@@ -3,10 +3,12 @@ using System.Windows;
 using Ewan.BusinessBonding;
 using Ewan.Core.Logger;
 using Ewan.Core.Culture;
+using Ewan.Core.Security;
 using log4net;
 using log4net.Config;
 using Prism.Mvvm;
 using MarkingMachineFeeder.Viewmodel;
+using MarkingMachineFeeder.Windows;
 
 namespace MarkingMachineFeeder
 {
@@ -40,7 +42,22 @@ namespace MarkingMachineFeeder
             else
             {
                 _uiLogger.Error(() => Ewan.Resources.LogMessages.MainControllerInitializationFailed);
+                MessageBox.Show("系统初始化失败，程序将退出。", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                Shutdown();
+                return;
             }
+
+            // 默认以操作员身份登录
+            var securityManager = SecurityManager.Instance();
+            if (!securityManager.Authenticate("operator", "123456"))
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.LoginError, "默认操作员登录失败");
+                MessageBox.Show("默认用户登录失败，程序将退出。", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                Shutdown();
+                return;
+            }
+
+            _uiLogger.Info(() => Ewan.Resources.LogMessages.SystemInitialized);
 
             // 手动配置Prism ViewModelLocator
             ConfigureViewModelLocator();

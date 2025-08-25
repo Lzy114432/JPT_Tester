@@ -186,4 +186,43 @@
   <data name="Log4netConfigNotFound" xml:space="preserve">
     <value>未找到Log4net配置文件</value>
   </data>
+  <data name="SecurityManagerInitialized" xml:space="preserve">
+    <value>安全管理器初始化成功</value>
+  </data>
+  <data name="LoginSuccessful" xml:space="preserve">
+    <value>用户 {0} 登录成功</value>
+  </data>
+  <data name="LoginInvalidInput" xml:space="preserve">
+    <value>登录失败：用户名或密码输入无效</value>
+  </data>
+  <data name="LoginUserNotFound" xml:space="preserve">
+    <value>登录失败：用户 {0} 不存在或未激活</value>
+  </data>
+  <data name="LoginPasswordIncorrect" xml:space="preserve">
+    <value>登录失败：用户 {0} 密码错误</value>
+  </data>
+  <data name="UserLoggedOut" xml:space="preserve">
+    <value>用户 {0} 注销成功</value>
+  </data>
+  <data name="UserAlreadyExists" xml:space="preserve">
+    <value>创建用户失败：用户 {0} 已存在</value>
+  </data>
+  <data name="UserCreated" xml:space="preserve">
+    <value>用户 {0} 创建成功</value>
+  </data>
+  <data name="DefaultUsersCreated" xml:space="preserve">
+    <value>默认用户创建成功</value>
+  </data>
+  <data name="UsersLoaded" xml:space="preserve">
+    <value>从存储加载了 {0} 个用户</value>
+  </data>
+  <data name="UsersLoadError" xml:space="preserve">
+    <value>加载用户数据失败：{0}</value>
+  </data>
+  <data name="UsersSaveError" xml:space="preserve">
+    <value>保存用户数据失败：{0}</value>
+  </data>
+  <data name="LoginError" xml:space="preserve">
+    <value>登录时发生错误：{0}</value>
+  </data>
 </root>

@@ -49,7 +49,9 @@
       <LastGenOutput>LogMessages.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="LogMessages.zh-CN.resx" />
+    <EmbeddedResource Include="LogMessages.zh-CN.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LogMessages.Designer.cs">

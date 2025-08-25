@@ -250,6 +250,123 @@ namespace Ewan.Resources {
         }
         
         /// <summary>
+        ///   查找类似 Security manager initialized successfully 的本地化字符串。
+        /// </summary>
+        public static string SecurityManagerInitialized {
+            get {
+                return ResourceManager.GetString("SecurityManagerInitialized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 User {0} login successful 的本地化字符串。
+        /// </summary>
+        public static string LoginSuccessful {
+            get {
+                return ResourceManager.GetString("LoginSuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Login failed: Invalid username or password input 的本地化字符串。
+        /// </summary>
+        public static string LoginInvalidInput {
+            get {
+                return ResourceManager.GetString("LoginInvalidInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Login failed: User {0} not found or inactive 的本地化字符串。
+        /// </summary>
+        public static string LoginUserNotFound {
+            get {
+                return ResourceManager.GetString("LoginUserNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Login failed: Incorrect password for user {0} 的本地化字符串。
+        /// </summary>
+        public static string LoginPasswordIncorrect {
+            get {
+                return ResourceManager.GetString("LoginPasswordIncorrect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 User {0} logged out successfully 的本地化字符串。
+        /// </summary>
+        public static string UserLoggedOut {
+            get {
+                return ResourceManager.GetString("UserLoggedOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 User creation failed: User {0} already exists 的本地化字符串。
+        /// </summary>
+        public static string UserAlreadyExists {
+            get {
+                return ResourceManager.GetString("UserAlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 User {0} created successfully 的本地化字符串。
+        /// </summary>
+        public static string UserCreated {
+            get {
+                return ResourceManager.GetString("UserCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Default users created successfully 的本地化字符串。
+        /// </summary>
+        public static string DefaultUsersCreated {
+            get {
+                return ResourceManager.GetString("DefaultUsersCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Loaded {0} users from storage 的本地化字符串。
+        /// </summary>
+        public static string UsersLoaded {
+            get {
+                return ResourceManager.GetString("UsersLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Failed to load user data: {0} 的本地化字符串。
+        /// </summary>
+        public static string UsersLoadError {
+            get {
+                return ResourceManager.GetString("UsersLoadError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Failed to save user data: {0} 的本地化字符串。
+        /// </summary>
+        public static string UsersSaveError {
+            get {
+                return ResourceManager.GetString("UsersSaveError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Login error occurred: {0} 的本地化字符串。
+        /// </summary>
+        public static string LoginError {
+            get {
+                return ResourceManager.GetString("LoginError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Log4net configuration loaded 的本地化字符串。
         /// </summary>
         public static string Log4netConfigLoaded {

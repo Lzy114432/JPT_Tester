@@ -22,6 +22,9 @@
                 </MenuItem>
             </Menu>
             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="10,5">
+                <TextBlock Text="{Binding CurrentUserText}" VerticalAlignment="Center" Margin="0,0,10,0" FontWeight="Bold"/>
+                <Button Content="{Binding SwitchUserButtonText}" Command="{Binding SwitchUserCommand}" 
+                        Width="80" Height="25" Margin="5,0"/>
                 <Button Content="{Binding TestLogButtonText}" Command="{Binding TestLogCommand}" 
                         Width="120" Height="25" Margin="5,0"/>
             </StackPanel>
