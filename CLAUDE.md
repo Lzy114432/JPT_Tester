@@ -339,3 +339,190 @@ Business Logic → UILogger → [UI Display + log4net File]
 - ✅ Type-safe message references
 - ✅ Consistent formatting and structure
 - ✅ Centralized logging configuration
+
+### Internationalization (i18n) Guidelines
+
+#### Resource File Organization
+
+All UI strings and user-facing messages must be stored in `.resx` resource files in the **Ewan.Resources** project:
+
+```
+Ewan.Resources/
+├── LogMessages.resx             # Log messages (English - default)
+├── LogMessages.zh-CN.resx       # Log messages (Chinese)
+├── UIStrings.resx              # UI strings (English - default)
+├── UIStrings.zh-CN.resx        # UI strings (Chinese)
+├── UIStrings.en-US.resx        # UI strings (US English variant)
+├── PermissionConfigStrings.resx     # Permission config UI (English)
+├── PermissionConfigStrings.zh-CN.resx # Permission config UI (Chinese)
+└── [Module]Strings.resx        # Module-specific strings
+```
+
+#### Resource File Standards
+
+1. **Always use .resx files, NOT XAML ResourceDictionary**:
+   ```csharp
+   // ✅ Correct - Use .resx resources with Designer.cs
+   WindowTitle = Ewan.Resources.UIStrings.MainWindowTitle;
+   
+   // ❌ Wrong - XAML ResourceDictionary
+   <ResourceDictionary Source="/Resources/Strings.xaml"/>
+   ```
+
+2. **Resource file configuration in .csproj**:
+   ```xml
+   <EmbeddedResource Include="UIStrings.resx">
+     <Generator>PublicResXFileCodeGenerator</Generator>
+     <LastGenOutput>UIStrings.Designer.cs</LastGenOutput>
+     <SubType>Designer</SubType>
+   </EmbeddedResource>
+   ```
+
+3. **Naming conventions**:
+   - **LogMessages.resx**: System log messages and operational messages
+   - **UIStrings.resx**: General UI text (menus, buttons, labels)
+   - **[Feature]Strings.resx**: Feature-specific UI strings (e.g., PermissionConfigStrings.resx)
+
+#### Culture Management
+
+1. **Set Culture through CultureManager**:
+   ```csharp
+   // In ViewModel constructor or initialization
+   _cultureManager = CultureManager.Instance();
+   _cultureManager.CultureChanged += OnCultureChanged;
+   
+   // Update resource culture when language changes
+   private void OnCultureChanged(object sender, CultureChangedEventArgs e)
+   {
+       Ewan.Resources.UIStrings.Culture = e.NewCulture;
+       Ewan.Resources.LogMessages.Culture = e.NewCulture;
+       UpdateUITexts(); // Refresh all UI strings
+   }
+   ```
+
+2. **Synchronize Culture in ViewModels**:
+   ```csharp
+   private void UpdateUITexts()
+   {
+       // Set culture before accessing resources
+       Ewan.Resources.UIStrings.Culture = _cultureManager.CurrentCulture;
+       
+       // Update all bound properties
+       WindowTitle = Ewan.Resources.UIStrings.WindowTitle;
+       SaveButtonText = Ewan.Resources.UIStrings.SaveButton;
+       
+       // Force UI refresh
+       RaisePropertyChanged(nameof(WindowTitle));
+       RaisePropertyChanged(nameof(SaveButtonText));
+   }
+   ```
+
+#### Using Resources in Code
+
+1. **In ViewModels (MVVM pattern)**:
+   ```csharp
+   public class MyViewModel : BindableBase
+   {
+       private string _title;
+       
+       public string Title
+       {
+           get => _title;
+           set => SetProperty(ref _title, value);
+       }
+       
+       private void UpdateUITexts()
+       {
+           Ewan.Resources.UIStrings.Culture = _cultureManager.CurrentCulture;
+           Title = Ewan.Resources.UIStrings.MyWindowTitle;
+       }
+   }
+   ```
+
+2. **In XAML (through binding)**:
+   ```xml
+   <!-- Bind to ViewModel properties, NOT directly to resources -->
+   <Window Title="{Binding WindowTitle}">
+       <Button Content="{Binding SaveButtonText}" />
+   </Window>
+   ```
+
+3. **For dynamic/formatted strings**:
+   ```csharp
+   // Resource: "Processing {0} items..."
+   var message = string.Format(
+       Ewan.Resources.UIStrings.ProcessingItems, 
+       itemCount
+   );
+   ```
+
+#### Adding New Resources
+
+1. **Step 1: Add to default resource file (.resx)**:
+   - Open `UIStrings.resx` in Visual Studio
+   - Add new entry with Name and Value
+   - Save the file
+
+2. **Step 2: Add translations to culture-specific files**:
+   - Open `UIStrings.zh-CN.resx`
+   - Add same Name with translated Value
+   - Repeat for other cultures
+
+3. **Step 3: Regenerate Designer.cs** (happens automatically in Visual Studio):
+   - The Designer.cs file will auto-generate with strongly-typed properties
+   - If not, right-click .resx file → Run Custom Tool
+
+4. **Step 4: Use in code**:
+   ```csharp
+   var text = Ewan.Resources.UIStrings.NewResourceKey;
+   ```
+
+#### Common Pitfalls to Avoid
+
+1. **❌ Don't hardcode strings in ViewModels**:
+   ```csharp
+   // Wrong
+   WindowTitle = "权限配置";
+   WindowTitle = isChinese ? "权限配置" : "Permission Configuration";
+   ```
+
+2. **❌ Don't use XAML ResourceDictionary for i18n**:
+   ```xml
+   <!-- Wrong -->
+   <ResourceDictionary Source="/Resources/Strings.xaml"/>
+   ```
+
+3. **❌ Don't forget to escape special XML characters in .resx**:
+   ```xml
+   <!-- Wrong -->
+   <data name="BackupRestore">
+     <value>Backup & Restore</value>
+   </data>
+   
+   <!-- Correct -->
+   <data name="BackupRestore">
+     <value>Backup &amp; Restore</value>
+   </data>
+   ```
+
+4. **❌ Don't access resources without setting Culture**:
+   ```csharp
+   // Wrong - uses default culture
+   var text = Ewan.Resources.UIStrings.SomeText;
+   
+   // Correct - uses current culture
+   Ewan.Resources.UIStrings.Culture = _cultureManager.CurrentCulture;
+   var text = Ewan.Resources.UIStrings.SomeText;
+   ```
+
+#### Best Practices
+
+1. **Always group related strings together** in resource files
+2. **Use descriptive resource keys** that indicate usage:
+   - `MainWindowTitle` instead of `Title1`
+   - `SaveButtonText` instead of `Button1`
+3. **Include placeholders** for dynamic content:
+   - `"Processing {0} of {1} items..."` instead of hardcoding
+4. **Test all languages** after adding new resources
+5. **Keep translations synchronized** - missing translations fall back to default
+6. **Use same key names** across all culture-specific files

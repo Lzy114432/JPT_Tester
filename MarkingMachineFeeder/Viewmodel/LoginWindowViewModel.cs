@@ -1,9 +1,11 @@
 using Ewan.Core.Security;
 using Ewan.Core.Logger;
+using Ewan.Core.Culture;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,6 +16,7 @@ namespace MarkingMachineFeeder.Viewmodel
     {
         private readonly UILogger _uiLogger = new UILogger(typeof(Ewan.Resources.LogMessages));
         private readonly SecurityManager _securityManager;
+        private readonly CultureManager _cultureManager;
 
         private string _title = "系统登录";
         private string _applicationName = "MarkingMachineFeeder";
@@ -21,7 +24,7 @@ namespace MarkingMachineFeeder.Viewmodel
         private string _usernameLabel = "用户名";
         private string _passwordLabel = "密码";
         private string _loginButtonText = "登录";
-        private string _userInfoText = "选择用户并输入对应密码登录，默认密码均为：123456";
+        private string _userInfoText = "选择用户并输入对应密码登录";
         
         private string _username = "";
         private string _selectedUser = "";
@@ -109,11 +112,26 @@ namespace MarkingMachineFeeder.Viewmodel
 
         public LoginWindowViewModel()
         {
+            // 运行时逻辑
             _securityManager = SecurityManager.Instance();
+            _cultureManager = CultureManager.Instance();
+            _cultureManager.CultureChanged += OnCultureChanged;
+            
+            // 初始化UIStrings的Culture
+            Ewan.Resources.UIStrings.Culture = _cultureManager.CurrentCulture;
+            
             LoginCommand = new DelegateCommand<PasswordBox>(ExecuteLogin, CanExecuteLogin);
             
             // 初始化可用用户列表
             InitializeAvailableUsers();
+            
+            UpdateUITexts();
+        }
+
+        private void OnCultureChanged(object sender, CultureChangedEventArgs e)
+        {
+            // 同步UIStrings的Culture设置
+            Ewan.Resources.UIStrings.Culture = e.NewCulture;
             
             UpdateUITexts();
         }
@@ -124,13 +142,13 @@ namespace MarkingMachineFeeder.Viewmodel
 
             if (string.IsNullOrWhiteSpace(Username))
             {
-                SetError("请输入用户名");
+                SetError(Ewan.Resources.UIStrings.PleaseEnterUsername);
                 return;
             }
 
             if (passwordBox == null || string.IsNullOrWhiteSpace(passwordBox.Password))
             {
-                SetError("请输入密码");
+                SetError(Ewan.Resources.UIStrings.PleaseEnterPassword);
                 return;
             }
 
@@ -138,18 +156,17 @@ namespace MarkingMachineFeeder.Viewmodel
             {
                 if (_securityManager.Authenticate(Username, passwordBox.Password))
                 {
-                    _uiLogger.Info(() => Ewan.Resources.LogMessages.LoginSuccessful, Username);
                     LoginSuccessful?.Invoke(this, EventArgs.Empty);
                 }
                 else
                 {
-                    SetError("用户名或密码错误");
+                    SetError(Ewan.Resources.UIStrings.InvalidUsernamePassword);
                 }
             }
             catch (Exception ex)
             {
                 _uiLogger.Error(() => Ewan.Resources.LogMessages.LoginError, ex.Message);
-                SetError($"登录时发生错误: {ex.Message}");
+                SetError(string.Format(Ewan.Resources.UIStrings.LoginErrorOccurred, ex.Message));
             }
         }
 
@@ -189,8 +206,23 @@ namespace MarkingMachineFeeder.Viewmodel
 
         private void UpdateUITexts()
         {
-            // 这里可以根据当前语言更新UI文本
-            // 暂时使用中文硬编码，后续可以改为资源文件
+            // 从资源文件加载UI文本
+            Title = Ewan.Resources.UIStrings.LoginTitle;
+            ApplicationName = Ewan.Resources.UIStrings.ApplicationName;
+            LoginHeaderText = Ewan.Resources.UIStrings.LoginHeaderText;
+            UsernameLabel = Ewan.Resources.UIStrings.UsernameLabel;
+            PasswordLabel = Ewan.Resources.UIStrings.PasswordLabel;
+            LoginButtonText = Ewan.Resources.UIStrings.LoginButtonText;
+            UserInfoText = Ewan.Resources.UIStrings.UserInfoText;
+            
+            // 强制触发所有相关属性的PropertyChanged事件
+            RaisePropertyChanged(nameof(Title));
+            RaisePropertyChanged(nameof(ApplicationName));
+            RaisePropertyChanged(nameof(LoginHeaderText));
+            RaisePropertyChanged(nameof(UsernameLabel));
+            RaisePropertyChanged(nameof(PasswordLabel));
+            RaisePropertyChanged(nameof(LoginButtonText));
+            RaisePropertyChanged(nameof(UserInfoText));
         }
     }
 }

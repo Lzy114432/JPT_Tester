@@ -120,10 +120,10 @@
   <data name="MainWindowStarted" xml:space="preserve">
     <value>主窗口已启动</value>
   </data>
-  <data name="Log4NetConfigLoaded" xml:space="preserve">
+  <data name="Log4netConfigLoaded" xml:space="preserve">
     <value>Log4net配置已加载</value>
   </data>
-  <data name="Log4NetConfigNotFound" xml:space="preserve">
+  <data name="Log4netConfigNotFound" xml:space="preserve">
     <value>未找到Log4net配置文件</value>
   </data>
   <data name="MainControllerInitialized" xml:space="preserve">
@@ -179,12 +179,6 @@
   </data>
   <data name="DatabaseConnected" xml:space="preserve">
     <value>数据库连接成功</value>
-  </data>
-  <data name="Log4netConfigLoaded" xml:space="preserve">
-    <value>Log4net配置已加载</value>
-  </data>
-  <data name="Log4netConfigNotFound" xml:space="preserve">
-    <value>未找到Log4net配置文件</value>
   </data>
   <data name="SecurityManagerInitialized" xml:space="preserve">
     <value>安全管理器初始化成功</value>

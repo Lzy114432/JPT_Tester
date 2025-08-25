@@ -5,8 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MarkingMachineFeeder"
         xmlns:controls="clr-namespace:MarkingMachineFeeder.Windows"
+        xmlns:vm="clr-namespace:MarkingMachineFeeder.Viewmodel"
         mc:Ignorable="d"
-        Title="{Binding Title}" Height="900" Width="1200">
+        Title="{Binding Title}" Height="900" Width="1200"
+        d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel, IsDesignTimeCreatable=False}">
+    
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -14,17 +21,32 @@
         </Grid.RowDefinitions>
         
         <!-- Top Menu Bar -->
-        <DockPanel Grid.Row="0">
-            <Menu DockPanel.Dock="Left">
+        <DockPanel Grid.Row="0" Background="#F5F5F5">
+            <Menu DockPanel.Dock="Left" Visibility="{Binding CanSwitchLanguage, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <MenuItem Header="{Binding LanguageMenuHeader}">
                     <MenuItem Header="English" Command="{Binding SwitchLanguageCommand}" CommandParameter="en-US"/>
                     <MenuItem Header="中文" Command="{Binding SwitchLanguageCommand}" CommandParameter="zh-CN"/>
                 </MenuItem>
+                <MenuItem Header="{Binding SystemManagementMenuHeader}" Visibility="{Binding CanViewSettings, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <MenuItem Header="{Binding PermissionConfigMenuHeader}" Command="{Binding OpenPermissionConfigCommand}"/>
+                </MenuItem>
             </Menu>
+            
+            <!-- 用户信息区域 - 居中显示 -->
+            <Border DockPanel.Dock="Top" Background="#E8E8E8" Padding="10,5" Margin="5,2">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="{Binding CurrentUserText}" 
+                              VerticalAlignment="Center" 
+                              FontWeight="Bold" 
+                              Foreground="#333333"
+                              Margin="0,0,15,0"/>
+                    <Button Content="{Binding SwitchUserButtonText}" 
+                            Command="{Binding SwitchUserCommand}" 
+                            Width="80" Height="25" Margin="5,0"/>
+                </StackPanel>
+            </Border>
+            
             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="10,5">
-                <TextBlock Text="{Binding CurrentUserText}" VerticalAlignment="Center" Margin="0,0,10,0" FontWeight="Bold"/>
-                <Button Content="{Binding SwitchUserButtonText}" Command="{Binding SwitchUserCommand}" 
-                        Width="80" Height="25" Margin="5,0"/>
                 <Button Content="{Binding TestLogButtonText}" Command="{Binding TestLogCommand}" 
                         Width="120" Height="25" Margin="5,0"/>
             </StackPanel>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  
+  <!-- Login Window -->
+  <data name="LoginTitle" xml:space="preserve">
+    <value>System Login</value>
+  </data>
+  <data name="ApplicationName" xml:space="preserve">
+    <value>MarkingMachineFeeder</value>
+  </data>
+  <data name="LoginHeaderText" xml:space="preserve">
+    <value>Please enter your login information</value>
+  </data>
+  <data name="UsernameLabel" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="PasswordLabel" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="LoginButtonText" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="UserInfoText" xml:space="preserve">
+    <value>Select a user and enter the corresponding password to login</value>
+  </data>
+  <data name="InvalidUsernamePassword" xml:space="preserve">
+    <value>Invalid username or password</value>
+  </data>
+  <data name="PleaseEnterUsername" xml:space="preserve">
+    <value>Please enter username</value>
+  </data>
+  <data name="PleaseEnterPassword" xml:space="preserve">
+    <value>Please enter password</value>
+  </data>
+  <data name="LoginErrorOccurred" xml:space="preserve">
+    <value>An error occurred during login: {0}</value>
+  </data>
+  
+  <!-- Main Window -->
+  <data name="MainWindowTitle" xml:space="preserve">
+    <value>MarkingMachineFeeder</value>
+  </data>
+  <data name="CurrentUser" xml:space="preserve">
+    <value>Current User: {0}</value>
+  </data>
+  <data name="TestLogButton" xml:space="preserve">
+    <value>Test Log</value>
+  </data>
+  <data name="LogoutButton" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="SwitchUserButton" xml:space="preserve">
+    <value>Switch User</value>
+  </data>
+  <data name="NoUserLoggedIn" xml:space="preserve">
+    <value>No user logged in</value>
+  </data>
+  <data name="LanguageMenuHeader" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  
+  <!-- User Roles -->
+  <data name="AdminRole" xml:space="preserve">
+    <value>Administrator</value>
+  </data>
+  <data name="EngineerRole" xml:space="preserve">
+    <value>Engineer</value>
+  </data>
+  <data name="OperatorRole" xml:space="preserve">
+    <value>Operator</value>
+  </data>
+  
+  <!-- User Display Names -->
+  <data name="AdminUser" xml:space="preserve">
+    <value>System Administrator</value>
+  </data>
+  <data name="EngineerUser" xml:space="preserve">
+    <value>Engineer</value>
+  </data>
+  <data name="OperatorUser" xml:space="preserve">
+    <value>Operator</value>
+  </data>
+</root>

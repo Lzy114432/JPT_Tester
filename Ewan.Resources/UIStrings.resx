@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  
+  <!-- Login Window -->
+  <data name="LoginTitle" xml:space="preserve">
+    <value>System Login</value>
+  </data>
+  <data name="ApplicationName" xml:space="preserve">
+    <value>MarkingMachineFeeder</value>
+  </data>
+  <data name="LoginHeaderText" xml:space="preserve">
+    <value>Please enter your login information</value>
+  </data>
+  <data name="UsernameLabel" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="PasswordLabel" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="LoginButtonText" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="UserInfoText" xml:space="preserve">
+    <value>Select a user and enter the corresponding password to login</value>
+  </data>
+  <data name="InvalidUsernamePassword" xml:space="preserve">
+    <value>Invalid username or password</value>
+  </data>
+  <data name="PleaseEnterUsername" xml:space="preserve">
+    <value>Please enter username</value>
+  </data>
+  <data name="PleaseEnterPassword" xml:space="preserve">
+    <value>Please enter password</value>
+  </data>
+  <data name="LoginErrorOccurred" xml:space="preserve">
+    <value>An error occurred during login: {0}</value>
+  </data>
+  
+  <!-- Main Window -->
+  <data name="MainWindowTitle" xml:space="preserve">
+    <value>MarkingMachineFeeder</value>
+  </data>
+  <data name="CurrentUser" xml:space="preserve">
+    <value>Current User: {0}</value>
+  </data>
+  <data name="TestLogButton" xml:space="preserve">
+    <value>Test Log</value>
+  </data>
+  <data name="LogoutButton" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="SwitchUserButton" xml:space="preserve">
+    <value>Switch User</value>
+  </data>
+  <data name="NoUserLoggedIn" xml:space="preserve">
+    <value>No user logged in</value>
+  </data>
+  <data name="LanguageMenuHeader" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  
+  <!-- User Roles -->
+  <data name="AdminRole" xml:space="preserve">
+    <value>Administrator</value>
+  </data>
+  <data name="EngineerRole" xml:space="preserve">
+    <value>Engineer</value>
+  </data>
+  <data name="OperatorRole" xml:space="preserve">
+    <value>Operator</value>
+  </data>
+  
+  <!-- User Display Names -->
+  <data name="AdminUser" xml:space="preserve">
+    <value>System Administrator</value>
+  </data>
+  <data name="EngineerUser" xml:space="preserve">
+    <value>Engineer</value>
+  </data>
+  <data name="OperatorUser" xml:space="preserve">
+    <value>Operator</value>
+  </data>
+  
+  <!-- Permission Configuration Window -->
+  <data name="PermissionConfigTitle" xml:space="preserve">
+    <value>Permission Configuration</value>
+  </data>
+  <data name="PermissionConfigDescription" xml:space="preserve">
+    <value>Configure system permissions for different roles and users</value>
+  </data>
+  <data name="RoleListTitle" xml:space="preserve">
+    <value>Roles</value>
+  </data>
+  <data name="UserSpecialPermissions" xml:space="preserve">
+    <value>User Special Permissions</value>
+  </data>
+  <data name="CurrentConfig" xml:space="preserve">
+    <value>Current Configuration: {0}</value>
+  </data>
+  <data name="RolePrefix" xml:space="preserve">
+    <value>Role: {0}</value>
+  </data>
+  <data name="UserSpecialPermissionsDesc" xml:space="preserve">
+    <value>User special permission configuration</value>
+  </data>
+  <data name="AddRoleButton" xml:space="preserve">
+    <value>Add Role</value>
+  </data>
+  <data name="DeleteRoleButton" xml:space="preserve">
+    <value>Delete Role</value>
+  </data>
+  <data name="ImportConfigButton" xml:space="preserve">
+    <value>Import Config</value>
+  </data>
+  <data name="ExportConfigButton" xml:space="preserve">
+    <value>Export Config</value>
+  </data>
+  <data name="ApplyButton" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="SaveButton" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="CancelButton" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  
+  <!-- Permission Categories -->
+  <data name="SystemManagement" xml:space="preserve">
+    <value>System Management</value>
+  </data>
+  <data name="UserManagement" xml:space="preserve">
+    <value>User Management</value>
+  </data>
+  <data name="DeviceControl" xml:space="preserve">
+    <value>Device Control</value>
+  </data>
+  <data name="DataManagement" xml:space="preserve">
+    <value>Data Management</value>
+  </data>
+  <data name="ProductionOperation" xml:space="preserve">
+    <value>Production Operation</value>
+  </data>
+  
+  <!-- Permission Names -->
+  <data name="SystemSettings" xml:space="preserve">
+    <value>System Settings</value>
+  </data>
+  <data name="SystemSettingsDesc" xml:space="preserve">
+    <value>Access and modify system settings</value>
+  </data>
+  <data name="LanguageSwitch" xml:space="preserve">
+    <value>Language Switch</value>
+  </data>
+  <data name="LanguageSwitchDesc" xml:space="preserve">
+    <value>Switch system language</value>
+  </data>
+  <data name="ViewLogs" xml:space="preserve">
+    <value>View Logs</value>
+  </data>
+  <data name="ViewLogsDesc" xml:space="preserve">
+    <value>View system logs</value>
+  </data>
+  <data name="BackupRestore" xml:space="preserve">
+    <value>Backup &amp; Restore</value>
+  </data>
+  <data name="BackupRestoreDesc" xml:space="preserve">
+    <value>System backup and restore</value>
+  </data>
+  <data name="UserManagePerm" xml:space="preserve">
+    <value>User Management</value>
+  </data>
+  <data name="UserManagePermDesc" xml:space="preserve">
+    <value>Create, edit, delete users</value>
+  </data>
+  <data name="PermissionConfig" xml:space="preserve">
+    <value>Permission Configuration</value>
+  </data>
+  <data name="PermissionConfigDesc" xml:space="preserve">
+    <value>Configure user permissions</value>
+  </data>
+  <data name="SwitchUser" xml:space="preserve">
+    <value>Switch User</value>
+  </data>
+  <data name="SwitchUserDesc" xml:space="preserve">
+    <value>Switch to other user accounts</value>
+  </data>
+  <data name="CameraControl" xml:space="preserve">
+    <value>Camera Control</value>
+  </data>
+  <data name="CameraControlDesc" xml:space="preserve">
+    <value>Control camera devices</value>
+  </data>
+  <data name="UPSControl" xml:space="preserve">
+    <value>UPS Control</value>
+  </data>
+  <data name="UPSControlDesc" xml:space="preserve">
+    <value>Control UPS devices</value>
+  </data>
+  <data name="MarkingMachineControl" xml:space="preserve">
+    <value>Marking Machine Control</value>
+  </data>
+  <data name="MarkingMachineControlDesc" xml:space="preserve">
+    <value>Control marking machine devices</value>
+  </data>
+  <data name="DataExport" xml:space="preserve">
+    <value>Data Export</value>
+  </data>
+  <data name="DataExportDesc" xml:space="preserve">
+    <value>Export system data</value>
+  </data>
+  <data name="DataImport" xml:space="preserve">
+    <value>Data Import</value>
+  </data>
+  <data name="DataImportDesc" xml:space="preserve">
+    <value>Import external data</value>
+  </data>
+  <data name="DataDelete" xml:space="preserve">
+    <value>Data Delete</value>
+  </data>
+  <data name="DataDeleteDesc" xml:space="preserve">
+    <value>Delete system data</value>
+  </data>
+  <data name="StartProduction" xml:space="preserve">
+    <value>Start Production</value>
+  </data>
+  <data name="StartProductionDesc" xml:space="preserve">
+    <value>Start production process</value>
+  </data>
+  <data name="StopProduction" xml:space="preserve">
+    <value>Stop Production</value>
+  </data>
+  <data name="StopProductionDesc" xml:space="preserve">
+    <value>Stop production process</value>
+  </data>
+  <data name="ConfigureProduction" xml:space="preserve">
+    <value>Configure Production</value>
+  </data>
+  <data name="ConfigureProductionDesc" xml:space="preserve">
+    <value>Configure production parameters</value>
+  </data>
+  
+  <!-- Messages -->
+  <data name="AddRoleFeatureDevelopment" xml:space="preserve">
+    <value>Add role feature is under development...</value>
+  </data>
+  <data name="ConfirmDeleteRole" xml:space="preserve">
+    <value>Are you sure you want to delete role '{0}'?</value>
+  </data>
+  <data name="ConfirmDeleteTitle" xml:space="preserve">
+    <value>Confirm Delete</value>
+  </data>
+  <data name="ImportTitle" xml:space="preserve">
+    <value>Import Permission Configuration</value>
+  </data>
+  <data name="ExportTitle" xml:space="preserve">
+    <value>Export Permission Configuration</value>
+  </data>
+  <data name="ImportSuccess" xml:space="preserve">
+    <value>Configuration imported successfully!</value>
+  </data>
+  <data name="ExportSuccess" xml:space="preserve">
+    <value>Configuration exported successfully!</value>
+  </data>
+  <data name="ImportFailed" xml:space="preserve">
+    <value>Import failed: {0}</value>
+  </data>
+  <data name="ExportFailed" xml:space="preserve">
+    <value>Export failed: {0}</value>
+  </data>
+  <data name="SaveFailed" xml:space="preserve">
+    <value>Save failed: {0}</value>
+  </data>
+  <data name="PermissionsApplied" xml:space="preserve">
+    <value>Permission configuration has been applied!</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Info" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="JsonFiles" xml:space="preserve">
+    <value>JSON Files|*.json|All Files|*.*</value>
+  </data>
+  <data name="SystemManagementMenu" xml:space="preserve">
+    <value>System Management</value>
+  </data>
+  <data name="PermissionConfigMenu" xml:space="preserve">
+    <value>Permission Configuration</value>
+  </data>
+</root>
