@@ -20,37 +20,89 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
-        <!-- Top Menu Bar -->
-        <DockPanel Grid.Row="0" Background="#F5F5F5">
-            <Menu DockPanel.Dock="Left" Visibility="{Binding CanSwitchLanguage, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <MenuItem Header="{Binding LanguageMenuHeader}">
-                    <MenuItem Header="English" Command="{Binding SwitchLanguageCommand}" CommandParameter="en-US"/>
-                    <MenuItem Header="中文" Command="{Binding SwitchLanguageCommand}" CommandParameter="zh-CN"/>
-                </MenuItem>
-                <MenuItem Header="{Binding SystemManagementMenuHeader}" Visibility="{Binding CanViewSettings, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <MenuItem Header="{Binding PermissionConfigMenuHeader}" Command="{Binding OpenPermissionConfigCommand}"/>
-                </MenuItem>
-            </Menu>
+        <!-- Top Menu Area (Upper & Lower) -->
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>  <!-- 上部菜单栏 -->
+                <RowDefinition Height="Auto"/>  <!-- 下部菜单栏 -->
+            </Grid.RowDefinitions>
             
-            <!-- 用户信息区域 - 居中显示 -->
-            <Border DockPanel.Dock="Top" Background="#E8E8E8" Padding="10,5" Margin="5,2">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <TextBlock Text="{Binding CurrentUserText}" 
+            <!-- 上部菜单栏 - 包含语言切换和系统管理 -->
+            <DockPanel Grid.Row="0" Background="#F0F0F0" LastChildFill="True">
+                <!-- 左侧 - 设置和系统菜单 -->
+                <Menu DockPanel.Dock="Left" Background="Transparent" Margin="10,2,5,2">
+                    <!-- 设置菜单 -->
+                    <MenuItem Header="{Binding SettingsMenuHeader}" 
+                              d:Header="设置"
+                              Command="{Binding OpenSettingsCommand}"/>
+                    
+                    <!-- 系统菜单 -->
+                    <MenuItem Header="{Binding SystemMenuHeader}"
+                              d:Header="系统">
+                        <!-- 系统设置项 -->
+                        <MenuItem Header="{Binding SystemSettingsMenuHeader}" 
+                                  d:Header="系统设置"
+                                  Command="{Binding OpenSystemCommand}"/>
+                        <!-- 权限配置菜单 -->
+                        <MenuItem Header="{Binding PermissionConfigMenuHeader}" 
+                                  d:Header="权限配置"
+                                  Command="{Binding OpenPermissionConfigCommand}"
+                                  Visibility="{Binding CanViewSettings, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                        <!-- 语言切换子菜单 -->
+                        <MenuItem Header="{Binding LanguageMenuHeader}"
+                                  d:Header="语言"
+                                  Visibility="{Binding CanSwitchLanguage, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <MenuItem Header="English" Command="{Binding SwitchLanguageCommand}" CommandParameter="en-US"/>
+                            <MenuItem Header="中文" Command="{Binding SwitchLanguageCommand}" CommandParameter="zh-CN"/>
+                        </MenuItem>
+                    </MenuItem>
+                </Menu>
+                
+                <!-- 右侧 - 用户信息 -->
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="0,5,10,5">
+                    <TextBlock Text="{Binding CurrentUserLabel}" 
+                              d:Text="当前用户："
+                              VerticalAlignment="Center" 
+                              FontWeight="Medium" 
+                              Foreground="#444444"/>
+                    <TextBlock Text="{Binding CurrentUser}" 
+                              d:Text="游客"
                               VerticalAlignment="Center" 
                               FontWeight="Bold" 
                               Foreground="#333333"
-                              Margin="0,0,15,0"/>
-                    <Button Content="{Binding SwitchUserButtonText}" 
-                            Command="{Binding SwitchUserCommand}" 
-                            Width="80" Height="25" Margin="5,0"/>
+                              Margin="5,0,0,0"/>
                 </StackPanel>
-            </Border>
+                
+                <!-- 填充空间 -->
+                <Grid/>
+            </DockPanel>
             
-            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="10,5">
-                <Button Content="{Binding TestLogButtonText}" Command="{Binding TestLogCommand}" 
-                        Width="120" Height="25" Margin="5,0"/>
-            </StackPanel>
-        </DockPanel>
+            <!-- 下部菜单栏 - 包含操作按钮 -->
+            <DockPanel Grid.Row="1" Background="#E8E8E8" LastChildFill="True">
+                <!-- 右侧 - 注销和登录按钮 -->
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="10,5">
+                    <Button Content="{Binding LogoutButtonText}" 
+                            d:Content="注销"
+                            Command="{Binding LogoutCommand}" 
+                            Width="80" Height="26" Margin="5,0"/>
+                    <Button Content="{Binding LoginButtonText}" 
+                            d:Content="登录"
+                            Command="{Binding LoginCommand}" 
+                            Width="80" Height="26" Margin="5,0"/>
+                </StackPanel>
+                
+                <!-- 左侧 - 测试日志按钮 -->
+                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" Margin="10,5">
+                    <Button Content="{Binding TestLogButtonText}" 
+                            d:Content="测试日志"
+                            Command="{Binding TestLogCommand}" 
+                            Width="120" Height="26" Margin="0,0,5,0"/>
+                </StackPanel>
+                
+                <!-- 填充空间 -->
+                <Grid/>
+            </DockPanel>
+        </Grid>
         
         <!-- Main Content -->
         <Grid Grid.Row="1">

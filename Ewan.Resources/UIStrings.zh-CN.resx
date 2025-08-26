@@ -105,7 +105,7 @@
     <value>测试日志</value>
   </data>
   <data name="LogoutButton" xml:space="preserve">
-    <value>退出登录</value>
+    <value>注销</value>
   </data>
   <data name="SwitchUserButton" xml:space="preserve">
     <value>切换用户</value>
@@ -343,6 +343,18 @@
   </data>
   <data name="JsonFiles" xml:space="preserve">
     <value>JSON文件|*.json|所有文件|*.*</value>
+  </data>
+  <data name="CurrentUserLabel" xml:space="preserve">
+    <value>当前用户：</value>
+  </data>
+  <data name="SystemSettingsMenu" xml:space="preserve">
+    <value>系统设置</value>
+  </data>
+  <data name="SettingsMenu" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="SystemMenu" xml:space="preserve">
+    <value>系统</value>
   </data>
   <data name="SystemManagementMenu" xml:space="preserve">
     <value>系统管理</value>

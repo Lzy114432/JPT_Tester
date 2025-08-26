@@ -344,6 +344,18 @@
   <data name="JsonFiles" xml:space="preserve">
     <value>JSON Files|*.json|All Files|*.*</value>
   </data>
+  <data name="CurrentUserLabel" xml:space="preserve">
+    <value>Current User:</value>
+  </data>
+  <data name="SystemSettingsMenu" xml:space="preserve">
+    <value>System Settings</value>
+  </data>
+  <data name="SettingsMenu" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="SystemMenu" xml:space="preserve">
+    <value>System</value>
+  </data>
   <data name="SystemManagementMenu" xml:space="preserve">
     <value>System Management</value>
   </data>
