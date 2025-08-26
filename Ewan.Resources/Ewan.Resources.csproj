@@ -75,6 +75,14 @@
     <EmbeddedResource Include="PermissionConfigStrings.zh-CN.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="LogStrings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LogStrings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LogStrings.zh-CN.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LogMessages.Designer.cs">
@@ -91,6 +99,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PermissionConfigStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="LogStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LogStrings.resx</DependentUpon>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

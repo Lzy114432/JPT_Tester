@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Ewan.Model.Permission
 {
@@ -37,8 +39,10 @@ namespace Ewan.Model.Permission
     /// <summary>
     /// 角色权限配置
     /// </summary>
-    public class RolePermissionConfig
+    public class RolePermissionConfig : INotifyPropertyChanged
     {
+        private string _localizedRoleDisplayName;
+
         /// <summary>
         /// 角色名称
         /// </summary>
@@ -50,6 +54,22 @@ namespace Ewan.Model.Permission
         public string RoleDisplayName { get; set; }
 
         /// <summary>
+        /// 本地化的角色显示名称（运行时设置）
+        /// </summary>
+        public string LocalizedRoleDisplayName 
+        { 
+            get => _localizedRoleDisplayName;
+            set
+            {
+                if (_localizedRoleDisplayName != value)
+                {
+                    _localizedRoleDisplayName = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        /// <summary>
         /// 角色拥有的权限ID列表
         /// </summary>
         public List<string> PermissionIds { get; set; } = new List<string>();
@@ -58,6 +78,13 @@ namespace Ewan.Model.Permission
         /// 是否为系统角色（不可删除）
         /// </summary>
         public bool IsSystemRole { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 
     /// <summary>

@@ -3,83 +3,286 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="clr-namespace:MarkingMachineFeeder.Viewmodel"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="600">
+             d:DesignHeight="300" d:DesignWidth="600"
+             d:DataContext="{d:DesignInstance Type=vm:LogWindowViewModel, IsDesignTimeCreatable=False}">
     <UserControl.Resources>
+        <!-- 现代化按钮样式 -->
+        <Style x:Key="ModernButton" TargetType="Button">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="MinWidth" Value="80"/>
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Foreground" Value="#2C3E50"/>
+            <Setter Property="Background" Value="#ECF0F1"/>
+            <Setter Property="BorderBrush" Value="#BDC3C7"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#D5DBDB"/>
+                                <Setter Property="BorderBrush" Value="#85929E"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#BFC9CA"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="#F8F9FA"/>
+                                <Setter Property="Foreground" Value="#AEB6BF"/>
+                                <Setter Property="BorderBrush" Value="#D5D8DC"/>
+                                <Setter Property="Cursor" Value="Arrow"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 现代化文本框样式 -->
+        <Style x:Key="ModernTextBox" TargetType="TextBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="8,0"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#BDC3C7"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="#2C3E50"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="4">
+                            <ScrollViewer x:Name="PART_ContentHost" 
+                                        VerticalAlignment="Center"
+                                        Margin="8,0"
+                                        HorizontalScrollBarVisibility="Hidden"
+                                        VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="BorderBrush" Value="#3498DB"/>
+                                <Setter Property="Background" Value="#FAFBFC"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 现代化复选框样式 -->
+        <Style x:Key="ModernCheckBox" TargetType="CheckBox">
+            <Setter Property="Foreground" Value="#2C3E50"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <!-- 现代化标签样式 -->
+        <Style x:Key="ModernLabel" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="#34495E"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+        </Style>
+
+        <!-- 日志级别样式 -->
         <Style x:Key="LogLevelStyle" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="SemiBold"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Level}" Value="Error">
-                    <Setter Property="Foreground" Value="Red"/>
+                    <Setter Property="Foreground" Value="#E74C3C"/>
                     <Setter Property="FontWeight" Value="Bold"/>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Level}" Value="Fatal">
-                    <Setter Property="Foreground" Value="DarkRed"/>
+                    <Setter Property="Foreground" Value="#C0392B"/>
                     <Setter Property="FontWeight" Value="Bold"/>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Level}" Value="Warn">
-                    <Setter Property="Foreground" Value="Orange"/>
+                    <Setter Property="Foreground" Value="#F39C12"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Level}" Value="Info">
-                    <Setter Property="Foreground" Value="Black"/>
+                    <Setter Property="Foreground" Value="#27AE60"/>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Level}" Value="Debug">
-                    <Setter Property="Foreground" Value="Gray"/>
+                    <Setter Property="Foreground" Value="#7F8C8D"/>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
     </UserControl.Resources>
     
-    <Grid>
+    <Grid Background="#F8F9FA">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
-        <!-- 工具栏 -->
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Background="LightGray" Margin="2">
-            <Button Content="清除日志" Margin="5" Padding="10,2" Command="{Binding ClearCommand}"/>
-            <Button Content="导出日志" Margin="5" Padding="10,2" Command="{Binding ExportCommand}"/>
-            <Separator Margin="5,0"/>
-            <CheckBox Content="自动滚动" IsChecked="{Binding AutoScroll}" VerticalAlignment="Center" Margin="5"/>
-            <TextBlock Text="最大行数:" VerticalAlignment="Center" Margin="5,0"/>
-            <TextBox Text="{Binding MaxLines}" Width="60" VerticalAlignment="Center" Margin="2"/>
-        </StackPanel>
+        <!-- 现代化工具栏 -->
+        <Border Grid.Row="0" Background="White" BorderBrush="#E9ECEF" BorderThickness="0,0,0,1">
+            <StackPanel Orientation="Horizontal" Margin="12,8">
+                <Button Content="{Binding ClearButtonText}" 
+                       d:Content="清除日志"
+                       Command="{Binding ClearCommand}"
+                       Style="{StaticResource ModernButton}"/>
+                <Button Content="{Binding ExportButtonText}" 
+                       d:Content="导出日志"
+                       Command="{Binding ExportCommand}"
+                       Style="{StaticResource ModernButton}"/>
+                
+                <Rectangle Width="1" Fill="#DEE2E6" Margin="12,4"/>
+                
+                <CheckBox Content="{Binding AutoScrollText}" 
+                         d:Content="自动滚动"
+                         IsChecked="{Binding AutoScroll}" 
+                         Style="{StaticResource ModernCheckBox}"
+                         Margin="8,0"/>
+                
+                <Rectangle Width="1" Fill="#DEE2E6" Margin="12,4"/>
+                
+                <TextBlock Text="{Binding MaxLinesText}" 
+                          d:Text="最大行数:"
+                          Style="{StaticResource ModernLabel}"
+                          Margin="8,0,4,0"/>
+                <TextBox Text="{Binding MaxLines}" 
+                        Width="60" 
+                        Style="{StaticResource ModernTextBox}"/>
+            </StackPanel>
+        </Border>
         
-        <!-- 日志表格 -->
-        <DataGrid Grid.Row="1" 
-                  Name="dgLogs" 
-                  ItemsSource="{Binding LogEntries}" 
-                  AutoGenerateColumns="False" 
-                  IsReadOnly="True"
-                  GridLinesVisibility="Horizontal"
-                  HeadersVisibility="Column"
-                  CanUserResizeColumns="True"
-                  CanUserSortColumns="True"
-                  SelectionMode="Extended"
-                  AlternatingRowBackground="AliceBlue">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="时间" Binding="{Binding Timestamp, StringFormat='yyyy-MM-dd HH:mm:ss.fff'}" Width="160" IsReadOnly="True"/>
-                <DataGridTextColumn Header="级别" Binding="{Binding Level}" Width="60" IsReadOnly="True">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock" BasedOn="{StaticResource LogLevelStyle}"/>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="消息" Binding="{Binding Message}" Width="*" IsReadOnly="True">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="TextWrapping" Value="Wrap"/>
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-            </DataGrid.Columns>
-            <DataGrid.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="复制选中行" Command="{Binding CopySelectedCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=DataGrid}, Path=SelectedItems}"/>
-                    <MenuItem Header="复制所有日志" Command="{Binding CopyAllCommand}"/>
-                    <Separator/>
-                    <MenuItem Header="清除日志" Command="{Binding ClearCommand}"/>
-                </ContextMenu>
-            </DataGrid.ContextMenu>
-        </DataGrid>
+        <!-- 现代化日志表格 -->
+        <Border Grid.Row="1" Background="White" Margin="8">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="4" Direction="270" Opacity="0.1" ShadowDepth="2"/>
+            </Border.Effect>
+            <DataGrid Name="dgLogs" 
+                      ItemsSource="{Binding LogEntries}" 
+                      AutoGenerateColumns="False" 
+                      IsReadOnly="True"
+                      GridLinesVisibility="Horizontal"
+                      HeadersVisibility="Column"
+                      CanUserResizeColumns="True"
+                      CanUserSortColumns="True"
+                      SelectionMode="Extended"
+                      AlternatingRowBackground="#F8F9FA"
+                      RowBackground="White"
+                      Background="White"
+                      BorderThickness="0"
+                      FontSize="13"
+                      RowHeight="28">
+                
+                <!-- 表格样式 -->
+                <DataGrid.Resources>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="#E9ECEF"/>
+                        <Setter Property="Foreground" Value="#495057"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="FontSize" Value="13"/>
+                        <Setter Property="Height" Value="36"/>
+                        <Setter Property="Padding" Value="12,0"/>
+                        <Setter Property="BorderBrush" Value="#DEE2E6"/>
+                        <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                    </Style>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Height" Value="28"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#E3F2FD"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="#BBDEFB"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Padding" Value="12,4"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Foreground" Value="#2C3E50"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.Resources>
+                
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="时间"
+                                       Binding="{Binding Timestamp, StringFormat='yyyy-MM-dd HH:mm:ss.fff'}" 
+                                       Width="160" IsReadOnly="True">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="#6C757D"/>
+                                <Setter Property="FontFamily" Value="Consolas, Monaco, monospace"/>
+                                <Setter Property="FontSize" Value="12"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    
+                    <DataGridTextColumn Header="级别"
+                                       Binding="{Binding Level}" Width="70" IsReadOnly="True">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource LogLevelStyle}">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="FontSize" Value="12"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    
+                    <DataGridTextColumn Header="消息"
+                                       Binding="{Binding Message}" Width="*" IsReadOnly="True">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="TextWrapping" Value="Wrap"/>
+                                <Setter Property="Foreground" Value="#2C3E50"/>
+                                <Setter Property="FontSize" Value="13"/>
+                                <Setter Property="LineHeight" Value="18"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+                
+                <DataGrid.ContextMenu>
+                    <ContextMenu Background="White" BorderBrush="#DEE2E6">
+                        <ContextMenu.Resources>
+                            <Style TargetType="MenuItem">
+                                <Setter Property="Padding" Value="12,6"/>
+                                <Setter Property="FontSize" Value="13"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#F8F9FA"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ContextMenu.Resources>
+                        <MenuItem Header="复制选中行"
+                                 Command="{Binding CopySelectedCommand}" 
+                                 CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=DataGrid}, Path=SelectedItems}"/>
+                        <MenuItem Header="复制所有日志"
+                                 Command="{Binding CopyAllCommand}"/>
+                        <Separator Background="#DEE2E6" Height="1"/>
+                        <MenuItem Header="清除日志"
+                                 Command="{Binding ClearCommand}"/>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+            </DataGrid>
+        </Border>
     </Grid>
 </UserControl>

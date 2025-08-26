@@ -1,5 +1,6 @@
 using Ewan.Core.Logger;
 using Ewan.Core.Msg;
+using Ewan.Core.Culture;
 using Ewan.Model.Messages;
 using Microsoft.Win32;
 using Prism.Commands;
@@ -63,10 +64,25 @@ namespace MarkingMachineFeeder.Viewmodel
     public class LogWindowViewModel : BindableBase, IDisposable
     {
         private readonly UILogger _uiLogger = new UILogger(typeof(Ewan.Resources.LogMessages));
+        private readonly CultureManager _cultureManager;
         private MsgListener _logListener;
         private ObservableCollection<LogEntry> _logEntries;
         private bool _autoScroll = true;
         private string _maxLines = "1000";
+
+        // UI文本属性
+        private string _clearButtonText;
+        private string _exportButtonText;
+        private string _autoScrollText;
+        private string _maxLinesText;
+        private string _timestampHeaderText;
+        private string _levelHeaderText;
+        private string _messageHeaderText;
+        private string _copySelectedText;
+        private string _copyAllText;
+        private string _clearMenuText;
+
+        #region Properties
 
         public ObservableCollection<LogEntry> LogEntries
         {
@@ -86,6 +102,68 @@ namespace MarkingMachineFeeder.Viewmodel
             set => SetProperty(ref _maxLines, value);
         }
 
+        public string ClearButtonText
+        {
+            get => _clearButtonText;
+            set => SetProperty(ref _clearButtonText, value);
+        }
+
+        public string ExportButtonText
+        {
+            get => _exportButtonText;
+            set => SetProperty(ref _exportButtonText, value);
+        }
+
+        public string AutoScrollText
+        {
+            get => _autoScrollText;
+            set => SetProperty(ref _autoScrollText, value);
+        }
+
+        public string MaxLinesText
+        {
+            get => _maxLinesText;
+            set => SetProperty(ref _maxLinesText, value);
+        }
+
+        public string TimestampHeaderText
+        {
+            get => _timestampHeaderText;
+            set => SetProperty(ref _timestampHeaderText, value);
+        }
+
+        public string LevelHeaderText
+        {
+            get => _levelHeaderText;
+            set => SetProperty(ref _levelHeaderText, value);
+        }
+
+        public string MessageHeaderText
+        {
+            get => _messageHeaderText;
+            set => SetProperty(ref _messageHeaderText, value);
+        }
+
+        public string CopySelectedText
+        {
+            get => _copySelectedText;
+            set => SetProperty(ref _copySelectedText, value);
+        }
+
+        public string CopyAllText
+        {
+            get => _copyAllText;
+            set => SetProperty(ref _copyAllText, value);
+        }
+
+        public string ClearMenuText
+        {
+            get => _clearMenuText;
+            set => SetProperty(ref _clearMenuText, value);
+        }
+
+        #endregion
+
         public DelegateCommand ClearCommand { get; }
         public DelegateCommand ExportCommand { get; }
         public DelegateCommand<System.Collections.IList> CopySelectedCommand { get; }
@@ -95,6 +173,9 @@ namespace MarkingMachineFeeder.Viewmodel
 
         public LogWindowViewModel()
         {
+            // 初始化CultureManager
+            _cultureManager = CultureManager.Instance();
+            
             LogEntries = new ObservableCollection<LogEntry>();
             
             ClearCommand = new DelegateCommand(ExecuteClear);
@@ -102,8 +183,56 @@ namespace MarkingMachineFeeder.Viewmodel
             CopySelectedCommand = new DelegateCommand<System.Collections.IList>(ExecuteCopySelected);
             CopyAllCommand = new DelegateCommand(ExecuteCopyAll);
 
+            // 初始化UI文本 - 先初始化文本再订阅事件
+            UpdateUITexts();
+            
+            // 订阅文化变更事件
+            _cultureManager.CultureChanged += OnCultureChanged;
+
             InitializeLogListener();
             AddSampleLogs();
+        }
+
+        private void OnCultureChanged(object sender, CultureChangedEventArgs e)
+        {
+            // 同步资源文件的Culture设置
+            Ewan.Resources.LogStrings.Culture = e.NewCulture;
+            UpdateUITexts();
+        }
+
+        private void UpdateUITexts()
+        {
+            try
+            {
+                // 确保资源文件使用正确的语言
+                Ewan.Resources.LogStrings.Culture = _cultureManager?.CurrentCulture;
+                
+                ClearButtonText = Ewan.Resources.LogStrings.ClearLogs ?? "Clear Logs";
+                ExportButtonText = Ewan.Resources.LogStrings.ExportLogs ?? "Export Logs";
+                AutoScrollText = Ewan.Resources.LogStrings.AutoScroll ?? "Auto Scroll";
+                MaxLinesText = Ewan.Resources.LogStrings.MaxLines ?? "Max Lines:";
+                TimestampHeaderText = Ewan.Resources.LogStrings.Timestamp ?? "Time";
+                LevelHeaderText = Ewan.Resources.LogStrings.Level ?? "Level";
+                MessageHeaderText = Ewan.Resources.LogStrings.Message ?? "Message";
+                CopySelectedText = Ewan.Resources.LogStrings.CopySelected ?? "Copy Selected";
+                CopyAllText = Ewan.Resources.LogStrings.CopyAllLogs ?? "Copy All Logs";
+                ClearMenuText = Ewan.Resources.LogStrings.ClearMenuText ?? "Clear Logs";
+            }
+            catch (Exception ex)
+            {
+                // 如果资源加载失败，使用英文默认值
+                System.Diagnostics.Debug.WriteLine($"LogWindow UpdateUITexts error: {ex.Message}");
+                ClearButtonText = "Clear Logs";
+                ExportButtonText = "Export Logs";
+                AutoScrollText = "Auto Scroll";
+                MaxLinesText = "Max Lines:";
+                TimestampHeaderText = "Time";
+                LevelHeaderText = "Level";
+                MessageHeaderText = "Message";
+                CopySelectedText = "Copy Selected";
+                CopyAllText = "Copy All Logs";
+                ClearMenuText = "Clear Logs";
+            }
         }
 
         private void InitializeLogListener()
@@ -180,15 +309,16 @@ namespace MarkingMachineFeeder.Viewmodel
             {
                 var saveFileDialog = new SaveFileDialog
                 {
-                    Filter = "文本文件 (*.txt)|*.txt|CSV文件 (*.csv)|*.csv|所有文件 (*.*)|*.*",
+                    Filter = Ewan.Resources.LogStrings.LogExportFilter,
                     DefaultExt = "txt",
-                    FileName = $"日志导出_{DateTime.Now:yyyyMMdd_HHmmss}"
+                    FileName = string.Format(Ewan.Resources.LogStrings.LogExportFileName, DateTime.Now.ToString("yyyyMMdd_HHmmss"))
                 };
 
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     var sb = new StringBuilder();
-                    sb.AppendLine("时间\t级别\t消息");
+                    sb.AppendLine(string.Format(Ewan.Resources.LogStrings.LogExportHeader, 
+                        TimestampHeaderText, LevelHeaderText, MessageHeaderText));
 
                     foreach (var entry in LogEntries)
                     {
@@ -196,12 +326,20 @@ namespace MarkingMachineFeeder.Viewmodel
                     }
 
                     File.WriteAllText(saveFileDialog.FileName, sb.ToString(), Encoding.UTF8);
-                    MessageBox.Show($"日志已导出到: {saveFileDialog.FileName}", "导出成功", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show(
+                        string.Format(Ewan.Resources.LogStrings.ExportSuccessMessage, saveFileDialog.FileName), 
+                        Ewan.Resources.LogStrings.ExportSuccess, 
+                        MessageBoxButton.OK, 
+                        MessageBoxImage.Information);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"导出日志失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(
+                    string.Format(Ewan.Resources.LogStrings.ExportFailedMessage, ex.Message), 
+                    Ewan.Resources.LogStrings.Error, 
+                    MessageBoxButton.OK, 
+                    MessageBoxImage.Error);
             }
         }
 
@@ -221,7 +359,11 @@ namespace MarkingMachineFeeder.Viewmodel
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"复制失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(
+                    string.Format(Ewan.Resources.LogStrings.CopyFailedMessage, ex.Message), 
+                    Ewan.Resources.LogStrings.Error, 
+                    MessageBoxButton.OK, 
+                    MessageBoxImage.Warning);
             }
         }
 
@@ -230,7 +372,8 @@ namespace MarkingMachineFeeder.Viewmodel
             try
             {
                 var sb = new StringBuilder();
-                sb.AppendLine("时间\t级别\t消息");
+                sb.AppendLine(string.Format(Ewan.Resources.LogStrings.LogExportHeader, 
+                    TimestampHeaderText, LevelHeaderText, MessageHeaderText));
 
                 foreach (var entry in LogEntries)
                 {
@@ -238,19 +381,39 @@ namespace MarkingMachineFeeder.Viewmodel
                 }
 
                 Clipboard.SetText(sb.ToString());
-                MessageBox.Show($"已复制 {LogEntries.Count} 条日志到剪贴板", "复制成功", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(
+                    string.Format(Ewan.Resources.LogStrings.CopySuccessMessage, LogEntries.Count), 
+                    Ewan.Resources.LogStrings.CopySuccess, 
+                    MessageBoxButton.OK, 
+                    MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"复制失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(
+                    string.Format(Ewan.Resources.LogStrings.CopyFailedMessage, ex.Message), 
+                    Ewan.Resources.LogStrings.Error, 
+                    MessageBoxButton.OK, 
+                    MessageBoxImage.Warning);
             }
         }
 
         public void Dispose()
         {
-            if (_logListener != null)
+            try
             {
-                MsgManager.Instance().UnRegisterListener(_logListener);
+                if (_logListener != null)
+                {
+                    MsgManager.Instance().UnRegisterListener(_logListener);
+                }
+                
+                if (_cultureManager != null)
+                {
+                    _cultureManager.CultureChanged -= OnCultureChanged;
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"LogWindowViewModel dispose error: {ex.Message}");
             }
         }
     }

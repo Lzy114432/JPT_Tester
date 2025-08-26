@@ -84,16 +84,9 @@
             </Border>
             
             <!-- Log Section -->
-            <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="1" Margin="0,2.5,0,0">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Text="日志区域" HorizontalAlignment="Center" Margin="5" FontWeight="Bold"/>
-                    <controls:LogWindow Grid.Row="1" Margin="5"/>
-                </Grid>
-            </Border>
+            <Grid Grid.Row="1" Margin="0,2.5,0,0">
+                <controls:LogWindow/>
+            </Grid>
         </Grid>
         
         <!-- Right Panel - Reserved -->

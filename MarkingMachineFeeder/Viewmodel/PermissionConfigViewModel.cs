@@ -235,6 +235,7 @@ namespace MarkingMachineFeeder.Viewmodel
         public DelegateCommand ApplyCommand { get; }
         public DelegateCommand SaveCommand { get; }
         public DelegateCommand CancelCommand { get; }
+        public DelegateCommand CloseCommand { get; }
 
         #endregion
 
@@ -255,6 +256,7 @@ namespace MarkingMachineFeeder.Viewmodel
             ApplyCommand = new DelegateCommand(ExecuteApply);
             SaveCommand = new DelegateCommand(ExecuteSave);
             CancelCommand = new DelegateCommand(ExecuteCancel);
+            CloseCommand = new DelegateCommand(ExecuteCancel); // 关闭按钮执行取消操作
 
             // 初始化数据
             InitializeData();
@@ -269,6 +271,12 @@ namespace MarkingMachineFeeder.Viewmodel
             Ewan.Resources.UIStrings.Culture = e.NewCulture;
             Ewan.Resources.PermissionConfigStrings.Culture = e.NewCulture;
             UpdateUITexts();
+            
+            // 更新角色本地化名称
+            foreach (var role in Roles)
+            {
+                role.LocalizedRoleDisplayName = GetLocalizedRoleName(role.RoleName);
+            }
             
             // 刷新权限分类显示
             if (PermissionCategories != null)
@@ -318,6 +326,16 @@ namespace MarkingMachineFeeder.Viewmodel
             
             // 初始化集合
             Roles = new ObservableCollection<RolePermissionConfig>(_configuration.RolePermissions);
+            
+            // 确保每个角色都有本地化名称
+            foreach (var role in Roles)
+            {
+                if (string.IsNullOrEmpty(role.LocalizedRoleDisplayName))
+                {
+                    role.LocalizedRoleDisplayName = GetLocalizedRoleName(role.RoleName);
+                }
+            }
+            
             Users = new ObservableCollection<UserPermissionConfig>(_configuration.UserPermissions);
             PermissionCategories = new ObservableCollection<PermissionCategoryViewModel>();
             
@@ -372,6 +390,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 {
                     RoleName = "Administrator",
                     RoleDisplayName = "管理员",
+                    LocalizedRoleDisplayName = GetLocalizedRoleName("Administrator"),
                     IsSystemRole = true,
                     PermissionIds = config.Permissions.Select(p => p.PermissionId).ToList() // 管理员拥有所有权限
                 },
@@ -379,6 +398,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 {
                     RoleName = "Engineer",
                     RoleDisplayName = "工程师",
+                    LocalizedRoleDisplayName = GetLocalizedRoleName("Engineer"),
                     IsSystemRole = true,
                     PermissionIds = new List<string>
                     {
@@ -393,6 +413,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 {
                     RoleName = "Operator",
                     RoleDisplayName = "操作员",
+                    LocalizedRoleDisplayName = GetLocalizedRoleName("Operator"),
                     IsSystemRole = true,
                     PermissionIds = new List<string>
                     {
@@ -460,7 +481,7 @@ namespace MarkingMachineFeeder.Viewmodel
 
         private void LoadRolePermissions(RolePermissionConfig role)
         {
-            CurrentConfigName = GetLocalizedRoleName(role.RoleDisplayName);
+            CurrentConfigName = role.LocalizedRoleDisplayName ?? GetLocalizedRoleName(role.RoleName);
             
             CurrentConfigDescription = string.Format(Ewan.Resources.PermissionConfigStrings.RolePrefix, role.RoleName);
             CurrentConfigDisplayText = string.Format(Ewan.Resources.PermissionConfigStrings.CurrentConfig, CurrentConfigName);
@@ -699,22 +720,19 @@ namespace MarkingMachineFeeder.Viewmodel
             return descKey;
         }
 
-        private string GetLocalizedRoleName(string roleDisplayName)
+        private string GetLocalizedRoleName(string roleName)
         {
-            // 根据角色显示名称获取本地化的名称
-            switch (roleDisplayName)
+            // 根据角色名称获取本地化的名称
+            switch (roleName)
             {
-                case "管理员":
                 case "Administrator":
                     return Ewan.Resources.PermissionConfigStrings.AdminRole;
-                case "工程师":
                 case "Engineer":
                     return Ewan.Resources.PermissionConfigStrings.EngineerRole;
-                case "操作员":
                 case "Operator":
                     return Ewan.Resources.PermissionConfigStrings.OperatorRole;
                 default:
-                    return roleDisplayName;
+                    return roleName;
             }
         }
 
