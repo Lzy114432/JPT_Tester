@@ -49,7 +49,7 @@ namespace MarkingMachineFeeder
 
             // 默认以操作员身份登录
             var securityManager = SecurityManager.Instance();
-            if (!securityManager.Authenticate("operator", "123456"))
+            if (!securityManager.Authenticate("operator", "1"))
             {
                 _uiLogger.Error(() => Ewan.Resources.LogMessages.LoginError, "默认操作员登录失败");
                 MessageBox.Show("默认用户登录失败，程序将退出。", "错误", MessageBoxButton.OK, MessageBoxImage.Error);

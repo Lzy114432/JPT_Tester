@@ -394,6 +394,42 @@ namespace Ewan.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Permission Configuration View.
+        /// </summary>
+        public static string PermissionConfigView {
+            get {
+                return ResourceManager.GetString("PermissionConfigView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View permission configuration.
+        /// </summary>
+        public static string PermissionConfigViewDesc {
+            get {
+                return ResourceManager.GetString("PermissionConfigViewDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Permission Configuration Control.
+        /// </summary>
+        public static string PermissionConfigControl {
+            get {
+                return ResourceManager.GetString("PermissionConfigControl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Modify permission configuration.
+        /// </summary>
+        public static string PermissionConfigControlDesc {
+            get {
+                return ResourceManager.GetString("PermissionConfigControlDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Marking Machine Control.
         /// </summary>
         public static string MarkingMachineControl {
@@ -471,6 +507,15 @@ namespace Ewan.Resources {
         public static string RolePrefix {
             get {
                 return ResourceManager.GetString("RolePrefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Role Permission Configuration.
+        /// </summary>
+        public static string RolePermissionConfiguration {
+            get {
+                return ResourceManager.GetString("RolePermissionConfiguration", resourceCulture);
             }
         }
         

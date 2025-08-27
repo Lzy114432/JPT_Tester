@@ -322,12 +322,10 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 
-                <!-- 左侧：角色/用户列表 -->
+                <!-- 左侧：角色列表 -->
                 <Border Grid.Column="0" Style="{StaticResource CardBorder}">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
@@ -340,7 +338,7 @@
                         <ListBox Grid.Row="1" 
                                  ItemsSource="{Binding Roles}" 
                                  SelectedItem="{Binding SelectedRole}"
-                                 Margin="15,0,15,10"
+                                 Margin="15,0,15,20"
                                  Style="{StaticResource ModernListBox}"
                                  ItemContainerStyle="{StaticResource ModernListBoxItem}">
                             <ListBox.ItemTemplate>
@@ -348,28 +346,6 @@
                                     <Border Padding="12,10" Margin="0,2" CornerRadius="8">
                                         <TextBlock Text="{Binding LocalizedRoleDisplayName}" 
                                                   FontWeight="SemiBold" 
-                                                  FontSize="14"
-                                                  Foreground="#495057"/>
-                                    </Border>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                        
-                        <!-- 用户列表 -->
-                        <TextBlock Grid.Row="2" Text="{Binding UserSpecialPermissionsTitle}" 
-                                  d:Text="用户特殊权限"
-                                  Style="{StaticResource SectionTitle}" 
-                                  Margin="20,15,20,5"/>
-                        <ListBox Grid.Row="3" 
-                                 ItemsSource="{Binding Users}" 
-                                 SelectedItem="{Binding SelectedUser}"
-                                 Margin="15,0,15,20"
-                                 Style="{StaticResource ModernListBox}"
-                                 ItemContainerStyle="{StaticResource ModernListBoxItem}">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Border Padding="12,10" Margin="0,2" CornerRadius="8">
-                                        <TextBlock Text="{Binding Username}" 
                                                   FontSize="14"
                                                   Foreground="#495057"/>
                                     </Border>
@@ -481,46 +457,17 @@
                    BorderThickness="0,1,0,0" 
                    CornerRadius="0,0,20,20"
                    Padding="20,15">
-                <Grid>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                        <Button Content="{Binding AddRoleButtonText}" 
-                               d:Content="添加角色"
-                               Command="{Binding AddRoleCommand}" 
-                               Style="{StaticResource SecondaryButton}" 
-                               Margin="0,0,5,0"/>
-                        <Button Content="{Binding DeleteRoleButtonText}" 
-                               d:Content="删除角色"
-                               Command="{Binding DeleteRoleCommand}" 
-                               Style="{StaticResource SecondaryButton}"/>
-                        <Rectangle Width="1" Fill="#E9ECEF" Margin="15,8"/>
-                        <Button Content="{Binding ImportConfigButtonText}" 
-                               d:Content="导入配置"
-                               Command="{Binding ImportConfigCommand}" 
-                               Style="{StaticResource SecondaryButton}" 
-                               Margin="0,0,5,0"/>
-                        <Button Content="{Binding ExportConfigButtonText}" 
-                               d:Content="导出配置"
-                               Command="{Binding ExportConfigCommand}" 
-                               Style="{StaticResource SecondaryButton}"/>
-                    </StackPanel>
-                    
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Content="{Binding ApplyButtonText}" 
-                               d:Content="应用"
-                               Command="{Binding ApplyCommand}" 
-                               Style="{StaticResource ModernButton}" 
-                               Margin="0,0,5,0"/>
-                        <Button Content="{Binding SaveButtonText}" 
-                               d:Content="保存"
-                               Command="{Binding SaveCommand}" 
-                               Style="{StaticResource ModernButton}" 
-                               Margin="0,0,5,0"/>
-                        <Button Content="{Binding CancelButtonText}" 
-                               d:Content="取消"
-                               Command="{Binding CancelCommand}" 
-                               Style="{StaticResource SecondaryButton}"/>
-                    </StackPanel>
-                </Grid>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="{Binding SaveButtonText}" 
+                           d:Content="保存"
+                           Command="{Binding SaveCommand}" 
+                           Style="{StaticResource ModernButton}" 
+                           Margin="0,0,5,0"/>
+                    <Button Content="{Binding CancelButtonText}" 
+                           d:Content="取消"
+                           Command="{Binding CancelCommand}" 
+                           Style="{StaticResource SecondaryButton}"/>
+                </StackPanel>
             </Border>
         </Grid>
     </Border>

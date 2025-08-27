@@ -367,6 +367,88 @@ namespace Ewan.Resources {
         }
         
         /// <summary>
+        ///   查找类似 User permissions updated for {0} 的本地化字符串。
+        /// </summary>
+        public static string UserPermissionsUpdated {
+            get {
+                return ResourceManager.GetString("UserPermissionsUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Permissions configuration saved successfully 的本地化字符串。
+        /// </summary>
+        public static string PermissionsSaved {
+            get {
+                return ResourceManager.GetString("PermissionsSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Failed to save permissions configuration: {0} 的本地化字符串。
+        /// </summary>
+        public static string PermissionsSaveError {
+            get {
+                return ResourceManager.GetString("PermissionsSaveError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Admin user created with {0} roles and {1} permissions 的本地化字符串。
+        /// </summary>
+        public static string AdminUserCreated {
+            get {
+                return ResourceManager.GetString("AdminUserCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Failed to create admin user or assign permissions 的本地化字符串。
+        /// </summary>
+        public static string AdminUserCreateFailed {
+            get {
+                return ResourceManager.GetString("AdminUserCreateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Saving admin user with {0} roles and {1} permissions 的本地化字符串。
+        /// </summary>
+        public static string AdminUserSaveCheck {
+            get {
+                return ResourceManager.GetString("AdminUserSaveCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Loaded admin user with {0} roles and {1} permissions 的本地化字符串。
+        /// </summary>
+        public static string AdminUserLoadCheck {
+            get {
+                return ResourceManager.GetString("AdminUserLoadCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Users saved successfully 的本地化字符串。
+        /// </summary>
+        public static string UsersSaved {
+            get {
+                return ResourceManager.GetString("UsersSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Permission check failed: User not authenticated for {0}.{1} 的本地化字符串。
+        /// </summary>
+        public static string PermissionCheckNotAuthenticated {
+            get {
+                return ResourceManager.GetString("PermissionCheckNotAuthenticated", resourceCulture);
+            }
+        }
+        
+        
+        /// <summary>
         ///   查找类似 Log4net configuration loaded 的本地化字符串。
         /// </summary>
         public static string Log4netConfigLoaded {

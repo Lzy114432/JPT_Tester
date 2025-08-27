@@ -103,12 +103,17 @@ namespace Ewan.Core.Security
         public bool HasPermission(string resource, string action)
         {
             if (!IsAuthenticated)
+            {
+                _uiLogger.Debug(() => Ewan.Resources.LogMessages.PermissionCheckNotAuthenticated, resource, action);
                 return false;
+            }
 
-            return _currentUser.Roles
+            var hasPermission = _currentUser.Roles
                 .SelectMany(r => r.Permissions)
                 .Any(p => p.Resource.Equals(resource, StringComparison.OrdinalIgnoreCase) &&
                          p.Action.Equals(action, StringComparison.OrdinalIgnoreCase));
+
+            return hasPermission;
         }
 
         /// <summary>
@@ -137,6 +142,55 @@ namespace Ewan.Core.Security
                 .SelectMany(r => r.Permissions)
                 .Distinct()
                 .ToList();
+        }
+
+        /// <summary>
+        /// 获取所有用户列表
+        /// </summary>
+        /// <returns>用户列表</returns>
+        public List<User> GetAllUsers()
+        {
+            return _users?.ToList() ?? new List<User>();
+        }
+
+        /// <summary>
+        /// 获取所有可用角色
+        /// </summary>
+        /// <returns>角色列表</returns>
+        public List<Role> GetAllRoles()
+        {
+            var allRoles = new List<Role>();
+            
+            // 从所有用户的角色中提取唯一角色
+            foreach (var user in _users)
+            {
+                foreach (var role in user.Roles)
+                {
+                    if (!allRoles.Any(r => r.Name.Equals(role.Name, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        allRoles.Add(role);
+                    }
+                }
+            }
+            
+            return allRoles;
+        }
+
+        /// <summary>
+        /// 更新用户角色和权限
+        /// </summary>
+        /// <param name="username">用户名</param>
+        /// <param name="roles">新的角色列表</param>
+        /// <returns>是否更新成功</returns>
+        public bool UpdateUserRoles(string username, List<Role> roles)
+        {
+            var user = _users.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
+            if (user == null)
+                return false;
+
+            user.Roles = roles ?? new List<Role>();
+            SaveUsers();
+            return true;
         }
 
         /// <summary>
@@ -185,9 +239,21 @@ namespace Ewan.Core.Security
                 var engineerRole = CreateEngineerRole();
                 var operatorRole = CreateOperatorRole();
 
-                CreateUser("admin", "123456", "系统管理员", new List<Role> { adminRole });
-                CreateUser("engineer", "123456", "工程师", new List<Role> { engineerRole });
-                CreateUser("operator", "123456", "操作员", new List<Role> { operatorRole });
+                CreateUser("admin", "1", "系统管理员", new List<Role> { adminRole });
+                CreateUser("engineer", "1", "工程师", new List<Role> { engineerRole });
+                CreateUser("operator", "1", "操作员", new List<Role> { operatorRole });
+
+                // 验证创建的用户是否有权限
+                var admin = _users.FirstOrDefault(u => u.Username == "admin");
+                if (admin != null && admin.Roles.Count > 0)
+                {
+                    var permissions = admin.Roles.FirstOrDefault()?.Permissions.Count ?? 0;
+                    _uiLogger.Info(() => Ewan.Resources.LogMessages.AdminUserCreated, admin.Roles.Count, permissions);
+                }
+                else
+                {
+                    _uiLogger.Error(() => Ewan.Resources.LogMessages.AdminUserCreateFailed);
+                }
 
                 _uiLogger.Info(() => Ewan.Resources.LogMessages.DefaultUsersCreated);
             }
@@ -201,21 +267,9 @@ namespace Ewan.Core.Security
             var role = new Role(RoleNames.Administrator, "系统管理员", "拥有所有权限");
             role.Permissions.AddRange(new[]
             {
-                new Permission(PermissionResources.Camera, PermissionActions.View, "查看相机"),
-                new Permission(PermissionResources.Camera, PermissionActions.Control, "控制相机"),
-                new Permission(PermissionResources.Camera, PermissionActions.Configure, "配置相机"),
-                new Permission(PermissionResources.UPS, PermissionActions.View, "查看UPS"),
-                new Permission(PermissionResources.UPS, PermissionActions.Control, "控制UPS"),
-                new Permission(PermissionResources.UPS, PermissionActions.Configure, "配置UPS"),
-                new Permission(PermissionResources.Log, PermissionActions.View, "查看日志"),
-                new Permission(PermissionResources.Log, PermissionActions.Export, "导出日志"),
-                new Permission(PermissionResources.Settings, PermissionActions.View, "查看设置"),
-                new Permission(PermissionResources.Settings, PermissionActions.Update, "修改设置"),
-                new Permission(PermissionResources.UserManagement, PermissionActions.View, "查看用户"),
-                new Permission(PermissionResources.UserManagement, PermissionActions.Create, "创建用户"),
-                new Permission(PermissionResources.UserManagement, PermissionActions.Update, "修改用户"),
-                new Permission(PermissionResources.UserManagement, PermissionActions.Delete, "删除用户"),
-                new Permission(PermissionResources.System, PermissionActions.Control, "系统控制")
+                new Permission(PermissionResources.Language, PermissionActions.Control, "切换语言"),
+                new Permission(PermissionResources.PermissionConfig, PermissionActions.View, "查看权限配置"),
+                new Permission(PermissionResources.PermissionConfig, PermissionActions.Control, "修改权限配置")
             });
             return role;
         }
@@ -225,17 +279,11 @@ namespace Ewan.Core.Security
         /// </summary>
         private Role CreateEngineerRole()
         {
-            var role = new Role(RoleNames.Engineer, "工程师", "设备控制和配置权限");
+            var role = new Role(RoleNames.Engineer, "工程师", "部分控制权限");
             role.Permissions.AddRange(new[]
             {
-                new Permission(PermissionResources.Camera, PermissionActions.View, "查看相机"),
-                new Permission(PermissionResources.Camera, PermissionActions.Control, "控制相机"),
-                new Permission(PermissionResources.Camera, PermissionActions.Configure, "配置相机"),
-                new Permission(PermissionResources.UPS, PermissionActions.View, "查看UPS"),
-                new Permission(PermissionResources.UPS, PermissionActions.Control, "控制UPS"),
-                new Permission(PermissionResources.Log, PermissionActions.View, "查看日志"),
-                new Permission(PermissionResources.Log, PermissionActions.Export, "导出日志"),
-                new Permission(PermissionResources.Settings, PermissionActions.View, "查看设置")
+                new Permission(PermissionResources.Language, PermissionActions.Control, "切换语言"),
+                new Permission(PermissionResources.PermissionConfig, PermissionActions.View, "查看权限配置")
             });
             return role;
         }
@@ -248,9 +296,7 @@ namespace Ewan.Core.Security
             var role = new Role(RoleNames.Operator, "操作员", "基本操作权限");
             role.Permissions.AddRange(new[]
             {
-                new Permission(PermissionResources.Camera, PermissionActions.View, "查看相机"),
-                new Permission(PermissionResources.UPS, PermissionActions.View, "查看UPS"),
-                new Permission(PermissionResources.Log, PermissionActions.View, "查看日志")
+                new Permission(PermissionResources.Language, PermissionActions.Control, "切换语言")
             });
             return role;
         }
@@ -272,6 +318,15 @@ namespace Ewan.Core.Security
                     {
                         _users = users;
                         _uiLogger.Info(() => Ewan.Resources.LogMessages.UsersLoaded, _users.Count);
+                        
+                        // 在加载后验证数据
+                        var admin = _users.FirstOrDefault(u => u.Username == "admin");
+                        if (admin != null)
+                        {
+                            _uiLogger.Info(() => Ewan.Resources.LogMessages.AdminUserLoadCheck, 
+                                admin.Roles.Count, 
+                                admin.Roles.FirstOrDefault()?.Permissions.Count ?? 0);
+                        }
                     }
                 }
             }

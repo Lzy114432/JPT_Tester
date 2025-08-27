@@ -219,4 +219,31 @@
   <data name="LoginError" xml:space="preserve">
     <value>Login error occurred: {0}</value>
   </data>
+  <data name="UserPermissionsUpdated" xml:space="preserve">
+    <value>User permissions updated for {0}</value>
+  </data>
+  <data name="PermissionsSaved" xml:space="preserve">
+    <value>Permissions configuration saved successfully</value>
+  </data>
+  <data name="PermissionsSaveError" xml:space="preserve">
+    <value>Failed to save permissions configuration: {0}</value>
+  </data>
+  <data name="AdminUserCreated" xml:space="preserve">
+    <value>Admin user created with {0} roles and {1} permissions</value>
+  </data>
+  <data name="AdminUserCreateFailed" xml:space="preserve">
+    <value>Failed to create admin user or assign permissions</value>
+  </data>
+  <data name="AdminUserSaveCheck" xml:space="preserve">
+    <value>Saving admin user with {0} roles and {1} permissions</value>
+  </data>
+  <data name="AdminUserLoadCheck" xml:space="preserve">
+    <value>Loaded admin user with {0} roles and {1} permissions</value>
+  </data>
+  <data name="UsersSaved" xml:space="preserve">
+    <value>Users saved successfully</value>
+  </data>
+  <data name="PermissionCheckNotAuthenticated" xml:space="preserve">
+    <value>Permission check failed: User not authenticated for {0}.{1}</value>
+  </data>
 </root>

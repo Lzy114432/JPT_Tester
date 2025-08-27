@@ -12,6 +12,354 @@
     
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        
+        <!-- Industrial Background Gradient -->
+        <LinearGradientBrush x:Key="BackgroundGradient" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#4A4A4A" Offset="0"/>
+            <GradientStop Color="#2D2D30" Offset="0.5"/>
+            <GradientStop Color="#1E1E1E" Offset="1"/>
+        </LinearGradientBrush>
+        
+        <!-- Industrial Menu Item Style -->
+        <Style x:Key="IndustrialMenuItem" TargetType="MenuItem">
+            <Setter Property="Background" Value="{StaticResource BackgroundGradient}"/>
+            <Setter Property="Foreground" Value="#FFFFFF"/>
+            <Setter Property="BorderBrush" Value="#555555"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="MenuItem">
+                        <Border x:Name="Border" 
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="3">
+                            <Border.Effect>
+                                <DropShadowEffect Color="Black" Opacity="0.3" ShadowDepth="2" BlurRadius="4"/>
+                            </Border.Effect>
+                            <Grid>
+                                <!-- Header Content -->
+                                <ContentPresenter x:Name="HeaderHost" 
+                                                ContentSource="Header" 
+                                                Margin="{TemplateBinding Padding}"
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Left"
+                                                RecognizesAccessKey="True"/>
+                                <!-- Submenu Arrow -->
+                                <Path x:Name="ArrowPath" 
+                                      Visibility="Collapsed"
+                                      HorizontalAlignment="Right" 
+                                      VerticalAlignment="Center" 
+                                      Margin="0,0,10,0"
+                                      Fill="{TemplateBinding Foreground}"
+                                      Data="M0,0 L4,4 L0,8 Z"/>
+                                <!-- Popup for submenu -->
+                                <Popup x:Name="SubMenuPopup" 
+                                       Placement="Bottom" 
+                                       IsOpen="{Binding Path=IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}"
+                                       AllowsTransparency="True" 
+                                       Focusable="False">
+                                    <Border Background="{StaticResource BackgroundGradient}" 
+                                            BorderBrush="#666666" 
+                                            BorderThickness="1"
+                                            CornerRadius="3"
+                                            Margin="0,0,5,5">
+                                        <Border.Effect>
+                                            <DropShadowEffect Color="Black" Opacity="0.4" ShadowDepth="3" BlurRadius="6"/>
+                                        </Border.Effect>
+                                        <StackPanel IsItemsHost="True" 
+                                                    KeyboardNavigation.DirectionalNavigation="Cycle"
+                                                    Margin="2"/>
+                                    </Border>
+                                </Popup>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!-- Has submenu items -->
+                            <Trigger Property="HasItems" Value="True">
+                                <Setter TargetName="ArrowPath" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                            <!-- Mouse over effect -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                            <GradientStop Color="#5A5A5A" Offset="0"/>
+                                            <GradientStop Color="#3D3D40" Offset="0.5"/>
+                                            <GradientStop Color="#2E2E2E" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#777777"/>
+                                <Setter Property="Foreground" Value="#FFFF00"/>
+                            </Trigger>
+                            <!-- Pressed effect -->
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Border" Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                            <GradientStop Color="#3A3A3A" Offset="0"/>
+                                            <GradientStop Color="#1D1D20" Offset="0.5"/>
+                                            <GradientStop Color="#0E0E0E" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#999999"/>
+                            </Trigger>
+                            <!-- Disabled effect -->
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="#666666"/>
+                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <!-- Industrial Sub Menu Item Style -->
+        <Style x:Key="IndustrialSubMenuItem" TargetType="MenuItem">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#E0E0E0"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="MenuItem">
+                        <Border x:Name="Border" 
+                                Background="{TemplateBinding Background}"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter ContentSource="Header"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#4A4A4A"/>
+                                <Setter Property="Foreground" Value="#FFFF00"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#2A2A2A"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <!-- Industrial Test Button Style -->
+        <Style x:Key="IndustrialTestButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource BackgroundGradient}"/>
+            <Setter Property="Foreground" Value="#FFFFFF"/>
+            <Setter Property="BorderBrush" Value="#555555"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="12,6"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4"
+                                SnapsToDevicePixels="true">
+                            <Border.Effect>
+                                <DropShadowEffect Color="Black" Opacity="0.1" ShadowDepth="1" BlurRadius="3"/>
+                            </Border.Effect>
+                            <ContentPresenter x:Name="contentPresenter" 
+                                            Focusable="False" 
+                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                            Margin="{TemplateBinding Padding}" 
+                                            RecognizesAccessKey="True" 
+                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsDefaulted" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="border" Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                            <GradientStop Color="#5A5A5A" Offset="0"/>
+                                            <GradientStop Color="#3D3D40" Offset="0.5"/>
+                                            <GradientStop Color="#2E2E2E" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="border" Property="BorderBrush" Value="#777777"/>
+                                <Setter Property="Foreground" Value="#FFFF00"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter TargetName="border" Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                            <GradientStop Color="#3A3A3A" Offset="0"/>
+                                            <GradientStop Color="#1D1D20" Offset="0.5"/>
+                                            <GradientStop Color="#0E0E0E" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="border" Property="BorderBrush" Value="#999999"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter TargetName="border" Property="Background" Value="#F4F4F4"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="#E0E0E0"/>
+                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="#999999"/>
+                                <Setter TargetName="border" Property="Opacity" Value="0.6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <!-- Modern Button Style -->
+        <Style x:Key="ModernButton" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+            <Setter Property="BorderBrush" Value="#CCCCCC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="12,6"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4"
+                                SnapsToDevicePixels="true">
+                            <Border.Effect>
+                                <DropShadowEffect Color="Black" Opacity="0.1" ShadowDepth="1" BlurRadius="3"/>
+                            </Border.Effect>
+                            <ContentPresenter x:Name="contentPresenter" 
+                                            Focusable="False" 
+                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                            Margin="{TemplateBinding Padding}" 
+                                            RecognizesAccessKey="True" 
+                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsDefaulted" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="border">
+                                    <Setter.Value>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                            <GradientStop Color="#F8F8F8" Offset="0"/>
+                                            <GradientStop Color="#E8E8E8" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="BorderBrush" TargetName="border" Value="#999999"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="border">
+                                    <Setter.Value>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                            <GradientStop Color="#D8D8D8" Offset="0"/>
+                                            <GradientStop Color="#C8C8C8" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="BorderBrush" TargetName="border" Value="#777777"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="border" Value="#F4F4F4"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="#E0E0E0"/>
+                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="#999999"/>
+                                <Setter Property="Opacity" Value="0.6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <!-- Logout Button Style (Red Theme) -->
+        <Style x:Key="LogoutButton" TargetType="Button" BasedOn="{StaticResource ModernButton}">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#F0F0F0" Offset="0"/>
+                        <GradientStop Color="#E8E8E8" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Foreground" Value="#C62D42"/>
+            <Setter Property="BorderBrush" Value="#D4A5A5"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="#FFE8E8" Offset="0"/>
+                                <GradientStop Color="#FFD8D8" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="BorderBrush" Value="#C62D42"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="#FFD0D0" Offset="0"/>
+                                <GradientStop Color="#FFC0C0" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        <!-- Login Button Style (Blue Theme) -->
+        <Style x:Key="LoginButton" TargetType="Button" BasedOn="{StaticResource ModernButton}">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#F0F8FF" Offset="0"/>
+                        <GradientStop Color="#E0E8F0" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Foreground" Value="#2E5BBA"/>
+            <Setter Property="BorderBrush" Value="#A5C4E4"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="#E8F4FF" Offset="0"/>
+                                <GradientStop Color="#D8E8FF" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="BorderBrush" Value="#2E5BBA"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="#D0E8FF" Offset="0"/>
+                                <GradientStop Color="#C0D8FF" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
     
     <Grid>
@@ -28,49 +376,57 @@
             </Grid.RowDefinitions>
             
             <!-- 上部菜单栏 - 包含语言切换和系统管理 -->
-            <DockPanel Grid.Row="0" Background="#F0F0F0" LastChildFill="True">
+            <DockPanel Grid.Row="0" Background="{StaticResource BackgroundGradient}" LastChildFill="True">
                 <!-- 左侧 - 设置和系统菜单 -->
-                <Menu DockPanel.Dock="Left" Background="Transparent" Margin="10,2,5,2">
+                <Menu DockPanel.Dock="Left" Background="Transparent" Margin="15,8,10,8">
                     <!-- 设置菜单 -->
                     <MenuItem Header="{Binding SettingsMenuHeader}" 
                               d:Header="设置"
-                              Command="{Binding OpenSettingsCommand}"/>
+                              Command="{Binding OpenSettingsCommand}"
+                              Style="{StaticResource IndustrialMenuItem}"/>
                     
                     <!-- 系统菜单 -->
                     <MenuItem Header="{Binding SystemMenuHeader}"
-                              d:Header="系统">
-                        <!-- 系统设置项 -->
-                        <MenuItem Header="{Binding SystemSettingsMenuHeader}" 
-                                  d:Header="系统设置"
-                                  Command="{Binding OpenSystemCommand}"/>
+                              d:Header="系统"
+                              Style="{StaticResource IndustrialMenuItem}">
                         <!-- 权限配置菜单 -->
                         <MenuItem Header="{Binding PermissionConfigMenuHeader}" 
                                   d:Header="权限配置"
                                   Command="{Binding OpenPermissionConfigCommand}"
+                                  Style="{StaticResource IndustrialSubMenuItem}"
                                   Visibility="{Binding CanViewSettings, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                         <!-- 语言切换子菜单 -->
                         <MenuItem Header="{Binding LanguageMenuHeader}"
                                   d:Header="语言"
+                                  Style="{StaticResource IndustrialSubMenuItem}"
                                   Visibility="{Binding CanSwitchLanguage, Converter={StaticResource BooleanToVisibilityConverter}}">
-                            <MenuItem Header="English" Command="{Binding SwitchLanguageCommand}" CommandParameter="en-US"/>
-                            <MenuItem Header="中文" Command="{Binding SwitchLanguageCommand}" CommandParameter="zh-CN"/>
+                            <MenuItem Header="English" 
+                                      Command="{Binding SwitchLanguageCommand}" 
+                                      CommandParameter="en-US"
+                                      Style="{StaticResource IndustrialSubMenuItem}"/>
+                            <MenuItem Header="中文" 
+                                      Command="{Binding SwitchLanguageCommand}" 
+                                      CommandParameter="zh-CN"
+                                      Style="{StaticResource IndustrialSubMenuItem}"/>
                         </MenuItem>
                     </MenuItem>
                 </Menu>
                 
                 <!-- 右侧 - 用户信息 -->
-                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="0,5,10,5">
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="0,8,15,8">
                     <TextBlock Text="{Binding CurrentUserLabel}" 
                               d:Text="当前用户："
                               VerticalAlignment="Center" 
                               FontWeight="Medium" 
-                              Foreground="#444444"/>
+                              Foreground="#CCCCCC"
+                              FontSize="13"/>
                     <TextBlock Text="{Binding CurrentUser}" 
                               d:Text="游客"
                               VerticalAlignment="Center" 
                               FontWeight="Bold" 
-                              Foreground="#333333"
-                              Margin="5,0,0,0"/>
+                              Foreground="#FFFFFF"
+                              FontSize="13"
+                              Margin="8,0,0,0"/>
                 </StackPanel>
                 
                 <!-- 填充空间 -->
@@ -78,25 +434,30 @@
             </DockPanel>
             
             <!-- 下部菜单栏 - 包含操作按钮 -->
-            <DockPanel Grid.Row="1" Background="#E8E8E8" LastChildFill="True">
+            <DockPanel Grid.Row="1" Background="{StaticResource BackgroundGradient}" LastChildFill="True">
                 <!-- 右侧 - 注销和登录按钮 -->
-                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="10,5">
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="15,8">
                     <Button Content="{Binding LogoutButtonText}" 
                             d:Content="注销"
                             Command="{Binding LogoutCommand}" 
-                            Width="80" Height="26" Margin="5,0"/>
+                            Style="{StaticResource LogoutButton}"
+                            Width="90" Height="32" 
+                            Margin="5,0"/>
                     <Button Content="{Binding LoginButtonText}" 
                             d:Content="登录"
                             Command="{Binding LoginCommand}" 
-                            Width="80" Height="26" Margin="5,0"/>
+                            Style="{StaticResource LoginButton}"
+                            Width="90" Height="32" 
+                            Margin="5,0"/>
                 </StackPanel>
                 
                 <!-- 左侧 - 测试日志按钮 -->
-                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" Margin="10,5">
+                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" Margin="15,8">
                     <Button Content="{Binding TestLogButtonText}" 
                             d:Content="测试日志"
                             Command="{Binding TestLogCommand}" 
-                            Width="120" Height="26" Margin="0,0,5,0"/>
+                            Style="{StaticResource IndustrialTestButton}"
+                            Width="120" Height="32" Margin="0,0,10,0"/>
                 </StackPanel>
                 
                 <!-- 填充空间 -->

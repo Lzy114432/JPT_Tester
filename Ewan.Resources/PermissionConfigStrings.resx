@@ -71,35 +71,16 @@
   <data name="RoleListTitle" xml:space="preserve">
     <value>Roles</value>
   </data>
-  <data name="UserSpecialPermissions" xml:space="preserve">
-    <value>User Special Permissions</value>
-  </data>
-  <data name="UserSpecialPermissionsDesc" xml:space="preserve">
-    <value>User special permission configuration</value>
-  </data>
   <data name="RolePrefix" xml:space="preserve">
     <value>Role: {0}</value>
   </data>
   <data name="CurrentConfig" xml:space="preserve">
     <value>Current Configuration: {0}</value>
   </data>
+  <data name="RolePermissionConfiguration" xml:space="preserve">
+    <value>Role Permission Configuration</value>
+  </data>
   
-  <!-- Buttons -->
-  <data name="AddRoleButton" xml:space="preserve">
-    <value>Add Role</value>
-  </data>
-  <data name="DeleteRoleButton" xml:space="preserve">
-    <value>Delete Role</value>
-  </data>
-  <data name="ImportConfigButton" xml:space="preserve">
-    <value>Import Config</value>
-  </data>
-  <data name="ExportConfigButton" xml:space="preserve">
-    <value>Export Config</value>
-  </data>
-  <data name="ApplyButton" xml:space="preserve">
-    <value>Apply</value>
-  </data>
   <data name="SaveButton" xml:space="preserve">
     <value>Save</value>
   </data>
@@ -107,39 +88,8 @@
     <value>Cancel</value>
   </data>
   
-  <!-- Messages -->
-  <data name="AddRoleFeatureDevelopment" xml:space="preserve">
-    <value>Add role feature is under development...</value>
-  </data>
-  <data name="ConfirmDeleteRole" xml:space="preserve">
-    <value>Are you sure you want to delete role '{0}'?</value>
-  </data>
-  <data name="ConfirmDeleteTitle" xml:space="preserve">
-    <value>Confirm Delete</value>
-  </data>
-  <data name="ImportTitle" xml:space="preserve">
-    <value>Import Permission Configuration</value>
-  </data>
-  <data name="ExportTitle" xml:space="preserve">
-    <value>Export Permission Configuration</value>
-  </data>
-  <data name="ImportSuccess" xml:space="preserve">
-    <value>Configuration imported successfully!</value>
-  </data>
-  <data name="ExportSuccess" xml:space="preserve">
-    <value>Configuration exported successfully!</value>
-  </data>
-  <data name="ImportFailed" xml:space="preserve">
-    <value>Import failed: {0}</value>
-  </data>
-  <data name="ExportFailed" xml:space="preserve">
-    <value>Export failed: {0}</value>
-  </data>
   <data name="SaveFailed" xml:space="preserve">
     <value>Save failed: {0}</value>
-  </data>
-  <data name="PermissionsApplied" xml:space="preserve">
-    <value>Permission configuration has been applied!</value>
   </data>
   <data name="Success" xml:space="preserve">
     <value>Success</value>
@@ -150,131 +100,30 @@
   <data name="Info" xml:space="preserve">
     <value>Information</value>
   </data>
-  <data name="JsonFiles" xml:space="preserve">
-    <value>JSON Files|*.json|All Files|*.*</value>
-  </data>
   
   <!-- Permission Categories -->
-  <data name="SystemManagement" xml:space="preserve">
-    <value>System Management</value>
-  </data>
-  <data name="UserManagement" xml:space="preserve">
-    <value>User Management</value>
-  </data>
-  <data name="DeviceControl" xml:space="preserve">
-    <value>Device Control</value>
-  </data>
-  <data name="DataManagement" xml:space="preserve">
-    <value>Data Management</value>
-  </data>
-  <data name="ProductionOperation" xml:space="preserve">
-    <value>Production Operation</value>
-  </data>
-  
-  <!-- System Management Permissions -->
   <data name="SystemSettings" xml:space="preserve">
     <value>System Settings</value>
   </data>
-  <data name="SystemSettingsDesc" xml:space="preserve">
-    <value>Access and modify system settings</value>
-  </data>
+  
+  <!-- System Settings Permissions -->
   <data name="LanguageSwitch" xml:space="preserve">
     <value>Language Switch</value>
   </data>
   <data name="LanguageSwitchDesc" xml:space="preserve">
     <value>Switch system language</value>
   </data>
-  <data name="ViewLogs" xml:space="preserve">
-    <value>View Logs</value>
+  <data name="PermissionConfigView" xml:space="preserve">
+    <value>Permission Configuration View</value>
   </data>
-  <data name="ViewLogsDesc" xml:space="preserve">
-    <value>View system logs</value>
+  <data name="PermissionConfigViewDesc" xml:space="preserve">
+    <value>View permission configuration</value>
   </data>
-  <data name="BackupRestore" xml:space="preserve">
-    <value>Backup &amp; Restore</value>
+  <data name="PermissionConfigControl" xml:space="preserve">
+    <value>Permission Configuration Control</value>
   </data>
-  <data name="BackupRestoreDesc" xml:space="preserve">
-    <value>System backup and restore</value>
-  </data>
-  
-  <!-- User Management Permissions -->
-  <data name="UserManagePerm" xml:space="preserve">
-    <value>User Management</value>
-  </data>
-  <data name="UserManagePermDesc" xml:space="preserve">
-    <value>Create, edit, delete users</value>
-  </data>
-  <data name="PermissionConfig" xml:space="preserve">
-    <value>Permission Configuration</value>
-  </data>
-  <data name="PermissionConfigDesc" xml:space="preserve">
-    <value>Configure user permissions</value>
-  </data>
-  <data name="SwitchUser" xml:space="preserve">
-    <value>Switch User</value>
-  </data>
-  <data name="SwitchUserDesc" xml:space="preserve">
-    <value>Switch to other user accounts</value>
-  </data>
-  
-  <!-- Device Control Permissions -->
-  <data name="CameraControl" xml:space="preserve">
-    <value>Camera Control</value>
-  </data>
-  <data name="CameraControlDesc" xml:space="preserve">
-    <value>Control camera devices</value>
-  </data>
-  <data name="UPSControl" xml:space="preserve">
-    <value>UPS Control</value>
-  </data>
-  <data name="UPSControlDesc" xml:space="preserve">
-    <value>Control UPS devices</value>
-  </data>
-  <data name="MarkingMachineControl" xml:space="preserve">
-    <value>Marking Machine Control</value>
-  </data>
-  <data name="MarkingMachineControlDesc" xml:space="preserve">
-    <value>Control marking machine devices</value>
-  </data>
-  
-  <!-- Data Management Permissions -->
-  <data name="DataExport" xml:space="preserve">
-    <value>Data Export</value>
-  </data>
-  <data name="DataExportDesc" xml:space="preserve">
-    <value>Export system data</value>
-  </data>
-  <data name="DataImport" xml:space="preserve">
-    <value>Data Import</value>
-  </data>
-  <data name="DataImportDesc" xml:space="preserve">
-    <value>Import external data</value>
-  </data>
-  <data name="DataDelete" xml:space="preserve">
-    <value>Data Delete</value>
-  </data>
-  <data name="DataDeleteDesc" xml:space="preserve">
-    <value>Delete system data</value>
-  </data>
-  
-  <!-- Production Operation Permissions -->
-  <data name="StartProduction" xml:space="preserve">
-    <value>Start Production</value>
-  </data>
-  <data name="StartProductionDesc" xml:space="preserve">
-    <value>Start production process</value>
-  </data>
-  <data name="StopProduction" xml:space="preserve">
-    <value>Stop Production</value>
-  </data>
-  <data name="StopProductionDesc" xml:space="preserve">
-    <value>Stop production process</value>
-  </data>
-  <data name="ConfigureProduction" xml:space="preserve">
-    <value>Configure Production</value>
-  </data>
-  <data name="ConfigureProductionDesc" xml:space="preserve">
-    <value>Configure production parameters</value>
+  <data name="PermissionConfigControlDesc" xml:space="preserve">
+    <value>Modify permission configuration</value>
   </data>
   
   <!-- Roles -->

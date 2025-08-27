@@ -71,35 +71,16 @@
   <data name="RoleListTitle" xml:space="preserve">
     <value>角色列表</value>
   </data>
-  <data name="UserSpecialPermissions" xml:space="preserve">
-    <value>用户特殊权限</value>
-  </data>
-  <data name="UserSpecialPermissionsDesc" xml:space="preserve">
-    <value>用户特殊权限配置</value>
-  </data>
   <data name="RolePrefix" xml:space="preserve">
-    <value>角色: {0}</value>
+    <value>角色：{0}</value>
   </data>
   <data name="CurrentConfig" xml:space="preserve">
-    <value>当前配置: {0}</value>
+    <value>当前配置：{0}</value>
+  </data>
+  <data name="RolePermissionConfiguration" xml:space="preserve">
+    <value>角色权限配置</value>
   </data>
   
-  <!-- Buttons -->
-  <data name="AddRoleButton" xml:space="preserve">
-    <value>添加角色</value>
-  </data>
-  <data name="DeleteRoleButton" xml:space="preserve">
-    <value>删除角色</value>
-  </data>
-  <data name="ImportConfigButton" xml:space="preserve">
-    <value>导入配置</value>
-  </data>
-  <data name="ExportConfigButton" xml:space="preserve">
-    <value>导出配置</value>
-  </data>
-  <data name="ApplyButton" xml:space="preserve">
-    <value>应用</value>
-  </data>
   <data name="SaveButton" xml:space="preserve">
     <value>保存</value>
   </data>
@@ -107,39 +88,8 @@
     <value>取消</value>
   </data>
   
-  <!-- Messages -->
-  <data name="AddRoleFeatureDevelopment" xml:space="preserve">
-    <value>添加角色功能开发中...</value>
-  </data>
-  <data name="ConfirmDeleteRole" xml:space="preserve">
-    <value>确定要删除角色 '{0}' 吗？</value>
-  </data>
-  <data name="ConfirmDeleteTitle" xml:space="preserve">
-    <value>确认删除</value>
-  </data>
-  <data name="ImportTitle" xml:space="preserve">
-    <value>导入权限配置</value>
-  </data>
-  <data name="ExportTitle" xml:space="preserve">
-    <value>导出权限配置</value>
-  </data>
-  <data name="ImportSuccess" xml:space="preserve">
-    <value>配置导入成功！</value>
-  </data>
-  <data name="ExportSuccess" xml:space="preserve">
-    <value>配置导出成功！</value>
-  </data>
-  <data name="ImportFailed" xml:space="preserve">
-    <value>导入失败：{0}</value>
-  </data>
-  <data name="ExportFailed" xml:space="preserve">
-    <value>导出失败：{0}</value>
-  </data>
   <data name="SaveFailed" xml:space="preserve">
     <value>保存失败：{0}</value>
-  </data>
-  <data name="PermissionsApplied" xml:space="preserve">
-    <value>权限配置已应用！</value>
   </data>
   <data name="Success" xml:space="preserve">
     <value>成功</value>
@@ -150,131 +100,30 @@
   <data name="Info" xml:space="preserve">
     <value>提示</value>
   </data>
-  <data name="JsonFiles" xml:space="preserve">
-    <value>JSON文件|*.json|所有文件|*.*</value>
-  </data>
   
   <!-- Permission Categories -->
-  <data name="SystemManagement" xml:space="preserve">
-    <value>系统管理</value>
-  </data>
-  <data name="UserManagement" xml:space="preserve">
-    <value>用户管理</value>
-  </data>
-  <data name="DeviceControl" xml:space="preserve">
-    <value>设备控制</value>
-  </data>
-  <data name="DataManagement" xml:space="preserve">
-    <value>数据管理</value>
-  </data>
-  <data name="ProductionOperation" xml:space="preserve">
-    <value>生产操作</value>
-  </data>
-  
-  <!-- System Management Permissions -->
   <data name="SystemSettings" xml:space="preserve">
     <value>系统设置</value>
   </data>
-  <data name="SystemSettingsDesc" xml:space="preserve">
-    <value>访问和修改系统设置</value>
-  </data>
+  
+  <!-- System Settings Permissions -->
   <data name="LanguageSwitch" xml:space="preserve">
     <value>语言切换</value>
   </data>
   <data name="LanguageSwitchDesc" xml:space="preserve">
     <value>切换系统语言</value>
   </data>
-  <data name="ViewLogs" xml:space="preserve">
-    <value>查看日志</value>
+  <data name="PermissionConfigView" xml:space="preserve">
+    <value>权限配置查看</value>
   </data>
-  <data name="ViewLogsDesc" xml:space="preserve">
-    <value>查看系统日志</value>
+  <data name="PermissionConfigViewDesc" xml:space="preserve">
+    <value>查看权限配置</value>
   </data>
-  <data name="BackupRestore" xml:space="preserve">
-    <value>备份恢复</value>
+  <data name="PermissionConfigControl" xml:space="preserve">
+    <value>权限配置控制</value>
   </data>
-  <data name="BackupRestoreDesc" xml:space="preserve">
-    <value>系统备份和恢复</value>
-  </data>
-  
-  <!-- User Management Permissions -->
-  <data name="UserManagePerm" xml:space="preserve">
-    <value>用户管理</value>
-  </data>
-  <data name="UserManagePermDesc" xml:space="preserve">
-    <value>创建、编辑、删除用户</value>
-  </data>
-  <data name="PermissionConfig" xml:space="preserve">
-    <value>权限配置</value>
-  </data>
-  <data name="PermissionConfigDesc" xml:space="preserve">
-    <value>配置用户权限</value>
-  </data>
-  <data name="SwitchUser" xml:space="preserve">
-    <value>切换用户</value>
-  </data>
-  <data name="SwitchUserDesc" xml:space="preserve">
-    <value>切换到其他用户账户</value>
-  </data>
-  
-  <!-- Device Control Permissions -->
-  <data name="CameraControl" xml:space="preserve">
-    <value>相机控制</value>
-  </data>
-  <data name="CameraControlDesc" xml:space="preserve">
-    <value>控制相机设备</value>
-  </data>
-  <data name="UPSControl" xml:space="preserve">
-    <value>UPS控制</value>
-  </data>
-  <data name="UPSControlDesc" xml:space="preserve">
-    <value>控制UPS设备</value>
-  </data>
-  <data name="MarkingMachineControl" xml:space="preserve">
-    <value>打标机控制</value>
-  </data>
-  <data name="MarkingMachineControlDesc" xml:space="preserve">
-    <value>控制打标机设备</value>
-  </data>
-  
-  <!-- Data Management Permissions -->
-  <data name="DataExport" xml:space="preserve">
-    <value>数据导出</value>
-  </data>
-  <data name="DataExportDesc" xml:space="preserve">
-    <value>导出系统数据</value>
-  </data>
-  <data name="DataImport" xml:space="preserve">
-    <value>数据导入</value>
-  </data>
-  <data name="DataImportDesc" xml:space="preserve">
-    <value>导入外部数据</value>
-  </data>
-  <data name="DataDelete" xml:space="preserve">
-    <value>数据删除</value>
-  </data>
-  <data name="DataDeleteDesc" xml:space="preserve">
-    <value>删除系统数据</value>
-  </data>
-  
-  <!-- Production Operation Permissions -->
-  <data name="StartProduction" xml:space="preserve">
-    <value>启动生产</value>
-  </data>
-  <data name="StartProductionDesc" xml:space="preserve">
-    <value>启动生产流程</value>
-  </data>
-  <data name="StopProduction" xml:space="preserve">
-    <value>停止生产</value>
-  </data>
-  <data name="StopProductionDesc" xml:space="preserve">
-    <value>停止生产流程</value>
-  </data>
-  <data name="ConfigureProduction" xml:space="preserve">
-    <value>配置生产</value>
-  </data>
-  <data name="ConfigureProductionDesc" xml:space="preserve">
-    <value>配置生产参数</value>
+  <data name="PermissionConfigControlDesc" xml:space="preserve">
+    <value>修改权限配置</value>
   </data>
   
   <!-- Roles -->

@@ -5,12 +5,8 @@ namespace Ewan.Model.Security
     /// </summary>
     public static class PermissionResources
     {
-        public const string Camera = "Camera";
-        public const string UPS = "UPS";
-        public const string Log = "Log";
-        public const string Settings = "Settings";
-        public const string UserManagement = "UserManagement";
-        public const string System = "System";
+        public const string Language = "Language";                   // 语言切换权限
+        public const string PermissionConfig = "PermissionConfig";  // 权限配置界面权限
     }
 
     /// <summary>
@@ -18,13 +14,8 @@ namespace Ewan.Model.Security
     /// </summary>
     public static class PermissionActions
     {
-        public const string View = "View";
-        public const string Control = "Control";
-        public const string Configure = "Configure";
-        public const string Delete = "Delete";
-        public const string Export = "Export";
-        public const string Create = "Create";
-        public const string Update = "Update";
+        public const string View = "View";        // 查看权限
+        public const string Control = "Control";  // 控制权限
     }
 
     /// <summary>

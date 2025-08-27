@@ -1,6 +1,8 @@
 using Ewan.Core.Logger;
 using Ewan.Core.Culture;
+using Ewan.Core.Security;
 using Ewan.Model.Permission;
+using Ewan.Model.Security;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
@@ -64,14 +66,13 @@ namespace MarkingMachineFeeder.Viewmodel
     {
         private readonly UILogger _uiLogger = new UILogger(typeof(Ewan.Resources.LogMessages));
         private readonly CultureManager _cultureManager;
+        private readonly SecurityManager _securityManager;
         private PermissionConfiguration _configuration;
         
         private ObservableCollection<RolePermissionConfig> _roles;
-        private ObservableCollection<UserPermissionConfig> _users;
         private ObservableCollection<PermissionCategoryViewModel> _permissionCategories;
         
         private RolePermissionConfig _selectedRole;
-        private UserPermissionConfig _selectedUser;
         private string _currentConfigName;
         private string _currentConfigDescription;
         
@@ -79,12 +80,6 @@ namespace MarkingMachineFeeder.Viewmodel
         private string _windowTitle;
         private string _windowDescription;
         private string _roleListTitle;
-        private string _userSpecialPermissionsTitle;
-        private string _addRoleButtonText;
-        private string _deleteRoleButtonText;
-        private string _importConfigButtonText;
-        private string _exportConfigButtonText;
-        private string _applyButtonText;
         private string _saveButtonText;
         private string _cancelButtonText;
         private string _currentConfigDisplayText;
@@ -112,41 +107,6 @@ namespace MarkingMachineFeeder.Viewmodel
             set => SetProperty(ref _roleListTitle, value);
         }
 
-        public string UserSpecialPermissionsTitle
-        {
-            get => _userSpecialPermissionsTitle;
-            set => SetProperty(ref _userSpecialPermissionsTitle, value);
-        }
-
-        public string AddRoleButtonText
-        {
-            get => _addRoleButtonText;
-            set => SetProperty(ref _addRoleButtonText, value);
-        }
-
-        public string DeleteRoleButtonText
-        {
-            get => _deleteRoleButtonText;
-            set => SetProperty(ref _deleteRoleButtonText, value);
-        }
-
-        public string ImportConfigButtonText
-        {
-            get => _importConfigButtonText;
-            set => SetProperty(ref _importConfigButtonText, value);
-        }
-
-        public string ExportConfigButtonText
-        {
-            get => _exportConfigButtonText;
-            set => SetProperty(ref _exportConfigButtonText, value);
-        }
-
-        public string ApplyButtonText
-        {
-            get => _applyButtonText;
-            set => SetProperty(ref _applyButtonText, value);
-        }
 
         public string SaveButtonText
         {
@@ -172,11 +132,6 @@ namespace MarkingMachineFeeder.Viewmodel
             set => SetProperty(ref _roles, value);
         }
 
-        public ObservableCollection<UserPermissionConfig> Users
-        {
-            get => _users;
-            set => SetProperty(ref _users, value);
-        }
 
         public ObservableCollection<PermissionCategoryViewModel> PermissionCategories
         {
@@ -192,22 +147,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 SetProperty(ref _selectedRole, value);
                 if (value != null)
                 {
-                    SelectedUser = null;
                     LoadRolePermissions(value);
-                }
-            }
-        }
-
-        public UserPermissionConfig SelectedUser
-        {
-            get => _selectedUser;
-            set
-            {
-                SetProperty(ref _selectedUser, value);
-                if (value != null)
-                {
-                    SelectedRole = null;
-                    LoadUserPermissions(value);
                 }
             }
         }
@@ -228,11 +168,6 @@ namespace MarkingMachineFeeder.Viewmodel
 
         #region Commands
 
-        public DelegateCommand AddRoleCommand { get; }
-        public DelegateCommand DeleteRoleCommand { get; }
-        public DelegateCommand ImportConfigCommand { get; }
-        public DelegateCommand ExportConfigCommand { get; }
-        public DelegateCommand ApplyCommand { get; }
         public DelegateCommand SaveCommand { get; }
         public DelegateCommand CancelCommand { get; }
         public DelegateCommand CloseCommand { get; }
@@ -241,6 +176,13 @@ namespace MarkingMachineFeeder.Viewmodel
 
         public PermissionConfigViewModel()
         {
+            // 初始化SecurityManager
+            _securityManager = SecurityManager.Instance();
+            
+            // 监听用户认证状态变化
+            _securityManager.UserAuthenticated += OnUserAuthenticated;
+            _securityManager.UserLoggedOut += OnUserLoggedOut;
+            
             // 初始化CultureManager
             _cultureManager = CultureManager.Instance();
             _cultureManager.CultureChanged += OnCultureChanged;
@@ -248,13 +190,7 @@ namespace MarkingMachineFeeder.Viewmodel
             // 确保UIStrings的Culture同步
             Ewan.Resources.UIStrings.Culture = _cultureManager.CurrentCulture;
             
-            // 初始化命令
-            AddRoleCommand = new DelegateCommand(ExecuteAddRole);
-            DeleteRoleCommand = new DelegateCommand(ExecuteDeleteRole, CanDeleteRole);
-            ImportConfigCommand = new DelegateCommand(ExecuteImportConfig);
-            ExportConfigCommand = new DelegateCommand(ExecuteExportConfig);
-            ApplyCommand = new DelegateCommand(ExecuteApply);
-            SaveCommand = new DelegateCommand(ExecuteSave);
+            SaveCommand = new DelegateCommand(ExecuteSave, CanExecutePermissionControl);
             CancelCommand = new DelegateCommand(ExecuteCancel);
             CloseCommand = new DelegateCommand(ExecuteCancel); // 关闭按钮执行取消操作
 
@@ -263,6 +199,26 @@ namespace MarkingMachineFeeder.Viewmodel
             
             // 初始化UI文本
             UpdateUITexts();
+            
+            // 刷新命令权限状态
+            RefreshCommandStates();
+            
+        }
+
+        /// <summary>
+        /// 用户认证成功事件处理
+        /// </summary>
+        private void OnUserAuthenticated(object sender, User user)
+        {
+            RefreshCommandStates();
+        }
+
+        /// <summary>
+        /// 用户注销事件处理
+        /// </summary>
+        private void OnUserLoggedOut(object sender, EventArgs e)
+        {
+            RefreshCommandStates();
         }
 
         private void OnCultureChanged(object sender, CultureChangedEventArgs e)
@@ -288,11 +244,10 @@ namespace MarkingMachineFeeder.Viewmodel
                 {
                     LoadRolePermissions(SelectedRole);
                 }
-                else if (SelectedUser != null)
-                {
-                    LoadUserPermissions(SelectedUser);
-                }
             }
+            
+            // 刷新命令权限状态
+            RefreshCommandStates();
         }
 
         private void UpdateUITexts()
@@ -303,12 +258,6 @@ namespace MarkingMachineFeeder.Viewmodel
             WindowTitle = Ewan.Resources.PermissionConfigStrings.WindowTitle;
             WindowDescription = Ewan.Resources.PermissionConfigStrings.WindowDescription;
             RoleListTitle = Ewan.Resources.PermissionConfigStrings.RoleListTitle;
-            UserSpecialPermissionsTitle = Ewan.Resources.PermissionConfigStrings.UserSpecialPermissions;
-            AddRoleButtonText = Ewan.Resources.PermissionConfigStrings.AddRoleButton;
-            DeleteRoleButtonText = Ewan.Resources.PermissionConfigStrings.DeleteRoleButton;
-            ImportConfigButtonText = Ewan.Resources.PermissionConfigStrings.ImportConfigButton;
-            ExportConfigButtonText = Ewan.Resources.PermissionConfigStrings.ExportConfigButton;
-            ApplyButtonText = Ewan.Resources.PermissionConfigStrings.ApplyButton;
             SaveButtonText = Ewan.Resources.PermissionConfigStrings.SaveButton;
             CancelButtonText = Ewan.Resources.PermissionConfigStrings.CancelButton;
             
@@ -319,24 +268,21 @@ namespace MarkingMachineFeeder.Viewmodel
             }
         }
 
+        /// <summary>
+        /// 刷新所有命令的权限状态
+        /// </summary>
+        private void RefreshCommandStates()
+        {
+            SaveCommand.RaiseCanExecuteChanged();
+            
+        }
+
         private void InitializeData()
         {
-            // 创建默认配置
-            _configuration = CreateDefaultConfiguration();
+            // 从SecurityManager加载实际用户和角色数据
+            LoadFromSecurityManager();
             
             // 初始化集合
-            Roles = new ObservableCollection<RolePermissionConfig>(_configuration.RolePermissions);
-            
-            // 确保每个角色都有本地化名称
-            foreach (var role in Roles)
-            {
-                if (string.IsNullOrEmpty(role.LocalizedRoleDisplayName))
-                {
-                    role.LocalizedRoleDisplayName = GetLocalizedRoleName(role.RoleName);
-                }
-            }
-            
-            Users = new ObservableCollection<UserPermissionConfig>(_configuration.UserPermissions);
             PermissionCategories = new ObservableCollection<PermissionCategoryViewModel>();
             
             // 加载权限分类
@@ -349,6 +295,55 @@ namespace MarkingMachineFeeder.Viewmodel
             }
         }
 
+        private void LoadFromSecurityManager()
+        {
+            // 创建配置对象
+            _configuration = new PermissionConfiguration();
+            
+            // 从SecurityManager获取所有角色
+            var allRoles = _securityManager.GetAllRoles();
+            var roleConfigs = new List<RolePermissionConfig>();
+            
+            foreach (var role in allRoles)
+            {
+                var roleConfig = new RolePermissionConfig
+                {
+                    RoleName = role.Name,
+                    RoleDisplayName = role.DisplayName,
+                    LocalizedRoleDisplayName = GetLocalizedRoleName(role.Name),
+                    IsSystemRole = IsSystemRole(role.Name),
+                    PermissionIds = role.Permissions.Select(p => $"{p.Resource.ToLower()}.{p.Action.ToLower()}").ToList()
+                };
+                roleConfigs.Add(roleConfig);
+            }
+            
+            _configuration.RolePermissions = roleConfigs;
+            Roles = new ObservableCollection<RolePermissionConfig>(roleConfigs);
+            
+            // 定义系统权限结构（这部分保持不变，用于显示权限分类）
+            _configuration.Permissions = CreateSystemPermissions();
+        }
+
+        private bool IsSystemRole(string roleName)
+        {
+            return roleName == RoleNames.Administrator || 
+                   roleName == RoleNames.Engineer || 
+                   roleName == RoleNames.Operator;
+        }
+
+        private List<PermissionConfig> CreateSystemPermissions()
+        {
+            return new List<PermissionConfig>
+            {
+                // 语言切换权限
+                new PermissionConfig { PermissionId = "language.control", DisplayName = "LanguageSwitch", Description = "LanguageSwitchDesc", Category = "SystemSettings" },
+                
+                // 权限配置权限
+                new PermissionConfig { PermissionId = "permissionconfig.view", DisplayName = "PermissionConfigView", Description = "PermissionConfigViewDesc", Category = "SystemSettings" },
+                new PermissionConfig { PermissionId = "permissionconfig.control", DisplayName = "PermissionConfigControl", Description = "PermissionConfigControlDesc", Category = "SystemSettings" },
+            };
+        }
+
         private PermissionConfiguration CreateDefaultConfiguration()
         {
             var config = new PermissionConfiguration();
@@ -356,31 +351,12 @@ namespace MarkingMachineFeeder.Viewmodel
             // 定义系统权限
             config.Permissions = new List<PermissionConfig>
             {
-                // 系统管理
-                new PermissionConfig { PermissionId = "system.settings", DisplayName = "SystemSettings", Description = "SystemSettingsDesc", Category = "SystemManagement" },
-                new PermissionConfig { PermissionId = "system.language", DisplayName = "LanguageSwitch", Description = "LanguageSwitchDesc", Category = "SystemManagement" },
-                new PermissionConfig { PermissionId = "system.logs", DisplayName = "ViewLogs", Description = "ViewLogsDesc", Category = "SystemManagement" },
-                new PermissionConfig { PermissionId = "system.backup", DisplayName = "BackupRestore", Description = "BackupRestoreDesc", Category = "SystemManagement" },
+                // 语言切换权限
+                new PermissionConfig { PermissionId = "language.control", DisplayName = "LanguageSwitch", Description = "LanguageSwitchDesc", Category = "SystemSettings" },
                 
-                // 用户管理
-                new PermissionConfig { PermissionId = "user.manage", DisplayName = "UserManagePerm", Description = "UserManagePermDesc", Category = "UserManagement" },
-                new PermissionConfig { PermissionId = "user.permissions", DisplayName = "PermissionConfig", Description = "PermissionConfigDesc", Category = "UserManagement" },
-                new PermissionConfig { PermissionId = "user.switchUser", DisplayName = "SwitchUser", Description = "SwitchUserDesc", Category = "UserManagement" },
-                
-                // 设备控制
-                new PermissionConfig { PermissionId = "device.camera", DisplayName = "CameraControl", Description = "CameraControlDesc", Category = "DeviceControl" },
-                new PermissionConfig { PermissionId = "device.ups", DisplayName = "UPSControl", Description = "UPSControlDesc", Category = "DeviceControl" },
-                new PermissionConfig { PermissionId = "device.marking", DisplayName = "MarkingMachineControl", Description = "MarkingMachineControlDesc", Category = "DeviceControl" },
-                
-                // 数据管理
-                new PermissionConfig { PermissionId = "data.export", DisplayName = "DataExport", Description = "DataExportDesc", Category = "DataManagement" },
-                new PermissionConfig { PermissionId = "data.import", DisplayName = "DataImport", Description = "DataImportDesc", Category = "DataManagement" },
-                new PermissionConfig { PermissionId = "data.delete", DisplayName = "DataDelete", Description = "DataDeleteDesc", Category = "DataManagement" },
-                
-                // 生产操作
-                new PermissionConfig { PermissionId = "production.start", DisplayName = "StartProduction", Description = "StartProductionDesc", Category = "ProductionOperation" },
-                new PermissionConfig { PermissionId = "production.stop", DisplayName = "StopProduction", Description = "StopProductionDesc", Category = "ProductionOperation" },
-                new PermissionConfig { PermissionId = "production.configure", DisplayName = "ConfigureProduction", Description = "ConfigureProductionDesc", Category = "ProductionOperation" },
+                // 权限配置权限
+                new PermissionConfig { PermissionId = "permissionconfig.view", DisplayName = "PermissionConfigView", Description = "PermissionConfigViewDesc", Category = "SystemSettings" },
+                new PermissionConfig { PermissionId = "permissionconfig.control", DisplayName = "PermissionConfigControl", Description = "PermissionConfigControlDesc", Category = "SystemSettings" },
             };
             
             // 定义角色权限
@@ -402,11 +378,8 @@ namespace MarkingMachineFeeder.Viewmodel
                     IsSystemRole = true,
                     PermissionIds = new List<string>
                     {
-                        "system.language", "system.logs",
-                        "user.switchUser",
-                        "device.camera", "device.ups", "device.marking",
-                        "data.export", "data.import",
-                        "production.start", "production.stop", "production.configure"
+                        "language.control",
+                        "permissionconfig.view"
                     }
                 },
                 new RolePermissionConfig
@@ -417,32 +390,8 @@ namespace MarkingMachineFeeder.Viewmodel
                     IsSystemRole = true,
                     PermissionIds = new List<string>
                     {
-                        "device.camera", "device.ups",
-                        "production.start", "production.stop"
+                        "language.control"
                     }
-                }
-            };
-            
-            // 定义用户特殊权限（示例）
-            config.UserPermissions = new List<UserPermissionConfig>
-            {
-                new UserPermissionConfig
-                {
-                    Username = "admin",
-                    GrantedPermissions = new List<string>(), // 使用角色默认权限
-                    DeniedPermissions = new List<string>()
-                },
-                new UserPermissionConfig
-                {
-                    Username = "engineer",
-                    GrantedPermissions = new List<string>(), 
-                    DeniedPermissions = new List<string>()
-                },
-                new UserPermissionConfig
-                {
-                    Username = "operator",
-                    GrantedPermissions = new List<string>(),
-                    DeniedPermissions = new List<string>()
                 }
             };
             
@@ -483,7 +432,7 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             CurrentConfigName = role.LocalizedRoleDisplayName ?? GetLocalizedRoleName(role.RoleName);
             
-            CurrentConfigDescription = string.Format(Ewan.Resources.PermissionConfigStrings.RolePrefix, role.RoleName);
+            CurrentConfigDescription = Ewan.Resources.PermissionConfigStrings.RolePermissionConfiguration;
             CurrentConfigDisplayText = string.Format(Ewan.Resources.PermissionConfigStrings.CurrentConfig, CurrentConfigName);
             
             // 更新权限勾选状态
@@ -497,161 +446,111 @@ namespace MarkingMachineFeeder.Viewmodel
             }
         }
 
-        private void LoadUserPermissions(UserPermissionConfig user)
-        {
-            CurrentConfigName = user.Username;
-            
-            CurrentConfigDescription = Ewan.Resources.PermissionConfigStrings.UserSpecialPermissionsDesc;
-            CurrentConfigDisplayText = string.Format(Ewan.Resources.PermissionConfigStrings.CurrentConfig, CurrentConfigName);
-            
-            // 首先获取用户的角色权限
-            // 这里需要从SecurityManager获取用户角色，暂时简化处理
-            var userRole = Roles.FirstOrDefault(r => r.RoleName == "Operator"); // 示例
-            
-            foreach (var category in PermissionCategories)
-            {
-                foreach (var permission in category.Permissions)
-                {
-                    // 基础权限来自角色
-                    bool hasPermission = userRole?.PermissionIds.Contains(permission.PermissionId) ?? false;
-                    
-                    // 应用用户特殊权限
-                    if (user.GrantedPermissions.Contains(permission.PermissionId))
-                        hasPermission = true;
-                    if (user.DeniedPermissions.Contains(permission.PermissionId))
-                        hasPermission = false;
-                    
-                    permission.IsGranted = hasPermission;
-                    permission.IsEditable = true;
-                }
-            }
-        }
 
         #region Command Implementations
 
-        private void ExecuteAddRole()
-        {
-            MessageBox.Show(Ewan.Resources.PermissionConfigStrings.AddRoleFeatureDevelopment, 
-                Ewan.Resources.PermissionConfigStrings.Info, MessageBoxButton.OK, MessageBoxImage.Information);
-        }
 
-        private void ExecuteDeleteRole()
+        /// <summary>
+        /// 检查用户是否有权限控制权限配置
+        /// </summary>
+        private bool CanExecutePermissionControl()
         {
-            if (SelectedRole != null && !SelectedRole.IsSystemRole)
-            {
-                string confirmMessage = string.Format(
-                    Ewan.Resources.PermissionConfigStrings.ConfirmDeleteRole, 
-                    GetLocalizedRoleName(SelectedRole.RoleDisplayName));
-                    
-                string confirmTitle = Ewan.Resources.PermissionConfigStrings.ConfirmDeleteTitle;
-                    
-                var result = MessageBox.Show(
-                    confirmMessage,
-                    confirmTitle,
-                    MessageBoxButton.YesNo, MessageBoxImage.Question);
-                
-                if (result == MessageBoxResult.Yes)
-                {
-                    Roles.Remove(SelectedRole);
-                    _configuration.RolePermissions.Remove(SelectedRole);
-                    SelectedRole = Roles.FirstOrDefault();
-                }
-            }
-        }
-
-        private bool CanDeleteRole()
-        {
-            return SelectedRole != null && !SelectedRole.IsSystemRole;
-        }
-
-        private void ExecuteImportConfig()
-        {
-            string filter = Ewan.Resources.PermissionConfigStrings.JsonFiles;
-            string title = Ewan.Resources.PermissionConfigStrings.ImportTitle;
-                
-            var dialog = new OpenFileDialog
-            {
-                Filter = filter,
-                Title = title
-            };
-            
-            if (dialog.ShowDialog() == true)
-            {
-                try
-                {
-                    var json = File.ReadAllText(dialog.FileName);
-                    _configuration = JsonConvert.DeserializeObject<PermissionConfiguration>(json);
-                    InitializeData();
-                    MessageBox.Show(Ewan.Resources.PermissionConfigStrings.ImportSuccess, 
-                        Ewan.Resources.PermissionConfigStrings.Success, MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(string.Format(Ewan.Resources.PermissionConfigStrings.ImportFailed, ex.Message), 
-                        Ewan.Resources.PermissionConfigStrings.Error, MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            }
-        }
-
-        private void ExecuteExportConfig()
-        {
-            string filter = Ewan.Resources.PermissionConfigStrings.JsonFiles;
-            string title = Ewan.Resources.PermissionConfigStrings.ExportTitle;
-                
-            var dialog = new SaveFileDialog
-            {
-                Filter = filter,
-                Title = title,
-                FileName = $"PermissionConfig_{DateTime.Now:yyyyMMdd_HHmmss}.json"
-            };
-            
-            if (dialog.ShowDialog() == true)
-            {
-                try
-                {
-                    SaveCurrentPermissions();
-                    var json = JsonConvert.SerializeObject(_configuration, Formatting.Indented);
-                    File.WriteAllText(dialog.FileName, json);
-                    MessageBox.Show(Ewan.Resources.PermissionConfigStrings.ExportSuccess, 
-                        Ewan.Resources.PermissionConfigStrings.Success, MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(string.Format(Ewan.Resources.PermissionConfigStrings.ExportFailed, ex.Message), 
-                        Ewan.Resources.PermissionConfigStrings.Error, MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            }
-        }
-
-        private void ExecuteApply()
-        {
-            SaveCurrentPermissions();
-            // TODO: 应用权限到系统
-            
-            MessageBox.Show(Ewan.Resources.PermissionConfigStrings.PermissionsApplied, 
-                Ewan.Resources.PermissionConfigStrings.Success, MessageBoxButton.OK, MessageBoxImage.Information);
+            return _securityManager.HasPermission(PermissionResources.PermissionConfig, PermissionActions.Control);
         }
 
         private void ExecuteSave()
         {
             SaveCurrentPermissions();
             
-            // TODO: 保存到配置文件
-            string configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config", "Permissions.json");
-            Directory.CreateDirectory(Path.GetDirectoryName(configPath));
-            
             try
             {
+                // 直接更新SecurityManager中所有用户的角色权限
+                var allUsers = _securityManager.GetAllUsers();
+                
+                // 禁用详细日志，只显示最终结果
+                foreach (var user in allUsers)
+                {
+                    var updatedRoles = new List<Role>();
+                    
+                    // 为该用户重新构建角色列表
+                    foreach (var userRole in user.Roles)
+                    {
+                        // 从配置中找到对应的角色配置
+                        var roleConfig = _configuration.RolePermissions.FirstOrDefault(r => r.RoleName == userRole.Name);
+                        if (roleConfig != null)
+                        {
+                            var role = new Role(roleConfig.RoleName, roleConfig.RoleDisplayName, "");
+                            
+                            // 添加角色的权限
+                            foreach (var permId in roleConfig.PermissionIds)
+                            {
+                                var parts = permId.Split('.');
+                                if (parts.Length == 2)
+                                {
+                                    var resource = parts[0];
+                                    var action = parts[1];
+                                    
+                                    // 转换资源名称为正确的大小写
+                                    resource = ConvertToProperCase(resource);
+                                    action = ConvertToProperCase(action);
+                                    
+                                    role.Permissions.Add(new Permission(resource, action, ""));
+                                }
+                            }
+                            
+                            updatedRoles.Add(role);
+                        }
+                    }
+                    
+                    // 静默更新用户角色（不显示详细日志）
+                    _securityManager.UpdateUserRoles(user.Username, updatedRoles);
+                }
+                
+                // 也保存到配置文件作为备份
+                string configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config", "Permissions.json");
+                Directory.CreateDirectory(Path.GetDirectoryName(configPath));
                 var json = JsonConvert.SerializeObject(_configuration, Formatting.Indented);
                 File.WriteAllText(configPath, json);
                 
                 DialogResult = true;
                 CloseRequested?.Invoke(this, EventArgs.Empty);
+                
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.PermissionsSaved);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(string.Format(Ewan.Resources.PermissionConfigStrings.SaveFailed, ex.Message), 
                     Ewan.Resources.PermissionConfigStrings.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.PermissionsSaveError, ex.Message);
+            }
+        }
+
+        private string ConvertToProperCase(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                return input;
+            
+            // 将资源名称转换为正确的大小写格式
+            switch (input.ToLower())
+            {
+                case "camera": return "Camera";
+                case "ups": return "UPS";
+                case "log": return "Log";
+                case "settings": return "Settings";
+                case "usermanagement": return "UserManagement";
+                case "system": return "System";
+                case "permissionconfig": return "PermissionConfig";
+                
+                // 动作转换
+                case "view": return "View";
+                case "control": return "Control";
+                case "configure": return "Configure";
+                case "export": return "Export";
+                case "update": return "Update";
+                case "create": return "Create";
+                case "delete": return "Delete";
+                
+                default: return input;
             }
         }
 
@@ -677,11 +576,6 @@ namespace MarkingMachineFeeder.Viewmodel
                         }
                     }
                 }
-            }
-            else if (SelectedUser != null)
-            {
-                // 保存用户特殊权限
-                // TODO: 实现用户权限保存逻辑
             }
             
             _configuration.LastModified = DateTime.Now;

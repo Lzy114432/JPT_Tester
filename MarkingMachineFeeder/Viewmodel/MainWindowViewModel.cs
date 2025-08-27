@@ -29,7 +29,6 @@ namespace MarkingMachineFeeder.Viewmodel
         private string _permissionConfigMenuHeader = "";
         private string _settingsMenuHeader = "";
         private string _systemMenuHeader = "";
-        private string _systemSettingsMenuHeader = "";
         private bool _canControlCamera = false;
         private bool _canControlUPS = false;
         private bool _canViewSettings = false;
@@ -125,12 +124,6 @@ namespace MarkingMachineFeeder.Viewmodel
             set { SetProperty(ref _systemMenuHeader, value); }
         }
 
-        public string SystemSettingsMenuHeader
-        {
-            get { return _systemSettingsMenuHeader; }
-            set { SetProperty(ref _systemSettingsMenuHeader, value); }
-        }
-
         public bool CanViewSettings
         {
             get { return _canViewSettings; }
@@ -148,7 +141,6 @@ namespace MarkingMachineFeeder.Viewmodel
         public DelegateCommand SwitchUserCommand { get; }
         public DelegateCommand OpenPermissionConfigCommand { get; }
         public DelegateCommand OpenSettingsCommand { get; }
-        public DelegateCommand OpenSystemCommand { get; }
 
         public MainWindowViewModel()
         {
@@ -170,7 +162,6 @@ namespace MarkingMachineFeeder.Viewmodel
             SwitchUserCommand = new DelegateCommand(ExecuteSwitchUser);
             OpenPermissionConfigCommand = new DelegateCommand(ExecuteOpenPermissionConfig, CanOpenPermissionConfig);
             OpenSettingsCommand = new DelegateCommand(ExecuteOpenSettings, CanOpenSettings);
-            OpenSystemCommand = new DelegateCommand(ExecuteOpenSystem, CanOpenSystem);
 
             UpdateUITexts();
             UpdateUserInfo();
@@ -259,30 +250,14 @@ namespace MarkingMachineFeeder.Viewmodel
 
         private bool CanOpenSettings()
         {
-            // 检查用户是否有权限访问设置
-            return _securityManager.IsAuthenticated && 
-                   _securityManager.CurrentUser?.Roles.Any(r => r.Name == "Administrator" || r.Name == "Engineer") == true;
-        }
-
-        private void ExecuteOpenSystem()
-        {
-            // 打开系统窗口的逻辑
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.SystemInitialized);
-            System.Windows.MessageBox.Show("系统管理功能将在未来版本中实现", "提示", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
-        }
-
-        private bool CanOpenSystem()
-        {
-            // 检查用户是否有权限访问系统管理
-            return _securityManager.IsAuthenticated && 
-                   _securityManager.CurrentUser?.Roles.Any(r => r.Name == "Administrator") == true;
+            // 检查用户是否有权限访问设置 - 使用权限系统检查
+            return _securityManager.HasPermission(PermissionResources.PermissionConfig, PermissionActions.View);
         }
 
         private bool CanOpenPermissionConfig()
         {
-            // 只有管理员可以打开权限配置
-            return _securityManager.IsAuthenticated && 
-                   _securityManager.CurrentUser?.Roles.Any(r => r.Name == "Administrator") == true;
+            // 基于权限系统检查用户是否有权访问权限配置
+            return _securityManager.HasPermission(PermissionResources.PermissionConfig, PermissionActions.View);
         }
 
         private void OnUserAuthenticated(object sender, User user)
@@ -366,7 +341,6 @@ namespace MarkingMachineFeeder.Viewmodel
             // 使用ResourceManager直接获取资源字符串，如果资源不存在则使用默认值
             SettingsMenuHeader = Ewan.Resources.UIStrings.ResourceManager.GetString("SettingsMenu", Ewan.Resources.UIStrings.Culture) ?? "设置";
             SystemMenuHeader = Ewan.Resources.UIStrings.ResourceManager.GetString("SystemMenu", Ewan.Resources.UIStrings.Culture) ?? "系统";
-            SystemSettingsMenuHeader = Ewan.Resources.UIStrings.ResourceManager.GetString("SystemSettingsMenu", Ewan.Resources.UIStrings.Culture) ?? "系统设置";
             CurrentUserLabel = Ewan.Resources.UIStrings.ResourceManager.GetString("CurrentUserLabel", Ewan.Resources.UIStrings.Culture) ?? "当前用户：";
             
             // 强制触发所有相关属性的PropertyChanged事件
@@ -380,26 +354,28 @@ namespace MarkingMachineFeeder.Viewmodel
             RaisePropertyChanged(nameof(PermissionConfigMenuHeader));
             RaisePropertyChanged(nameof(SettingsMenuHeader));
             RaisePropertyChanged(nameof(SystemMenuHeader));
-            RaisePropertyChanged(nameof(SystemSettingsMenuHeader));
             RaisePropertyChanged(nameof(CurrentUserLabel));
         }
         private void UpdatePermissions()
         {
-            CanControlCamera = _securityManager.HasPermission(PermissionResources.Camera, PermissionActions.Control);
-            CanControlUPS = _securityManager.HasPermission(PermissionResources.UPS, PermissionActions.Control);
-            CanViewSettings = _securityManager.HasPermission(PermissionResources.Settings, PermissionActions.View);
+            // 移除Camera和UPS权限检查，因为已经删除了这些权限
+            CanControlCamera = false;  // 禁用相机控制
+            CanControlUPS = false;     // 禁用UPS控制
+            CanViewSettings = _securityManager.HasPermission(PermissionResources.PermissionConfig, PermissionActions.View);
             
-            // 只有管理员和工程师可以切换语言，操作员不能
-            if (_securityManager.IsAuthenticated)
-            {
-                var user = _securityManager.CurrentUser;
-                var hasOperatorRole = user.Roles.Any(r => r.Name == "Operator");
-                CanSwitchLanguage = !hasOperatorRole; // 操作员不能切换语言
-            }
-            else
-            {
-                CanSwitchLanguage = false; // 未登录用户不能切换语言
-            }
+            // 使用新的Language权限控制语言切换
+            CanSwitchLanguage = _securityManager.HasPermission(PermissionResources.Language, PermissionActions.Control);
+            
+            
+            // 触发属性变更通知，确保UI更新
+            RaisePropertyChanged(nameof(CanViewSettings));
+            RaisePropertyChanged(nameof(CanSwitchLanguage));
+            RaisePropertyChanged(nameof(CanControlCamera));
+            RaisePropertyChanged(nameof(CanControlUPS));
+            
+            // 刷新依赖权限的命令状态
+            OpenPermissionConfigCommand.RaiseCanExecuteChanged();
+            OpenSettingsCommand.RaiseCanExecuteChanged();
         }
     }
 }

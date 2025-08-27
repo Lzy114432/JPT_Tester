@@ -24,9 +24,17 @@
       "Bash(mv Ewan.Model/JPT.Model.csproj Ewan.Model/Ewan.Model.csproj)",
       "Bash(mv Ewan.Resources/JPT.Resources.csproj Ewan.Resources/Ewan.Resources.csproj)",
       "Bash(rm -rf JPT.Core JPT.BusinessBonding JPT.Model JPT.Resources)",
-      "Bash(find Ewan.Core Ewan.BusinessBonding Ewan.Model Ewan.Resources -name \"*.cs\" -exec grep -l \"namespace JPT\\|using JPT\" {} ;)"
+      "Bash(find Ewan.Core Ewan.BusinessBonding Ewan.Model Ewan.Resources -name \"*.cs\" -exec grep -l \"namespace JPT\\|using JPT\" {} ;)",
+      "Bash(\"/c/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe\" MarkingMachineFeeder.sln /p:Configuration=Debug)",
+      "Bash(\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\MSBuild.exe\" MarkingMachineFeeder.sln)",
+      "Bash(\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\MSBuild.exe\" MarkingMachineFeeder.sln /p:Configuration=Debug)",
+      "Bash(\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\MSBuild.exe\" MarkingMachineFeeder.sln /p:Configuration=Debug /t:Clean,Build)",
+      "Bash(\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\MSBuild.exe\" \"C:\\Users\\Administrator\\source\\repos\\MarkingMachineFeeder\\MarkingMachineFeeder.sln\" /p:Configuration=Debug /t:Clean,Build)"
     ],
     "deny": [],
-    "ask": []
+    "ask": [],
+    "additionalDirectories": [
+      "C:\\c\\Users\\Administrator\\source\\repos"
+    ]
   }
 }

@@ -98,14 +98,42 @@ namespace Ewan.Model.Permission
         public string Username { get; set; }
 
         /// <summary>
-        /// 额外授予的权限
+        /// 显示名称
         /// </summary>
-        public List<string> GrantedPermissions { get; set; } = new List<string>();
+        public string DisplayName { get; set; }
 
         /// <summary>
-        /// 明确拒绝的权限（优先级高于角色权限）
+        /// 分配的角色列表
         /// </summary>
-        public List<string> DeniedPermissions { get; set; } = new List<string>();
+        public List<string> AssignedRoles { get; set; } = new List<string>();
+
+        /// <summary>
+        /// 额外授予的权限ID列表
+        /// </summary>
+        public List<string> AdditionalPermissionIds { get; set; } = new List<string>();
+
+        /// <summary>
+        /// 明确撤销的权限ID列表（优先级高于角色权限）
+        /// </summary>
+        public List<string> RevokedPermissionIds { get; set; } = new List<string>();
+
+        /// <summary>
+        /// 额外授予的权限（兼容旧版本）
+        /// </summary>
+        public List<string> GrantedPermissions 
+        { 
+            get => AdditionalPermissionIds;
+            set => AdditionalPermissionIds = value ?? new List<string>();
+        }
+
+        /// <summary>
+        /// 明确拒绝的权限（兼容旧版本）
+        /// </summary>
+        public List<string> DeniedPermissions 
+        { 
+            get => RevokedPermissionIds;
+            set => RevokedPermissionIds = value ?? new List<string>();
+        }
     }
 
     /// <summary>
