@@ -419,7 +419,7 @@
             </Grid.RowDefinitions>
             
             <!-- 上部菜单栏 - 包含语言切换和系统管理 -->
-            <DockPanel Grid.Row="0" Background="{StaticResource BackgroundGradient}" LastChildFill="True">
+            <DockPanel Grid.Row="0" Background="{StaticResource BackgroundGradient}" LastChildFill="True" MouseLeftButtonDown="DockPanel_MouseLeftButtonDown">
                 <!-- 左侧 - 设置和系统菜单 -->
                 <Menu DockPanel.Dock="Left" Background="Transparent" Margin="15,8,10,8">
                     <!-- 设置菜单 -->
@@ -484,7 +484,7 @@
             </DockPanel>
             
             <!-- 下部菜单栏 - 包含操作按钮 -->
-            <DockPanel Grid.Row="1" Background="{StaticResource BackgroundGradient}" LastChildFill="True">
+            <DockPanel Grid.Row="1" Background="{StaticResource BackgroundGradient}" LastChildFill="True" MouseLeftButtonDown="DockPanel_MouseLeftButtonDown">
                 <!-- 右侧 - 注销和登录按钮 -->
                 <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="15,8">
                     <Button Content="{Binding LogoutButtonText}" 
@@ -526,7 +526,7 @@
         <!-- Left Panel - UPS -->
         <Border Grid.Column="0" BorderBrush="Gray" BorderThickness="1" Margin="5">
             <Grid>
-                <TextBlock Text="UPS 区域" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5" FontWeight="Bold"/>
+                <TextBlock Text="UPH 区域" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5" FontWeight="Bold"/>
                 <!-- UPS content will be added here -->
             </Grid>
         </Border>
