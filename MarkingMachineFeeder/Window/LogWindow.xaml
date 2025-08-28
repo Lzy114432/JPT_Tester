@@ -158,9 +158,9 @@
                           d:Text="最大行数:"
                           Style="{StaticResource ModernLabel}"
                           Margin="8,0,4,0"/>
-                <TextBox Text="{Binding MaxLines}" 
-                        Width="60" 
-                        Style="{StaticResource ModernTextBox}"/>
+                <TextBox Text="{Binding MaxLines}"
+                         Width="80"
+                         Style="{StaticResource ModernTextBox}"/>
             </StackPanel>
         </Border>
         
@@ -176,7 +176,7 @@
                       GridLinesVisibility="Horizontal"
                       HeadersVisibility="Column"
                       CanUserResizeColumns="True"
-                      CanUserSortColumns="True"
+                      CanUserSortColumns="False"
                       SelectionMode="Extended"
                       AlternatingRowBackground="#F8F9FA"
                       RowBackground="White"
