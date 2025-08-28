@@ -465,5 +465,14 @@ namespace Ewan.Resources {
                 return ResourceManager.GetString("Log4netConfigNotFound", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   查找类似 User {0} is exiting the application 的本地化字符串。
+        /// </summary>
+        public static string UserExiting {
+            get {
+                return ResourceManager.GetString("UserExiting", resourceCulture);
+            }
+        }
     }
 }

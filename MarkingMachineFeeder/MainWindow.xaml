@@ -8,6 +8,10 @@
         xmlns:vm="clr-namespace:MarkingMachineFeeder.Viewmodel"
         mc:Ignorable="d"
         Title="{Binding Title}" Height="900" Width="1200"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        BorderBrush="Transparent"
+        BorderThickness="0"
         d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel, IsDesignTimeCreatable=False}">
     
     <Window.Resources>
@@ -26,7 +30,7 @@
             <Setter Property="Foreground" Value="#FFFFFF"/>
             <Setter Property="BorderBrush" Value="#555555"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="Padding" Value="12,8,28,8"/>
             <Setter Property="Margin" Value="2"/>
             <Setter Property="FontSize" Value="13"/>
             <Setter Property="FontWeight" Value="Medium"/>
@@ -54,7 +58,7 @@
                                       Visibility="Collapsed"
                                       HorizontalAlignment="Right" 
                                       VerticalAlignment="Center" 
-                                      Margin="0,0,10,0"
+                                      Margin="0,0,6,0"
                                       Fill="{TemplateBinding Foreground}"
                                       Data="M0,0 L4,4 L0,8 Z"/>
                                 <!-- Popup for submenu -->
@@ -133,9 +137,48 @@
                         <Border x:Name="Border" 
                                 Background="{TemplateBinding Background}"
                                 Padding="{TemplateBinding Padding}">
-                            <ContentPresenter ContentSource="Header"/>
+                            <Grid>
+                                <!-- Header Content -->
+                                <ContentPresenter x:Name="HeaderPresenter" 
+                                                ContentSource="Header"
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Left"/>
+                                <!-- Submenu Arrow for nested items -->
+                                <Path x:Name="ArrowPath" 
+                                      Visibility="Collapsed"
+                                      HorizontalAlignment="Right" 
+                                      VerticalAlignment="Center" 
+                                      Margin="0,0,5,0"
+                                      Fill="{TemplateBinding Foreground}"
+                                      Data="M0,0 L4,4 L0,8 Z"/>
+                                <!-- Popup for nested submenu -->
+                                <Popup x:Name="SubMenuPopup" 
+                                       Placement="Right" 
+                                       IsOpen="{Binding Path=IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}"
+                                       AllowsTransparency="True" 
+                                       Focusable="False"
+                                       HorizontalOffset="2"
+                                       VerticalOffset="-3">
+                                    <Border Background="{StaticResource BackgroundGradient}" 
+                                            BorderBrush="#666666" 
+                                            BorderThickness="1"
+                                            CornerRadius="3"
+                                            Margin="0,0,5,5">
+                                        <Border.Effect>
+                                            <DropShadowEffect Color="Black" Opacity="0.4" ShadowDepth="3" BlurRadius="6"/>
+                                        </Border.Effect>
+                                        <StackPanel IsItemsHost="True" 
+                                                    KeyboardNavigation.DirectionalNavigation="Cycle"
+                                                    Margin="2"/>
+                                    </Border>
+                                </Popup>
+                            </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
+                            <!-- Has submenu items -->
+                            <Trigger Property="HasItems" Value="True">
+                                <Setter TargetName="ArrowPath" Property="Visibility" Value="Visible"/>
+                            </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="Border" Property="Background" Value="#4A4A4A"/>
                                 <Setter Property="Foreground" Value="#FFFF00"/>
@@ -409,6 +452,13 @@
                                       CommandParameter="zh-CN"
                                       Style="{StaticResource IndustrialSubMenuItem}"/>
                         </MenuItem>
+                        <!-- 分隔线 -->
+                        <Separator Style="{x:Null}" Height="1" Margin="5,3" Background="#AAAAAA"/>
+                        <!-- 退出菜单 -->
+                        <MenuItem Header="{Binding ExitMenuHeader}" 
+                                  d:Header="退出"
+                                  Command="{Binding ExitCommand}"
+                                  Style="{StaticResource IndustrialSubMenuItem}"/>
                     </MenuItem>
                 </Menu>
                 

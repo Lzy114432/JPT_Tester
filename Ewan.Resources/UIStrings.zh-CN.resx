@@ -204,4 +204,7 @@
   <data name="PermissionConfigMenu" xml:space="preserve">
     <value>权限配置</value>
   </data>
+  <data name="ExitMenu" xml:space="preserve">
+    <value>退出</value>
+  </data>
 </root>

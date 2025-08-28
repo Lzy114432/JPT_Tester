@@ -320,5 +320,14 @@ namespace Ewan.Resources {
                 return ResourceManager.GetString("UsernameLabel", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   查找类似 Exit 的本地化字符串。
+        /// </summary>
+        public static string ExitMenu {
+            get {
+                return ResourceManager.GetString("ExitMenu", resourceCulture);
+            }
+        }
     }
 }

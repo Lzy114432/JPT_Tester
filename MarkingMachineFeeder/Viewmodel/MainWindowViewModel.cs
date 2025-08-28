@@ -29,6 +29,7 @@ namespace MarkingMachineFeeder.Viewmodel
         private string _permissionConfigMenuHeader = "";
         private string _settingsMenuHeader = "";
         private string _systemMenuHeader = "";
+        private string _exitMenuHeader = "";
         private bool _canControlCamera = false;
         private bool _canControlUPS = false;
         private bool _canViewSettings = false;
@@ -134,6 +135,13 @@ namespace MarkingMachineFeeder.Viewmodel
             get { return _canSwitchLanguage; }
             set { SetProperty(ref _canSwitchLanguage, value); }
         }
+        
+        public string ExitMenuHeader
+        {
+            get { return _exitMenuHeader; }
+            set { SetProperty(ref _exitMenuHeader, value); }
+        }
+        
         public DelegateCommand<string> SwitchLanguageCommand { get; }
         public DelegateCommand TestLogCommand { get; }
         public DelegateCommand LogoutCommand { get; }
@@ -141,6 +149,7 @@ namespace MarkingMachineFeeder.Viewmodel
         public DelegateCommand SwitchUserCommand { get; }
         public DelegateCommand OpenPermissionConfigCommand { get; }
         public DelegateCommand OpenSettingsCommand { get; }
+        public DelegateCommand ExitCommand { get; }
 
         public MainWindowViewModel()
         {
@@ -162,6 +171,7 @@ namespace MarkingMachineFeeder.Viewmodel
             SwitchUserCommand = new DelegateCommand(ExecuteSwitchUser);
             OpenPermissionConfigCommand = new DelegateCommand(ExecuteOpenPermissionConfig, CanOpenPermissionConfig);
             OpenSettingsCommand = new DelegateCommand(ExecuteOpenSettings, CanOpenSettings);
+            ExitCommand = new DelegateCommand(ExecuteExit);
 
             UpdateUITexts();
             UpdateUserInfo();
@@ -260,6 +270,15 @@ namespace MarkingMachineFeeder.Viewmodel
             return _securityManager.HasPermission(PermissionResources.PermissionConfig, PermissionActions.View);
         }
 
+        private void ExecuteExit()
+        {
+            // 记录当前用户退出应用程序
+            var currentUser = _securityManager.CurrentUser?.Username ?? "游客";
+            _uiLogger.Info(() => Ewan.Resources.LogMessages.UserExiting, currentUser);
+            
+            System.Windows.Application.Current.Shutdown();
+        }
+
         private void OnUserAuthenticated(object sender, User user)
         {
             UpdateUserInfo();
@@ -342,6 +361,7 @@ namespace MarkingMachineFeeder.Viewmodel
             SettingsMenuHeader = Ewan.Resources.UIStrings.ResourceManager.GetString("SettingsMenu", Ewan.Resources.UIStrings.Culture) ?? "设置";
             SystemMenuHeader = Ewan.Resources.UIStrings.ResourceManager.GetString("SystemMenu", Ewan.Resources.UIStrings.Culture) ?? "系统";
             CurrentUserLabel = Ewan.Resources.UIStrings.ResourceManager.GetString("CurrentUserLabel", Ewan.Resources.UIStrings.Culture) ?? "当前用户：";
+            ExitMenuHeader = Ewan.Resources.UIStrings.ExitMenu;
             
             // 强制触发所有相关属性的PropertyChanged事件
             RaisePropertyChanged(nameof(Title));
@@ -355,6 +375,7 @@ namespace MarkingMachineFeeder.Viewmodel
             RaisePropertyChanged(nameof(SettingsMenuHeader));
             RaisePropertyChanged(nameof(SystemMenuHeader));
             RaisePropertyChanged(nameof(CurrentUserLabel));
+            RaisePropertyChanged(nameof(ExitMenuHeader));
         }
         private void UpdatePermissions()
         {

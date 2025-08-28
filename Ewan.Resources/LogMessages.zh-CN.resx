@@ -246,4 +246,7 @@
   <data name="PermissionCheckNotAuthenticated" xml:space="preserve">
     <value>权限检查失败：用户未认证，资源 {0}.{1}</value>
   </data>
+  <data name="UserExiting" xml:space="preserve">
+    <value>用户 {0} 正在退出应用程序</value>
+  </data>
 </root>

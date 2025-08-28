@@ -246,4 +246,7 @@
   <data name="PermissionCheckNotAuthenticated" xml:space="preserve">
     <value>Permission check failed: User not authenticated for {0}.{1}</value>
   </data>
+  <data name="UserExiting" xml:space="preserve">
+    <value>User {0} is exiting the application</value>
+  </data>
 </root>
