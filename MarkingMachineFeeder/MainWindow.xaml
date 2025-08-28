@@ -15,9 +15,9 @@
         
         <!-- Industrial Background Gradient -->
         <LinearGradientBrush x:Key="BackgroundGradient" StartPoint="0,0" EndPoint="0,1">
-            <GradientStop Color="#4A4A4A" Offset="0"/>
-            <GradientStop Color="#2D2D30" Offset="0.5"/>
-            <GradientStop Color="#1E1E1E" Offset="1"/>
+            <GradientStop Color="#4682B4" Offset="0"/>
+            <GradientStop Color="#36648B" Offset="0.5"/>
+            <GradientStop Color="#27408B" Offset="1"/>
         </LinearGradientBrush>
         
         <!-- Industrial Menu Item Style -->
