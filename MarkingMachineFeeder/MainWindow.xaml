@@ -142,7 +142,8 @@
                                 <ContentPresenter x:Name="HeaderPresenter" 
                                                 ContentSource="Header"
                                                 VerticalAlignment="Center"
-                                                HorizontalAlignment="Left"/>
+                                                HorizontalAlignment="Left"
+                                                Margin="0,0,20,0"/>
                                 <!-- Submenu Arrow for nested items -->
                                 <Path x:Name="ArrowPath" 
                                       Visibility="Collapsed"
@@ -458,7 +459,8 @@
                         <MenuItem Header="{Binding ExitMenuHeader}" 
                                   d:Header="退出"
                                   Command="{Binding ExitCommand}"
-                                  Style="{StaticResource IndustrialSubMenuItem}"/>
+                                  Style="{StaticResource IndustrialSubMenuItem}"
+                                  Visibility="{Binding CanExit, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                     </MenuItem>
                 </Menu>
                 

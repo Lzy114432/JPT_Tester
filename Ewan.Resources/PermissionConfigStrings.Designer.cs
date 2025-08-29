@@ -709,6 +709,24 @@ namespace Ewan.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Exit Application.
+        /// </summary>
+        public static string SystemControl {
+            get {
+                return ResourceManager.GetString("SystemControl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Allow user to exit the application.
+        /// </summary>
+        public static string SystemControlDesc {
+            get {
+                return ResourceManager.GetString("SystemControlDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Configure system permissions for different roles and users.
         /// </summary>
         public static string WindowDescription {

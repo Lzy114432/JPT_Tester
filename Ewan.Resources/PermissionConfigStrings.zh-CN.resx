@@ -105,6 +105,9 @@
   <data name="SystemSettings" xml:space="preserve">
     <value>系统设置</value>
   </data>
+  <data name="SystemControl" xml:space="preserve">
+    <value>系统控制</value>
+  </data>
   
   <!-- System Settings Permissions -->
   <data name="LanguageSwitch" xml:space="preserve">
@@ -124,6 +127,14 @@
   </data>
   <data name="PermissionConfigControlDesc" xml:space="preserve">
     <value>修改权限配置</value>
+  </data>
+  
+  <!-- System Control Permissions -->
+  <data name="SystemControl" xml:space="preserve">
+    <value>退出应用程序</value>
+  </data>
+  <data name="SystemControlDesc" xml:space="preserve">
+    <value>允许用户退出应用程序</value>
   </data>
   
   <!-- Roles -->

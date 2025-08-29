@@ -172,13 +172,133 @@ private void UpdateUITexts()
 
 ## Security System
 
+### Current Permission Resources
+- **Language**: Controls language switching functionality
+- **PermissionConfig**: Controls access to permission configuration interface  
+- **SystemControl**: Controls system operations (currently: application exit)
+
 ### Permission Matrix
-| Role          | Language.Control | PermissionConfig.View | PermissionConfig.Control |
-| ------------- | ---------------- | --------------------- | ------------------------ |
-| Administrator | ✓                | ✓                     | ✓                        |
-| Engineer      | ✓                | ✓                     | ❌                        |
-| Operator      | ✓                | ❌                     | ❌                        |
-| Guest         | ❌                | ❌                     | ❌                        |
+| Role          | Language.Control | PermissionConfig.View | PermissionConfig.Control | SystemControl.Control |
+| ------------- | ---------------- | --------------------- | ------------------------ | --------------------- |
+| Administrator | ✓                | ✓                     | ✓                        | ✓                     |
+| Engineer      | ✓                | ✓                     | ❌                        | ✓                     |
+| Operator      | ✓                | ❌                     | ❌                        | ✓ (configurable)     |
+| Guest         | ❌                | ❌                     | ❌                        | ❌                     |
+
+### Adding New Permission-Controlled Features
+
+**Step 1: Define Permission Resource (if new category needed)**
+```csharp
+// In SecurityConstants.cs
+public const string NewResource = "NewResource";
+```
+
+**Step 2: Add Permission to Roles (in SecurityManager.cs)**
+```csharp
+private Role CreateAdministratorRole()
+{
+    var role = new Role(RoleNames.Administrator, "系统管理员", "拥有所有权限");
+    role.Permissions.AddRange(new[]
+    {
+        // ... existing permissions
+        new Permission(PermissionResources.NewResource, PermissionActions.Control, "新功能控制")
+    });
+    return role;
+}
+```
+
+**Step 3: Add UI Permission Configuration (in PermissionConfigViewModel.cs)**
+```csharp
+private List<PermissionConfig> CreateSystemPermissions()
+{
+    return new List<PermissionConfig>
+    {
+        // ... existing permissions
+        new PermissionConfig { 
+            PermissionId = "newresource.control", 
+            DisplayName = "NewFeature", 
+            Description = "NewFeatureDesc", 
+            Category = "FeatureCategory" 
+        },
+    };
+}
+```
+
+**Step 4: Add UI Visibility Control**
+```csharp
+// In ViewModel
+public bool CanAccessNewFeature
+{
+    get => _canAccessNewFeature;
+    set => SetProperty(ref _canAccessNewFeature, value);
+}
+
+private void UpdatePermissions()
+{
+    CanAccessNewFeature = _securityManager.HasPermission(PermissionResources.NewResource, PermissionActions.Control);
+    RaisePropertyChanged(nameof(CanAccessNewFeature));
+}
+```
+
+**Step 5: XAML Binding with Visibility Control**
+```xml
+<MenuItem Header="New Feature" 
+          Command="{Binding NewFeatureCommand}"
+          Visibility="{Binding CanAccessNewFeature, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+```
+
+**Step 6: Add Localized Resources**
+```xml
+<!-- UIStrings.resx -->
+<data name="NewFeature"><value>New Feature</value></data>
+
+<!-- UIStrings.zh-CN.resx -->  
+<data name="NewFeature"><value>新功能</value></data>
+
+<!-- PermissionConfigStrings.resx -->
+<data name="NewFeature"><value>New Feature Access</value></data>
+<data name="NewFeatureDesc"><value>Allow access to new feature</value></data>
+```
+
+### User Permission Configuration Process
+
+**Method 1: Through PermissionConfigWindow (Recommended)**
+1. Login as Administrator
+2. Open System → Permission Configuration
+3. Select the role to modify
+4. Check/uncheck desired permissions
+5. Click Save to persist changes
+
+**Method 2: Direct users.json Modification**
+⚠️ **IMPORTANT**: Permission keys in users.json must use **lowercase format**
+```json
+{
+  "Resource": "systemcontrol",  // NOT "SystemControl"
+  "Action": "Control",          // Action can be mixed case
+  "Key": "systemcontrol.Control"
+}
+```
+
+**Common Permission Keys:**
+- `language.Control` - Language switching
+- `permissionconfig.View` - View permission config  
+- `permissionconfig.Control` - Modify permission config
+- `systemcontrol.Control` - Exit application
+
+**Example: Remove Exit Permission from Operator**
+```json
+{
+  "Name": "Operator",
+  "Permissions": [
+    {
+      "Resource": "language",
+      "Action": "Control",
+      "Key": "language.Control"
+    }
+    // Remove systemcontrol.Control entry to disable exit permission
+  ]
+}
+```
 
 ### Permission-Based Commands
 ```csharp
@@ -313,6 +433,97 @@ public MyViewModel()
 private void OnUserAuthenticated(object sender, User user)
 {
     UpdatePermissions(); // Refresh UI permissions
+}
+```
+
+#### Problem: Permission configuration changes not taking effect
+
+**Symptoms:**
+- Changed permissions in PermissionConfigWindow but UI still shows old permissions
+- User permissions don't match users.json file
+
+**Solutions:**
+1. **Check permission key format in users.json**
+```json
+// ✅ CORRECT - Resource in lowercase
+{
+  "Resource": "systemcontrol",
+  "Action": "Control", 
+  "Key": "systemcontrol.Control"
+}
+
+// ❌ WRONG - Resource capitalization mismatch
+{
+  "Resource": "SystemControl",  // This won't match!
+  "Action": "Control",
+  "Key": "SystemControl.Control"
+}
+```
+
+2. **Restart application after manual users.json changes**
+   - users.json is loaded on application startup
+   - Manual edits require restart to take effect
+   - Use PermissionConfigWindow for live updates
+
+3. **Verify permission constants match PermissionId format**
+```csharp
+// SecurityConstants.cs
+public const string SystemControl = "SystemControl"; 
+
+// PermissionConfigViewModel.cs - must use lowercase in PermissionId
+new PermissionConfig { 
+    PermissionId = "systemcontrol.control", // lowercase to match users.json
+    DisplayName = "SystemControl",
+    Category = "SystemControl" 
+}
+```
+
+#### Problem: New UI element not respecting permissions
+
+**Symptoms:**
+- Added new button/menu but it's always visible regardless of user permissions
+- Permission checking works but UI doesn't update
+
+**Solutions:**
+1. **Missing Visibility binding in XAML**
+```xml
+<!-- ✅ CORRECT -->
+<MenuItem Header="Exit" 
+          Command="{Binding ExitCommand}"
+          Visibility="{Binding CanExit, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+<!-- ❌ WRONG - Missing Visibility binding -->
+<MenuItem Header="Exit" Command="{Binding ExitCommand}"/>
+```
+
+2. **Missing permission property in ViewModel**
+```csharp
+// Add property for permission state
+public bool CanExit
+{
+    get => _canExit;
+    set => SetProperty(ref _canExit, value);
+}
+
+// Update in UpdatePermissions method
+private void UpdatePermissions()
+{
+    CanExit = _securityManager.HasPermission(PermissionResources.SystemControl, PermissionActions.Control);
+    RaisePropertyChanged(nameof(CanExit)); // CRITICAL!
+}
+```
+
+3. **Add debugging output**
+```csharp
+private void UpdatePermissions()
+{
+    CanExit = _securityManager.HasPermission(PermissionResources.SystemControl, PermissionActions.Control);
+    
+    // Debug output
+    var user = _securityManager.CurrentUser?.Username ?? "未登录";
+    System.Diagnostics.Debug.WriteLine($"用户 {user} 退出权限: {(CanExit ? "有权限" : "无权限")}");
+    
+    RaisePropertyChanged(nameof(CanExit));
 }
 ```
 

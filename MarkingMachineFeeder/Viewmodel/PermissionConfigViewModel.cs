@@ -341,6 +341,9 @@ namespace MarkingMachineFeeder.Viewmodel
                 // 权限配置权限
                 new PermissionConfig { PermissionId = "permissionconfig.view", DisplayName = "PermissionConfigView", Description = "PermissionConfigViewDesc", Category = "SystemSettings" },
                 new PermissionConfig { PermissionId = "permissionconfig.control", DisplayName = "PermissionConfigControl", Description = "PermissionConfigControlDesc", Category = "SystemSettings" },
+                
+                // 系统控制权限（包括退出应用程序）
+                new PermissionConfig { PermissionId = "systemcontrol.control", DisplayName = "SystemControl", Description = "SystemControlDesc", Category = "SystemControl" },
             };
         }
 

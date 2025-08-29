@@ -34,6 +34,7 @@ namespace MarkingMachineFeeder.Viewmodel
         private bool _canControlUPS = false;
         private bool _canViewSettings = false;
         private bool _canSwitchLanguage = false;
+        private bool _canExit = false;
 
         public string Title
         {
@@ -136,6 +137,12 @@ namespace MarkingMachineFeeder.Viewmodel
             set { SetProperty(ref _canSwitchLanguage, value); }
         }
         
+        public bool CanExit
+        {
+            get { return _canExit; }
+            set { SetProperty(ref _canExit, value); }
+        }
+        
         public string ExitMenuHeader
         {
             get { return _exitMenuHeader; }
@@ -171,7 +178,7 @@ namespace MarkingMachineFeeder.Viewmodel
             SwitchUserCommand = new DelegateCommand(ExecuteSwitchUser);
             OpenPermissionConfigCommand = new DelegateCommand(ExecuteOpenPermissionConfig, CanOpenPermissionConfig);
             OpenSettingsCommand = new DelegateCommand(ExecuteOpenSettings, CanOpenSettings);
-            ExitCommand = new DelegateCommand(ExecuteExit);
+            ExitCommand = new DelegateCommand(ExecuteExit, CanExecuteExit);
 
             UpdateUITexts();
             UpdateUserInfo();
@@ -268,6 +275,12 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             // 基于权限系统检查用户是否有权访问权限配置
             return _securityManager.HasPermission(PermissionResources.PermissionConfig, PermissionActions.View);
+        }
+
+        private bool CanExecuteExit()
+        {
+            // 检查用户是否有权限退出应用程序
+            return _securityManager.HasPermission(PermissionResources.SystemControl, PermissionActions.Control);
         }
 
         private void ExecuteExit()
@@ -397,16 +410,20 @@ namespace MarkingMachineFeeder.Viewmodel
             // 使用新的Language权限控制语言切换
             CanSwitchLanguage = _securityManager.HasPermission(PermissionResources.Language, PermissionActions.Control);
             
+            // 使用SystemControl权限控制退出功能
+            CanExit = _securityManager.HasPermission(PermissionResources.SystemControl, PermissionActions.Control);
             
             // 触发属性变更通知，确保UI更新
             RaisePropertyChanged(nameof(CanViewSettings));
             RaisePropertyChanged(nameof(CanSwitchLanguage));
             RaisePropertyChanged(nameof(CanControlCamera));
             RaisePropertyChanged(nameof(CanControlUPS));
+            RaisePropertyChanged(nameof(CanExit));
             
             // 刷新依赖权限的命令状态
             OpenPermissionConfigCommand.RaiseCanExecuteChanged();
             OpenSettingsCommand.RaiseCanExecuteChanged();
+            ExitCommand.RaiseCanExecuteChanged();
         }
     }
 }

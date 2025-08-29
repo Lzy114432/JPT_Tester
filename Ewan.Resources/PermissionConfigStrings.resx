@@ -105,6 +105,9 @@
   <data name="SystemSettings" xml:space="preserve">
     <value>System Settings</value>
   </data>
+  <data name="SystemControl" xml:space="preserve">
+    <value>System Control</value>
+  </data>
   
   <!-- System Settings Permissions -->
   <data name="LanguageSwitch" xml:space="preserve">
@@ -124,6 +127,14 @@
   </data>
   <data name="PermissionConfigControlDesc" xml:space="preserve">
     <value>Modify permission configuration</value>
+  </data>
+  
+  <!-- System Control Permissions -->
+  <data name="SystemControl" xml:space="preserve">
+    <value>Exit Application</value>
+  </data>
+  <data name="SystemControlDesc" xml:space="preserve">
+    <value>Allow user to exit the application</value>
   </data>
   
   <!-- Roles -->

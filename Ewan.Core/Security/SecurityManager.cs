@@ -18,7 +18,7 @@ namespace Ewan.Core.Security
     {
         private User _currentUser;
         private List<User> _users;
-        private readonly string _usersFilePath = "users.json";
+        private readonly string _usersFilePath = Path.Combine("Config", "users.json");
 
         /// <summary>
         /// 当前登录用户
@@ -269,7 +269,8 @@ namespace Ewan.Core.Security
             {
                 new Permission(PermissionResources.Language, PermissionActions.Control, "切换语言"),
                 new Permission(PermissionResources.PermissionConfig, PermissionActions.View, "查看权限配置"),
-                new Permission(PermissionResources.PermissionConfig, PermissionActions.Control, "修改权限配置")
+                new Permission(PermissionResources.PermissionConfig, PermissionActions.Control, "修改权限配置"),
+                new Permission(PermissionResources.SystemControl, PermissionActions.Control, "系统控制（包括退出应用程序）")
             });
             return role;
         }
@@ -283,7 +284,8 @@ namespace Ewan.Core.Security
             role.Permissions.AddRange(new[]
             {
                 new Permission(PermissionResources.Language, PermissionActions.Control, "切换语言"),
-                new Permission(PermissionResources.PermissionConfig, PermissionActions.View, "查看权限配置")
+                new Permission(PermissionResources.PermissionConfig, PermissionActions.View, "查看权限配置"),
+                new Permission(PermissionResources.SystemControl, PermissionActions.Control, "系统控制（包括退出应用程序）")
             });
             return role;
         }
@@ -296,7 +298,8 @@ namespace Ewan.Core.Security
             var role = new Role(RoleNames.Operator, "操作员", "基本操作权限");
             role.Permissions.AddRange(new[]
             {
-                new Permission(PermissionResources.Language, PermissionActions.Control, "切换语言")
+                new Permission(PermissionResources.Language, PermissionActions.Control, "切换语言"),
+                new Permission(PermissionResources.SystemControl, PermissionActions.Control, "系统控制（包括退出应用程序）")
             });
             return role;
         }
