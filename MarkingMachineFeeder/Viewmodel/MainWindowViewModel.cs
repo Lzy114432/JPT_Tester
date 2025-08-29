@@ -23,7 +23,6 @@ namespace MarkingMachineFeeder.Viewmodel
         private string _currentUser = "Guest";
         private string _currentUserLabel = "";
         private string _loginButtonText = "";
-        private string _logoutButtonText = "";
         private string _switchUserButtonText = "";
         private string _systemManagementMenuHeader = "";
         private string _permissionConfigMenuHeader = "";
@@ -78,11 +77,6 @@ namespace MarkingMachineFeeder.Viewmodel
             set { SetProperty(ref _currentUserLabel, value); }
         }
 
-        public string LogoutButtonText
-        {
-            get { return _logoutButtonText; }
-            set { SetProperty(ref _logoutButtonText, value); }
-        }
 
         public bool CanControlCamera
         {
@@ -151,7 +145,6 @@ namespace MarkingMachineFeeder.Viewmodel
         
         public DelegateCommand<string> SwitchLanguageCommand { get; }
         public DelegateCommand TestLogCommand { get; }
-        public DelegateCommand LogoutCommand { get; }
         public DelegateCommand LoginCommand { get; }
         public DelegateCommand SwitchUserCommand { get; }
         public DelegateCommand OpenPermissionConfigCommand { get; }
@@ -173,7 +166,6 @@ namespace MarkingMachineFeeder.Viewmodel
 
             SwitchLanguageCommand = new DelegateCommand<string>(ExecuteSwitchLanguage);
             TestLogCommand = new DelegateCommand(ExecuteTestLog);
-            LogoutCommand = new DelegateCommand(ExecuteLogout);
             LoginCommand = new DelegateCommand(ExecuteLogin);
             SwitchUserCommand = new DelegateCommand(ExecuteSwitchUser);
             OpenPermissionConfigCommand = new DelegateCommand(ExecuteOpenPermissionConfig, CanOpenPermissionConfig);
@@ -240,11 +232,6 @@ namespace MarkingMachineFeeder.Viewmodel
             {
                 // 用户登录成功，界面会自动更新
             }
-        }
-
-        private void ExecuteLogout()
-        {
-            _securityManager.Logout();
         }
 
         private void ExecuteOpenPermissionConfig()
@@ -376,7 +363,6 @@ namespace MarkingMachineFeeder.Viewmodel
             TestLogButtonText = Ewan.Resources.UIStrings.TestLogButton;
             // 使用资源字符串替代硬编码值
             LoginButtonText = Ewan.Resources.UIStrings.LoginButtonText;
-            LogoutButtonText = Ewan.Resources.UIStrings.LogoutButton;
             SwitchUserButtonText = Ewan.Resources.UIStrings.SwitchUserButton;
             SystemManagementMenuHeader = Ewan.Resources.UIStrings.SystemManagementMenu;
             PermissionConfigMenuHeader = Ewan.Resources.UIStrings.PermissionConfigMenu;
@@ -391,7 +377,6 @@ namespace MarkingMachineFeeder.Viewmodel
             RaisePropertyChanged(nameof(LanguageMenuHeader));
             RaisePropertyChanged(nameof(TestLogButtonText));
             RaisePropertyChanged(nameof(LoginButtonText));
-            RaisePropertyChanged(nameof(LogoutButtonText));
             RaisePropertyChanged(nameof(SwitchUserButtonText));
             RaisePropertyChanged(nameof(SystemManagementMenuHeader));
             RaisePropertyChanged(nameof(PermissionConfigMenuHeader));

@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:MarkingMachineFeeder.Windows"
         mc:Ignorable="d"
         Title="{Binding Title}" 
+        d:Title="确认"
         Height="200" Width="400"
         WindowStartupLocation="CenterOwner"
         WindowStyle="None"
@@ -189,14 +190,14 @@
                     <Button DockPanel.Dock="Right" Content="✕" Foreground="White" 
                             Background="Transparent" BorderThickness="0" Padding="5,0" 
                             FontWeight="Bold" Click="CloseButton_Click"/>
-                    <TextBlock Text="{Binding Title}" Foreground="White" FontWeight="Bold" 
+                    <TextBlock Text="{Binding Title}" d:Text="确认退出" Foreground="White" FontWeight="Bold" 
                                VerticalAlignment="Center" Margin="5,0"/>
                 </DockPanel>
             </Border>
             
             <!-- 内容区域 -->
             <Border Grid.Row="1" Padding="20,15">
-                <TextBlock Text="{Binding Message}" TextWrapping="Wrap" VerticalAlignment="Center" 
+                <TextBlock Text="{Binding Message}" d:Text="您确定要退出应用程序吗？" TextWrapping="Wrap" VerticalAlignment="Center" 
                            HorizontalAlignment="Center" FontSize="14" TextAlignment="Center"/>
             </Border>
             
@@ -204,13 +205,13 @@
             <Border Grid.Row="2" Background="#EFEFEF" BorderBrush="#DDDDDD" 
                     BorderThickness="0,1,0,0" Padding="15,10" CornerRadius="0,0,8,8">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button Content="{Binding YesButtonText}" 
+                    <Button Content="{Binding YesButtonText}" d:Content="是" 
                             Style="{StaticResource ConfirmButton}" Click="YesButton_Click"/>
-                    <Button Content="{Binding NoButtonText}" 
+                    <Button Content="{Binding NoButtonText}" d:Content="否" 
                             Style="{StaticResource IndustrialButton}" Click="NoButton_Click"/>
-                    <Button Content="{Binding CancelButtonText}" 
+                    <Button Content="{Binding CancelButtonText}" d:Content="取消" 
                             Style="{StaticResource CancelButton}" Click="CancelButton_Click"
-                            Visibility="{Binding CancelButtonVisibility}"/>
+                            Visibility="{Binding CancelButtonVisibility}" d:Visibility="Visible"/>
                 </StackPanel>
             </Border>
         </Grid>

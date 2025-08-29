@@ -453,8 +453,6 @@
                                       CommandParameter="zh-CN"
                                       Style="{StaticResource IndustrialSubMenuItem}"/>
                         </MenuItem>
-                        <!-- 分隔线 -->
-                        <Separator Style="{x:Null}" Height="1" Margin="5,3" Background="#AAAAAA"/>
                         <!-- 退出菜单 -->
                         <MenuItem Header="{Binding ExitMenuHeader}" 
                                   d:Header="退出"
@@ -487,14 +485,8 @@
             
             <!-- 下部菜单栏 - 包含操作按钮 -->
             <DockPanel Grid.Row="1" Background="{StaticResource BackgroundGradient}" LastChildFill="True" MouseLeftButtonDown="DockPanel_MouseLeftButtonDown">
-                <!-- 右侧 - 注销和登录按钮 -->
+                <!-- 右侧 - 登录按钮 -->
                 <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="15,8">
-                    <Button Content="{Binding LogoutButtonText}" 
-                            d:Content="注销"
-                            Command="{Binding LogoutCommand}" 
-                            Style="{StaticResource LogoutButton}"
-                            Width="90" Height="32" 
-                            Margin="5,0"/>
                     <Button Content="{Binding LoginButtonText}" 
                             d:Content="登录"
                             Command="{Binding LoginCommand}" 
