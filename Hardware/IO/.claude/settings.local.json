@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rm:*)",
+      "Bash(del:*)",
+      "Bash(dotnet build:*)",
+      "Bash(dotnet new:*)",
+      "Bash(rd:*)",
+      "Bash(mkdir:*)",
+      "Bash(move InterfaceIHardwareIO.cs CoreInterfacesIHardwareIO.cs)",
+      "Bash(move \"Interface\\IHardwareIO.cs\" \"Core\\Interfaces\\IHardwareIO.cs\")",
+      "Bash(cmd /c move:*)",
+      "Bash(copy:*)",
+      "Bash(xcopy:*)",
+      "Bash(dir:*)"
+    ],
+    "deny": []
+  }
+}
