@@ -361,3 +361,17 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Claude.ai specific files
+.claude/settings.local.json
+**/.claude/settings.local.json
+
+# Custom build output directories
+bindDebug/
+bindRelease/
+**/bindDebug/
+**/bindRelease/
+
+# Temporary screenshots
+image.png
+Screenshot*.png
