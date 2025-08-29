@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Ewan.Core
+namespace Ewan.Core.Run
 {
     public class StreamRunner
     {

@@ -6,7 +6,7 @@ namespace MarkingMachineFeeder.Windows
     /// <summary>
     /// PermissionConfigWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class PermissionConfigWindow : Window
+    public partial class PermissionConfigWindow : System.Windows.Window
     {
         private PermissionConfigViewModel _viewModel;
 

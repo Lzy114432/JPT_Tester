@@ -270,7 +270,8 @@ namespace Ewan.Core.Security
                 new Permission(PermissionResources.Language, PermissionActions.Control, "切换语言"),
                 new Permission(PermissionResources.PermissionConfig, PermissionActions.View, "查看权限配置"),
                 new Permission(PermissionResources.PermissionConfig, PermissionActions.Control, "修改权限配置"),
-                new Permission(PermissionResources.SystemControl, PermissionActions.Control, "系统控制（包括退出应用程序）")
+                new Permission(PermissionResources.SystemControl, PermissionActions.Control, "系统控制（包括退出应用程序）"),
+                new Permission(PermissionResources.HardwareControl, PermissionActions.Control, "硬件控制（包括IO控制）")
             });
             return role;
         }
@@ -285,7 +286,8 @@ namespace Ewan.Core.Security
             {
                 new Permission(PermissionResources.Language, PermissionActions.Control, "切换语言"),
                 new Permission(PermissionResources.PermissionConfig, PermissionActions.View, "查看权限配置"),
-                new Permission(PermissionResources.SystemControl, PermissionActions.Control, "系统控制（包括退出应用程序）")
+                new Permission(PermissionResources.SystemControl, PermissionActions.Control, "系统控制（包括退出应用程序）"),
+                new Permission(PermissionResources.HardwareControl, PermissionActions.Control, "硬件控制（包括IO控制）")
             });
             return role;
         }

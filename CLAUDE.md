@@ -17,8 +17,8 @@ This file provides comprehensive guidance for Claude Code (claude.ai/code) when 
 
 ### Essential Commands
 ```bash
-# Build solution (verified working method)
-cd "C:\Users\Administrator\source\repos\MarkingMachineFeeder" && "C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\amd64\MSBuild.exe" MarkingMachineFeeder.sln
+# Build solution with x64 platform (verified working method)
+cd "C:\Users\Administrator\source\repos\MarkingMachineFeeder" && "C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\amd64\MSBuild.exe" MarkingMachineFeeder.sln -p:Configuration=Debug -p:Platform=x64
 ```
 
 ### Log Files Location
@@ -550,7 +550,10 @@ _uiLogger.Debug(() => Ewan.Resources.LogMessages.PermissionCheckResult,
 
 ### Verified Build Command
 ```bash
-cd "C:\Users\Administrator\source\repos\MarkingMachineFeeder" && "C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\amd64\MSBuild.exe" MarkingMachineFeeder.sln
+# Build with x64 platform configuration (required for proper compilation)
+cd "C:\Users\Administrator\source\repos\MarkingMachineFeeder" && "C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\amd64\MSBuild.exe" MarkingMachineFeeder.sln -p:Configuration=Debug -p:Platform=x64
+
+# Note: Use hyphen (-p:) instead of forward slash (/p:) for MSBuild parameters to avoid parsing errors
 ```
 
 ### Known Non-blocking Warnings

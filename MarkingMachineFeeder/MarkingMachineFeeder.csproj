@@ -124,6 +124,9 @@
     <Compile Include="Window\ConfirmationDialog.xaml.cs">
       <DependentUpon>ConfirmationDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Window\IOControlWindow.xaml.cs">
+      <DependentUpon>IOControlWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Window\PermissionConfigWindow.xaml.cs">
       <DependentUpon>PermissionConfigWindow.xaml</DependentUpon>
     </Compile>
@@ -132,6 +135,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Window\ConfirmationDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Window\IOControlWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -181,6 +188,7 @@
     </Compile>
     <Compile Include="Viewmodel\MainWindowViewModel.cs" />
     <Compile Include="Viewmodel\LogWindowViewModel.cs" />
+    <Compile Include="Viewmodel\IOControlViewModel.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

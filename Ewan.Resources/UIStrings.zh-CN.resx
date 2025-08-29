@@ -222,4 +222,10 @@
   <data name="ButtonCancel" xml:space="preserve">
     <value>取消</value>
   </data>
+  <data name="HardwareControlMenu" xml:space="preserve">
+    <value>硬件控制</value>
+  </data>
+  <data name="IOControlMenu" xml:space="preserve">
+    <value>IO控制</value>
+  </data>
 </root>

@@ -29,11 +29,14 @@ namespace MarkingMachineFeeder.Viewmodel
         private string _settingsMenuHeader = "";
         private string _systemMenuHeader = "";
         private string _exitMenuHeader = "";
+        private string _ioControlMenuHeader = "";
+        private string _hardwareControlMenuHeader = "";
         private bool _canControlCamera = false;
         private bool _canControlUPS = false;
         private bool _canViewSettings = false;
         private bool _canSwitchLanguage = false;
         private bool _canExit = false;
+        private bool _canAccessHardwareControl = false;
 
         public string Title
         {
@@ -143,12 +146,31 @@ namespace MarkingMachineFeeder.Viewmodel
             set { SetProperty(ref _exitMenuHeader, value); }
         }
         
+        public bool CanAccessHardwareControl
+        {
+            get { return _canAccessHardwareControl; }
+            set { SetProperty(ref _canAccessHardwareControl, value); }
+        }
+        
+        public string IOControlMenuHeader
+        {
+            get { return _ioControlMenuHeader; }
+            set { SetProperty(ref _ioControlMenuHeader, value); }
+        }
+
+        public string HardwareControlMenuHeader
+        {
+            get { return _hardwareControlMenuHeader; }
+            set { SetProperty(ref _hardwareControlMenuHeader, value); }
+        }
+        
         public DelegateCommand<string> SwitchLanguageCommand { get; }
         public DelegateCommand TestLogCommand { get; }
         public DelegateCommand LoginCommand { get; }
         public DelegateCommand SwitchUserCommand { get; }
         public DelegateCommand OpenPermissionConfigCommand { get; }
         public DelegateCommand OpenSettingsCommand { get; }
+        public DelegateCommand OpenIOControlCommand { get; }
         public DelegateCommand ExitCommand { get; }
 
         public MainWindowViewModel()
@@ -170,6 +192,7 @@ namespace MarkingMachineFeeder.Viewmodel
             SwitchUserCommand = new DelegateCommand(ExecuteSwitchUser);
             OpenPermissionConfigCommand = new DelegateCommand(ExecuteOpenPermissionConfig, CanOpenPermissionConfig);
             OpenSettingsCommand = new DelegateCommand(ExecuteOpenSettings, CanOpenSettings);
+            OpenIOControlCommand = new DelegateCommand(ExecuteOpenIOControl, CanOpenIOControl);
             ExitCommand = new DelegateCommand(ExecuteExit, CanExecuteExit);
 
             UpdateUITexts();
@@ -252,10 +275,23 @@ namespace MarkingMachineFeeder.Viewmodel
             System.Windows.MessageBox.Show("设置功能将在未来版本中实现", "提示", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
         }
 
+        private void ExecuteOpenIOControl()
+        {
+            // 打开IO控制窗口
+            var ioControlWindow = new MarkingMachineFeeder.Windows.IOControlWindow();
+            ioControlWindow.ShowDialog();
+        }
+
         private bool CanOpenSettings()
         {
             // 检查用户是否有权限访问设置 - 使用权限系统检查
             return _securityManager.HasPermission(PermissionResources.PermissionConfig, PermissionActions.View);
+        }
+
+        private bool CanOpenIOControl()
+        {
+            // 检查用户是否有权限访问硬件控制
+            return _securityManager.HasPermission(PermissionResources.HardwareControl, PermissionActions.Control);
         }
 
         private bool CanOpenPermissionConfig()
@@ -371,6 +407,8 @@ namespace MarkingMachineFeeder.Viewmodel
             SystemMenuHeader = Ewan.Resources.UIStrings.ResourceManager.GetString("SystemMenu", Ewan.Resources.UIStrings.Culture) ?? "系统";
             CurrentUserLabel = Ewan.Resources.UIStrings.ResourceManager.GetString("CurrentUserLabel", Ewan.Resources.UIStrings.Culture) ?? "当前用户：";
             ExitMenuHeader = Ewan.Resources.UIStrings.ExitMenu;
+            IOControlMenuHeader = Ewan.Resources.UIStrings.IOControlMenu;
+            HardwareControlMenuHeader = Ewan.Resources.UIStrings.HardwareControlMenu;
             
             // 强制触发所有相关属性的PropertyChanged事件
             RaisePropertyChanged(nameof(Title));
@@ -384,6 +422,8 @@ namespace MarkingMachineFeeder.Viewmodel
             RaisePropertyChanged(nameof(SystemMenuHeader));
             RaisePropertyChanged(nameof(CurrentUserLabel));
             RaisePropertyChanged(nameof(ExitMenuHeader));
+            RaisePropertyChanged(nameof(IOControlMenuHeader));
+            RaisePropertyChanged(nameof(HardwareControlMenuHeader));
         }
         private void UpdatePermissions()
         {
@@ -398,17 +438,22 @@ namespace MarkingMachineFeeder.Viewmodel
             // 使用SystemControl权限控制退出功能
             CanExit = _securityManager.HasPermission(PermissionResources.SystemControl, PermissionActions.Control);
             
+            // 使用HardwareControl权限控制硬件功能访问
+            CanAccessHardwareControl = _securityManager.HasPermission(PermissionResources.HardwareControl, PermissionActions.Control);
+            
             // 触发属性变更通知，确保UI更新
             RaisePropertyChanged(nameof(CanViewSettings));
             RaisePropertyChanged(nameof(CanSwitchLanguage));
             RaisePropertyChanged(nameof(CanControlCamera));
             RaisePropertyChanged(nameof(CanControlUPS));
             RaisePropertyChanged(nameof(CanExit));
+            RaisePropertyChanged(nameof(CanAccessHardwareControl));
             
             // 刷新依赖权限的命令状态
             OpenPermissionConfigCommand.RaiseCanExecuteChanged();
             OpenSettingsCommand.RaiseCanExecuteChanged();
             ExitCommand.RaiseCanExecuteChanged();
+            OpenIOControlCommand.RaiseCanExecuteChanged();
         }
     }
 }

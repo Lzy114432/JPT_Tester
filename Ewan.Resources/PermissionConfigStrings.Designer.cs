@@ -628,6 +628,24 @@ namespace Ewan.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hardware Control.
+        /// </summary>
+        public static string HardwareControl {
+            get {
+                return ResourceManager.GetString("HardwareControl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Control hardware devices including IO.
+        /// </summary>
+        public static string HardwareControlDesc {
+            get {
+                return ResourceManager.GetString("HardwareControlDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to UPS Control.
         /// </summary>
         public static string UPSControl {

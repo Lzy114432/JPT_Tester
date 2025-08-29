@@ -137,6 +137,14 @@
     <value>允许用户退出应用程序</value>
   </data>
   
+  <!-- Hardware Control Permissions -->
+  <data name="HardwareControl" xml:space="preserve">
+    <value>硬件控制</value>
+  </data>
+  <data name="HardwareControlDesc" xml:space="preserve">
+    <value>允许用户访问硬件控制功能（包括IO控制）</value>
+  </data>
+  
   <!-- Roles -->
   <data name="AdminRole" xml:space="preserve">
     <value>管理员</value>

@@ -426,8 +426,19 @@
                     <!-- 设置菜单 -->
                     <MenuItem Header="{Binding SettingsMenuHeader}" 
                               d:Header="设置"
-                              Command="{Binding OpenSettingsCommand}"
-                              Style="{StaticResource IndustrialMenuItem}"/>
+                              Style="{StaticResource IndustrialMenuItem}">
+                        <!-- 硬件控制菜单 -->
+                        <MenuItem Header="{Binding HardwareControlMenuHeader}" 
+                                  d:Header="硬件控制"
+                                  Style="{StaticResource IndustrialSubMenuItem}"
+                                  Visibility="{Binding CanAccessHardwareControl, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <!-- IO控制子菜单 -->
+                            <MenuItem Header="{Binding IOControlMenuHeader}" 
+                                      d:Header="IO控制"
+                                      Command="{Binding OpenIOControlCommand}"
+                                      Style="{StaticResource IndustrialSubMenuItem}"/>
+                        </MenuItem>
+                    </MenuItem>
                     
                     <!-- 系统菜单 -->
                     <MenuItem Header="{Binding SystemMenuHeader}"

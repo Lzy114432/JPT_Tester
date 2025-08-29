@@ -7,7 +7,7 @@ namespace MarkingMachineFeeder.Windows
     /// <summary>
     /// ConfirmationDialog.xaml 的交互逻辑
     /// </summary>
-    public partial class ConfirmationDialog : Window
+    public partial class ConfirmationDialog : System.Windows.Window
     {
         public ConfirmationDialogViewModel ViewModel { get; }
 

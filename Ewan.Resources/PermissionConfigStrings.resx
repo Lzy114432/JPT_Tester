@@ -137,6 +137,14 @@
     <value>Allow user to exit the application</value>
   </data>
   
+  <!-- Hardware Control Permissions -->
+  <data name="HardwareControl" xml:space="preserve">
+    <value>Hardware Control</value>
+  </data>
+  <data name="HardwareControlDesc" xml:space="preserve">
+    <value>Allow user to access hardware control functions (including IO Control)</value>
+  </data>
+  
   <!-- Roles -->
   <data name="AdminRole" xml:space="preserve">
     <value>Administrator</value>

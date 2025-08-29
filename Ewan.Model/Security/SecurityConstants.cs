@@ -8,6 +8,7 @@ namespace Ewan.Model.Security
         public const string Language = "Language";                   // 语言切换权限
         public const string PermissionConfig = "PermissionConfig";  // 权限配置界面权限
         public const string SystemControl = "SystemControl";        // 系统控制权限（包括退出应用程序）
+        public const string HardwareControl = "HardwareControl";    // 硬件控制权限（包括IO控制等）
     }
 
     /// <summary>

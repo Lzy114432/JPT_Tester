@@ -374,5 +374,143 @@ namespace Ewan.Resources {
                 return ResourceManager.GetString("ButtonCancel", resourceCulture);
             }
         }
+        
+        public static string IOControlTitle {
+            get {
+                return ResourceManager.GetString("IOControlTitle", resourceCulture);
+            }
+        }
+        
+        public static string SimulateInput {
+            get {
+                return ResourceManager.GetString("SimulateInput", resourceCulture);
+            }
+        }
+        
+        public static string MappingConfig {
+            get {
+                return ResourceManager.GetString("MappingConfig", resourceCulture);
+            }
+        }
+        
+        public static string OutputTest {
+            get {
+                return ResourceManager.GetString("OutputTest", resourceCulture);
+            }
+        }
+        
+        public static string Refresh {
+            get {
+                return ResourceManager.GetString("Refresh", resourceCulture);
+            }
+        }
+        
+        public static string DigitalInput {
+            get {
+                return ResourceManager.GetString("DigitalInput", resourceCulture);
+            }
+        }
+        
+        public static string DigitalOutput {
+            get {
+                return ResourceManager.GetString("DigitalOutput", resourceCulture);
+            }
+        }
+        
+        public static string Page1 {
+            get {
+                return ResourceManager.GetString("Page1", resourceCulture);
+            }
+        }
+        
+        public static string Page2 {
+            get {
+                return ResourceManager.GetString("Page2", resourceCulture);
+            }
+        }
+        
+        public static string Page3 {
+            get {
+                return ResourceManager.GetString("Page3", resourceCulture);
+            }
+        }
+        
+        public static string Page4 {
+            get {
+                return ResourceManager.GetString("Page4", resourceCulture);
+            }
+        }
+        
+        public static string InputPointsDisplay {
+            get {
+                return ResourceManager.GetString("InputPointsDisplay", resourceCulture);
+            }
+        }
+        
+        public static string OutputPointsDisplay {
+            get {
+                return ResourceManager.GetString("OutputPointsDisplay", resourceCulture);
+            }
+        }
+        
+        public static string Connected {
+            get {
+                return ResourceManager.GetString("Connected", resourceCulture);
+            }
+        }
+        
+        public static string NotConnected {
+            get {
+                return ResourceManager.GetString("NotConnected", resourceCulture);
+            }
+        }
+        
+        public static string Ready {
+            get {
+                return ResourceManager.GetString("Ready", resourceCulture);
+            }
+        }
+        
+        public static string HardwareControlMenu {
+            get {
+                return ResourceManager.GetString("HardwareControlMenu", resourceCulture);
+            }
+        }
+        
+        public static string IOControlMenu {
+            get {
+                return ResourceManager.GetString("IOControlMenu", resourceCulture);
+            }
+        }
+        
+        public static string SimulateInputMessage {
+            get {
+                return ResourceManager.GetString("SimulateInputMessage", resourceCulture);
+            }
+        }
+        
+        public static string MappingConfigMessage {
+            get {
+                return ResourceManager.GetString("MappingConfigMessage", resourceCulture);
+            }
+        }
+        
+        public static string OutputTestMessage {
+            get {
+                return ResourceManager.GetString("OutputTestMessage", resourceCulture);
+            }
+        }
+        
+        public static string RefreshMessage {
+            get {
+                return ResourceManager.GetString("RefreshMessage", resourceCulture);
+            }
+        }
+        
+        public static string MessageBoxTitle {
+            get {
+                return ResourceManager.GetString("MessageBoxTitle", resourceCulture);
+            }
+        }
     }
 }

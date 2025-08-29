@@ -344,6 +344,9 @@ namespace MarkingMachineFeeder.Viewmodel
                 
                 // 系统控制权限（包括退出应用程序）
                 new PermissionConfig { PermissionId = "systemcontrol.control", DisplayName = "SystemControl", Description = "SystemControlDesc", Category = "SystemControl" },
+                
+                // 硬件控制权限（包括IO控制）
+                new PermissionConfig { PermissionId = "hardwarecontrol.control", DisplayName = "HardwareControl", Description = "HardwareControlDesc", Category = "HardwareControl" },
             };
         }
 
