@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="WindowTitle" xml:space="preserve">
+    <value>IO 控制面板</value>
+  </data>
+  <data name="SimulateInput" xml:space="preserve">
+    <value>🔧 模拟输入</value>
+  </data>
+  <data name="EdgeDetection" xml:space="preserve">
+    <value>📊 边沿检测</value>
+  </data>
+  <data name="MappingConfig" xml:space="preserve">
+    <value>🔄 映射</value>
+  </data>
+  <data name="OutputTest" xml:space="preserve">
+    <value>⚡ 输出测试</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>🔄 刷新</value>
+  </data>
+  <data name="DigitalInput" xml:space="preserve">
+    <value>数字输入</value>
+  </data>
+  <data name="DigitalOutput" xml:space="preserve">
+    <value>数字输出</value>
+  </data>
+  <data name="Page1" xml:space="preserve">
+    <value>第 1 页 (0-15)</value>
+  </data>
+  <data name="Page2" xml:space="preserve">
+    <value>第 2 页 (16-31)</value>
+  </data>
+  <data name="Page3" xml:space="preserve">
+    <value>第 3 页 (32-47)</value>
+  </data>
+  <data name="Page4" xml:space="preserve">
+    <value>第 4 页 (48-63)</value>
+  </data>
+  <data name="InputPointsDisplay" xml:space="preserve">
+    <value>输入点显示区域</value>
+  </data>
+  <data name="OutputPointsDisplay" xml:space="preserve">
+    <value>输出点显示区域</value>
+  </data>
+  <data name="Connected" xml:space="preserve">
+    <value>已连接</value>
+  </data>
+  <data name="NotConnected" xml:space="preserve">
+    <value>未连接</value>
+  </data>
+  <data name="Ready" xml:space="preserve">
+    <value>就绪</value>
+  </data>
+  <data name="SimulateInputMessage" xml:space="preserve">
+    <value>模拟输入功能待实现</value>
+  </data>
+  <data name="EdgeDetectionMessage" xml:space="preserve">
+    <value>边沿检测功能正在开发中...</value>
+  </data>
+  <data name="MappingConfigMessage" xml:space="preserve">
+    <value>映射功能待实现</value>
+  </data>
+  <data name="OutputTestMessage" xml:space="preserve">
+    <value>输出测试功能待实现</value>
+  </data>
+  <data name="RefreshMessage" xml:space="preserve">
+    <value>刷新功能待实现</value>
+  </data>
+  <data name="MessageBoxTitle" xml:space="preserve">
+    <value>提示</value>
+  </data>
+  <data name="Minimize" xml:space="preserve">
+    <value>最小化</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>关闭</value>
+  </data>
+</root>

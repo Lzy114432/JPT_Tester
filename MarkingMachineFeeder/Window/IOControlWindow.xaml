@@ -1,0 +1,567 @@
+<Window x:Class="MarkingMachineFeeder.Windows.IOControlWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:MarkingMachineFeeder.Viewmodel"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=vm:IOControlViewModel, IsDesignTimeCreatable=True}"
+        Title="IO控制面板" 
+        Height="750" Width="1100"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ResizeMode="NoResize">
+    
+    <Window.Resources>
+        <!-- 主题颜色 -->
+        <SolidColorBrush x:Key="PrimaryColor" Color="#4682B4"/>
+        <SolidColorBrush x:Key="SecondaryColor" Color="#5A9FD4"/>
+        <SolidColorBrush x:Key="AccentColor" Color="#32CD32"/>
+        <SolidColorBrush x:Key="DarkBackground" Color="#2C3E50"/>
+        <SolidColorBrush x:Key="LightBackground" Color="#ECF0F1"/>
+        
+        <!-- 窗口背景渐变 -->
+        <LinearGradientBrush x:Key="WindowBackground" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#F8F9FA" Offset="0"/>
+            <GradientStop Color="#E9ECEF" Offset="1"/>
+        </LinearGradientBrush>
+        
+        <!-- 标题栏背景渐变 -->
+        <LinearGradientBrush x:Key="HeaderGradient" StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="#4682B4" Offset="0"/>
+            <GradientStop Color="#5A9FD4" Offset="1"/>
+        </LinearGradientBrush>
+        
+        <!-- IO指示灯样式 - 关闭状态 -->
+        <Style x:Key="IOIndicatorOff" TargetType="Border">
+            <Setter Property="Width" Value="45"/>
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#6C757D" Offset="0"/>
+                        <GradientStop Color="#495057" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="BorderBrush" Value="#343A40"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Margin" Value="8"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Black" BlurRadius="5" ShadowDepth="2" Opacity="0.3"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <!-- IO指示灯样式 - 开启状态 -->
+        <Style x:Key="IOIndicatorOn" TargetType="Border">
+            <Setter Property="Width" Value="45"/>
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Background">
+                <Setter.Value>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#00FF00" Offset="0"/>
+                        <GradientStop Color="#00CC00" Offset="1"/>
+                    </RadialGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="BorderBrush" Value="#00AA00"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Margin" Value="8"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="LightGreen" BlurRadius="15" ShadowDepth="0" Opacity="0.8"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 现代化按钮样式 -->
+        <Style x:Key="ModernButton" TargetType="Button">
+            <Setter Property="Width" Value="140"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Margin" Value="8"/>
+            <Setter Property="Background" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}" 
+                                CornerRadius="8">
+                            <Border.Effect>
+                                <DropShadowEffect Color="Black" BlurRadius="5" ShadowDepth="2" Opacity="0.2"/>
+                            </Border.Effect>
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource SecondaryColor}"/>
+                                <Setter TargetName="border" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect Color="Black" BlurRadius="8" ShadowDepth="3" Opacity="0.3"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#36648B"/>
+                                <Setter TargetName="border" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <TranslateTransform Y="1"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 页面切换按钮样式 -->
+        <Style x:Key="PageButton" TargetType="Button">
+            <Setter Property="Width" Value="35"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Margin" Value="3"/>
+            <Setter Property="Background" Value="#E1E8ED"/>
+            <Setter Property="Foreground" Value="#495057"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}" 
+                                CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#CED4DA"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#ADB5BD"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <!-- 组框标题样式 -->
+        <Style x:Key="ModernGroupBox" TargetType="GroupBox">
+            <Setter Property="BorderBrush" Value="#DEE2E6"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="GroupBox">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="35"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            
+                            <!-- 标题栏 -->
+                            <Border Grid.Row="0" 
+                                    Background="{StaticResource PrimaryColor}"
+                                    CornerRadius="8,8,0,0">
+                                <TextBlock Text="{TemplateBinding Header}"
+                                          Foreground="White"
+                                          FontSize="16"
+                                          FontWeight="SemiBold"
+                                          VerticalAlignment="Center"
+                                          Margin="15,0,0,0"/>
+                            </Border>
+                            
+                            <!-- 内容区域 -->
+                            <Border Grid.Row="1" 
+                                    Background="White"
+                                    BorderBrush="#DEE2E6"
+                                    BorderThickness="1,0,1,1"
+                                    CornerRadius="0,0,8,8">
+                                <ContentPresenter Margin="10"/>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <!-- 主窗口边框 -->
+    <Border Background="White" 
+            CornerRadius="12"
+            BorderBrush="#DEE2E6"
+            BorderThickness="1">
+        <Border.Effect>
+            <DropShadowEffect Color="Black" BlurRadius="15" ShadowDepth="5" Opacity="0.2"/>
+        </Border.Effect>
+        
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="45"/>  <!-- 标题栏 -->
+                <RowDefinition Height="70"/>  <!-- 控制栏 -->
+                <RowDefinition Height="*"/>   <!-- 主内容 -->
+                <RowDefinition Height="35"/>  <!-- 状态栏 -->
+            </Grid.RowDefinitions>
+
+            <!-- 标题栏 -->
+            <Border Grid.Row="0" 
+                    Background="{StaticResource HeaderGradient}"
+                    CornerRadius="12,12,0,0"
+                    MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+                <Grid>
+                    <TextBlock Text="{Binding WindowTitle}" 
+                              Foreground="White"
+                              FontSize="18"
+                              FontWeight="Bold"
+                              VerticalAlignment="Center"
+                              Margin="20,0,0,0"/>
+                    
+                    <!-- 窗口控制按钮 -->
+                    <StackPanel Orientation="Horizontal" 
+                               HorizontalAlignment="Right"
+                               Margin="0,0,10,0">
+                        <Button Name="MinimizeButton"
+                               Content="─"
+                               Width="30" Height="30"
+                               Background="Transparent"
+                               Foreground="White"
+                               BorderThickness="0"
+                               FontSize="16"
+                               Command="{Binding MinimizeCommand}"
+                               Cursor="Hand"/>
+                        <Button Name="CloseButton"
+                               Content="✕"
+                               Width="30" Height="30"
+                               Background="Transparent"
+                               Foreground="White"
+                               BorderThickness="0"
+                               FontSize="16"
+                               Command="{Binding CloseCommand}"
+                               Cursor="Hand"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- 控制栏 -->
+            <Border Grid.Row="1" 
+                    Background="#F8F9FA"
+                    BorderBrush="#DEE2E6"
+                    BorderThickness="0,1,0,1">
+                <!-- 功能按钮 -->
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <!-- 输入相关按钮组 -->
+                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                        <Button Name="EdgeDetectionButton" 
+                                Content="{Binding EdgeDetectionText}"
+                                Style="{StaticResource ModernButton}"
+                                Command="{Binding EdgeDetectionCommand}"/>
+                        
+                        <Button Name="SimulateInputButton" 
+                                Content="{Binding SimulateInputText}"
+                                Style="{StaticResource ModernButton}"
+                                Command="{Binding SimulateInputCommand}"/>
+                    </StackPanel>
+                    
+                    <!-- 分隔区域 -->
+                    <Border Grid.Column="1" Width="2" Height="35">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="Transparent" Offset="0"/>
+                                <GradientStop Color="#DEE2E6" Offset="0.5"/>
+                                <GradientStop Color="Transparent" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+                    
+                    <!-- 映射配置按钮（输入输出都相关） -->
+                    <Button Grid.Column="2" 
+                            Name="MappingButton" 
+                            Content="{Binding MappingConfigText}"
+                            Style="{StaticResource ModernButton}"
+                            Width="160"
+                            Background="{StaticResource AccentColor}"
+                            Command="{Binding MappingConfigCommand}"/>
+                    
+                    <!-- 分隔区域 -->
+                    <Border Grid.Column="3" Width="2" Height="35">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="Transparent" Offset="0"/>
+                                <GradientStop Color="#DEE2E6" Offset="0.5"/>
+                                <GradientStop Color="Transparent" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+                    
+                    <!-- 输出相关按钮 -->
+                    <Button Grid.Column="4"
+                            Name="OutputTestButton" 
+                            Content="{Binding OutputTestText}"
+                            Style="{StaticResource ModernButton}"
+                            Width="160"
+                            Command="{Binding OutputTestCommand}"/>
+                </Grid>
+            </Border>
+
+            <!-- 主内容区域 -->
+            <Grid Grid.Row="2" Margin="15">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="30"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- 输入区域 -->
+                <GroupBox Grid.Column="0" 
+                         Header="{Binding DigitalInputText}" 
+                         Style="{StaticResource ModernGroupBox}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="50"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- 输入点显示区域 -->
+                        <Border Grid.Row="0" 
+                               Background="#FAFBFC"
+                               BorderBrush="#E1E8ED"
+                               BorderThickness="1"
+                               CornerRadius="6"
+                               Margin="5">
+                            <Grid>
+                                <!-- 占位符内容 -->
+                                <TextBlock Text="{Binding InputPointsDisplayText}" 
+                                          HorizontalAlignment="Center" 
+                                          VerticalAlignment="Center"
+                                          FontSize="18"
+                                          FontStyle="Italic"
+                                          Foreground="#ADB5BD"/>
+                                
+                                <!-- 示例网格线 -->
+                                <Grid Opacity="0.1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <!-- 绘制网格线 -->
+                                    <Border Grid.Row="0" Grid.Column="0" BorderBrush="#DEE2E6" BorderThickness="1"/>
+                                    <Border Grid.Row="0" Grid.Column="1" BorderBrush="#DEE2E6" BorderThickness="1"/>
+                                    <Border Grid.Row="0" Grid.Column="2" BorderBrush="#DEE2E6" BorderThickness="1"/>
+                                    <Border Grid.Row="0" Grid.Column="3" BorderBrush="#DEE2E6" BorderThickness="1"/>
+                                    <Border Grid.Row="1" Grid.Column="0" BorderBrush="#DEE2E6" BorderThickness="1"/>
+                                    <Border Grid.Row="1" Grid.Column="1" BorderBrush="#DEE2E6" BorderThickness="1"/>
+                                    <Border Grid.Row="1" Grid.Column="2" BorderBrush="#DEE2E6" BorderThickness="1"/>
+                                    <Border Grid.Row="1" Grid.Column="3" BorderBrush="#DEE2E6" BorderThickness="1"/>
+                                    <Border Grid.Row="2" Grid.Column="0" BorderBrush="#DEE2E6" BorderThickness="1"/>
+                                    <Border Grid.Row="2" Grid.Column="1" BorderBrush="#DEE2E6" BorderThickness="1"/>
+                                    <Border Grid.Row="2" Grid.Column="2" BorderBrush="#DEE2E6" BorderThickness="1"/>
+                                    <Border Grid.Row="2" Grid.Column="3" BorderBrush="#DEE2E6" BorderThickness="1"/>
+                                    <Border Grid.Row="3" Grid.Column="0" BorderBrush="#DEE2E6" BorderThickness="1"/>
+                                    <Border Grid.Row="3" Grid.Column="1" BorderBrush="#DEE2E6" BorderThickness="1"/>
+                                    <Border Grid.Row="3" Grid.Column="2" BorderBrush="#DEE2E6" BorderThickness="1"/>
+                                    <Border Grid.Row="3" Grid.Column="3" BorderBrush="#DEE2E6" BorderThickness="1"/>
+                                </Grid>
+                            </Grid>
+                        </Border>
+
+                        <!-- 输入页面控制 -->
+                        <Border Grid.Row="1" 
+                               Background="#F8F9FA"
+                               CornerRadius="6"
+                               Margin="5">
+                            <StackPanel Orientation="Horizontal" 
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center">
+                                <Button Name="InputPageUpButton" 
+                                       Content="▲" 
+                                       Style="{StaticResource PageButton}" />
+                                <ComboBox Name="InputPageComboBox" 
+                                         Width="50" 
+                                         Height="35" 
+                                         Margin="5"
+                                         VerticalContentAlignment="Center"
+                                         HorizontalContentAlignment="Center"
+                                         FontSize="14"
+                                         SelectedIndex="0"
+                                         ItemsSource="{Binding InputPages}">
+                                </ComboBox>
+                                <Button Name="InputPageDownButton" 
+                                       Content="▼" 
+                                       Style="{StaticResource PageButton}" />
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </GroupBox>
+
+                <!-- 分隔区域 -->
+                <Grid Grid.Column="1">
+                    <Rectangle Width="2" 
+                              Fill="#DEE2E6"
+                              VerticalAlignment="Stretch"
+                              HorizontalAlignment="Center"/>
+                </Grid>
+
+                <!-- 输出区域 -->
+                <GroupBox Grid.Column="2" 
+                         Header="{Binding DigitalOutputText}" 
+                         Style="{StaticResource ModernGroupBox}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="50"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- 输出点显示区域 -->
+                        <Border Grid.Row="0" 
+                               Background="#FAFBFC"
+                               BorderBrush="#E1E8ED"
+                               BorderThickness="1"
+                               CornerRadius="6"
+                               Margin="5">
+                            <Grid>
+                                <!-- 占位符内容 -->
+                                <TextBlock Text="{Binding OutputPointsDisplayText}" 
+                                          HorizontalAlignment="Center" 
+                                          VerticalAlignment="Center"
+                                          FontSize="18"
+                                          FontStyle="Italic"
+                                          Foreground="#ADB5BD"/>
+                                
+                                <!-- 示例网格线 -->
+                                <Grid Opacity="0.1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <!-- 绘制网格线 -->
+                                    <Border Grid.Row="0" Grid.Column="0" BorderBrush="#DEE2E6" BorderThickness="1"/>
+                                    <Border Grid.Row="0" Grid.Column="1" BorderBrush="#DEE2E6" BorderThickness="1"/>
+                                    <Border Grid.Row="0" Grid.Column="2" BorderBrush="#DEE2E6" BorderThickness="1"/>
+                                    <Border Grid.Row="0" Grid.Column="3" BorderBrush="#DEE2E6" BorderThickness="1"/>
+                                    <Border Grid.Row="1" Grid.Column="0" BorderBrush="#DEE2E6" BorderThickness="1"/>
+                                    <Border Grid.Row="1" Grid.Column="1" BorderBrush="#DEE2E6" BorderThickness="1"/>
+                                    <Border Grid.Row="1" Grid.Column="2" BorderBrush="#DEE2E6" BorderThickness="1"/>
+                                    <Border Grid.Row="1" Grid.Column="3" BorderBrush="#DEE2E6" BorderThickness="1"/>
+                                    <Border Grid.Row="2" Grid.Column="0" BorderBrush="#DEE2E6" BorderThickness="1"/>
+                                    <Border Grid.Row="2" Grid.Column="1" BorderBrush="#DEE2E6" BorderThickness="1"/>
+                                    <Border Grid.Row="2" Grid.Column="2" BorderBrush="#DEE2E6" BorderThickness="1"/>
+                                    <Border Grid.Row="2" Grid.Column="3" BorderBrush="#DEE2E6" BorderThickness="1"/>
+                                    <Border Grid.Row="3" Grid.Column="0" BorderBrush="#DEE2E6" BorderThickness="1"/>
+                                    <Border Grid.Row="3" Grid.Column="1" BorderBrush="#DEE2E6" BorderThickness="1"/>
+                                    <Border Grid.Row="3" Grid.Column="2" BorderBrush="#DEE2E6" BorderThickness="1"/>
+                                    <Border Grid.Row="3" Grid.Column="3" BorderBrush="#DEE2E6" BorderThickness="1"/>
+                                </Grid>
+                            </Grid>
+                        </Border>
+
+                        <!-- 输出页面控制 -->
+                        <Border Grid.Row="1" 
+                               Background="#F8F9FA"
+                               CornerRadius="6"
+                               Margin="5">
+                            <StackPanel Orientation="Horizontal" 
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center">
+                                <Button Name="OutputPageUpButton" 
+                                       Content="▲" 
+                                       Style="{StaticResource PageButton}" />
+                                <ComboBox Name="OutputPageComboBox" 
+                                         Width="50" 
+                                         Height="35" 
+                                         Margin="5"
+                                         VerticalContentAlignment="Center"
+                                         HorizontalContentAlignment="Center"
+                                         FontSize="14"
+                                         SelectedIndex="0"
+                                         ItemsSource="{Binding OutputPages}">
+                                </ComboBox>
+                                <Button Name="OutputPageDownButton" 
+                                       Content="▼" 
+                                       Style="{StaticResource PageButton}" />
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+            
+            <!-- 状态栏 -->
+            <Border Grid.Row="3" 
+                    Background="#2C3E50"
+                    CornerRadius="0,0,12,12">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <!-- 连接状态 -->
+                    <StackPanel Grid.Column="0" 
+                               Orientation="Horizontal"
+                               VerticalAlignment="Center"
+                               Margin="15,0,0,0">
+                        <Ellipse Name="ConnectionIndicator"
+                                Width="10" Height="10"
+                                Fill="#DC3545"
+                                Margin="0,0,6,0"/>
+                        <TextBlock Name="ConnectionStatusLabel"
+                                  Text="{Binding ConnectionStatusText}"
+                                  FontSize="12"
+                                  Foreground="White"
+                                  VerticalAlignment="Center"/>
+                    </StackPanel>
+                    
+                    <TextBlock Grid.Column="2"
+                              Name="CurrentTimeLabel"
+                              Text="{Binding CurrentTime}"
+                              Foreground="White"
+                              FontSize="12"
+                              VerticalAlignment="Center"
+                              Margin="0,0,15,0"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</Window>
