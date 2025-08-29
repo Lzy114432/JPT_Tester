@@ -272,11 +272,21 @@ namespace MarkingMachineFeeder.Viewmodel
 
         private void ExecuteExit()
         {
-            // 记录当前用户退出应用程序
-            var currentUser = _securityManager.CurrentUser?.Username ?? "游客";
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.UserExiting, currentUser);
-            
-            System.Windows.Application.Current.Shutdown();
+            // 创建并显示自定义确认对话框
+            var confirmDialog = new MarkingMachineFeeder.Windows.ConfirmationDialog(
+                Ewan.Resources.UIStrings.ExitConfirmTitle,
+                Ewan.Resources.UIStrings.ExitConfirmMessage,
+                false);
+
+            // 如果用户确认退出
+            if (confirmDialog.ShowDialog() == true)
+            {
+                // 记录当前用户退出应用程序
+                var currentUser = _securityManager.CurrentUser?.Username ?? "游客";
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.UserExiting, currentUser);
+                
+                System.Windows.Application.Current.Shutdown();
+            }
         }
 
         private void OnUserAuthenticated(object sender, User user)

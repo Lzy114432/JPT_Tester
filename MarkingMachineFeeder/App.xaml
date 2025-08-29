@@ -4,6 +4,11 @@
              xmlns:local="clr-namespace:MarkingMachineFeeder"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <!-- Industrial Background Gradient -->
+        <LinearGradientBrush x:Key="BackgroundGradient" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#4682B4" Offset="0"/>
+            <GradientStop Color="#36648B" Offset="0.5"/>
+            <GradientStop Color="#27408B" Offset="1"/>
+        </LinearGradientBrush>
     </Application.Resources>
 </Application>

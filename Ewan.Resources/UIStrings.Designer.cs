@@ -329,5 +329,50 @@ namespace Ewan.Resources {
                 return ResourceManager.GetString("ExitMenu", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   查找类似 Exit Confirmation 的本地化字符串。
+        /// </summary>
+        public static string ExitConfirmTitle {
+            get {
+                return ResourceManager.GetString("ExitConfirmTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Are you sure you want to exit the application? 的本地化字符串。
+        /// </summary>
+        public static string ExitConfirmMessage {
+            get {
+                return ResourceManager.GetString("ExitConfirmMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Yes 的本地化字符串。
+        /// </summary>
+        public static string ButtonYes {
+            get {
+                return ResourceManager.GetString("ButtonYes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 No 的本地化字符串。
+        /// </summary>
+        public static string ButtonNo {
+            get {
+                return ResourceManager.GetString("ButtonNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Cancel 的本地化字符串。
+        /// </summary>
+        public static string ButtonCancel {
+            get {
+                return ResourceManager.GetString("ButtonCancel", resourceCulture);
+            }
+        }
     }
 }

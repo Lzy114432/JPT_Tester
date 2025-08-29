@@ -207,4 +207,19 @@
   <data name="ExitMenu" xml:space="preserve">
     <value>退出</value>
   </data>
+  <data name="ExitConfirmTitle" xml:space="preserve">
+    <value>退出确认</value>
+  </data>
+  <data name="ExitConfirmMessage" xml:space="preserve">
+    <value>确定要退出应用程序吗？</value>
+  </data>
+  <data name="ButtonYes" xml:space="preserve">
+    <value>是</value>
+  </data>
+  <data name="ButtonNo" xml:space="preserve">
+    <value>否</value>
+  </data>
+  <data name="ButtonCancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
 </root>
