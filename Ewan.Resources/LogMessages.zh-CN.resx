@@ -1,64 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -117,32 +58,347 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="MainWindowStarted" xml:space="preserve">
-    <value>主窗口已启动</value>
+  <data name="ModuleInitialized" xml:space="preserve">
+    <value>模块初始化成功: {0}</value>
   </data>
-  <data name="Log4netConfigLoaded" xml:space="preserve">
-    <value>Log4net配置已加载</value>
+  <data name="ModuleInitializationFailed" xml:space="preserve">
+    <value>模块初始化失败: {0} - {1}</value>
   </data>
-  <data name="Log4netConfigNotFound" xml:space="preserve">
-    <value>未找到Log4net配置文件</value>
+  <data name="ModuleDestroyed" xml:space="preserve">
+    <value>模块已销毁: {0}</value>
   </data>
-  <data name="MainControllerInitialized" xml:space="preserve">
-    <value>主控制器已初始化</value>
+  <data name="ModuleRunError" xml:space="preserve">
+    <value>模块运行错误: {0} - {1}</value>
   </data>
-  <data name="MainControllerInitializationFailed" xml:space="preserve">
-    <value>主控制器初始化失败</value>
+  <data name="IOConnectionFailed" xml:space="preserve">
+    <value>IO连接失败: {0}</value>
   </data>
-  <data name="ViewModelLocatorConfigured" xml:space="preserve">
-    <value>视图模型定位器已配置</value>
+  <data name="IOMappingCreated" xml:space="preserve">
+    <value>IO映射配置创建成功</value>
   </data>
-  <data name="StreamRunnerModulesInitialized" xml:space="preserve">
-    <value>流运行器模块已初始化</value>
+  <data name="UserExiting" xml:space="preserve">
+    <value>用户 {0} 正在退出应用程序</value>
   </data>
-  <data name="BaseManagerInitialized" xml:space="preserve">
-    <value>基础管理器 {0} 已初始化</value>
+  <data name="ApplicationStarted" xml:space="preserve">
+    <value>应用程序启动成功</value>
+  </data>
+  <data name="ApplicationExiting" xml:space="preserve">
+    <value>应用程序正在退出</value>
+  </data>
+  <data name="ConfigurationChanged" xml:space="preserve">
+    <value>配置已更改: {0}</value>
+  </data>
+  <data name="LanguageChanged" xml:space="preserve">
+    <value>语言已更改为 {0}</value>
+  </data>
+  <data name="PermissionDenied" xml:space="preserve">
+    <value>权限被拒绝: {0}</value>
+  </data>
+  <data name="LoginSuccess" xml:space="preserve">
+    <value>用户 {0} 登录成功</value>
+  </data>
+  <data name="LoginFailed" xml:space="preserve">
+    <value>用户 {0} 登录失败</value>
+  </data>
+  <data name="LogoutSuccess" xml:space="preserve">
+    <value>用户 {0} 注销成功</value>
+  </data>
+  <data name="CommandReceived" xml:space="preserve">
+    <value>收到命令: {0}</value>
+  </data>
+  <data name="CommandExecuted" xml:space="preserve">
+    <value>命令已执行: {0}</value>
+  </data>
+  <data name="DatabaseConnectionError" xml:space="preserve">
+    <value>数据库连接错误: {0}</value>
+  </data>
+  <data name="FileNotFound" xml:space="preserve">
+    <value>文件未找到: {0}</value>
+  </data>
+  <data name="FileLoadError" xml:space="preserve">
+    <value>加载文件失败: {0}</value>
+  </data>
+  <data name="FileSaveError" xml:space="preserve">
+    <value>保存文件失败: {0}</value>
+  </data>
+  <data name="SecurityManagerInitialized" xml:space="preserve">
+    <value>安全管理器初始化成功</value>
+  </data>
+  <data name="SecurityManagerDestroyed" xml:space="preserve">
+    <value>安全管理器已销毁</value>
+  </data>
+  <data name="CultureManagerInitialized" xml:space="preserve">
+    <value>文化管理器初始化成功</value>
+  </data>
+  <data name="CultureManagerDestroyed" xml:space="preserve">
+    <value>文化管理器已销毁</value>
+  </data>
+  <data name="PasswordFieldEmpty" xml:space="preserve">
+    <value>密码字段不能为空</value>
+  </data>
+  <data name="UsernameFieldEmpty" xml:space="preserve">
+    <value>用户名字段不能为空</value>
+  </data>
+  <data name="InvalidCredentials" xml:space="preserve">
+    <value>用户名或密码无效</value>
+  </data>
+  <data name="UserNotFound" xml:space="preserve">
+    <value>用户未找到: {0}</value>
+  </data>
+  <data name="RoleNotFound" xml:space="preserve">
+    <value>角色未找到: {0}</value>
+  </data>
+  <data name="PermissionNotFound" xml:space="preserve">
+    <value>权限未找到: {0}</value>
+  </data>
+  <data name="ErrorOccurred" xml:space="preserve">
+    <value>发生错误: {0}</value>
+  </data>
+  <data name="OperationCompleted" xml:space="preserve">
+    <value>操作成功完成</value>
+  </data>
+  <data name="OperationFailed" xml:space="preserve">
+    <value>操作失败: {0}</value>
+  </data>
+  <data name="DebugInformation" xml:space="preserve">
+    <value>调试: {0}</value>
+  </data>
+  <data name="InformationMessage" xml:space="preserve">
+    <value>信息: {0}</value>
+  </data>
+  <data name="WarningMessage" xml:space="preserve">
+    <value>警告: {0}</value>
+  </data>
+  <data name="ErrorMessage" xml:space="preserve">
+    <value>错误: {0}</value>
+  </data>
+  <data name="FatalError" xml:space="preserve">
+    <value>致命错误: {0}</value>
+  </data>
+  <data name="StreamStarted" xml:space="preserve">
+    <value>流已启动: {0}</value>
+  </data>
+  <data name="StreamStopped" xml:space="preserve">
+    <value>流已停止: {0}</value>
+  </data>
+  <data name="StreamError" xml:space="preserve">
+    <value>流错误: {0} - {1}</value>
+  </data>
+  <data name="StreamStarting" xml:space="preserve">
+    <value>正在启动流: {0}</value>
+  </data>
+  <data name="StreamStopping" xml:space="preserve">
+    <value>正在停止流: {0}</value>
+  </data>
+  <data name="ManagerInitializing" xml:space="preserve">
+    <value>正在初始化管理器: {0}</value>
+  </data>
+  <data name="ManagerDestroying" xml:space="preserve">
+    <value>正在销毁管理器: {0}</value>
+  </data>
+  <data name="UserAuthenticated" xml:space="preserve">
+    <value>用户已认证: {0}</value>
+  </data>
+  <data name="UserLoggedOut" xml:space="preserve">
+    <value>用户已注销: {0}</value>
+  </data>
+  <data name="PermissionGranted" xml:space="preserve">
+    <value>权限已授予: {0}</value>
+  </data>
+  <data name="RoleAssigned" xml:space="preserve">
+    <value>角色已分配: {0} 给 {1}</value>
+  </data>
+  <data name="RoleRemoved" xml:space="preserve">
+    <value>角色已移除: {0} 从 {1}</value>
+  </data>
+  <data name="SettingsLoaded" xml:space="preserve">
+    <value>设置加载成功</value>
+  </data>
+  <data name="SettingsSaved" xml:space="preserve">
+    <value>设置保存成功</value>
+  </data>
+  <data name="SettingsLoadError" xml:space="preserve">
+    <value>加载设置失败: {0}</value>
+  </data>
+  <data name="SettingsSaveError" xml:space="preserve">
+    <value>保存设置失败: {0}</value>
+  </data>
+  <data name="ConfigFileNotFound" xml:space="preserve">
+    <value>配置文件未找到: {0}</value>
+  </data>
+  <data name="ConfigFileCreated" xml:space="preserve">
+    <value>配置文件已创建: {0}</value>
+  </data>
+  <data name="ConfigFileLoaded" xml:space="preserve">
+    <value>配置文件已加载: {0}</value>
+  </data>
+  <data name="ConfigFileSaved" xml:space="preserve">
+    <value>配置文件已保存: {0}</value>
+  </data>
+  <data name="SystemStartup" xml:space="preserve">
+    <value>系统启动完成</value>
+  </data>
+  <data name="SystemShutdown" xml:space="preserve">
+    <value>系统关闭已启动</value>
+  </data>
+  <data name="ServiceStarted" xml:space="preserve">
+    <value>服务已启动: {0}</value>
+  </data>
+  <data name="ServiceStopped" xml:space="preserve">
+    <value>服务已停止: {0}</value>
+  </data>
+  <data name="ServiceError" xml:space="preserve">
+    <value>服务错误: {0} - {1}</value>
+  </data>
+  <data name="ConnectionEstablished" xml:space="preserve">
+    <value>连接已建立: {0}</value>
+  </data>
+  <data name="ConnectionClosed" xml:space="preserve">
+    <value>连接已关闭: {0}</value>
+  </data>
+  <data name="ConnectionError" xml:space="preserve">
+    <value>连接错误: {0}</value>
+  </data>
+  <data name="DataReceived" xml:space="preserve">
+    <value>接收数据: {0} 字节</value>
+  </data>
+  <data name="DataSent" xml:space="preserve">
+    <value>发送数据: {0} 字节</value>
+  </data>
+  <data name="ProcessingStarted" xml:space="preserve">
+    <value>处理已开始: {0}</value>
+  </data>
+  <data name="ProcessingCompleted" xml:space="preserve">
+    <value>处理已完成: {0}</value>
+  </data>
+  <data name="ProcessingError" xml:space="preserve">
+    <value>处理错误: {0} - {1}</value>
+  </data>
+  <data name="ValidationError" xml:space="preserve">
+    <value>验证错误: {0}</value>
+  </data>
+  <data name="ValidationSuccess" xml:space="preserve">
+    <value>验证成功</value>
+  </data>
+  <data name="InitializationStarted" xml:space="preserve">
+    <value>初始化已开始: {0}</value>
+  </data>
+  <data name="InitializationCompleted" xml:space="preserve">
+    <value>初始化已完成: {0}</value>
+  </data>
+  <data name="InitializationFailed" xml:space="preserve">
+    <value>初始化失败: {0}</value>
+  </data>
+  <data name="IOConfigFileNotFound" xml:space="preserve">
+    <value>IO配置文件未找到: {0}</value>
+  </data>
+  <data name="IOConfigurationLoaded" xml:space="preserve">
+    <value>IO配置已从以下位置加载: {0}</value>
+  </data>
+  <data name="IOConfigCreating" xml:space="preserve">
+    <value>正在创建默认IO配置</value>
+  </data>
+  <data name="IOInputMappingsCreated" xml:space="preserve">
+    <value>已创建 {0} 个输入映射</value>
+  </data>
+  <data name="IOOutputMappingsCreated" xml:space="preserve">
+    <value>已创建 {0} 个输出映射</value>
+  </data>
+  <data name="DirectoryCreated" xml:space="preserve">
+    <value>目录已创建: {0}</value>
+  </data>
+  <data name="IOConfigFileSaved" xml:space="preserve">
+    <value>IO配置已保存到: {0}</value>
+  </data>
+  <data name="IOConfigFileSaveError" xml:space="preserve">
+    <value>保存IO配置失败: {0}</value>
+  </data>
+  <data name="IONotInitialized" xml:space="preserve">
+    <value>IO未初始化</value>
+  </data>
+  <data name="IOConnected" xml:space="preserve">
+    <value>IO已连接: {0}</value>
+  </data>
+  <data name="IOConnectionError" xml:space="preserve">
+    <value>IO连接错误: {0}</value>
+  </data>
+  <data name="IODisconnected" xml:space="preserve">
+    <value>IO已断开连接</value>
+  </data>
+  <data name="IORecreationFailed" xml:space="preserve">
+    <value>重新创建IO失败: {0}</value>
+  </data>
+  <data name="PermissionCheckNotAuthenticated" xml:space="preserve">
+    <value>权限检查失败：用户未认证，资源 {0}.{1}</value>
+  </data>
+  <data name="UserAlreadyExists" xml:space="preserve">
+    <value>用户已存在: {0}</value>
+  </data>
+  <data name="UserCreated" xml:space="preserve">
+    <value>用户已创建: {0}</value>
+  </data>
+  <data name="AdminUserCreated" xml:space="preserve">
+    <value>管理员用户创建成功</value>
+  </data>
+  <data name="AdminUserCreateFailed" xml:space="preserve">
+    <value>创建管理员用户失败</value>
+  </data>
+  <data name="DefaultUsersCreated" xml:space="preserve">
+    <value>默认用户创建成功</value>
+  </data>
+  <data name="UsersLoaded" xml:space="preserve">
+    <value>已加载 {0} 个用户</value>
+  </data>
+  <data name="AdminUserLoadCheck" xml:space="preserve">
+    <value>管理员用户检查: {0}</value>
+  </data>
+  <data name="UsersLoadError" xml:space="preserve">
+    <value>加载用户失败: {0}</value>
+  </data>
+  <data name="UsersSaveError" xml:space="preserve">
+    <value>保存用户失败: {0}</value>
+  </data>
+  <data name="UsersSaved" xml:space="preserve">
+    <value>用户保存成功</value>
+  </data>
+  <data name="PermissionCheckResult" xml:space="preserve">
+    <value>权限检查 {0}: {1}.{2} - {3}</value>
   </data>
   <data name="BaseManagerDestroyed" xml:space="preserve">
-    <value>基础管理器 {0} 已销毁</value>
+    <value>基础管理器已销毁: {0}</value>
+  </data>
+  <data name="ManagerInitialized" xml:space="preserve">
+    <value>管理器初始化成功: {0}</value>
+  </data>
+  <data name="ManagerInitializationFailed" xml:space="preserve">
+    <value>管理器初始化失败: {0} - {1}</value>
+  </data>
+  <data name="CultureManagerInitError" xml:space="preserve">
+    <value>文化管理器初始化错误: {0}</value>
+  </data>
+  <data name="StreamRunnerModulesInitialized" xml:space="preserve">
+    <value>流运行器模块初始化完成: {0}</value>
+  </data>
+  <data name="CultureChanged" xml:space="preserve">
+    <value>文化已更改为 {0}</value>
+  </data>
+  <data name="InvalidCulture" xml:space="preserve">
+    <value>无效的文化: {0}</value>
+  </data>
+  <data name="LoginInvalidInput" xml:space="preserve">
+    <value>登录失败 - 输入无效</value>
+  </data>
+  <data name="LoginUserNotFound" xml:space="preserve">
+    <value>登录失败 - 用户未找到: {0}</value>
+  </data>
+  <data name="LoginPasswordIncorrect" xml:space="preserve">
+    <value>登录失败 - 用户密码错误: {0}</value>
+  </data>
+  <data name="LoginSuccessful" xml:space="preserve">
+    <value>用户登录成功: {0}</value>
+  </data>
+  <data name="SaveLanguageError" xml:space="preserve">
+    <value>保存语言设置错误: {0}</value>
   </data>
   <data name="MsgManagerProcessError" xml:space="preserve">
     <value>消息管理器处理错误: {0}</value>
@@ -150,103 +406,70 @@
   <data name="MsgManagerQueueFull" xml:space="preserve">
     <value>消息队列已满，丢弃消息</value>
   </data>
-  <data name="TestLogClicked" xml:space="preserve">
-    <value>测试日志按钮被点击 - 测试国际化功能</value>
+  <data name="IOConfigFileLoaded" xml:space="preserve">
+    <value>IO配置文件已加载: {0}</value>
   </data>
-  <data name="SystemStatusNormal" xml:space="preserve">
-    <value>系统状态: 正常运行</value>
+  <data name="IODefaultMappingsCreated" xml:space="preserve">
+    <value>默认IO映射已创建</value>
   </data>
-  <data name="DatabaseConnectionError" xml:space="preserve">
-    <value>数据库连接失败: {0}</value>
+  <data name="IOAutoConfigLoaded" xml:space="preserve">
+    <value>自动配置已加载</value>
   </data>
-  <data name="ProcessingComplete" xml:space="preserve">
-    <value>处理成功完成，耗时 {0} 秒</value>
+  <data name="IOHardwareCreated" xml:space="preserve">
+    <value>IO硬件已创建: {0}</value>
   </data>
-  <data name="CultureChanged" xml:space="preserve">
-    <value>语言已切换至: {0}</value>
+  <data name="BaseManagerInitialized" xml:space="preserve">
+    <value>基础管理器初始化成功: {0}</value>
   </data>
-  <data name="CultureManagerInitError" xml:space="preserve">
-    <value>文化管理器初始化错误: {0}</value>
+  <data name="StreamProcessStarted" xml:space="preserve">
+    <value>流处理已启动</value>
   </data>
-  <data name="InvalidCulture" xml:space="preserve">
-    <value>无效的区域设置: {0}，错误: {1}</value>
+  <data name="StreamProcessStopped" xml:space="preserve">
+    <value>流处理已停止</value>
   </data>
-  <data name="SaveLanguageError" xml:space="preserve">
-    <value>保存语言设置错误: {0}</value>
+  <data name="ViewModelLocatorConfigured" xml:space="preserve">
+    <value>ViewModelLocator已配置</value>
   </data>
   <data name="SystemInitialized" xml:space="preserve">
     <value>系统初始化成功</value>
   </data>
+  <data name="SystemStatusNormal" xml:space="preserve">
+    <value>系统状态: 正常</value>
+  </data>
+  <data name="Log4netConfigNotFound" xml:space="preserve">
+    <value>Log4net配置文件未找到</value>
+  </data>
   <data name="DatabaseConnected" xml:space="preserve">
     <value>数据库连接成功</value>
   </data>
-  <data name="SecurityManagerInitialized" xml:space="preserve">
-    <value>安全管理器初始化成功</value>
+  <data name="MainWindowStarted" xml:space="preserve">
+    <value>主窗口已启动</value>
   </data>
-  <data name="LoginSuccessful" xml:space="preserve">
-    <value>用户 {0} 登录成功</value>
+  <data name="TestLogClicked" xml:space="preserve">
+    <value>测试日志按钮被点击</value>
   </data>
-  <data name="LoginInvalidInput" xml:space="preserve">
-    <value>登录失败：用户名或密码输入无效</value>
-  </data>
-  <data name="LoginUserNotFound" xml:space="preserve">
-    <value>登录失败：用户 {0} 不存在或未激活</value>
-  </data>
-  <data name="LoginPasswordIncorrect" xml:space="preserve">
-    <value>登录失败：用户 {0} 密码错误</value>
-  </data>
-  <data name="UserLoggedOut" xml:space="preserve">
-    <value>用户 {0} 注销成功</value>
-  </data>
-  <data name="UserAlreadyExists" xml:space="preserve">
-    <value>创建用户失败：用户 {0} 已存在</value>
-  </data>
-  <data name="UserCreated" xml:space="preserve">
-    <value>用户 {0} 创建成功</value>
-  </data>
-  <data name="DefaultUsersCreated" xml:space="preserve">
-    <value>默认用户创建成功</value>
-  </data>
-  <data name="UsersLoaded" xml:space="preserve">
-    <value>从存储加载了 {0} 个用户</value>
-  </data>
-  <data name="UsersLoadError" xml:space="preserve">
-    <value>加载用户数据失败：{0}</value>
-  </data>
-  <data name="UsersSaveError" xml:space="preserve">
-    <value>保存用户数据失败：{0}</value>
-  </data>
-  <data name="LoginError" xml:space="preserve">
-    <value>登录时发生错误：{0}</value>
-  </data>
-  <data name="UserPermissionsUpdated" xml:space="preserve">
-    <value>用户 {0} 的权限已更新</value>
+  <data name="ProcessingComplete" xml:space="preserve">
+    <value>处理完成</value>
   </data>
   <data name="PermissionsSaved" xml:space="preserve">
-    <value>权限配置保存成功</value>
+    <value>权限保存成功</value>
   </data>
   <data name="PermissionsSaveError" xml:space="preserve">
-    <value>保存权限配置失败：{0}</value>
+    <value>保存权限失败: {0}</value>
   </data>
-  <data name="AdminUserCreated" xml:space="preserve">
-    <value>管理员用户创建成功，拥有 {0} 个角色和 {1} 个权限</value>
+  <data name="Log4netConfigLoaded" xml:space="preserve">
+    <value>Log4net配置已加载</value>
   </data>
-  <data name="AdminUserCreateFailed" xml:space="preserve">
-    <value>创建管理员用户或分配权限失败</value>
+  <data name="TypeLoaded" xml:space="preserve">
+    <value>类型已加载: {0}</value>
   </data>
-  <data name="AdminUserSaveCheck" xml:space="preserve">
-    <value>保存管理员用户，拥有 {0} 个角色和 {1} 个权限</value>
+  <data name="MainControllerInitialized" xml:space="preserve">
+    <value>MainController初始化成功</value>
   </data>
-  <data name="AdminUserLoadCheck" xml:space="preserve">
-    <value>加载管理员用户，拥有 {0} 个角色和 {1} 个权限</value>
+  <data name="MainControllerInitializationFailed" xml:space="preserve">
+    <value>MainController初始化失败: {0}</value>
   </data>
-  <data name="UsersSaved" xml:space="preserve">
-    <value>用户数据保存成功</value>
-  </data>
-  <data name="PermissionCheckNotAuthenticated" xml:space="preserve">
-    <value>权限检查失败：用户未认证，资源 {0}.{1}</value>
-  </data>
-  <data name="UserExiting" xml:space="preserve">
-    <value>用户 {0} 正在退出应用程序</value>
+  <data name="LoginError" xml:space="preserve">
+    <value>登录错误: {0}</value>
   </data>
 </root>

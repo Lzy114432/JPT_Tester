@@ -1,64 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -117,136 +58,418 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="MainWindowStarted" xml:space="preserve">
-    <value>Main window started</value>
+  <data name="ModuleInitialized" xml:space="preserve">
+    <value>Module initialized: {0}</value>
   </data>
-  <data name="Log4netConfigLoaded" xml:space="preserve">
-    <value>Log4net configuration loaded</value>
+  <data name="ModuleInitializationFailed" xml:space="preserve">
+    <value>Module initialization failed: {0} - {1}</value>
   </data>
-  <data name="Log4netConfigNotFound" xml:space="preserve">
-    <value>Log4net configuration not found</value>
+  <data name="ModuleDestroyed" xml:space="preserve">
+    <value>Module destroyed: {0}</value>
   </data>
-  <data name="MainControllerInitialized" xml:space="preserve">
-    <value>Main controller initialized</value>
+  <data name="ModuleRunError" xml:space="preserve">
+    <value>Module run error: {0} - {1}</value>
   </data>
-  <data name="MainControllerInitializationFailed" xml:space="preserve">
-    <value>Main controller initialization failed</value>
+  <data name="IOConnectionFailed" xml:space="preserve">
+    <value>IO connection failed: {0}</value>
   </data>
-  <data name="ViewModelLocatorConfigured" xml:space="preserve">
-    <value>View model locator configured</value>
+  <data name="IOMappingCreated" xml:space="preserve">
+    <value>IO mapping configuration created successfully</value>
   </data>
-  <data name="StreamRunnerModulesInitialized" xml:space="preserve">
-    <value>Stream runner modules initialized</value>
+  <data name="UserExiting" xml:space="preserve">
+    <value>User {0} is exiting the application</value>
   </data>
-  <data name="BaseManagerInitialized" xml:space="preserve">
-    <value>Base manager {0} initialized</value>
+  <data name="ApplicationStarted" xml:space="preserve">
+    <value>Application started successfully</value>
   </data>
-  <data name="BaseManagerDestroyed" xml:space="preserve">
-    <value>Base manager {0} destroyed</value>
+  <data name="ApplicationExiting" xml:space="preserve">
+    <value>Application is exiting</value>
   </data>
-  <data name="MsgManagerProcessError" xml:space="preserve">
-    <value>Message manager processing error: {0}</value>
+  <data name="ConfigurationChanged" xml:space="preserve">
+    <value>Configuration changed: {0}</value>
   </data>
-  <data name="MsgManagerQueueFull" xml:space="preserve">
-    <value>Message queue is full</value>
+  <data name="LanguageChanged" xml:space="preserve">
+    <value>Language changed to {0}</value>
   </data>
-  <data name="TestLogClicked" xml:space="preserve">
-    <value>Test log button clicked - Testing internationalization</value>
+  <data name="PermissionDenied" xml:space="preserve">
+    <value>Permission denied: {0}</value>
   </data>
-  <data name="SystemStatusNormal" xml:space="preserve">
-    <value>System status: Normal operation</value>
+  <data name="LoginSuccess" xml:space="preserve">
+    <value>User {0} logged in successfully</value>
   </data>
-  <data name="DatabaseConnectionError" xml:space="preserve">
-    <value>Database connection failed: {0}</value>
+  <data name="LoginFailed" xml:space="preserve">
+    <value>Login failed for user {0}</value>
   </data>
-  <data name="ProcessingComplete" xml:space="preserve">
-    <value>Processing completed successfully in {0} seconds</value>
-  </data>
-  <data name="CultureChanged" xml:space="preserve">
-    <value>Culture changed to: {0}</value>
-  </data>
-  <data name="CultureManagerInitError" xml:space="preserve">
-    <value>Culture manager initialization error: {0}</value>
-  </data>
-  <data name="InvalidCulture" xml:space="preserve">
-    <value>Invalid culture: {0}, error: {1}</value>
-  </data>
-  <data name="SaveLanguageError" xml:space="preserve">
-    <value>Save language setting error: {0}</value>
-  </data>
-  <data name="SystemInitialized" xml:space="preserve">
-    <value>System initialized successfully</value>
-  </data>
-  <data name="DatabaseConnected" xml:space="preserve">
-    <value>Database connected successfully</value>
-  </data>
-  <data name="SecurityManagerInitialized" xml:space="preserve">
-    <value>Security manager initialized successfully</value>
-  </data>
-  <data name="LoginSuccessful" xml:space="preserve">
-    <value>User {0} login successful</value>
-  </data>
-  <data name="LoginInvalidInput" xml:space="preserve">
-    <value>Login failed: Invalid username or password input</value>
-  </data>
-  <data name="LoginUserNotFound" xml:space="preserve">
-    <value>Login failed: User {0} not found or inactive</value>
-  </data>
-  <data name="LoginPasswordIncorrect" xml:space="preserve">
-    <value>Login failed: Incorrect password for user {0}</value>
-  </data>
-  <data name="UserLoggedOut" xml:space="preserve">
+  <data name="LogoutSuccess" xml:space="preserve">
     <value>User {0} logged out successfully</value>
   </data>
+  <data name="CommandReceived" xml:space="preserve">
+    <value>Command received: {0}</value>
+  </data>
+  <data name="CommandExecuted" xml:space="preserve">
+    <value>Command executed: {0}</value>
+  </data>
+  <data name="DatabaseConnectionError" xml:space="preserve">
+    <value>Database connection error: {0}</value>
+  </data>
+  <data name="FileNotFound" xml:space="preserve">
+    <value>File not found: {0}</value>
+  </data>
+  <data name="FileLoadError" xml:space="preserve">
+    <value>Failed to load file: {0}</value>
+  </data>
+  <data name="FileSaveError" xml:space="preserve">
+    <value>Failed to save file: {0}</value>
+  </data>
+  <data name="SecurityManagerInitialized" xml:space="preserve">
+    <value>Security Manager initialized successfully</value>
+  </data>
+  <data name="SecurityManagerDestroyed" xml:space="preserve">
+    <value>Security Manager destroyed</value>
+  </data>
+  <data name="CultureManagerInitialized" xml:space="preserve">
+    <value>Culture Manager initialized successfully</value>
+  </data>
+  <data name="CultureManagerDestroyed" xml:space="preserve">
+    <value>Culture Manager destroyed</value>
+  </data>
+  <data name="PasswordFieldEmpty" xml:space="preserve">
+    <value>Password field cannot be empty</value>
+  </data>
+  <data name="UsernameFieldEmpty" xml:space="preserve">
+    <value>Username field cannot be empty</value>
+  </data>
+  <data name="InvalidCredentials" xml:space="preserve">
+    <value>Invalid username or password</value>
+  </data>
+  <data name="UserNotFound" xml:space="preserve">
+    <value>User not found: {0}</value>
+  </data>
+  <data name="RoleNotFound" xml:space="preserve">
+    <value>Role not found: {0}</value>
+  </data>
+  <data name="PermissionNotFound" xml:space="preserve">
+    <value>Permission not found: {0}</value>
+  </data>
+  <data name="ErrorOccurred" xml:space="preserve">
+    <value>An error occurred: {0}</value>
+  </data>
+  <data name="OperationCompleted" xml:space="preserve">
+    <value>Operation completed successfully</value>
+  </data>
+  <data name="OperationFailed" xml:space="preserve">
+    <value>Operation failed: {0}</value>
+  </data>
+  <data name="DebugInformation" xml:space="preserve">
+    <value>Debug: {0}</value>
+  </data>
+  <data name="InformationMessage" xml:space="preserve">
+    <value>Info: {0}</value>
+  </data>
+  <data name="WarningMessage" xml:space="preserve">
+    <value>Warning: {0}</value>
+  </data>
+  <data name="ErrorMessage" xml:space="preserve">
+    <value>Error: {0}</value>
+  </data>
+  <data name="FatalError" xml:space="preserve">
+    <value>Fatal error: {0}</value>
+  </data>
+  <data name="StreamStarted" xml:space="preserve">
+    <value>Stream started: {0}</value>
+  </data>
+  <data name="StreamStopped" xml:space="preserve">
+    <value>Stream stopped: {0}</value>
+  </data>
+  <data name="StreamError" xml:space="preserve">
+    <value>Stream error: {0} - {1}</value>
+  </data>
+  <data name="StreamStarting" xml:space="preserve">
+    <value>Starting stream: {0}</value>
+  </data>
+  <data name="StreamStopping" xml:space="preserve">
+    <value>Stopping stream: {0}</value>
+  </data>
+  <data name="ManagerInitializing" xml:space="preserve">
+    <value>Initializing manager: {0}</value>
+  </data>
+  <data name="ManagerDestroying" xml:space="preserve">
+    <value>Destroying manager: {0}</value>
+  </data>
+  <data name="UserAuthenticated" xml:space="preserve">
+    <value>User authenticated: {0}</value>
+  </data>
+  <data name="UserLoggedOut" xml:space="preserve">
+    <value>User logged out: {0}</value>
+  </data>
+  <data name="PermissionGranted" xml:space="preserve">
+    <value>Permission granted: {0}</value>
+  </data>
+  <data name="RoleAssigned" xml:space="preserve">
+    <value>Role assigned: {0} to {1}</value>
+  </data>
+  <data name="RoleRemoved" xml:space="preserve">
+    <value>Role removed: {0} from {1}</value>
+  </data>
+  <data name="SettingsLoaded" xml:space="preserve">
+    <value>Settings loaded successfully</value>
+  </data>
+  <data name="SettingsSaved" xml:space="preserve">
+    <value>Settings saved successfully</value>
+  </data>
+  <data name="SettingsLoadError" xml:space="preserve">
+    <value>Failed to load settings: {0}</value>
+  </data>
+  <data name="SettingsSaveError" xml:space="preserve">
+    <value>Failed to save settings: {0}</value>
+  </data>
+  <data name="ConfigFileNotFound" xml:space="preserve">
+    <value>Configuration file not found: {0}</value>
+  </data>
+  <data name="ConfigFileCreated" xml:space="preserve">
+    <value>Configuration file created: {0}</value>
+  </data>
+  <data name="ConfigFileLoaded" xml:space="preserve">
+    <value>Configuration file loaded: {0}</value>
+  </data>
+  <data name="ConfigFileSaved" xml:space="preserve">
+    <value>Configuration file saved: {0}</value>
+  </data>
+  <data name="SystemStartup" xml:space="preserve">
+    <value>System startup completed</value>
+  </data>
+  <data name="SystemShutdown" xml:space="preserve">
+    <value>System shutdown initiated</value>
+  </data>
+  <data name="ServiceStarted" xml:space="preserve">
+    <value>Service started: {0}</value>
+  </data>
+  <data name="ServiceStopped" xml:space="preserve">
+    <value>Service stopped: {0}</value>
+  </data>
+  <data name="ServiceError" xml:space="preserve">
+    <value>Service error: {0} - {1}</value>
+  </data>
+  <data name="ConnectionEstablished" xml:space="preserve">
+    <value>Connection established: {0}</value>
+  </data>
+  <data name="ConnectionClosed" xml:space="preserve">
+    <value>Connection closed: {0}</value>
+  </data>
+  <data name="ConnectionError" xml:space="preserve">
+    <value>Connection error: {0}</value>
+  </data>
+  <data name="DataReceived" xml:space="preserve">
+    <value>Data received: {0} bytes</value>
+  </data>
+  <data name="DataSent" xml:space="preserve">
+    <value>Data sent: {0} bytes</value>
+  </data>
+  <data name="ProcessingStarted" xml:space="preserve">
+    <value>Processing started: {0}</value>
+  </data>
+  <data name="ProcessingCompleted" xml:space="preserve">
+    <value>Processing completed: {0}</value>
+  </data>
+  <data name="ProcessingError" xml:space="preserve">
+    <value>Processing error: {0} - {1}</value>
+  </data>
+  <data name="ValidationError" xml:space="preserve">
+    <value>Validation error: {0}</value>
+  </data>
+  <data name="ValidationSuccess" xml:space="preserve">
+    <value>Validation successful</value>
+  </data>
+  <data name="InitializationStarted" xml:space="preserve">
+    <value>Initialization started: {0}</value>
+  </data>
+  <data name="InitializationCompleted" xml:space="preserve">
+    <value>Initialization completed: {0}</value>
+  </data>
+  <data name="InitializationFailed" xml:space="preserve">
+    <value>Initialization failed: {0}</value>
+  </data>
+  <data name="IOConfigFileNotFound" xml:space="preserve">
+    <value>IO configuration file not found: {0}</value>
+  </data>
+  <data name="IOConfigurationLoaded" xml:space="preserve">
+    <value>IO configuration loaded from: {0}</value>
+  </data>
+  <data name="IOConfigCreating" xml:space="preserve">
+    <value>Creating default IO configuration</value>
+  </data>
+  <data name="IOInputMappingsCreated" xml:space="preserve">
+    <value>Created {0} input mappings</value>
+  </data>
+  <data name="IOOutputMappingsCreated" xml:space="preserve">
+    <value>Created {0} output mappings</value>
+  </data>
+  <data name="DirectoryCreated" xml:space="preserve">
+    <value>Directory created: {0}</value>
+  </data>
+  <data name="IOConfigFileSaved" xml:space="preserve">
+    <value>IO configuration saved to: {0}</value>
+  </data>
+  <data name="IOConfigFileSaveError" xml:space="preserve">
+    <value>Failed to save IO configuration: {0}</value>
+  </data>
+  <data name="IONotInitialized" xml:space="preserve">
+    <value>IO not initialized</value>
+  </data>
+  <data name="IOConnected" xml:space="preserve">
+    <value>IO connected: {0}</value>
+  </data>
+  <data name="IOConnectionError" xml:space="preserve">
+    <value>IO connection error: {0}</value>
+  </data>
+  <data name="IODisconnected" xml:space="preserve">
+    <value>IO disconnected</value>
+  </data>
+  <data name="IORecreationFailed" xml:space="preserve">
+    <value>Failed to recreate IO: {0}</value>
+  </data>
+  <data name="PermissionCheckNotAuthenticated" xml:space="preserve">
+    <value>Permission check failed: User not authenticated for {0}.{1}</value>
+  </data>
   <data name="UserAlreadyExists" xml:space="preserve">
-    <value>User creation failed: User {0} already exists</value>
+    <value>User already exists: {0}</value>
   </data>
   <data name="UserCreated" xml:space="preserve">
-    <value>User {0} created successfully</value>
+    <value>User created: {0}</value>
+  </data>
+  <data name="AdminUserCreated" xml:space="preserve">
+    <value>Admin user created successfully</value>
+  </data>
+  <data name="AdminUserCreateFailed" xml:space="preserve">
+    <value>Failed to create admin user</value>
   </data>
   <data name="DefaultUsersCreated" xml:space="preserve">
     <value>Default users created successfully</value>
   </data>
   <data name="UsersLoaded" xml:space="preserve">
-    <value>Loaded {0} users from storage</value>
-  </data>
-  <data name="UsersLoadError" xml:space="preserve">
-    <value>Failed to load user data: {0}</value>
-  </data>
-  <data name="UsersSaveError" xml:space="preserve">
-    <value>Failed to save user data: {0}</value>
-  </data>
-  <data name="LoginError" xml:space="preserve">
-    <value>Login error occurred: {0}</value>
-  </data>
-  <data name="UserPermissionsUpdated" xml:space="preserve">
-    <value>User permissions updated for {0}</value>
-  </data>
-  <data name="PermissionsSaved" xml:space="preserve">
-    <value>Permissions configuration saved successfully</value>
-  </data>
-  <data name="PermissionsSaveError" xml:space="preserve">
-    <value>Failed to save permissions configuration: {0}</value>
-  </data>
-  <data name="AdminUserCreated" xml:space="preserve">
-    <value>Admin user created with {0} roles and {1} permissions</value>
-  </data>
-  <data name="AdminUserCreateFailed" xml:space="preserve">
-    <value>Failed to create admin user or assign permissions</value>
-  </data>
-  <data name="AdminUserSaveCheck" xml:space="preserve">
-    <value>Saving admin user with {0} roles and {1} permissions</value>
+    <value>Loaded {0} users</value>
   </data>
   <data name="AdminUserLoadCheck" xml:space="preserve">
-    <value>Loaded admin user with {0} roles and {1} permissions</value>
+    <value>Admin user check: {0}</value>
+  </data>
+  <data name="UsersLoadError" xml:space="preserve">
+    <value>Failed to load users: {0}</value>
+  </data>
+  <data name="UsersSaveError" xml:space="preserve">
+    <value>Failed to save users: {0}</value>
   </data>
   <data name="UsersSaved" xml:space="preserve">
     <value>Users saved successfully</value>
   </data>
-  <data name="PermissionCheckNotAuthenticated" xml:space="preserve">
-    <value>Permission check failed: User not authenticated for {0}.{1}</value>
+  <data name="PermissionCheckResult" xml:space="preserve">
+    <value>Permission check for {0}: {1}.{2} - {3}</value>
   </data>
-  <data name="UserExiting" xml:space="preserve">
-    <value>User {0} is exiting the application</value>
+  <data name="BaseManagerDestroyed" xml:space="preserve">
+    <value>Base Manager destroyed: {0}</value>
+  </data>
+  <data name="ManagerInitialized" xml:space="preserve">
+    <value>Manager initialized: {0}</value>
+  </data>
+  <data name="ManagerInitializationFailed" xml:space="preserve">
+    <value>Manager initialization failed: {0} - {1}</value>
+  </data>
+  <data name="CultureManagerInitError" xml:space="preserve">
+    <value>Culture Manager initialization error: {0}</value>
+  </data>
+  <data name="StreamRunnerModulesInitialized" xml:space="preserve">
+    <value>Stream runner modules initialized: {0}</value>
+  </data>
+  <data name="CultureChanged" xml:space="preserve">
+    <value>Culture changed to {0}</value>
+  </data>
+  <data name="InvalidCulture" xml:space="preserve">
+    <value>Invalid culture: {0}</value>
+  </data>
+  <data name="LoginInvalidInput" xml:space="preserve">
+    <value>Login failed - invalid input</value>
+  </data>
+  <data name="LoginUserNotFound" xml:space="preserve">
+    <value>Login failed - user not found: {0}</value>
+  </data>
+  <data name="LoginPasswordIncorrect" xml:space="preserve">
+    <value>Login failed - incorrect password for user: {0}</value>
+  </data>
+  <data name="LoginSuccessful" xml:space="preserve">
+    <value>Login successful for user: {0}</value>
+  </data>
+  <data name="SaveLanguageError" xml:space="preserve">
+    <value>Save language error: {0}</value>
+  </data>
+  <data name="MsgManagerProcessError" xml:space="preserve">
+    <value>Message manager process error: {0}</value>
+  </data>
+  <data name="MsgManagerQueueFull" xml:space="preserve">
+    <value>Message queue is full, dropping message</value>
+  </data>
+  <data name="IOConfigFileLoaded" xml:space="preserve">
+    <value>IO configuration file loaded: {0}</value>
+  </data>
+  <data name="IODefaultMappingsCreated" xml:space="preserve">
+    <value>Default IO mappings created</value>
+  </data>
+  <data name="IOAutoConfigLoaded" xml:space="preserve">
+    <value>Auto configuration loaded</value>
+  </data>
+  <data name="IOHardwareCreated" xml:space="preserve">
+    <value>IO hardware created: {0}</value>
+  </data>
+  <data name="BaseManagerInitialized" xml:space="preserve">
+    <value>Base Manager initialized: {0}</value>
+  </data>
+  <data name="StreamProcessStarted" xml:space="preserve">
+    <value>Stream process started</value>
+  </data>
+  <data name="StreamProcessStopped" xml:space="preserve">
+    <value>Stream process stopped</value>
+  </data>
+  <data name="ViewModelLocatorConfigured" xml:space="preserve">
+    <value>ViewModelLocator configured</value>
+  </data>
+  <data name="SystemInitialized" xml:space="preserve">
+    <value>System initialized successfully</value>
+  </data>
+  <data name="SystemStatusNormal" xml:space="preserve">
+    <value>System status: Normal</value>
+  </data>
+  <data name="Log4netConfigNotFound" xml:space="preserve">
+    <value>Log4net configuration file not found</value>
+  </data>
+  <data name="DatabaseConnected" xml:space="preserve">
+    <value>Database connected successfully</value>
+  </data>
+  <data name="MainWindowStarted" xml:space="preserve">
+    <value>Main window started</value>
+  </data>
+  <data name="TestLogClicked" xml:space="preserve">
+    <value>Test log button clicked</value>
+  </data>
+  <data name="ProcessingComplete" xml:space="preserve">
+    <value>Processing complete</value>
+  </data>
+  <data name="PermissionsSaved" xml:space="preserve">
+    <value>Permissions saved successfully</value>
+  </data>
+  <data name="PermissionsSaveError" xml:space="preserve">
+    <value>Failed to save permissions: {0}</value>
+  </data>
+  <data name="Log4netConfigLoaded" xml:space="preserve">
+    <value>Log4net configuration loaded</value>
+  </data>
+  <data name="TypeLoaded" xml:space="preserve">
+    <value>Type loaded: {0}</value>
+  </data>
+  <data name="MainControllerInitialized" xml:space="preserve">
+    <value>MainController initialized successfully</value>
+  </data>
+  <data name="MainControllerInitializationFailed" xml:space="preserve">
+    <value>MainController initialization failed: {0}</value>
+  </data>
+  <data name="LoginError" xml:space="preserve">
+    <value>Login error: {0}</value>
   </data>
 </root>
