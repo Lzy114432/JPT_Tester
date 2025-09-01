@@ -193,9 +193,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="log4net.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -221,6 +218,10 @@
     <ProjectReference Include="..\Ewan.Resources\Ewan.Resources.csproj">
       <Project>{b8e5b123-4567-8901-2345-6789abcd1234}</Project>
       <Name>Ewan.Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ewan.LogManager\Ewan.LogManager.csproj">
+      <Project>{88888888-8888-8888-8888-888888888888}</Project>
+      <Name>Ewan.LogManager</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

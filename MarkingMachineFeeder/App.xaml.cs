@@ -1,15 +1,10 @@
-﻿using System.IO;
-using System.Windows;
-using Ewan.BusinessBonding;
+﻿using Ewan.BusinessBonding;
 using Ewan.Core.Logger;
-using Ewan.Core.Culture;
 using Ewan.Core.Security;
-using Ewan.Core.IO;  // 添加LayeredIOManager的引用
-using log4net;
-using log4net.Config;
-using Prism.Mvvm;
 using MarkingMachineFeeder.Viewmodel;
-using MarkingMachineFeeder.Windows;
+using Prism.Mvvm;
+using System.IO;
+using System.Windows;
 
 namespace MarkingMachineFeeder
 {
@@ -22,22 +17,14 @@ namespace MarkingMachineFeeder
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            // 手动配置log4net
-            var logConfigFile = new FileInfo("log4net.config");
-            if (logConfigFile.Exists)
-            {
-                XmlConfigurator.Configure(logConfigFile);
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.Log4netConfigLoaded);
-            }
-            else
-            {
-                BasicConfigurator.Configure();
-                _uiLogger.Warn(() => Ewan.Resources.LogMessages.Log4netConfigNotFound);
-            }
+            // 初始化日志系统
+            Ewan.LogManager.Logger.LogManager.Initialize("log4net.config");
+            
+            // 设置 IOLogger 的资源类型
+            Ewan.LogManager.Logger.IOLogger.Instance.SetResourceType(typeof(Ewan.Resources.LogMessages));
+            
+            _uiLogger.Info(() => Ewan.Resources.LogMessages.Log4netConfigLoaded);
 
-            // 强制引用LayeredIOManager以确保程序集被加载
-            var layeredIOType = typeof(LayeredIOManager);
-            _uiLogger.Debug(() => Ewan.Resources.LogMessages.TypeLoaded, layeredIOType.Name);
 
             // 初始化Ewan.BusinessBonding MainController (包含所有Managers)
             if (MainController.Instance().Initialize())

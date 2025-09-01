@@ -1,7 +1,6 @@
 using Ewan.Core.Logger;
 using Ewan.Core.Msg;
 using Ewan.Core.Culture;
-using Ewan.Model.Messages;
 using Microsoft.Win32;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -11,6 +10,8 @@ using System.ComponentModel;
 using System.IO;
 using System.Text;
 using System.Windows;
+using UILogMsg = Ewan.Model.Messages.UILogMsg;
+using UILogLevel = Ewan.Model.Messages.LogLevel;
 
 namespace MarkingMachineFeeder.Viewmodel
 {
@@ -20,7 +21,7 @@ namespace MarkingMachineFeeder.Viewmodel
     public class LogEntry : INotifyPropertyChanged
     {
         private DateTime _timestamp;
-        private LogLevel _level;
+        private UILogLevel _level;
         private string _message;
 
         public DateTime Timestamp
@@ -33,7 +34,7 @@ namespace MarkingMachineFeeder.Viewmodel
             }
         }
 
-        public LogLevel Level
+        public UILogLevel Level
         {
             get => _level;
             set
