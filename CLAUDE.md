@@ -22,12 +22,26 @@ This file provides comprehensive guidance for Claude Code (claude.ai/code) when 
 cd "C:\Users\Administrator\source\repos\MarkingMachineFeeder" && "C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\amd64\MSBuild.exe" MarkingMachineFeeder.sln -p:Configuration=Debug -p:Platform=x64
 ```
 
-### Log Files Location
+### Key Paths and Locations
 ```
-# Application logs are located in:
-MarkingMachineFeeder\bin\Debug\Logs\
+# Project Root
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\
+
+# Build Output (x64 Platform)
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\MarkingMachineFeeder\bin\x64\Debug\
+
+# Application Logs
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\MarkingMachineFeeder\bin\x64\Debug\Logs\
 - app.log[YYYY-MM-DD].txt (daily log files with dynamic dates)
 - When user mentions "logs" or "日志", check this directory
+
+# Configuration Files
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\MarkingMachineFeeder\bin\x64\Debug\users.json
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\MarkingMachineFeeder\bin\x64\Debug\config.json
+
+# Module Locations
+Ewan.Core\Module\         # Custom modules location
+Ewan.Core\IO\            # IO control related classes
 ```
 
 ### Key Singleton Pattern
