@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Ewan.LogManager.Logger;
 
 namespace IOLibrary.Core.Layered
 {
@@ -73,7 +74,7 @@ namespace IOLibrary.Core.Layered
             if (result)
             {
                 isOpen = true;
-                LogInfo($"Connected to {hardwareIO.HardwareType}: {hardwareIO.ConnectionInfo}");
+                IOLogger.Instance.LogRaw(LogLevel.Info, $"Connected to {hardwareIO.HardwareType}: {hardwareIO.ConnectionInfo}");
             }
             return result;
         }
@@ -84,7 +85,7 @@ namespace IOLibrary.Core.Layered
             {
                 hardwareIO.Disconnect();
                 isOpen = false;
-                LogInfo($"Disconnected from {hardwareIO.HardwareType}");
+                IOLogger.Instance.LogRaw(LogLevel.Info, $"Disconnected from {hardwareIO.HardwareType}");
             }
         }
 
@@ -202,7 +203,7 @@ namespace IOLibrary.Core.Layered
 
                 // None/ForceOff → ForceOn：上升沿
                
-                LogDebug($"SetInputSimulate[L{logicalIndex}]: {previousMode} -> ForceOn, Rising edge");
+                //IOLogger.Instance.LogRaw(LogLevel.Debug, $"SetInputSimulate[L{logicalIndex}]: {previousMode} -> ForceOn, Rising edge");
             }
             else if ((previousMode == SimulateMode.ForceOn || previousMode == SimulateMode.None) && mode == SimulateMode.ForceOff)
             {
@@ -215,10 +216,10 @@ namespace IOLibrary.Core.Layered
                     simulatedRisingEdges[logicalIndex] = true;
                 }
 
-                LogDebug($"SetInputSimulate[L{logicalIndex}]: {previousMode} -> ForceOff, Falling edge");
+                //IOLogger.Instance.LogRaw(LogLevel.Debug, $"SetInputSimulate[L{logicalIndex}]: {previousMode} -> ForceOff, Falling edge");
             }
             
-            LogDebug($"SetInputSimulate[L{logicalIndex}]: {previousMode} -> {mode}");
+            //IOLogger.Instance.LogRaw(LogLevel.Debug, $"SetInputSimulate[L{logicalIndex}]: {previousMode} -> {mode}");
         }
 
         /// <summary>
@@ -265,11 +266,11 @@ namespace IOLibrary.Core.Layered
                 if (!mapping.IsNormallyOpen)
                     value = !value;
                 
-                LogDebug($"WriteOutBit[{logicalIndex}->P{physicalIndex}]: {value}");
+                //IOLogger.Instance.LogRaw(LogLevel.Debug, $"WriteOutBit[{logicalIndex}->P{physicalIndex}]: {value}");
             }
             else
             {
-                LogDebug($"WriteOutBit[P{physicalIndex}]: {value}");
+                //IOLogger.Instance.LogRaw(LogLevel.Debug, $"WriteOutBit[P{physicalIndex}]: {value}");
             }
             
             return hardwareIO.WriteOutBit(physicalIndex, value);
@@ -294,12 +295,12 @@ namespace IOLibrary.Core.Layered
                 if (!mapping.IsNormallyOpen)
                     state = !state;
                 
-                LogDebug($"ReadOutBit[{logicalIndex}->P{physicalIndex}]: {state}");
+                //IOLogger.Instance.LogRaw(LogLevel.Debug, $"ReadOutBit[{logicalIndex}->P{physicalIndex}]: {state}");
             }
             else
             {
                 state = hardwareIO.ReadOutBit(physicalIndex);
-                LogDebug($"ReadOutBit[P{physicalIndex}]: {state}");
+                //IOLogger.Instance.LogRaw(LogLevel.Debug, $"ReadOutBit[P{physicalIndex}]: {state}");
             }
             
             return state;
@@ -376,13 +377,13 @@ namespace IOLibrary.Core.Layered
                 {
                     // 常闭：逻辑上升沿对应物理下降沿
                     hardwareIO.ClearFallingBit(mapping.PhysicalIndex);
-                    LogDebug($"ClearRisingBit[L{logicalIndex}->P{mapping.PhysicalIndex}] NC - clearing physical falling");
+                    //IOLogger.Instance.LogRaw(LogLevel.Debug, $"ClearRisingBit[L{logicalIndex}->P{mapping.PhysicalIndex}] NC - clearing physical falling");
                 }
                 else
                 {
                     // 常开：逻辑上升沿对应物理上升沿
                     hardwareIO.ClearRisingBit(mapping.PhysicalIndex);
-                    LogDebug($"ClearRisingBit[L{logicalIndex}->P{mapping.PhysicalIndex}] NO - clearing physical rising");
+                    //IOLogger.Instance.LogRaw(LogLevel.Debug, $"ClearRisingBit[L{logicalIndex}->P{mapping.PhysicalIndex}] NO - clearing physical rising");
                 }
             }
             else
@@ -390,7 +391,7 @@ namespace IOLibrary.Core.Layered
                 int physicalIndex = logicalIndex;
                 simulatedRisingEdges.Remove(physicalIndex);
                 hardwareIO.ClearRisingBit(physicalIndex);
-                LogDebug($"ClearRisingBit[P{physicalIndex}]");
+                //IOLogger.Instance.LogRaw(LogLevel.Debug, $"ClearRisingBit[P{physicalIndex}]");
             }
         }
 
@@ -426,13 +427,13 @@ namespace IOLibrary.Core.Layered
                 {
                     // 常闭：逻辑下降沿 = 物理上升沿
                     physicalEdge = hardwareIO.ReadRisingBit(mapping.PhysicalIndex);
-                    LogDebug($"ReadFallingBit[L{logicalIndex}->P{mapping.PhysicalIndex}] NC mapping, physical rising: {physicalEdge}");
+                    //IOLogger.Instance.LogRaw(LogLevel.Debug, $"ReadFallingBit[L{logicalIndex}->P{mapping.PhysicalIndex}] NC mapping, physical rising: {physicalEdge}");
                 }
                 else
                 {
                     // 常开：逻辑下降沿 = 物理下降沿
                     physicalEdge = hardwareIO.ReadFallingBit(mapping.PhysicalIndex);
-                    LogDebug($"ReadFallingBit[L{logicalIndex}->P{mapping.PhysicalIndex}] NO mapping, physical falling: {physicalEdge}");
+                    //IOLogger.Instance.LogRaw(LogLevel.Debug, $"ReadFallingBit[L{logicalIndex}->P{mapping.PhysicalIndex}] NO mapping, physical falling: {physicalEdge}");
                 }
                 return physicalEdge;
             }
@@ -445,12 +446,12 @@ namespace IOLibrary.Core.Layered
                 if (simulatedInputs.TryGetValue(physicalIndex, out var simMode) && simMode != SimulateMode.None)
                 {
                     bool hasFalling = simulatedFallingEdges.ContainsKey(physicalIndex) ? simulatedFallingEdges[physicalIndex] : false;
-                    LogDebug($"ReadFallingBit[P{physicalIndex}] (simulated): {hasFalling}");
+                    //IOLogger.Instance.LogRaw(LogLevel.Debug, $"ReadFallingBit[P{physicalIndex}] (simulated): {hasFalling}");
                     return hasFalling;
                 }
                 
                 bool falling = hardwareIO.ReadFallingBit(physicalIndex);
-                LogDebug($"ReadFallingBit[P{physicalIndex}]: {falling}");
+                //IOLogger.Instance.LogRaw(LogLevel.Debug, $"ReadFallingBit[P{physicalIndex}]: {falling}");
                 return falling;
             }
         }
@@ -472,13 +473,13 @@ namespace IOLibrary.Core.Layered
                 {
                     // 常闭：逻辑下降沿对应物理上升沿
                     hardwareIO.ClearRisingBit(mapping.PhysicalIndex);
-                    LogDebug($"ClearFallingBit[L{logicalIndex}->P{mapping.PhysicalIndex}] NC - clearing physical rising");
+                    //IOLogger.Instance.LogRaw(LogLevel.Debug, $"ClearFallingBit[L{logicalIndex}->P{mapping.PhysicalIndex}] NC - clearing physical rising");
                 }
                 else
                 {
                     // 常开：逻辑下降沿对应物理下降沿
                     hardwareIO.ClearFallingBit(mapping.PhysicalIndex);
-                    LogDebug($"ClearFallingBit[L{logicalIndex}->P{mapping.PhysicalIndex}] NO - clearing physical falling");
+                    //IOLogger.Instance.LogRaw(LogLevel.Debug, $"ClearFallingBit[L{logicalIndex}->P{mapping.PhysicalIndex}] NO - clearing physical falling");
                 }
             }
             else
@@ -486,7 +487,7 @@ namespace IOLibrary.Core.Layered
                 int physicalIndex = logicalIndex;
                 simulatedFallingEdges.Remove(physicalIndex);
                 hardwareIO.ClearFallingBit(physicalIndex);
-                LogDebug($"ClearFallingBit[P{physicalIndex}]");
+                //IOLogger.Instance.LogRaw(LogLevel.Debug, $"ClearFallingBit[P{physicalIndex}]");
             }
         }
 
@@ -504,7 +505,7 @@ namespace IOLibrary.Core.Layered
             string json = JsonConvert.SerializeObject(config, Formatting.Indented);
             File.WriteAllText(filePath, json);
             
-            LogInfo($"Saved mapping configuration to {filePath}");
+            IOLogger.Instance.LogRaw(LogLevel.Info, $"Saved mapping configuration to {filePath}");
         }
 
         /// <summary>
@@ -519,7 +520,7 @@ namespace IOLibrary.Core.Layered
                 string configDir = Path.Combine(Directory.GetCurrentDirectory(), "Config", "IO");
                 if (!Directory.Exists(configDir))
                 {
-                    LogWarning($"Configuration directory not found: {configDir}");
+                    IOLogger.Instance.LogRaw(LogLevel.Warn, $"Configuration directory not found: {configDir}");
                     return;
                 }
                 
@@ -531,17 +532,17 @@ namespace IOLibrary.Core.Layered
                 
                 if (files == null)
                 {
-                    LogWarning($"No configuration files found in: {configDir}");
+                    IOLogger.Instance.LogRaw(LogLevel.Warn, $"No configuration files found in: {configDir}");
                     return;
                 }
                 
                 filePath = files.FullName;
-                LogInfo($"Auto-selected latest config file: {files.Name}");
+                IOLogger.Instance.LogRaw(LogLevel.Info, $"Auto-selected latest config file: {files.Name}");
             }
             
             if (!File.Exists(filePath))
             {
-                LogWarning($"Configuration file not found: {filePath}");
+                IOLogger.Instance.LogRaw(LogLevel.Warn, $"Configuration file not found: {filePath}");
                 return;
             }
             
@@ -572,8 +573,8 @@ namespace IOLibrary.Core.Layered
                     }
                 }
                 
-                LogInfo($"Loaded mapping configuration from {filePath}");
-                LogInfo($"Input mappings: {inputMappings.Count}, Output mappings: {outputMappings.Count}");
+                IOLogger.Instance.LogRaw(LogLevel.Info, $"Loaded mapping configuration from {filePath}");
+                IOLogger.Instance.LogRaw(LogLevel.Info, $"Input mappings: {inputMappings.Count}, Output mappings: {outputMappings.Count}");
             }
         }
 
@@ -590,7 +591,7 @@ namespace IOLibrary.Core.Layered
                 IsNormallyOpen = isNormallyOpen
             };
             
-            LogDebug($"Added input mapping: L{logicalIndex}->P{physicalIndex} ({name})");
+            //IOLogger.Instance.LogRaw(LogLevel.Debug, $"Added input mapping: L{logicalIndex}->P{physicalIndex} ({name})");
         }
 
         /// <summary>
@@ -606,7 +607,7 @@ namespace IOLibrary.Core.Layered
                 IsNormallyOpen = isNormallyOpen
             };
             
-            LogDebug($"Added output mapping: L{logicalIndex}->P{physicalIndex} ({name})");
+            //IOLogger.Instance.LogRaw(LogLevel.Debug, $"Added output mapping: L{logicalIndex}->P{physicalIndex} ({name})");
         }
 
         /// <summary>
@@ -625,6 +626,8 @@ namespace IOLibrary.Core.Layered
             return outputMappings.ContainsKey(logicalIndex) ? outputMappings[logicalIndex] : null;
         }
 
+        // 注释掉旧的日志方法，使用新的IOLogger
+        /*
         private void LogDebug(string message)
         {
             if (enableLogging)
@@ -642,5 +645,6 @@ namespace IOLibrary.Core.Layered
         {
             Console.WriteLine($"[WARN] {DateTime.Now:HH:mm:ss} {message}");
         }
+        */
     }
 }

@@ -180,7 +180,7 @@ namespace Ewan.LogManager.Logger
         /// </summary>
         /// <param name="level">日志级别</param>
         /// <param name="message">消息</param>
-        protected void LogWithCallerInfo(LogLevel level, string message)
+        public void LogWithCallerInfo(LogLevel level, string message)
         {
             var callerInfo = GetCallerInfo();
             var logMessage = $"[{callerInfo}] {message}";
@@ -192,7 +192,7 @@ namespace Ewan.LogManager.Logger
         /// </summary>
         /// <param name="level">日志级别</param>
         /// <param name="message">消息</param>
-        protected void LogRaw(LogLevel level, string message)
+        public void LogRaw(LogLevel level, string message)
         {
             switch (level)
             {

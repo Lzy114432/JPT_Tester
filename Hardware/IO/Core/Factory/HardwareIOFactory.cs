@@ -4,6 +4,7 @@ using IOLibrary.Hardware.IOC0640;
 using IOLibrary.Hardware.Mitsubishi;
 using System;
 using System.Collections.Generic;
+using Ewan.LogManager.Logger;
 
 namespace IOLibrary.Core.Factory
 {
@@ -101,11 +102,11 @@ namespace IOLibrary.Core.Factory
             {
                 if (hardware.Connect(config.ConnectionString))
                 {
-                    Console.WriteLine($"Successfully connected to {config.Type}: {hardware.ConnectionInfo}");
+                    IOLogger.Instance.LogRaw(LogLevel.Info, $"Successfully connected to {config.Type}: {hardware.ConnectionInfo}");
                 }
                 else
                 {
-                    Console.WriteLine($"Failed to connect to {config.Type}");
+                    IOLogger.Instance.LogRaw(LogLevel.Error, $"Failed to connect to {config.Type}");
                 }
             }
             

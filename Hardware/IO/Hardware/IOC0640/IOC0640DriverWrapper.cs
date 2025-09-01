@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using IOLibrary.Core.Interfaces;
+using Ewan.LogManager.Logger;
 
 namespace IOLibrary.Hardware.IOC0640
 {
@@ -129,7 +130,7 @@ namespace IOLibrary.Hardware.IOC0640
                     // 根据实际板卡数量分配缓冲区
                     if (boardCount > MAX_BOARDS)
                     {
-                        Console.WriteLine($"Warning: Detected {boardCount} boards, but only supporting {MAX_BOARDS}");
+                        IOLogger.Instance.LogRaw(LogLevel.Warn, $"Detected {boardCount} boards, but only supporting {MAX_BOARDS}");
                         boardCount = MAX_BOARDS;
                     }
 
@@ -158,19 +159,19 @@ namespace IOLibrary.Hardware.IOC0640
                     }
                     
                     isConnected = true;
-                    Console.WriteLine($"IOC0640 connected with {boardCount} board(s), {totalBits} I/O points");
+                    IOLogger.Instance.LogRaw(LogLevel.Info, $"IOC0640 connected with {boardCount} board(s), {totalBits} I/O points");
                     return true;
                 }
                 else
                 {
-                    Console.WriteLine("No IOC0640 boards detected");
+                    IOLogger.Instance.LogRaw(LogLevel.Warn, "No IOC0640 boards detected");
                     isConnected = false;
                     return false;
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"IOC0640 connection failed: {ex.Message}");
+                IOLogger.Instance.LogRaw(LogLevel.Error, $"IOC0640 connection failed: {ex.Message}");
                 isConnected = false;
                 return false;
             }
@@ -194,12 +195,12 @@ namespace IOLibrary.Hardware.IOC0640
                 risingEdges = null;
                 fallingEdges = null;
                 
-                Console.WriteLine("IOC0640 disconnected");
+                IOLogger.Instance.LogRaw(LogLevel.Info, "IOC0640 disconnected");
                 return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"IOC0640 disconnect failed: {ex.Message}");
+                IOLogger.Instance.LogRaw(LogLevel.Error, $"IOC0640 disconnect failed: {ex.Message}");
                 return false;
             }
         }
@@ -245,7 +246,7 @@ namespace IOLibrary.Hardware.IOC0640
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"IOC0640 DataSync failed: {ex.Message}");
+                IOLogger.Instance.LogRaw(LogLevel.Error, $"IOC0640 DataSync failed: {ex.Message}");
             }
         }
 

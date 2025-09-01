@@ -2,6 +2,7 @@ using IOLibrary.Core.Interfaces;
 using IOLibrary.Core.Layered;
 using IOLibrary.Core.Models;
 using System;
+using Ewan.LogManager.Logger;
 
 namespace IOLibrary.Core.Factory
 {
@@ -144,11 +145,11 @@ namespace IOLibrary.Core.Factory
             {
                 if (layeredIO.Open(_hardwareConfig.ConnectionString))
                 {
-                    Console.WriteLine($"Successfully connected LayeredIO to {_hardwareConfig.Type}");
+                    IOLogger.Instance.LogRaw(LogLevel.Info, $"Successfully connected LayeredIO to {_hardwareConfig.Type}");
                 }
                 else
                 {
-                    Console.WriteLine($"Failed to connect LayeredIO to {_hardwareConfig.Type}");
+                    IOLogger.Instance.LogRaw(LogLevel.Error, $"Failed to connect LayeredIO to {_hardwareConfig.Type}");
                 }
             }
             

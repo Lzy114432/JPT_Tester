@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net461;netcoreapp3.1;net6.0-windows</TargetFrameworks>
+    <TargetFramework>net472</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <LangVersion>9.0</LangVersion>
     <Nullable>enable</Nullable>
@@ -18,14 +18,10 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="System.IO.Ports" Version="6.0.0" Condition="'$(TargetFramework)' != 'net461'" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" />
     <PackageReference Include="System.ValueTuple" Version="4.6.1" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
-    <Reference Include="System.Windows.Forms" />
-  </ItemGroup>
 
   <ItemGroup>
     <!-- 在VS中将DLL显示在Libs文件夹下 -->
@@ -36,6 +32,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PlcCommunication\PlcCommunication.csproj" />
+    <ProjectReference Include="..\..\Ewan.LogManager\Ewan.LogManager.csproj" />
   </ItemGroup>
 
   <!-- 复制DLL到输出根目录 -->

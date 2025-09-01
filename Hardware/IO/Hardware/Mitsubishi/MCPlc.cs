@@ -2,6 +2,7 @@
 using PlcCommunication.Interfaces;
 using System;
 using System.Collections;
+using Ewan.LogManager.Logger;
 
 namespace IOLibrary.Hardware.Mitsubishi
 {
@@ -83,7 +84,7 @@ namespace IOLibrary.Hardware.Mitsubishi
                 var parts = connectionString.Split(':');
                 if (parts.Length < 2)
                 {
-                    Console.WriteLine($"MCPlc: Invalid connection string: {connectionString}");
+                    IOLogger.Instance.LogPLCCommunication(connectionString, "Connect", "Invalid connection string", false);
                     return false;
                 }
                 
@@ -96,7 +97,7 @@ namespace IOLibrary.Hardware.Mitsubishi
                     // 这里假设使用MCProtocol实现
                     // 实际使用时需要根据具体的PLC类型创建相应的实例
                     // plc = new MCProtocolPlc(); // 需要具体的实现类
-                    Console.WriteLine($"MCPlc: PLC instance not provided, cannot auto-create");
+                    IOLogger.Instance.LogPLCCommunication("", "Connect", "PLC instance not provided", false);
                     return false;
                 }
                 
@@ -104,7 +105,7 @@ namespace IOLibrary.Hardware.Mitsubishi
                 var initResult = plc.Initialize(connectionString);
                 if (!initResult.Success)
                 {
-                    Console.WriteLine($"MCPlc: Failed to initialize PLC - {initResult.ErrorMessage}");
+                    IOLogger.Instance.LogPLCCommunication(connectionString, "Initialize", initResult.ErrorMessage, false);
                     return false;
                 }
                 
@@ -112,16 +113,16 @@ namespace IOLibrary.Hardware.Mitsubishi
                 var connectResult = plc.Connect();
                 if (!connectResult.Success)
                 {
-                    Console.WriteLine($"MCPlc: Failed to connect PLC - {connectResult.ErrorMessage}");
+                    IOLogger.Instance.LogPLCCommunication($"{ipAddress}:{port}", "Connect", connectResult.ErrorMessage, false);
                     return false;
                 }
                 
-                Console.WriteLine($"MCPlc: Connected successfully to {ipAddress}:{port}");
+                IOLogger.Instance.LogPLCCommunication($"{ipAddress}:{port}", "Connect", "Connected successfully", true);
                 return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"MCPlc: Connect failed - {ex.Message}");
+                IOLogger.Instance.LogPLCCommunication($"{ipAddress}:{port}", "Connect", ex.Message, false);
                 return false;
             }
         }
@@ -138,12 +139,12 @@ namespace IOLibrary.Hardware.Mitsubishi
                     var result = plc.Disconnect();
                     if (result.Success)
                     {
-                        Console.WriteLine("MCPlc: Disconnected successfully");
+                        IOLogger.Instance.LogPLCCommunication($"{ipAddress}:{port}", "Disconnect", "Disconnected successfully", true);
                         return true;
                     }
                     else
                     {
-                        Console.WriteLine($"MCPlc: Disconnect failed - {result.ErrorMessage}");
+                        IOLogger.Instance.LogPLCCommunication($"{ipAddress}:{port}", "Disconnect", result.ErrorMessage, false);
                         return false;
                     }
                 }
@@ -151,7 +152,7 @@ namespace IOLibrary.Hardware.Mitsubishi
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"MCPlc: Disconnect error - {ex.Message}");
+                IOLogger.Instance.LogPLCCommunication($"{ipAddress}:{port}", "Disconnect", ex.Message, false);
                 return false;
             }
         }
@@ -212,12 +213,12 @@ namespace IOLibrary.Hardware.Mitsubishi
                 }
                 else
                 {
-                    Console.WriteLine($"MCPlc: Failed to read input data - {result.ErrorMessage}");
+                    IOLogger.Instance.LogPLCCommunication(xAreaBaseAddress, "ReadInput", result.ErrorMessage, false);
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"MCPlc: Input sync error - {ex.Message}");
+                IOLogger.Instance.LogPLCCommunication(xAreaBaseAddress, "InputSync", ex.Message, false);
             }
         }
         
@@ -242,12 +243,12 @@ namespace IOLibrary.Hardware.Mitsubishi
                 
                 if (!result.Success)
                 {
-                    Console.WriteLine($"MCPlc: Failed to write output data - {result.ErrorMessage}");
+                    IOLogger.Instance.LogPLCCommunication(yAreaBaseAddress, "WriteOutput", result.ErrorMessage, false);
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"MCPlc: Output sync error - {ex.Message}");
+                IOLogger.Instance.LogPLCCommunication(yAreaBaseAddress, "OutputSync", ex.Message, false);
             }
         }
         
@@ -287,7 +288,7 @@ namespace IOLibrary.Hardware.Mitsubishi
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"MCPlc: Write output bit {bit} error - {ex.Message}");
+                IOLogger.Instance.LogPLCCommunication($"Y{bit}", "WriteOutBit", ex.Message, false);
                 return false;
             }
         }

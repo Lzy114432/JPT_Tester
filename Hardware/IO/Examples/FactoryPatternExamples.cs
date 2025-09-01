@@ -16,7 +16,7 @@ namespace IOLibrary.Examples
         /// </summary>
         public static LayeredIO CreateMitsubishiPLCWithBuilder()
         {
-            Console.WriteLine("=== 使用构建器模式创建三菱PLC ===");
+            //Console.WriteLine("=== 使用构建器模式创建三菱PLC ===");
             
             var mcPlc = new MCProtocolPlc();
             
@@ -36,7 +36,7 @@ namespace IOLibrary.Examples
         /// </summary>
         public static LayeredIO CreateIOC0640WithFactory()
         {
-            Console.WriteLine("=== 使用工厂直接创建IOC0640 ===");
+            //Console.WriteLine("=== 使用工厂直接创建IOC0640 ===");
             
             // 配置硬件
             var config = new HardwareIOConfig
@@ -68,7 +68,7 @@ namespace IOLibrary.Examples
         /// </summary>
         public static LayeredIO CreateWithFluentAPI()
         {
-            Console.WriteLine("=== 使用流式API创建 ===");
+            //Console.WriteLine("=== 使用流式API创建 ===");
             
             return LayeredIOBuilder.Create()
                 .WithIOC0640()                         // 选择IOC0640硬件
@@ -83,7 +83,7 @@ namespace IOLibrary.Examples
         /// </summary>
         public static LayeredIO CreateDynamicHardware(string hardwareTypeStr)
         {
-            Console.WriteLine($"=== 动态创建硬件: {hardwareTypeStr} ===");
+            //Console.WriteLine($"=== 动态创建硬件: {hardwareTypeStr} ===");
             
             HardwareType hardwareType;
             HardwareIOConfig config;
@@ -140,7 +140,7 @@ namespace IOLibrary.Examples
         /// </summary>
         public static void RegisterCustomHardware()
         {
-            Console.WriteLine("=== 注册自定义硬件类型 ===");
+            //Console.WriteLine("=== 注册自定义硬件类型 ===");
             
             // 注册自定义硬件创建器
             HardwareIOFactory.Register(HardwareType.Custom, config =>
@@ -165,14 +165,14 @@ namespace IOLibrary.Examples
         /// </summary>
         public static void CreateMultipleHardware()
         {
-            Console.WriteLine("=== 批量创建不同硬件 ===");
+            //Console.WriteLine("=== 批量创建不同硬件 ===");
             
             // 获取所有已注册的硬件类型
             var registeredTypes = HardwareIOFactory.GetRegisteredTypes();
             
             foreach (var type in registeredTypes)
             {
-                Console.WriteLine($"已注册硬件类型: {type}");
+                //Console.WriteLine($"已注册硬件类型: {type}");
                 
                 if (HardwareIOFactory.IsTypeRegistered(type))
                 {
@@ -195,11 +195,11 @@ namespace IOLibrary.Examples
                         };
                         
                         var hardware = HardwareIOFactory.Create(config);
-                        Console.WriteLine($"  创建成功: {hardware.HardwareType}");
+                        //Console.WriteLine($"  创建成功: {hardware.HardwareType}");
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"  创建失败: {ex.Message}");
+                        //Console.WriteLine($"  创建失败: {ex.Message}");
                     }
                 }
             }
@@ -214,38 +214,38 @@ namespace IOLibrary.Examples
             {
                 // 示例1: 构建器模式
                 var plcSystem = CreateMitsubishiPLCWithBuilder();
-                Console.WriteLine($"创建成功: {plcSystem.Name}");
+                //Console.WriteLine($"创建成功: {plcSystem.Name}");
                 plcSystem.Close();
-                Console.WriteLine();
+                //Console.WriteLine();
                 
                 // 示例2: 工厂模式
                 var iocSystem = CreateIOC0640WithFactory();
-                Console.WriteLine($"创建成功: {iocSystem.Name}");
+                //Console.WriteLine($"创建成功: {iocSystem.Name}");
                 iocSystem.Close();
-                Console.WriteLine();
+                //Console.WriteLine();
                 
                 // 示例3: 流式API
                 var testSystem = CreateWithFluentAPI();
-                Console.WriteLine($"创建成功: {testSystem.Name}");
+                //Console.WriteLine($"创建成功: {testSystem.Name}");
                 testSystem.Close();
-                Console.WriteLine();
+                //Console.WriteLine();
                 
                 // 示例4: 动态创建
                 var dynamicSystem = CreateDynamicHardware("plc");
-                Console.WriteLine($"创建成功: {dynamicSystem.Name}");
+                //Console.WriteLine($"创建成功: {dynamicSystem.Name}");
                 dynamicSystem.Close();
-                Console.WriteLine();
+                //Console.WriteLine();
                 
                 // 示例5: 注册自定义
                 RegisterCustomHardware();
-                Console.WriteLine();
+                //Console.WriteLine();
                 
                 // 示例6: 批量创建
                 CreateMultipleHardware();
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"示例运行出错: {ex.Message}");
+                //Console.WriteLine($"示例运行出错: {ex.Message}");
             }
         }
     }
