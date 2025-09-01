@@ -32,9 +32,9 @@ namespace Ewan.BusinessBonding
         private StreamRunner _safetyRunner;
 
         /// <summary>
-        /// 真实IO流程runner
+        /// IO轮询流程runner
         /// </summary>
-        private StreamRunner _realIORunner;
+        private StreamRunner _ioPollingRunner;
 
         #endregion
 
@@ -43,7 +43,7 @@ namespace Ewan.BusinessBonding
         private List<IModule> _mainModules = new List<IModule>();
         private List<IModule> _plcHeartModules = new List<IModule>();
         private List<IModule> _safetyModules = new List<IModule>();
-        private List<IModule> _realIOModules = new List<IModule>();
+        private List<IModule> _ioPollingModules = new List<IModule>();
 
         #endregion
 
@@ -74,13 +74,13 @@ namespace Ewan.BusinessBonding
             
             #endregion
 
-            #region //构造真实IO流程的节点并加入到对应runner
+            #region //构造IO轮询流程的节点并加入到对应runner
             
-            // 添加RealIOModule用于真实IO数据同步（200ms）
-            _realIOModules.Add(new RealIOModule());
+            // 添加IOPollingModule用于IO数据轮询（200ms）
+            _ioPollingModules.Add(new IOPollingModule());
             
-            // 创建真实IO流程runner
-            _realIORunner = new StreamRunner(_realIOModules);
+            // 创建IO轮询流程runner
+            _ioPollingRunner = new StreamRunner(_ioPollingModules);
             
             #endregion
 
@@ -99,8 +99,8 @@ namespace Ewan.BusinessBonding
                 StartPlcHeartStream();
                 //3.运行安全流程
                 StartSafetyStream();
-                //4.运行真实IO流程
-                StartRealIOStream();
+                //4.运行IO轮询流程
+                StartIOPollingStream();
                 
                 ////4.运行plc产能统计流程
                 //StartPlcProductCapacityStream();
@@ -131,8 +131,8 @@ namespace Ewan.BusinessBonding
             StopPlcHeartStream();
             //3.停止安全流程
             StopSafetyStream();
-            //4.停止真实IO流程
-            StopRealIOStream();
+            //4.停止IO轮询流程
+            StopIOPollingStream();
 
             ////...n.停止其他流程
             //StopOtherStream();
@@ -173,13 +173,13 @@ namespace Ewan.BusinessBonding
         }
 
         /// <summary>
-        /// 启动真实IO流程
+        /// 启动IO轮询流程
         /// </summary>
-        private void StartRealIOStream()
+        private void StartIOPollingStream()
         {
-            if (_realIORunner != null)
+            if (_ioPollingRunner != null)
             {
-                _realIORunner.Start();
+                _ioPollingRunner.Start();
             }
         }
 
@@ -219,11 +219,11 @@ namespace Ewan.BusinessBonding
         }
 
         /// <summary>
-        /// 停止真实IO流程
+        /// 停止IO轮询流程
         /// </summary>
-        private void StopRealIOStream()
+        private void StopIOPollingStream()
         {
-            _realIORunner?.Stop();
+            _ioPollingRunner?.Stop();
         }
 
         ///// <summary>

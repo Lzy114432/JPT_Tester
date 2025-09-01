@@ -197,7 +197,7 @@ namespace Ewan.Core.IO
             int inputCount = _layeredIO.InputCount;
             for (int i = 0; i < inputCount; i++)
             {
-                _layeredIO.AddInputMapping(i, i, $"X{i + 1}", true);
+                _layeredIO.AddInputMapping(i, i, $"X{i}", true);  // 从X0开始
             }
             _uiLogger.Info(() => Ewan.Resources.LogMessages.IOInputMappingsCreated, inputCount);
             
@@ -205,7 +205,7 @@ namespace Ewan.Core.IO
             int outputCount = _layeredIO.OutputCount;
             for (int i = 0; i < outputCount; i++)
             {
-                _layeredIO.AddOutputMapping(i, i, $"Y{i + 1}", true);
+                _layeredIO.AddOutputMapping(i, i, $"Y{i}", true);  // 从Y0开始
             }
             _uiLogger.Info(() => Ewan.Resources.LogMessages.IOOutputMappingsCreated, outputCount);
             

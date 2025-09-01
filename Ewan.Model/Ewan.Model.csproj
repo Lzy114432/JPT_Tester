@@ -60,7 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IO\RealIO.cs" />
+    <Compile Include="IO\IOStatus.cs" />
     <Compile Include="Messages\UILogMsg.cs" />
     <Compile Include="Permission\PermissionConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

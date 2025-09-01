@@ -303,7 +303,7 @@
                             Content="{Binding MappingConfigText}"
                             Style="{StaticResource ModernButton}"
                             Width="160"
-                            Background="{StaticResource AccentColor}"
+                            Background="{Binding MappingButtonBackground}"
                             Command="{Binding MappingConfigCommand}"/>
                     
                     <!-- 分隔区域 -->

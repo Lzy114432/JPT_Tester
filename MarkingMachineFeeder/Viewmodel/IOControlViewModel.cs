@@ -21,7 +21,7 @@ namespace MarkingMachineFeeder.Viewmodel
         private readonly UILogger _uiLogger = new UILogger(typeof(Ewan.Resources.LogMessages));
         private readonly MsgManager _msgManager = MsgManager.Instance();
         private DispatcherTimer _clockTimer;
-        private RealIO _realIO;
+        private IOStatus _realIO;
         private MsgListener _ioUpdateListener;
 
         #region Properties
@@ -235,6 +235,30 @@ namespace MarkingMachineFeeder.Viewmodel
             }
         }
 
+        private bool _isMappingMode = true; // 默认显示映射值
+        public bool IsMappingMode
+        {
+            get => _isMappingMode;
+            set
+            {
+                if (SetProperty(ref _isMappingMode, value))
+                {
+                    // 更新按钮文本和颜色
+                    UpdateMappingButtonDisplay();
+                    // 通知IOPollingModule切换模式
+                    Ewan.Core.Module.IOPollingModule.SetMappingMode(value);
+                }
+            }
+        }
+
+        // 按钮背景颜色属性
+        private string _mappingButtonBackground = "#32CD32"; // 默认绿色(AccentColor)
+        public string MappingButtonBackground
+        {
+            get => _mappingButtonBackground;
+            set => SetProperty(ref _mappingButtonBackground, value);
+        }
+
         #endregion
 
         #region Commands
@@ -269,6 +293,10 @@ namespace MarkingMachineFeeder.Viewmodel
             InputPageDownCommand = new DelegateCommand(ExecuteInputPageDown);
             OutputPageUpCommand = new DelegateCommand(ExecuteOutputPageUp);
             OutputPageDownCommand = new DelegateCommand(ExecuteOutputPageDown);
+
+            // Initialize mapping mode (默认映射模式)
+            IsMappingMode = true;
+            UpdateMappingButtonDisplay();
 
             // Initialize IO points collections
             InputPoints = new ObservableCollection<IOPointViewModel>();
@@ -450,11 +478,21 @@ namespace MarkingMachineFeeder.Viewmodel
 
         private void ExecuteMappingConfig()
         {
-            MessageBox.Show(
-                Ewan.Resources.IOControlStrings.MappingConfigMessage,
-                Ewan.Resources.IOControlStrings.MessageBoxTitle,
-                MessageBoxButton.OK,
-                MessageBoxImage.Information);
+            // 切换映射模式
+            IsMappingMode = !IsMappingMode;
+            
+            // 显示提示信息
+            string modeText = IsMappingMode ? 
+                "映射模式" : 
+                "真实模式";
+            
+            _uiLogger.Info(() => Ewan.Resources.LogMessages.ModuleInitialized, $"IO模式切换: {modeText}");
+            
+            // 切换后重新更新显示
+            if (_realIO != null)
+            {
+                UpdateAllIOPoints();
+            }
         }
 
         private void ExecuteOutputTest()
@@ -510,6 +548,21 @@ namespace MarkingMachineFeeder.Viewmodel
                 CurrentOutputPage++;
             }
         }
+        
+        private void UpdateMappingButtonDisplay()
+        {
+            // 根据模式更新按钮文本和颜色
+            if (IsMappingMode)
+            {
+                MappingConfigText = "🔄 映射"; // 映射模式
+                MappingButtonBackground = "#32CD32"; // 绿色 (AccentColor)
+            }
+            else
+            {
+                MappingConfigText = "✅ 真实"; // 真实模式  
+                MappingButtonBackground = "#4682B4"; // 蓝色 (PrimaryColor)
+            }
+        }
 
         #endregion
 
@@ -525,7 +578,7 @@ namespace MarkingMachineFeeder.Viewmodel
         private void InitializeIOPoints()
         {
             // 初始化64个输入点和64个输出点的视图模型
-            for (int i = 1; i <= 64; i++)
+            for (int i = 0; i < 64; i++)
             {
                 InputPoints.Add(new IOPointViewModel { Index = i, Name = $"X{i}", IsOn = false });
                 OutputPoints.Add(new IOPointViewModel { Index = i, Name = $"Y{i}", IsOn = false });
@@ -586,12 +639,36 @@ namespace MarkingMachineFeeder.Viewmodel
             for (int i = 0; i < 64; i++)
             {
                 InputPoints[i].IsOn = _realIO.X[i];
+                
+                // 根据模式更新名称
+                if (IsMappingMode && _realIO.XNames != null && _realIO.XNames[i] != null)
+                {
+                    // 映射模式：使用映射配置中的名称
+                    InputPoints[i].Name = _realIO.XNames[i];
+                }
+                else
+                {
+                    // 真实模式：使用默认名称 X0开始
+                    InputPoints[i].Name = $"X{i}";
+                }
             }
 
             // 更新所有输出点
             for (int i = 0; i < 64; i++)
             {
                 OutputPoints[i].IsOn = _realIO.Y[i];
+                
+                // 根据模式更新名称
+                if (IsMappingMode && _realIO.YNames != null && _realIO.YNames[i] != null)
+                {
+                    // 映射模式：使用映射配置中的名称
+                    OutputPoints[i].Name = _realIO.YNames[i];
+                }
+                else
+                {
+                    // 真实模式：使用默认名称 Y0开始
+                    OutputPoints[i].Name = $"Y{i}";
+                }
             }
 
             // 更新连接状态
@@ -608,7 +685,7 @@ namespace MarkingMachineFeeder.Viewmodel
 
         private void OnIOUpdateMessage(MessageModel message)
         {
-            if (message.Subject == MsgSubject.IOUpdate && message.Data is RealIO realIO)
+            if (message.Subject == MsgSubject.IOUpdate && message.Data is IOStatus realIO)
             {
                 Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {
