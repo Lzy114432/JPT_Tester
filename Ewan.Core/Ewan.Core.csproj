@@ -71,9 +71,11 @@
     <Compile Include="Attribute\ManagerAttribute.cs" />
     <Compile Include="BaseManager.cs" />
     <Compile Include="Culture\CultureManager.cs" />
+    <Compile Include="IO\LayeredIOManager.cs" />
     <Compile Include="Logger\UILogger.cs" />
     <Compile Include="Module\BaseModule.cs" />
     <Compile Include="Module\Interface\IModule.cs" />
+    <Compile Include="Module\SafetyModule.cs" />
     <Compile Include="Msg\MessageModel.cs" />
     <Compile Include="Msg\MsgListener.cs" />
     <Compile Include="Msg\MsgManager.cs" />
@@ -104,6 +106,14 @@
     <ProjectReference Include="..\Ewan.Resources\Ewan.Resources.csproj">
       <Project>{b8e5b123-4567-8901-2345-6789abcd1234}</Project>
       <Name>Ewan.Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hardware\IO\IOLibrary.csproj">
+      <Project>{aaaa1111-2222-3333-4444-555566667777}</Project>
+      <Name>IOLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hardware\PlcCommunication\PlcCommunication.csproj">
+      <Project>{bbbb1111-2222-3333-4444-555566667777}</Project>
+      <Name>PlcCommunication</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

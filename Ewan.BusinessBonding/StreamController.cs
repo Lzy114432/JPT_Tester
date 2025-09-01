@@ -1,5 +1,6 @@
 ﻿using Ewan.Core;
 using Ewan.Core.Attribute;
+using Ewan.Core.Module;
 using Ewan.Core.Module.Interface;
 using Ewan.Core.Run;
 using System;
@@ -25,22 +26,29 @@ namespace Ewan.BusinessBonding
         /// </summary>
         private StreamRunner _plcHeartRunner;
 
+        /// <summary>
+        /// 安全流程runner
+        /// </summary>
+        private StreamRunner _safetyRunner;
+
         #endregion
 
         #region 节点集合
 
         private List<IModule> _mainModules = new List<IModule>();
         private List<IModule> _plcHeartModules = new List<IModule>();
-
+        private List<IModule> _safetyModules = new List<IModule>();
 
         #endregion
 
         public override bool Init()
         {
             #region  //构造主流程的节点并加入到对应runner
+            
             //_mainModules.Add(new PlcModule());//测试可以换成数据模拟节点 根据配置决定加载哪个PLC节点
             //_mainModules.Add(new AlarmModule<PlcModel>());
             //_mainRunner = new StreamRunner(_mainModules);
+            
             #endregion
 
             #region //构造plc心跳流程的节点并加入到对应runner
@@ -50,6 +58,15 @@ namespace Ewan.BusinessBonding
 
             #endregion
 
+            #region //构造安全流程的节点并加入到对应runner
+            
+            // 添加SafetyModule用于IO数据同步
+            _safetyModules.Add(new SafetyModule());
+            
+            // 创建安全流程runner
+            _safetyRunner = new StreamRunner(_safetyModules);
+            
+            #endregion
 
             return base.Init();
         }
@@ -64,7 +81,10 @@ namespace Ewan.BusinessBonding
                 StartMainStream();
                 //2.运行plc心跳流程
                 StartPlcHeartStream();
-                ////3.运行plc产能统计流程
+                //3.运行安全流程
+                StartSafetyStream();
+                
+                ////4.运行plc产能统计流程
                 //StartPlcProductCapacityStream();
 
                 ////...n.运行其他流程
@@ -76,6 +96,7 @@ namespace Ewan.BusinessBonding
                 ////停止流程
                 //StopMainStream();
                 //StopPlcHeartStream();
+                //StopSafetyStream();
                 //StopPlcProductCapacityStream();
                 //StopOtherStream();
             }
@@ -90,6 +111,8 @@ namespace Ewan.BusinessBonding
             StopMainStream();
             //2.停止plc心跳流程
             StopPlcHeartStream();
+            //3.停止安全流程
+            StopSafetyStream();
 
             ////...n.停止其他流程
             //StopOtherStream();
@@ -118,6 +141,17 @@ namespace Ewan.BusinessBonding
             }
         }
 
+        /// <summary>
+        /// 启动安全流程
+        /// </summary>
+        private void StartSafetyStream()
+        {
+            if (_safetyRunner != null)
+            {
+                _safetyRunner.Start();
+            }
+        }
+
         ///// <summary>
         ///// 启动产能流程
         ///// </summary>
@@ -134,7 +168,7 @@ namespace Ewan.BusinessBonding
         /// </summary>
         private void StopMainStream()
         {
-            _mainRunner.Stop();
+            _mainRunner?.Stop();
         }
 
         /// <summary>
@@ -142,7 +176,15 @@ namespace Ewan.BusinessBonding
         /// </summary>
         private void StopPlcHeartStream()
         {
-            _plcHeartRunner.Stop();
+            _plcHeartRunner?.Stop();
+        }
+
+        /// <summary>
+        /// 停止安全流程
+        /// </summary>
+        private void StopSafetyStream()
+        {
+            _safetyRunner?.Stop();
         }
 
         ///// <summary>
