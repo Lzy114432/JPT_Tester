@@ -7,6 +7,7 @@ This file provides comprehensive guidance for Claude Code (claude.ai/code) when 
 - [Quick Reference](#quick-reference)
 - [Project Overview](#project-overview)
 - [Architecture](#architecture)
+- [Stream Process Management](#stream-process-management)
 - [Development Guidelines](#development-guidelines)
 - [Security System](#security-system)
 - [Internationalization](#internationalization)
@@ -104,6 +105,238 @@ public class MyViewModel : BindableBase
     {
         _securityManager.UserAuthenticated += OnUserAuthenticated;
         _cultureManager.CultureChanged += OnCultureChanged;
+    }
+}
+```
+
+---
+
+## Stream Process Management
+
+### Overview
+The application uses a multi-stream architecture where different processes run independently and concurrently. Each stream is managed by a `StreamRunner` that executes a collection of `IModule` implementations.
+
+### Stream Architecture
+
+**Current Stream Types:**
+1. **Main Stream** (`_mainRunner`) - Primary business logic
+2. **PLC Heart Stream** (`_plcHeartRunner`) - PLC heartbeat monitoring
+3. **Safety Stream** (`_safetyRunner`) - IO synchronization and safety monitoring
+
+**Stream Components:**
+```csharp
+// StreamController.cs structure
+public class StreamController : BaseManager<StreamController>
+{
+    // Stream Runners
+    private StreamRunner _mainRunner;
+    private StreamRunner _plcHeartRunner;
+    private StreamRunner _safetyRunner;
+    
+    // Module Collections
+    private List<IModule> _mainModules = new List<IModule>();
+    private List<IModule> _plcHeartModules = new List<IModule>();
+    private List<IModule> _safetyModules = new List<IModule>();
+}
+```
+
+### Adding a New Stream Process
+
+**Step 1: Create Module Class**
+```csharp
+// Location: Ewan.Core\Module\YourModule.cs
+using Ewan.Core.Module;
+
+public class YourModule : BaseModule<YourModule>
+{
+    protected override void OnInit()
+    {
+        // Initialize module resources
+        _uiLogger.Info(() => Ewan.Resources.LogMessages.ModuleInitialized, "YourModule");
+    }
+    
+    protected override bool OnRun()
+    {
+        // Module logic - called in loop
+        // Return true to continue, false to stop
+        
+        System.Threading.Thread.Sleep(100); // Control loop speed
+        return true;
+    }
+    
+    protected override void OnDestroy()
+    {
+        // Cleanup resources
+        _uiLogger.Info(() => Ewan.Resources.LogMessages.ModuleDestroyed, "YourModule");
+    }
+}
+```
+
+**Step 2: Add Stream Runner and Module Collection**
+```csharp
+// In StreamController.cs
+
+#region Stream Runners
+private StreamRunner _yourStreamRunner;
+#endregion
+
+#region Module Collections
+private List<IModule> _yourModules = new List<IModule>();
+#endregion
+```
+
+**Step 3: Initialize Stream in Init()**
+```csharp
+public override bool Init()
+{
+    #region // Construct your stream nodes and add to runner
+    
+    // Add modules to collection
+    _yourModules.Add(new YourModule());
+    // Can add multiple modules to same stream
+    // _yourModules.Add(new AnotherModule());
+    
+    // Create stream runner
+    _yourStreamRunner = new StreamRunner(_yourModules);
+    
+    #endregion
+    
+    return base.Init();
+}
+```
+
+**Step 4: Add Start/Stop Methods**
+```csharp
+// In StartRun()
+public void StartRun()
+{
+    try
+    {
+        // ... existing streams
+        
+        // Start your stream
+        StartYourStream();
+    }
+    catch (Exception ex)
+    {
+        // Handle errors
+    }
+}
+
+// In StopRun()
+public void StopRun()
+{
+    // ... existing streams
+    
+    // Stop your stream
+    StopYourStream();
+}
+
+// Private methods
+private void StartYourStream()
+{
+    if (_yourStreamRunner != null)
+    {
+        _yourStreamRunner.Start();
+    }
+}
+
+private void StopYourStream()
+{
+    _yourStreamRunner?.Stop();
+}
+```
+
+### Module Development Guidelines
+
+**1. Module Lifecycle**
+- `OnInit()`: Called once when module initializes
+- `OnRun()`: Called repeatedly in a loop while stream is running
+- `OnDestroy()`: Called once when module is destroyed
+
+**2. Best Practices**
+- Always include sleep/delay in `OnRun()` to control CPU usage
+- Use `_uiLogger` for logging with resource strings
+- Return `false` from `OnRun()` to stop the stream
+- Handle exceptions properly to prevent stream crashes
+
+**3. Common Module Patterns**
+
+**Data Sync Module:**
+```csharp
+public class SafetyModule : BaseModule<SafetyModule>
+{
+    private LayeredIOManager _ioManager;
+    private int _scanInterval = 10; // ms
+    
+    protected override bool OnRun()
+    {
+        if (_layeredIO != null && _ioManager.IsConnected)
+        {
+            _layeredIO.DataSync();
+        }
+        
+        Thread.Sleep(_scanInterval);
+        return true;
+    }
+}
+```
+
+**Monitoring Module:**
+```csharp
+public class PlcHeartModule : BaseModule<PlcHeartModule>
+{
+    private int _heartbeatInterval = 1000; // ms
+    
+    protected override bool OnRun()
+    {
+        // Check PLC status
+        bool plcAlive = CheckPlcStatus();
+        
+        if (!plcAlive)
+        {
+            _uiLogger.Warning(() => LogMessages.PlcHeartbeatLost);
+        }
+        
+        Thread.Sleep(_heartbeatInterval);
+        return true;
+    }
+}
+```
+
+### Stream Priority and Dependencies
+
+**Initialization Order (by Manager Priority):**
+1. Priority 0: SecurityManager, CultureManager
+2. Priority 1: LayeredIOManager
+3. Priority 3: StreamController
+
+**Stream Start Order (in StartRun):**
+1. Main Stream
+2. PLC Heart Stream  
+3. Safety Stream
+4. Other streams...
+
+**Important:** Safety-critical streams should start first and stop last.
+
+### Debugging Streams
+
+**Check Stream Status:**
+```csharp
+// In StreamController
+public bool IsMainStreamRunning => _mainRunner?.IsRunning ?? false;
+public bool IsSafetyStreamRunning => _safetyRunner?.IsRunning ?? false;
+```
+
+**Log Stream Events:**
+```csharp
+private void StartSafetyStream()
+{
+    if (_safetyRunner != null)
+    {
+        _uiLogger.Info(() => LogMessages.StreamStarting, "Safety");
+        _safetyRunner.Start();
+        _uiLogger.Info(() => LogMessages.StreamStarted, "Safety");
     }
 }
 ```

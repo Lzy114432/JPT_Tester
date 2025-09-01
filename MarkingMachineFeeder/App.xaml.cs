@@ -4,6 +4,7 @@ using Ewan.BusinessBonding;
 using Ewan.Core.Logger;
 using Ewan.Core.Culture;
 using Ewan.Core.Security;
+using Ewan.Core.IO;  // 添加LayeredIOManager的引用
 using log4net;
 using log4net.Config;
 using Prism.Mvvm;
@@ -34,6 +35,10 @@ namespace MarkingMachineFeeder
                 _uiLogger.Warn(() => Ewan.Resources.LogMessages.Log4netConfigNotFound);
             }
 
+            // 强制引用LayeredIOManager以确保程序集被加载
+            var layeredIOType = typeof(LayeredIOManager);
+            _uiLogger.Debug(() => Ewan.Resources.LogMessages.TypeLoaded, layeredIOType.Name);
+
             // 初始化Ewan.BusinessBonding MainController (包含所有Managers)
             if (MainController.Instance().Initialize())
             {
@@ -59,6 +64,11 @@ namespace MarkingMachineFeeder
 
             _uiLogger.Info(() => Ewan.Resources.LogMessages.SystemInitialized);
 
+            // 启动流程
+            var streamController = StreamController.Instance();
+            streamController.StartRun();
+            _uiLogger.Info(() => Ewan.Resources.LogMessages.StreamProcessStarted);
+
             // 手动配置Prism ViewModelLocator
             ConfigureViewModelLocator();
 
@@ -72,6 +82,17 @@ namespace MarkingMachineFeeder
             ViewModelLocationProvider.Register<Windows.LogWindow, LogWindowViewModel>();
             
             _uiLogger.Info(() => Ewan.Resources.LogMessages.ViewModelLocatorConfigured);
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            // 停止所有流程
+            var streamController = StreamController.Instance();
+            streamController.StopRun();
+            _uiLogger.Info(() => Ewan.Resources.LogMessages.StreamProcessStopped);
+
+            // 调用基类方法
+            base.OnExit(e);
         }
     }
 }
