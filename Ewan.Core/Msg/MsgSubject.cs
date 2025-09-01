@@ -7,5 +7,6 @@
     {
         None,
         UILog,
+        IOUpdate,  // IO数据更新消息
     }
 }

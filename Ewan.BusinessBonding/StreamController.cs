@@ -31,6 +31,11 @@ namespace Ewan.BusinessBonding
         /// </summary>
         private StreamRunner _safetyRunner;
 
+        /// <summary>
+        /// 真实IO流程runner
+        /// </summary>
+        private StreamRunner _realIORunner;
+
         #endregion
 
         #region 节点集合
@@ -38,6 +43,7 @@ namespace Ewan.BusinessBonding
         private List<IModule> _mainModules = new List<IModule>();
         private List<IModule> _plcHeartModules = new List<IModule>();
         private List<IModule> _safetyModules = new List<IModule>();
+        private List<IModule> _realIOModules = new List<IModule>();
 
         #endregion
 
@@ -68,6 +74,16 @@ namespace Ewan.BusinessBonding
             
             #endregion
 
+            #region //构造真实IO流程的节点并加入到对应runner
+            
+            // 添加RealIOModule用于真实IO数据同步（200ms）
+            _realIOModules.Add(new RealIOModule());
+            
+            // 创建真实IO流程runner
+            _realIORunner = new StreamRunner(_realIOModules);
+            
+            #endregion
+
             return base.Init();
         }
         /// <summary>
@@ -83,6 +99,8 @@ namespace Ewan.BusinessBonding
                 StartPlcHeartStream();
                 //3.运行安全流程
                 StartSafetyStream();
+                //4.运行真实IO流程
+                StartRealIOStream();
                 
                 ////4.运行plc产能统计流程
                 //StartPlcProductCapacityStream();
@@ -113,6 +131,8 @@ namespace Ewan.BusinessBonding
             StopPlcHeartStream();
             //3.停止安全流程
             StopSafetyStream();
+            //4.停止真实IO流程
+            StopRealIOStream();
 
             ////...n.停止其他流程
             //StopOtherStream();
@@ -152,6 +172,17 @@ namespace Ewan.BusinessBonding
             }
         }
 
+        /// <summary>
+        /// 启动真实IO流程
+        /// </summary>
+        private void StartRealIOStream()
+        {
+            if (_realIORunner != null)
+            {
+                _realIORunner.Start();
+            }
+        }
+
         ///// <summary>
         ///// 启动产能流程
         ///// </summary>
@@ -185,6 +216,14 @@ namespace Ewan.BusinessBonding
         private void StopSafetyStream()
         {
             _safetyRunner?.Stop();
+        }
+
+        /// <summary>
+        /// 停止真实IO流程
+        /// </summary>
+        private void StopRealIOStream()
+        {
+            _realIORunner?.Stop();
         }
 
         ///// <summary>

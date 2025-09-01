@@ -1,5 +1,6 @@
 using Ewan.Core.IO;
 using Ewan.Core.Msg;
+using Ewan.LogManager.Logger;
 using IOLibrary.Core.Layered;
 using System;
 using System.Diagnostics;
@@ -86,9 +87,10 @@ namespace Ewan.Core.Module
                 _avgSyncTime = (_avgSyncTime * (_syncCount - 1) + _performanceWatch.ElapsedMilliseconds) / _syncCount;
                 
                 // 每1000次输出一次性能报告
-                if (_syncCount % 1000 == 0)
+                if (_syncCount % 100 == 0)
                 {
-                    _uiLogger.Debug(() => $"IO同步性能: 平均{_avgSyncTime:F2}ms, 当前{_performanceWatch.ElapsedMilliseconds}ms");
+                    IOLogger.Instance.LogRaw(LogLevel.Debug, 
+                        $"IO同步性能: 平均{_avgSyncTime:F2}ms, 当前{_performanceWatch.ElapsedMilliseconds}ms");
                 }
 
                 // 延时控制循环速度

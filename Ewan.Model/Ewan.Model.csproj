@@ -14,52 +14,41 @@
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    
     <DebugSymbols>true</DebugSymbols>
-    
     <DebugType>full</DebugType>
-    
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    
     <ErrorReport>prompt</ErrorReport>
-    
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    
     <DebugType>pdbonly</DebugType>
-    
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    
     <DefineConstants>TRACE</DefineConstants>
-    
     <ErrorReport>prompt</ErrorReport>
-    
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">    
-    <PlatformTarget>x64</PlatformTarget>    
-    <DebugSymbols>true</DebugSymbols>    
-    <DebugType>full</DebugType>    
-    <Optimize>false</Optimize>    
-    <OutputPath>bindDebug</OutputPath>    
-    <DefineConstants>DEBUG;TRACE</DefineConstants>    
-    <ErrorReport>prompt</ErrorReport>    
-    <WarningLevel>4</WarningLevel>  
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bindDebug</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">    
-    <PlatformTarget>x64</PlatformTarget>    
-    <DebugType>pdbonly</DebugType>    
-    <Optimize>true</Optimize>    
-    <OutputPath>bindRelease</OutputPath>    
-    <DefineConstants>TRACE</DefineConstants>    
-    <ErrorReport>prompt</ErrorReport>    
-    <WarningLevel>4</WarningLevel>  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bindRelease</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -71,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IO\RealIO.cs" />
     <Compile Include="Messages\UILogMsg.cs" />
     <Compile Include="Permission\PermissionConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

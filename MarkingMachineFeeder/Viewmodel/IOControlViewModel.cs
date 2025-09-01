@@ -6,7 +6,12 @@ using Prism.Commands;
 using Prism.Mvvm;
 using Ewan.Core.Culture;
 using Ewan.Core.Logger;
+using Ewan.Core.Msg;
+using Ewan.Model.IO;
+using Ewan.Model.Messages;
 using Ewan.Model.Security;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MarkingMachineFeeder.Viewmodel
 {
@@ -14,7 +19,10 @@ namespace MarkingMachineFeeder.Viewmodel
     {
         private readonly CultureManager _cultureManager = CultureManager.Instance();
         private readonly UILogger _uiLogger = new UILogger(typeof(Ewan.Resources.LogMessages));
+        private readonly MsgManager _msgManager = MsgManager.Instance();
         private DispatcherTimer _clockTimer;
+        private RealIO _realIO;
+        private MsgListener _ioUpdateListener;
 
         #region Properties
 
@@ -157,6 +165,76 @@ namespace MarkingMachineFeeder.Viewmodel
             }
         }
 
+        // IO点位显示集合
+        private ObservableCollection<IOPointViewModel> _inputPoints;
+        public ObservableCollection<IOPointViewModel> InputPoints
+        {
+            get => _inputPoints;
+            set => SetProperty(ref _inputPoints, value);
+        }
+
+        private ObservableCollection<IOPointViewModel> _outputPoints;
+        public ObservableCollection<IOPointViewModel> OutputPoints
+        {
+            get => _outputPoints;
+            set => SetProperty(ref _outputPoints, value);
+        }
+
+        // 两列显示的IO点位
+        private ObservableCollection<IOPointViewModel> _inputPointsColumn1;
+        public ObservableCollection<IOPointViewModel> InputPointsColumn1
+        {
+            get => _inputPointsColumn1;
+            set => SetProperty(ref _inputPointsColumn1, value);
+        }
+
+        private ObservableCollection<IOPointViewModel> _inputPointsColumn2;
+        public ObservableCollection<IOPointViewModel> InputPointsColumn2
+        {
+            get => _inputPointsColumn2;
+            set => SetProperty(ref _inputPointsColumn2, value);
+        }
+
+        private ObservableCollection<IOPointViewModel> _outputPointsColumn1;
+        public ObservableCollection<IOPointViewModel> OutputPointsColumn1
+        {
+            get => _outputPointsColumn1;
+            set => SetProperty(ref _outputPointsColumn1, value);
+        }
+
+        private ObservableCollection<IOPointViewModel> _outputPointsColumn2;
+        public ObservableCollection<IOPointViewModel> OutputPointsColumn2
+        {
+            get => _outputPointsColumn2;
+            set => SetProperty(ref _outputPointsColumn2, value);
+        }
+
+        private int _currentInputPage = 0;
+        public int CurrentInputPage
+        {
+            get => _currentInputPage;
+            set
+            {
+                if (SetProperty(ref _currentInputPage, value))
+                {
+                    UpdateInputPageDisplay();
+                }
+            }
+        }
+
+        private int _currentOutputPage = 0;
+        public int CurrentOutputPage
+        {
+            get => _currentOutputPage;
+            set
+            {
+                if (SetProperty(ref _currentOutputPage, value))
+                {
+                    UpdateOutputPageDisplay();
+                }
+            }
+        }
+
         #endregion
 
         #region Commands
@@ -167,6 +245,12 @@ namespace MarkingMachineFeeder.Viewmodel
         public DelegateCommand OutputTestCommand { get; }
         public DelegateCommand MinimizeCommand { get; }
         public DelegateCommand CloseCommand { get; }
+        
+        // Page navigation commands
+        public DelegateCommand InputPageUpCommand { get; }
+        public DelegateCommand InputPageDownCommand { get; }
+        public DelegateCommand OutputPageUpCommand { get; }
+        public DelegateCommand OutputPageDownCommand { get; }
 
         #endregion
 
@@ -179,6 +263,25 @@ namespace MarkingMachineFeeder.Viewmodel
             OutputTestCommand = new DelegateCommand(ExecuteOutputTest);
             MinimizeCommand = new DelegateCommand(ExecuteMinimize);
             CloseCommand = new DelegateCommand(ExecuteClose);
+            
+            // Initialize page navigation commands
+            InputPageUpCommand = new DelegateCommand(ExecuteInputPageUp);
+            InputPageDownCommand = new DelegateCommand(ExecuteInputPageDown);
+            OutputPageUpCommand = new DelegateCommand(ExecuteOutputPageUp);
+            OutputPageDownCommand = new DelegateCommand(ExecuteOutputPageDown);
+
+            // Initialize IO points collections
+            InputPoints = new ObservableCollection<IOPointViewModel>();
+            OutputPoints = new ObservableCollection<IOPointViewModel>();
+            InputPointsColumn1 = new ObservableCollection<IOPointViewModel>();
+            InputPointsColumn2 = new ObservableCollection<IOPointViewModel>();
+            OutputPointsColumn1 = new ObservableCollection<IOPointViewModel>();
+            OutputPointsColumn2 = new ObservableCollection<IOPointViewModel>();
+            InitializeIOPoints();
+
+            // Subscribe to messages
+            _ioUpdateListener = new MsgListener(MsgSubject.IOUpdate, OnIOUpdateMessage);
+            _msgManager.RegisterListener(_ioUpdateListener);
 
             // Subscribe to culture change events
             _cultureManager.CultureChanged += OnCultureChanged;
@@ -373,6 +476,40 @@ namespace MarkingMachineFeeder.Viewmodel
             _clockTimer?.Stop();
             Application.Current.Windows[Application.Current.Windows.Count - 1].Close();
         }
+        
+        private void ExecuteInputPageUp()
+        {
+            if (CurrentInputPage > 0)
+            {
+                CurrentInputPage--;
+            }
+        }
+        
+        private void ExecuteInputPageDown()
+        {
+            // 4 pages total (0-3), each page shows 16 points
+            if (CurrentInputPage < 3)
+            {
+                CurrentInputPage++;
+            }
+        }
+        
+        private void ExecuteOutputPageUp()
+        {
+            if (CurrentOutputPage > 0)
+            {
+                CurrentOutputPage--;
+            }
+        }
+        
+        private void ExecuteOutputPageDown()
+        {
+            // 4 pages total (0-3), each page shows 16 points
+            if (CurrentOutputPage < 3)
+            {
+                CurrentOutputPage++;
+            }
+        }
 
         #endregion
 
@@ -380,6 +517,134 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             _clockTimer?.Stop();
             _cultureManager.CultureChanged -= OnCultureChanged;
+            _msgManager.UnRegisterListener(_ioUpdateListener);
+        }
+
+        #region IO Points Management
+
+        private void InitializeIOPoints()
+        {
+            // 初始化64个输入点和64个输出点的视图模型
+            for (int i = 1; i <= 64; i++)
+            {
+                InputPoints.Add(new IOPointViewModel { Index = i, Name = $"X{i}", IsOn = false });
+                OutputPoints.Add(new IOPointViewModel { Index = i, Name = $"Y{i}", IsOn = false });
+            }
+            
+            // 初始化第一页显示
+            UpdateInputPageDisplay();
+            UpdateOutputPageDisplay();
+        }
+
+        private void UpdateInputPageDisplay()
+        {
+            InputPointsColumn1.Clear();
+            InputPointsColumn2.Clear();
+            
+            // 每页显示16个点（两列，每列8个）
+            int startIndex = CurrentInputPage * 16;
+            
+            // 左列: X0-X7 (或对应页的前8个)
+            for (int i = 0; i < 8 && startIndex + i < 64; i++)
+            {
+                InputPointsColumn1.Add(InputPoints[startIndex + i]);
+            }
+            
+            // 右列: X8-X15 (或对应页的后8个)
+            for (int i = 8; i < 16 && startIndex + i < 64; i++)
+            {
+                InputPointsColumn2.Add(InputPoints[startIndex + i]);
+            }
+        }
+
+        private void UpdateOutputPageDisplay()
+        {
+            OutputPointsColumn1.Clear();
+            OutputPointsColumn2.Clear();
+            
+            // 每页显示16个点（两列，每列8个）
+            int startIndex = CurrentOutputPage * 16;
+            
+            // 左列: Y0-Y7 (或对应页的前8个)
+            for (int i = 0; i < 8 && startIndex + i < 64; i++)
+            {
+                OutputPointsColumn1.Add(OutputPoints[startIndex + i]);
+            }
+            
+            // 右列: Y8-Y15 (或对应页的后8个)
+            for (int i = 8; i < 16 && startIndex + i < 64; i++)
+            {
+                OutputPointsColumn2.Add(OutputPoints[startIndex + i]);
+            }
+        }
+
+        private void UpdateAllIOPoints()
+        {
+            if (_realIO == null) return;
+
+            // 更新所有输入点
+            for (int i = 0; i < 64; i++)
+            {
+                InputPoints[i].IsOn = _realIO.X[i];
+            }
+
+            // 更新所有输出点
+            for (int i = 0; i < 64; i++)
+            {
+                OutputPoints[i].IsOn = _realIO.Y[i];
+            }
+
+            // 更新连接状态
+            IsConnected = _realIO.IsConnected;
+            
+            // 更新当前页显示
+            UpdateInputPageDisplay();
+            UpdateOutputPageDisplay();
+        }
+
+        #endregion
+
+        #region Message Handling
+
+        private void OnIOUpdateMessage(MessageModel message)
+        {
+            if (message.Subject == MsgSubject.IOUpdate && message.Data is RealIO realIO)
+            {
+                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    _realIO = realIO;
+                    UpdateAllIOPoints();
+                }));
+            }
+        }
+
+        #endregion
+    }
+
+    /// <summary>
+    /// IO点位视图模型
+    /// </summary>
+    public class IOPointViewModel : BindableBase
+    {
+        private int _index;
+        public int Index
+        {
+            get => _index;
+            set => SetProperty(ref _index, value);
+        }
+
+        private string _name;
+        public string Name
+        {
+            get => _name;
+            set => SetProperty(ref _name, value);
+        }
+
+        private bool _isOn;
+        public bool IsOn
+        {
+            get => _isOn;
+            set => SetProperty(ref _isOn, value);
         }
     }
 }

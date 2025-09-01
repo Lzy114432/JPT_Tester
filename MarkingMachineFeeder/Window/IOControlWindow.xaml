@@ -353,47 +353,96 @@
                                CornerRadius="6"
                                Margin="5">
                             <Grid>
-                                <!-- 占位符内容 -->
-                                <TextBlock Text="{Binding InputPointsDisplayText}" 
-                                          HorizontalAlignment="Center" 
-                                          VerticalAlignment="Center"
-                                          FontSize="18"
-                                          FontStyle="Italic"
-                                          Foreground="#ADB5BD"/>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
                                 
-                                <!-- 示例网格线 -->
-                                <Grid Opacity="0.1">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*"/>
-                                        <RowDefinition Height="*"/>
-                                        <RowDefinition Height="*"/>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    
-                                    <!-- 绘制网格线 -->
-                                    <Border Grid.Row="0" Grid.Column="0" BorderBrush="#DEE2E6" BorderThickness="1"/>
-                                    <Border Grid.Row="0" Grid.Column="1" BorderBrush="#DEE2E6" BorderThickness="1"/>
-                                    <Border Grid.Row="0" Grid.Column="2" BorderBrush="#DEE2E6" BorderThickness="1"/>
-                                    <Border Grid.Row="0" Grid.Column="3" BorderBrush="#DEE2E6" BorderThickness="1"/>
-                                    <Border Grid.Row="1" Grid.Column="0" BorderBrush="#DEE2E6" BorderThickness="1"/>
-                                    <Border Grid.Row="1" Grid.Column="1" BorderBrush="#DEE2E6" BorderThickness="1"/>
-                                    <Border Grid.Row="1" Grid.Column="2" BorderBrush="#DEE2E6" BorderThickness="1"/>
-                                    <Border Grid.Row="1" Grid.Column="3" BorderBrush="#DEE2E6" BorderThickness="1"/>
-                                    <Border Grid.Row="2" Grid.Column="0" BorderBrush="#DEE2E6" BorderThickness="1"/>
-                                    <Border Grid.Row="2" Grid.Column="1" BorderBrush="#DEE2E6" BorderThickness="1"/>
-                                    <Border Grid.Row="2" Grid.Column="2" BorderBrush="#DEE2E6" BorderThickness="1"/>
-                                    <Border Grid.Row="2" Grid.Column="3" BorderBrush="#DEE2E6" BorderThickness="1"/>
-                                    <Border Grid.Row="3" Grid.Column="0" BorderBrush="#DEE2E6" BorderThickness="1"/>
-                                    <Border Grid.Row="3" Grid.Column="1" BorderBrush="#DEE2E6" BorderThickness="1"/>
-                                    <Border Grid.Row="3" Grid.Column="2" BorderBrush="#DEE2E6" BorderThickness="1"/>
-                                    <Border Grid.Row="3" Grid.Column="3" BorderBrush="#DEE2E6" BorderThickness="1"/>
-                                </Grid>
+                                <!-- 左列 X0-X7 -->
+                                <ItemsControl Grid.Column="0" ItemsSource="{Binding InputPointsColumn1}" Margin="10">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Vertical"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,6">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="45"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                
+                                                <!-- IO指示灯 -->
+                                                <Border Grid.Column="0" 
+                                                        Width="39" Height="37"
+                                                        CornerRadius="4">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Background" Value="#DC143C"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsOn}" Value="True">
+                                                                    <Setter Property="Background" Value="#00FF00"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                </Border>
+                                                
+                                                <!-- IO点名称 -->
+                                                <TextBlock Grid.Column="1" 
+                                                          Text="{Binding Name}" 
+                                                          VerticalAlignment="Center"
+                                                          Margin="15,0,0,0"
+                                                          FontSize="14"
+                                                          FontWeight="SemiBold"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                
+                                <!-- 右列 X8-X15 -->
+                                <ItemsControl Grid.Column="1" ItemsSource="{Binding InputPointsColumn2}" Margin="10">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Vertical"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,6">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="45"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                
+                                                <!-- IO指示灯 -->
+                                                <Border Grid.Column="0" 
+                                                        Width="39" Height="37"
+                                                        CornerRadius="4">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Background" Value="#DC143C"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsOn}" Value="True">
+                                                                    <Setter Property="Background" Value="#00FF00"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                </Border>
+                                                
+                                                <!-- IO点名称 -->
+                                                <TextBlock Grid.Column="1" 
+                                                          Text="{Binding Name}" 
+                                                          VerticalAlignment="Center"
+                                                          Margin="15,0,0,0"
+                                                          FontSize="14"
+                                                          FontWeight="SemiBold"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
                             </Grid>
                         </Border>
 
@@ -407,7 +456,8 @@
                                        VerticalAlignment="Center">
                                 <Button Name="InputPageUpButton" 
                                        Content="▲" 
-                                       Style="{StaticResource PageButton}" />
+                                       Style="{StaticResource PageButton}"
+                                       Command="{Binding InputPageUpCommand}" />
                                 <ComboBox Name="InputPageComboBox" 
                                          Width="50" 
                                          Height="35" 
@@ -415,12 +465,13 @@
                                          VerticalContentAlignment="Center"
                                          HorizontalContentAlignment="Center"
                                          FontSize="14"
-                                         SelectedIndex="0"
+                                         SelectedIndex="{Binding CurrentInputPage}"
                                          ItemsSource="{Binding InputPages}">
                                 </ComboBox>
                                 <Button Name="InputPageDownButton" 
                                        Content="▼" 
-                                       Style="{StaticResource PageButton}" />
+                                       Style="{StaticResource PageButton}"
+                                       Command="{Binding InputPageDownCommand}" />
                             </StackPanel>
                         </Border>
                     </Grid>
@@ -452,47 +503,98 @@
                                CornerRadius="6"
                                Margin="5">
                             <Grid>
-                                <!-- 占位符内容 -->
-                                <TextBlock Text="{Binding OutputPointsDisplayText}" 
-                                          HorizontalAlignment="Center" 
-                                          VerticalAlignment="Center"
-                                          FontSize="18"
-                                          FontStyle="Italic"
-                                          Foreground="#ADB5BD"/>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
                                 
-                                <!-- 示例网格线 -->
-                                <Grid Opacity="0.1">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*"/>
-                                        <RowDefinition Height="*"/>
-                                        <RowDefinition Height="*"/>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    
-                                    <!-- 绘制网格线 -->
-                                    <Border Grid.Row="0" Grid.Column="0" BorderBrush="#DEE2E6" BorderThickness="1"/>
-                                    <Border Grid.Row="0" Grid.Column="1" BorderBrush="#DEE2E6" BorderThickness="1"/>
-                                    <Border Grid.Row="0" Grid.Column="2" BorderBrush="#DEE2E6" BorderThickness="1"/>
-                                    <Border Grid.Row="0" Grid.Column="3" BorderBrush="#DEE2E6" BorderThickness="1"/>
-                                    <Border Grid.Row="1" Grid.Column="0" BorderBrush="#DEE2E6" BorderThickness="1"/>
-                                    <Border Grid.Row="1" Grid.Column="1" BorderBrush="#DEE2E6" BorderThickness="1"/>
-                                    <Border Grid.Row="1" Grid.Column="2" BorderBrush="#DEE2E6" BorderThickness="1"/>
-                                    <Border Grid.Row="1" Grid.Column="3" BorderBrush="#DEE2E6" BorderThickness="1"/>
-                                    <Border Grid.Row="2" Grid.Column="0" BorderBrush="#DEE2E6" BorderThickness="1"/>
-                                    <Border Grid.Row="2" Grid.Column="1" BorderBrush="#DEE2E6" BorderThickness="1"/>
-                                    <Border Grid.Row="2" Grid.Column="2" BorderBrush="#DEE2E6" BorderThickness="1"/>
-                                    <Border Grid.Row="2" Grid.Column="3" BorderBrush="#DEE2E6" BorderThickness="1"/>
-                                    <Border Grid.Row="3" Grid.Column="0" BorderBrush="#DEE2E6" BorderThickness="1"/>
-                                    <Border Grid.Row="3" Grid.Column="1" BorderBrush="#DEE2E6" BorderThickness="1"/>
-                                    <Border Grid.Row="3" Grid.Column="2" BorderBrush="#DEE2E6" BorderThickness="1"/>
-                                    <Border Grid.Row="3" Grid.Column="3" BorderBrush="#DEE2E6" BorderThickness="1"/>
-                                </Grid>
+                                <!-- 左列 Y0-Y7 -->
+                                <ItemsControl Grid.Column="0" ItemsSource="{Binding OutputPointsColumn1}" Margin="10">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Vertical"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,6">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="45"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                
+                                                <!-- IO指示灯 -->
+                                                <Border Grid.Column="0" 
+                                                        Width="39" Height="37"
+                                                        CornerRadius="4"
+                                                        Cursor="Hand">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Background" Value="#DC143C"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsOn}" Value="True">
+                                                                    <Setter Property="Background" Value="#00FF00"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                </Border>
+                                                
+                                                <!-- IO点名称 -->
+                                                <TextBlock Grid.Column="1" 
+                                                          Text="{Binding Name}" 
+                                                          VerticalAlignment="Center"
+                                                          Margin="15,0,0,0"
+                                                          FontSize="14"
+                                                          FontWeight="SemiBold"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                
+                                <!-- 右列 Y8-Y15 -->
+                                <ItemsControl Grid.Column="1" ItemsSource="{Binding OutputPointsColumn2}" Margin="10">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Vertical"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,6">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="45"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                
+                                                <!-- IO指示灯 -->
+                                                <Border Grid.Column="0" 
+                                                        Width="39" Height="37"
+                                                        CornerRadius="4"
+                                                        Cursor="Hand">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Background" Value="#DC143C"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsOn}" Value="True">
+                                                                    <Setter Property="Background" Value="#00FF00"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                </Border>
+                                                
+                                                <!-- IO点名称 -->
+                                                <TextBlock Grid.Column="1" 
+                                                          Text="{Binding Name}" 
+                                                          VerticalAlignment="Center"
+                                                          Margin="15,0,0,0"
+                                                          FontSize="14"
+                                                          FontWeight="SemiBold"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
                             </Grid>
                         </Border>
 
@@ -506,7 +608,8 @@
                                        VerticalAlignment="Center">
                                 <Button Name="OutputPageUpButton" 
                                        Content="▲" 
-                                       Style="{StaticResource PageButton}" />
+                                       Style="{StaticResource PageButton}"
+                                       Command="{Binding OutputPageUpCommand}" />
                                 <ComboBox Name="OutputPageComboBox" 
                                          Width="50" 
                                          Height="35" 
@@ -514,12 +617,13 @@
                                          VerticalContentAlignment="Center"
                                          HorizontalContentAlignment="Center"
                                          FontSize="14"
-                                         SelectedIndex="0"
+                                         SelectedIndex="{Binding CurrentOutputPage}"
                                          ItemsSource="{Binding OutputPages}">
                                 </ComboBox>
                                 <Button Name="OutputPageDownButton" 
                                        Content="▼" 
-                                       Style="{StaticResource PageButton}" />
+                                       Style="{StaticResource PageButton}"
+                                       Command="{Binding OutputPageDownCommand}" />
                             </StackPanel>
                         </Border>
                     </Grid>
@@ -544,8 +648,18 @@
                                Margin="15,0,0,0">
                         <Ellipse Name="ConnectionIndicator"
                                 Width="10" Height="10"
-                                Fill="#DC3545"
-                                Margin="0,0,6,0"/>
+                                Margin="0,0,6,0">
+                            <Ellipse.Style>
+                                <Style TargetType="Ellipse">
+                                    <Setter Property="Fill" Value="#DC3545"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsConnected}" Value="True">
+                                            <Setter Property="Fill" Value="#28A745"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Ellipse.Style>
+                        </Ellipse>
                         <TextBlock Name="ConnectionStatusLabel"
                                   Text="{Binding ConnectionStatusText}"
                                   FontSize="12"
