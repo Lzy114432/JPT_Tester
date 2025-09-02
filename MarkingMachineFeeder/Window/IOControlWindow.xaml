@@ -283,6 +283,7 @@
                         <Button Name="SimulateInputButton" 
                                 Content="{Binding SimulateInputText}"
                                 Style="{StaticResource ModernButton}"
+                                Background="{Binding SimulateInputButtonBackground}"
                                 Command="{Binding SimulateInputCommand}"/>
                     </StackPanel>
                     
@@ -374,16 +375,21 @@
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
                                                 
-                                                <!-- IO指示灯 -->
+                                                <!-- IO指示灯 - 输入点支持点击 -->
                                                 <Border Grid.Column="0" 
                                                         Width="39" Height="37"
-                                                        CornerRadius="4">
+                                                        CornerRadius="4"
+                                                        Background="{Binding BackgroundColor}">
+                                                    <Border.InputBindings>
+                                                        <MouseBinding Gesture="LeftClick"
+                                                                    Command="{Binding DataContext.InputPointClickCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                    CommandParameter="{Binding}"/>
+                                                    </Border.InputBindings>
                                                     <Border.Style>
                                                         <Style TargetType="Border">
-                                                            <Setter Property="Background" Value="#DC143C"/>
                                                             <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding IsOn}" Value="True">
-                                                                    <Setter Property="Background" Value="#00FF00"/>
+                                                                <DataTrigger Binding="{Binding IsClickable}" Value="True">
+                                                                    <Setter Property="Cursor" Value="Hand"/>
                                                                 </DataTrigger>
                                                             </Style.Triggers>
                                                         </Style>
@@ -417,16 +423,21 @@
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
                                                 
-                                                <!-- IO指示灯 -->
+                                                <!-- IO指示灯 - 输入点支持点击 -->
                                                 <Border Grid.Column="0" 
                                                         Width="39" Height="37"
-                                                        CornerRadius="4">
+                                                        CornerRadius="4"
+                                                        Background="{Binding BackgroundColor}">
+                                                    <Border.InputBindings>
+                                                        <MouseBinding Gesture="LeftClick"
+                                                                    Command="{Binding DataContext.InputPointClickCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                    CommandParameter="{Binding}"/>
+                                                    </Border.InputBindings>
                                                     <Border.Style>
                                                         <Style TargetType="Border">
-                                                            <Setter Property="Background" Value="#DC143C"/>
                                                             <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding IsOn}" Value="True">
-                                                                    <Setter Property="Background" Value="#00FF00"/>
+                                                                <DataTrigger Binding="{Binding IsClickable}" Value="True">
+                                                                    <Setter Property="Cursor" Value="Hand"/>
                                                                 </DataTrigger>
                                                             </Style.Triggers>
                                                         </Style>

@@ -499,4 +499,16 @@
   <data name="LoginError" xml:space="preserve">
     <value>Login error: {0}</value>
   </data>
+  <data name="IOSimulateSet" xml:space="preserve">
+    <value>IO simulate mode set: {0} = {1}</value>
+  </data>
+  <data name="IOSimulateError" xml:space="preserve">
+    <value>IO simulate error: {0} - {1}</value>
+  </data>
+  <data name="IOSimulateCleared" xml:space="preserve">
+    <value>All IO simulations cleared</value>
+  </data>
+  <data name="IOSimulateModeChanged" xml:space="preserve">
+    <value>IO simulate mode changed: {0}</value>
+  </data>
 </root>

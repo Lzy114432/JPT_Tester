@@ -72,6 +72,12 @@ namespace Ewan.Resources {
             }
         }
         
+        public static string SimulatingModeText {
+            get {
+                return ResourceManager.GetString("SimulatingModeText", resourceCulture);
+            }
+        }
+        
         public static string EdgeDetection {
             get {
                 return ResourceManager.GetString("EdgeDetection", resourceCulture);

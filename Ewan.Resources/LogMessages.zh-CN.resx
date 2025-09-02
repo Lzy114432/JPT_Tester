@@ -499,4 +499,16 @@
   <data name="LoginError" xml:space="preserve">
     <value>登录错误: {0}</value>
   </data>
+  <data name="IOSimulateSet" xml:space="preserve">
+    <value>IO模拟模式设置: {0} = {1}</value>
+  </data>
+  <data name="IOSimulateError" xml:space="preserve">
+    <value>IO模拟错误: {0} - {1}</value>
+  </data>
+  <data name="IOSimulateCleared" xml:space="preserve">
+    <value>清除所有IO模拟状态</value>
+  </data>
+  <data name="IOSimulateModeChanged" xml:space="preserve">
+    <value>IO模拟模式已更改: {0}</value>
+  </data>
 </root>

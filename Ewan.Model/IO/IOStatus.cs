@@ -76,6 +76,13 @@ namespace Ewan.Model.IO
         public string[] YMappedNames { get; set; }
         #endregion
 
+        #region 模拟状态数据
+        /// <summary>
+        /// 输入点模拟状态数组 (0=None, 1=ForceOn, 2=ForceOff)
+        /// </summary>
+        public int[] XSimulateMode { get; set; }
+        #endregion
+
         /// <summary>
         /// 连接状态
         /// </summary>
@@ -119,6 +126,9 @@ namespace Ewan.Model.IO
             XMappedNames = new string[IO_COUNT];
             YMappedNames = new string[IO_COUNT];
             
+            // 模拟状态数据
+            XSimulateMode = new int[IO_COUNT];
+            
             // 初始化默认名称
             for (int i = 0; i < IO_COUNT; i++)
             {
@@ -133,6 +143,9 @@ namespace Ewan.Model.IO
                 // 映射IO名称（初始和真实相同，后续会从配置文件加载）
                 XMappedNames[i] = $"X{i}";  // 映射名称 X0-X63
                 YMappedNames[i] = $"Y{i}";  // 映射名称 Y0-Y63
+                
+                // 初始化模拟状态为None(0)
+                XSimulateMode[i] = 0;
             }
             
             LastUpdateTime = DateTime.Now;

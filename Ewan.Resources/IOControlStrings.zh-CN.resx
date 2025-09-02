@@ -61,6 +61,9 @@
   <data name="WindowTitle" xml:space="preserve">
     <value>IO 控制面板</value>
   </data>
+  <data name="SimulatingModeText" xml:space="preserve">
+    <value>🔄 模拟中</value>
+  </data>
   <data name="SimulateInput" xml:space="preserve">
     <value>🔧 模拟输入</value>
   </data>

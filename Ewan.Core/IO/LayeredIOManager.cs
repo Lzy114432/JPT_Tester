@@ -386,6 +386,114 @@ namespace Ewan.Core.IO
         }
 
         /// <summary>
+        /// 设置输入点模拟状态
+        /// </summary>
+        /// <param name="index">输入点索引 (0-63)</param>
+        /// <param name="mode">模拟模式 (SimulateMode枚举)</param>
+        /// <param name="useMapping">是否使用映射 (true: 使用映射索引, false: 使用物理索引)</param>
+        /// <returns>设置是否成功</returns>
+        public bool SetInputSimulate(int index, SimulateMode mode, bool useMapping = true)
+        {
+            lock (_lockObject)
+            {
+                if (_layeredIO == null)
+                {
+                    _uiLogger.Error(() => Ewan.Resources.LogMessages.IONotInitialized);
+                    return false;
+                }
+
+                try
+                {
+                    // 使用LayeredIO的SetInputSimulate方法
+                    _layeredIO.SetInputSimulate(index, mode, useMapping);
+                    
+                    string modeName;
+                    switch ((int)mode)
+                    {
+                        case 1:
+                            modeName = "ForceOn";
+                            break;
+                        case 2:
+                            modeName = "ForceOff";
+                            break;
+                        default:
+                            modeName = "None";
+                            break;
+                    }
+                    
+                    _uiLogger.Debug(() => Ewan.Resources.LogMessages.IOSimulateSet, $"X{index}", modeName);
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    _uiLogger.Error(() => Ewan.Resources.LogMessages.IOSimulateError, $"X{index}", ex.Message);
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 获取输入点模拟状态
+        /// </summary>
+        /// <param name="index">输入点索引 (0-63)</param>
+        /// <param name="useMapping">是否使用映射 (true: 使用映射索引, false: 使用物理索引)</param>
+        /// <returns>模拟模式</returns>
+        public SimulateMode GetInputSimulate(int index, bool useMapping = true)
+        {
+            lock (_lockObject)
+            {
+                if (_layeredIO == null)
+                {
+                    return SimulateMode.None;
+                }
+
+                try
+                {
+                    return _layeredIO.GetInputSimulate(index, useMapping);
+                }
+                catch (Exception ex)
+                {
+                    _uiLogger.Error(() => Ewan.Resources.LogMessages.IOSimulateError, $"X{index}", ex.Message);
+                    return SimulateMode.None;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 清除所有输入点模拟状态
+        /// </summary>
+        /// <param name="useMapping">是否使用映射</param>
+        /// <returns>清除是否成功</returns>
+        public bool ClearAllSimulations(bool useMapping = true)
+        {
+            lock (_lockObject)
+            {
+                if (_layeredIO == null)
+                {
+                    _uiLogger.Error(() => Ewan.Resources.LogMessages.IONotInitialized);
+                    return false;
+                }
+
+                try
+                {
+                    // 清除所有输入点的模拟状态
+                    for (int i = 0; i < InputCount; i++)
+                    {
+                        _layeredIO.SetInputSimulate(i, SimulateMode.None, useMapping);
+                    }
+                    
+                    _uiLogger.Info(() => Ewan.Resources.LogMessages.IOSimulateCleared);
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    _uiLogger.Error(() => Ewan.Resources.LogMessages.IOSimulateError, "Clear", ex.Message);
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
         /// 设置硬件类型（需要在Init之前调用）
         /// </summary>
         public void SetHardwareType(HardwareType type, string connectionString = null)

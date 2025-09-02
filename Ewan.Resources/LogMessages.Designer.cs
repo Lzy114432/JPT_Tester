@@ -1382,5 +1382,29 @@ namespace Ewan.Resources {
                 return ResourceManager.GetString("PermissionCheckResult", resourceCulture);
             }
         }
+        
+        public static string IOSimulateSet {
+            get {
+                return ResourceManager.GetString("IOSimulateSet", resourceCulture);
+            }
+        }
+        
+        public static string IOSimulateError {
+            get {
+                return ResourceManager.GetString("IOSimulateError", resourceCulture);
+            }
+        }
+        
+        public static string IOSimulateCleared {
+            get {
+                return ResourceManager.GetString("IOSimulateCleared", resourceCulture);
+            }
+        }
+        
+        public static string IOSimulateModeChanged {
+            get {
+                return ResourceManager.GetString("IOSimulateModeChanged", resourceCulture);
+            }
+        }
     }
 }

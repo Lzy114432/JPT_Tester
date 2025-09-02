@@ -271,6 +271,29 @@ namespace MarkingMachineFeeder.Viewmodel
             }
         }
 
+        // 模拟输入模式
+        private bool _isSimulateInputMode = false;
+        public bool IsSimulateInputMode
+        {
+            get => _isSimulateInputMode;
+            set
+            {
+                if (SetProperty(ref _isSimulateInputMode, value))
+                {
+                    UpdateSimulateInputButtonDisplay();
+                    UpdateInputPointsClickability();
+                }
+            }
+        }
+
+        // 模拟输入按钮背景颜色
+        private string _simulateInputButtonBackground = "#4682B4"; // 默认钢蓝色
+        public string SimulateInputButtonBackground
+        {
+            get => _simulateInputButtonBackground;
+            set => SetProperty(ref _simulateInputButtonBackground, value);
+        }
+
         // 输出测试按钮背景颜色
         private string _outputTestButtonBackground = "#FF4500"; // 默认橙红色
         public string OutputTestButtonBackground
@@ -296,8 +319,9 @@ namespace MarkingMachineFeeder.Viewmodel
         public DelegateCommand OutputPageUpCommand { get; }
         public DelegateCommand OutputPageDownCommand { get; }
         
-        // Output point click command
+        // IO point click commands
         public DelegateCommand<IOPointViewModel> OutputPointClickCommand { get; }
+        public DelegateCommand<IOPointViewModel> InputPointClickCommand { get; }
 
         #endregion
 
@@ -317,8 +341,9 @@ namespace MarkingMachineFeeder.Viewmodel
             OutputPageUpCommand = new DelegateCommand(ExecuteOutputPageUp);
             OutputPageDownCommand = new DelegateCommand(ExecuteOutputPageDown);
             
-            // Initialize output point click command
+            // Initialize IO point click commands
             OutputPointClickCommand = new DelegateCommand<IOPointViewModel>(ExecuteOutputPointClick, CanExecuteOutputPointClick);
+            InputPointClickCommand = new DelegateCommand<IOPointViewModel>(ExecuteInputPointClick, CanExecuteInputPointClick);
 
             // Initialize mapping mode (默认映射模式)
             IsMappingMode = true;
@@ -458,6 +483,7 @@ namespace MarkingMachineFeeder.Viewmodel
             // Update button displays to reflect current language
             UpdateMappingButtonDisplay();
             UpdateOutputTestButtonDisplay();
+            UpdateSimulateInputButtonDisplay();
 
             // Notify all properties changed
             RaisePropertyChanged(nameof(WindowTitle));
@@ -499,11 +525,120 @@ namespace MarkingMachineFeeder.Viewmodel
 
         private void ExecuteSimulateInput()
         {
-            MessageBox.Show(
-                Ewan.Resources.IOControlStrings.SimulateInputMessage,
-                Ewan.Resources.IOControlStrings.MessageBoxTitle,
-                MessageBoxButton.OK,
-                MessageBoxImage.Information);
+            // 切换模拟输入模式
+            IsSimulateInputMode = !IsSimulateInputMode;
+            
+            // 显示提示信息
+            string modeText = IsSimulateInputMode ? 
+                "模拟输入模式已开启" : 
+                "模拟输入模式已关闭";
+            
+            _uiLogger.Info(() => Ewan.Resources.LogMessages.IOSimulateModeChanged, modeText);
+            
+            if (IsSimulateInputMode)
+            {
+                // 开启模拟模式时，将所有输入点设置为灰色（模拟状态为0，但启用了模拟模式）
+                for (int i = 0; i < 64; i++)
+                {
+                    InputPoints[i].IsInSimulateMode = true;  // 标记为模拟模式
+                }
+            }
+            else
+            {
+                // 关闭模拟模式，清除所有模拟状态
+                IOController.Instance().ClearAllSimulations();
+                // 更新显示
+                if (_realIO != null)
+                {
+                    for (int i = 0; i < 64; i++)
+                    {
+                        _realIO.XSimulateMode[i] = 0;
+                        InputPoints[i].SimulateMode = 0;
+                        InputPoints[i].IsInSimulateMode = false;  // 取消模拟模式标记
+                    }
+                }
+            }
+            
+            // 更新当前页显示
+            UpdateInputPageDisplay();
+        }
+
+        private void UpdateSimulateInputButtonDisplay()
+        {
+            // 根据模式更新按钮文本和颜色
+            if (IsSimulateInputMode)
+            {
+                SimulateInputText = Ewan.Resources.IOControlStrings.SimulatingModeText; // 模拟中
+                SimulateInputButtonBackground = "#00FF00"; // 亮绿色
+            }
+            else
+            {
+                SimulateInputText = Ewan.Resources.IOControlStrings.SimulateInput; // 正常模式  
+                SimulateInputButtonBackground = "#4682B4"; // 钢蓝色
+            }
+        }
+
+        private void UpdateInputPointsClickability()
+        {
+            // 通知所有输入点更新可点击状态
+            foreach (var point in InputPoints)
+            {
+                point.IsClickable = IsSimulateInputMode;
+            }
+            
+            // 刷新输入点击命令状态
+            InputPointClickCommand?.RaiseCanExecuteChanged();
+        }
+
+        private bool CanExecuteInputPointClick(IOPointViewModel point)
+        {
+            // 只有在模拟输入模式下才能点击输入点
+            return IsSimulateInputMode && point != null;
+        }
+
+        private void ExecuteInputPointClick(IOPointViewModel point)
+        {
+            if (point == null || !IsSimulateInputMode)
+                return;
+
+            try
+            {
+                // 循环切换模拟状态: None(0) -> ForceOn(1) -> ForceOff(2) -> None(0)
+                int newMode = (point.SimulateMode + 1) % 3;
+                
+                // 使用IOController设置模拟状态
+                IOController.Instance().SetInputSimulate(point.Index, newMode, IsMappingMode);
+                
+                // 更新视图模型
+                point.SimulateMode = newMode;
+                
+                // 更新IOStatus中的模拟状态
+                if (_realIO != null)
+                {
+                    _realIO.XSimulateMode[point.Index] = newMode;
+                }
+                
+                string modeName;
+                switch (newMode)
+                {
+                    case 1:
+                        modeName = "ForceOn";
+                        break;
+                    case 2:
+                        modeName = "ForceOff";
+                        break;
+                    default:
+                        modeName = "None";
+                        break;
+                }
+                
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.IOSimulateSet,
+                    point.Name, modeName);
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.IOSimulateError, point.Name, ex.Message);
+            }
         }
 
         private void ExecuteMappingConfig()
@@ -732,6 +867,8 @@ namespace MarkingMachineFeeder.Viewmodel
                 {
                     InputPoints[i].IsOn = _realIO.XMapped[i];
                     InputPoints[i].Name = _realIO.XMappedNames[i];
+                    InputPoints[i].SimulateMode = _realIO.XSimulateMode[i]; // 同步模拟状态
+                    // 保持IsInSimulateMode状态不变，因为这是由按钮控制的
                 }
 
                 for (int i = 0; i < 64; i++)
@@ -747,6 +884,8 @@ namespace MarkingMachineFeeder.Viewmodel
                 {
                     InputPoints[i].IsOn = _realIO.XReal[i];
                     InputPoints[i].Name = _realIO.XRealNames[i];
+                    InputPoints[i].SimulateMode = _realIO.XSimulateMode[i]; // 同步模拟状态
+                    // 保持IsInSimulateMode状态不变，因为这是由按钮控制的
                 }
 
                 for (int i = 0; i < 64; i++)
@@ -806,7 +945,13 @@ namespace MarkingMachineFeeder.Viewmodel
         public bool IsOn
         {
             get => _isOn;
-            set => SetProperty(ref _isOn, value);
+            set
+            {
+                if (SetProperty(ref _isOn, value))
+                {
+                    RaisePropertyChanged(nameof(BackgroundColor));
+                }
+            }
         }
 
         private bool _isClickable;
@@ -814,6 +959,67 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             get => _isClickable;
             set => SetProperty(ref _isClickable, value);
+        }
+
+        private int _simulateMode;
+        /// <summary>
+        /// 模拟模式 (0=None灰色, 1=ForceOn绿色, 2=ForceOff红色)
+        /// </summary>
+        public int SimulateMode
+        {
+            get => _simulateMode;
+            set
+            {
+                if (SetProperty(ref _simulateMode, value))
+                {
+                    RaisePropertyChanged(nameof(BackgroundColor));
+                }
+            }
+        }
+
+        private bool _isInSimulateMode;
+        /// <summary>
+        /// 是否处于模拟模式（用于控制所有点显示为灰色）
+        /// </summary>
+        public bool IsInSimulateMode
+        {
+            get => _isInSimulateMode;
+            set
+            {
+                if (SetProperty(ref _isInSimulateMode, value))
+                {
+                    RaisePropertyChanged(nameof(BackgroundColor));
+                }
+            }
+        }
+
+        /// <summary>
+        /// 根据模拟状态返回背景颜色
+        /// </summary>
+        public string BackgroundColor
+        {
+            get
+            {
+                // 如果处于模拟模式
+                if (IsInSimulateMode)
+                {
+                    // 根据具体的模拟状态显示颜色
+                    switch (SimulateMode)
+                    {
+                        case 0: // None - 显示灰色
+                            return "#808080";
+                        case 1: // ForceOn - 显示亮绿色
+                            return "#00FF00";
+                        case 2: // ForceOff - 显示亮红色
+                            return "#FF0000";
+                        default:
+                            return "#808080";
+                    }
+                }
+                
+                // 正常模式，根据实际状态显示
+                return IsOn ? "#00FF00" : "#DC143C"; // 绿色/暗红色
+            }
         }
     }
 }
