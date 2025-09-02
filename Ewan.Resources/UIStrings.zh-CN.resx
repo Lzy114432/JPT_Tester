@@ -228,4 +228,7 @@
   <data name="IOControlMenu" xml:space="preserve">
     <value>IO控制</value>
   </data>
+  <data name="IOMappingConfigMenu" xml:space="preserve">
+    <value>IO映射配置</value>
+  </data>
 </root>

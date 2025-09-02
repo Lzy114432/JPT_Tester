@@ -1,0 +1,308 @@
+<Window x:Class="MarkingMachineFeeder.Windows.IOMappingConfigWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:MarkingMachineFeeder.Viewmodel"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=vm:IOMappingConfigViewModel, IsDesignTimeCreatable=True}"
+        Title="IO映射配置" 
+        Height="700" Width="600"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="ToolWindow"
+        ResizeMode="NoResize"
+        Name="IOMappingWindow">
+    
+    <Window.Resources>
+        <!-- 简洁的样式定义 -->
+        <Style x:Key="SimpleDataGrid" TargetType="DataGrid">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#CCCCCC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#E0E0E0"/>
+            <Setter Property="RowHeight" Value="28"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="CanUserResizeRows" Value="False"/>
+            <Setter Property="CanUserSortColumns" Value="False"/>
+            <Setter Property="SelectionMode" Value="Single"/>
+            <Setter Property="SelectionUnit" Value="Cell"/>
+            <Setter Property="AlternatingRowBackground" Value="#FAFAFA"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontFamily" Value="微软雅黑"/>
+        </Style>
+        
+        <Style x:Key="ColumnHeaderStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#F0F0F0"/>
+            <Setter Property="Foreground" Value="#333333"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="BorderBrush" Value="#CCCCCC"/>
+            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+            <Setter Property="Padding" Value="5,0"/>
+        </Style>
+        
+        <Style x:Key="SimpleButton" TargetType="Button">
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Background" Value="#4682B4"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontFamily" Value="微软雅黑"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="3">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#5A9FD4"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#3A6FA4"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    
+    <!-- 主容器 -->
+    <Grid>
+        <GroupBox Header="{Binding MappingSettingsText}" 
+                  Margin="10" 
+                  FontSize="14" 
+                  FontFamily="微软雅黑">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="60"/>
+                </Grid.RowDefinitions>
+                
+                <!-- Tab控件 -->
+                <TabControl Grid.Row="0" Margin="10">
+                    <TabItem Header="{Binding InputTabText, FallbackValue=输入}" FontSize="12">
+                        <DataGrid x:Name="InputDataGrid"
+                                  ItemsSource="{Binding InputMappings}"
+                                  Style="{StaticResource SimpleDataGrid}"
+                                  ColumnHeaderStyle="{StaticResource ColumnHeaderStyle}">
+                            <DataGrid.Columns>
+                                <!-- 序号列 - 只读 -->
+                                <DataGridTextColumn Header="{Binding DataContext.IndexHeaderText, ElementName=IOMappingWindow, FallbackValue=序号}" 
+                                                    Binding="{Binding LogicalIndex}" 
+                                                    Width="80"
+                                                    IsReadOnly="True"
+                                                    CanUserSort="False">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="TextAlignment" Value="Center"/>
+                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                                
+                                <!-- 名称列 - 可编辑 -->
+                                <DataGridTextColumn Header="{Binding DataContext.NameHeaderText, ElementName=IOMappingWindow, FallbackValue=名称}" 
+                                                    Binding="{Binding Name}" 
+                                                    Width="250"
+                                                    CanUserSort="False">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Padding" Value="5,0"/>
+                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                    <DataGridTextColumn.EditingElementStyle>
+                                        <Style TargetType="TextBox">
+                                            <Setter Property="Padding" Value="3,0"/>
+                                            <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                        </Style>
+                                    </DataGridTextColumn.EditingElementStyle>
+                                </DataGridTextColumn>
+                                
+                                <!-- 映射列 - 可编辑 -->
+                                <DataGridTextColumn Header="{Binding DataContext.MappingHeaderText, ElementName=IOMappingWindow, FallbackValue=映射}" 
+                                                    Binding="{Binding PhysicalIndex}" 
+                                                    Width="100"
+                                                    CanUserSort="False">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="TextAlignment" Value="Center"/>
+                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                    <DataGridTextColumn.EditingElementStyle>
+                                        <Style TargetType="TextBox">
+                                            <Setter Property="TextAlignment" Value="Center"/>
+                                            <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                        </Style>
+                                    </DataGridTextColumn.EditingElementStyle>
+                                </DataGridTextColumn>
+                                
+                                <!-- 状态列 - 下拉选择 -->
+                                <DataGridTemplateColumn Header="{Binding DataContext.StatusHeaderText, ElementName=IOMappingWindow, FallbackValue=状态}"
+                                                        Width="100"
+                                                        CanUserSort="False">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding IsNormallyOpen, Converter={x:Null}}"
+                                                       VerticalAlignment="Center"
+                                                       HorizontalAlignment="Center">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsNormallyOpen}" Value="True">
+                                                                <Setter Property="Text" Value="常开"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding IsNormallyOpen}" Value="False">
+                                                                <Setter Property="Text" Value="常闭"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding DataContext.StatusOptions, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                      SelectedValue="{Binding IsNormallyOpen, UpdateSourceTrigger=PropertyChanged}"
+                                                      SelectedValuePath="Value"
+                                                      DisplayMemberPath="Display"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </TabItem>
+                    
+                    <TabItem Header="{Binding OutputTabText, FallbackValue=输出}" FontSize="12">
+                        <DataGrid x:Name="OutputDataGrid"
+                                  ItemsSource="{Binding OutputMappings}"
+                                  Style="{StaticResource SimpleDataGrid}"
+                                  ColumnHeaderStyle="{StaticResource ColumnHeaderStyle}">
+                            <DataGrid.Columns>
+                                <!-- 序号列 - 只读 -->
+                                <DataGridTextColumn Header="{Binding DataContext.IndexHeaderText, ElementName=IOMappingWindow, FallbackValue=序号}" 
+                                                    Binding="{Binding LogicalIndex}" 
+                                                    Width="80"
+                                                    IsReadOnly="True"
+                                                    CanUserSort="False">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="TextAlignment" Value="Center"/>
+                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                                
+                                <!-- 名称列 - 可编辑 -->
+                                <DataGridTextColumn Header="{Binding DataContext.NameHeaderText, ElementName=IOMappingWindow, FallbackValue=名称}" 
+                                                    Binding="{Binding Name}" 
+                                                    Width="250"
+                                                    CanUserSort="False">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Padding" Value="5,0"/>
+                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                    <DataGridTextColumn.EditingElementStyle>
+                                        <Style TargetType="TextBox">
+                                            <Setter Property="Padding" Value="3,0"/>
+                                            <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                        </Style>
+                                    </DataGridTextColumn.EditingElementStyle>
+                                </DataGridTextColumn>
+                                
+                                <!-- 映射列 - 可编辑 -->
+                                <DataGridTextColumn Header="{Binding DataContext.MappingHeaderText, ElementName=IOMappingWindow, FallbackValue=映射}" 
+                                                    Binding="{Binding PhysicalIndex}" 
+                                                    Width="100"
+                                                    CanUserSort="False">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="TextAlignment" Value="Center"/>
+                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                    <DataGridTextColumn.EditingElementStyle>
+                                        <Style TargetType="TextBox">
+                                            <Setter Property="TextAlignment" Value="Center"/>
+                                            <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                        </Style>
+                                    </DataGridTextColumn.EditingElementStyle>
+                                </DataGridTextColumn>
+                                
+                                <!-- 状态列 - 下拉选择 -->
+                                <DataGridTemplateColumn Header="{Binding DataContext.StatusHeaderText, ElementName=IOMappingWindow, FallbackValue=状态}"
+                                                        Width="100"
+                                                        CanUserSort="False">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding IsNormallyOpen, Converter={x:Null}}"
+                                                       VerticalAlignment="Center"
+                                                       HorizontalAlignment="Center">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsNormallyOpen}" Value="True">
+                                                                <Setter Property="Text" Value="常开"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding IsNormallyOpen}" Value="False">
+                                                                <Setter Property="Text" Value="常闭"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding DataContext.StatusOptions, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                      SelectedValue="{Binding IsNormallyOpen, UpdateSourceTrigger=PropertyChanged}"
+                                                      SelectedValuePath="Value"
+                                                      DisplayMemberPath="Display"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </TabItem>
+                </TabControl>
+                
+                <!-- 底部按钮区 -->
+                <StackPanel Grid.Row="1" 
+                            Orientation="Horizontal" 
+                            HorizontalAlignment="Right" 
+                            VerticalAlignment="Center">
+                    <Button Content="{Binding ApplyText, FallbackValue=应用}" 
+                            Command="{Binding ApplyCommand}"
+                            Style="{StaticResource SimpleButton}"
+                            Margin="0,0,10,0"/>
+                    <Button Content="{Binding OKText, FallbackValue=确定}" 
+                            Command="{Binding OKCommand}"
+                            Style="{StaticResource SimpleButton}"
+                            Margin="0,0,10,0"/>
+                    <Button Content="{Binding CancelText, FallbackValue=取消}" 
+                            Command="{Binding CancelCommand}"
+                            Style="{StaticResource SimpleButton}"
+                            Background="#808080"/>
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+    </Grid>
+</Window>

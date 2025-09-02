@@ -483,6 +483,12 @@ namespace Ewan.Resources {
             }
         }
         
+        public static string IOMappingConfigMenu {
+            get {
+                return ResourceManager.GetString("IOMappingConfigMenu", resourceCulture);
+            }
+        }
+        
         public static string SimulateInputMessage {
             get {
                 return ResourceManager.GetString("SimulateInputMessage", resourceCulture);

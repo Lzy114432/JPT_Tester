@@ -437,6 +437,11 @@
                                       d:Header="IO控制"
                                       Command="{Binding OpenIOControlCommand}"
                                       Style="{StaticResource IndustrialSubMenuItem}"/>
+                            <!-- IO映射配置子菜单 -->
+                            <MenuItem Header="{Binding IOMappingConfigMenuHeader}" 
+                                      d:Header="IO映射配置"
+                                      Command="{Binding OpenIOMappingConfigCommand}"
+                                      Style="{StaticResource IndustrialSubMenuItem}"/>
                         </MenuItem>
                     </MenuItem>
                     

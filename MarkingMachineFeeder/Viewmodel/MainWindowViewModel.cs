@@ -30,6 +30,7 @@ namespace MarkingMachineFeeder.Viewmodel
         private string _systemMenuHeader = "";
         private string _exitMenuHeader = "";
         private string _ioControlMenuHeader = "";
+        private string _ioMappingConfigMenuHeader = "";
         private string _hardwareControlMenuHeader = "";
         private bool _canControlCamera = false;
         private bool _canControlUPS = false;
@@ -158,6 +159,12 @@ namespace MarkingMachineFeeder.Viewmodel
             set { SetProperty(ref _ioControlMenuHeader, value); }
         }
 
+        public string IOMappingConfigMenuHeader
+        {
+            get { return _ioMappingConfigMenuHeader; }
+            set { SetProperty(ref _ioMappingConfigMenuHeader, value); }
+        }
+
         public string HardwareControlMenuHeader
         {
             get { return _hardwareControlMenuHeader; }
@@ -171,6 +178,7 @@ namespace MarkingMachineFeeder.Viewmodel
         public DelegateCommand OpenPermissionConfigCommand { get; }
         public DelegateCommand OpenSettingsCommand { get; }
         public DelegateCommand OpenIOControlCommand { get; }
+        public DelegateCommand OpenIOMappingConfigCommand { get; }
         public DelegateCommand ExitCommand { get; }
 
         public MainWindowViewModel()
@@ -193,6 +201,7 @@ namespace MarkingMachineFeeder.Viewmodel
             OpenPermissionConfigCommand = new DelegateCommand(ExecuteOpenPermissionConfig, CanOpenPermissionConfig);
             OpenSettingsCommand = new DelegateCommand(ExecuteOpenSettings, CanOpenSettings);
             OpenIOControlCommand = new DelegateCommand(ExecuteOpenIOControl, CanOpenIOControl);
+            OpenIOMappingConfigCommand = new DelegateCommand(ExecuteOpenIOMappingConfig, CanOpenIOMappingConfig);
             ExitCommand = new DelegateCommand(ExecuteExit, CanExecuteExit);
 
             UpdateUITexts();
@@ -282,6 +291,13 @@ namespace MarkingMachineFeeder.Viewmodel
             ioControlWindow.ShowDialog();
         }
 
+        private void ExecuteOpenIOMappingConfig()
+        {
+            // 打开IO映射配置窗口
+            var ioMappingConfigWindow = new MarkingMachineFeeder.Windows.IOMappingConfigWindow();
+            ioMappingConfigWindow.ShowDialog();
+        }
+
         private bool CanOpenSettings()
         {
             // 检查用户是否有权限访问设置 - 使用权限系统检查
@@ -291,6 +307,12 @@ namespace MarkingMachineFeeder.Viewmodel
         private bool CanOpenIOControl()
         {
             // 检查用户是否有权限访问硬件控制
+            return _securityManager.HasPermission(PermissionResources.HardwareControl, PermissionActions.Control);
+        }
+
+        private bool CanOpenIOMappingConfig()
+        {
+            // 检查用户是否有权限访问IO映射配置
             return _securityManager.HasPermission(PermissionResources.HardwareControl, PermissionActions.Control);
         }
 
@@ -408,6 +430,7 @@ namespace MarkingMachineFeeder.Viewmodel
             CurrentUserLabel = Ewan.Resources.UIStrings.ResourceManager.GetString("CurrentUserLabel", Ewan.Resources.UIStrings.Culture) ?? "当前用户：";
             ExitMenuHeader = Ewan.Resources.UIStrings.ExitMenu;
             IOControlMenuHeader = Ewan.Resources.UIStrings.IOControlMenu;
+            IOMappingConfigMenuHeader = Ewan.Resources.UIStrings.IOMappingConfigMenu;
             HardwareControlMenuHeader = Ewan.Resources.UIStrings.HardwareControlMenu;
             
             // 强制触发所有相关属性的PropertyChanged事件
@@ -423,6 +446,7 @@ namespace MarkingMachineFeeder.Viewmodel
             RaisePropertyChanged(nameof(CurrentUserLabel));
             RaisePropertyChanged(nameof(ExitMenuHeader));
             RaisePropertyChanged(nameof(IOControlMenuHeader));
+            RaisePropertyChanged(nameof(IOMappingConfigMenuHeader));
             RaisePropertyChanged(nameof(HardwareControlMenuHeader));
         }
         private void UpdatePermissions()
@@ -454,6 +478,7 @@ namespace MarkingMachineFeeder.Viewmodel
             OpenSettingsCommand.RaiseCanExecuteChanged();
             ExitCommand.RaiseCanExecuteChanged();
             OpenIOControlCommand.RaiseCanExecuteChanged();
+            OpenIOMappingConfigCommand.RaiseCanExecuteChanged();
         }
     }
 }
