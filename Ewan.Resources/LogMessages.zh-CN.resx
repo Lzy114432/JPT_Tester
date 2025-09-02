@@ -328,6 +328,33 @@
   <data name="IORecreationFailed" xml:space="preserve">
     <value>重新创建IO失败: {0}</value>
   </data>
+  <data name="IONotConnected" xml:space="preserve">
+    <value>IO未连接</value>
+  </data>
+  <data name="IOWriteSuccess" xml:space="preserve">
+    <value>成功写入 {0} = {1}</value>
+  </data>
+  <data name="IOWriteFailed" xml:space="preserve">
+    <value>写入 {0} 失败</value>
+  </data>
+  <data name="IOWriteError" xml:space="preserve">
+    <value>写入 {0} 错误: {1}</value>
+  </data>
+  <data name="IOReadError" xml:space="preserve">
+    <value>读取 {0} 错误: {1}</value>
+  </data>
+  <data name="IOMappingModeChanged" xml:space="preserve">
+    <value>IO映射模式已切换至: {0}</value>
+  </data>
+  <data name="IOTestModeChanged" xml:space="preserve">
+    <value>IO测试模式: {0}</value>
+  </data>
+  <data name="IOOutputChanged" xml:space="preserve">
+    <value>输出 {0} 设置为: {1}</value>
+  </data>
+  <data name="IOOutputControlError" xml:space="preserve">
+    <value>输出控制错误: {0}</value>
+  </data>
   <data name="PermissionCheckNotAuthenticated" xml:space="preserve">
     <value>权限检查失败：用户未认证，资源 {0}.{1}</value>
   </data>

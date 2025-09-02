@@ -127,6 +127,18 @@
   <data name="MessageBoxTitle" xml:space="preserve">
     <value>提示</value>
   </data>
+  <data name="MappingModeText" xml:space="preserve">
+    <value>🔄 映射</value>
+  </data>
+  <data name="RealModeText" xml:space="preserve">
+    <value>✅ 真实</value>
+  </data>
+  <data name="TestingModeText" xml:space="preserve">
+    <value>⚡ 测试中</value>
+  </data>
+  <data name="OutputTestNormalText" xml:space="preserve">
+    <value>⚡ 输出测试</value>
+  </data>
   <data name="Minimize" xml:space="preserve">
     <value>最小化</value>
   </data>

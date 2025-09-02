@@ -317,6 +317,75 @@ namespace Ewan.Core.IO
         }
 
         /// <summary>
+        /// 写入输出点位值
+        /// </summary>
+        /// <param name="index">输出点索引 (0-63)</param>
+        /// <param name="value">输出值</param>
+        /// <param name="useMapping">是否使用映射 (true: 使用映射索引, false: 使用物理索引)</param>
+        /// <returns>写入是否成功</returns>
+        public bool WriteOutput(int index, bool value, bool useMapping = true)
+        {
+            lock (_lockObject)
+            {
+                if (_layeredIO == null || !_layeredIO.IsOpen)
+                {
+                    _uiLogger.Error(() => Ewan.Resources.LogMessages.IONotConnected);
+                    return false;
+                }
+
+                try
+                {
+                    // 使用LayeredIO的WriteOutBit方法
+                    // useMapping参数决定是否使用映射
+                    bool result = _layeredIO.WriteOutBit(index, value, useMapping);
+                    
+                    if (result)
+                    {
+                        _uiLogger.Debug(() => Ewan.Resources.LogMessages.IOWriteSuccess, $"Y{index}", value);
+                    }
+                    else
+                    {
+                        _uiLogger.Error(() => Ewan.Resources.LogMessages.IOWriteFailed, $"Y{index}");
+                    }
+                    
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    _uiLogger.Error(() => Ewan.Resources.LogMessages.IOWriteError, $"Y{index}", ex.Message);
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 读取输出点位值
+        /// </summary>
+        /// <param name="index">输出点索引 (0-63)</param>
+        /// <param name="useMapping">是否使用映射 (true: 使用映射索引, false: 使用物理索引)</param>
+        /// <returns>输出点位值</returns>
+        public bool ReadOutput(int index, bool useMapping = true)
+        {
+            lock (_lockObject)
+            {
+                if (_layeredIO == null || !_layeredIO.IsOpen)
+                {
+                    return false;
+                }
+
+                try
+                {
+                    return _layeredIO.ReadOutBit(index, useMapping);
+                }
+                catch (Exception ex)
+                {
+                    _uiLogger.Error(() => Ewan.Resources.LogMessages.IOReadError, $"Y{index}", ex.Message);
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
         /// 设置硬件类型（需要在Init之前调用）
         /// </summary>
         public void SetHardwareType(HardwareType type, string connectionString = null)

@@ -323,6 +323,7 @@
                             Content="{Binding OutputTestText}"
                             Style="{StaticResource ModernButton}"
                             Width="160"
+                            Background="{Binding OutputTestButtonBackground}"
                             Command="{Binding OutputTestCommand}"/>
                 </Grid>
             </Border>
@@ -528,12 +529,25 @@
                                                         Width="39" Height="37"
                                                         CornerRadius="4"
                                                         Cursor="Hand">
+                                                    <Border.InputBindings>
+                                                        <MouseBinding MouseAction="LeftClick" 
+                                                                     Command="{Binding DataContext.OutputPointClickCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                                     CommandParameter="{Binding}"/>
+                                                    </Border.InputBindings>
                                                     <Border.Style>
                                                         <Style TargetType="Border">
                                                             <Setter Property="Background" Value="#DC143C"/>
                                                             <Style.Triggers>
                                                                 <DataTrigger Binding="{Binding IsOn}" Value="True">
                                                                     <Setter Property="Background" Value="#00FF00"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding IsClickable}" Value="True">
+                                                                    <Setter Property="Cursor" Value="Hand"/>
+                                                                    <Setter Property="Opacity" Value="1.0"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding IsClickable}" Value="False">
+                                                                    <Setter Property="Cursor" Value="Arrow"/>
+                                                                    <Setter Property="Opacity" Value="0.7"/>
                                                                 </DataTrigger>
                                                             </Style.Triggers>
                                                         </Style>
@@ -572,12 +586,25 @@
                                                         Width="39" Height="37"
                                                         CornerRadius="4"
                                                         Cursor="Hand">
+                                                    <Border.InputBindings>
+                                                        <MouseBinding MouseAction="LeftClick" 
+                                                                     Command="{Binding DataContext.OutputPointClickCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                                     CommandParameter="{Binding}"/>
+                                                    </Border.InputBindings>
                                                     <Border.Style>
                                                         <Style TargetType="Border">
                                                             <Setter Property="Background" Value="#DC143C"/>
                                                             <Style.Triggers>
                                                                 <DataTrigger Binding="{Binding IsOn}" Value="True">
                                                                     <Setter Property="Background" Value="#00FF00"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding IsClickable}" Value="True">
+                                                                    <Setter Property="Cursor" Value="Hand"/>
+                                                                    <Setter Property="Opacity" Value="1.0"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding IsClickable}" Value="False">
+                                                                    <Setter Property="Cursor" Value="Arrow"/>
+                                                                    <Setter Property="Opacity" Value="0.7"/>
                                                                 </DataTrigger>
                                                             </Style.Triggers>
                                                         </Style>

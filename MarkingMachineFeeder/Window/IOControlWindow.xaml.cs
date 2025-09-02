@@ -39,5 +39,10 @@ namespace MarkingMachineFeeder.Windows
         {
 
         }
+
+        private void SimulateInputButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

@@ -44,7 +44,7 @@ namespace Ewan.Core.Security
         {
             LoadUsers();
             InitializeDefaultUsers();
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.SecurityManagerInitialized);
+            _appLogger.Info(Ewan.Resources.LogMessages.SecurityManagerInitialized);
             return base.Init();
         }
 
@@ -76,7 +76,7 @@ namespace Ewan.Core.Security
             }
 
             _currentUser = user;
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.LoginSuccessful, username);
+            _appLogger.Info(Ewan.Resources.LogMessages.LoginSuccessful + ": " + username);
             UserAuthenticated?.Invoke(this, user);
             return true;
         }

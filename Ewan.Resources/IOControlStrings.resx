@@ -127,6 +127,18 @@
   <data name="MessageBoxTitle" xml:space="preserve">
     <value>Notice</value>
   </data>
+  <data name="MappingModeText" xml:space="preserve">
+    <value>🔄 Mapping</value>
+  </data>
+  <data name="RealModeText" xml:space="preserve">
+    <value>✅ Real</value>
+  </data>
+  <data name="TestingModeText" xml:space="preserve">
+    <value>⚡ Testing</value>
+  </data>
+  <data name="OutputTestNormalText" xml:space="preserve">
+    <value>⚡ Output Test</value>
+  </data>
   <data name="Minimize" xml:space="preserve">
     <value>Minimize</value>
   </data>

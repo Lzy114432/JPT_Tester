@@ -198,6 +198,30 @@ namespace Ewan.Resources {
             }
         }
         
+        public static string MappingModeText {
+            get {
+                return ResourceManager.GetString("MappingModeText", resourceCulture);
+            }
+        }
+        
+        public static string RealModeText {
+            get {
+                return ResourceManager.GetString("RealModeText", resourceCulture);
+            }
+        }
+        
+        public static string TestingModeText {
+            get {
+                return ResourceManager.GetString("TestingModeText", resourceCulture);
+            }
+        }
+        
+        public static string OutputTestNormalText {
+            get {
+                return ResourceManager.GetString("OutputTestNormalText", resourceCulture);
+            }
+        }
+        
         public static string Minimize {
             get {
                 return ResourceManager.GetString("Minimize", resourceCulture);

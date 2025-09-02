@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Logger\AppLogger.cs" />
     <Compile Include="Logger\FileLogger.cs" />
     <Compile Include="Logger\IOLogger.cs" />
     <Compile Include="Logger\LogLevel.cs" />

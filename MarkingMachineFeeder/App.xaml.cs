@@ -1,6 +1,7 @@
 ﻿using Ewan.BusinessBonding;
 using Ewan.Core.Logger;
 using Ewan.Core.Security;
+using Ewan.LogManager.Logger;
 using MarkingMachineFeeder.Viewmodel;
 using Prism.Mvvm;
 using System.IO;
@@ -14,6 +15,7 @@ namespace MarkingMachineFeeder
     public partial class App : Application
     {
         private readonly UILogger _uiLogger = new UILogger(typeof(Ewan.Resources.LogMessages));
+        private readonly AppLogger _appLogger = AppLogger.Instance;
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -23,17 +25,17 @@ namespace MarkingMachineFeeder
             // 设置 IOLogger 的资源类型
             Ewan.LogManager.Logger.IOLogger.Instance.SetResourceType(typeof(Ewan.Resources.LogMessages));
             
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.Log4netConfigLoaded);
+            _appLogger.Info(Ewan.Resources.LogMessages.Log4netConfigLoaded);
 
 
             // 初始化Ewan.BusinessBonding MainController (包含所有Managers)
             if (MainController.Instance().Initialize())
             {
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.MainControllerInitialized);
+                _appLogger.Info(Ewan.Resources.LogMessages.MainControllerInitialized);
             }
             else
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.MainControllerInitializationFailed);
+                _appLogger.Error(Ewan.Resources.LogMessages.MainControllerInitializationFailed);
                 MessageBox.Show("系统初始化失败，程序将退出。", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                 Shutdown();
                 return;
@@ -43,7 +45,7 @@ namespace MarkingMachineFeeder
             var securityManager = SecurityManager.Instance();
             if (!securityManager.Authenticate("operator", "1"))
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.LoginError, "默认操作员登录失败");
+                _appLogger.Error(Ewan.Resources.LogMessages.LoginError + ": 默认操作员登录失败");
                 MessageBox.Show("默认用户登录失败，程序将退出。", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                 Shutdown();
                 return;

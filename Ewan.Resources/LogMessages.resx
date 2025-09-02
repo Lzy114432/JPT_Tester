@@ -328,6 +328,33 @@
   <data name="IORecreationFailed" xml:space="preserve">
     <value>Failed to recreate IO: {0}</value>
   </data>
+  <data name="IONotConnected" xml:space="preserve">
+    <value>IO not connected</value>
+  </data>
+  <data name="IOWriteSuccess" xml:space="preserve">
+    <value>Successfully wrote {0} = {1}</value>
+  </data>
+  <data name="IOWriteFailed" xml:space="preserve">
+    <value>Failed to write {0}</value>
+  </data>
+  <data name="IOWriteError" xml:space="preserve">
+    <value>Error writing {0}: {1}</value>
+  </data>
+  <data name="IOReadError" xml:space="preserve">
+    <value>Error reading {0}: {1}</value>
+  </data>
+  <data name="IOMappingModeChanged" xml:space="preserve">
+    <value>IO mapping mode changed to: {0}</value>
+  </data>
+  <data name="IOTestModeChanged" xml:space="preserve">
+    <value>IO test mode: {0}</value>
+  </data>
+  <data name="IOOutputChanged" xml:space="preserve">
+    <value>Output {0} set to: {1}</value>
+  </data>
+  <data name="IOOutputControlError" xml:space="preserve">
+    <value>Output control error: {0}</value>
+  </data>
   <data name="PermissionCheckNotAuthenticated" xml:space="preserve">
     <value>Permission check failed: User not authenticated for {0}.{1}</value>
   </data>

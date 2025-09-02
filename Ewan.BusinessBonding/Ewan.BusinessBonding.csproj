@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IOController.cs" />
     <Compile Include="MainController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StreamController.cs" />
@@ -68,6 +69,10 @@
     <ProjectReference Include="..\Ewan.Core\Ewan.Core.csproj">
       <Project>{74a46493-03c1-44b6-ba22-cff0f8ec9fbe}</Project>
       <Name>Ewan.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ewan.LogManager\Ewan.LogManager.csproj">
+      <Project>{88888888-8888-8888-8888-888888888888}</Project>
+      <Name>Ewan.LogManager</Name>
     </ProjectReference>
     <ProjectReference Include="..\Ewan.Resources\Ewan.Resources.csproj">
       <Project>{b8e5b123-4567-8901-2345-6789abcd1234}</Project>

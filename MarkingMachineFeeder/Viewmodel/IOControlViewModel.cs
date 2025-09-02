@@ -1,17 +1,14 @@
-using System;
-using System.Collections.ObjectModel;
-using System.Windows;
-using System.Windows.Threading;
-using Prism.Commands;
-using Prism.Mvvm;
+using Ewan.BusinessBonding;
 using Ewan.Core.Culture;
 using Ewan.Core.Logger;
 using Ewan.Core.Msg;
 using Ewan.Model.IO;
-using Ewan.Model.Messages;
-using Ewan.Model.Security;
-using System.Collections.Generic;
-using System.Linq;
+using Prism.Commands;
+using Prism.Mvvm;
+using System;
+using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace MarkingMachineFeeder.Viewmodel
 {
@@ -245,8 +242,8 @@ namespace MarkingMachineFeeder.Viewmodel
                 {
                     // 更新按钮文本和颜色
                     UpdateMappingButtonDisplay();
-                    // 通知IOPollingModule切换模式
-                    Ewan.Core.Module.IOPollingModule.SetMappingMode(value);
+                    // 映射模式已经存储在IsMappingMode属性中
+                    // WriteOutput方法会使用这个值
                 }
             }
         }
@@ -257,6 +254,29 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             get => _mappingButtonBackground;
             set => SetProperty(ref _mappingButtonBackground, value);
+        }
+
+        // 输出测试模式
+        private bool _isOutputTestMode = false;
+        public bool IsOutputTestMode
+        {
+            get => _isOutputTestMode;
+            set
+            {
+                if (SetProperty(ref _isOutputTestMode, value))
+                {
+                    UpdateOutputTestButtonDisplay();
+                    UpdateOutputPointsClickability();
+                }
+            }
+        }
+
+        // 输出测试按钮背景颜色
+        private string _outputTestButtonBackground = "#FF4500"; // 默认橙红色
+        public string OutputTestButtonBackground
+        {
+            get => _outputTestButtonBackground;
+            set => SetProperty(ref _outputTestButtonBackground, value);
         }
 
         #endregion
@@ -275,6 +295,9 @@ namespace MarkingMachineFeeder.Viewmodel
         public DelegateCommand InputPageDownCommand { get; }
         public DelegateCommand OutputPageUpCommand { get; }
         public DelegateCommand OutputPageDownCommand { get; }
+        
+        // Output point click command
+        public DelegateCommand<IOPointViewModel> OutputPointClickCommand { get; }
 
         #endregion
 
@@ -293,6 +316,9 @@ namespace MarkingMachineFeeder.Viewmodel
             InputPageDownCommand = new DelegateCommand(ExecuteInputPageDown);
             OutputPageUpCommand = new DelegateCommand(ExecuteOutputPageUp);
             OutputPageDownCommand = new DelegateCommand(ExecuteOutputPageDown);
+            
+            // Initialize output point click command
+            OutputPointClickCommand = new DelegateCommand<IOPointViewModel>(ExecuteOutputPointClick, CanExecuteOutputPointClick);
 
             // Initialize mapping mode (默认映射模式)
             IsMappingMode = true;
@@ -428,6 +454,10 @@ namespace MarkingMachineFeeder.Viewmodel
             
             // Update connection status
             UpdateConnectionStatus();
+            
+            // Update button displays to reflect current language
+            UpdateMappingButtonDisplay();
+            UpdateOutputTestButtonDisplay();
 
             // Notify all properties changed
             RaisePropertyChanged(nameof(WindowTitle));
@@ -486,7 +516,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 "映射模式" : 
                 "真实模式";
             
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.ModuleInitialized, $"IO模式切换: {modeText}");
+            _uiLogger.Info(() => Ewan.Resources.LogMessages.IOMappingModeChanged, modeText);
             
             // 切换后重新更新显示
             if (_realIO != null)
@@ -497,11 +527,70 @@ namespace MarkingMachineFeeder.Viewmodel
 
         private void ExecuteOutputTest()
         {
-            MessageBox.Show(
-                Ewan.Resources.IOControlStrings.OutputTestMessage,
-                Ewan.Resources.IOControlStrings.MessageBoxTitle,
-                MessageBoxButton.OK,
-                MessageBoxImage.Information);
+            // 切换输出测试模式
+            IsOutputTestMode = !IsOutputTestMode;
+            
+            // 显示提示信息
+            string modeText = IsOutputTestMode ? 
+                "输出测试模式已开启" : 
+                "输出测试模式已关闭";
+            
+            _uiLogger.Info(() => Ewan.Resources.LogMessages.IOTestModeChanged, modeText);
+        }
+
+        private void UpdateOutputTestButtonDisplay()
+        {
+            // 根据模式更新按钮文本和颜色
+            if (IsOutputTestMode)
+            {
+                OutputTestText = Ewan.Resources.IOControlStrings.TestingModeText; // 测试模式
+                OutputTestButtonBackground = "#00FF00"; // 亮绿色
+            }
+            else
+            {
+                OutputTestText = Ewan.Resources.IOControlStrings.OutputTestNormalText; // 正常模式  
+                OutputTestButtonBackground = "#FF4500"; // 橙红色
+            }
+        }
+
+        private void UpdateOutputPointsClickability()
+        {
+            // 通知所有输出点更新可点击状态
+            foreach (var point in OutputPoints)
+            {
+                point.IsClickable = IsOutputTestMode;
+            }
+            
+            // 刷新输出点击命令状态
+            OutputPointClickCommand?.RaiseCanExecuteChanged();
+        }
+
+        private bool CanExecuteOutputPointClick(IOPointViewModel point)
+        {
+            // 只有在输出测试模式下才能点击输出点
+            return IsOutputTestMode && point != null;
+        }
+
+        private void ExecuteOutputPointClick(IOPointViewModel point)
+        {
+            if (point == null || !IsOutputTestMode)
+                return;
+
+            try
+            {
+                // 切换输出点状态
+                bool newValue = !point.IsOn;
+
+                // 使用IOController写入输出
+                IOController.Instance().WriteOutput(point.Index, newValue, IsMappingMode);
+
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.IOOutputChanged,
+                    point.Name, newValue ? "ON" : "OFF");
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.IOOutputControlError, ex.Message);
+            }
         }
 
         private void ExecuteMinimize()
@@ -554,12 +643,12 @@ namespace MarkingMachineFeeder.Viewmodel
             // 根据模式更新按钮文本和颜色
             if (IsMappingMode)
             {
-                MappingConfigText = "🔄 映射"; // 映射模式
+                MappingConfigText = Ewan.Resources.IOControlStrings.MappingModeText; // 映射模式
                 MappingButtonBackground = "#32CD32"; // 绿色 (AccentColor)
             }
             else
             {
-                MappingConfigText = "✅ 真实"; // 真实模式  
+                MappingConfigText = Ewan.Resources.IOControlStrings.RealModeText; // 真实模式  
                 MappingButtonBackground = "#4682B4"; // 蓝色 (PrimaryColor)
             }
         }
@@ -635,39 +724,35 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             if (_realIO == null) return;
 
-            // 更新所有输入点
-            for (int i = 0; i < 64; i++)
+            // 根据模式选择数据源
+            if (IsMappingMode)
             {
-                InputPoints[i].IsOn = _realIO.X[i];
-                
-                // 根据模式更新名称
-                if (IsMappingMode && _realIO.XNames != null && _realIO.XNames[i] != null)
+                // 映射模式：使用映射数据
+                for (int i = 0; i < 64; i++)
                 {
-                    // 映射模式：使用映射配置中的名称
-                    InputPoints[i].Name = _realIO.XNames[i];
+                    InputPoints[i].IsOn = _realIO.XMapped[i];
+                    InputPoints[i].Name = _realIO.XMappedNames[i];
                 }
-                else
+
+                for (int i = 0; i < 64; i++)
                 {
-                    // 真实模式：使用默认名称 X0开始
-                    InputPoints[i].Name = $"X{i}";
+                    OutputPoints[i].IsOn = _realIO.YMapped[i];
+                    OutputPoints[i].Name = _realIO.YMappedNames[i];
                 }
             }
-
-            // 更新所有输出点
-            for (int i = 0; i < 64; i++)
+            else
             {
-                OutputPoints[i].IsOn = _realIO.Y[i];
-                
-                // 根据模式更新名称
-                if (IsMappingMode && _realIO.YNames != null && _realIO.YNames[i] != null)
+                // 真实模式：使用真实数据
+                for (int i = 0; i < 64; i++)
                 {
-                    // 映射模式：使用映射配置中的名称
-                    OutputPoints[i].Name = _realIO.YNames[i];
+                    InputPoints[i].IsOn = _realIO.XReal[i];
+                    InputPoints[i].Name = _realIO.XRealNames[i];
                 }
-                else
+
+                for (int i = 0; i < 64; i++)
                 {
-                    // 真实模式：使用默认名称 Y0开始
-                    OutputPoints[i].Name = $"Y{i}";
+                    OutputPoints[i].IsOn = _realIO.YReal[i];
+                    OutputPoints[i].Name = _realIO.YRealNames[i];
                 }
             }
 
@@ -722,6 +807,13 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             get => _isOn;
             set => SetProperty(ref _isOn, value);
+        }
+
+        private bool _isClickable;
+        public bool IsClickable
+        {
+            get => _isClickable;
+            set => SetProperty(ref _isClickable, value);
         }
     }
 }

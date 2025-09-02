@@ -1,4 +1,5 @@
 ﻿using Ewan.Core.Logger;
+using Ewan.LogManager.Logger;
 
 namespace Ewan.Core
 {
@@ -9,6 +10,7 @@ namespace Ewan.Core
     public abstract class BaseManager<T>
     {
         protected readonly UILogger _uiLogger = new UILogger(typeof(Ewan.Resources.LogMessages));
+        protected readonly AppLogger _appLogger = AppLogger.Instance;
 
         /// <summary>
         /// 单例
@@ -24,7 +26,7 @@ namespace Ewan.Core
         /// </summary>
         public virtual bool Init()
         {
-            _uiLogger.Debug(() => Ewan.Resources.LogMessages.BaseManagerInitialized, GetType().Name);
+            _appLogger.Debug(Ewan.Resources.LogMessages.BaseManagerInitialized + ": " + GetType().Name);
             return true;
         }
 
@@ -33,7 +35,7 @@ namespace Ewan.Core
         /// </summary>
         public virtual void Destroy()
         {
-            _uiLogger.Debug(() => Ewan.Resources.LogMessages.BaseManagerDestroyed, GetType().Name);
+            _appLogger.Debug(Ewan.Resources.LogMessages.BaseManagerDestroyed + ": " + GetType().Name);
         }
 
         private static class InstanceHolder

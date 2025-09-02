@@ -259,25 +259,29 @@ namespace MarkingMachineFeeder.Viewmodel
                 };
 
                 // 在UI线程上添加日志条目
-                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                var dispatcher = Application.Current?.Dispatcher;
+                if (dispatcher != null)
                 {
-                    LogEntries.Add(logEntry);
-
-                    // 限制最大行数
-                    if (int.TryParse(MaxLines, out int maxLines))
+                    dispatcher.BeginInvoke(new Action(() =>
                     {
-                        while (LogEntries.Count > maxLines)
+                        LogEntries.Add(logEntry);
+
+                        // 限制最大行数
+                        if (int.TryParse(MaxLines, out int maxLines))
                         {
-                            LogEntries.RemoveAt(0);
+                            while (LogEntries.Count > maxLines)
+                            {
+                                LogEntries.RemoveAt(0);
+                            }
                         }
-                    }
 
-                    // 如果启用自动滚动，触发滚动到底部事件
-                    if (AutoScroll)
-                    {
-                        ScrollToBottomRequested?.Invoke();
-                    }
-                }));
+                        // 如果启用自动滚动，触发滚动到底部事件
+                        if (AutoScroll)
+                        {
+                            ScrollToBottomRequested?.Invoke();
+                        }
+                    }));
+                }
             }
             catch (Exception ex)
             {

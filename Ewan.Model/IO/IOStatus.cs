@@ -13,24 +13,68 @@ namespace Ewan.Model.IO
         public const int IO_COUNT = 64;
 
         /// <summary>
-        /// 输入点数组 X1-X64 (索引0-63对应X1-X64)
+        /// 输入点数组 X1-X64 (索引0-63对应X1-X64) - 兼容旧代码
         /// </summary>
         public bool[] X { get; set; }
 
         /// <summary>
-        /// 输出点数组 Y1-Y64 (索引0-63对应Y1-Y64)
+        /// 输出点数组 Y1-Y64 (索引0-63对应Y1-Y64) - 兼容旧代码
         /// </summary>
         public bool[] Y { get; set; }
 
         /// <summary>
-        /// 输入点映射名称数组 (映射模式时使用)
+        /// 输入点映射名称数组 (映射模式时使用) - 兼容旧代码
         /// </summary>
         public string[] XNames { get; set; }
 
         /// <summary>
-        /// 输出点映射名称数组 (映射模式时使用)
+        /// 输出点映射名称数组 (映射模式时使用) - 兼容旧代码
         /// </summary>
         public string[] YNames { get; set; }
+
+        #region 真实IO数据
+        /// <summary>
+        /// 真实输入点数组 (物理地址对应的值)
+        /// </summary>
+        public bool[] XReal { get; set; }
+
+        /// <summary>
+        /// 真实输出点数组 (物理地址对应的值)
+        /// </summary>
+        public bool[] YReal { get; set; }
+
+        /// <summary>
+        /// 真实输入点名称数组 (X0-X63)
+        /// </summary>
+        public string[] XRealNames { get; set; }
+
+        /// <summary>
+        /// 真实输出点名称数组 (Y0-Y63)
+        /// </summary>
+        public string[] YRealNames { get; set; }
+        #endregion
+
+        #region 映射IO数据
+        /// <summary>
+        /// 映射输入点数组 (逻辑地址对应的值)
+        /// </summary>
+        public bool[] XMapped { get; set; }
+
+        /// <summary>
+        /// 映射输出点数组 (逻辑地址对应的值)
+        /// </summary>
+        public bool[] YMapped { get; set; }
+
+        /// <summary>
+        /// 映射输入点名称数组 (从配置文件加载的名称)
+        /// </summary>
+        public string[] XMappedNames { get; set; }
+
+        /// <summary>
+        /// 映射输出点名称数组 (从配置文件加载的名称)
+        /// </summary>
+        public string[] YMappedNames { get; set; }
+        #endregion
 
         /// <summary>
         /// 连接状态
@@ -57,16 +101,38 @@ namespace Ewan.Model.IO
         /// </summary>
         public IOStatus()
         {
+            // 兼容旧代码的数组
             X = new bool[IO_COUNT];
             Y = new bool[IO_COUNT];
             XNames = new string[IO_COUNT];
             YNames = new string[IO_COUNT];
             
+            // 真实IO数据
+            XReal = new bool[IO_COUNT];
+            YReal = new bool[IO_COUNT];
+            XRealNames = new string[IO_COUNT];
+            YRealNames = new string[IO_COUNT];
+            
+            // 映射IO数据
+            XMapped = new bool[IO_COUNT];
+            YMapped = new bool[IO_COUNT];
+            XMappedNames = new string[IO_COUNT];
+            YMappedNames = new string[IO_COUNT];
+            
             // 初始化默认名称
             for (int i = 0; i < IO_COUNT; i++)
             {
+                // 兼容旧代码
                 XNames[i] = $"X{i}";  // 默认名称 X0-X63
                 YNames[i] = $"Y{i}";  // 默认名称 Y0-Y63
+                
+                // 真实IO名称
+                XRealNames[i] = $"X{i}";  // 真实名称 X0-X63
+                YRealNames[i] = $"Y{i}";  // 真实名称 Y0-Y63
+                
+                // 映射IO名称（初始和真实相同，后续会从配置文件加载）
+                XMappedNames[i] = $"X{i}";  // 映射名称 X0-X63
+                YMappedNames[i] = $"Y{i}";  // 映射名称 Y0-Y63
             }
             
             LastUpdateTime = DateTime.Now;

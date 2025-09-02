@@ -1195,6 +1195,87 @@ namespace Ewan.Resources {
         }
         
         /// <summary>
+        ///   查找类似 IO not connected 的本地化字符串。
+        /// </summary>
+        public static string IONotConnected {
+            get {
+                return ResourceManager.GetString("IONotConnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Successfully wrote {0} = {1} 的本地化字符串。
+        /// </summary>
+        public static string IOWriteSuccess {
+            get {
+                return ResourceManager.GetString("IOWriteSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Failed to write {0} 的本地化字符串。
+        /// </summary>
+        public static string IOWriteFailed {
+            get {
+                return ResourceManager.GetString("IOWriteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Error writing {0}: {1} 的本地化字符串。
+        /// </summary>
+        public static string IOWriteError {
+            get {
+                return ResourceManager.GetString("IOWriteError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Error reading {0}: {1} 的本地化字符串。
+        /// </summary>
+        public static string IOReadError {
+            get {
+                return ResourceManager.GetString("IOReadError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 IO mapping mode changed to: {0} 的本地化字符串。
+        /// </summary>
+        public static string IOMappingModeChanged {
+            get {
+                return ResourceManager.GetString("IOMappingModeChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 IO test mode: {0} 的本地化字符串。
+        /// </summary>
+        public static string IOTestModeChanged {
+            get {
+                return ResourceManager.GetString("IOTestModeChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Output {0} set to: {1} 的本地化字符串。
+        /// </summary>
+        public static string IOOutputChanged {
+            get {
+                return ResourceManager.GetString("IOOutputChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Output control error: {0} 的本地化字符串。
+        /// </summary>
+        public static string IOOutputControlError {
+            get {
+                return ResourceManager.GetString("IOOutputControlError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Permission check failed: User not authenticated for {0}.{1} 的本地化字符串。
         /// </summary>
         public static string PermissionCheckNotAuthenticated {

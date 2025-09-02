@@ -1,12 +1,10 @@
 using Ewan.Core.IO;
 using Ewan.Core.Msg;
 using Ewan.Model.IO;
-using Ewan.Model.Messages;
-using System;
-using System.Threading;
-using System.IO;
 using Newtonsoft.Json;
-using System.Collections.Generic;
+using System;
+using System.IO;
+using System.Threading;
 
 namespace Ewan.Core.Module
 {
@@ -15,7 +13,7 @@ namespace Ewan.Core.Module
     /// </summary>
     public class IOPollingModule : BaseModule<IOPollingModule>
     {
-        private LayeredIOManager _ioManager;
+        //private LayeredIOManager _ioManager;
         private IOStatus _ioStatus;
         private readonly int _readInterval = 200; // 200ms读取间隔
         private DateTime _lastSyncTime;
@@ -26,7 +24,7 @@ namespace Ewan.Core.Module
             try
             {
                 // 获取IO管理器实例
-                _ioManager = LayeredIOManager.Instance();
+                //_ioManager = LayeredIOManager.Instance();
                 
                 // 创建IOStatus实例
                 _ioStatus = new IOStatus();
@@ -78,7 +76,7 @@ namespace Ewan.Core.Module
         /// </summary>
         private void ReadIOData()
         {
-            if (_ioManager == null || !_ioManager.IsConnected)
+            if (LayeredIOManager.Instance() == null || !LayeredIOManager.Instance().IsConnected)
             {
                 _ioStatus.IsConnected = false;
                 _ioStatus.ErrorMessage = "IO管理器未连接";
@@ -87,7 +85,7 @@ namespace Ewan.Core.Module
 
             try
             {
-                var layeredIO = _ioManager.LayeredIO;
+                var layeredIO = LayeredIOManager.Instance().LayeredIO;
                 if (layeredIO == null || !layeredIO.IsOpen)
                 {
                     _ioStatus.IsConnected = false;
@@ -95,17 +93,28 @@ namespace Ewan.Core.Module
                     return;
                 }
 
-                // 直接读取所有输入点 (X1-X64)，SafetyModule已经执行了DataSync
-                // 根据模式读取真实值(false)或映射值(true)
+                // 同时读取真实IO和映射IO数据
                 for (int i = 0; i < IOStatus.IO_COUNT; i++)
                 {
-                    _ioStatus.X[i] = layeredIO.ReadInBit(i, _useMappingMode);
+                    // 读取真实输入点（物理地址）
+                    _ioStatus.XReal[i] = layeredIO.ReadInBit(i, false);
+                    // 读取映射输入点（逻辑地址）
+                    _ioStatus.XMapped[i] = layeredIO.ReadInBit(i, true);
+                    
+                    // 为了兼容旧代码，根据当前模式设置X数组
+                    _ioStatus.X[i] = _useMappingMode ? _ioStatus.XMapped[i] : _ioStatus.XReal[i];
                 }
 
-                // 读取所有输出点 (Y1-Y64)
+                // 读取所有输出点
                 for (int i = 0; i < IOStatus.IO_COUNT; i++)
                 {
-                    _ioStatus.Y[i] = layeredIO.ReadOutBit(i, _useMappingMode);
+                    // 读取真实输出点（物理地址）
+                    _ioStatus.YReal[i] = layeredIO.ReadOutBit(i, false);
+                    // 读取映射输出点（逻辑地址）
+                    _ioStatus.YMapped[i] = layeredIO.ReadOutBit(i, true);
+                    
+                    // 为了兼容旧代码，根据当前模式设置Y数组
+                    _ioStatus.Y[i] = _useMappingMode ? _ioStatus.YMapped[i] : _ioStatus.YReal[i];
                 }
 
                 // 更新状态
@@ -142,63 +151,6 @@ namespace Ewan.Core.Module
         }
 
         /// <summary>
-        /// 获取当前的IOStatus数据
-        /// </summary>
-        /// <returns>IOStatus实例</returns>
-        public IOStatus GetIOStatus()
-        {
-            return _ioStatus;
-        }
-
-        /// <summary>
-        /// 设置输出点值
-        /// </summary>
-        /// <param name="index">输出点索引 (0-63)</param>
-        /// <param name="value">输出值</param>
-        public bool SetOutput(int index, bool value)
-        {
-            try
-            {
-                if (_ioManager == null || !_ioManager.IsConnected)
-                    return false;
-
-                var layeredIO = _ioManager.LayeredIO;
-                if (layeredIO == null || !layeredIO.IsOpen)
-                    return false;
-
-                // 写入输出点 (索引从0开始)
-                bool result = layeredIO.WriteOutBit(index, value);
-                
-                if (result)
-                {
-                    // 更新本地缓存
-                    _ioStatus.SetY(index, value);
-                }
-
-                return result;
-            }
-            catch (Exception ex)
-            {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ModuleRunError, $"IOPollingModule Write Y{index}", ex.Message);
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// 设置是否使用映射模式
-        /// </summary>
-        /// <param name="useMapping">true: 使用映射值, false: 使用真实值</param>
-        public static void SetMappingMode(bool useMapping)
-        {
-            _useMappingMode = useMapping;
-        }
-
-        /// <summary>
-        /// 获取当前是否使用映射模式
-        /// </summary>
-        public static bool IsMappingMode => _useMappingMode;
-
-        /// <summary>
         /// 从映射配置文件加载IO点位名称
         /// </summary>
         private void LoadIOPointMappingNames()
@@ -220,6 +172,9 @@ namespace Ewan.Core.Module
                             string name = (string)mapping.Name;
                             if (logicalIndex >= 0 && logicalIndex < IOStatus.IO_COUNT && !string.IsNullOrEmpty(name))
                             {
+                                // 更新映射名称数组
+                                _ioStatus.XMappedNames[logicalIndex] = name;
+                                // 兼容旧代码
                                 _ioStatus.XNames[logicalIndex] = name;
                             }
                         }
@@ -234,6 +189,9 @@ namespace Ewan.Core.Module
                             string name = (string)mapping.Name;
                             if (logicalIndex >= 0 && logicalIndex < IOStatus.IO_COUNT && !string.IsNullOrEmpty(name))
                             {
+                                // 更新映射名称数组
+                                _ioStatus.YMappedNames[logicalIndex] = name;
+                                // 兼容旧代码
                                 _ioStatus.YNames[logicalIndex] = name;
                             }
                         }
