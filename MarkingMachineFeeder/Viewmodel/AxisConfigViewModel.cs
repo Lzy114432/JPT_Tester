@@ -6,12 +6,13 @@ using System.Windows;
 using System.Windows.Input;
 using Prism.Commands;
 using Prism.Mvvm;
-using Ewan.Model;
+using Ewan.Model.Config;
 using Ewan.Core.Culture;
 using Ewan.Core.Security;
 using Ewan.Core;
 using Ewan.Core.Logger;
 using Newtonsoft.Json;
+using System.ComponentModel;
 
 namespace MarkingMachineFeeder.Viewmodel
 {
@@ -37,13 +38,42 @@ namespace MarkingMachineFeeder.Viewmodel
             set => SetProperty(ref _directionOptions, value);
         }
 
+        private ObservableCollection<HomingDirOption> _homingDirOptions;
+        public ObservableCollection<HomingDirOption> HomingDirOptions
+        {
+            get => _homingDirOptions;
+            set => SetProperty(ref _homingDirOptions, value);
+        }
+
+
 
         private AxisConfig _selectedAxis;
         public AxisConfig SelectedAxis
         {
             get => _selectedAxis;
-            set => SetProperty(ref _selectedAxis, value);
+            set 
+            { 
+                if (SetProperty(ref _selectedAxis, value))
+                {
+                    // Refresh commands when selection changes
+                    RemoveAxisCommand?.RaiseCanExecuteChanged();
+                    
+                    // Update UI visibility property
+                    RaisePropertyChanged(nameof(HasSelectedAxis));
+                    RaisePropertyChanged(nameof(HasNoSelectedAxis));
+                }
+            }
         }
+
+        /// <summary>
+        /// 是否有选中的轴（用于控制详细配置区域的显示）
+        /// </summary>
+        public bool HasSelectedAxis => SelectedAxis != null;
+
+        /// <summary>
+        /// 是否没有选中轴（用于控制提示文本的显示）
+        /// </summary>
+        public bool HasNoSelectedAxis => SelectedAxis == null;
 
         #region UI Texts
         
@@ -75,19 +105,35 @@ namespace MarkingMachineFeeder.Viewmodel
             set => SetProperty(ref _removeAxisText, value);
         }
 
-        private string _resetDefaultText = "重置默认值";
-        public string ResetDefaultText
-        {
-            get => _resetDefaultText;
-            set => SetProperty(ref _resetDefaultText, value);
-        }
 
         private string _axisNumHeaderText = "轴号";
-        public string AxisNumHeaderText
+        public string AxisIDHeaderText
         {
             get => _axisNumHeaderText;
             set => SetProperty(ref _axisNumHeaderText, value);
         }
+
+        private string _maxPosHeaderText = "最大位置(mm)";
+        public string MaxPosHeaderText
+        {
+            get => _maxPosHeaderText;
+            set => SetProperty(ref _maxPosHeaderText, value);
+        }
+
+        private string _minPosHeaderText = "最小位置(mm)";
+        public string MinPosHeaderText
+        {
+            get => _minPosHeaderText;
+            set => SetProperty(ref _minPosHeaderText, value);
+        }
+
+        private string _homingDirHeaderText = "回零方向";
+        public string HomingDirHeaderText
+        {
+            get => _homingDirHeaderText;
+            set => SetProperty(ref _homingDirHeaderText, value);
+        }
+
 
         private string _axisNameHeaderText = "轴名称";
         public string AxisNameHeaderText
@@ -146,7 +192,6 @@ namespace MarkingMachineFeeder.Viewmodel
         
         public DelegateCommand AddAxisCommand { get; private set; }
         public DelegateCommand RemoveAxisCommand { get; private set; }
-        public DelegateCommand ResetDefaultCommand { get; private set; }
         public DelegateCommand OKCommand { get; private set; }
 
         #endregion
@@ -172,7 +217,6 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             AddAxisCommand = new DelegateCommand(ExecuteAddAxis);
             RemoveAxisCommand = new DelegateCommand(ExecuteRemoveAxis, CanExecuteRemoveAxis);
-            ResetDefaultCommand = new DelegateCommand(ExecuteResetDefault);
             OKCommand = new DelegateCommand(ExecuteOK);
         }
 
@@ -183,6 +227,13 @@ namespace MarkingMachineFeeder.Viewmodel
             {
                 new OptionItem { Display = "正向", Value = true },
                 new OptionItem { Display = "反向", Value = false }
+            };
+
+            // Initialize homing direction options
+            HomingDirOptions = new ObservableCollection<HomingDirOption>
+            {
+                new HomingDirOption { Display = "正方向", Value = HomingDir.Positive },
+                new HomingDirOption { Display = "负方向", Value = HomingDir.Negative }
             };
 
             // Try to load from JSON file
@@ -200,8 +251,7 @@ namespace MarkingMachineFeeder.Viewmodel
             AxisParametersText = "轴参数配置";
             AddAxisText = "添加轴";
             RemoveAxisText = "删除轴";
-            ResetDefaultText = "重置默认值";
-            AxisNumHeaderText = "轴号";
+            AxisIDHeaderText = "轴号";
             AxisNameHeaderText = "轴名称";
             DirectionHeaderText = "方向";
             SpeedHeaderText = "速度(mm/s)";
@@ -210,12 +260,15 @@ namespace MarkingMachineFeeder.Viewmodel
             EnabledHeaderText = "使能";
             OKText = "确定";
             
-            AxisParameters = new ObservableCollection<AxisConfig>
+            // 使用AxisConfigManager创建默认配置
+            var defaultManager = AxisConfigManager.CreateDefault();
+            AxisParameters = new ObservableCollection<AxisConfig>(defaultManager.AxisConfigs);
+            
+            // Auto-select first axis for design time
+            if (AxisParameters.Count > 0)
             {
-                AxisConfig.CreateDefault(0),
-                AxisConfig.CreateDefault(1),
-                AxisConfig.CreateDefault(2)
-            };
+                SelectedAxis = AxisParameters[0];
+            }
         }
 
         private bool LoadFromJsonFile()
@@ -231,7 +284,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 }
                 
                 string jsonContent = File.ReadAllText(configPath);
-                var config = JsonConvert.DeserializeObject<AxisConfiguration>(jsonContent);
+                var config = JsonConvert.DeserializeObject<AxisConfigManager>(jsonContent);
                 
                 if (config == null)
                 {
@@ -240,8 +293,13 @@ namespace MarkingMachineFeeder.Viewmodel
                 }
                 
                 // Load axis parameters
-                AxisParameters = new ObservableCollection<AxisConfig>(config.AxisParameters ?? new System.Collections.Generic.List<AxisConfig>());
+                AxisParameters = new ObservableCollection<AxisConfig>(config.AxisConfigs ?? new System.Collections.Generic.List<AxisConfig>());
                 
+                // Auto-select first axis if available
+                if (AxisParameters.Count > 0)
+                {
+                    SelectedAxis = AxisParameters[0];
+                }
                 
                 System.Diagnostics.Debug.WriteLine($"成功加载轴配置: {AxisParameters.Count} 个轴");
                 return true;
@@ -260,7 +318,22 @@ namespace MarkingMachineFeeder.Viewmodel
             // Create default axes (X, Y, Z)
             for (int i = 0; i < 3; i++)
             {
-                AxisParameters.Add(AxisConfig.CreateDefault(i));
+                var defaultConfig = new AxisConfig
+                {
+                    AxisID = i,
+                    IsUsing = i == 0, // 只启用第一个轴
+                    MaxPos = 700.0f,
+                    MinPos = -11.0f,
+                    HomingDir = HomingDir.Positive,
+                    AxisSpeed = new AxisSpeed { SpeedName = "HighSpd", Jerk = 500000, MaxSpeed = 1000, MinSpeed = 800, Acc = 6500, Dec = 6500 }
+                };
+                AxisParameters.Add(defaultConfig);
+            }
+            
+            // Auto-select first axis if available
+            if (AxisParameters.Count > 0)
+            {
+                SelectedAxis = AxisParameters[0];
             }
         }
 
@@ -273,10 +346,12 @@ namespace MarkingMachineFeeder.Viewmodel
                 AxisParametersText = "轴参数配置";
                 AddAxisText = "添加轴";
                 RemoveAxisText = "删除轴";
-                ResetDefaultText = "重置默认值";
-                AxisNumHeaderText = "轴号";
+                AxisIDHeaderText = "轴号";
                 AxisNameHeaderText = "轴名称";
                 DirectionHeaderText = "方向";
+                HomingDirHeaderText = "回零方向";
+                MaxPosHeaderText = "最大位置(mm)";
+                MinPosHeaderText = "最小位置(mm)";
                 SpeedHeaderText = "速度(mm/s)";
                 AccHeaderText = "加速度(mm/s²)";
                 DecHeaderText = "减速度(mm/s²)";
@@ -289,6 +364,13 @@ namespace MarkingMachineFeeder.Viewmodel
                     DirectionOptions[0].Display = "正向";
                     DirectionOptions[1].Display = "反向";
                 }
+                
+                // Update homing direction options
+                if (HomingDirOptions != null)
+                {
+                    HomingDirOptions[0].Display = "正方向";
+                    HomingDirOptions[1].Display = "负方向";
+                }
             }
             else
             {
@@ -296,10 +378,12 @@ namespace MarkingMachineFeeder.Viewmodel
                 AxisParametersText = "Axis Parameters";
                 AddAxisText = "Add Axis";
                 RemoveAxisText = "Remove Axis";
-                ResetDefaultText = "Reset Default";
-                AxisNumHeaderText = "Axis No.";
+                AxisIDHeaderText = "Axis No.";
                 AxisNameHeaderText = "Axis Name";
                 DirectionHeaderText = "Direction";
+                HomingDirHeaderText = "Homing Direction";
+                MaxPosHeaderText = "Max Position(mm)";
+                MinPosHeaderText = "Min Position(mm)";
                 SpeedHeaderText = "Speed(mm/s)";
                 AccHeaderText = "Acceleration(mm/s²)";
                 DecHeaderText = "Deceleration(mm/s²)";
@@ -312,10 +396,18 @@ namespace MarkingMachineFeeder.Viewmodel
                     DirectionOptions[0].Display = "Forward";
                     DirectionOptions[1].Display = "Reverse";
                 }
+                
+                // Update homing direction options
+                if (HomingDirOptions != null)
+                {
+                    HomingDirOptions[0].Display = "Forward";
+                    HomingDirOptions[1].Display = "Reverse";
+                }
             }
 
             // Notify property changes
             RaisePropertyChanged(nameof(DirectionOptions));
+            RaisePropertyChanged(nameof(HomingDirOptions));
         }
 
         private void OnCultureChanged(object sender, CultureChangedEventArgs e)
@@ -329,11 +421,19 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             try
             {
-                int nextAxisNum = AxisParameters.Count > 0 ? AxisParameters.Max(a => a.AxisNum) + 1 : 0;
-                var newAxis = AxisConfig.CreateDefault(nextAxisNum);
+                int nextAxisID = AxisParameters.Count > 0 ? AxisParameters.Max(a => a.AxisID) + 1 : 0;
+                var newAxis = new AxisConfig
+                {
+                    AxisID = nextAxisID,
+                    IsUsing = false,
+                    MaxPos = 700.0f,
+                    MinPos = -11.0f,
+                    HomingDir = HomingDir.Positive,
+                    AxisSpeed = new AxisSpeed { SpeedName = "HighSpd", Jerk = 500000, MaxSpeed = 1000, MinSpeed = 800, Acc = 6500, Dec = 6500 }
+                };
                 AxisParameters.Add(newAxis);
                 
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.AxisAdded, nextAxisNum);
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.AxisAdded, nextAxisID);
             }
             catch (Exception ex)
             {
@@ -352,7 +452,7 @@ namespace MarkingMachineFeeder.Viewmodel
             {
                 if (SelectedAxis != null && AxisParameters.Contains(SelectedAxis))
                 {
-                    int axisNum = SelectedAxis.AxisNum;
+                    int axisNum = SelectedAxis.AxisID;
                     AxisParameters.Remove(SelectedAxis);
                     _uiLogger.Info(() => Ewan.Resources.LogMessages.AxisRemoved, axisNum);
                 }
@@ -367,23 +467,6 @@ namespace MarkingMachineFeeder.Viewmodel
             }
         }
 
-        private void ExecuteResetDefault()
-        {
-            try
-            {
-                var result = MessageBox.Show("确定要重置所有轴参数为默认值吗？", "确认", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if (result == MessageBoxResult.Yes)
-                {
-                    AxisParameters.Clear();
-                    InitializeDefaultData();
-                    _uiLogger.Info(() => Ewan.Resources.LogMessages.AxisParametersReset);
-                }
-            }
-            catch (Exception ex)
-            {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.AxisParametersResetFailed, ex.Message);
-            }
-        }
 
         private void ExecuteOK()
         {
@@ -412,9 +495,9 @@ namespace MarkingMachineFeeder.Viewmodel
                 
                 string configPath = Path.Combine(configDir, "axis_config.json");
                 
-                var config = new AxisConfiguration
+                var config = new AxisConfigManager
                 {
-                    AxisParameters = AxisParameters.ToList(),
+                    AxisConfigs = AxisParameters.ToList(),
                     SaveTime = DateTime.Now
                 };
                 
@@ -446,6 +529,16 @@ namespace MarkingMachineFeeder.Viewmodel
             }
         }
 
+
         #endregion
+    }
+
+    /// <summary>
+    /// 回零方向选择项
+    /// </summary>
+    public class HomingDirOption
+    {
+        public string Display { get; set; }
+        public HomingDir Value { get; set; }
     }
 }

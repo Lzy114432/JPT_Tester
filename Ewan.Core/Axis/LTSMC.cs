@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
 
-namespace MotionSMC304
+namespace Ewan.Core.Axis
 {
     public static class LTSMC
     {

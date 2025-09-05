@@ -535,12 +535,6 @@
   <data name="AxisRemoveFailed" xml:space="preserve">
     <value>删除轴失败: {0}</value>
   </data>
-  <data name="AxisParametersReset" xml:space="preserve">
-    <value>轴参数已重置为默认值</value>
-  </data>
-  <data name="AxisParametersResetFailed" xml:space="preserve">
-    <value>重置轴参数失败: {0}</value>
-  </data>
   <data name="AxisConfigurationSaved" xml:space="preserve">
     <value>轴配置已保存到: {0}</value>
   </data>

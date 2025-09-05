@@ -195,23 +195,6 @@ namespace Ewan.Resources {
             }
         }
         
-        /// <summary>
-        ///   查找类似 Axis parameters reset to default values 的本地化字符串。
-        /// </summary>
-        public static string AxisParametersReset {
-            get {
-                return ResourceManager.GetString("AxisParametersReset", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Failed to reset axis parameters: {0} 的本地化字符串。
-        /// </summary>
-        public static string AxisParametersResetFailed {
-            get {
-                return ResourceManager.GetString("AxisParametersResetFailed", resourceCulture);
-            }
-        }
         
         /// <summary>
         ///   查找类似 Axis removed: {0} 的本地化字符串。

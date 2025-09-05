@@ -7,13 +7,16 @@
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=vm:AxisConfigViewModel, IsDesignTimeCreatable=True}"
         Title="{Binding WindowTitle, FallbackValue=轴参数配置}" 
-        Height="650" Width="800"
+        Height="750" Width="1200"
         WindowStartupLocation="CenterScreen"
-        WindowStyle="ToolWindow"
-        ResizeMode="NoResize"
+        WindowStyle="SingleBorderWindow"
+        ResizeMode="CanResize"
         Name="AxisConfigWindowView">
     
     <Window.Resources>
+        <!-- Boolean to Visibility Converter -->
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        
         <!-- 通用样式定义 -->
         <Style x:Key="SimpleDataGrid" TargetType="DataGrid">
             <Setter Property="Background" Value="White"/>
@@ -29,7 +32,7 @@
             <Setter Property="CanUserResizeRows" Value="False"/>
             <Setter Property="CanUserSortColumns" Value="False"/>
             <Setter Property="SelectionMode" Value="Single"/>
-            <Setter Property="SelectionUnit" Value="Cell"/>
+            <Setter Property="SelectionUnit" Value="FullRow"/>
             <Setter Property="AlternatingRowBackground" Value="#FAFAFA"/>
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="FontFamily" Value="微软雅黑"/>
@@ -161,177 +164,227 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         
-        <!-- 轴参数配置区域 -->
-        <GroupBox Grid.Row="0" Header="{Binding AxisParametersText, FallbackValue=轴参数配置}" 
-                  Style="{StaticResource GroupBoxStyle}">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                
-                <!-- 工具栏 -->
-                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,5,0,10">
-                    <Button Content="{Binding AddAxisText, FallbackValue=添加轴}" 
-                            Command="{Binding AddAxisCommand}"
-                            Style="{StaticResource SimpleButton}" Width="80"/>
-                    <Button Content="{Binding RemoveAxisText, FallbackValue=删除轴}" 
-                            Command="{Binding RemoveAxisCommand}"
-                            Style="{StaticResource SimpleButton}" Width="80"
-                            Background="#CD5C5C"/>
-                    <Separator Width="20" Background="Transparent"/>
-                    <Button Content="{Binding ResetDefaultText, FallbackValue=重置默认值}" 
-                            Command="{Binding ResetDefaultCommand}"
-                            Style="{StaticResource SimpleButton}" Width="120"
-                            Background="#FFA500"/>
-                </StackPanel>
-                
-                <!-- 轴参数表格 -->
-                <DataGrid Grid.Row="1" x:Name="AxisDataGrid"
-                          ItemsSource="{Binding AxisParameters}"
-                          Style="{StaticResource SimpleDataGrid}"
-                          ColumnHeaderStyle="{StaticResource ColumnHeaderStyle}">
-                    <DataGrid.Columns>
-                        <!-- 轴号列 -->
-                        <DataGridTextColumn Header="{Binding DataContext.AxisNumHeaderText, ElementName=AxisConfigWindowViewView, FallbackValue=轴号}" 
-                                            Binding="{Binding AxisNum}" 
-                                            Width="80"
-                                            IsReadOnly="True">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="TextAlignment" Value="Center"/>
-                                    <Setter Property="VerticalAlignment" Value="Center"/>
-                                    <Setter Property="FontWeight" Value="SemiBold"/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
+        <!-- 主内容区域 -->
+        <Grid Grid.Row="0" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="400"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <!-- 左侧：轴列表 -->
+            <GroupBox Grid.Column="0" Header="{Binding AxisParametersText, FallbackValue=轴参数配置}" 
+                      Style="{StaticResource GroupBoxStyle}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <!-- 工具栏 -->
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,5,0,10">
+                        <Button Content="{Binding AddAxisText, FallbackValue=添加轴}" 
+                                Command="{Binding AddAxisCommand}"
+                                Style="{StaticResource SimpleButton}" Width="80"/>
+                        <Button Content="{Binding RemoveAxisText, FallbackValue=删除轴}" 
+                                Command="{Binding RemoveAxisCommand}"
+                                Style="{StaticResource SimpleButton}" Width="80"
+                                Background="#CD5C5C"/>
+                    </StackPanel>
+                    
+                    <!-- 轴参数表格 -->
+                    <DataGrid Grid.Row="1" x:Name="AxisDataGrid"
+                              ItemsSource="{Binding AxisParameters}"
+                              SelectedItem="{Binding SelectedAxis}"
+                              Style="{StaticResource SimpleDataGrid}"
+                              ColumnHeaderStyle="{StaticResource ColumnHeaderStyle}">
+                        <DataGrid.Columns>
+                            <!-- 轴号列 -->
+                            <DataGridTextColumn Header="{Binding DataContext.AxisIDHeaderText, ElementName=AxisConfigWindowView, FallbackValue=轴号}" 
+                                                Binding="{Binding AxisID}" 
+                                                Width="60"
+                                                IsReadOnly="True">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextAlignment" Value="Center"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            
+                            <!-- 使能状态列 -->
+                            <DataGridTemplateColumn Header="{Binding DataContext.EnabledHeaderText, ElementName=AxisConfigWindowView, FallbackValue=使能}"
+                                                    Width="60">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox IsChecked="{Binding IsUsing, UpdateSourceTrigger=PropertyChanged}"
+                                                  HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            
+                            <!-- 位置限制列 -->
+                            <DataGridTemplateColumn Header="位置范围" Width="120">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0:F1}~{1:F1}">
+                                                    <Binding Path="MinPos"/>
+                                                    <Binding Path="MaxPos"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            
+                            <!-- 回零方向列 -->
+                            <DataGridTemplateColumn Header="{Binding DataContext.HomingDirHeaderText, ElementName=AxisConfigWindowView, FallbackValue=回零方向}"
+                                                    Width="80">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding HomingDir}" Value="Positive">
+                                                            <Setter Property="Text" Value="正向"/>
+                                                            <Setter Property="Foreground" Value="#008000"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding HomingDir}" Value="Negative">
+                                                            <Setter Property="Text" Value="负向"/>
+                                                            <Setter Property="Foreground" Value="#FF4500"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </GroupBox>
+            
+            <!-- 右侧：详细配置 -->
+            <GroupBox Grid.Column="1" Header="详细配置" Style="{StaticResource GroupBoxStyle}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="10">
                         
-                        <!-- 轴名称列 -->
-                        <DataGridTextColumn Header="{Binding DataContext.AxisNameHeaderText, ElementName=AxisConfigWindowViewView, FallbackValue=轴名称}" 
-                                            Binding="{Binding Name}" 
-                                            Width="120">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Padding" Value="8,0"/>
-                                    <Setter Property="VerticalAlignment" Value="Center"/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                            <DataGridTextColumn.EditingElementStyle>
-                                <Style TargetType="TextBox">
-                                    <Setter Property="Padding" Value="5,0"/>
-                                    <Setter Property="VerticalContentAlignment" Value="Center"/>
-                                </Style>
-                            </DataGridTextColumn.EditingElementStyle>
-                        </DataGridTextColumn>
+                        <!-- 未选择轴时的提示 -->
+                        <TextBlock Text="请先添加轴或选择左侧轴进行配置" 
+                                   FontSize="16" 
+                                   FontWeight="Bold" 
+                                   Foreground="#666666"
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center" 
+                                   Margin="50"
+                                   Visibility="{Binding HasNoSelectedAxis, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                         
-                        <!-- 方向列 -->
-                        <DataGridTemplateColumn Header="{Binding DataContext.DirectionHeaderText, ElementName=AxisConfigWindowView, FallbackValue=方向}"
-                                                Width="80">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Dir}" Value="True">
-                                                        <Setter Property="Text" Value="正向"/>
-                                                        <Setter Property="Foreground" Value="#008000"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Dir}" Value="False">
-                                                        <Setter Property="Text" Value="反向"/>
-                                                        <Setter Property="Foreground" Value="#FF4500"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                            <DataGridTemplateColumn.CellEditingTemplate>
-                                <DataTemplate>
-                                    <ComboBox ItemsSource="{Binding DataContext.DirectionOptions, RelativeSource={RelativeSource AncestorType=Window}}"
-                                              SelectedValue="{Binding Dir, UpdateSourceTrigger=PropertyChanged}"
-                                              SelectedValuePath="Value"
-                                              DisplayMemberPath="Display"/>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellEditingTemplate>
-                        </DataGridTemplateColumn>
+                        <!-- 选择轴后的详细配置 -->
+                        <StackPanel Visibility="{Binding HasSelectedAxis, Converter={StaticResource BooleanToVisibilityConverter}}">
                         
-                        <!-- 速度列 -->
-                        <DataGridTextColumn Header="{Binding DataContext.SpeedHeaderText, ElementName=AxisConfigWindowView, FallbackValue=速度(mm/s)}" 
-                                            Binding="{Binding Speed, StringFormat=F1}" 
-                                            Width="100">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="TextAlignment" Value="Right"/>
-                                    <Setter Property="VerticalAlignment" Value="Center"/>
-                                    <Setter Property="Padding" Value="0,0,8,0"/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                            <DataGridTextColumn.EditingElementStyle>
-                                <Style TargetType="TextBox">
-                                    <Setter Property="TextAlignment" Value="Right"/>
-                                    <Setter Property="VerticalContentAlignment" Value="Center"/>
-                                    <Setter Property="Padding" Value="0,0,5,0"/>
-                                </Style>
-                            </DataGridTextColumn.EditingElementStyle>
-                        </DataGridTextColumn>
+                        <!-- 基本参数 -->
+                        <GroupBox Header="基本参数" Style="{StaticResource GroupBoxStyle}" Margin="0,0,0,10">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="35"/>
+                                    <RowDefinition Height="35"/>
+                                    <RowDefinition Height="35"/>
+                                    <RowDefinition Height="35"/>
+                                </Grid.RowDefinitions>
+                                
+                                <!-- 轴号 -->
+                                <Label Grid.Row="0" Grid.Column="0" Content="轴号:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SelectedAxis.AxisID}" 
+                                         Style="{StaticResource ConfigTextBox}" IsReadOnly="True"/>
+                                
+                                <!-- 使能状态 -->
+                                <Label Grid.Row="0" Grid.Column="2" Content="使能:" VerticalAlignment="Center"/>
+                                <CheckBox Grid.Row="0" Grid.Column="3" IsChecked="{Binding SelectedAxis.IsUsing}" 
+                                          VerticalAlignment="Center"/>
+                                
+                                <!-- 最大位置 -->
+                                <Label Grid.Row="1" Grid.Column="0" Content="最大位置(mm):" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding SelectedAxis.MaxPos}" 
+                                         Style="{StaticResource ConfigTextBox}"/>
+                                
+                                <!-- 最小位置 -->
+                                <Label Grid.Row="1" Grid.Column="2" Content="最小位置(mm):" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding SelectedAxis.MinPos}" 
+                                         Style="{StaticResource ConfigTextBox}"/>
+                                
+                                <!-- 回零方向 -->
+                                <Label Grid.Row="2" Grid.Column="0" Content="回零方向:" VerticalAlignment="Center"/>
+                                <ComboBox Grid.Row="2" Grid.Column="1" 
+                                          ItemsSource="{Binding HomingDirOptions}"
+                                          SelectedValue="{Binding SelectedAxis.HomingDir}"
+                                          SelectedValuePath="Value"
+                                          DisplayMemberPath="Display"
+                                          Height="28"/>
+                            </Grid>
+                        </GroupBox>
                         
-                        <!-- 加速度列 -->
-                        <DataGridTextColumn Header="{Binding DataContext.AccHeaderText, ElementName=AxisConfigWindowView, FallbackValue=加速度(mm/s²)}" 
-                                            Binding="{Binding Acc, StringFormat=F1}" 
-                                            Width="110">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="TextAlignment" Value="Right"/>
-                                    <Setter Property="VerticalAlignment" Value="Center"/>
-                                    <Setter Property="Padding" Value="0,0,8,0"/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                            <DataGridTextColumn.EditingElementStyle>
-                                <Style TargetType="TextBox">
-                                    <Setter Property="TextAlignment" Value="Right"/>
-                                    <Setter Property="VerticalContentAlignment" Value="Center"/>
-                                    <Setter Property="Padding" Value="0,0,5,0"/>
-                                </Style>
-                            </DataGridTextColumn.EditingElementStyle>
-                        </DataGridTextColumn>
-                        
-                        <!-- 减速度列 -->
-                        <DataGridTextColumn Header="{Binding DataContext.DecHeaderText, ElementName=AxisConfigWindowView, FallbackValue=减速度(mm/s²)}" 
-                                            Binding="{Binding Dec, StringFormat=F1}" 
-                                            Width="110">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="TextAlignment" Value="Right"/>
-                                    <Setter Property="VerticalAlignment" Value="Center"/>
-                                    <Setter Property="Padding" Value="0,0,8,0"/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                            <DataGridTextColumn.EditingElementStyle>
-                                <Style TargetType="TextBox">
-                                    <Setter Property="TextAlignment" Value="Right"/>
-                                    <Setter Property="VerticalContentAlignment" Value="Center"/>
-                                    <Setter Property="Padding" Value="0,0,5,0"/>
-                                </Style>
-                            </DataGridTextColumn.EditingElementStyle>
-                        </DataGridTextColumn>
-                        
-                        <!-- 使能状态列 -->
-                        <DataGridTemplateColumn Header="{Binding DataContext.EnabledHeaderText, ElementName=AxisConfigWindowView, FallbackValue=使能}"
-                                                Width="80">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <CheckBox IsChecked="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged}"
-                                              HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"/>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </Grid>
-        </GroupBox>
+                        <!-- 速度配置 -->
+                        <GroupBox Header="速度配置" Style="{StaticResource GroupBoxStyle}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="35"/>
+                                    <RowDefinition Height="35"/>
+                                    <RowDefinition Height="35"/>
+                                </Grid.RowDefinitions>
+                                
+                                <!-- 脉冲当量 -->
+                                <Label Grid.Row="0" Grid.Column="0" Content="脉冲当量:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SelectedAxis.Step}" 
+                                         Style="{StaticResource ConfigTextBox}"/>
+                                
+                                <!-- 最大速度 -->
+                                <Label Grid.Row="0" Grid.Column="2" Content="最大速度(mm/s):" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding SelectedAxis.AxisSpeed.MaxSpeed}" 
+                                         Style="{StaticResource ConfigTextBox}"/>
+                                
+                                <!-- 最小速度 -->
+                                <Label Grid.Row="1" Grid.Column="0" Content="最小速度(mm/s):" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding SelectedAxis.AxisSpeed.MinSpeed}" 
+                                         Style="{StaticResource ConfigTextBox}"/>
+                                
+                                <!-- 加速度 -->
+                                <Label Grid.Row="1" Grid.Column="2" Content="加速度(mm/s²):" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding SelectedAxis.AxisSpeed.Acc}" 
+                                         Style="{StaticResource ConfigTextBox}"/>
+                                
+                                <!-- 减速度 -->
+                                <Label Grid.Row="2" Grid.Column="0" Content="减速度(mm/s²):" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding SelectedAxis.AxisSpeed.Dec}" 
+                                         Style="{StaticResource ConfigTextBox}"/>
+                                
+                                <!-- 加加速度(Jerk) -->
+                                <Label Grid.Row="2" Grid.Column="2" Content="加加速度:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding SelectedAxis.AxisSpeed.Jerk}" 
+                                         Style="{StaticResource ConfigTextBox}"/>
+                            </Grid>
+                        </GroupBox>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </GroupBox>
+        </Grid>
         
         <!-- 底部按钮区 -->
         <Border Grid.Row="1" Background="#E8E8E8" BorderBrush="#CCCCCC" BorderThickness="0,1,0,0">

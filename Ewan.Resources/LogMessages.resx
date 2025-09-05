@@ -535,12 +535,6 @@
   <data name="AxisRemoveFailed" xml:space="preserve">
     <value>Failed to remove axis: {0}</value>
   </data>
-  <data name="AxisParametersReset" xml:space="preserve">
-    <value>Axis parameters reset to default values</value>
-  </data>
-  <data name="AxisParametersResetFailed" xml:space="preserve">
-    <value>Failed to reset axis parameters: {0}</value>
-  </data>
   <data name="AxisConfigurationSaved" xml:space="preserve">
     <value>Axis configuration saved to: {0}</value>
   </data>

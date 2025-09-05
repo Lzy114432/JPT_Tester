@@ -21,8 +21,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IOLibrary", "Hardware\IO\IO
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlcCommunication", "Hardware\PlcCommunication\PlcCommunication.csproj", "{B2C3D4E5-F6A7-8901-2345-678901BCDEF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{072C8366-826D-4B58-9524-ED0872AE4507}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM64 = Debug|ARM64
@@ -95,14 +93,6 @@ Global
 		{B2C3D4E5-F6A7-8901-2345-678901BCDEF0}.Release|ARM64.Build.0 = Release|Any CPU
 		{B2C3D4E5-F6A7-8901-2345-678901BCDEF0}.Release|x64.ActiveCfg = Release|x64
 		{B2C3D4E5-F6A7-8901-2345-678901BCDEF0}.Release|x64.Build.0 = Release|x64
-		{072C8366-826D-4B58-9524-ED0872AE4507}.Debug|ARM64.ActiveCfg = Debug|ARM64
-		{072C8366-826D-4B58-9524-ED0872AE4507}.Debug|ARM64.Build.0 = Debug|ARM64
-		{072C8366-826D-4B58-9524-ED0872AE4507}.Debug|x64.ActiveCfg = Debug|x64
-		{072C8366-826D-4B58-9524-ED0872AE4507}.Debug|x64.Build.0 = Debug|x64
-		{072C8366-826D-4B58-9524-ED0872AE4507}.Release|ARM64.ActiveCfg = Release|ARM64
-		{072C8366-826D-4B58-9524-ED0872AE4507}.Release|ARM64.Build.0 = Release|ARM64
-		{072C8366-826D-4B58-9524-ED0872AE4507}.Release|x64.ActiveCfg = Release|Any CPU
-		{072C8366-826D-4B58-9524-ED0872AE4507}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
