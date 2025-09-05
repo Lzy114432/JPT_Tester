@@ -517,4 +517,40 @@
   <data name="AxisManagerDestroyFailed" xml:space="preserve">
     <value>轴管理器销毁失败: {0}</value>
   </data>
+  <data name="AxisConnectionTesting" xml:space="preserve">
+    <value>正在测试轴连接: {0}</value>
+  </data>
+  <data name="AxisConnectionTestFailed" xml:space="preserve">
+    <value>轴连接测试失败: {0}</value>
+  </data>
+  <data name="AxisAdded" xml:space="preserve">
+    <value>已添加轴: {0}</value>
+  </data>
+  <data name="AxisAddFailed" xml:space="preserve">
+    <value>添加轴失败: {0}</value>
+  </data>
+  <data name="AxisRemoved" xml:space="preserve">
+    <value>已删除轴: {0}</value>
+  </data>
+  <data name="AxisRemoveFailed" xml:space="preserve">
+    <value>删除轴失败: {0}</value>
+  </data>
+  <data name="AxisParametersReset" xml:space="preserve">
+    <value>轴参数已重置为默认值</value>
+  </data>
+  <data name="AxisParametersResetFailed" xml:space="preserve">
+    <value>重置轴参数失败: {0}</value>
+  </data>
+  <data name="AxisConfigurationSaved" xml:space="preserve">
+    <value>轴配置已保存到: {0}</value>
+  </data>
+  <data name="AxisConfigurationSaveFailed" xml:space="preserve">
+    <value>保存轴配置失败: {0}</value>
+  </data>
+  <data name="AxisConfigurationLoaded" xml:space="preserve">
+    <value>轴配置已从以下位置加载: {0}</value>
+  </data>
+  <data name="AxisConfigurationLoadFailed" xml:space="preserve">
+    <value>加载轴配置失败: {0}</value>
+  </data>
 </root>

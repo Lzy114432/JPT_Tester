@@ -161,6 +161,7 @@
     <Compile Include="Viewmodel\LoginWindowViewModel.cs" />
     <Compile Include="Viewmodel\PermissionConfigViewModel.cs" />
     <Compile Include="Viewmodel\IOMappingConfigViewModel.cs" />
+    <Compile Include="Viewmodel\AxisConfigViewModel.cs" />
     <Compile Include="Model\IOMapping.cs" />
     <Compile Include="Model\IOMappingConfig.cs" />
     <Compile Include="Window\LoginWindow.xaml.cs">
@@ -174,11 +175,19 @@
       <DependentUpon>IOMappingConfigWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Window\AxisConfigWindow.xaml.cs">
+      <DependentUpon>AxisConfigWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Page Include="Window\PermissionConfigWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Window\IOMappingConfigWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Window\AxisConfigWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

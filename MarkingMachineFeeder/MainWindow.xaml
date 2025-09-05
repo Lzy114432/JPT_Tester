@@ -442,6 +442,11 @@
                                       d:Header="IO映射配置"
                                       Command="{Binding OpenIOMappingConfigCommand}"
                                       Style="{StaticResource IndustrialSubMenuItem}"/>
+                            <!-- 轴配置子菜单 -->
+                            <MenuItem Header="{Binding AxisConfigMenuHeader}" 
+                                      d:Header="轴配置"
+                                      Command="{Binding OpenAxisConfigCommand}"
+                                      Style="{StaticResource IndustrialSubMenuItem}"/>
                         </MenuItem>
                     </MenuItem>
                     

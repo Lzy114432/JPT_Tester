@@ -183,7 +183,8 @@
                       Background="White"
                       BorderThickness="0"
                       FontSize="13"
-                      RowHeight="28">
+                      VerticalGridLinesBrush="#E9ECEF"
+                      HorizontalGridLinesBrush="#E9ECEF">
                 
                 <!-- 表格样式 -->
                 <DataGrid.Resources>
@@ -200,7 +201,8 @@
                         <Setter Property="VerticalContentAlignment" Value="Center"/>
                     </Style>
                     <Style TargetType="DataGridRow">
-                        <Setter Property="Height" Value="28"/>
+                        <Setter Property="MinHeight" Value="28"/>
+                        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background" Value="#E3F2FD"/>
@@ -212,8 +214,21 @@
                     </Style>
                     <Style TargetType="DataGridCell">
                         <Setter Property="BorderThickness" Value="0"/>
-                        <Setter Property="Padding" Value="12,4"/>
-                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="Padding" Value="12,8"/>
+                        <Setter Property="VerticalAlignment" Value="Stretch"/>
+                        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="DataGridCell">
+                                    <Border Background="{TemplateBinding Background}" 
+                                            BorderBrush="{TemplateBinding BorderBrush}" 
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter VerticalAlignment="Top"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
                         <Style.Triggers>
                             <Trigger Property="IsSelected" Value="True">
                                 <Setter Property="Background" Value="Transparent"/>
@@ -226,12 +241,15 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="时间"
                                        Binding="{Binding Timestamp, StringFormat='yyyy-MM-dd HH:mm:ss.fff'}" 
-                                       Width="160" IsReadOnly="True">
+                                       Width="180" IsReadOnly="True">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="Foreground" Value="#6C757D"/>
                                 <Setter Property="FontFamily" Value="Consolas, Monaco, monospace"/>
                                 <Setter Property="FontSize" Value="12"/>
+                                <Setter Property="VerticalAlignment" Value="Top"/>
+                                <Setter Property="Margin" Value="0,0"/>
+                                <Setter Property="Padding" Value="0"/>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
@@ -241,7 +259,10 @@
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock" BasedOn="{StaticResource LogLevelStyle}">
                                 <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="VerticalAlignment" Value="Top"/>
                                 <Setter Property="FontSize" Value="12"/>
+                                <Setter Property="Margin" Value="0,0"/>
+                                <Setter Property="Padding" Value="0"/>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
@@ -254,6 +275,11 @@
                                 <Setter Property="Foreground" Value="#2C3E50"/>
                                 <Setter Property="FontSize" Value="13"/>
                                 <Setter Property="LineHeight" Value="18"/>
+                                <Setter Property="ToolTip" Value="{Binding Message}"/>
+                                <Setter Property="MaxHeight" Value="100"/>
+                                <Setter Property="VerticalAlignment" Value="Top"/>
+                                <Setter Property="Margin" Value="0,0"/>
+                                <Setter Property="Padding" Value="0"/>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>

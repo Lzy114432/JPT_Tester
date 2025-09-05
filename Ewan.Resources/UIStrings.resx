@@ -231,4 +231,7 @@
   <data name="IOMappingConfigMenu" xml:space="preserve">
     <value>IO Mapping Config</value>
   </data>
+  <data name="AxisConfigMenu" xml:space="preserve">
+    <value>Axis Configuration</value>
+  </data>
 </root>

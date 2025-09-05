@@ -31,6 +31,7 @@ namespace MarkingMachineFeeder.Viewmodel
         private string _exitMenuHeader = "";
         private string _ioControlMenuHeader = "";
         private string _ioMappingConfigMenuHeader = "";
+        private string _axisConfigMenuHeader = "";
         private string _hardwareControlMenuHeader = "";
         private bool _canControlCamera = false;
         private bool _canControlUPS = false;
@@ -171,6 +172,12 @@ namespace MarkingMachineFeeder.Viewmodel
             set { SetProperty(ref _hardwareControlMenuHeader, value); }
         }
         
+        public string AxisConfigMenuHeader
+        {
+            get { return _axisConfigMenuHeader; }
+            set { SetProperty(ref _axisConfigMenuHeader, value); }
+        }
+        
         public DelegateCommand<string> SwitchLanguageCommand { get; }
         public DelegateCommand TestLogCommand { get; }
         public DelegateCommand LoginCommand { get; }
@@ -179,6 +186,7 @@ namespace MarkingMachineFeeder.Viewmodel
         public DelegateCommand OpenSettingsCommand { get; }
         public DelegateCommand OpenIOControlCommand { get; }
         public DelegateCommand OpenIOMappingConfigCommand { get; }
+        public DelegateCommand OpenAxisConfigCommand { get; }
         public DelegateCommand ExitCommand { get; }
 
         public MainWindowViewModel()
@@ -202,6 +210,7 @@ namespace MarkingMachineFeeder.Viewmodel
             OpenSettingsCommand = new DelegateCommand(ExecuteOpenSettings, CanOpenSettings);
             OpenIOControlCommand = new DelegateCommand(ExecuteOpenIOControl, CanOpenIOControl);
             OpenIOMappingConfigCommand = new DelegateCommand(ExecuteOpenIOMappingConfig, CanOpenIOMappingConfig);
+            OpenAxisConfigCommand = new DelegateCommand(ExecuteOpenAxisConfig, CanOpenAxisConfig);
             ExitCommand = new DelegateCommand(ExecuteExit, CanExecuteExit);
 
             UpdateUITexts();
@@ -431,6 +440,7 @@ namespace MarkingMachineFeeder.Viewmodel
             ExitMenuHeader = Ewan.Resources.UIStrings.ExitMenu;
             IOControlMenuHeader = Ewan.Resources.UIStrings.IOControlMenu;
             IOMappingConfigMenuHeader = Ewan.Resources.UIStrings.IOMappingConfigMenu;
+            AxisConfigMenuHeader = Ewan.Resources.UIStrings.AxisConfigMenu;
             HardwareControlMenuHeader = Ewan.Resources.UIStrings.HardwareControlMenu;
             
             // 强制触发所有相关属性的PropertyChanged事件
@@ -447,6 +457,7 @@ namespace MarkingMachineFeeder.Viewmodel
             RaisePropertyChanged(nameof(ExitMenuHeader));
             RaisePropertyChanged(nameof(IOControlMenuHeader));
             RaisePropertyChanged(nameof(IOMappingConfigMenuHeader));
+            RaisePropertyChanged(nameof(AxisConfigMenuHeader));
             RaisePropertyChanged(nameof(HardwareControlMenuHeader));
         }
         private void UpdatePermissions()
@@ -479,6 +490,28 @@ namespace MarkingMachineFeeder.Viewmodel
             ExitCommand.RaiseCanExecuteChanged();
             OpenIOControlCommand.RaiseCanExecuteChanged();
             OpenIOMappingConfigCommand.RaiseCanExecuteChanged();
+            OpenAxisConfigCommand.RaiseCanExecuteChanged();
+        }
+
+        private void ExecuteOpenAxisConfig()
+        {
+            try
+            {
+                // 打开轴配置窗口
+                var axisConfigWindow = new MarkingMachineFeeder.Windows.AxisConfigWindow();
+                axisConfigWindow.ShowDialog();
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingComplete);
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "轴配置", ex.Message);
+            }
+        }
+
+        private bool CanOpenAxisConfig()
+        {
+            // 检查用户是否有权限访问轴配置 - 使用权限配置的查看权限
+            return _securityManager.HasPermission(PermissionResources.PermissionConfig, PermissionActions.View);
         }
     }
 }

@@ -231,4 +231,7 @@
   <data name="IOMappingConfigMenu" xml:space="preserve">
     <value>IO映射配置</value>
   </data>
+  <data name="AxisConfigMenu" xml:space="preserve">
+    <value>轴配置</value>
+  </data>
 </root>
