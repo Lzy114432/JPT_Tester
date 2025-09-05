@@ -511,4 +511,10 @@
   <data name="IOSimulateModeChanged" xml:space="preserve">
     <value>IO模拟模式已更改: {0}</value>
   </data>
+  <data name="AxisManagerInitFailed" xml:space="preserve">
+    <value>轴管理器初始化失败: {0}</value>
+  </data>
+  <data name="AxisManagerDestroyFailed" xml:space="preserve">
+    <value>轴管理器销毁失败: {0}</value>
+  </data>
 </root>

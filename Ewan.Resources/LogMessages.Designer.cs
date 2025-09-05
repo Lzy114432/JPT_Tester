@@ -1406,5 +1406,23 @@ namespace Ewan.Resources {
                 return ResourceManager.GetString("IOSimulateModeChanged", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   查找类似 Axis Manager initialization failed: {0} 的本地化字符串。
+        /// </summary>
+        public static string AxisManagerInitFailed {
+            get {
+                return ResourceManager.GetString("AxisManagerInitFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Axis Manager destroy failed: {0} 的本地化字符串。
+        /// </summary>
+        public static string AxisManagerDestroyFailed {
+            get {
+                return ResourceManager.GetString("AxisManagerDestroyFailed", resourceCulture);
+            }
+        }
     }
 }

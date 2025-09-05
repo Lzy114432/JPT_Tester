@@ -1,0 +1,83 @@
+﻿<Window x:Class="Test.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Test"
+        mc:Ignorable="d"
+        Title="AxisManager Test" Height="600" Width="900">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <!-- AxisManager 控制区域 -->
+        <GroupBox Grid.Row="0" Header="AxisManager Controls" Margin="5" Padding="10">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <Button Name="btnInitAxis" Content="Initialize Axis" Width="120" Height="30" Margin="5" Click="BtnInitAxis_Click"/>
+                    <Button Name="btnDestroyAxis" Content="Destroy Axis" Width="120" Height="30" Margin="5" Click="BtnDestroyAxis_Click"/>
+                    <TextBlock Text="Status:" VerticalAlignment="Center" Margin="10,0,5,0"/>
+                    <TextBlock Name="txtAxisStatus" Text="Not Initialized" VerticalAlignment="Center" FontWeight="Bold"/>
+                </StackPanel>
+                
+                <!-- 轴状态显示区域 -->
+                <StackPanel Orientation="Horizontal" Margin="5" Background="LightGray">
+                    <TextBlock Text="Busy:" VerticalAlignment="Center" Width="40" Margin="5,0"/>
+                    <TextBlock Name="txtIsBusy" Text="N/A" VerticalAlignment="Center" Width="50" FontWeight="Bold" Margin="5,0"/>
+                    
+                    <TextBlock Text="Alarm:" VerticalAlignment="Center" Width="50" Margin="10,0,5,0"/>
+                    <TextBlock Name="txtIsAlarm" Text="N/A" VerticalAlignment="Center" Width="50" FontWeight="Bold" Margin="5,0"/>
+                    
+                    <TextBlock Text="Position:" VerticalAlignment="Center" Width="60" Margin="10,0,5,0"/>
+                    <TextBlock Name="txtPosition" Text="N/A" VerticalAlignment="Center" Width="80" FontWeight="Bold" Margin="5,0"/>
+                </StackPanel>
+            </StackPanel>
+        </GroupBox>
+        
+        <!-- Jog 控制区域 -->
+        <GroupBox Grid.Row="1" Header="Jog Controls" Margin="5" Padding="10">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <TextBlock Text="Speed:" VerticalAlignment="Center" Width="50"/>
+                    <TextBox Name="txtSpeed" Text="100" Width="80" Height="25" Margin="5,0"/>
+                    <TextBlock Text="Step:" VerticalAlignment="Center" Width="40" Margin="10,0,0,0"/>
+                    <TextBox Name="txtStep" Text="1000" Width="80" Height="25" Margin="5,0"/>
+                    <TextBlock Text="Acc:" VerticalAlignment="Center" Width="30" Margin="10,0,0,0"/>
+                    <TextBox Name="txtAcc" Text="0.5" Width="60" Height="25" Margin="5,0"/>
+                    <TextBlock Text="Dec:" VerticalAlignment="Center" Width="30" Margin="10,0,0,0"/>
+                    <TextBox Name="txtDec" Text="0.5" Width="60" Height="25" Margin="5,0"/>
+                </StackPanel>
+                
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <Button Name="btnJogPositive" Content="Jog +" Width="80" Height="30" Margin="5" 
+                            MouseDown="BtnJogPositive_MouseDown" MouseUp="BtnJogPositive_MouseUp" MouseLeave="BtnJogPositive_MouseLeave"/>
+                    <Button Name="btnJogNegative" Content="Jog -" Width="80" Height="30" Margin="5" 
+                            MouseDown="BtnJogNegative_MouseDown" MouseUp="BtnJogNegative_MouseUp" MouseLeave="BtnJogNegative_MouseLeave"/>
+                    <Button Name="btnJogStop" Content="Stop" Width="80" Height="30" Margin="5" Click="BtnJogStop_Click"/>
+                    <Button Name="btnEmgStop" Content="Emergency Stop" Width="120" Height="30" Margin="5" Background="Red" Foreground="White" Click="BtnEmgStop_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </GroupBox>
+        
+        <!-- 快捷操作区域 -->
+        <GroupBox Grid.Row="2" Header="Quick Actions" Margin="5" Padding="10">
+            <StackPanel Orientation="Horizontal">
+                <Button Name="btnQuickJogPos" Content="Quick Jog + (默认)" Width="150" Height="30" Margin="5" Click="BtnQuickJogPos_Click"/>
+                <Button Name="btnQuickJogNeg" Content="Quick Jog - (默认)" Width="150" Height="30" Margin="5" Click="BtnQuickJogNeg_Click"/>
+            </StackPanel>
+        </GroupBox>
+        
+        <!-- 日志显示区域 -->
+        <GroupBox Grid.Row="3" Header="Log Messages" Margin="5" Padding="5">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <TextBox Name="txtLog" IsReadOnly="True" TextWrapping="Wrap" AcceptsReturn="True" 
+                         VerticalScrollBarVisibility="Auto" Background="Black" Foreground="Green" 
+                         FontFamily="Consolas" FontSize="12"/>
+            </ScrollViewer>
+        </GroupBox>
+    </Grid>
+</Window>

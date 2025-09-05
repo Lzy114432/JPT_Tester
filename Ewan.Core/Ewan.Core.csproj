@@ -69,10 +69,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attribute\ManagerAttribute.cs" />
+    <Compile Include="Axis\AxisManager.cs" />
     <Compile Include="BaseManager.cs" />
     <Compile Include="Culture\CultureManager.cs" />
     <Compile Include="IO\LayeredIOManager.cs" />
     <Compile Include="Logger\UILogger.cs" />
+    <Compile Include="Axis\LTSMC.cs" />
     <Compile Include="Module\BaseModule.cs" />
     <Compile Include="Module\Interface\IModule.cs" />
     <Compile Include="Module\IOPollingModule.cs" />
