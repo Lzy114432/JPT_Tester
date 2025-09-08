@@ -85,6 +85,8 @@ namespace Ewan.Core.IO
             // 这里先使用默认值，后续可以从配置文件读取
             _hardwareType = HardwareType.MitsubishiPLC;
             _connectionString = "127.0.0.1:6000";
+            //_hardwareType = HardwareType.SMC606IO;
+            //_connectionString = "192.168.5.11";
             _mappingConfigPath = Path.Combine("Config", "io_mapping.json");
             _enableLogging = true;
             
@@ -106,6 +108,9 @@ namespace Ewan.Core.IO
                         break;
                     case HardwareType.IOC0640:
                         CreateIOC0640();
+                        break;
+                    case HardwareType.SMC606IO:
+                        CreateSMC606IO();
                         break;
                     default:
                         throw new NotSupportedException($"不支持的硬件类型: {_hardwareType}");
@@ -186,6 +191,115 @@ namespace Ewan.Core.IO
             };
             
             _uiLogger.Debug(() => Ewan.Resources.LogMessages.IOHardwareCreated, "IOC0640");
+        }
+
+        /// <summary>
+        /// 创建SMC606IO的LayeredIO
+        /// </summary>
+        private void CreateSMC606IO()
+        {
+            var config = new HardwareIOConfig
+            {
+                Type = HardwareType.SMC606IO,
+                ConnectionString = _connectionString ?? ""
+            };
+            
+            var hardware = HardwareIOFactory.Create(config);
+            _layeredIO = new LayeredIO(hardware)
+            {
+                Name = "MarkingMachine IO System",
+                EnableLogging = _enableLogging
+            };
+            
+            _uiLogger.Debug(() => Ewan.Resources.LogMessages.IOHardwareCreated, "SMC606IO");
+        }
+
+        /// <summary>
+        /// 检查并创建SMC606IO映射配置
+        /// </summary>
+        private void CheckAndCreateSMC606IOMappings()
+        {
+            try
+            {
+                // 如果映射配置文件存在，先尝试加载
+                bool configFileExists = File.Exists(_mappingConfigPath);
+                if (configFileExists)
+                {
+                    _layeredIO.LoadMappingConfiguration(_mappingConfigPath);
+                    _uiLogger.Info(() => Ewan.Resources.LogMessages.IOConfigFileLoaded, _mappingConfigPath);
+                    return;
+                }
+
+                // 配置文件不存在，尝试自动查找配置文件
+                _layeredIO.LoadMappingConfiguration("");
+                
+                // 检查是否成功加载了映射（检查前几个点位）
+                bool hasMappings = false;
+                for (int i = 0; i < 5; i++)
+                {
+                    if (_layeredIO.GetInputMapping(i) != null || _layeredIO.GetOutputMapping(i) != null)
+                    {
+                        hasMappings = true;
+                        break;
+                    }
+                }
+                
+                // 如果还是没有映射，根据硬件实际IO数量创建默认映射
+                if (!hasMappings)
+                {
+                    CreateSMC606IODefaultMappings();
+                    _uiLogger.Info(() => Ewan.Resources.LogMessages.IODefaultMappingsCreated);
+                }
+                else
+                {
+                    _uiLogger.Info(() => Ewan.Resources.LogMessages.IOAutoConfigLoaded);
+                }
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.IOConfigFileSaveError, _mappingConfigPath, ex.Message);
+                
+                // 加载失败时，创建默认映射
+                try
+                {
+                    CreateSMC606IODefaultMappings();
+                    _uiLogger.Info(() => Ewan.Resources.LogMessages.IODefaultMappingsCreated);
+                }
+                catch (Exception createEx)
+                {
+                    _uiLogger.Error(() => Ewan.Resources.LogMessages.IOConfigFileSaveError, "DefaultMappings", createEx.Message);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 为SMC606IO创建默认映射，根据硬件实际检测到的IO数量
+        /// </summary>
+        private void CreateSMC606IODefaultMappings()
+        {
+            // 获取硬件实际检测到的IO数量
+            int actualInputCount = _layeredIO.InputCount;
+            int actualOutputCount = _layeredIO.OutputCount;
+            
+            _uiLogger.Info(() => Ewan.Resources.LogMessages.IOConfigurationLoaded, 
+                $"SMC606IO检测到输入点数: {actualInputCount}, 输出点数: {actualOutputCount}");
+
+            // 根据实际输入点数创建映射
+            for (int i = 0; i < actualInputCount; i++)
+            {
+                _layeredIO.AddInputMapping(i, i, $"X{i}", true);
+            }
+            _uiLogger.Info(() => Ewan.Resources.LogMessages.IOInputMappingsCreated, actualInputCount);
+            
+            // 根据实际输出点数创建映射
+            for (int i = 0; i < actualOutputCount; i++)
+            {
+                _layeredIO.AddOutputMapping(i, i, $"Y{i}", true);
+            }
+            _uiLogger.Info(() => Ewan.Resources.LogMessages.IOOutputMappingsCreated, actualOutputCount);
+            
+            // 保存默认映射到配置文件
+            SaveDefaultMappingConfiguration();
         }
 
         /// <summary>
@@ -274,6 +388,12 @@ namespace Ewan.Core.IO
                     if (result)
                     {
                         _uiLogger.Info(() => Ewan.Resources.LogMessages.IOConnected, connStr);
+                        
+                        // SMC606IO连接成功后，检查并创建映射配置
+                        if (_hardwareType == HardwareType.SMC606IO)
+                        {
+                            CheckAndCreateSMC606IOMappings();
+                        }
                     }
                     else
                     {

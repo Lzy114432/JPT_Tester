@@ -16,6 +16,11 @@ namespace IOLibrary.Core.Models
         IOC0640,
         
         /// <summary>
+        /// SMC606IO板卡
+        /// </summary>
+        SMC606IO,
+        
+        /// <summary>
         /// 模拟硬件（用于测试）
         /// </summary>
         Simulator,

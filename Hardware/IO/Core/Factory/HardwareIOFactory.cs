@@ -2,6 +2,7 @@ using IOLibrary.Core.Interfaces;
 using IOLibrary.Core.Models;
 using IOLibrary.Hardware.IOC0640;
 using IOLibrary.Hardware.Mitsubishi;
+using IOLibrary.Hardware.SMC606IO;
 using System;
 using System.Collections.Generic;
 using Ewan.LogManager.Logger;
@@ -43,6 +44,12 @@ namespace IOLibrary.Core.Factory
             Register(HardwareType.IOC0640, config =>
             {
                 return new IOC0640DriverWrapper();
+            });
+            
+            // 注册SMC606IO板卡
+            Register(HardwareType.SMC606IO, config =>
+            {
+                return new IOSMC606DriverWrapper();
             });
             
             // 注册模拟器（如果有的话）
