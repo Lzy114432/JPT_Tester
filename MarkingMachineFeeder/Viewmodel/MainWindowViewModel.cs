@@ -41,29 +41,27 @@ namespace MarkingMachineFeeder.Viewmodel
         private bool _canExit = false;
         private bool _canAccessHardwareControl = false;
 
-        // IO状态属性
-        private string _inputSignal1Text = "启动信号";
-        private string _inputSignal2Text = "停止信号";
-        private string _inputSignal3Text = "安全门";
-        private string _outputSignal1Text = "气缸1";
-        private string _outputSignal2Text = "气缸2";
-        private string _outputSignal3Text = "报警灯";
-        private string _systemStatus1Text = "系统运行";
-        private string _systemStatus2Text = "通信状态";
+        // IO状态属性 - 根据io.csv定义的交互信号
+        // 输入信号：IN3-IN11, IN15-IN17, IN19-IN20
+        private bool _in3_DetectMaterial = false;
+        private bool _in4_GripComplete = false;
+        private bool _in5_LowerCameraPos = false;
+        private bool _in6_PositionComplete = false;
+        private bool _in7_MoveToScanArea = false;
+        private bool _in8_PlaceComplete = false;
+        private bool _in9_Initialize = false;
+        private bool _in10_PickComplete = false;
+        private bool _in11_InsertCartComplete = false;
+        private bool _in15_RobotAlarm = false;
+        private bool _in16_UpperCameraAlarm = false;
+        private bool _in17_LowerCameraAlarm = false;
+        private bool _in19_CylinderAlarm = false;
+        private bool _in20_RobotBusy = false;
 
-        private bool _inputSignal1Status = true;
-        private bool _inputSignal2Status = false;
-        private bool _inputSignal3Status = true;
-        private bool _outputSignal1Status = false;
-        private bool _outputSignal2Status = true;
-        private bool _outputSignal3Status = false;
-        private bool _systemStatus1 = true;
-        private bool _systemStatus2 = true;
 
-        // UPH相关属性
-        private string _currentUPH = "1,250";
-        private string _targetUPH = "1,500";
-        private string _efficiencyPercentage = "83.3%";
+        // UPH相关属性 - 上料和下料
+        private string _loadingUPH = "1,250";
+        private string _unloadingUPH = "1,180";
 
         // A料属性
         private string _materialA_Barcode = "A240912001";
@@ -267,6 +265,12 @@ namespace MarkingMachineFeeder.Viewmodel
         public DelegateCommand SystemStartCommand { get; }
         public DelegateCommand SystemPauseCommand { get; }
         public DelegateCommand SystemStopCommand { get; }
+        
+        // 机械手手动控制命令 - 对应OUT11-OUT13, OUT17
+        public DelegateCommand OUT11_Bin1SelectCommand { get; }
+        public DelegateCommand OUT12_Bin2SelectCommand { get; }
+        public DelegateCommand OUT13_Bin3SelectCommand { get; }
+        public DelegateCommand OUT17_InsertCartCommand { get; }
 
         public MainWindowViewModel()
         {
@@ -310,6 +314,12 @@ namespace MarkingMachineFeeder.Viewmodel
             SystemStartCommand = new DelegateCommand(ExecuteSystemStart);
             SystemPauseCommand = new DelegateCommand(ExecuteSystemPause);
             SystemStopCommand = new DelegateCommand(ExecuteSystemStop);
+            
+            // 初始化机械手手动控制命令
+            OUT11_Bin1SelectCommand = new DelegateCommand(ExecuteOUT11_Bin1Select);
+            OUT12_Bin2SelectCommand = new DelegateCommand(ExecuteOUT12_Bin2Select);
+            OUT13_Bin3SelectCommand = new DelegateCommand(ExecuteOUT13_Bin3Select);
+            OUT17_InsertCartCommand = new DelegateCommand(ExecuteOUT17_InsertCart);
 
             UpdateUITexts();
             UpdateUserInfo();
@@ -635,130 +645,121 @@ namespace MarkingMachineFeeder.Viewmodel
             return _securityManager.HasPermission(PermissionResources.PermissionConfig, PermissionActions.View);
         }
 
-        #region IO状态属性
+        #region 交互IO状态属性 - 根据io.csv定义
 
-        // 输入信号文本属性
-        public string InputSignal1Text
+        // IN3 - 检测到料片信号
+        public bool IN3_DetectMaterial
         {
-            get => _inputSignal1Text;
-            set => SetProperty(ref _inputSignal1Text, value);
+            get => _in3_DetectMaterial;
+            set => SetProperty(ref _in3_DetectMaterial, value);
         }
 
-        public string InputSignal2Text
+        // IN4 - 抓取完成信号
+        public bool IN4_GripComplete
         {
-            get => _inputSignal2Text;
-            set => SetProperty(ref _inputSignal2Text, value);
+            get => _in4_GripComplete;
+            set => SetProperty(ref _in4_GripComplete, value);
         }
 
-        public string InputSignal3Text
+        // IN5 - 下相机精确定位完成信号
+        public bool IN5_LowerCameraPos
         {
-            get => _inputSignal3Text;
-            set => SetProperty(ref _inputSignal3Text, value);
+            get => _in5_LowerCameraPos;
+            set => SetProperty(ref _in5_LowerCameraPos, value);
         }
 
-        // 输出信号文本属性
-        public string OutputSignal1Text
+        // IN6 - 定位完成信号
+        public bool IN6_PositionComplete
         {
-            get => _outputSignal1Text;
-            set => SetProperty(ref _outputSignal1Text, value);
+            get => _in6_PositionComplete;
+            set => SetProperty(ref _in6_PositionComplete, value);
         }
 
-        public string OutputSignal2Text
+        // IN7 - 移至扫码区到位信号
+        public bool IN7_MoveToScanArea
         {
-            get => _outputSignal2Text;
-            set => SetProperty(ref _outputSignal2Text, value);
+            get => _in7_MoveToScanArea;
+            set => SetProperty(ref _in7_MoveToScanArea, value);
         }
 
-        public string OutputSignal3Text
+        // IN8 - 放置完成反馈信号
+        public bool IN8_PlaceComplete
         {
-            get => _outputSignal3Text;
-            set => SetProperty(ref _outputSignal3Text, value);
+            get => _in8_PlaceComplete;
+            set => SetProperty(ref _in8_PlaceComplete, value);
         }
 
-        // 系统状态文本属性
-        public string SystemStatus1Text
+        // IN9 - 初始化信号
+        public bool IN9_Initialize
         {
-            get => _systemStatus1Text;
-            set => SetProperty(ref _systemStatus1Text, value);
+            get => _in9_Initialize;
+            set => SetProperty(ref _in9_Initialize, value);
         }
 
-        public string SystemStatus2Text
+        // IN10 - 取料完成反馈信号
+        public bool IN10_PickComplete
         {
-            get => _systemStatus2Text;
-            set => SetProperty(ref _systemStatus2Text, value);
+            get => _in10_PickComplete;
+            set => SetProperty(ref _in10_PickComplete, value);
         }
 
-        // 输入信号状态属性
-        public bool InputSignal1Status
+        // IN11 - 插入小车完成反馈信号
+        public bool IN11_InsertCartComplete
         {
-            get => _inputSignal1Status;
-            set => SetProperty(ref _inputSignal1Status, value);
+            get => _in11_InsertCartComplete;
+            set => SetProperty(ref _in11_InsertCartComplete, value);
         }
 
-        public bool InputSignal2Status
+        // IN15 - 机械手报警信号
+        public bool IN15_RobotAlarm
         {
-            get => _inputSignal2Status;
-            set => SetProperty(ref _inputSignal2Status, value);
+            get => _in15_RobotAlarm;
+            set => SetProperty(ref _in15_RobotAlarm, value);
         }
 
-        public bool InputSignal3Status
+        // IN16 - 上相机报警信号
+        public bool IN16_UpperCameraAlarm
         {
-            get => _inputSignal3Status;
-            set => SetProperty(ref _inputSignal3Status, value);
+            get => _in16_UpperCameraAlarm;
+            set => SetProperty(ref _in16_UpperCameraAlarm, value);
         }
 
-        // 输出信号状态属性
-        public bool OutputSignal1Status
+        // IN17 - 下相机报警信号
+        public bool IN17_LowerCameraAlarm
         {
-            get => _outputSignal1Status;
-            set => SetProperty(ref _outputSignal1Status, value);
+            get => _in17_LowerCameraAlarm;
+            set => SetProperty(ref _in17_LowerCameraAlarm, value);
         }
 
-        public bool OutputSignal2Status
+        // IN19 - 气缸报警信号
+        public bool IN19_CylinderAlarm
         {
-            get => _outputSignal2Status;
-            set => SetProperty(ref _outputSignal2Status, value);
+            get => _in19_CylinderAlarm;
+            set => SetProperty(ref _in19_CylinderAlarm, value);
         }
 
-        public bool OutputSignal3Status
+        // IN20 - 机械手忙碌状态信号
+        public bool IN20_RobotBusy
         {
-            get => _outputSignal3Status;
-            set => SetProperty(ref _outputSignal3Status, value);
+            get => _in20_RobotBusy;
+            set => SetProperty(ref _in20_RobotBusy, value);
         }
 
-        // 系统状态属性
-        public bool SystemStatus1
-        {
-            get => _systemStatus1;
-            set => SetProperty(ref _systemStatus1, value);
-        }
-
-        public bool SystemStatus2
-        {
-            get => _systemStatus2;
-            set => SetProperty(ref _systemStatus2, value);
-        }
 
         #endregion
         
         #region UPH相关属性
         
-        public string CurrentUPH
+        public string LoadingUPH
         {
-            get => _currentUPH;
-            set => SetProperty(ref _currentUPH, value);
+            get => _loadingUPH;
+            set => SetProperty(ref _loadingUPH, value);
         }
         
-        public string TargetUPH
+        public string UnloadingUPH
         {
-            get => _targetUPH;
-            set => SetProperty(ref _targetUPH, value);
-        }
-        
-        public string EfficiencyPercentage
-        {
-            get => _efficiencyPercentage;
-            set => SetProperty(ref _efficiencyPercentage, value);
+            get => _unloadingUPH;
+            set => SetProperty(ref _unloadingUPH, value);
         }
         
         #endregion
@@ -1026,6 +1027,34 @@ namespace MarkingMachineFeeder.Viewmodel
             _uiLogger.Info(() => Ewan.Resources.LogMessages.TestLogClicked);
         }
         
+        #endregion
+        
+        #region 机械手手动控制命令方法
+
+        private void ExecuteOUT11_Bin1Select()
+        {
+            // OUT11 - 料仓1选择信号
+            _uiLogger.Info(() => Ewan.Resources.LogMessages.TestLogClicked); // 使用现有的日志消息作为占位符
+        }
+
+        private void ExecuteOUT12_Bin2Select()
+        {
+            // OUT12 - 料仓2选择信号
+            _uiLogger.Info(() => Ewan.Resources.LogMessages.TestLogClicked); // 使用现有的日志消息作为占位符
+        }
+
+        private void ExecuteOUT13_Bin3Select()
+        {
+            // OUT13 - 料仓3选择信号
+            _uiLogger.Info(() => Ewan.Resources.LogMessages.TestLogClicked); // 使用现有的日志消息作为占位符
+        }
+
+        private void ExecuteOUT17_InsertCart()
+        {
+            // OUT17 - 发送插入小车指令
+            _uiLogger.Info(() => Ewan.Resources.LogMessages.TestLogClicked); // 使用现有的日志消息作为占位符
+        }
+
         #endregion
     }
 }
