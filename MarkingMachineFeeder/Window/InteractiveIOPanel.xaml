@@ -1,0 +1,196 @@
+<UserControl x:Class="MarkingMachineFeeder.Windows.InteractiveIOPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="clr-namespace:MarkingMachineFeeder.Viewmodel"
+             xmlns:ewanControls="clr-namespace:Ewan.Controls;assembly=Ewan.Controls"
+             mc:Ignorable="d"
+             d:DesignWidth="280"
+             d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel, IsDesignTimeCreatable=False}"
+             Height="344">
+    <!-- 交互IO -->
+    <GroupBox Header="交互IO"
+              Margin="5"
+              Padding="5">
+        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <!-- Row 1: IN3检测到料片信号, IN4抓取完成信号 -->
+                <ewanControls:EwanIO Grid.Row="0"
+                                     Grid.Column="0"
+                                     LabelText="检测料片"
+                                     IsOn="{Binding IN3_DetectMaterial, FallbackValue=False}"
+                                     IconSize="20"
+                                     LabelFontSize="10"
+                                     OnColor="#00FF7F"
+                                     OffColor="#696969"
+                                     ShowGlowEffect="True"
+                                     EnableAnimation="True"
+                                     Margin="1" />
+                <ewanControls:EwanIO Grid.Row="0"
+                                     Grid.Column="1"
+                                     LabelText="抓取完成"
+                                     IsOn="{Binding IN4_GripComplete, FallbackValue=False}"
+                                     IconSize="20"
+                                     LabelFontSize="10"
+                                     OnColor="#00FF7F"
+                                     OffColor="#696969"
+                                     ShowGlowEffect="True"
+                                     EnableAnimation="True"
+                                     Margin="1" />
+                <!-- Row 2: IN5下相机定位完成, IN6定位完成 -->
+                <ewanControls:EwanIO Grid.Row="1"
+                                     Grid.Column="0"
+                                     LabelText="下相机定位"
+                                     IsOn="{Binding IN5_LowerCameraPos, FallbackValue=False}"
+                                     IconSize="20"
+                                     LabelFontSize="10"
+                                     OnColor="#1E90FF"
+                                     OffColor="#696969"
+                                     ShowGlowEffect="True"
+                                     EnableAnimation="True"
+                                     Margin="1" />
+                <ewanControls:EwanIO Grid.Row="1"
+                                     Grid.Column="1"
+                                     LabelText="定位完成"
+                                     IsOn="{Binding IN6_PositionComplete, FallbackValue=False}"
+                                     IconSize="20"
+                                     LabelFontSize="10"
+                                     OnColor="#1E90FF"
+                                     OffColor="#696969"
+                                     ShowGlowEffect="True"
+                                     EnableAnimation="True"
+                                     Margin="1" />
+                <!-- Row 3: IN7移至扫码区, IN8放置完成 -->
+                <ewanControls:EwanIO Grid.Row="2"
+                                     Grid.Column="0"
+                                     LabelText="移至扫码区"
+                                     IsOn="{Binding IN7_MoveToScanArea, FallbackValue=False}"
+                                     IconSize="20"
+                                     LabelFontSize="10"
+                                     OnColor="#FFD700"
+                                     OffColor="#696969"
+                                     ShowGlowEffect="True"
+                                     EnableAnimation="True"
+                                     Margin="1" />
+                <ewanControls:EwanIO Grid.Row="2"
+                                     Grid.Column="1"
+                                     LabelText="放置完成"
+                                     IsOn="{Binding IN8_PlaceComplete, FallbackValue=False}"
+                                     IconSize="20"
+                                     LabelFontSize="10"
+                                     OnColor="#FFD700"
+                                     OffColor="#696969"
+                                     ShowGlowEffect="True"
+                                     EnableAnimation="True"
+                                     Margin="1" />
+                <!-- Row 4: IN9初始化信号, IN10取料完成 -->
+                <ewanControls:EwanIO Grid.Row="3"
+                                     Grid.Column="0"
+                                     LabelText="初始化"
+                                     IsOn="{Binding IN9_Initialize, FallbackValue=False}"
+                                     IconSize="20"
+                                     LabelFontSize="10"
+                                     OnColor="#FFA500"
+                                     OffColor="#696969"
+                                     ShowGlowEffect="True"
+                                     EnableAnimation="True"
+                                     Margin="1" />
+                <ewanControls:EwanIO Grid.Row="3"
+                                     Grid.Column="1"
+                                     LabelText="取料完成"
+                                     IsOn="{Binding IN10_PickComplete, FallbackValue=False}"
+                                     IconSize="20"
+                                     LabelFontSize="10"
+                                     OnColor="#FFA500"
+                                     OffColor="#696969"
+                                     ShowGlowEffect="True"
+                                     EnableAnimation="True"
+                                     Margin="1" />
+                <!-- Row 5: IN11插入小车完成, IN15机械手报警 -->
+                <ewanControls:EwanIO Grid.Row="4"
+                                     Grid.Column="0"
+                                     LabelText="插入小车"
+                                     IsOn="{Binding IN11_InsertCartComplete, FallbackValue=False}"
+                                     IconSize="20"
+                                     LabelFontSize="10"
+                                     OnColor="#32CD32"
+                                     OffColor="#696969"
+                                     ShowGlowEffect="True"
+                                     EnableAnimation="True"
+                                     Margin="1" />
+                <ewanControls:EwanIO Grid.Row="4"
+                                     Grid.Column="1"
+                                     LabelText="机械手报警"
+                                     IsOn="{Binding IN15_RobotAlarm, FallbackValue=False}"
+                                     IconSize="20"
+                                     LabelFontSize="10"
+                                     OnColor="#FF4500"
+                                     OffColor="#696969"
+                                     ShowGlowEffect="True"
+                                     EnableAnimation="True"
+                                     Margin="1" />
+                <!-- Row 6: IN16上相机报警, IN17下相机报警 -->
+                <ewanControls:EwanIO Grid.Row="5"
+                                     Grid.Column="0"
+                                     LabelText="上相机报警"
+                                     IsOn="{Binding IN16_UpperCameraAlarm, FallbackValue=False}"
+                                     IconSize="20"
+                                     LabelFontSize="10"
+                                     OnColor="#FF4500"
+                                     OffColor="#696969"
+                                     ShowGlowEffect="True"
+                                     EnableAnimation="True"
+                                     Margin="1" />
+                <ewanControls:EwanIO Grid.Row="5"
+                                     Grid.Column="1"
+                                     LabelText="下相机报警"
+                                     IsOn="{Binding IN17_LowerCameraAlarm, FallbackValue=False}"
+                                     IconSize="20"
+                                     LabelFontSize="10"
+                                     OnColor="#FF4500"
+                                     OffColor="#696969"
+                                     ShowGlowEffect="True"
+                                     EnableAnimation="True"
+                                     Margin="1" />
+                <!-- Row 7: IN19气缸报警, IN20机械手忙碌 -->
+                <ewanControls:EwanIO Grid.Row="6"
+                                     Grid.Column="0"
+                                     LabelText="气缸报警"
+                                     IsOn="{Binding IN19_CylinderAlarm, FallbackValue=False}"
+                                     IconSize="20"
+                                     LabelFontSize="10"
+                                     OnColor="#DC143C"
+                                     OffColor="#696969"
+                                     ShowGlowEffect="True"
+                                     EnableAnimation="True"
+                                     Margin="1" />
+                <ewanControls:EwanIO Grid.Row="6"
+                                     Grid.Column="1"
+                                     LabelText="机械手忙碌"
+                                     IsOn="{Binding IN20_RobotBusy, FallbackValue=False}"
+                                     IconSize="20"
+                                     LabelFontSize="10"
+                                     OnColor="#FFD700"
+                                     OffColor="#696969"
+                                     ShowGlowEffect="True"
+                                     EnableAnimation="True"
+                                     Margin="1" />
+            </Grid>
+        </ScrollViewer>
+    </GroupBox>
+</UserControl>
