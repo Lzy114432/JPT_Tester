@@ -654,6 +654,8 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         
                         <!-- Material Header -->
@@ -669,11 +671,11 @@
                         <Border Grid.Row="1" Background="#E6F3FF" Margin="2,1" CornerRadius="4" BorderBrush="#87CEEB" BorderThickness="1">
                             <Grid Margin="6,4">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="40"/>
+                                    <ColumnDefinition Width="50"/>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="60"/>
+                                    <ColumnDefinition Width="50"/>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="40"/>
                                     <ColumnDefinition Width="25"/>
@@ -681,7 +683,7 @@
                                 
                                 <Button Grid.Column="0" Content="清料" 
                                        Style="{StaticResource ModernButton}" 
-                                       Width="38" Height="26" 
+                                       Width="46" Height="26" 
                                        FontSize="10" FontWeight="Bold"
                                        Command="{Binding MaterialA_ClearCommand}"
                                        ToolTip="清空A料"
@@ -709,11 +711,11 @@
                         <Border Grid.Row="2" Background="#F0FFF0" Margin="2,1" CornerRadius="4" BorderBrush="#90EE90" BorderThickness="1">
                             <Grid Margin="6,4">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="40"/>
+                                    <ColumnDefinition Width="50"/>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="60"/>
+                                    <ColumnDefinition Width="50"/>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="40"/>
                                     <ColumnDefinition Width="25"/>
@@ -721,7 +723,7 @@
                                 
                                 <Button Grid.Column="0" Content="清料" 
                                        Style="{StaticResource ModernButton}" 
-                                       Width="38" Height="26" 
+                                       Width="46" Height="26" 
                                        FontSize="10" FontWeight="Bold"
                                        Command="{Binding MaterialB_ClearCommand}"
                                        ToolTip="清空B料"
@@ -749,11 +751,11 @@
                         <Border Grid.Row="3" Background="#FFF0F0" Margin="2,1" CornerRadius="4" BorderBrush="#FFB6C1" BorderThickness="1">
                             <Grid Margin="6,4">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="40"/>
+                                    <ColumnDefinition Width="50"/>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="60"/>
+                                    <ColumnDefinition Width="50"/>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="40"/>
                                     <ColumnDefinition Width="25"/>
@@ -761,7 +763,7 @@
                                 
                                 <Button Grid.Column="0" Content="清料" 
                                        Style="{StaticResource ModernButton}" 
-                                       Width="38" Height="26" 
+                                       Width="46" Height="26" 
                                        FontSize="10" FontWeight="Bold"
                                        Command="{Binding MaterialNG_ClearCommand}"
                                        ToolTip="清空NG料"
@@ -784,6 +786,138 @@
                                        Margin="0"/>
                             </Grid>
                         </Border>
+                        
+                        <!-- Material Inventory Panel -->
+                        <GroupBox Grid.Row="4" Header="设备物料库存" Margin="2,8,2,4" Padding="6" 
+                                 FontSize="12" FontWeight="Medium" Foreground="#2E5BBA">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                
+                                <!-- Material Inventory Status -->
+                                <Grid Grid.Row="0" Margin="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <!-- A Material Inventory -->
+                                    <Border Grid.Column="0" Background="#E6F3FF" Margin="1" Padding="6,8" CornerRadius="4" BorderBrush="#87CEEB" BorderThickness="1">
+                                        <StackPanel>
+                                            <TextBlock Text="A料库存" FontWeight="Bold" FontSize="10" HorizontalAlignment="Center" Foreground="#4682B4"/>
+                                            <TextBlock Text="{Binding MaterialA_Count, FallbackValue='150'}" 
+                                                      FontWeight="Bold" FontSize="16" Foreground="#4682B4" 
+                                                      HorizontalAlignment="Center" Margin="0,4,0,0"/>
+                                            <TextBlock Text="件" FontSize="9" HorizontalAlignment="Center" Foreground="#4682B4"/>
+                                        </StackPanel>
+                                    </Border>
+                                    
+                                    <!-- B Material Inventory -->
+                                    <Border Grid.Column="1" Background="#F0FFF0" Margin="1" Padding="6,8" CornerRadius="4" BorderBrush="#90EE90" BorderThickness="1">
+                                        <StackPanel>
+                                            <TextBlock Text="B料库存" FontWeight="Bold" FontSize="10" HorizontalAlignment="Center" Foreground="#228B22"/>
+                                            <TextBlock Text="{Binding MaterialB_Count, FallbackValue='89'}" 
+                                                      FontWeight="Bold" FontSize="16" Foreground="#228B22" 
+                                                      HorizontalAlignment="Center" Margin="0,4,0,0"/>
+                                            <TextBlock Text="件" FontSize="9" HorizontalAlignment="Center" Foreground="#228B22"/>
+                                        </StackPanel>
+                                    </Border>
+                                    
+                                    <!-- NG Material Inventory -->
+                                    <Border Grid.Column="2" Background="#FFF0F0" Margin="1" Padding="6,8" CornerRadius="4" BorderBrush="#FFB6C1" BorderThickness="1">
+                                        <StackPanel>
+                                            <TextBlock Text="NG料库存" FontWeight="Bold" FontSize="10" HorizontalAlignment="Center" Foreground="#DC143C"/>
+                                            <TextBlock Text="{Binding MaterialNG_Count, FallbackValue='12'}" 
+                                                      FontWeight="Bold" FontSize="16" Foreground="#DC143C" 
+                                                      HorizontalAlignment="Center" Margin="0,4,0,0"/>
+                                            <TextBlock Text="件" FontSize="9" HorizontalAlignment="Center" Foreground="#DC143C"/>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+                                
+                                <!-- Total and Capacity -->
+                                <Border Grid.Row="1" Background="#F8F9FA" Margin="2,6,2,2" Padding="8,6" CornerRadius="3">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left">
+                                            <TextBlock Text="总库存:" FontWeight="Bold" FontSize="11" VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding TotalMaterialCount, FallbackValue='251'}" 
+                                                      FontWeight="Bold" FontSize="13" Foreground="#0066CC" 
+                                                      Margin="4,0,0,0" VerticalAlignment="Center"/>
+                                            <TextBlock Text="件" FontSize="10" Margin="2,0,0,0" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                        
+                                        <Rectangle Grid.Column="1" Width="1" Fill="#CCCCCC" Margin="8,2"/>
+                                        
+                                        <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                                            <TextBlock Text="满载:" FontWeight="Bold" FontSize="11" VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding MaxCapacity, FallbackValue='1500'}" 
+                                                      FontWeight="Bold" FontSize="13" Foreground="#666666" 
+                                                      Margin="4,0,0,0" VerticalAlignment="Center"/>
+                                            <TextBlock Text="件" FontSize="10" Margin="2,0,0,0" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                                
+                                <!-- Status and Alert -->
+                                <Border Grid.Row="2" Background="#E8F5E8" Margin="2" Padding="6,4" CornerRadius="3">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                            <TextBlock Text="库存状态:" FontSize="10" VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding InventoryStatusText, FallbackValue='正常'}" 
+                                                      FontSize="10" FontWeight="Bold" Foreground="#228B22"
+                                                      Margin="4,0,0,0" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                        
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                            <TextBlock Text="更新:" FontSize="9" Foreground="#666666" VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding LastUpdateTime, FallbackValue='14:32'}" 
+                                                      FontSize="9" Foreground="#666666" 
+                                                      Margin="3,0,0,0" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </GroupBox>
+                        
+                        <!-- Material Operation Quick Actions -->
+                        <GroupBox Grid.Row="5" Header="快捷操作" Margin="2,4,2,8" Padding="8" 
+                                 FontSize="12" FontWeight="Medium" Foreground="#2E5BBA">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <Button Grid.Column="0" Content="全部清料" 
+                                       Style="{StaticResource ModernButton}" 
+                                       Height="36" FontSize="12" FontWeight="Bold"
+                                       Command="{Binding ClearAllMaterialsCommand}"
+                                       Background="#FFE6E6" BorderBrush="#FFB6C1"
+                                       ToolTip="清空所有物料" Margin="4,0"/>
+                                
+                                <Button Grid.Column="1" Content="重置计数" 
+                                       Style="{StaticResource ModernButton}" 
+                                       Height="36" FontSize="12" FontWeight="Bold"
+                                       Command="{Binding ResetAllCountCommand}"
+                                       Background="#E6F3FF" BorderBrush="#87CEEB"
+                                       ToolTip="重置所有计数器" Margin="4,0"/>
+                            </Grid>
+                        </GroupBox>
                     </Grid>
                 </Grid>
             </Border>
