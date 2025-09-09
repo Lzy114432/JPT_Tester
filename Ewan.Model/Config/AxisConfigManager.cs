@@ -78,7 +78,10 @@ namespace Ewan.Model.Config
                     MaxPos = 700.0f,
                     MinPos = -11.0f,
                     HomingDir = HomingDir.Positive,
-                    AxisSpeed = CreateDefaultSpeedProfile()
+                    Jerk = 500000,
+                    Speed = 1000,
+                    Acc = 6500,
+                    Dec = 6500
                 };
                 
                 manager.AxisConfigs.Add(axisConfig);
@@ -87,22 +90,6 @@ namespace Ewan.Model.Config
             return manager;
         }
 
-        /// <summary>
-        /// 创建默认速度配置
-        /// </summary>
-        /// <returns>默认速度配置</returns>
-        private static AxisSpeed CreateDefaultSpeedProfile()
-        {
-            return new AxisSpeed
-            {
-                SpeedName = "HighSpd",
-                Jerk = 500000,
-                MaxSpeed = 1000,
-                MinSpeed = 800,
-                Acc = 6500,
-                Dec = 6500
-            };
-        }
 
         /// <summary>
         /// 从JSON文件加载配置

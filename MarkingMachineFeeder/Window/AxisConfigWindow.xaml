@@ -354,29 +354,24 @@
                                 <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SelectedAxis.Step}" 
                                          Style="{StaticResource ConfigTextBox}"/>
                                 
-                                <!-- 最大速度 -->
-                                <Label Grid.Row="0" Grid.Column="2" Content="最大速度(mm/s):" VerticalAlignment="Center"/>
-                                <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding SelectedAxis.AxisSpeed.MaxSpeed}" 
-                                         Style="{StaticResource ConfigTextBox}"/>
-                                
-                                <!-- 最小速度 -->
-                                <Label Grid.Row="1" Grid.Column="0" Content="最小速度(mm/s):" VerticalAlignment="Center"/>
-                                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding SelectedAxis.AxisSpeed.MinSpeed}" 
+                                <!-- 速度 -->
+                                <Label Grid.Row="0" Grid.Column="2" Content="速度(mm/s):" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding SelectedAxis.Speed}" 
                                          Style="{StaticResource ConfigTextBox}"/>
                                 
                                 <!-- 加速度 -->
-                                <Label Grid.Row="1" Grid.Column="2" Content="加速度(mm/s²):" VerticalAlignment="Center"/>
-                                <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding SelectedAxis.AxisSpeed.Acc}" 
+                                <Label Grid.Row="1" Grid.Column="0" Content="加速度(mm/s²):" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding SelectedAxis.Acc}" 
                                          Style="{StaticResource ConfigTextBox}"/>
                                 
                                 <!-- 减速度 -->
                                 <Label Grid.Row="2" Grid.Column="0" Content="减速度(mm/s²):" VerticalAlignment="Center"/>
-                                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding SelectedAxis.AxisSpeed.Dec}" 
+                                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding SelectedAxis.Dec}" 
                                          Style="{StaticResource ConfigTextBox}"/>
                                 
                                 <!-- 加加速度(Jerk) -->
                                 <Label Grid.Row="2" Grid.Column="2" Content="加加速度:" VerticalAlignment="Center"/>
-                                <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding SelectedAxis.AxisSpeed.Jerk}" 
+                                <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding SelectedAxis.Jerk}" 
                                          Style="{StaticResource ConfigTextBox}"/>
                             </Grid>
                         </GroupBox>

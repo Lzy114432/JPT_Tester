@@ -154,9 +154,9 @@ namespace Ewan.Core.Axis
         {
             double vel = Math.Abs(speed);
             int dir = speed > 0 ? 1 : 0; // 1正，0负
-            LTSMC.smc_set_s_profile(card, (ushort)axisConfig.AxisID, 0, axisConfig.AxisSpeed.Dec / 3);//设置S段时间（0-1s)
+            LTSMC.smc_set_s_profile(card, (ushort)axisConfig.AxisID, 0, axisConfig.Dec / 3);//设置S段时间（0-1s)
             LTSMC.smc_set_profile_unit(card, (ushort)axisConfig.AxisID
-            , 10000, vel * axisConfig.Step, axisConfig.AxisSpeed.Acc, axisConfig.AxisSpeed.Dec, 10000);//设置起始速度、运行速度、停止速度、加速时间、减速时间
+            , 10000, vel * axisConfig.Step, axisConfig.Acc, axisConfig.Dec, 10000);//设置起始速度、运行速度、停止速度、加速时间、减速时间
             LTSMC.smc_vmove(card, (ushort)axisConfig.AxisID, (ushort)dir);
             return true;
         }
@@ -215,6 +215,59 @@ namespace Ewan.Core.Axis
 
             return pos / axisConfig.Step;
         }
+
+
+        public bool IsAlarm(AxisConfig axisConfig)
+        {
+            uint val2 = LTSMC.smc_axis_io_status(card, (ushort)axisConfig.AxisID);
+            return (val2 & 0x01) > 0;
+        }
+
+        public bool IsBusy(AxisConfig axisConfig)
+        {
+            short rcode = LTSMC.smc_check_done(card, (ushort)axisConfig.AxisID);
+            return rcode != 1;
+        }
+
+
+
+        public bool AbsMove(AxisConfig axisConfig,double pos)
+        {
+            if (axisConfig.HomingDir == HomingDir.Positive)
+            {
+                pos =  pos * 1;
+            }
+            else
+            {
+                pos = pos * -1;
+            }
+
+            int pulse = (int)(pos * axisConfig.Step);
+
+            ushort State_Machine = 0;
+            short temp;
+            temp = LTSMC.nmcs_get_axis_state_machine(card, (ushort)axisConfig.AxisID, ref State_Machine);
+            if (State_Machine == 0)
+            {
+                //LTSMC.smc_set_pulse_outmode(card.iCardNo, (ushort)Parameter.AxisNum, 0);//设置脉冲模式
+                //LTSMC.smc_set_equiv(card.iCardNo, (ushort)Parameter.AxisNum, 1);
+                LTSMC.smc_set_s_profile(card, (ushort)axisConfig.AxisID, 0, axisConfig.Dec / 3);//设置S段时间（0-1s)
+                LTSMC.smc_set_profile_unit(card, (ushort)axisConfig.AxisID
+                , 10000, axisConfig.Speed * axisConfig.Step, axisConfig.Acc, axisConfig.Dec, 10000);//设置起始速度、运行速度、停止速度、加速时间、减速时间
+                LTSMC.smc_set_dec_stop_time(card, (ushort)axisConfig.AxisID, axisConfig.Dec);
+
+                LTSMC.smc_pmove_unit(card, (ushort)axisConfig.AxisID, pulse, 1);//定长运动
+
+            }
+
+            //short ret = LTSMC.smc_set_profile_unit(card.iCardNo, (ushort)Parameter.AxisNum
+            //    , 10000, Parameter.Speed * Parameter.Step, Parameter.Acc, Parameter.Dec, 10000);
+            //ret = LTSMC.smc_set_s_profile(card.iCardNo, (ushort)Parameter.AxisNum, 0, Parameter.Dec / 3);
+            //ret = LTSMC.smc_pmove_unit(card.iCardNo, (ushort)Parameter.AxisNum, pulse, 1);//定长运动
+            return true;
+        }
+
+
 
         #endregion
 

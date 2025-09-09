@@ -234,4 +234,7 @@
   <data name="AxisConfigMenu" xml:space="preserve">
     <value>轴配置</value>
   </data>
+  <data name="AxisControlMenu" xml:space="preserve">
+    <value>轴手动控制</value>
+  </data>
 </root>

@@ -325,7 +325,10 @@ namespace MarkingMachineFeeder.Viewmodel
                     MaxPos = 700.0f,
                     MinPos = -11.0f,
                     HomingDir = HomingDir.Positive,
-                    AxisSpeed = new AxisSpeed { SpeedName = "HighSpd", Jerk = 500000, MaxSpeed = 1000, MinSpeed = 800, Acc = 6500, Dec = 6500 }
+                    Jerk = 500000,
+                    Speed = 1000,
+                    Acc = 6500,
+                    Dec = 6500
                 };
                 AxisParameters.Add(defaultConfig);
             }
@@ -429,7 +432,10 @@ namespace MarkingMachineFeeder.Viewmodel
                     MaxPos = 700.0f,
                     MinPos = -11.0f,
                     HomingDir = HomingDir.Positive,
-                    AxisSpeed = new AxisSpeed { SpeedName = "HighSpd", Jerk = 500000, MaxSpeed = 1000, MinSpeed = 800, Acc = 6500, Dec = 6500 }
+                    Jerk = 500000,
+                    Speed = 1000,
+                    Acc = 6500,
+                    Dec = 6500
                 };
                 AxisParameters.Add(newAxis);
                 

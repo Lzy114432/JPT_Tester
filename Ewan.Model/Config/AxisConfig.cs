@@ -37,9 +37,24 @@ namespace Ewan.Model.Config
         public HomingDir HomingDir { get; set; } = HomingDir.Positive;
 
         /// <summary>
-        /// 速度配置
+        /// 加加速度
         /// </summary>
-        public AxisSpeed AxisSpeed { get; set; } = new AxisSpeed();
+        public double Jerk { get; set; } = 500000;
+
+        /// <summary>
+        /// 速度(mm/s)
+        /// </summary>
+        public double Speed { get; set; } = 1000;
+
+        /// <summary>
+        /// 加速度
+        /// </summary>
+        public double Acc { get; set; } = 6500;
+
+        /// <summary>
+        /// 减速度
+        /// </summary>
+        public double Dec { get; set; } = 6500;
     }
 
     /// <summary>

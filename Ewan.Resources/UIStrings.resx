@@ -234,4 +234,7 @@
   <data name="AxisConfigMenu" xml:space="preserve">
     <value>Axis Configuration</value>
   </data>
+  <data name="AxisControlMenu" xml:space="preserve">
+    <value>Axis Manual Control</value>
+  </data>
 </root>

@@ -127,6 +127,9 @@
     <Compile Include="Window\IOControlWindow.xaml.cs">
       <DependentUpon>IOControlWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Window\AxisControlWindow.xaml.cs">
+      <DependentUpon>AxisControlWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Window\PermissionConfigWindow.xaml.cs">
       <DependentUpon>PermissionConfigWindow.xaml</DependentUpon>
     </Compile>
@@ -139,6 +142,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Window\IOControlWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Window\AxisControlWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -162,6 +169,7 @@
     <Compile Include="Viewmodel\PermissionConfigViewModel.cs" />
     <Compile Include="Viewmodel\IOMappingConfigViewModel.cs" />
     <Compile Include="Viewmodel\AxisConfigViewModel.cs" />
+    <Compile Include="Viewmodel\AxisControlViewModel.cs" />
     <Compile Include="Model\IOMapping.cs" />
     <Compile Include="Model\IOMappingConfig.cs" />
     <Compile Include="Window\LoginWindow.xaml.cs">
