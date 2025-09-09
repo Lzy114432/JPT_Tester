@@ -1,0 +1,280 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Ewan.Controls">
+    
+    <!-- EwanIO 工业级控件样式 -->
+    <Style TargetType="{x:Type local:EwanIO}">
+        <Style.Resources>
+            <!-- 工业级颜色定义 -->
+            <Color x:Key="SteelBlueColor">#4682B4</Color>
+            <Color x:Key="DarkSteelBlueColor">#2F4F4F</Color>
+            <Color x:Key="LightSteelBlueColor">#B0C4DE</Color>
+            <Color x:Key="IndustryGreenColor">#00FF7F</Color>
+            <Color x:Key="IndustryRedColor">#FF4500</Color>
+            <Color x:Key="IndustryGrayColor">#696969</Color>
+            <Color x:Key="IndustryWhiteColor">#F8F8FF</Color>
+            
+            <!-- 动态ON状态渐变画刷 - 现代LED效果 -->
+            <RadialGradientBrush x:Key="DynamicOnBrush"
+                                 GradientOrigin="0.25,0.25"
+                                 Center="0.5,0.5"
+                                 RadiusX="0.8"
+                                 RadiusY="0.8">
+                <GradientStop Color="#FFFFFF" Offset="0.0" />
+                <GradientStop Color="#00FF7F" Offset="0.3" />
+                <GradientStop Color="#32CD32" Offset="0.7" />
+                <GradientStop Color="#228B22" Offset="1.0" />
+            </RadialGradientBrush>
+            
+            <!-- 动态OFF状态渐变画刷 - 工业灰色 -->
+            <RadialGradientBrush x:Key="DynamicOffBrush"
+                                 GradientOrigin="0.25,0.25"
+                                 Center="0.5,0.5"
+                                 RadiusX="0.8"
+                                 RadiusY="0.8">
+                <GradientStop Color="#D3D3D3" Offset="0.0" />
+                <GradientStop Color="#A9A9A9" Offset="0.4" />
+                <GradientStop Color="#808080" Offset="0.8" />
+                <GradientStop Color="#696969" Offset="1.0" />
+            </RadialGradientBrush>
+            
+            <!-- 发光效果外环画刷 -->
+            <RadialGradientBrush x:Key="GlowBrush"
+                                 GradientOrigin="0.5,0.5"
+                                 Center="0.5,0.5"
+                                 RadiusX="1.0"
+                                 RadiusY="1.0">
+                <GradientStop Color="#8000FF7F" Offset="0.0" />
+                <GradientStop Color="#4000FF7F" Offset="0.6" />
+                <GradientStop Color="#0000FF7F" Offset="1.0" />
+            </RadialGradientBrush>
+            
+            <!-- 边框画刷 -->
+            <LinearGradientBrush x:Key="BorderBrush" StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="{StaticResource SteelBlueColor}" Offset="0.0" />
+                <GradientStop Color="{StaticResource DarkSteelBlueColor}" Offset="1.0" />
+            </LinearGradientBrush>
+            
+            <!-- 悬停状态边框画刷 -->
+            <LinearGradientBrush x:Key="HoverBorderBrush" StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="{StaticResource LightSteelBlueColor}" Offset="0.0" />
+                <GradientStop Color="{StaticResource SteelBlueColor}" Offset="1.0" />
+            </LinearGradientBrush>
+        </Style.Resources>
+        
+        <!-- 默认属性设置 -->
+        <Setter Property="MinWidth" Value="80" />
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Padding" Value="8,4" />
+        <Setter Property="Margin" Value="2" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Cursor" Value="Hand" />
+        
+        <!-- 控件模板 -->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:EwanIO}">
+                    <Border x:Name="MainBorder"
+                            Background="Transparent"
+                            BorderBrush="{StaticResource BorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="6"
+                            Padding="{TemplateBinding Padding}"
+                            SnapsToDevicePixels="True">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="12" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            
+                            <!-- 发光效果外环 (仅在ON状态且启用发光时可见) -->
+                            <Ellipse x:Name="GlowRing"
+                                     Grid.Column="0"
+                                     Width="{TemplateBinding IconSize}"
+                                     Height="{TemplateBinding IconSize}"
+                                     Fill="{StaticResource GlowBrush}"
+                                     VerticalAlignment="Center"
+                                     HorizontalAlignment="Center"
+                                     Opacity="0"
+                                     RenderTransformOrigin="0.5,0.5">
+                                <Ellipse.RenderTransform>
+                                    <ScaleTransform x:Name="GlowScale" ScaleX="1.3" ScaleY="1.3" />
+                                </Ellipse.RenderTransform>
+                            </Ellipse>
+                            
+                            <!-- 主状态指示器 -->
+                            <Ellipse x:Name="StatusLamp"
+                                     Grid.Column="0"
+                                     Width="{TemplateBinding IconSize}"
+                                     Height="{TemplateBinding IconSize}"
+                                     Stroke="{TemplateBinding IndicatorBorderBrush}"
+                                     StrokeThickness="{TemplateBinding IndicatorBorderThickness}"
+                                     Fill="{TemplateBinding OffColor}"
+                                     VerticalAlignment="Center"
+                                     HorizontalAlignment="Center"
+                                     RenderTransformOrigin="0.5,0.5">
+                                <Ellipse.RenderTransform>
+                                    <ScaleTransform x:Name="LampScale" ScaleX="1.0" ScaleY="1.0" />
+                                </Ellipse.RenderTransform>
+                                <Ellipse.Effect>
+                                    <DropShadowEffect x:Name="StatusLampShadow"
+                                                      Color="Gray"
+                                                      Direction="315"
+                                                      ShadowDepth="2"
+                                                      BlurRadius="4"
+                                                      Opacity="0.3" />
+                                </Ellipse.Effect>
+                            </Ellipse>
+                            
+                            <!-- 内部高光点 -->
+                            <Ellipse x:Name="InnerHighlight"
+                                     Grid.Column="0"
+                                     Width="8"
+                                     Height="8"
+                                     Fill="White"
+                                     Opacity="0.6"
+                                     VerticalAlignment="Center"
+                                     HorizontalAlignment="Center"
+                                     Margin="-6,-6,0,0" />
+                            
+                            <!-- 状态标签 -->
+                            <TextBlock x:Name="LabelText"
+                                       Grid.Column="2"
+                                       Text="{TemplateBinding LabelText}"
+                                       FontSize="{TemplateBinding LabelFontSize}"
+                                       FontWeight="{TemplateBinding LabelFontWeight}"
+                                       Foreground="{TemplateBinding LabelForeground}"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Left"
+                                       TextWrapping="NoWrap"
+                                       TextTrimming="CharacterEllipsis"
+                                       RenderOptions.ClearTypeHint="Enabled">
+                                <TextBlock.Effect>
+                                    <DropShadowEffect Color="White"
+                                                      Direction="45"
+                                                      ShadowDepth="1"
+                                                      BlurRadius="1"
+                                                      Opacity="0.5" />
+                                </TextBlock.Effect>
+                            </TextBlock>
+                        </Grid>
+                    </Border>
+                    
+                    <!-- 控件状态触发器 -->
+                    <ControlTemplate.Triggers>
+                        <!-- 鼠标悬停效果 -->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="MainBorder" Property="BorderBrush" Value="{StaticResource HoverBorderBrush}" />
+                            <Setter TargetName="MainBorder" Property="BorderThickness" Value="2" />
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="LampScale"
+                                                         Storyboard.TargetProperty="ScaleX"
+                                                         To="1.1"
+                                                         Duration="0:0:0.2"
+                                                         AutoReverse="False" />
+                                        <DoubleAnimation Storyboard.TargetName="LampScale"
+                                                         Storyboard.TargetProperty="ScaleY"
+                                                         To="1.1"
+                                                         Duration="0:0:0.2"
+                                                         AutoReverse="False" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="LampScale"
+                                                         Storyboard.TargetProperty="ScaleX"
+                                                         To="1.0"
+                                                         Duration="0:0:0.2"
+                                                         AutoReverse="False" />
+                                        <DoubleAnimation Storyboard.TargetName="LampScale"
+                                                         Storyboard.TargetProperty="ScaleY"
+                                                         To="1.0"
+                                                         Duration="0:0:0.2"
+                                                         AutoReverse="False" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                        
+                        <!-- IsOn状态为True时的样式 -->
+                        <Trigger Property="IsOn" Value="True">
+                            <Setter TargetName="StatusLamp" Property="Fill" 
+                                    Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=OnColor}" />
+                            <Setter TargetName="StatusLamp" Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect Color="#00FF7F"
+                                                      Direction="315"
+                                                      ShadowDepth="3"
+                                                      BlurRadius="8"
+                                                      Opacity="0.7" />
+                                </Setter.Value>
+                            </Setter>
+                            
+                            <!-- 动态边框颜色绑定 -->
+                            <Setter TargetName="StatusLamp" Property="Stroke" 
+                                    Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IndicatorBorderBrush}" />
+                            
+                            <!-- 发光效果 -->
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="GlowRing"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="0.8"
+                                                         Duration="0:0:0.3" />
+                                        <DoubleAnimation Storyboard.TargetName="GlowScale"
+                                                         Storyboard.TargetProperty="ScaleX"
+                                                         From="1.0" To="1.4"
+                                                         Duration="0:0:0.5"
+                                                         RepeatBehavior="Forever"
+                                                         AutoReverse="True" />
+                                        <DoubleAnimation Storyboard.TargetName="GlowScale"
+                                                         Storyboard.TargetProperty="ScaleY"
+                                                         From="1.0" To="1.4"
+                                                         Duration="0:0:0.5"
+                                                         RepeatBehavior="Forever"
+                                                         AutoReverse="True" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="GlowRing"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="0"
+                                                         Duration="0:0:0.3" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                        
+                        <!-- ShowGlowEffect为False时隐藏发光效果 -->
+                        <Trigger Property="ShowGlowEffect" Value="False">
+                            <Setter TargetName="GlowRing" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        
+                        <!-- EnableAnimation为False时禁用所有动画 -->
+                        <Trigger Property="EnableAnimation" Value="False">
+                            <Setter TargetName="GlowRing" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        
+                        <!-- 禁用状态 -->
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5" />
+                            <Setter TargetName="LabelText" Property="Foreground" Value="Gray" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+</ResourceDictionary>

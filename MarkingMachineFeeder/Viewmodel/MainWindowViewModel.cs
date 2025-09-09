@@ -41,6 +41,25 @@ namespace MarkingMachineFeeder.Viewmodel
         private bool _canExit = false;
         private bool _canAccessHardwareControl = false;
 
+        // IO状态属性
+        private string _inputSignal1Text = "启动信号";
+        private string _inputSignal2Text = "停止信号";
+        private string _inputSignal3Text = "安全门";
+        private string _outputSignal1Text = "气缸1";
+        private string _outputSignal2Text = "气缸2";
+        private string _outputSignal3Text = "报警灯";
+        private string _systemStatus1Text = "系统运行";
+        private string _systemStatus2Text = "通信状态";
+
+        private bool _inputSignal1Status = true;
+        private bool _inputSignal2Status = false;
+        private bool _inputSignal3Status = true;
+        private bool _outputSignal1Status = false;
+        private bool _outputSignal2Status = true;
+        private bool _outputSignal3Status = false;
+        private bool _systemStatus1 = true;
+        private bool _systemStatus2 = true;
+
         public string Title
         {
             get { return _title; }
@@ -545,5 +564,111 @@ namespace MarkingMachineFeeder.Viewmodel
             // 检查用户是否有权限访问轴手动控制 - 使用权限配置的查看权限
             return _securityManager.HasPermission(PermissionResources.PermissionConfig, PermissionActions.View);
         }
+
+        #region IO状态属性
+
+        // 输入信号文本属性
+        public string InputSignal1Text
+        {
+            get => _inputSignal1Text;
+            set => SetProperty(ref _inputSignal1Text, value);
+        }
+
+        public string InputSignal2Text
+        {
+            get => _inputSignal2Text;
+            set => SetProperty(ref _inputSignal2Text, value);
+        }
+
+        public string InputSignal3Text
+        {
+            get => _inputSignal3Text;
+            set => SetProperty(ref _inputSignal3Text, value);
+        }
+
+        // 输出信号文本属性
+        public string OutputSignal1Text
+        {
+            get => _outputSignal1Text;
+            set => SetProperty(ref _outputSignal1Text, value);
+        }
+
+        public string OutputSignal2Text
+        {
+            get => _outputSignal2Text;
+            set => SetProperty(ref _outputSignal2Text, value);
+        }
+
+        public string OutputSignal3Text
+        {
+            get => _outputSignal3Text;
+            set => SetProperty(ref _outputSignal3Text, value);
+        }
+
+        // 系统状态文本属性
+        public string SystemStatus1Text
+        {
+            get => _systemStatus1Text;
+            set => SetProperty(ref _systemStatus1Text, value);
+        }
+
+        public string SystemStatus2Text
+        {
+            get => _systemStatus2Text;
+            set => SetProperty(ref _systemStatus2Text, value);
+        }
+
+        // 输入信号状态属性
+        public bool InputSignal1Status
+        {
+            get => _inputSignal1Status;
+            set => SetProperty(ref _inputSignal1Status, value);
+        }
+
+        public bool InputSignal2Status
+        {
+            get => _inputSignal2Status;
+            set => SetProperty(ref _inputSignal2Status, value);
+        }
+
+        public bool InputSignal3Status
+        {
+            get => _inputSignal3Status;
+            set => SetProperty(ref _inputSignal3Status, value);
+        }
+
+        // 输出信号状态属性
+        public bool OutputSignal1Status
+        {
+            get => _outputSignal1Status;
+            set => SetProperty(ref _outputSignal1Status, value);
+        }
+
+        public bool OutputSignal2Status
+        {
+            get => _outputSignal2Status;
+            set => SetProperty(ref _outputSignal2Status, value);
+        }
+
+        public bool OutputSignal3Status
+        {
+            get => _outputSignal3Status;
+            set => SetProperty(ref _outputSignal3Status, value);
+        }
+
+        // 系统状态属性
+        public bool SystemStatus1
+        {
+            get => _systemStatus1;
+            set => SetProperty(ref _systemStatus1, value);
+        }
+
+        public bool SystemStatus2
+        {
+            get => _systemStatus2;
+            set => SetProperty(ref _systemStatus2, value);
+        }
+
+        #endregion
     }
 }

@@ -6,8 +6,9 @@
         xmlns:local="clr-namespace:MarkingMachineFeeder"
         xmlns:controls="clr-namespace:MarkingMachineFeeder.Windows"
         xmlns:vm="clr-namespace:MarkingMachineFeeder.Viewmodel"
+        xmlns:ewanControls="clr-namespace:Ewan.Controls;assembly=Ewan.Controls"
         mc:Ignorable="d"
-        Title="{Binding Title}" Height="900" Width="1200"
+        Title="{Binding Title}" Height="1000" Width="1400"
         WindowStyle="None"
         AllowsTransparency="True"
         BorderBrush="Transparent"
@@ -538,16 +539,182 @@
         <!-- Main Content -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200" MinWidth="150"/>
+                <ColumnDefinition Width="280" MinWidth="250"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="200" MinWidth="150"/>
             </Grid.ColumnDefinitions>
         
-        <!-- Left Panel - UPS -->
+        <!-- Left Panel - IO Control -->
         <Border Grid.Column="0" BorderBrush="Gray" BorderThickness="1" Margin="5">
             <Grid>
-                <TextBlock Text="UPH 区域" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5" FontWeight="Bold"/>
-                <!-- UPS content will be added here -->
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                
+                <!-- Header -->
+                <TextBlock Grid.Row="0" Text="系统控制面板" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5" FontWeight="Bold" FontSize="14"/>
+                
+                <!-- 安全IO显示 -->
+                <GroupBox Grid.Row="1" Header="安全IO显示" Margin="5" Padding="5">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        
+                        <ewanControls:EwanIO Grid.Row="0" Grid.Column="0"
+                            LabelText="急停按钮"
+                            IsOn="False"
+                            IconSize="24"
+                            LabelFontSize="11"
+                            OnColor="#DC143C"
+                            OffColor="#696969"
+                            ShowGlowEffect="True"
+                            EnableAnimation="True"
+                            Margin="2" />
+                            
+                        <ewanControls:EwanIO Grid.Row="0" Grid.Column="1"
+                            LabelText="安全门"
+                            IsOn="True"
+                            IconSize="24"
+                            LabelFontSize="11"
+                            OnColor="#32CD32"
+                            OffColor="#DC143C"
+                            ShowGlowEffect="True"
+                            EnableAnimation="True"
+                            Margin="2" />
+                            
+                        <ewanControls:EwanIO Grid.Row="1" Grid.Column="0"
+                            LabelText="防护罩"
+                            IsOn="True"
+                            IconSize="24"
+                            LabelFontSize="11"
+                            OnColor="#32CD32"
+                            OffColor="#DC143C"
+                            ShowGlowEffect="True"
+                            EnableAnimation="True"
+                            Margin="2" />
+                            
+                        <ewanControls:EwanIO Grid.Row="1" Grid.Column="1"
+                            LabelText="系统运行"
+                            IsOn="True"
+                            IconSize="24"
+                            LabelFontSize="11"
+                            OnColor="#00FF7F"
+                            OffColor="#DC143C"
+                            ShowGlowEffect="True"
+                            EnableAnimation="True"
+                            Margin="2" />
+                    </Grid>
+                </GroupBox>
+                
+                <!-- 交互IO -->
+                <GroupBox Grid.Row="2" Header="交互IO" Margin="5" Padding="5">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        
+                        <ewanControls:EwanIO Grid.Row="0" Grid.Column="0"
+                            LabelText="启动信号"
+                            IsOn="{Binding InputSignal1Status, FallbackValue=True}"
+                            IconSize="24"
+                            LabelFontSize="11"
+                            OnColor="#00FF7F"
+                            OffColor="#696969"
+                            ShowGlowEffect="True"
+                            EnableAnimation="True"
+                            Margin="2" />
+                            
+                        <ewanControls:EwanIO Grid.Row="0" Grid.Column="1"
+                            LabelText="停止信号"
+                            IsOn="{Binding InputSignal2Status, FallbackValue=False}"
+                            IconSize="24"
+                            LabelFontSize="11"
+                            OnColor="#FF4500"
+                            OffColor="#696969"
+                            ShowGlowEffect="True"
+                            EnableAnimation="True"
+                            Margin="2" />
+                            
+                        <ewanControls:EwanIO Grid.Row="1" Grid.Column="0"
+                            LabelText="气缸1"
+                            IsOn="{Binding OutputSignal1Status, FallbackValue=False}"
+                            IconSize="24"
+                            LabelFontSize="11"
+                            OnColor="#1E90FF"
+                            OffColor="#696969"
+                            ShowGlowEffect="True"
+                            EnableAnimation="True"
+                            Margin="2" />
+                            
+                        <ewanControls:EwanIO Grid.Row="1" Grid.Column="1"
+                            LabelText="气缸2"
+                            IsOn="{Binding OutputSignal2Status, FallbackValue=True}"
+                            IconSize="24"
+                            LabelFontSize="11"
+                            OnColor="#1E90FF"
+                            OffColor="#696969"
+                            ShowGlowEffect="True"
+                            EnableAnimation="True"
+                            Margin="2" />
+                    </Grid>
+                </GroupBox>
+                
+                <!-- 手动控制 -->
+                <GroupBox Grid.Row="3" Header="手动控制" Margin="5" Padding="5">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        
+                        <Button Grid.Row="0" Grid.Column="0" 
+                                Content="手动启动"
+                                Style="{StaticResource IndustrialTestButton}"
+                                FontSize="11"
+                                Height="35"
+                                Margin="2" />
+                                
+                        <Button Grid.Row="0" Grid.Column="1" 
+                                Content="手动停止"
+                                Style="{StaticResource IndustrialTestButton}"
+                                FontSize="11"
+                                Height="35"
+                                Margin="2" />
+                                
+                        <Button Grid.Row="1" Grid.Column="0" 
+                                Content="复位"
+                                Style="{StaticResource IndustrialTestButton}"
+                                FontSize="11"
+                                Height="35"
+                                Margin="2" />
+                                
+                        <Button Grid.Row="1" Grid.Column="1" 
+                                Content="测试模式"
+                                Style="{StaticResource IndustrialTestButton}"
+                                FontSize="11"
+                                Height="35"
+                                Margin="2" />
+                    </Grid>
+                </GroupBox>
+                
             </Grid>
         </Border>
         
