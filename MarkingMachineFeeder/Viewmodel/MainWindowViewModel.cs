@@ -60,6 +60,40 @@ namespace MarkingMachineFeeder.Viewmodel
         private bool _systemStatus1 = true;
         private bool _systemStatus2 = true;
 
+        // UPH相关属性
+        private string _currentUPH = "1,250";
+        private string _targetUPH = "1,500";
+        private string _efficiencyPercentage = "83.3%";
+
+        // A料属性
+        private string _materialA_Barcode = "A240912001";
+        private string _materialA_Count = "150";
+        private string _materialA_Priority = "1";
+
+        // B料属性
+        private string _materialB_Barcode = "B240912002";
+        private string _materialB_Count = "89";
+        private string _materialB_Priority = "2";
+
+        // NG料属性
+        private string _materialNG_Barcode = "NG240912003";
+        private string _materialNG_Count = "12";
+        private string _materialNG_Priority = "3";
+
+        // 系统状态属性
+        private string _systemRunningStatus = "Green";
+        private string _emergencyStopStatus = "Gray";
+        private string _alarmStatus = "Gray";
+        private string _pauseStatus = "Gray";
+        private string _productionModeColor = "Blue";
+        private string _productionModeText = "自动模式";
+
+        // 系统状态布尔属性（用于EwanIO的IsOn绑定）
+        private bool _systemRunningIsOn = true;
+        private bool _emergencyStopIsOn = false;
+        private bool _alarmIsOn = false;
+        private bool _pauseIsOn = false;
+
         public string Title
         {
             get { return _title; }
@@ -215,6 +249,24 @@ namespace MarkingMachineFeeder.Viewmodel
         public DelegateCommand OpenAxisConfigCommand { get; }
         public DelegateCommand OpenAxisControlCommand { get; }
         public DelegateCommand ExitCommand { get; }
+        
+        // 物料优先级调整命令
+        public DelegateCommand MaterialA_IncreasePriorityCommand { get; }
+        public DelegateCommand MaterialB_IncreasePriorityCommand { get; }
+        public DelegateCommand MaterialNG_IncreasePriorityCommand { get; }
+        
+        // 物料清除命令
+        public DelegateCommand MaterialA_ClearCommand { get; }
+        public DelegateCommand MaterialB_ClearCommand { get; }
+        public DelegateCommand MaterialNG_ClearCommand { get; }
+        
+        // 系统控制命令
+        public DelegateCommand SystemResetCommand { get; }
+        public DelegateCommand EmergencyStopCommand { get; }
+        public DelegateCommand ClearAlarmCommand { get; }
+        public DelegateCommand SystemStartCommand { get; }
+        public DelegateCommand SystemPauseCommand { get; }
+        public DelegateCommand SystemStopCommand { get; }
 
         public MainWindowViewModel()
         {
@@ -240,6 +292,24 @@ namespace MarkingMachineFeeder.Viewmodel
             OpenAxisConfigCommand = new DelegateCommand(ExecuteOpenAxisConfig, CanOpenAxisConfig);
             OpenAxisControlCommand = new DelegateCommand(ExecuteOpenAxisControl, CanOpenAxisControl);
             ExitCommand = new DelegateCommand(ExecuteExit, CanExecuteExit);
+            
+            // 初始化物料优先级调整命令
+            MaterialA_IncreasePriorityCommand = new DelegateCommand(ExecuteMaterialA_IncreasePriority);
+            MaterialB_IncreasePriorityCommand = new DelegateCommand(ExecuteMaterialB_IncreasePriority);
+            MaterialNG_IncreasePriorityCommand = new DelegateCommand(ExecuteMaterialNG_IncreasePriority);
+            
+            // 初始化物料清除命令
+            MaterialA_ClearCommand = new DelegateCommand(ExecuteMaterialA_Clear);
+            MaterialB_ClearCommand = new DelegateCommand(ExecuteMaterialB_Clear);
+            MaterialNG_ClearCommand = new DelegateCommand(ExecuteMaterialNG_Clear);
+            
+            // 初始化系统控制命令
+            SystemResetCommand = new DelegateCommand(ExecuteSystemReset);
+            EmergencyStopCommand = new DelegateCommand(ExecuteEmergencyStop);
+            ClearAlarmCommand = new DelegateCommand(ExecuteClearAlarm);
+            SystemStartCommand = new DelegateCommand(ExecuteSystemStart);
+            SystemPauseCommand = new DelegateCommand(ExecuteSystemPause);
+            SystemStopCommand = new DelegateCommand(ExecuteSystemStop);
 
             UpdateUITexts();
             UpdateUserInfo();
@@ -669,6 +739,293 @@ namespace MarkingMachineFeeder.Viewmodel
             set => SetProperty(ref _systemStatus2, value);
         }
 
+        #endregion
+        
+        #region UPH相关属性
+        
+        public string CurrentUPH
+        {
+            get => _currentUPH;
+            set => SetProperty(ref _currentUPH, value);
+        }
+        
+        public string TargetUPH
+        {
+            get => _targetUPH;
+            set => SetProperty(ref _targetUPH, value);
+        }
+        
+        public string EfficiencyPercentage
+        {
+            get => _efficiencyPercentage;
+            set => SetProperty(ref _efficiencyPercentage, value);
+        }
+        
+        #endregion
+        
+        #region 物料相关属性
+        
+        // A料属性
+        public string MaterialA_Barcode
+        {
+            get => _materialA_Barcode;
+            set => SetProperty(ref _materialA_Barcode, value);
+        }
+        
+        public string MaterialA_Count
+        {
+            get => _materialA_Count;
+            set => SetProperty(ref _materialA_Count, value);
+        }
+        
+        public string MaterialA_Priority
+        {
+            get => _materialA_Priority;
+            set => SetProperty(ref _materialA_Priority, value);
+        }
+        
+        // B料属性
+        public string MaterialB_Barcode
+        {
+            get => _materialB_Barcode;
+            set => SetProperty(ref _materialB_Barcode, value);
+        }
+        
+        public string MaterialB_Count
+        {
+            get => _materialB_Count;
+            set => SetProperty(ref _materialB_Count, value);
+        }
+        
+        public string MaterialB_Priority
+        {
+            get => _materialB_Priority;
+            set => SetProperty(ref _materialB_Priority, value);
+        }
+        
+        // NG料属性
+        public string MaterialNG_Barcode
+        {
+            get => _materialNG_Barcode;
+            set => SetProperty(ref _materialNG_Barcode, value);
+        }
+        
+        public string MaterialNG_Count
+        {
+            get => _materialNG_Count;
+            set => SetProperty(ref _materialNG_Count, value);
+        }
+        
+        public string MaterialNG_Priority
+        {
+            get => _materialNG_Priority;
+            set => SetProperty(ref _materialNG_Priority, value);
+        }
+        
+        #endregion
+        
+        #region 系统状态属性
+        
+        public string SystemRunningStatus
+        {
+            get => _systemRunningStatus;
+            set => SetProperty(ref _systemRunningStatus, value);
+        }
+        
+        public string EmergencyStopStatus
+        {
+            get => _emergencyStopStatus;
+            set => SetProperty(ref _emergencyStopStatus, value);
+        }
+        
+        public string AlarmStatus
+        {
+            get => _alarmStatus;
+            set => SetProperty(ref _alarmStatus, value);
+        }
+        
+        public string PauseStatus
+        {
+            get => _pauseStatus;
+            set => SetProperty(ref _pauseStatus, value);
+        }
+        
+        public string ProductionModeColor
+        {
+            get => _productionModeColor;
+            set => SetProperty(ref _productionModeColor, value);
+        }
+        
+        public string ProductionModeText
+        {
+            get => _productionModeText;
+            set => SetProperty(ref _productionModeText, value);
+        }
+        
+        // 系统状态布尔属性
+        public bool SystemRunningIsOn
+        {
+            get => _systemRunningIsOn;
+            set => SetProperty(ref _systemRunningIsOn, value);
+        }
+        
+        public bool EmergencyStopIsOn
+        {
+            get => _emergencyStopIsOn;
+            set => SetProperty(ref _emergencyStopIsOn, value);
+        }
+        
+        public bool AlarmIsOn
+        {
+            get => _alarmIsOn;
+            set => SetProperty(ref _alarmIsOn, value);
+        }
+        
+        public bool PauseIsOn
+        {
+            get => _pauseIsOn;
+            set => SetProperty(ref _pauseIsOn, value);
+        }
+        
+        #endregion
+        
+        #region 物料清除命令方法
+        
+        private void ExecuteMaterialA_Clear()
+        {
+            MaterialA_Barcode = "";
+            MaterialA_Count = "0";
+            _uiLogger.Info(() => Ewan.Resources.LogMessages.TestLogClicked); // 使用现有的日志消息作为占位符
+        }
+        
+        private void ExecuteMaterialB_Clear()
+        {
+            MaterialB_Barcode = "";
+            MaterialB_Count = "0";
+            _uiLogger.Info(() => Ewan.Resources.LogMessages.TestLogClicked); // 使用现有的日志消息作为占位符
+        }
+        
+        private void ExecuteMaterialNG_Clear()
+        {
+            MaterialNG_Barcode = "";
+            MaterialNG_Count = "0";
+            _uiLogger.Info(() => Ewan.Resources.LogMessages.TestLogClicked); // 使用现有的日志消息作为占位符
+        }
+        
+        #endregion
+        
+        #region 物料优先级调整命令方法
+        
+        private void ExecuteMaterialA_IncreasePriority()
+        {
+            if (int.TryParse(MaterialA_Priority, out int currentPriority) && currentPriority > 1)
+            {
+                MaterialA_Priority = (currentPriority - 1).ToString();
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.TestLogClicked); // 使用现有的日志消息作为占位符
+            }
+        }
+        
+        private void ExecuteMaterialB_IncreasePriority()
+        {
+            if (int.TryParse(MaterialB_Priority, out int currentPriority) && currentPriority > 1)
+            {
+                MaterialB_Priority = (currentPriority - 1).ToString();
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.TestLogClicked); // 使用现有的日志消息作为占位符
+            }
+        }
+        
+        private void ExecuteMaterialNG_IncreasePriority()
+        {
+            if (int.TryParse(MaterialNG_Priority, out int currentPriority) && currentPriority > 1)
+            {
+                MaterialNG_Priority = (currentPriority - 1).ToString();
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.TestLogClicked); // 使用现有的日志消息作为占位符
+            }
+        }
+        
+        #endregion
+        
+        #region 系统控制命令方法
+        
+        private void ExecuteSystemReset()
+        {
+            // 复位系统状态
+            SystemRunningStatus = "Green";
+            SystemRunningIsOn = true;
+            EmergencyStopStatus = "Gray";
+            EmergencyStopIsOn = false;
+            AlarmStatus = "Gray";
+            AlarmIsOn = false;
+            PauseStatus = "Gray";
+            PauseIsOn = false;
+            ProductionModeText = "自动模式";
+            ProductionModeColor = "Blue";
+            
+            _uiLogger.Info(() => Ewan.Resources.LogMessages.TestLogClicked); // 使用现有的日志消息作为占位符
+        }
+        
+        private void ExecuteEmergencyStop()
+        {
+            // 急停操作
+            SystemRunningStatus = "Red";
+            SystemRunningIsOn = false;
+            EmergencyStopStatus = "Red";
+            EmergencyStopIsOn = true;
+            ProductionModeText = "急停状态";
+            ProductionModeColor = "Red";
+            
+            _uiLogger.Info(() => Ewan.Resources.LogMessages.TestLogClicked);
+        }
+        
+        private void ExecuteClearAlarm()
+        {
+            // 清除报警
+            AlarmStatus = "Gray";
+            AlarmIsOn = false;
+            
+            _uiLogger.Info(() => Ewan.Resources.LogMessages.TestLogClicked);
+        }
+        
+        private void ExecuteSystemStart()
+        {
+            // 启动系统
+            SystemRunningStatus = "Green";
+            SystemRunningIsOn = true;
+            EmergencyStopIsOn = false;
+            PauseStatus = "Gray";
+            PauseIsOn = false;
+            ProductionModeText = "运行中";
+            ProductionModeColor = "Green";
+            
+            _uiLogger.Info(() => Ewan.Resources.LogMessages.TestLogClicked);
+        }
+        
+        private void ExecuteSystemPause()
+        {
+            // 暂停系统
+            SystemRunningStatus = "Yellow";
+            SystemRunningIsOn = true;
+            PauseStatus = "Yellow";
+            PauseIsOn = true;
+            ProductionModeText = "暂停中";
+            ProductionModeColor = "Orange";
+            
+            _uiLogger.Info(() => Ewan.Resources.LogMessages.TestLogClicked);
+        }
+        
+        private void ExecuteSystemStop()
+        {
+            // 停止系统
+            SystemRunningStatus = "Gray";
+            SystemRunningIsOn = false;
+            PauseStatus = "Gray";
+            PauseIsOn = false;
+            ProductionModeText = "已停止";
+            ProductionModeColor = "Gray";
+            
+            _uiLogger.Info(() => Ewan.Resources.LogMessages.TestLogClicked);
+        }
+        
         #endregion
     }
 }

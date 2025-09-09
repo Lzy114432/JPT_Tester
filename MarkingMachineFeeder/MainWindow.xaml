@@ -728,8 +728,228 @@
             <!-- Camera Section -->
             <Border Grid.Row="0" BorderBrush="Gray" BorderThickness="1" Margin="0,0,0,2.5">
                 <Grid>
-                    <TextBlock Text="相机区域" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5" FontWeight="Bold"/>
-                    <!-- Camera content will be added here -->
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <!-- Left Side - UPH Section -->
+                    <Border Grid.Column="0" BorderBrush="Gray" BorderThickness="0,0,1,0" Margin="5">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            
+                            <!-- UPH Header -->
+                            <TextBlock Grid.Row="0" Text="生产效率(UPH)" 
+                                      HorizontalAlignment="Center" 
+                                      VerticalAlignment="Center" 
+                                      Margin="5" 
+                                      FontWeight="Bold" 
+                                      FontSize="16"
+                                      Foreground="#2E5BBA"/>
+                            
+                            <!-- UPH Display -->
+                            <Grid Grid.Row="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                
+                                <!-- Current UPH -->
+                                <Border Grid.Row="0" Background="#F0F8FF" Margin="10,5" CornerRadius="8" BorderBrush="#4682B4" BorderThickness="2">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="当前:" VerticalAlignment="Center" Margin="10,0" FontSize="14" FontWeight="Medium"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding CurrentUPH, FallbackValue='1,250'}" 
+                                                  VerticalAlignment="Center" 
+                                                  HorizontalAlignment="Right" 
+                                                  Margin="0,0,10,0" 
+                                                  FontSize="20" 
+                                                  FontWeight="Bold" 
+                                                  Foreground="#2E5BBA"/>
+                                    </Grid>
+                                </Border>
+                                
+                                <!-- Target UPH -->
+                                <Border Grid.Row="1" Background="#F0FFF0" Margin="10,5" CornerRadius="8" BorderBrush="#32CD32" BorderThickness="2">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="目标:" VerticalAlignment="Center" Margin="10,0" FontSize="14" FontWeight="Medium"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding TargetUPH, FallbackValue='1,500'}" 
+                                                  VerticalAlignment="Center" 
+                                                  HorizontalAlignment="Right" 
+                                                  Margin="0,0,10,0" 
+                                                  FontSize="20" 
+                                                  FontWeight="Bold" 
+                                                  Foreground="#228B22"/>
+                                    </Grid>
+                                </Border>
+                                
+                                <!-- Efficiency Percentage -->
+                                <Border Grid.Row="2" Background="#FFF8DC" Margin="10,5" CornerRadius="8" BorderBrush="#FFD700" BorderThickness="2">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="效率:" VerticalAlignment="Center" Margin="10,0" FontSize="14" FontWeight="Medium"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding EfficiencyPercentage, FallbackValue='83.3%'}" 
+                                                  VerticalAlignment="Center" 
+                                                  HorizontalAlignment="Right" 
+                                                  Margin="0,0,10,0" 
+                                                  FontSize="20" 
+                                                  FontWeight="Bold" 
+                                                  Foreground="#FF8C00"/>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                    
+                    <!-- Right Side - Material Section -->
+                    <Grid Grid.Column="1" Margin="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        
+                        <!-- Material Header -->
+                        <TextBlock Grid.Row="0" Text="物料管理" 
+                                  HorizontalAlignment="Center" 
+                                  VerticalAlignment="Center" 
+                                  Margin="5" 
+                                  FontWeight="Bold" 
+                                  FontSize="16"
+                                  Foreground="#2E5BBA"/>
+                        
+                        <!-- A料 -->
+                        <Border Grid.Row="1" Background="#E6F3FF" Margin="5,2" CornerRadius="6" BorderBrush="#87CEEB" BorderThickness="1">
+                            <Grid Margin="8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="30"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <Button Grid.Column="0" Content="清料" 
+                                       Style="{StaticResource ModernButton}" 
+                                       Width="45" Height="25" 
+                                       FontSize="9" FontWeight="Bold"
+                                       Command="{Binding MaterialA_ClearCommand}"
+                                       ToolTip="清空A料"
+                                       Margin="2,0,2,0"/>
+                                <TextBlock Grid.Column="1" Text="A料:" VerticalAlignment="Center" FontWeight="Bold" FontSize="12" Foreground="#4682B4" Margin="0,0,8,0"/>
+                                <TextBox Grid.Column="2" Text="{Binding MaterialA_Barcode, FallbackValue='A240912001'}" 
+                                        VerticalAlignment="Center" FontSize="11" Padding="4,2" Margin="0,0,8,0"/>
+                                <TextBlock Grid.Column="3" Text="计数:" VerticalAlignment="Center" FontSize="11" Margin="0,0,4,0"/>
+                                <TextBox Grid.Column="4" Text="{Binding MaterialA_Count, FallbackValue='150'}" 
+                                        VerticalAlignment="Center" FontSize="11" Padding="4,2" Margin="0,0,8,0"/>
+                                <TextBlock Grid.Column="5" Text="优先级:" VerticalAlignment="Center" FontSize="11" Margin="0,0,4,0"/>
+                                <TextBox Grid.Column="6" Text="{Binding MaterialA_Priority, FallbackValue='1'}" 
+                                        VerticalAlignment="Center" FontSize="11" Padding="4,2" Margin="0,0,8,0"/>
+                                <Button Grid.Column="7" Content="↑" 
+                                       Style="{StaticResource ModernButton}" 
+                                       Width="25" Height="25" 
+                                       FontSize="10" FontWeight="Bold"
+                                       Command="{Binding MaterialA_IncreasePriorityCommand}"
+                                       ToolTip="提升A料优先级"/>
+                            </Grid>
+                        </Border>
+                        
+                        <!-- B料 -->
+                        <Border Grid.Row="2" Background="#F0FFF0" Margin="5,2" CornerRadius="6" BorderBrush="#90EE90" BorderThickness="1">
+                            <Grid Margin="8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="30"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <Button Grid.Column="0" Content="清料" 
+                                       Style="{StaticResource ModernButton}" 
+                                       Width="45" Height="25" 
+                                       FontSize="9" FontWeight="Bold"
+                                       Command="{Binding MaterialB_ClearCommand}"
+                                       ToolTip="清空B料"
+                                       Margin="2,0,2,0"/>
+                                <TextBlock Grid.Column="1" Text="B料:" VerticalAlignment="Center" FontWeight="Bold" FontSize="12" Foreground="#228B22" Margin="0,0,8,0"/>
+                                <TextBox Grid.Column="2" Text="{Binding MaterialB_Barcode, FallbackValue='B240912002'}" 
+                                        VerticalAlignment="Center" FontSize="11" Padding="4,2" Margin="0,0,8,0"/>
+                                <TextBlock Grid.Column="3" Text="计数:" VerticalAlignment="Center" FontSize="11" Margin="0,0,4,0"/>
+                                <TextBox Grid.Column="4" Text="{Binding MaterialB_Count, FallbackValue='89'}" 
+                                        VerticalAlignment="Center" FontSize="11" Padding="4,2" Margin="0,0,8,0"/>
+                                <TextBlock Grid.Column="5" Text="优先级:" VerticalAlignment="Center" FontSize="11" Margin="0,0,4,0"/>
+                                <TextBox Grid.Column="6" Text="{Binding MaterialB_Priority, FallbackValue='2'}" 
+                                        VerticalAlignment="Center" FontSize="11" Padding="4,2" Margin="0,0,8,0"/>
+                                <Button Grid.Column="7" Content="↑" 
+                                       Style="{StaticResource ModernButton}" 
+                                       Width="25" Height="25" 
+                                       FontSize="10" FontWeight="Bold"
+                                       Command="{Binding MaterialB_IncreasePriorityCommand}"
+                                       ToolTip="提升B料优先级"/>
+                            </Grid>
+                        </Border>
+                        
+                        <!-- NG料 -->
+                        <Border Grid.Row="3" Background="#FFF0F0" Margin="5,2" CornerRadius="6" BorderBrush="#FFB6C1" BorderThickness="1">
+                            <Grid Margin="8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="30"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <Button Grid.Column="0" Content="清料" 
+                                       Style="{StaticResource ModernButton}" 
+                                       Width="45" Height="25" 
+                                       FontSize="9" FontWeight="Bold"
+                                       Command="{Binding MaterialNG_ClearCommand}"
+                                       ToolTip="清空NG料"
+                                       Margin="2,0,2,0"/>
+                                <TextBlock Grid.Column="1" Text="NG料:" VerticalAlignment="Center" FontWeight="Bold" FontSize="12" Foreground="#DC143C" Margin="0,0,8,0"/>
+                                <TextBox Grid.Column="2" Text="{Binding MaterialNG_Barcode, FallbackValue='NG240912003'}" 
+                                        VerticalAlignment="Center" FontSize="11" Padding="4,2" Margin="0,0,8,0"/>
+                                <TextBlock Grid.Column="3" Text="计数:" VerticalAlignment="Center" FontSize="11" Margin="0,0,4,0"/>
+                                <TextBox Grid.Column="4" Text="{Binding MaterialNG_Count, FallbackValue='12'}" 
+                                        VerticalAlignment="Center" FontSize="11" Padding="4,2" Margin="0,0,8,0"/>
+                                <TextBlock Grid.Column="5" Text="优先级:" VerticalAlignment="Center" FontSize="11" Margin="0,0,4,0"/>
+                                <TextBox Grid.Column="6" Text="{Binding MaterialNG_Priority, FallbackValue='3'}" 
+                                        VerticalAlignment="Center" FontSize="11" Padding="4,2" Margin="0,0,8,0"/>
+                                <Button Grid.Column="7" Content="↑" 
+                                       Style="{StaticResource ModernButton}" 
+                                       Width="25" Height="25" 
+                                       FontSize="10" FontWeight="Bold"
+                                       Command="{Binding MaterialNG_IncreasePriorityCommand}"
+                                       ToolTip="提升NG料优先级"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
                 </Grid>
             </Border>
             
@@ -739,11 +959,148 @@
             </Grid>
         </Grid>
         
-        <!-- Right Panel - Reserved -->
+        <!-- Right Panel - Reserved & System Control -->
         <Border Grid.Column="2" BorderBrush="Gray" BorderThickness="1" Margin="5">
             <Grid>
-                <TextBlock Text="预留区域" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5" FontWeight="Bold"/>
-                <!-- Reserved content will be added here -->
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+                <!-- Header -->
+                <TextBlock Grid.Row="0" Text="系统控制区域" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5" FontWeight="Bold" FontSize="14"/>
+                
+                <!-- Reserved Content Area -->
+                <Border Grid.Row="1" Background="#F8F9FA" Margin="8" CornerRadius="6" BorderBrush="#DEE2E6" BorderThickness="1">
+                    <TextBlock Text="预留功能区域" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" Foreground="#6C757D"/>
+                </Border>
+                
+                <!-- System Status Display -->
+                <GroupBox Grid.Row="2" Header="系统状态" Margin="8,4" Padding="8" FontSize="12" FontWeight="Medium">
+                    <StackPanel>
+                        <!-- 系统运行状态 -->
+                        <ewanControls:EwanIO 
+                            LabelText="系统运行"
+                            IsOn="{Binding SystemRunningIsOn, FallbackValue=True}"
+                            IconSize="18"
+                            LabelFontSize="12"
+                            OnColor="{Binding SystemRunningStatus, FallbackValue=Green}"
+                            OffColor="#696969"
+                            ShowGlowEffect="True"
+                            EnableAnimation="True"
+                            Margin="2,3"/>
+                        
+                        <!-- 急停状态 -->
+                        <ewanControls:EwanIO 
+                            LabelText="急停状态"
+                            IsOn="{Binding EmergencyStopIsOn, FallbackValue=False}"
+                            IconSize="18"
+                            LabelFontSize="12"
+                            OnColor="{Binding EmergencyStopStatus, FallbackValue=Red}"
+                            OffColor="#696969"
+                            ShowGlowEffect="True"
+                            EnableAnimation="True"
+                            Margin="2,3"/>
+                        
+                        <!-- 报警状态 -->
+                        <ewanControls:EwanIO 
+                            LabelText="报警状态"
+                            IsOn="{Binding AlarmIsOn, FallbackValue=False}"
+                            IconSize="18"
+                            LabelFontSize="12"
+                            OnColor="{Binding AlarmStatus, FallbackValue=Red}"
+                            OffColor="#696969"
+                            ShowGlowEffect="True"
+                            EnableAnimation="True"
+                            Margin="2,3"/>
+                        
+                        <!-- 暂停状态 -->
+                        <ewanControls:EwanIO 
+                            LabelText="暂停状态"
+                            IsOn="{Binding PauseIsOn, FallbackValue=False}"
+                            IconSize="18"
+                            LabelFontSize="12"
+                            OnColor="{Binding PauseStatus, FallbackValue=Yellow}"
+                            OffColor="#696969"
+                            ShowGlowEffect="True"
+                            EnableAnimation="True"
+                            Margin="2,3"/>
+                        
+                        <!-- 生产模式状态 -->
+                        <ewanControls:EwanIO 
+                            LabelText="{Binding ProductionModeText, FallbackValue='自动模式'}"
+                            IsOn="True"
+                            IconSize="18"
+                            LabelFontSize="12"
+                            LabelFontWeight="Bold"
+                            OnColor="{Binding ProductionModeColor, FallbackValue=Blue}"
+                            OffColor="#696969"
+                            ShowGlowEffect="True"
+                            EnableAnimation="True"
+                            Margin="2,3"/>
+                    </StackPanel>
+                </GroupBox>
+                
+                <!-- System Control Buttons -->
+                <GroupBox Grid.Row="3" Header="系统控制" Margin="8,4,8,8" Padding="8" FontSize="12" FontWeight="Medium">
+                    <StackPanel>
+                        <!-- 复位按钮 -->
+                        <Button Content="复位"
+                                Style="{StaticResource IndustrialTestButton}"
+                                Background="#6C757D"
+                                FontSize="12"
+                                Height="35"
+                                Command="{Binding SystemResetCommand}"
+                                Margin="4,2"/>
+                                
+                        <!-- 急停按钮 -->
+                        <Button Content="急停"
+                                Style="{StaticResource IndustrialTestButton}"
+                                Background="#DC3545"
+                                FontSize="12"
+                                Height="35"
+                                Command="{Binding EmergencyStopCommand}"
+                                Margin="4,2"/>
+                                
+                        <!-- 清除报警按钮 -->
+                        <Button Content="清除报警"
+                                Style="{StaticResource IndustrialTestButton}"
+                                Background="#FD7E14"
+                                FontSize="12"
+                                Height="35"
+                                Command="{Binding ClearAlarmCommand}"
+                                Margin="4,2"/>
+                        
+                        <!-- 启动按钮 -->
+                        <Button Content="启动"
+                                Style="{StaticResource IndustrialTestButton}"
+                                Background="#28A745"
+                                FontSize="12"
+                                Height="35"
+                                Command="{Binding SystemStartCommand}"
+                                Margin="4,2"/>
+                                
+                        <!-- 暂停按钮 -->
+                        <Button Content="暂停"
+                                Style="{StaticResource IndustrialTestButton}"
+                                Background="#FFC107"
+                                FontSize="12"
+                                Height="35"
+                                Command="{Binding SystemPauseCommand}"
+                                Margin="4,2"/>
+                                
+                        <!-- 停止按钮 -->
+                        <Button Content="停止"
+                                Style="{StaticResource IndustrialTestButton}"
+                                Background="#DC3545"
+                                FontSize="12"
+                                Height="35"
+                                Command="{Binding SystemStopCommand}"
+                                Margin="4,2"/>
+                    </StackPanel>
+                </GroupBox>
             </Grid>
         </Border>
         </Grid>
