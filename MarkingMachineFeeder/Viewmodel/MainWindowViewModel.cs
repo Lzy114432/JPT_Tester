@@ -414,7 +414,6 @@ namespace MarkingMachineFeeder.Viewmodel
             if (_ioControlWindow == null || !_ioControlWindow.IsLoaded)
             {
                 _ioControlWindow = new MarkingMachineFeeder.Windows.IOControlWindow();
-                _ioControlWindow.Owner = Application.Current.MainWindow;
                 _ioControlWindow.Closed += (s, e) => _ioControlWindow = null; // 窗口关闭时清除引用
                 _ioControlWindow.Show();
             }
@@ -432,7 +431,6 @@ namespace MarkingMachineFeeder.Viewmodel
             if (_ioMappingConfigWindow == null || !_ioMappingConfigWindow.IsLoaded)
             {
                 _ioMappingConfigWindow = new MarkingMachineFeeder.Windows.IOMappingConfigWindow();
-                _ioMappingConfigWindow.Owner = Application.Current.MainWindow;
                 _ioMappingConfigWindow.Closed += (s, e) => _ioMappingConfigWindow = null; // 窗口关闭时清除引用
                 _ioMappingConfigWindow.Show();
             }
@@ -640,7 +638,6 @@ namespace MarkingMachineFeeder.Viewmodel
                 if (_axisConfigWindow == null || !_axisConfigWindow.IsLoaded)
                 {
                     _axisConfigWindow = new MarkingMachineFeeder.Windows.AxisConfigWindow();
-                    _axisConfigWindow.Owner = Application.Current.MainWindow;
                     _axisConfigWindow.Closed += (s, e) => _axisConfigWindow = null; // 窗口关闭时清除引用
                     _axisConfigWindow.Show();
                 }
@@ -666,7 +663,6 @@ namespace MarkingMachineFeeder.Viewmodel
                 if (_axisControlWindow == null || !_axisControlWindow.IsLoaded)
                 {
                     _axisControlWindow = new MarkingMachineFeeder.Windows.AxisControlWindow();
-                    _axisControlWindow.Owner = Application.Current.MainWindow;
                     _axisControlWindow.Closed += (s, e) => _axisControlWindow = null; // 窗口关闭时清除引用
                     _axisControlWindow.Show();
                 }

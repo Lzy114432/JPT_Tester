@@ -791,8 +791,8 @@
                             </Grid>
                         </Border>
                         
-                        <!-- Material Inventory Panel -->
-                        <GroupBox Grid.Row="4" Header="设备物料库存" Margin="2,8,2,4" Padding="6" 
+                        <!-- Material Storage Panel -->
+                        <GroupBox Grid.Row="4" Header="设备物料存量" Margin="2,8,2,4" Padding="6" 
                                  FontSize="12" FontWeight="Medium" Foreground="#2E5BBA">
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -812,7 +812,7 @@
                                     <!-- A Material Inventory -->
                                     <Border Grid.Column="0" Background="#E6F3FF" Margin="1" Padding="6,8" CornerRadius="4" BorderBrush="#87CEEB" BorderThickness="1">
                                         <StackPanel>
-                                            <TextBlock Text="A料库存" FontWeight="Bold" FontSize="10" HorizontalAlignment="Center" Foreground="#4682B4"/>
+                                            <TextBlock Text="A料存量" FontWeight="Bold" FontSize="10" HorizontalAlignment="Center" Foreground="#4682B4"/>
                                             <TextBlock Text="{Binding MaterialA_Count, FallbackValue='150'}" 
                                                       FontWeight="Bold" FontSize="16" Foreground="#4682B4" 
                                                       HorizontalAlignment="Center" Margin="0,4,0,0"/>
@@ -823,7 +823,7 @@
                                     <!-- B Material Inventory -->
                                     <Border Grid.Column="1" Background="#F0FFF0" Margin="1" Padding="6,8" CornerRadius="4" BorderBrush="#90EE90" BorderThickness="1">
                                         <StackPanel>
-                                            <TextBlock Text="B料库存" FontWeight="Bold" FontSize="10" HorizontalAlignment="Center" Foreground="#228B22"/>
+                                            <TextBlock Text="B料存量" FontWeight="Bold" FontSize="10" HorizontalAlignment="Center" Foreground="#228B22"/>
                                             <TextBlock Text="{Binding MaterialB_Count, FallbackValue='89'}" 
                                                       FontWeight="Bold" FontSize="16" Foreground="#228B22" 
                                                       HorizontalAlignment="Center" Margin="0,4,0,0"/>
@@ -834,7 +834,7 @@
                                     <!-- NG Material Inventory -->
                                     <Border Grid.Column="2" Background="#FFF0F0" Margin="1" Padding="6,8" CornerRadius="4" BorderBrush="#FFB6C1" BorderThickness="1">
                                         <StackPanel>
-                                            <TextBlock Text="NG料库存" FontWeight="Bold" FontSize="10" HorizontalAlignment="Center" Foreground="#DC143C"/>
+                                            <TextBlock Text="NG料存量" FontWeight="Bold" FontSize="10" HorizontalAlignment="Center" Foreground="#DC143C"/>
                                             <TextBlock Text="{Binding MaterialNG_Count, FallbackValue='12'}" 
                                                       FontWeight="Bold" FontSize="16" Foreground="#DC143C" 
                                                       HorizontalAlignment="Center" Margin="0,4,0,0"/>
@@ -853,7 +853,7 @@
                                         </Grid.ColumnDefinitions>
                                         
                                         <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left">
-                                            <TextBlock Text="总库存:" FontWeight="Bold" FontSize="11" VerticalAlignment="Center"/>
+                                            <TextBlock Text="总存量:" FontWeight="Bold" FontSize="11" VerticalAlignment="Center"/>
                                             <TextBlock Text="{Binding TotalMaterialCount, FallbackValue='251'}" 
                                                       FontWeight="Bold" FontSize="13" Foreground="#0066CC" 
                                                       Margin="4,0,0,0" VerticalAlignment="Center"/>
@@ -881,7 +881,7 @@
                                         </Grid.ColumnDefinitions>
                                         
                                         <StackPanel Grid.Column="0" Orientation="Horizontal">
-                                            <TextBlock Text="库存状态:" FontSize="10" VerticalAlignment="Center"/>
+                                            <TextBlock Text="存量状态:" FontSize="10" VerticalAlignment="Center"/>
                                             <TextBlock Text="{Binding InventoryStatusText, FallbackValue='正常'}" 
                                                       FontSize="10" FontWeight="Bold" Foreground="#228B22"
                                                       Margin="4,0,0,0" VerticalAlignment="Center"/>

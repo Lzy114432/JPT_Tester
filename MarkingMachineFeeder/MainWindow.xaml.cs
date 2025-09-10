@@ -29,5 +29,31 @@ namespace MarkingMachineFeeder
                 DragMove();
             }
         }
+
+        /// <summary>
+        /// 处理主窗体鼠标点击事件，确保主窗体能够获得焦点并置顶
+        /// </summary>
+        protected override void OnMouseDown(MouseButtonEventArgs e)
+        {
+            base.OnMouseDown(e);
+            
+            // 激活当前窗体并置顶
+            if (!this.IsActive)
+            {
+                this.Activate();
+                this.Focus();
+            }
+        }
+
+        /// <summary>
+        /// 处理主窗体激活事件
+        /// </summary>
+        protected override void OnActivated(System.EventArgs e)
+        {
+            base.OnActivated(e);
+            
+            // 确保主窗体真正获得焦点
+            this.Focus();
+        }
     }
 }
