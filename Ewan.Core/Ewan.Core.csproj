@@ -79,6 +79,7 @@
     <Compile Include="Module\Interface\IModule.cs" />
     <Compile Include="Module\IOPollingModule.cs" />
     <Compile Include="Module\SafetyModule.cs" />
+    <Compile Include="Module\SystemStatusIndicatorModule.cs" />
     <Compile Include="Msg\MessageModel.cs" />
     <Compile Include="Msg\MsgListener.cs" />
     <Compile Include="Msg\MsgManager.cs" />

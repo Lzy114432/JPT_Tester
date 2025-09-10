@@ -63,6 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Alarm\AlarmIOMapping.cs" />
     <Compile Include="Config\AxisConfig.cs" />
     <Compile Include="Config\AxisConfigManager.cs" />
     <Compile Include="Config\AxisEnum.cs" />
@@ -74,6 +75,8 @@
     <Compile Include="Security\Role.cs" />
     <Compile Include="Security\SecurityConstants.cs" />
     <Compile Include="Security\User.cs" />
+    <Compile Include="System\SystemStatus.cs" />
+    <Compile Include="System\StatusIndicatorCommand.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

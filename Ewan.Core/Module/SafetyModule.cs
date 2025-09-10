@@ -1,6 +1,8 @@
 using Ewan.Core.IO;
 using Ewan.Core.Msg;
 using Ewan.LogManager.Logger;
+using Ewan.Model.Alarm;
+using Ewan.Model.System;
 using IOLibrary.Core.Layered;
 using System;
 using System.Diagnostics;
@@ -8,7 +10,7 @@ using System.Diagnostics;
 namespace Ewan.Core.Module
 {
     /// <summary>
-    /// 安全模块 - 负责同步IO数据
+    /// 安全模块 - 负责同步IO数据和监控报警
     /// </summary>
     public class SafetyModule : BaseModule<SafetyModule>
     {
@@ -25,6 +27,14 @@ namespace Ewan.Core.Module
         private Stopwatch _performanceWatch = new Stopwatch();
         private long _syncCount = 0;
         private double _avgSyncTime = 0;
+        
+        // 报警监控
+        private bool _lastEmergencyButtonState = false;
+        private bool _lastSafetyDoorState = false;
+        private bool _lastMotorAlarmState = false;
+        private bool _lastPressureLowState = false;
+        private int _alarmCheckInterval = 5; // 报警检查计数器（5次同步检查一次报警）
+        private int _alarmCheckCounter = 0;
 
         #endregion
 
@@ -80,6 +90,14 @@ namespace Ewan.Core.Module
                 // 执行IO数据同步
                 _layeredIO.DataSync();
                 
+                // 检查报警状态（减少频率避免过频检查）
+                _alarmCheckCounter++;
+                if (_alarmCheckCounter >= _alarmCheckInterval)
+                {
+                    CheckAlarmInputs();
+                    _alarmCheckCounter = 0;
+                }
+                
                 _performanceWatch.Stop();
                 
                 // 更新性能统计
@@ -117,6 +135,91 @@ namespace Ewan.Core.Module
             }
             
             _uiLogger.Info(() => Ewan.Resources.LogMessages.ModuleDestroyed, "SafetyModule");
+        }
+
+        #endregion
+
+        #region 报警监控
+
+        /// <summary>
+        /// 检查报警输入信号
+        /// </summary>
+        private void CheckAlarmInputs()
+        {
+            try
+            {
+                // 检查急停按钮
+                bool emergencyButton = ReadInput(AlarmIOMapping.EMERGENCY_BUTTON);
+                if (emergencyButton && emergencyButton != _lastEmergencyButtonState)
+                {
+                    SendAlarmMessage(SystemStatus.Critical, "急停按钮被按下", true);
+                }
+                _lastEmergencyButtonState = emergencyButton;
+
+                // 检查安全门
+                bool safetyDoor = ReadInput(AlarmIOMapping.SAFETY_DOOR);
+                if (!safetyDoor && safetyDoor != _lastSafetyDoorState) // 安全门打开（假设常闭）
+                {
+                    SendAlarmMessage(SystemStatus.Warning, "安全门已打开", false);
+                }
+                _lastSafetyDoorState = safetyDoor;
+
+                // 检查电机报警
+                bool motorAlarm = ReadInput(AlarmIOMapping.MOTOR_ALARM);
+                if (motorAlarm && motorAlarm != _lastMotorAlarmState)
+                {
+                    SendAlarmMessage(SystemStatus.Alarm, "电机报警信号", true);
+                }
+                _lastMotorAlarmState = motorAlarm;
+
+                // 检查气压不足
+                bool pressureLow = ReadInput(AlarmIOMapping.PRESSURE_LOW);
+                if (pressureLow && pressureLow != _lastPressureLowState)
+                {
+                    SendAlarmMessage(SystemStatus.Warning, "气压不足", false);
+                }
+                _lastPressureLowState = pressureLow;
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ModuleRunError, 
+                    "SafetyModule-CheckAlarmInputs", ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 读取输入点位
+        /// </summary>
+        private bool ReadInput(int index)
+        {
+            try
+            {
+                return _layeredIO?.ReadInBit(index, true) ?? false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 发送报警消息给状态指示器
+        /// </summary>
+        private void SendAlarmMessage(SystemStatus status, string description, bool isCritical)
+        {
+            try
+            {
+                var command = new StatusIndicatorCommand(status, description, isCritical);
+                var msg = new MessageModel(MsgSubject.StatusIndicator, command);
+                _msgManager.PushMsg(msg);
+                
+                _uiLogger.Warn(() => $"报警触发: {description}");
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ModuleRunError, 
+                    "SafetyModule-SendAlarmMessage", ex.Message);
+            }
         }
 
         #endregion
