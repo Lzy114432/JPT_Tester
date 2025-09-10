@@ -7,6 +7,7 @@ using Prism.Mvvm;
 using System;
 using System.Globalization;
 using System.Linq;
+using System.Windows;
 
 namespace MarkingMachineFeeder.Viewmodel
 {
@@ -40,6 +41,12 @@ namespace MarkingMachineFeeder.Viewmodel
         private bool _canSwitchLanguage = false;
         private bool _canExit = false;
         private bool _canAccessHardwareControl = false;
+
+        // 窗体实例管理 - 单例模式
+        private MarkingMachineFeeder.Windows.IOControlWindow _ioControlWindow;
+        private MarkingMachineFeeder.Windows.IOMappingConfigWindow _ioMappingConfigWindow;
+        private MarkingMachineFeeder.Windows.AxisConfigWindow _axisConfigWindow;
+        private MarkingMachineFeeder.Windows.AxisControlWindow _axisControlWindow;
 
         // IO状态属性 - 根据io.csv定义的交互信号
         // 输入信号：IN3-IN11, IN15-IN17, IN19-IN20
@@ -403,16 +410,38 @@ namespace MarkingMachineFeeder.Viewmodel
 
         private void ExecuteOpenIOControl()
         {
-            // 打开IO控制窗口
-            var ioControlWindow = new MarkingMachineFeeder.Windows.IOControlWindow();
-            ioControlWindow.ShowDialog();
+            // 单例模式：检查是否已存在IO控制窗口
+            if (_ioControlWindow == null || !_ioControlWindow.IsLoaded)
+            {
+                _ioControlWindow = new MarkingMachineFeeder.Windows.IOControlWindow();
+                _ioControlWindow.Owner = Application.Current.MainWindow;
+                _ioControlWindow.Closed += (s, e) => _ioControlWindow = null; // 窗口关闭时清除引用
+                _ioControlWindow.Show();
+            }
+            else
+            {
+                // 如果窗口已存在，激活并置顶
+                _ioControlWindow.Activate();
+                _ioControlWindow.Focus();
+            }
         }
 
         private void ExecuteOpenIOMappingConfig()
         {
-            // 打开IO映射配置窗口
-            var ioMappingConfigWindow = new MarkingMachineFeeder.Windows.IOMappingConfigWindow();
-            ioMappingConfigWindow.ShowDialog();
+            // 单例模式：检查是否已存在IO映射配置窗口
+            if (_ioMappingConfigWindow == null || !_ioMappingConfigWindow.IsLoaded)
+            {
+                _ioMappingConfigWindow = new MarkingMachineFeeder.Windows.IOMappingConfigWindow();
+                _ioMappingConfigWindow.Owner = Application.Current.MainWindow;
+                _ioMappingConfigWindow.Closed += (s, e) => _ioMappingConfigWindow = null; // 窗口关闭时清除引用
+                _ioMappingConfigWindow.Show();
+            }
+            else
+            {
+                // 如果窗口已存在，激活并置顶
+                _ioMappingConfigWindow.Activate();
+                _ioMappingConfigWindow.Focus();
+            }
         }
 
         private bool CanOpenSettings()
@@ -607,9 +636,20 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             try
             {
-                // 打开轴配置窗口
-                var axisConfigWindow = new MarkingMachineFeeder.Windows.AxisConfigWindow();
-                axisConfigWindow.ShowDialog();
+                // 单例模式：检查是否已存在轴配置窗口
+                if (_axisConfigWindow == null || !_axisConfigWindow.IsLoaded)
+                {
+                    _axisConfigWindow = new MarkingMachineFeeder.Windows.AxisConfigWindow();
+                    _axisConfigWindow.Owner = Application.Current.MainWindow;
+                    _axisConfigWindow.Closed += (s, e) => _axisConfigWindow = null; // 窗口关闭时清除引用
+                    _axisConfigWindow.Show();
+                }
+                else
+                {
+                    // 如果窗口已存在，激活并置顶
+                    _axisConfigWindow.Activate();
+                    _axisConfigWindow.Focus();
+                }
                 _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingComplete);
             }
             catch (Exception ex)
@@ -622,9 +662,20 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             try
             {
-                // 打开轴手动控制窗口
-                var axisControlWindow = new MarkingMachineFeeder.Windows.AxisControlWindow();
-                axisControlWindow.ShowDialog();
+                // 单例模式：检查是否已存在轴手动控制窗口
+                if (_axisControlWindow == null || !_axisControlWindow.IsLoaded)
+                {
+                    _axisControlWindow = new MarkingMachineFeeder.Windows.AxisControlWindow();
+                    _axisControlWindow.Owner = Application.Current.MainWindow;
+                    _axisControlWindow.Closed += (s, e) => _axisControlWindow = null; // 窗口关闭时清除引用
+                    _axisControlWindow.Show();
+                }
+                else
+                {
+                    // 如果窗口已存在，激活并置顶
+                    _axisControlWindow.Activate();
+                    _axisControlWindow.Focus();
+                }
                 _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingComplete, "轴手动控制");
             }
             catch (Exception ex)
