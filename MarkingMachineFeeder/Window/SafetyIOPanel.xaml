@@ -10,7 +10,7 @@
              d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel, IsDesignTimeCreatable=False}">
     
     <!-- 安全IO显示 -->
-    <GroupBox Header="安全IO显示" Margin="5" Padding="5">
+    <GroupBox Header="安全IO显示" Margin="5,5,5,0" Padding="8">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>

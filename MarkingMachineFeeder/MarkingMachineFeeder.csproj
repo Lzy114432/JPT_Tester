@@ -142,6 +142,9 @@
     <Compile Include="Window\RobotControlPanel.xaml.cs">
       <DependentUpon>RobotControlPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Window\ConveyorIOPanel.xaml.cs">
+      <DependentUpon>ConveyorIOPanel.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -217,6 +220,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Window\RobotControlPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Window\ConveyorIOPanel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

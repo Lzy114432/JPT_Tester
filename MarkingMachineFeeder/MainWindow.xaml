@@ -549,22 +549,26 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="2.5*"/>
-                    <RowDefinition Height="0.8*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 
                 <!-- Header -->
-                <TextBlock Grid.Row="0" Text="系统控制面板" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5" FontWeight="Bold" FontSize="14"/>
+                <TextBlock Grid.Row="0" Text="系统控制面板" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5,5,5,15" FontWeight="Bold" FontSize="14"/>
                 
                 <!-- Safety IO Panel -->
-                <controls:SafetyIOPanel Grid.Row="1" />
+                <controls:SafetyIOPanel Grid.Row="1" Margin="0,0,0,15"/>
                 
                 <!-- Interactive IO Panel -->
-                <controls:InteractiveIOPanel Grid.Row="2" />
+                <controls:InteractiveIOPanel Grid.Row="2" Margin="0,0,0,15"/>
+                
+                <!-- Conveyor IO Panel -->
+                <controls:ConveyorIOPanel Grid.Row="3" Margin="0,0,0,15"/>
                 
                 <!-- Robot Control Panel -->
-                <controls:RobotControlPanel Grid.Row="3" />
+                <controls:RobotControlPanel Grid.Row="4" Margin="0,0,0,5"/>
                 
             </Grid>
         </Border>

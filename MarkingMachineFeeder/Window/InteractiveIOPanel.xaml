@@ -7,12 +7,11 @@
              xmlns:ewanControls="clr-namespace:Ewan.Controls;assembly=Ewan.Controls"
              mc:Ignorable="d"
              d:DesignWidth="280"
-             d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel, IsDesignTimeCreatable=False}"
-             Height="344">
+             d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel, IsDesignTimeCreatable=False}">
     <!-- 交互IO -->
-    <GroupBox Header="交互IO"
-              Margin="5"
-              Padding="5">
+    <GroupBox Header="机械臂交互IO"
+              Margin="5,5,5,0"
+              Padding="8">
         <ScrollViewer VerticalScrollBarVisibility="Auto"
                       HorizontalScrollBarVisibility="Disabled">
             <Grid>

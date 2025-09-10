@@ -1,17 +1,15 @@
+using Ewan.Core.Axis;
+using Ewan.Core.Culture;
+using Ewan.Core.Logger;
+using Ewan.Core.Security;
+using Ewan.Model.Config;
+using Prism.Commands;
+using Prism.Mvvm;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Threading;
-using Prism.Commands;
-using Prism.Mvvm;
-using Ewan.Model.Config;
-using Ewan.Core.Culture;
-using Ewan.Core.Security;
-using Ewan.Core.Axis;
-using Ewan.Core;
-using Ewan.Core.Logger;
 
 namespace MarkingMachineFeeder.Viewmodel
 {
