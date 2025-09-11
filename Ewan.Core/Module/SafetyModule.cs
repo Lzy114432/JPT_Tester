@@ -3,6 +3,7 @@ using Ewan.Core.Msg;
 using Ewan.LogManager.Logger;
 using Ewan.Model.Alarm;
 using Ewan.Model.System;
+using Ewan.Model.Safety;
 using IOLibrary.Core.Layered;
 using System;
 using System.Diagnostics;
@@ -152,7 +153,7 @@ namespace Ewan.Core.Module
                 bool emergencyButton = ReadInput(AlarmIOMapping.EMERGENCY_BUTTON);
                 if (emergencyButton && emergencyButton != _lastEmergencyButtonState)
                 {
-                    SendAlarmMessage(SystemStatus.Critical, "急停按钮被按下", true);
+                    SendSafetyAlert(SafetyAlertType.EmergencyStop, SafetyAlertLevel.Critical, "急停按钮被按下", true);
                 }
                 _lastEmergencyButtonState = emergencyButton;
 
@@ -160,7 +161,7 @@ namespace Ewan.Core.Module
                 bool safetyDoor = ReadInput(AlarmIOMapping.SAFETY_DOOR);
                 if (!safetyDoor && safetyDoor != _lastSafetyDoorState) // 安全门打开（假设常闭）
                 {
-                    SendAlarmMessage(SystemStatus.Warning, "安全门已打开", false);
+                    SendSafetyAlert(SafetyAlertType.SafetyDoorOpen, SafetyAlertLevel.Warning, "安全门已打开", false);
                 }
                 _lastSafetyDoorState = safetyDoor;
 
@@ -168,7 +169,7 @@ namespace Ewan.Core.Module
                 bool motorAlarm = ReadInput(AlarmIOMapping.MOTOR_ALARM);
                 if (motorAlarm && motorAlarm != _lastMotorAlarmState)
                 {
-                    SendAlarmMessage(SystemStatus.Alarm, "电机报警信号", true);
+                    SendSafetyAlert(SafetyAlertType.MotorAlarm, SafetyAlertLevel.Alarm, "电机报警信号", true);
                 }
                 _lastMotorAlarmState = motorAlarm;
 
@@ -176,7 +177,7 @@ namespace Ewan.Core.Module
                 bool pressureLow = ReadInput(AlarmIOMapping.PRESSURE_LOW);
                 if (pressureLow && pressureLow != _lastPressureLowState)
                 {
-                    SendAlarmMessage(SystemStatus.Warning, "气压不足", false);
+                    SendSafetyAlert(SafetyAlertType.PressureLow, SafetyAlertLevel.Warning, "气压不足", false);
                 }
                 _lastPressureLowState = pressureLow;
             }
@@ -203,22 +204,39 @@ namespace Ewan.Core.Module
         }
 
         /// <summary>
-        /// 发送报警消息给状态指示器
+        /// 发送安全报警消息给AutoProductionModule
         /// </summary>
-        private void SendAlarmMessage(SystemStatus status, string description, bool isCritical)
+        /// <param name="alertType">报警类型</param>
+        /// <param name="alertLevel">报警级别</param>
+        /// <param name="description">报警描述</param>
+        /// <param name="requireEmergencyStop">是否需要急停</param>
+        private void SendSafetyAlert(SafetyAlertType alertType, SafetyAlertLevel alertLevel, string description, bool requireEmergencyStop)
         {
             try
             {
-                var command = new StatusIndicatorCommand(status, description, isCritical);
-                var msg = new MessageModel(MsgSubject.StatusIndicator, command);
+                // 创建安全报警消息
+                var safetyAlert = new SafetyAlert(alertType, alertLevel, description, requireEmergencyStop);
+                var msg = new MessageModel(MsgSubject.SafetyAlert, safetyAlert);
+                
+                // 发送到消息队列
                 _msgManager.PushMsg(msg);
                 
-                _uiLogger.Warn(() => $"报警触发: {description}");
+                // 记录日志
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ErrorOccurred, 
+                    "安全报警触发: " + description);
+                
+                // 同时发送给状态指示器（保持原有功能）
+                var statusIndicatorCommand = new StatusIndicatorCommand(
+                    alertLevel == SafetyAlertLevel.Critical ? SystemStatus.Critical : 
+                    alertLevel == SafetyAlertLevel.Alarm ? SystemStatus.Alarm : SystemStatus.Warning, 
+                    description, requireEmergencyStop);
+                var statusMsg = new MessageModel(MsgSubject.StatusIndicator, statusIndicatorCommand);
+                _msgManager.PushMsg(statusMsg);
             }
             catch (Exception ex)
             {
                 _uiLogger.Error(() => Ewan.Resources.LogMessages.ModuleRunError, 
-                    "SafetyModule-SendAlarmMessage", ex.Message);
+                    "SafetyModule-SendSafetyAlert", ex.Message);
             }
         }
 
@@ -248,6 +266,18 @@ namespace Ewan.Core.Module
         /// 获取LayeredIO实例（供其他模块使用）
         /// </summary>
         public LayeredIO GetLayeredIO() => _layeredIO;
+        
+        /// <summary>
+        /// 手动发送安全报警（供其他模块调用）
+        /// </summary>
+        /// <param name="alertType">报警类型</param>
+        /// <param name="alertLevel">报警级别</param>
+        /// <param name="description">报警描述</param>
+        /// <param name="requireEmergencyStop">是否需要急停</param>
+        public void TriggerSafetyAlert(SafetyAlertType alertType, SafetyAlertLevel alertLevel, string description, bool requireEmergencyStop = false)
+        {
+            SendSafetyAlert(alertType, alertLevel, description, requireEmergencyStop);
+        }
 
         #endregion
     }

@@ -38,6 +38,11 @@ namespace Ewan.BusinessBonding
         private StreamRunner _ioPollingRunner;
 
         /// <summary>
+        /// 料仓升降控制流程runner
+        /// </summary>
+        private StreamRunner _binElevatorRunner;
+
+        /// <summary>
         /// 报警流程runner（暂时注释，调试时启用）
         /// </summary>
         // private StreamRunner _alarmRunner;
@@ -50,6 +55,7 @@ namespace Ewan.BusinessBonding
         private List<IModule> _plcHeartModules = new List<IModule>();
         private List<IModule> _safetyModules = new List<IModule>();
         private List<IModule> _ioPollingModules = new List<IModule>();
+        private List<IModule> _binElevatorModules = new List<IModule>();
         
         /// <summary>
         /// 报警模块集合（暂时注释，调试时启用）
@@ -69,9 +75,14 @@ namespace Ewan.BusinessBonding
             
             #region  //构造主流程的节点并加入到对应runner
             
+            // 添加自动生产流程模块
+            _mainModules.Add(new AutoProductionModule());
+            
             //_mainModules.Add(new PlcModule());//测试可以换成数据模拟节点 根据配置决定加载哪个PLC节点
             //_mainModules.Add(new AlarmModule<PlcModel>());
-            //_mainRunner = new StreamRunner(_mainModules);
+            
+            // 创建主流程runner
+            _mainRunner = new StreamRunner(_mainModules);
             
             #endregion
 
@@ -99,6 +110,16 @@ namespace Ewan.BusinessBonding
             
             // 创建IO轮询流程runner
             _ioPollingRunner = new StreamRunner(_ioPollingModules);
+            
+            #endregion
+
+            #region //构造料仓升降控制流程的节点并加入到对应runner
+            
+            // 添加BinElevatorModule用于料仓升降控制
+            _binElevatorModules.Add(new BinElevatorModule());
+            
+            // 创建料仓升降流程runner
+            _binElevatorRunner = new StreamRunner(_binElevatorModules);
             
             #endregion
 
@@ -135,7 +156,9 @@ namespace Ewan.BusinessBonding
                 StartSafetyStream();
                 //4.运行IO轮询流程
                 StartIOPollingStream();
-                //5.运行报警流程（暂时注释，调试时启用）
+                //5.运行料仓升降控制流程
+                StartBinElevatorStream();
+                //6.运行报警流程（暂时注释，调试时启用）
                 //StartAlarmStream();
                 
                 ////6.运行plc产能统计流程
@@ -169,7 +192,9 @@ namespace Ewan.BusinessBonding
             StopSafetyStream();
             //4.停止IO轮询流程
             StopIOPollingStream();
-            //5.停止报警流程（暂时注释，调试时启用）
+            //5.停止料仓升降流程
+            StopBinElevatorStream();
+            //6.停止报警流程（暂时注释，调试时启用）
             //StopAlarmStream();
             
             // 通知系统状态变为待机（三色灯变为绿灯常亮）
@@ -265,6 +290,25 @@ namespace Ewan.BusinessBonding
         private void StopIOPollingStream()
         {
             _ioPollingRunner?.Stop();
+        }
+
+        /// <summary>
+        /// 启动料仓升降流程
+        /// </summary>
+        private void StartBinElevatorStream()
+        {
+            if (_binElevatorRunner != null)
+            {
+                _binElevatorRunner.Start();
+            }
+        }
+
+        /// <summary>
+        /// 停止料仓升降流程
+        /// </summary>
+        private void StopBinElevatorStream()
+        {
+            _binElevatorRunner?.Stop();
         }
 
         /// <summary>

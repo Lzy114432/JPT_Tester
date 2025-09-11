@@ -75,7 +75,9 @@
     <Compile Include="IO\LayeredIOManager.cs" />
     <Compile Include="Logger\UILogger.cs" />
     <Compile Include="Axis\LTSMC.cs" />
+    <Compile Include="Module\AutoProductionModule.cs" />
     <Compile Include="Module\BaseModule.cs" />
+    <Compile Include="Module\BinElevatorModule.cs" />
     <Compile Include="Module\Interface\IModule.cs" />
     <Compile Include="Module\IOPollingModule.cs" />
     <Compile Include="Module\SafetyModule.cs" />

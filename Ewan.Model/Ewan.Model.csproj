@@ -70,13 +70,17 @@
     <Compile Include="IO\IOStatus.cs" />
     <Compile Include="Messages\UILogMsg.cs" />
     <Compile Include="Permission\PermissionConfig.cs" />
+    <Compile Include="Production\AutoProductionIO.cs" />
+    <Compile Include="Production\AutoProductionState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Safety\SafetyAlert.cs" />
     <Compile Include="Security\Permission.cs" />
     <Compile Include="Security\Role.cs" />
     <Compile Include="Security\SecurityConstants.cs" />
     <Compile Include="Security\User.cs" />
     <Compile Include="System\SystemStatus.cs" />
     <Compile Include="System\StatusIndicatorCommand.cs" />
+    <Compile Include="System\SystemStatusMessage.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
