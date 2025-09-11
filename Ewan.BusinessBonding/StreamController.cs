@@ -146,7 +146,7 @@ namespace Ewan.BusinessBonding
             try
             {
                 // 通知系统状态变为运行中（三色灯变为绿灯闪烁）
-                NotifySystemStatus("Running", "流程启动");
+                //NotifySystemStatus("Running", "流程启动");
                 
                 //1.运行主流程
                 StartMainStream();
@@ -157,7 +157,7 @@ namespace Ewan.BusinessBonding
                 //4.运行IO轮询流程
                 StartIOPollingStream();
                 //5.运行料仓升降控制流程
-                StartBinElevatorStream();
+                //StartBinElevatorStream();
                 //6.运行报警流程（暂时注释，调试时启用）
                 //StartAlarmStream();
                 
@@ -193,12 +193,12 @@ namespace Ewan.BusinessBonding
             //4.停止IO轮询流程
             StopIOPollingStream();
             //5.停止料仓升降流程
-            StopBinElevatorStream();
+            //StopBinElevatorStream();
             //6.停止报警流程（暂时注释，调试时启用）
             //StopAlarmStream();
             
             // 通知系统状态变为待机（三色灯变为绿灯常亮）
-            NotifySystemStatus("Standby", "流程停止");
+            //NotifySystemStatus("Standby", "流程停止");
 
             ////...n.停止其他流程
             //StopOtherStream();

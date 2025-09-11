@@ -8,7 +8,7 @@ using Ewan.Core.Msg;
 
 namespace Ewan.Core.Module
 {
-    /// <summary>
+    /// <summary>d
     /// 料仓升降控制模块
     /// 负责在自动模式下根据感应器状态自动控制三个料仓的升降
     /// </summary>
