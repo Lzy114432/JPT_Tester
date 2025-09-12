@@ -1,4 +1,5 @@
 using Ewan.Core.Msg;
+using Ewan.Core.IO;
 using Ewan.Model.Alarm;
 using Ewan.Model.System;
 using System;
@@ -16,7 +17,7 @@ namespace Ewan.Core.Module
         #region 私有字段
 
         private MsgListener _msgListener;
-        // IOController引用移除，避免循环依赖
+        private readonly LayeredIOManager _ioManager = LayeredIOManager.Instance();
         private SystemStatus _currentStatus = SystemStatus.Initializing;
         
         // 蜂鸣器控制
@@ -235,9 +236,30 @@ namespace Ewan.Core.Module
         {
             try
             {
-                // 记录需要设置的IO状态（实际IO操作在StreamController中实现）
-                _uiLogger.Info(() => $"需要设置三色灯: 红灯={red}, 黄灯={yellow}, 绿灯={green}");
-                _uiLogger.Debug(() => $"IO点位: 红灯={AlarmIOMapping.RED_LIGHT}, 黄灯={AlarmIOMapping.YELLOW_LIGHT}, 绿灯={AlarmIOMapping.GREEN_LIGHT}");
+                // 实际控制IO输出
+                if (_ioManager != null && _ioManager.IsConnected)
+                {
+                    // 控制红灯 (Y2)
+                    bool redResult = _ioManager.WriteOutput(AlarmIOMapping.RED_LIGHT, red);
+                    // 控制黄灯 (Y1) 
+                    bool yellowResult = _ioManager.WriteOutput(AlarmIOMapping.YELLOW_LIGHT, yellow);
+                    // 控制绿灯 (Y0)
+                    bool greenResult = _ioManager.WriteOutput(AlarmIOMapping.GREEN_LIGHT, green);
+                    
+                    // 记录操作结果
+                    _uiLogger.Info(() => $"三色灯控制: 红灯={red}({(redResult ? "成功" : "失败")}), 黄灯={yellow}({(yellowResult ? "成功" : "失败")}), 绿灯={green}({(greenResult ? "成功" : "失败")})");
+                    
+                    // 如果有任何一个灯控制失败，记录警告
+                    if (!redResult || !yellowResult || !greenResult)
+                    {
+                        _uiLogger.Warn(() => $"部分三色灯控制失败");
+                    }
+                }
+                else
+                {
+                    _uiLogger.Warn(() => "IO管理器未连接，无法控制三色灯");
+                    _uiLogger.Debug(() => $"预期设置: 红灯={red}, 黄灯={yellow}, 绿灯={green}");
+                }
             }
             catch (Exception ex)
             {
@@ -338,8 +360,21 @@ namespace Ewan.Core.Module
             
             try
             {
-                // 记录需要启动蜂鸣器（实际IO操作在StreamController中实现）
-                _uiLogger.Info(() => $"需要启动蜂鸣器: IO点位={AlarmIOMapping.BUZZER}");
+                // 实际控制蜂鸣器IO输出
+                if (_ioManager != null && _ioManager.IsConnected)
+                {
+                    bool buzzerResult = _ioManager.WriteOutput(AlarmIOMapping.BUZZER, true);
+                    _uiLogger.Info(() => $"蜂鸣器启动: {(buzzerResult ? "成功" : "失败")} (Y{AlarmIOMapping.BUZZER})");
+                    
+                    if (!buzzerResult)
+                    {
+                        _uiLogger.Warn(() => "蜂鸣器启动失败");
+                    }
+                }
+                else
+                {
+                    _uiLogger.Warn(() => "IO管理器未连接，无法启动蜂鸣器");
+                }
             }
             catch (Exception ex)
             {
@@ -382,8 +417,21 @@ namespace Ewan.Core.Module
             
             try
             {
-                // 记录需要停止蜂鸣器（实际IO操作在StreamController中实现）
-                _uiLogger.Info(() => $"需要停止蜂鸣器: IO点位={AlarmIOMapping.BUZZER}");
+                // 实际控制蜂鸣器IO输出
+                if (_ioManager != null && _ioManager.IsConnected)
+                {
+                    bool buzzerResult = _ioManager.WriteOutput(AlarmIOMapping.BUZZER, false);
+                    _uiLogger.Info(() => $"蜂鸣器停止: {(buzzerResult ? "成功" : "失败")} (Y{AlarmIOMapping.BUZZER})");
+                    
+                    if (!buzzerResult)
+                    {
+                        _uiLogger.Warn(() => "蜂鸣器停止失败");
+                    }
+                }
+                else
+                {
+                    _uiLogger.Warn(() => "IO管理器未连接，无法停止蜂鸣器");
+                }
             }
             catch (Exception ex)
             {

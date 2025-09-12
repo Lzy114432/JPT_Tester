@@ -70,6 +70,10 @@
       <Project>{74a46493-03c1-44b6-ba22-cff0f8ec9fbe}</Project>
       <Name>Ewan.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Ewan.Model\Ewan.Model.csproj">
+      <Project>{c9d2e3f4-5678-9012-3456-789abcde0123}</Project>
+      <Name>Ewan.Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Ewan.LogManager\Ewan.LogManager.csproj">
       <Project>{88888888-8888-8888-8888-888888888888}</Project>
       <Name>Ewan.LogManager</Name>

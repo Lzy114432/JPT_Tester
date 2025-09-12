@@ -4,6 +4,7 @@ using Ewan.Core.Module;
 using Ewan.Core.Module.Interface;
 using Ewan.Core.Msg;
 using Ewan.Core.Run;
+using Ewan.Model.System;
 using System;
 using System.Collections.Generic;
 
@@ -43,6 +44,11 @@ namespace Ewan.BusinessBonding
         private StreamRunner _binElevatorRunner;
 
         /// <summary>
+        /// 系统状态指示器流程runner
+        /// </summary>
+        private StreamRunner _statusIndicatorRunner;
+
+        /// <summary>
         /// 报警流程runner（暂时注释，调试时启用）
         /// </summary>
         // private StreamRunner _alarmRunner;
@@ -56,6 +62,7 @@ namespace Ewan.BusinessBonding
         private List<IModule> _safetyModules = new List<IModule>();
         private List<IModule> _ioPollingModules = new List<IModule>();
         private List<IModule> _binElevatorModules = new List<IModule>();
+        private List<IModule> _statusIndicatorModules = new List<IModule>();
         
         /// <summary>
         /// 报警模块集合（暂时注释，调试时启用）
@@ -66,10 +73,13 @@ namespace Ewan.BusinessBonding
 
         public override bool Init()
         {
-            #region  //初始化系统状态指示器（三色灯统一控制）
+            #region  //构造系统状态指示器流程的节点并加入到对应runner
             
-            // 简化的系统状态指示器，统一控制三色灯和蜂鸣器
-            // SystemStatusIndicatorModule.Instance().Init(); // 在调试时启用
+            // 添加系统状态指示器模块，统一控制三色灯和蜂鸣器
+            _statusIndicatorModules.Add(new SystemStatusIndicatorModule());
+            
+            // 创建系统状态指示器流程runner
+            _statusIndicatorRunner = new StreamRunner(_statusIndicatorModules);
             
             #endregion
             
@@ -92,7 +102,7 @@ namespace Ewan.BusinessBonding
             //_plcHeartRunner = new StreamRunner(_plcHeartModules);
 
             #endregion
-
+                
             #region //构造安全流程的节点并加入到对应runner
             
             // 添加SafetyModule用于IO数据同步
@@ -145,17 +155,21 @@ namespace Ewan.BusinessBonding
         {
             try
             {
-                // 通知系统状态变为运行中（三色灯变为绿灯闪烁）
-                //NotifySystemStatus("Running", "流程启动");
-                
-                //1.运行主流程
-                StartMainStream();
-                //2.运行plc心跳流程
-                StartPlcHeartStream();
-                //3.运行安全流程
+                //0.启动安全流程（最高优先级，负责安全监控）
                 StartSafetyStream();
-                //4.运行IO轮询流程
+                
+                //1.启动系统状态指示器流程（第二优先级，用于状态显示）
+                StartStatusIndicatorStream();
+
+                // 通过消息队列通知系统状态变为运行中（三色灯变为绿灯闪烁）
+                SendSystemStatusMessage(SystemStatus.Running, "流程启动");
+
+                //2.运行IO轮询流程（第三优先级，为其他流程提供IO数据）
                 StartIOPollingStream();
+                //3.运行plc心跳流程
+                StartPlcHeartStream();
+                //4.运行主流程
+                StartMainStream();
                 //5.运行料仓升降控制流程
                 //StartBinElevatorStream();
                 //6.运行报警流程（暂时注释，调试时启用）
@@ -184,21 +198,28 @@ namespace Ewan.BusinessBonding
         /// </summary>
         public void StopRun()
         {
-            //1.停止主流程
+            //1.停止主流程（先停止业务流程）
             StopMainStream();
             //2.停止plc心跳流程
             StopPlcHeartStream();
-            //3.停止安全流程
-            StopSafetyStream();
-            //4.停止IO轮询流程
-            StopIOPollingStream();
-            //5.停止料仓升降流程
+            //3.停止料仓升降流程
             //StopBinElevatorStream();
-            //6.停止报警流程（暂时注释，调试时启用）
+            //4.停止报警流程（暂时注释，调试时启用）
+            //StopAlarmStream();
+            //5.停止IO轮询流程
+            StopIOPollingStream();
+
+
+            // 通过消息队列通知系统状态变为停止（关闭所有指示灯）
+            SendSystemStatusMessage(SystemStatus.Stopped, "流程停止");
+
+            //6.停止系统状态指示器流程
+            StopStatusIndicatorStream();
+            //7.停止安全流程（最后停止，确保安全监控到最后一刻）
+            StopSafetyStream();
             //StopAlarmStream();
             
-            // 通知系统状态变为待机（三色灯变为绿灯常亮）
-            //NotifySystemStatus("Standby", "流程停止");
+
 
             ////...n.停止其他流程
             //StopOtherStream();
@@ -334,33 +355,44 @@ namespace Ewan.BusinessBonding
         //}
 
         /// <summary>
-        /// 通知系统状态变化（用于控制三色灯）
+        /// 启动系统状态指示器流程
         /// </summary>
-        private void NotifySystemStatus(string status, string reason)
+        private void StartStatusIndicatorStream()
+        {
+            if (_statusIndicatorRunner != null)
+            {
+                _statusIndicatorRunner.Start();
+                _uiLogger.Info(() => "系统状态指示器流程已启动");
+            }
+        }
+
+        /// <summary>
+        /// 停止系统状态指示器流程
+        /// </summary>
+        private void StopStatusIndicatorStream()
+        {
+            _statusIndicatorRunner?.Stop();
+            _uiLogger.Info(() => "系统状态指示器流程已停止");
+        }
+
+        /// <summary>
+        /// 通过消息队列发送系统状态变化通知
+        /// </summary>
+        private void SendSystemStatusMessage(SystemStatus status, string description, bool isCritical = false)
         {
             try
             {
-                // 直接调用系统状态指示器（简化消息传递）
-                // var statusIndicator = SystemStatusIndicatorModule.Instance();
-                // switch (status)
-                // {
-                //     case "Running":
-                //         statusIndicator.SetRunningStatus();
-                //         break;
-                //     case "Standby":
-                //         statusIndicator.SetStandbyStatus();
-                //         break;
-                //     case "Paused":
-                //         statusIndicator.SetPausedStatus();
-                //         break;
-                // }
+                var command = new StatusIndicatorCommand(status, description, isCritical);
+                var message = new MessageModel(MsgSubject.StatusIndicator, command);
                 
-                _uiLogger.Info(() => $"系统状态通知: {status} - {reason}");
+                MsgManager.Instance().PushMsg(message);
+                
+                _uiLogger.Info(() => $"发送系统状态消息: {status} - {description}");
             }
             catch (Exception ex)
             {
                 _uiLogger.Error(() => Ewan.Resources.LogMessages.ModuleRunError, 
-                    "StreamController-NotifySystemStatus", ex.Message);
+                    "StreamController-SendSystemStatusMessage", ex.Message);
             }
         }
 
