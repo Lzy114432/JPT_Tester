@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=vm:AxisControlViewModel, IsDesignTimeCreatable=True}"
         Title="{Binding WindowTitle, FallbackValue=轴手动控制}" 
-        Height="800" Width="1400"
+        Height="650" Width="1100"
         WindowStartupLocation="CenterScreen"
         WindowStyle="SingleBorderWindow"
         ResizeMode="CanResize"

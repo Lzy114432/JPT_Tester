@@ -41,11 +41,11 @@ namespace Ewan.Core.Axis
 
         public override void Destroy()
         {
-            short res = LTSMC.smc_board_close(card);
-            if (res != 0)
-            {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.AxisManagerDestroyFailed, res);
-            }
+            //short res = LTSMC.smc_board_close(card);
+            //if (res != 0)
+            //{
+            //    _uiLogger.Error(() => Ewan.Resources.LogMessages.AxisManagerDestroyFailed, res);
+            //}
             base.Destroy();
         }
         
@@ -123,6 +123,28 @@ namespace Ewan.Core.Axis
             }
         }
 
+        /// <summary>
+        /// 重新加载轴配置
+        /// </summary>
+        /// <returns>重新加载是否成功</returns>
+        public bool ReloadAxisConfiguration()
+        {
+            bool result = LoadAxisConfiguration();
+            if (result)
+            {
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.AxisConfigurationLoaded, "轴配置已重新加载");
+                
+                // 触发配置更新事件
+                ConfigurationUpdated?.Invoke(this, EventArgs.Empty);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 配置更新事件
+        /// </summary>
+        public event EventHandler ConfigurationUpdated;
+
         #endregion
 
         #region 轴配置访问接口
@@ -154,9 +176,17 @@ namespace Ewan.Core.Axis
         {
             double vel = Math.Abs(speed);
             int dir = speed > 0 ? 1 : 0; // 1正，0负
-            LTSMC.smc_set_s_profile(card, (ushort)axisConfig.AxisID, 0, axisConfig.Dec / 3);//设置S段时间（0-1s)
+
+
+            LTSMC.smc_set_s_profile(card, (ushort)axisConfig.AxisID, 0, axisConfig.Dec/3);//设置S段时间（0-1s)
+            
+            // 使用配置中的速度参数，或者使用传入的速度
+            double maxSpeed = speed * axisConfig.Step; // 使用配置中的最大速度
+            double startSpeed = maxSpeed * 0.1; // 起始速度为最大速度的10%
+            double stopSpeed = maxSpeed * 0.05; // 停止速度为最大速度的5%
+            
             LTSMC.smc_set_profile_unit(card, (ushort)axisConfig.AxisID
-            , 10000, vel * axisConfig.Step, axisConfig.Acc, axisConfig.Dec, 10000);//设置起始速度、运行速度、停止速度、加速时间、减速时间
+            , startSpeed, maxSpeed, axisConfig.Acc, axisConfig.Dec, stopSpeed);//设置起始速度、运行速度、停止速度、加速时间、减速时间
             LTSMC.smc_vmove(card, (ushort)axisConfig.AxisID, (ushort)dir);
             return true;
         }
@@ -204,7 +234,7 @@ namespace Ewan.Core.Axis
             double pos = 0;
             LTSMC.smc_get_position_unit(card, (ushort)axisConfig.AxisID, ref pos);
 
-            if (axisConfig.HomingDir != HomingDir.Positive)
+            if (axisConfig.MotionDir != MotionDir.Positive)
             {
                 pos = 1;
             }
@@ -233,7 +263,7 @@ namespace Ewan.Core.Axis
 
         public bool AbsMove(AxisConfig axisConfig,double pos)
         {
-            if (axisConfig.HomingDir == HomingDir.Positive)
+            if (axisConfig.MotionDir == MotionDir.Positive)
             {
                 pos =  pos * 1;
             }

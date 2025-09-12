@@ -32,14 +32,10 @@ namespace Ewan.Model.Config
         public double Step { get; set; } = 1;
 
         /// <summary>
-        /// 方向
+        /// 运动方向
         /// </summary>
-        public HomingDir HomingDir { get; set; } = HomingDir.Positive;
+        public MotionDir MotionDir { get; set; } = MotionDir.Positive;
 
-        /// <summary>
-        /// 加加速度
-        /// </summary>
-        public double Jerk { get; set; } = 500000;
 
         /// <summary>
         /// 速度(mm/s)

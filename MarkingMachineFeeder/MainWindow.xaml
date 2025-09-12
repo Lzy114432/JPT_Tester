@@ -8,7 +8,7 @@
         xmlns:vm="clr-namespace:MarkingMachineFeeder.Viewmodel"
         xmlns:ewanControls="clr-namespace:Ewan.Controls;assembly=Ewan.Controls"
         mc:Ignorable="d"
-        Title="{Binding Title}" Height="1000" Width="1400"
+        Title="{Binding Title}" WindowState="Maximized"
         WindowStyle="None"
         AllowsTransparency="True"
         BorderBrush="Transparent"

@@ -188,7 +188,7 @@ namespace MarkingMachineFeeder.Viewmodel
             // 设置默认选中用户
             if (AvailableUsers.Count > 0)
             {
-                Username = AvailableUsers[2]; // 默认选择 operator
+                Username = AvailableUsers[0]; // 默认选择 admin (调试模式)
             }
         }
 

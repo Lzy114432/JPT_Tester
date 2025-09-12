@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=vm:AxisConfigViewModel, IsDesignTimeCreatable=True}"
         Title="{Binding WindowTitle, FallbackValue=轴参数配置}" 
-        Height="750" Width="1200"
+        Height="650" Width="1000"
         WindowStartupLocation="CenterScreen"
         WindowStyle="SingleBorderWindow"
         ResizeMode="CanResize"
@@ -167,7 +167,7 @@
         <!-- 主内容区域 -->
         <Grid Grid.Row="0" Margin="10">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="400"/>
+                <ColumnDefinition Width="350"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             
@@ -240,8 +240,8 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                             
-                            <!-- 回零方向列 -->
-                            <DataGridTemplateColumn Header="{Binding DataContext.HomingDirHeaderText, ElementName=AxisConfigWindowView, FallbackValue=回零方向}"
+                            <!-- 运动方向列 -->
+                            <DataGridTemplateColumn Header="{Binding DataContext.MotionDirHeaderText, ElementName=AxisConfigWindowView, FallbackValue=运动方向}"
                                                     Width="80">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -249,11 +249,11 @@
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock">
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding HomingDir}" Value="Positive">
+                                                        <DataTrigger Binding="{Binding MotionDir}" Value="Positive">
                                                             <Setter Property="Text" Value="正向"/>
                                                             <Setter Property="Foreground" Value="#008000"/>
                                                         </DataTrigger>
-                                                        <DataTrigger Binding="{Binding HomingDir}" Value="Negative">
+                                                        <DataTrigger Binding="{Binding MotionDir}" Value="Negative">
                                                             <Setter Property="Text" Value="负向"/>
                                                             <Setter Property="Foreground" Value="#FF4500"/>
                                                         </DataTrigger>
@@ -291,16 +291,16 @@
                         <GroupBox Header="基本参数" Style="{StaticResource GroupBoxStyle}" Margin="0,0,0,10">
                             <Grid>
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
                                     <ColumnDefinition Width="120"/>
-                                    <ColumnDefinition Width="150"/>
-                                    <ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="100"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="35"/>
-                                    <RowDefinition Height="35"/>
-                                    <RowDefinition Height="35"/>
-                                    <RowDefinition Height="35"/>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="30"/>
                                 </Grid.RowDefinitions>
                                 
                                 <!-- 轴号 -->
@@ -323,11 +323,11 @@
                                 <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding SelectedAxis.MinPos}" 
                                          Style="{StaticResource ConfigTextBox}"/>
                                 
-                                <!-- 回零方向 -->
-                                <Label Grid.Row="2" Grid.Column="0" Content="回零方向:" VerticalAlignment="Center"/>
+                                <!-- 运动方向 -->
+                                <Label Grid.Row="2" Grid.Column="0" Content="运动方向:" VerticalAlignment="Center"/>
                                 <ComboBox Grid.Row="2" Grid.Column="1" 
-                                          ItemsSource="{Binding HomingDirOptions}"
-                                          SelectedValue="{Binding SelectedAxis.HomingDir}"
+                                          ItemsSource="{Binding MotionDirOptions}"
+                                          SelectedValue="{Binding SelectedAxis.MotionDir}"
                                           SelectedValuePath="Value"
                                           DisplayMemberPath="Display"
                                           Height="28"/>
@@ -338,15 +338,15 @@
                         <GroupBox Header="速度配置" Style="{StaticResource GroupBoxStyle}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
                                     <ColumnDefinition Width="120"/>
-                                    <ColumnDefinition Width="150"/>
-                                    <ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="100"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="35"/>
-                                    <RowDefinition Height="35"/>
-                                    <RowDefinition Height="35"/>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="30"/>
                                 </Grid.RowDefinitions>
                                 
                                 <!-- 脉冲当量 -->
@@ -369,10 +369,6 @@
                                 <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding SelectedAxis.Dec}" 
                                          Style="{StaticResource ConfigTextBox}"/>
                                 
-                                <!-- 加加速度(Jerk) -->
-                                <Label Grid.Row="2" Grid.Column="2" Content="加加速度:" VerticalAlignment="Center"/>
-                                <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding SelectedAxis.Jerk}" 
-                                         Style="{StaticResource ConfigTextBox}"/>
                             </Grid>
                         </GroupBox>
                         </StackPanel>

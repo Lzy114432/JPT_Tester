@@ -2,7 +2,7 @@
 
 namespace Ewan.Model.Config
 {
-    public enum HomingDir
+    public enum MotionDir
     {
         [Description("负方向")]
         Negative = 0,

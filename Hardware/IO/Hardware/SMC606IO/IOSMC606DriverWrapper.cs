@@ -53,12 +53,12 @@ namespace IOLibrary.Hardware.SMC606IO
         /// <summary>
         /// 输入点数
         /// </summary>
-        public int InputCount => inputboardCount;
+        public int InputCount => ioinputnum;
 
         /// <summary>
         /// 输出点数
         /// </summary>
-        public int OutputCount => outputboardCount;
+        public int OutputCount => iooutputnum;
 
 
         #region 初始化和销毁代码
@@ -111,7 +111,9 @@ namespace IOLibrary.Hardware.SMC606IO
                 outputboardCount = board;
 
                 InitializeCaches();
-
+                
+                isConnected = true;
+                IOLogger.Instance.LogRaw(LogLevel.Info, $"SMC606IO connected successfully: {ConnectionInfo}");
                 return true;
             }
             catch (Exception ex)

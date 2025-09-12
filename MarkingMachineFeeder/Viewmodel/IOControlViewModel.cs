@@ -1,5 +1,6 @@
 using Ewan.BusinessBonding;
 using Ewan.Core.Culture;
+using Ewan.Core.IO;
 using Ewan.Core.Logger;
 using Ewan.Core.Msg;
 using Ewan.Model.IO;
@@ -17,9 +18,17 @@ namespace MarkingMachineFeeder.Viewmodel
         private readonly CultureManager _cultureManager = CultureManager.Instance();
         private readonly UILogger _uiLogger = new UILogger(typeof(Ewan.Resources.LogMessages));
         private readonly MsgManager _msgManager = MsgManager.Instance();
+        private readonly LayeredIOManager _ioManager = LayeredIOManager.Instance();
         private DispatcherTimer _clockTimer;
         private IOStatus _realIO;
         private MsgListener _ioUpdateListener;
+        
+        // 动态IO数量和页数配置
+        private int _actualInputCount;
+        private int _actualOutputCount;
+        private int _inputPageCount;
+        private int _outputPageCount;
+        private const int POINTS_PER_PAGE = 16; // 每页16个点（2列，每列8个）
 
         #region Properties
 
@@ -356,6 +365,9 @@ namespace MarkingMachineFeeder.Viewmodel
             InputPointsColumn2 = new ObservableCollection<IOPointViewModel>();
             OutputPointsColumn1 = new ObservableCollection<IOPointViewModel>();
             OutputPointsColumn2 = new ObservableCollection<IOPointViewModel>();
+            
+            // 获取实际IO数量并计算页数
+            InitializeIOConfiguration();
             InitializeIOPoints();
 
             // Subscribe to messages
@@ -396,6 +408,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 InputPointsDisplayText = "输入点显示区域";
                 OutputPointsDisplayText = "输出点显示区域";
                 
+                // 设计时默认页面集合（使用默认的4页）
                 InputPages = new ObservableCollection<string> 
                 { 
                     "1",
@@ -460,22 +473,18 @@ namespace MarkingMachineFeeder.Viewmodel
             OutputPointsDisplayText = Ewan.Resources.IOControlStrings.OutputPointsDisplay;
             ReadyText = Ewan.Resources.IOControlStrings.Ready;
             
-            // Update page collections
-            InputPages = new ObservableCollection<string>
+            // Update page collections - 使用动态页数
+            InputPages = new ObservableCollection<string>();
+            for (int i = 1; i <= _inputPageCount; i++)
             {
-                "1",
-                "2",
-                "3",
-                "4"
-            };
+                InputPages.Add(i.ToString());
+            }
             
-            OutputPages = new ObservableCollection<string>
+            OutputPages = new ObservableCollection<string>();
+            for (int i = 1; i <= _outputPageCount; i++)
             {
-                "1",
-                "2",
-                "3",
-                "4"
-            };
+                OutputPages.Add(i.ToString());
+            }
             
             // Update connection status
             UpdateConnectionStatus();
@@ -538,7 +547,7 @@ namespace MarkingMachineFeeder.Viewmodel
             if (IsSimulateInputMode)
             {
                 // 开启模拟模式时，将所有输入点设置为灰色（模拟状态为0，但启用了模拟模式）
-                for (int i = 0; i < 64; i++)
+                for (int i = 0; i < _actualInputCount; i++)
                 {
                     InputPoints[i].IsInSimulateMode = true;  // 标记为模拟模式
                 }
@@ -550,7 +559,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 // 更新显示
                 if (_realIO != null)
                 {
-                    for (int i = 0; i < 64; i++)
+                    for (int i = 0; i < _actualInputCount; i++)
                     {
                         _realIO.XSimulateMode[i] = 0;
                         InputPoints[i].SimulateMode = 0;
@@ -749,8 +758,8 @@ namespace MarkingMachineFeeder.Viewmodel
         
         private void ExecuteInputPageDown()
         {
-            // 4 pages total (0-3), each page shows 16 points
-            if (CurrentInputPage < 3)
+            // 使用动态页数，页数从0开始计数
+            if (CurrentInputPage < _inputPageCount - 1)
             {
                 CurrentInputPage++;
             }
@@ -766,8 +775,8 @@ namespace MarkingMachineFeeder.Viewmodel
         
         private void ExecuteOutputPageDown()
         {
-            // 4 pages total (0-3), each page shows 16 points
-            if (CurrentOutputPage < 3)
+            // 使用动态页数，页数从0开始计数
+            if (CurrentOutputPage < _outputPageCount - 1)
             {
                 CurrentOutputPage++;
             }
@@ -799,12 +808,47 @@ namespace MarkingMachineFeeder.Viewmodel
 
         #region IO Points Management
 
+        /// <summary>
+        /// 初始化IO配置（获取实际IO数量并计算页数）
+        /// </summary>
+        private void InitializeIOConfiguration()
+        {
+            try
+            {
+                // 获取实际IO数量
+                _actualInputCount = _ioManager.InputCount;
+                _actualOutputCount = _ioManager.OutputCount;
+                
+                // 计算页数（每页16个点）
+                _inputPageCount = Math.Max(1, (int)Math.Ceiling((double)_actualInputCount / POINTS_PER_PAGE));
+                _outputPageCount = Math.Max(1, (int)Math.Ceiling((double)_actualOutputCount / POINTS_PER_PAGE));
+                
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.IOConfigurationLoaded,
+                    $"检测到输入点数: {_actualInputCount} (页数: {_inputPageCount}), 输出点数: {_actualOutputCount} (页数: {_outputPageCount})");
+            }
+            catch (Exception ex)
+            {
+                // 如果获取失败，使用默认值
+                _actualInputCount = 64;
+                _actualOutputCount = 64;
+                _inputPageCount = 4;
+                _outputPageCount = 4;
+                
+                _uiLogger.Warn(() => Ewan.Resources.LogMessages.IOConfigurationLoaded, 
+                    "获取实际IO数量失败，使用默认配置: " + ex.Message);
+            }
+        }
+
         private void InitializeIOPoints()
         {
-            // 初始化64个输入点和64个输出点的视图模型
-            for (int i = 0; i < 64; i++)
+            // 根据实际IO数量初始化输入点和输出点的视图模型
+            for (int i = 0; i < _actualInputCount; i++)
             {
                 InputPoints.Add(new IOPointViewModel { Index = i, Name = $"X{i}", IsOn = false });
+            }
+            
+            for (int i = 0; i < _actualOutputCount; i++)
+            {
                 OutputPoints.Add(new IOPointViewModel { Index = i, Name = $"Y{i}", IsOn = false });
             }
             
@@ -819,16 +863,16 @@ namespace MarkingMachineFeeder.Viewmodel
             InputPointsColumn2.Clear();
             
             // 每页显示16个点（两列，每列8个）
-            int startIndex = CurrentInputPage * 16;
+            int startIndex = CurrentInputPage * POINTS_PER_PAGE;
             
             // 左列: X0-X7 (或对应页的前8个)
-            for (int i = 0; i < 8 && startIndex + i < 64; i++)
+            for (int i = 0; i < 8 && startIndex + i < _actualInputCount; i++)
             {
                 InputPointsColumn1.Add(InputPoints[startIndex + i]);
             }
             
             // 右列: X8-X15 (或对应页的后8个)
-            for (int i = 8; i < 16 && startIndex + i < 64; i++)
+            for (int i = 8; i < 16 && startIndex + i < _actualInputCount; i++)
             {
                 InputPointsColumn2.Add(InputPoints[startIndex + i]);
             }
@@ -840,16 +884,16 @@ namespace MarkingMachineFeeder.Viewmodel
             OutputPointsColumn2.Clear();
             
             // 每页显示16个点（两列，每列8个）
-            int startIndex = CurrentOutputPage * 16;
+            int startIndex = CurrentOutputPage * POINTS_PER_PAGE;
             
             // 左列: Y0-Y7 (或对应页的前8个)
-            for (int i = 0; i < 8 && startIndex + i < 64; i++)
+            for (int i = 0; i < 8 && startIndex + i < _actualOutputCount; i++)
             {
                 OutputPointsColumn1.Add(OutputPoints[startIndex + i]);
             }
             
             // 右列: Y8-Y15 (或对应页的后8个)
-            for (int i = 8; i < 16 && startIndex + i < 64; i++)
+            for (int i = 8; i < 16 && startIndex + i < _actualOutputCount; i++)
             {
                 OutputPointsColumn2.Add(OutputPoints[startIndex + i]);
             }
@@ -863,7 +907,7 @@ namespace MarkingMachineFeeder.Viewmodel
             if (IsMappingMode)
             {
                 // 映射模式：使用映射数据
-                for (int i = 0; i < 64; i++)
+                for (int i = 0; i < _actualInputCount; i++)
                 {
                     InputPoints[i].IsOn = _realIO.XMapped[i];
                     InputPoints[i].Name = _realIO.XMappedNames[i];
@@ -871,7 +915,7 @@ namespace MarkingMachineFeeder.Viewmodel
                     // 保持IsInSimulateMode状态不变，因为这是由按钮控制的
                 }
 
-                for (int i = 0; i < 64; i++)
+                for (int i = 0; i < _actualOutputCount; i++)
                 {
                     OutputPoints[i].IsOn = _realIO.YMapped[i];
                     OutputPoints[i].Name = _realIO.YMappedNames[i];
@@ -880,7 +924,7 @@ namespace MarkingMachineFeeder.Viewmodel
             else
             {
                 // 真实模式：使用真实数据
-                for (int i = 0; i < 64; i++)
+                for (int i = 0; i < _actualInputCount; i++)
                 {
                     InputPoints[i].IsOn = _realIO.XReal[i];
                     InputPoints[i].Name = _realIO.XRealNames[i];
@@ -888,7 +932,7 @@ namespace MarkingMachineFeeder.Viewmodel
                     // 保持IsInSimulateMode状态不变，因为这是由按钮控制的
                 }
 
-                for (int i = 0; i < 64; i++)
+                for (int i = 0; i < _actualOutputCount; i++)
                 {
                     OutputPoints[i].IsOn = _realIO.YReal[i];
                     OutputPoints[i].Name = _realIO.YRealNames[i];

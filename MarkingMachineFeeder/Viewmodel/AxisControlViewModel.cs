@@ -146,6 +146,9 @@ namespace MarkingMachineFeeder.Viewmodel
             {
                 UpdateUITexts();
                 _cultureManager.CultureChanged += OnCultureChanged;
+                
+                // 监听轴配置更新事件
+                _axisManager.ConfigurationUpdated += OnAxisConfigurationUpdated;
             }
         }
 
@@ -221,8 +224,7 @@ namespace MarkingMachineFeeder.Viewmodel
                         MaxPos = config.MaxPos,
                         MinPos = config.MinPos,
                         Step = config.Step,
-                        HomingDir = config.HomingDir,
-                        Jerk = config.Jerk,
+                        MotionDir = config.MotionDir,
                         Acc = config.Acc,
                         Dec = config.Dec,
                         Position = 0, // 初始位置
@@ -576,11 +578,19 @@ namespace MarkingMachineFeeder.Viewmodel
 
         #endregion
 
+        private void OnAxisConfigurationUpdated(object sender, EventArgs e)
+        {
+            // 轴配置更新后重新加载轴配置
+            LoadAxisConfigs();
+            _uiLogger.Info(() => Ewan.Resources.LogMessages.AxisConfigurationLoaded, "轴控制界面已更新配置");
+        }
+
         // 清理资源
         public void Dispose()
         {
             _statusTimer?.Stop();
             _cultureManager.CultureChanged -= OnCultureChanged;
+            _axisManager.ConfigurationUpdated -= OnAxisConfigurationUpdated;
         }
     }
 

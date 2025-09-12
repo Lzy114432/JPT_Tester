@@ -77,8 +77,7 @@ namespace Ewan.Model.Config
                     IsUsing = i == 0, // 只有第一个轴默认启用
                     MaxPos = 700.0f,
                     MinPos = -11.0f,
-                    HomingDir = HomingDir.Positive,
-                    Jerk = 500000,
+                    MotionDir = MotionDir.Positive,
                     Speed = 1000,
                     Acc = 6500,
                     Dec = 6500

@@ -11,6 +11,7 @@ using Ewan.Core.Culture;
 using Ewan.Core.Security;
 using Ewan.Core;
 using Ewan.Core.Logger;
+using Ewan.Core.Axis;
 using Newtonsoft.Json;
 using System.ComponentModel;
 
@@ -21,6 +22,7 @@ namespace MarkingMachineFeeder.Viewmodel
         private readonly CultureManager _cultureManager = CultureManager.Instance();
         private readonly SecurityManager _securityManager = SecurityManager.Instance();
         private readonly UILogger _uiLogger = new UILogger(typeof(Ewan.Resources.LogMessages));
+        private readonly AxisManager _axisManager = AxisManager.Instance();
         
         #region Properties
         
@@ -38,11 +40,11 @@ namespace MarkingMachineFeeder.Viewmodel
             set => SetProperty(ref _directionOptions, value);
         }
 
-        private ObservableCollection<HomingDirOption> _homingDirOptions;
-        public ObservableCollection<HomingDirOption> HomingDirOptions
+        private ObservableCollection<MotionDirOption> _motionDirOptions;
+        public ObservableCollection<MotionDirOption> MotionDirOptions
         {
-            get => _homingDirOptions;
-            set => SetProperty(ref _homingDirOptions, value);
+            get => _motionDirOptions;
+            set => SetProperty(ref _motionDirOptions, value);
         }
 
 
@@ -127,11 +129,11 @@ namespace MarkingMachineFeeder.Viewmodel
             set => SetProperty(ref _minPosHeaderText, value);
         }
 
-        private string _homingDirHeaderText = "回零方向";
-        public string HomingDirHeaderText
+        private string _motionDirHeaderText = "运动方向";
+        public string MotionDirHeaderText
         {
-            get => _homingDirHeaderText;
-            set => SetProperty(ref _homingDirHeaderText, value);
+            get => _motionDirHeaderText;
+            set => SetProperty(ref _motionDirHeaderText, value);
         }
 
 
@@ -229,11 +231,11 @@ namespace MarkingMachineFeeder.Viewmodel
                 new OptionItem { Display = "反向", Value = false }
             };
 
-            // Initialize homing direction options
-            HomingDirOptions = new ObservableCollection<HomingDirOption>
+            // Initialize motion direction options
+            MotionDirOptions = new ObservableCollection<MotionDirOption>
             {
-                new HomingDirOption { Display = "正方向", Value = HomingDir.Positive },
-                new HomingDirOption { Display = "负方向", Value = HomingDir.Negative }
+                new MotionDirOption { Display = "正方向", Value = MotionDir.Positive },
+                new MotionDirOption { Display = "负方向", Value = MotionDir.Negative }
             };
 
             // Try to load from JSON file
@@ -324,8 +326,7 @@ namespace MarkingMachineFeeder.Viewmodel
                     IsUsing = i == 0, // 只启用第一个轴
                     MaxPos = 700.0f,
                     MinPos = -11.0f,
-                    HomingDir = HomingDir.Positive,
-                    Jerk = 500000,
+                    MotionDir = MotionDir.Positive,
                     Speed = 1000,
                     Acc = 6500,
                     Dec = 6500
@@ -352,7 +353,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 AxisIDHeaderText = "轴号";
                 AxisNameHeaderText = "轴名称";
                 DirectionHeaderText = "方向";
-                HomingDirHeaderText = "回零方向";
+                MotionDirHeaderText = "运动方向";
                 MaxPosHeaderText = "最大位置(mm)";
                 MinPosHeaderText = "最小位置(mm)";
                 SpeedHeaderText = "速度(mm/s)";
@@ -368,11 +369,11 @@ namespace MarkingMachineFeeder.Viewmodel
                     DirectionOptions[1].Display = "反向";
                 }
                 
-                // Update homing direction options
-                if (HomingDirOptions != null)
+                // Update motion direction options
+                if (MotionDirOptions != null)
                 {
-                    HomingDirOptions[0].Display = "正方向";
-                    HomingDirOptions[1].Display = "负方向";
+                    MotionDirOptions[0].Display = "正方向";
+                    MotionDirOptions[1].Display = "负方向";
                 }
             }
             else
@@ -384,7 +385,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 AxisIDHeaderText = "Axis No.";
                 AxisNameHeaderText = "Axis Name";
                 DirectionHeaderText = "Direction";
-                HomingDirHeaderText = "Homing Direction";
+                MotionDirHeaderText = "Motion Direction";
                 MaxPosHeaderText = "Max Position(mm)";
                 MinPosHeaderText = "Min Position(mm)";
                 SpeedHeaderText = "Speed(mm/s)";
@@ -400,17 +401,17 @@ namespace MarkingMachineFeeder.Viewmodel
                     DirectionOptions[1].Display = "Reverse";
                 }
                 
-                // Update homing direction options
-                if (HomingDirOptions != null)
+                // Update motion direction options
+                if (MotionDirOptions != null)
                 {
-                    HomingDirOptions[0].Display = "Forward";
-                    HomingDirOptions[1].Display = "Reverse";
+                    MotionDirOptions[0].Display = "Forward";
+                    MotionDirOptions[1].Display = "Reverse";
                 }
             }
 
             // Notify property changes
             RaisePropertyChanged(nameof(DirectionOptions));
-            RaisePropertyChanged(nameof(HomingDirOptions));
+            RaisePropertyChanged(nameof(MotionDirOptions));
         }
 
         private void OnCultureChanged(object sender, CultureChangedEventArgs e)
@@ -431,8 +432,7 @@ namespace MarkingMachineFeeder.Viewmodel
                     IsUsing = false,
                     MaxPos = 700.0f,
                     MinPos = -11.0f,
-                    HomingDir = HomingDir.Positive,
-                    Jerk = 500000,
+                    MotionDir = MotionDir.Positive,
                     Speed = 1000,
                     Acc = 6500,
                     Dec = 6500
@@ -479,6 +479,16 @@ namespace MarkingMachineFeeder.Viewmodel
             // Save configuration and close
             if (SaveToJsonFile())
             {
+                // 通知AxisManager重新加载配置
+                if (_axisManager.ReloadAxisConfiguration())
+                {
+                    _uiLogger.Info(() => Ewan.Resources.LogMessages.AxisConfigurationSaved, "轴配置已保存并应用");
+                }
+                else
+                {
+                    _uiLogger.Warn(() => Ewan.Resources.LogMessages.AxisConfigurationLoadFailed, "轴配置保存成功，但应用失败");
+                }
+                
                 CloseWindow();
             }
             else
@@ -540,11 +550,11 @@ namespace MarkingMachineFeeder.Viewmodel
     }
 
     /// <summary>
-    /// 回零方向选择项
+    /// 运动方向选择项
     /// </summary>
-    public class HomingDirOption
+    public class MotionDirOption
     {
         public string Display { get; set; }
-        public HomingDir Value { get; set; }
+        public MotionDir Value { get; set; }
     }
 }

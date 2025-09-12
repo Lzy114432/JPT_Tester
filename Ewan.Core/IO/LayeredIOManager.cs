@@ -83,10 +83,10 @@ namespace Ewan.Core.IO
         {
             // TODO: 从配置文件加载设置
             // 这里先使用默认值，后续可以从配置文件读取
-            _hardwareType = HardwareType.MitsubishiPLC;
-            _connectionString = "127.0.0.1:6000";
-            //_hardwareType = HardwareType.SMC606IO;
-            //_connectionString = "192.168.5.11";
+            //_hardwareType = HardwareType.MitsubishiPLC;
+            //_connectionString = "127.0.0.1:6000";
+            _hardwareType = HardwareType.SMC606IO;
+            _connectionString = "192.168.5.11";
             _mappingConfigPath = Path.Combine("Config", "io_mapping.json");
             _enableLogging = true;
             
@@ -221,12 +221,50 @@ namespace Ewan.Core.IO
         {
             try
             {
+                // 获取硬件实际检测到的IO数量
+                int actualInputCount = _layeredIO.InputCount;
+                int actualOutputCount = _layeredIO.OutputCount;
+                
                 // 如果映射配置文件存在，先尝试加载
                 bool configFileExists = File.Exists(_mappingConfigPath);
                 if (configFileExists)
                 {
                     _layeredIO.LoadMappingConfiguration(_mappingConfigPath);
                     _uiLogger.Info(() => Ewan.Resources.LogMessages.IOConfigFileLoaded, _mappingConfigPath);
+                    
+                    // 检查现有映射数量是否与实际IO数量匹配
+                    int existingInputMappings = 0;
+                    int existingOutputMappings = 0;
+                    
+                    // 计算现有输入映射数量
+                    for (int i = 0; i < actualInputCount; i++)
+                    {
+                        if (_layeredIO.GetInputMapping(i) != null)
+                            existingInputMappings++;
+                    }
+                    
+                    // 计算现有输出映射数量
+                    for (int i = 0; i < actualOutputCount; i++)
+                    {
+                        if (_layeredIO.GetOutputMapping(i) != null)
+                            existingOutputMappings++;
+                    }
+                    
+                    // 如果映射数量匹配，直接使用现有映射
+                    if (existingInputMappings == actualInputCount && existingOutputMappings == actualOutputCount)
+                    {
+                        _uiLogger.Info(() => Ewan.Resources.LogMessages.IOConfigurationLoaded, 
+                            $"使用现有映射: 输入={existingInputMappings}, 输出={existingOutputMappings}");
+                        return;
+                    }
+                    
+                    // 映射数量不匹配，重新创建
+                    _uiLogger.Info(() => Ewan.Resources.LogMessages.IOConfigurationLoaded, 
+                        $"映射数量不匹配，重新创建: 现有(输入={existingInputMappings}, 输出={existingOutputMappings}) vs 实际(输入={actualInputCount}, 输出={actualOutputCount})");
+                    
+                    // 清除现有映射，重新创建
+                    CreateSMC606IODefaultMappings();
+                    _uiLogger.Info(() => Ewan.Resources.LogMessages.IODefaultMappingsCreated);
                     return;
                 }
 
@@ -655,6 +693,43 @@ namespace Ewan.Core.IO
                 catch (Exception ex)
                 {
                     _uiLogger.Error(() => Ewan.Resources.LogMessages.IORecreationFailed, ex.Message);
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 强制重新创建IO映射配置（根据实际检测到的IO数量）
+        /// </summary>
+        /// <returns>重新创建是否成功</returns>
+        public bool ForceRecreateIOMapping()
+        {
+            lock (_lockObject)
+            {
+                try
+                {
+                    if (_layeredIO == null || !_layeredIO.IsOpen)
+                    {
+                        _uiLogger.Error(() => Ewan.Resources.LogMessages.IONotConnected);
+                        return false;
+                    }
+
+                    if (_hardwareType == HardwareType.SMC606IO)
+                    {
+                        CreateSMC606IODefaultMappings();
+                        _uiLogger.Info(() => Ewan.Resources.LogMessages.IODefaultMappingsCreated);
+                        return true;
+                    }
+                    else
+                    {
+                        CreateDefaultMappings();
+                        _uiLogger.Info(() => Ewan.Resources.LogMessages.IODefaultMappingsCreated);
+                        return true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _uiLogger.Error(() => Ewan.Resources.LogMessages.IOConfigFileSaveError, "ForceRecreateIOMapping", ex.Message);
                     return false;
                 }
             }
