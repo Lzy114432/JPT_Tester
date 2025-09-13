@@ -91,8 +91,21 @@ namespace IOLibrary.Hardware.SMC606IO
                     return false;
                 }
 
-                smc_get_total_ionum(card, ref ioinputnum, ref iooutputnum);//获取控制器自身的IO数
-
+                // 注释掉动态读取IO数量的代码，改为固定值
+                // smc_get_total_ionum(card, ref ioinputnum, ref iooutputnum);//获取控制器自身的IO数
+                
+                // 使用固定的IO数量值
+                ioinputnum = 40;  // 固定输入点数为40
+                iooutputnum = 34; // 固定输出点数为34
+                
+                // 根据固定值计算板卡数量
+                // 输入板卡数量: 40个输入点需要2个板卡 (32+8)
+                inputboardCount = 2;
+                
+                // 输出板卡数量: 34个输出点需要2个板卡 (32+2)
+                outputboardCount = 2;
+                
+                /* 原始动态读取代码（已注释）
                 // 计算 inputboardCount 和  outputboardCount的数量 
                 int board = ioinputnum / 32;
                 int leftio = ioinputnum - 32 * board;
@@ -109,6 +122,7 @@ namespace IOLibrary.Hardware.SMC606IO
                     board++;
                 }
                 outputboardCount = board;
+                */
 
                 InitializeCaches();
                 

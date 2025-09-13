@@ -191,6 +191,48 @@ namespace Ewan.Core.Axis
             return true;
         }
 
+        public bool JogDown(AxisConfig axisConfig)
+        {
+            double vel = Math.Abs(-axisConfig.Speed);
+            int dir = -axisConfig.Speed > 0 ? 1 : 0; // 1正，0负
+
+
+            LTSMC.smc_set_s_profile(card, (ushort)axisConfig.AxisID, 0, axisConfig.Dec / 3);//设置S段时间（0-1s)
+
+            // 使用配置中的速度参数，或者使用传入的速度
+            double maxSpeed = -axisConfig.Speed * axisConfig.Step; // 使用配置中的最大速度
+            double startSpeed = maxSpeed * 0.1; // 起始速度为最大速度的10%
+            double stopSpeed = maxSpeed * 0.05; // 停止速度为最大速度的5%
+
+            LTSMC.smc_set_profile_unit(card, (ushort)axisConfig.AxisID
+            , startSpeed, maxSpeed, axisConfig.Acc, axisConfig.Dec, stopSpeed);//设置起始速度、运行速度、停止速度、加速时间、减速时间
+            LTSMC.smc_vmove(card, (ushort)axisConfig.AxisID, (ushort)dir);
+            return true;
+        }
+
+
+        public bool JogUp(AxisConfig axisConfig)
+        {
+            double vel = Math.Abs(axisConfig.Speed);
+            int dir = axisConfig.Speed > 0 ? 1 : 0; // 1正，0负
+
+
+            LTSMC.smc_set_s_profile(card, (ushort)axisConfig.AxisID, 0, axisConfig.Dec / 3);//设置S段时间（0-1s)
+
+            // 使用配置中的速度参数，或者使用传入的速度
+            double maxSpeed = axisConfig.Speed * axisConfig.Step; // 使用配置中的最大速度
+            double startSpeed = maxSpeed * 0.1; // 起始速度为最大速度的10%
+            double stopSpeed = maxSpeed * 0.05; // 停止速度为最大速度的5%
+
+            LTSMC.smc_set_profile_unit(card, (ushort)axisConfig.AxisID
+            , startSpeed, maxSpeed, axisConfig.Acc, axisConfig.Dec, stopSpeed);//设置起始速度、运行速度、停止速度、加速时间、减速时间
+            LTSMC.smc_vmove(card, (ushort)axisConfig.AxisID, (ushort)dir);
+            return true;
+        }
+
+
+
+
         public bool JogStop(AxisConfig axisConfig)
         {
             LTSMC.smc_stop(card, (ushort)axisConfig.AxisID, 0);
@@ -296,6 +338,10 @@ namespace Ewan.Core.Axis
             //ret = LTSMC.smc_pmove_unit(card.iCardNo, (ushort)Parameter.AxisNum, pulse, 1);//定长运动
             return true;
         }
+
+
+
+
 
 
 

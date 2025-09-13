@@ -171,7 +171,7 @@ namespace Ewan.BusinessBonding
                 //4.运行主流程
                 StartMainStream();
                 //5.运行料仓升降控制流程
-                //StartBinElevatorStream();
+                StartBinElevatorStream();
                 //6.运行报警流程（暂时注释，调试时启用）
                 //StartAlarmStream();
                 
@@ -203,7 +203,7 @@ namespace Ewan.BusinessBonding
             //2.停止plc心跳流程
             StopPlcHeartStream();
             //3.停止料仓升降流程
-            //StopBinElevatorStream();
+            StopBinElevatorStream();
             //4.停止报警流程（暂时注释，调试时启用）
             //StopAlarmStream();
             //5.停止IO轮询流程
@@ -321,6 +321,7 @@ namespace Ewan.BusinessBonding
             if (_binElevatorRunner != null)
             {
                 _binElevatorRunner.Start();
+                _uiLogger.Info(() => "料仓升降控制流程已启动");
             }
         }
 
@@ -330,6 +331,7 @@ namespace Ewan.BusinessBonding
         private void StopBinElevatorStream()
         {
             _binElevatorRunner?.Stop();
+            _uiLogger.Info(() => "料仓升降控制流程已停止");
         }
 
         /// <summary>

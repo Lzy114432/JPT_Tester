@@ -522,13 +522,14 @@
                             Margin="5,0"/>
                 </StackPanel>
                 
-                <!-- 左侧 - 测试日志按钮 -->
+                <!-- 左侧 - 测试日志按钮 (已隐藏) -->
                 <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" Margin="15,8">
                     <Button Content="{Binding TestLogButtonText}" 
                             d:Content="测试日志"
                             Command="{Binding TestLogCommand}" 
                             Style="{StaticResource IndustrialTestButton}"
-                            Width="120" Height="32" Margin="0,0,10,0"/>
+                            Width="120" Height="32" Margin="0,0,10,0"
+                            Visibility="Hidden"/>
                 </StackPanel>
                 
                 <!-- 填充空间 -->
