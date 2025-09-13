@@ -22,14 +22,21 @@ namespace Ewan.Core.Module
         // 系统状态
         private bool _systemStarted = false;
         private SystemMode _currentMode = SystemMode.Manual;
-        
+
         // 料仓状态机
-        private BinElevatorMode _binElevatorMode = BinElevatorMode.Stopped;
-        
+        //private BinElevatorMode _binElevatorMode = BinElevatorMode.Stopped;
+
+        private BinElevatorMode _binElevatorMode = BinElevatorMode.AutoUp;
+
         // 料仓升降状态
         private BinElevatorState _bin1State = BinElevatorState.Unknown;
         private BinElevatorState _bin2State = BinElevatorState.Unknown;
         private BinElevatorState _bin3State = BinElevatorState.Unknown;
+        
+        // 料仓到达感应位置标志
+        private bool _bin1ReachedSensor = false;
+        private bool _bin2ReachedSensor = false;
+        private bool _bin3ReachedSensor = false;
         
         // 感应器状态缓存
         private bool _bin1SensorLast = false;
@@ -105,12 +112,12 @@ namespace Ewan.Core.Module
         {
             try
             {
-                // 检查是否满足运行条件
-                if (!ShouldRunElevatorControl())
-                {
-                    Thread.Sleep(_scanInterval);
-                    return true;
-                }
+                //// 检查是否满足运行条件
+                //if (!ShouldRunElevatorControl())
+                //{
+                //    Thread.Sleep(_scanInterval);
+                //    return true;
+                //}
 
                 lock (_stateLock)
                 {
@@ -241,7 +248,7 @@ namespace Ewan.Core.Module
                         "料仓" + binNumber + "自动上升模式：开始上升到感应位置");
                 }
             }
-            else // 有料状态 - 到达感应位置，停止并切换到自动下降模式
+            else // 有料状态 - 到达感应位置，停止
             {
                 // 如果正在移动，停止移动
                 if (currentState == BinElevatorState.Moving)
@@ -249,12 +256,34 @@ namespace Ewan.Core.Module
                     StopBinAxis(binNumber, axisId);
                     currentState = BinElevatorState.Elevated;
                     
-                    _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, 
-                        "料仓" + binNumber + "自动上升完成：到达感应位置，切换到自动下降模式");
-                    
-                    // 只在料仓1时发送模式切换消息，避免重复切换
-                    if (binNumber == 1)
+                    // 标记该料仓已到达感应位置
+                    switch (binNumber)
                     {
+                        case 1:
+                            _bin1ReachedSensor = true;
+                            break;
+                        case 2:
+                            _bin2ReachedSensor = true;
+                            break;
+                        case 3:
+                            _bin3ReachedSensor = true;
+                            break;
+                    }
+                    
+                    _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, 
+                        "料仓" + binNumber + "自动上升完成：到达感应位置");
+                    
+                    // 检查是否所有料仓都到达感应位置
+                    if (_bin1ReachedSensor && _bin2ReachedSensor && _bin3ReachedSensor)
+                    {
+                        _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, 
+                            "所有料仓都已到达感应位置，切换到自动下降模式");
+                        
+                        // 重置到达标志
+                        _bin1ReachedSensor = false;
+                        _bin2ReachedSensor = false;
+                        _bin3ReachedSensor = false;
+                        
                         // 自动切换到自动下降模式
                         SetBinElevatorMode(BinElevatorMode.AutoDown);
                     }
@@ -731,6 +760,11 @@ namespace Ewan.Core.Module
                 _bin2State = BinElevatorState.Unknown;
                 _bin3State = BinElevatorState.Unknown;
                 
+                // 重置料仓到达感应位置标志
+                _bin1ReachedSensor = false;
+                _bin2ReachedSensor = false;
+                _bin3ReachedSensor = false;
+                
                 _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, 
                     "料仓状态初始化 - 料仓1:" + (_bin1SensorLast ? "有料" : "无料") + 
                     " 料仓2:" + (_bin2SensorLast ? "有料" : "无料") + 
@@ -788,6 +822,11 @@ namespace Ewan.Core.Module
                     
                     _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, 
                         "料仓状态机切换: " + oldMode + " → " + mode);
+                    
+                    // 切换模式时重置到达感应位置标志
+                    _bin1ReachedSensor = false;
+                    _bin2ReachedSensor = false;
+                    _bin3ReachedSensor = false;
                     
                     // 如果切换到停止模式，停止所有升降动作
                     if (mode == BinElevatorMode.Stopped)
