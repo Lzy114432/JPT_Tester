@@ -91,16 +91,6 @@ namespace Ewan.Model.Production
         Init,
 
         /// <summary>
-        /// 自动上升模式 - 上升到感应位置停止
-        /// </summary>
-        AutoUp,
-
-        /// <summary>
-        /// 自动下降模式 - 有料感应就下降
-        /// </summary>
-        AutoDown,
-
-        /// <summary>
         /// 上料模式 - 等待机械手上料完成
         /// </summary>
         Loading,
