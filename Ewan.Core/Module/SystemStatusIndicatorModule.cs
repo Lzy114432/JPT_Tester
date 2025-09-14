@@ -256,7 +256,7 @@ namespace Ewan.Core.Module
                     bool greenResult = _ioManager.LayeredIO.WriteOutBit(AlarmIOMapping.GREEN_LIGHT, green);
 
                     // 记录操作结果
-                    _uiLogger.Info(() => $"三色灯控制: 红灯={red}({(redResult ? "成功" : "失败")}), 黄灯={yellow}({(yellowResult ? "成功" : "失败")}), 绿灯={green}({(greenResult ? "成功" : "失败")})");
+                    //_uiLogger.Info(() => $"三色灯控制: 红灯={red}({(redResult ? "成功" : "失败")}), 黄灯={yellow}({(yellowResult ? "成功" : "失败")}), 绿灯={green}({(greenResult ? "成功" : "失败")})");
                     
                     // 如果有任何一个灯控制失败，记录警告
                     if (!redResult || !yellowResult || !greenResult)

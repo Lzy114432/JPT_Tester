@@ -200,10 +200,9 @@ namespace Ewan.Core.Module
                     {
                         _ioManager.LayeredIO.ClearFallingBit(ROBOT_UNLOADING_COMPLETE_SIGNAL);
 
-                        if (_binElevatorMode != BinElevatorMode.Loading)
-                        {
-                            ResetSelectedBinStates(BinElevatorMode.Unloading);
-                        }
+
+                        ResetSelectedBinStates(BinElevatorMode.Unloading);
+
                     }
                 }
 
@@ -234,7 +233,7 @@ namespace Ewan.Core.Module
                     default:
                         // 未知模式 - 记录警告
                         _uiLogger.Warn(() => Ewan.Resources.LogMessages.ProcessingError, 
-                            "料仓" + binNumber + "未知的料仓状态机模式: " + _binElevatorMode);
+                            "料仓" + binNumber + "未知的料仓状态机模式", _binElevatorMode.ToString());
                         break;
                 }
             }
@@ -262,8 +261,6 @@ namespace Ewan.Core.Module
                     {
                         StartBinJogUp(binNumber, axisId);
                         currentState = BinElevatorState.Moving;
-                        _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, 
-                            "料仓" + binNumber + "初始化：开始上升到感应位置");
                     }
                     else
                     {
@@ -295,7 +292,7 @@ namespace Ewan.Core.Module
 
                     
                 case BinElevatorState.Lowered:
-                    // 正在下降中，检查是否脱离感应位置
+                    // 正在下降中，检查是否到达感应位置
                     if (ReadBinSensor(binNumber))
                     {
                         StopBinAxis(binNumber, axisId);
@@ -314,8 +311,8 @@ namespace Ewan.Core.Module
                                 break;
                         }
                         
-                        _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, 
-                            "料仓" + binNumber + "初始化完成：已下降到无感应位置并停止");
+                        //_uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, 
+                        //    "料仓" + binNumber + "初始化完成：已下降到感应位置并停止");
                         
                         // 检查是否所有料仓都初始化完成
                         if (_bin1ReachedSensor && _bin2ReachedSensor && _bin3ReachedSensor)
@@ -466,13 +463,13 @@ namespace Ewan.Core.Module
                     else
                     {
                         _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
-                            "料仓" + binNumber + "轴配置未找到，轴ID:" + axisId);
+                            "料仓" + binNumber + "轴配置未找到", "轴ID:" + axisId);
                     }
                 }
                 else
                 {
                     _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
-                        "AxisManager未初始化");
+                        "AxisManager未初始化", "");
                 }
             }
             catch (Exception ex)
@@ -505,13 +502,13 @@ namespace Ewan.Core.Module
                     else
                     {
                         _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
-                            "料仓" + binNumber + "轴配置未找到，轴ID:" + axisId);
+                            "料仓" + binNumber + "轴配置未找到", "轴ID:" + axisId);
                     }
                 }
                 else
                 {
                     _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
-                        "AxisManager未初始化");
+                        "AxisManager未初始化", "");
                 }
             }
             catch (Exception ex)
@@ -544,13 +541,13 @@ namespace Ewan.Core.Module
                     else
                     {
                         _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
-                            "料仓" + binNumber + "轴配置未找到，轴ID:" + axisId);
+                            "料仓" + binNumber + "轴配置未找到", "轴ID:" + axisId);
                     }
                 }
                 else
                 {
                     _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
-                        "AxisManager未初始化");
+                        "AxisManager未初始化", "");
                 }
             }
             catch (Exception ex)
