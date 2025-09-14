@@ -50,6 +50,10 @@ namespace Ewan.Core.Module
         private const int BIN1_AXIS_ID = 0; // 料仓1轴ID
         private const int BIN2_AXIS_ID = 1; // 料仓2轴ID
         private const int BIN3_AXIS_ID = 2; // 料仓3轴ID
+        
+        // 机械手信号IO配置
+        private const int ROBOT_LOADING_COMPLETE_SIGNAL = 8;  // 机械手下料完成信号
+        private const int ROBOT_UNLOADING_COMPLETE_SIGNAL = 10; // 机械手上料完成信号
 
 
         #endregion
@@ -111,8 +115,8 @@ namespace Ewan.Core.Module
                 {
                     // 检查并处理三个料仓的感应器状态
                     ProcessBinElevator(1, BIN1_AXIS_ID, ref _bin1State, ref _bin1SensorLast);
-                    //ProcessBinElevator(2, BIN2_AXIS_ID, ref _bin2State, ref _bin2SensorLast);
-                    //ProcessBinElevator(3, BIN3_AXIS_ID, ref _bin3State, ref _bin3SensorLast);
+                    ProcessBinElevator(2, BIN2_AXIS_ID, ref _bin2State, ref _bin2SensorLast);
+                    ProcessBinElevator(3, BIN3_AXIS_ID, ref _bin3State, ref _bin3SensorLast);
                 }
                 
                 Thread.Sleep(_scanInterval);
@@ -175,10 +179,10 @@ namespace Ewan.Core.Module
                 // 检查机械手信号（仅在第一个料仓处理时检查，避免重复检查）
                 if (binNumber == 1)
                 {
-                    // 检查机械手下料请求信号
-                    if (_ioManager.LayeredIO.ReadFallingBit(8))
+                    // 检查机械手下料完成信号
+                    if (_ioManager.LayeredIO.ReadFallingBit(ROBOT_LOADING_COMPLETE_SIGNAL))
                     {
-                        _ioManager.LayeredIO.ClearFallingBit(8);
+                        _ioManager.LayeredIO.ClearFallingBit(ROBOT_LOADING_COMPLETE_SIGNAL);
                         _binElevatorMode = BinElevatorMode.Loading;
                         // 重置所有料仓状态，准备执行下料动作
                         _bin1State = BinElevatorState.Unknown;
@@ -186,10 +190,10 @@ namespace Ewan.Core.Module
                         _bin3State = BinElevatorState.Unknown;
                     }
 
-                    // 检查机械手上料请求信号
-                    if (_ioManager.LayeredIO.ReadFallingBit(10))
+                    // 检查机械手上料完成信号
+                    if (_ioManager.LayeredIO.ReadFallingBit(ROBOT_UNLOADING_COMPLETE_SIGNAL))
                     {
-                        _ioManager.LayeredIO.ClearFallingBit(10);
+                        _ioManager.LayeredIO.ClearFallingBit(ROBOT_UNLOADING_COMPLETE_SIGNAL);
 
                         if (_binElevatorMode != BinElevatorMode.Loading)
                         {
@@ -302,24 +306,23 @@ namespace Ewan.Core.Module
                                 break;
                         }
                         
-                        //_uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, 
-                        //    "料仓" + binNumber + "初始化完成：已下降到无感应位置并停止");
+                        _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, 
+                            "料仓" + binNumber + "初始化完成：已下降到无感应位置并停止");
                         
-                        //// 检查是否所有料仓都初始化完成
-                        //if (_bin1ReachedSensor && _bin2ReachedSensor && _bin3ReachedSensor)
-                        //{
-                        //    _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, 
-                        //        "所有料仓初始化完成，切换到停止模式");
+                        // 检查是否所有料仓都初始化完成
+                        if (_bin1ReachedSensor && _bin2ReachedSensor && _bin3ReachedSensor)
+                        {
+                            _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, 
+                                "所有料仓初始化完成，切换到停止模式");
                             
                             // 重置标志
                             _bin1ReachedSensor = false;
-                        //_bin2ReachedSensor = false;
-                        //_bin3ReachedSensor = false;
+                            _bin2ReachedSensor = false;
+                            _bin3ReachedSensor = false;
 
-                        // 切换到停止模式，等待进一步指令
-                        SetBinElevatorMode(BinElevatorMode.Stopped);
-
-                        //}
+                            // 切换到停止模式，等待进一步指令
+                            SetBinElevatorMode(BinElevatorMode.Stopped);
+                        }
                     }
                     break;
             }
