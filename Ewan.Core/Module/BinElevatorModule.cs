@@ -54,6 +54,11 @@ namespace Ewan.Core.Module
         // 机械手信号IO配置
         private const int ROBOT_LOADING_COMPLETE_SIGNAL = 8;  // 机械手下料完成信号
         private const int ROBOT_UNLOADING_COMPLETE_SIGNAL = 10; // 机械手上料完成信号
+        
+        // 料仓选择信号IO配置
+        private const int BIN1_SELECT_SIGNAL = 11; // Y11 - 料仓1选择信号
+        private const int BIN2_SELECT_SIGNAL = 12; // Y12 - 料仓2选择信号
+        private const int BIN3_SELECT_SIGNAL = 13; // Y13 - 料仓3选择信号
 
 
         #endregion
@@ -68,7 +73,8 @@ namespace Ewan.Core.Module
             Unknown,      // 未知状态
             Lowered,      // 已降低
             Elevated,     // 已升高
-            Moving        // 正在移动
+            Moving,        // 正在移动
+            Stopped       // 已停止
         }
 
         #endregion
@@ -176,6 +182,9 @@ namespace Ewan.Core.Module
         {
             try
             {
+
+                #region 机械手上下料完成信号处理
+
                 // 检查机械手信号（仅在第一个料仓处理时检查，避免重复检查）
                 if (binNumber == 1)
                 {
@@ -183,11 +192,7 @@ namespace Ewan.Core.Module
                     if (_ioManager.LayeredIO.ReadFallingBit(ROBOT_LOADING_COMPLETE_SIGNAL))
                     {
                         _ioManager.LayeredIO.ClearFallingBit(ROBOT_LOADING_COMPLETE_SIGNAL);
-                        _binElevatorMode = BinElevatorMode.Loading;
-                        // 重置所有料仓状态，准备执行下料动作
-                        _bin1State = BinElevatorState.Unknown;
-                        _bin2State = BinElevatorState.Unknown;
-                        _bin3State = BinElevatorState.Unknown;
+                        ResetSelectedBinStates(BinElevatorMode.Loading);
                     }
 
                     // 检查机械手上料完成信号
@@ -197,14 +202,12 @@ namespace Ewan.Core.Module
 
                         if (_binElevatorMode != BinElevatorMode.Loading)
                         {
-                            _binElevatorMode = BinElevatorMode.Unloading;
-                            // 重置所有料仓状态，准备执行下料动作
-                            _bin1State = BinElevatorState.Unknown;
-                            _bin2State = BinElevatorState.Unknown;
-                            _bin3State = BinElevatorState.Unknown;
+                            ResetSelectedBinStates(BinElevatorMode.Unloading);
                         }
                     }
                 }
+
+                #endregion
 
                 // 料仓状态机逻辑 - 使用switch优化
                 switch (_binElevatorMode)
@@ -215,12 +218,12 @@ namespace Ewan.Core.Module
                         break;
 
                     case BinElevatorMode.Loading:
-                        // 状态机3: 上料模式 - 料仓不动，等待机械手上料完成
+                        // 状态机1: 上料模式 - 料仓不动，等待机械手上料完成
                         ProcessLoadingMode(binNumber, axisId, ref currentState);
                         break;
 
                     case BinElevatorMode.Unloading:
-                        // 状态机4: 下料模式 - 料仓不动，等待机械手下料完成
+                        // 状态机2: 下料模式 - 料仓不动，等待机械手下料完成
                         ProcessUnloadingMode(binNumber, axisId, ref currentState);
                         break;
 
@@ -250,6 +253,9 @@ namespace Ewan.Core.Module
             // 根据当前状态执行不同的初始化步骤
             switch (currentState)
             {
+                case BinElevatorState.Stopped:
+                    // 已经初始化完成，保持静止
+                    break;
                 case BinElevatorState.Unknown:
                     // 第一步：开始上升到感应位置
                     if (!ReadBinSensor(binNumber)) // 料仓感应为false 就是上升
@@ -285,6 +291,8 @@ namespace Ewan.Core.Module
                     _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, 
                         "料仓" + binNumber + "初始化：开始从感应位置下降");
                     break;
+
+
                     
                 case BinElevatorState.Lowered:
                     // 正在下降中，检查是否脱离感应位置
@@ -319,7 +327,7 @@ namespace Ewan.Core.Module
                             _bin1ReachedSensor = false;
                             _bin2ReachedSensor = false;
                             _bin3ReachedSensor = false;
-
+                            currentState = BinElevatorState.Stopped;
                             // 切换到停止模式，等待进一步指令
                             SetBinElevatorMode(BinElevatorMode.Stopped);
                         }
@@ -338,92 +346,35 @@ namespace Ewan.Core.Module
             {
                 case BinElevatorState.Unknown:
                     // 检查当前感应器状态
-                    if (ReadBinSensor(binNumber)) // 
+                    if (ReadBinSensor(binNumber)) 
                     {
                         // 开始下降动作
                         StartBinJogDown(binNumber, axisId);
                         currentState = BinElevatorState.Moving;
-                        _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, 
+                        _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted,
                             "料仓" + binNumber + "上料模式：开始下降");
                     }
                     else
                     {
                         // 感应器已经为true，直接完成
                         currentState = BinElevatorState.Lowered;
-                        _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, 
+                        _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted,
                             "料仓" + binNumber + "上料模式：已在感应位置");
-                        
-                        // 标记该料仓上料动作完成
-                        switch (binNumber)
-                        {
-                            case 1:
-                                _bin1ReachedSensor = true;
-                                break;
-                            case 2:
-                                _bin2ReachedSensor = true;
-                                break;
-                            case 3:
-                                _bin3ReachedSensor = true;
-                                break;
-                        }
-                        
-                        // 检查是否所有料仓都完成上料动作
-                        if (_bin1ReachedSensor) // 只检查料仓1
-                        {
-                            _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, 
-                                "料仓上料动作完成，切换到停止模式");
-                            
-                            // 重置标志
-                            _bin1ReachedSensor = false;
-                            
-                            // 切换到停止模式
-                            SetBinElevatorMode(BinElevatorMode.Stopped);
 
-                        }
+                        // 切换到停止模式
+                        SetBinElevatorMode(BinElevatorMode.Stopped);
                     }
                     break;
-                    
+
                 case BinElevatorState.Moving:
                     // 正在下降中，检查是否到达感应位置
-                    if (!ReadBinSensor(binNumber)) 
+                    if (!ReadBinSensor(binNumber))
                     {
                         StopBinAxis(binNumber, axisId);
-                        currentState = BinElevatorState.Lowered;
-                        
-                        // 标记该料仓上料动作完成
-                        switch (binNumber)
-                        {
-                            case 1:
-                                _bin1ReachedSensor = true;
-                                break;
-                            case 2:
-                                _bin2ReachedSensor = true;
-                                break;
-                            case 3:
-                                _bin3ReachedSensor = true;
-                                break;
-                        }
-                        
-                        _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, 
-                            "料仓" + binNumber + "上料动作完成：已下降到感应位置并停止");
-                        
-                        // 检查是否所有料仓都完成上料动作
-                        if (_bin1ReachedSensor) // 只检查料仓1
-                        {
-                            _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, 
-                                "料仓上料动作完成，切换到停止模式");
-                            
-                            // 重置标志
-                            _bin1ReachedSensor = false;
-                            
-                            // 切换到停止模式
-                            SetBinElevatorMode(BinElevatorMode.Stopped);
-                        }
+                        currentState = BinElevatorState.Stopped;
                     }
                     break;
-                    
-                case BinElevatorState.Lowered:
-                    // 已完成，保持静止状态
+                case BinElevatorState.Stopped:
                     break;
             }
         }
@@ -477,44 +428,18 @@ namespace Ewan.Core.Module
                     if (ReadBinSensor(binNumber))
                     {
                         StopBinAxis(binNumber, axisId);
-
-                        // 标记该料仓初始化完成
-                        switch (binNumber)
-                        {
-                            case 1:
-                                _bin1ReachedSensor = true;
-                                break;
-                            case 2:
-                                _bin2ReachedSensor = true;
-                                break;
-                            case 3:
-                                _bin3ReachedSensor = true;
-                                break;
-                        }
-
-                        //_uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, 
-                        //    "料仓" + binNumber + "初始化完成：已下降到无感应位置并停止");
-
-                        //// 检查是否所有料仓都初始化完成
-                        //if (_bin1ReachedSensor && _bin2ReachedSensor && _bin3ReachedSensor)
-                        //{
-                        //    _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, 
-                        //        "所有料仓初始化完成，切换到停止模式");
-
-                        // 重置标志
-                        _bin1ReachedSensor = false;
-                        //_bin2ReachedSensor = false;
-                        //_bin3ReachedSensor = false;
-
-                        // 切换到停止模式，等待进一步指令
-                        SetBinElevatorMode(BinElevatorMode.Stopped);
-
-                        //}
+                        currentState = BinElevatorState.Stopped;
                     }
+                    break;
+
+
+                case BinElevatorState.Stopped:
                     break;
             }
         }
 
+
+        #endregion
 
         #region 轴控制操作
 
@@ -535,24 +460,24 @@ namespace Ewan.Core.Module
                     {
                         // 使用JogDown进行下降，速度使用配置中的速度
                         _axisManager.JogDown(axisConfig);
-                        _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, 
+                        _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted,
                             "料仓" + binNumber + "开始Jog下降，速度:" + axisConfig.Speed);
                     }
                     else
                     {
-                        _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, 
+                        _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
                             "料仓" + binNumber + "轴配置未找到，轴ID:" + axisId);
                     }
                 }
                 else
                 {
-                    _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, 
+                    _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
                         "AxisManager未初始化");
                 }
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, 
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
                     "料仓" + binNumber + "Jog下降", ex.Message);
             }
         }
@@ -574,24 +499,24 @@ namespace Ewan.Core.Module
                     {
                         // 使用JogUp进行上升，速度使用配置中的速度
                         _axisManager.JogUp(axisConfig);
-                        _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, 
+                        _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted,
                             "料仓" + binNumber + "开始Jog上升，速度:" + axisConfig.Speed);
                     }
                     else
                     {
-                        _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, 
+                        _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
                             "料仓" + binNumber + "轴配置未找到，轴ID:" + axisId);
                     }
                 }
                 else
                 {
-                    _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, 
+                    _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
                         "AxisManager未初始化");
                 }
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, 
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
                     "料仓" + binNumber + "Jog上升", ex.Message);
             }
         }
@@ -618,19 +543,19 @@ namespace Ewan.Core.Module
                     }
                     else
                     {
-                        _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, 
+                        _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
                             "料仓" + binNumber + "轴配置未找到，轴ID:" + axisId);
                     }
                 }
                 else
                 {
-                    _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, 
+                    _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
                         "AxisManager未初始化");
                 }
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, 
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
                     "料仓" + binNumber + "停止", ex.Message);
             }
         }
@@ -638,7 +563,31 @@ namespace Ewan.Core.Module
 
         #endregion
 
+        #region 料仓状态重置
 
+        /// <summary>
+        /// 根据Y11/Y12/Y13信号重置选中料仓的状态并切换模式
+        /// </summary>
+        /// <param name="mode">要切换到的料仓模式</param>
+        private void ResetSelectedBinStates(BinElevatorMode mode)
+        {
+            // 设置料仓模式
+            _binElevatorMode = mode;
+            
+            // 根据Y11/Y12/Y13信号选择性重置料仓状态
+            if (_ioManager.LayeredIO.ReadOutBit(BIN1_SELECT_SIGNAL))
+            {
+                _bin1State = BinElevatorState.Unknown;
+            }
+            if (_ioManager.LayeredIO.ReadOutBit(BIN2_SELECT_SIGNAL))
+            {
+                _bin2State = BinElevatorState.Unknown;
+            }
+            if (_ioManager.LayeredIO.ReadOutBit(BIN3_SELECT_SIGNAL))
+            {
+                _bin3State = BinElevatorState.Unknown;
+            }
+        }
 
         #endregion
 
