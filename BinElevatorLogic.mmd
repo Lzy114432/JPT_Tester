@@ -1,0 +1,116 @@
+graph TD
+    A[开始 BinElevatorModule] --> B[初始化模块]
+    B --> C[注册消息监听器]
+    C --> D[进入主循环 OnRun]
+    
+    D --> E[检查机械手信号 CheckRobotSignals]
+    E --> E1{机械手下料完成信号?}
+    E1 -->|是| E2[切换到Loading模式<br/>重置选中料仓状态]
+    E1 -->|否| E3{机械手上料完成信号?}
+    E3 -->|是| E4[切换到Unloading模式<br/>重置选中料仓状态]
+    E3 -->|否| F[处理三个料仓状态机]
+    E2 --> F
+    E4 --> F
+    
+    F --> F1[处理料仓1<br/>ProcessBinElevator]
+    F1 --> F2[处理料仓2<br/>ProcessBinElevator]
+    F2 --> F3[处理料仓3<br/>ProcessBinElevator]
+    F3 --> G[延时90ms]
+    G --> D
+    
+    %% 料仓状态机详细流程
+    F1 --> SM{当前模式?}
+    SM -->|Init| INIT[初始化状态机]
+    SM -->|Loading| LOAD[上料状态机]
+    SM -->|Unloading| UNLOAD[下料状态机]
+    SM -->|Stopped| STOP[停止模式]
+    
+    %% 初始化状态机
+    INIT --> INIT1{当前状态?}
+    INIT1 -->|Unknown| INIT2{有感应信号?}
+    INIT2 -->|否| INIT3[开始上升<br/>状态=Moving]
+    INIT2 -->|是| INIT4[状态=Elevated]
+    INIT1 -->|Moving| INIT5{到达感应位置?}
+    INIT5 -->|是| INIT6[停止轴<br/>状态=Elevated]
+    INIT1 -->|Elevated| INIT7[开始下降<br/>状态=Lowered]
+    INIT1 -->|Lowered| INIT8{到达感应位置?}
+    INIT8 -->|是| INIT9[停止轴<br/>标记完成]
+    INIT9 --> INIT10{所有料仓完成?}
+    INIT10 -->|是| INIT11[切换到Stopped模式<br/>重置标志]
+    
+    %% 上料状态机
+    LOAD --> LOAD1{当前状态?}
+    LOAD1 -->|Unknown| LOAD2{有感应信号?}
+    LOAD2 -->|是| LOAD3[开始下降<br/>状态=Moving]
+    LOAD2 -->|否| LOAD4[状态=Stopped<br/>已在位置]
+    LOAD1 -->|Moving| LOAD5{脱离感应位置?}
+    LOAD5 -->|是| LOAD6[停止轴<br/>状态=Stopped]
+    
+    %% 下料状态机
+    UNLOAD --> UNLOAD1{当前状态?}
+    UNLOAD1 -->|Unknown| UNLOAD2{有感应信号?}
+    UNLOAD2 -->|否| UNLOAD3[开始上升<br/>状态=Moving]
+    UNLOAD2 -->|是| UNLOAD4[状态=Elevated]
+    UNLOAD1 -->|Moving| UNLOAD5{到达感应位置?}
+    UNLOAD5 -->|是| UNLOAD6[停止轴<br/>状态=Elevated]
+    UNLOAD1 -->|Elevated| UNLOAD7[开始下降<br/>状态=Lowered]
+    UNLOAD1 -->|Lowered| UNLOAD8{脱离感应位置?}
+    UNLOAD8 -->|是| UNLOAD9[停止轴<br/>状态=Stopped]
+    
+    %% IO信号说明
+    subgraph "IO信号配置"
+        IO1[X8: 机械手下料完成]
+        IO2[X10: 机械手上料完成]
+        IO3[Y11: 料仓1选择]
+        IO4[Y12: 料仓2选择] 
+        IO5[Y13: 料仓3选择]
+        IO6[X27: 料仓1感应器]
+        IO7[X28: 料仓2感应器]
+        IO8[X29: 料仓3感应器]
+    end
+    
+    %% 轴控制说明
+    subgraph "轴控制配置"
+        AXIS1[轴0: 料仓1升降]
+        AXIS2[轴1: 料仓2升降]
+        AXIS3[轴2: 料仓3升降]
+    end
+    
+    %% 状态定义
+    subgraph "状态定义"
+        STATE1[Unknown: 未知状态]
+        STATE2[Moving: 正在移动]
+        STATE3[Elevated: 已升高到感应位置]
+        STATE4[Lowered: 正在下降/已降低]
+        STATE5[Stopped: 已停止]
+    end
+    
+    %% 模式定义
+    subgraph "模式定义"
+        MODE1[Init: 初始化模式]
+        MODE2[Loading: 上料模式]
+        MODE3[Unloading: 下料模式]
+        MODE4[Stopped: 停止模式]
+    end
+    
+    %% 异常处理
+    subgraph "异常处理"
+        ERR1[轴配置未找到] --> ERR2[记录错误日志]
+        ERR3[IO读取失败] --> ERR2
+        ERR4[模块运行异常] --> ERR5[延时1000ms继续]
+    end
+    
+    %% 样式定义
+    classDef startEnd fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef process fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef decision fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef stateProcess fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px
+    classDef ioConfig fill:#fff8e1,stroke:#f57f17,stroke-width:2px
+    classDef error fill:#ffebee,stroke:#c62828,stroke-width:2px
+    
+    class A,B,C startEnd
+    class D,E,F,F1,F2,F3,G process
+    class E1,E3,INIT2,INIT5,INIT8,INIT10,LOAD2,LOAD5,UNLOAD2,UNLOAD5,UNLOAD8 decision
+    class INIT,LOAD,UNLOAD,STOP,INIT3,INIT6,INIT7,INIT9,LOAD3,LOAD6,UNLOAD3,UNLOAD6,UNLOAD7,UNLOAD9 stateProcess
+    class IO1,IO2,IO3,IO4,IO5,IO6,IO7,IO8,AXIS1,AXIS2,AXIS3 ioConfig
+    class ERR1,ERR2,ERR3,ERR4,ERR5 error
