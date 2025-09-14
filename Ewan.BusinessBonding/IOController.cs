@@ -13,7 +13,7 @@ namespace Ewan.BusinessBonding
             {
                 // 使用LayeredIOManager的WriteOutput方法
                 // 根据当前映射模式决定是否使用映射
-                bool result = LayeredIOManager.Instance().WriteOutput(index, value, useMapping);
+                bool result = LayeredIOManager.Instance().LayeredIO.WriteOutBit(index, value, useMapping);
                 
                 if (result)
                 {

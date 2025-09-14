@@ -240,12 +240,21 @@ namespace Ewan.Core.Module
                 if (_ioManager != null && _ioManager.IsConnected)
                 {
                     // 控制红灯 (Y2)
-                    bool redResult = _ioManager.WriteOutput(AlarmIOMapping.RED_LIGHT, red);
+                    //bool redResult = _ioManager.WriteOutput(AlarmIOMapping.RED_LIGHT, red);
+                    //// 控制黄灯 (Y1) 
+                    //bool yellowResult = _ioManager.WriteOutput(AlarmIOMapping.YELLOW_LIGHT, yellow);
+                    //// 控制绿灯 (Y0)
+                    //bool greenResult = _ioManager.WriteOutput(AlarmIOMapping.GREEN_LIGHT, green);
+
+
+
+                    // 控制红灯 (Y2)
+                    bool redResult = _ioManager.LayeredIO.WriteOutBit(AlarmIOMapping.RED_LIGHT, red);
                     // 控制黄灯 (Y1) 
-                    bool yellowResult = _ioManager.WriteOutput(AlarmIOMapping.YELLOW_LIGHT, yellow);
+                    bool yellowResult = _ioManager.LayeredIO.WriteOutBit(AlarmIOMapping.YELLOW_LIGHT, yellow);
                     // 控制绿灯 (Y0)
-                    bool greenResult = _ioManager.WriteOutput(AlarmIOMapping.GREEN_LIGHT, green);
-                    
+                    bool greenResult = _ioManager.LayeredIO.WriteOutBit(AlarmIOMapping.GREEN_LIGHT, green);
+
                     // 记录操作结果
                     _uiLogger.Info(() => $"三色灯控制: 红灯={red}({(redResult ? "成功" : "失败")}), 黄灯={yellow}({(yellowResult ? "成功" : "失败")}), 绿灯={green}({(greenResult ? "成功" : "失败")})");
                     
@@ -363,7 +372,7 @@ namespace Ewan.Core.Module
                 // 实际控制蜂鸣器IO输出
                 if (_ioManager != null && _ioManager.IsConnected)
                 {
-                    bool buzzerResult = _ioManager.WriteOutput(AlarmIOMapping.BUZZER, true);
+                    bool buzzerResult = _ioManager.LayeredIO.WriteOutBit(AlarmIOMapping.BUZZER, true);
                     _uiLogger.Info(() => $"蜂鸣器启动: {(buzzerResult ? "成功" : "失败")} (Y{AlarmIOMapping.BUZZER})");
                     
                     if (!buzzerResult)
@@ -420,7 +429,7 @@ namespace Ewan.Core.Module
                 // 实际控制蜂鸣器IO输出
                 if (_ioManager != null && _ioManager.IsConnected)
                 {
-                    bool buzzerResult = _ioManager.WriteOutput(AlarmIOMapping.BUZZER, false);
+                    bool buzzerResult = _ioManager.LayeredIO.WriteOutBit(AlarmIOMapping.BUZZER, false);
                     _uiLogger.Info(() => $"蜂鸣器停止: {(buzzerResult ? "成功" : "失败")} (Y{AlarmIOMapping.BUZZER})");
                     
                     if (!buzzerResult)
