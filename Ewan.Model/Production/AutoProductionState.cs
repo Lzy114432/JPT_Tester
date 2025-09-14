@@ -83,6 +83,14 @@ namespace Ewan.Model.Production
     public enum BinElevatorMode
     {
         /// <summary>
+        /// 初始化模式先上升
+        /// 到底感应位置，再下降，
+        /// 下降到没有感应
+        /// 保持停止状态
+        /// </summary>
+        Init,
+
+        /// <summary>
         /// 自动上升模式 - 上升到感应位置停止
         /// </summary>
         AutoUp,
