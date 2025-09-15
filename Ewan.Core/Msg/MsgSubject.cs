@@ -13,5 +13,7 @@
         SystemStatus,  // 系统状态变化消息
         BinElevatorCommand,  // 料仓升降控制指令
         BinElevatorStatus,   // 料仓升降状态反馈
+
+        LoadingandunloadingState, //装卸状态
     }
 }

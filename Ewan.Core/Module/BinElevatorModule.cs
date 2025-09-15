@@ -160,6 +160,14 @@ namespace Ewan.Core.Module
                 // 检查机械手下料完成信号
                 if (_ioManager.LayeredIO.ReadFallingBit(ROBOT_LOADING_COMPLETE_SIGNAL))
                 {
+                    var materialOperationStatus = new MaterialOperationStatus
+                    {
+                        Loading = false,
+                        Unloading = true
+                    };
+
+                    PushLoadingandunloading(materialOperationStatus);
+
                     _ioManager.LayeredIO.ClearFallingBit(ROBOT_LOADING_COMPLETE_SIGNAL);
                     ResetSelectedBinStates(BinElevatorMode.Loading);
                 }
@@ -167,7 +175,18 @@ namespace Ewan.Core.Module
                 // 检查机械手上料完成信号
                 if (_ioManager.LayeredIO.ReadFallingBit(ROBOT_UNLOADING_COMPLETE_SIGNAL))
                 {
+                    var materialOperationStatus = new MaterialOperationStatus
+                    {
+                        Loading = true,
+                        Unloading = false
+                    };
+
+                    PushLoadingandunloading(materialOperationStatus);
+
                     _ioManager.LayeredIO.ClearFallingBit(ROBOT_UNLOADING_COMPLETE_SIGNAL);
+
+
+
                     ResetSelectedBinStates(BinElevatorMode.Unloading);
                 }
             }
@@ -713,5 +732,14 @@ namespace Ewan.Core.Module
         }
 
         #endregion
+
+
+        private void PushLoadingandunloading(MaterialOperationStatus materialOperationStatus)
+        {
+            MessageModel msg = new MessageModel(MsgSubject.LoadingandunloadingState, materialOperationStatus);
+            MsgManager.Instance().PushMsg(msg);
+        }
+
+
     }
 }

@@ -85,8 +85,6 @@ namespace Ewan.BusinessBonding
             
             #region  //构造主流程的节点并加入到对应runner
             
-            // 添加自动生产流程模块
-            _mainModules.Add(new AutoProductionModule());
             
             //_mainModules.Add(new PlcModule());//测试可以换成数据模拟节点 根据配置决定加载哪个PLC节点
             //_mainModules.Add(new AlarmModule<PlcModel>());
