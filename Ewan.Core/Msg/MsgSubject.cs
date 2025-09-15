@@ -15,5 +15,9 @@
         BinElevatorStatus,   // 料仓升降状态反馈
 
         LoadingandunloadingState, //装卸状态
+
+        RingLineData,
+
+        RingLineheartData
     }
 }

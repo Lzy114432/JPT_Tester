@@ -85,6 +85,7 @@
     <Compile Include="Module\IOPollingModule.cs" />
     <Compile Include="Module\MaterialLoadingModule.cs" />
     <Compile Include="Module\MaterialUnloadingModule.cs" />
+    <Compile Include="Module\RingLineModule.cs" />
     <Compile Include="Module\SafetyModule.cs" />
     <Compile Include="Module\SystemStatusIndicatorModule.cs" />
     <Compile Include="Msg\MessageModel.cs" />
