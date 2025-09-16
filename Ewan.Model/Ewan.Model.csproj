@@ -82,6 +82,7 @@
     <Compile Include="Security\User.cs" />
     <Compile Include="System\SystemStatus.cs" />
     <Compile Include="System\StatusIndicatorCommand.cs" />
+    <Compile Include="System\SystemControlCommand.cs" />
     <Compile Include="System\SystemStatusMessage.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

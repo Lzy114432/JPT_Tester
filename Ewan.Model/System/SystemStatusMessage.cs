@@ -45,6 +45,16 @@ namespace Ewan.Model.System
         public SystemMode SystemMode { get; set; }
         
         /// <summary>
+        /// 旧状态
+        /// </summary>
+        public SystemStatus OldStatus { get; set; }
+        
+        /// <summary>
+        /// 新状态
+        /// </summary>
+        public SystemStatus NewStatus { get; set; }
+        
+        /// <summary>
         /// 消息时间戳
         /// </summary>
         public DateTime Timestamp { get; set; }

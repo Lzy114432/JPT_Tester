@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading;
+using Ewan.Core.Msg;
+using Ewan.Model.System;
 
 namespace Ewan.Core.Module
 {
@@ -17,6 +19,8 @@ namespace Ewan.Core.Module
         
         private int _scanInterval = 100; // 扫描间隔，毫秒
         private bool _systemReady = false;
+        private bool _isRunning = false; // 控制OnRun是否进行循环的变量
+        private MsgListener _systemControlListener; // 系统控制消息监听器
 
         #endregion
 
@@ -27,6 +31,9 @@ namespace Ewan.Core.Module
             try
             {
                 _uiLogger.Info(() => Ewan.Resources.LogMessages.ModuleInitialized, "ProductionLineModule");
+                
+                // 注册系统控制消息监听器
+                RegisterSystemControlListener();
                 
                 // 创建共享状态
                 _sharedState = new ProductionLineSharedState();
@@ -52,7 +59,7 @@ namespace Ewan.Core.Module
 
         protected override bool OnRun()
         {
-            if (!_systemReady) return true;
+            if (!_systemReady || !_isRunning) return true;
             
             try
             {
@@ -83,6 +90,12 @@ namespace Ewan.Core.Module
         {
             try
             {
+                // 停止运行
+                _isRunning = false;
+                
+                // 取消注册消息监听器
+                UnregisterSystemControlListener();
+                
                 if (_materialLoading != null)
                 {
                     _materialLoading.Destroy();
@@ -110,12 +123,31 @@ namespace Ewan.Core.Module
         #region 公共方法
 
         /// <summary>
+        /// 启动生产线运行
+        /// </summary>
+        public void StartProduction()
+        {
+            _isRunning = true;
+            _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "生产线启动");
+        }
+
+        /// <summary>
+        /// 停止生产线运行
+        /// </summary>
+        public void StopProduction()
+        {
+            _isRunning = false;
+            _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "生产线停止");
+        }
+
+        /// <summary>
         /// 紧急停止所有流程
         /// </summary>
         public void EmergencyStop()
         {
             try
             {
+                _isRunning = false;
                 _materialLoading?.ForceStopLoading();
                 // 如果BinElevatorModule有紧急停止方法，可以在这里调用
                 
@@ -125,6 +157,89 @@ namespace Ewan.Core.Module
             {
                 _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, 
                     "生产线紧急停止", ex.Message);
+            }
+        }
+
+        #endregion
+
+        #region 私有方法
+
+        /// <summary>
+        /// 注册系统控制消息监听器
+        /// </summary>
+        private void RegisterSystemControlListener()
+        {
+            try
+            {
+                _systemControlListener = new MsgListener(MsgSubject.SystemControl, OnSystemControlMessage);
+                MsgManager.Instance().RegisterListener(_systemControlListener);
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "系统控制消息监听器注册");
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, 
+                    "系统控制消息监听器注册", ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 取消注册系统控制消息监听器
+        /// </summary>
+        private void UnregisterSystemControlListener()
+        {
+            try
+            {
+                if (_systemControlListener != null)
+                {
+                    MsgManager.Instance().UnRegisterListener(_systemControlListener);
+                    _systemControlListener = null;
+                    _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "系统控制消息监听器取消注册");
+                }
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, 
+                    "系统控制消息监听器取消注册", ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 处理系统控制消息
+        /// </summary>
+        /// <param name="message">消息模型</param>
+        private void OnSystemControlMessage(MessageModel message)
+        {
+            try
+            {
+                if (message.Data is SystemControlCommand command)
+                {
+                    switch (command)
+                    {
+                        case SystemControlCommand.Start:
+                            StartProduction();
+                            break;
+                        case SystemControlCommand.Stop:
+                            StopProduction();
+                            break;
+                        case SystemControlCommand.EmergencyStop:
+                            EmergencyStop();
+                            break;
+                        default:
+                            _uiLogger.Warn(() => Ewan.Resources.LogMessages.ProcessingError, 
+                                "未知系统控制命令", command.ToString());
+                            break;
+                    }
+                }
+                else
+                {
+                    _uiLogger.Warn(() => Ewan.Resources.LogMessages.ProcessingError, 
+                        "系统控制消息数据类型错误", message.Data?.GetType().Name ?? "null");
+                }
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, 
+                    "处理系统控制消息", ex.Message);
             }
         }
 

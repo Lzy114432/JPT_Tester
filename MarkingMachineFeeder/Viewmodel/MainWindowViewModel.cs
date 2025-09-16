@@ -1,3 +1,4 @@
+using Ewan.BusinessBonding;
 using Ewan.Core.Culture;
 using Ewan.Core.Logger;
 using Ewan.Core.Security;
@@ -16,6 +17,7 @@ namespace MarkingMachineFeeder.Viewmodel
         private readonly UILogger _uiLogger = new UILogger(typeof(Ewan.Resources.LogMessages));
         private readonly CultureManager _cultureManager;
         private readonly SecurityManager _securityManager;
+        private readonly SystemControlService _systemControlService;
 
         private string _title = "MarkingMachineFeeder";
         private string _languageMenuHeader = "Language";
@@ -301,6 +303,8 @@ namespace MarkingMachineFeeder.Viewmodel
             _securityManager = SecurityManager.Instance();
             _securityManager.UserAuthenticated += OnUserAuthenticated;
             _securityManager.UserLoggedOut += OnUserLoggedOut;
+
+            _systemControlService = SystemControlService.Instance();
 
             SwitchLanguageCommand = new DelegateCommand<string>(ExecuteSwitchLanguage);
             TestLogCommand = new DelegateCommand(ExecuteTestLog);
@@ -1034,15 +1038,30 @@ namespace MarkingMachineFeeder.Viewmodel
         
         private void ExecuteEmergencyStop()
         {
-            // 急停操作
-            SystemRunningStatus = "Red";
-            SystemRunningIsOn = false;
-            EmergencyStopStatus = "Red";
-            EmergencyStopIsOn = true;
-            ProductionModeText = "急停状态";
-            ProductionModeColor = "Red";
-            
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.TestLogClicked);
+            try
+            {
+                _uiLogger.Warn(() => Ewan.Resources.LogMessages.ProcessingCompleted, "用户触发紧急停止");
+                
+                // 调用系统控制服务紧急停止
+                _systemControlService.EmergencyStopSystem();
+                
+                // 更新界面状态
+                SystemRunningStatus = "Red";
+                SystemRunningIsOn = false;
+                EmergencyStopStatus = "Red";
+                EmergencyStopIsOn = true;
+                PauseStatus = "Gray";
+                PauseIsOn = false;
+                ProductionModeText = "急停状态";
+                ProductionModeColor = "Red";
+                
+                _uiLogger.Warn(() => Ewan.Resources.LogMessages.ProcessingCompleted, "紧急停止操作完成");
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, 
+                    "紧急停止操作", ex.Message);
+            }
         }
         
         private void ExecuteClearAlarm()
@@ -1056,16 +1075,30 @@ namespace MarkingMachineFeeder.Viewmodel
         
         private void ExecuteSystemStart()
         {
-            // 启动系统
-            SystemRunningStatus = "Green";
-            SystemRunningIsOn = true;
-            EmergencyStopIsOn = false;
-            PauseStatus = "Gray";
-            PauseIsOn = false;
-            ProductionModeText = "运行中";
-            ProductionModeColor = "Green";
-            
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.TestLogClicked);
+            try
+            {
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "用户请求启动系统");
+                
+                // 调用系统控制服务启动系统
+                _systemControlService.StartSystem();
+                
+                // 更新界面状态
+                SystemRunningStatus = "Green";
+                SystemRunningIsOn = true;
+                EmergencyStopIsOn = false;
+                EmergencyStopStatus = "Gray";
+                PauseStatus = "Gray";
+                PauseIsOn = false;
+                ProductionModeText = "运行中";
+                ProductionModeColor = "Green";
+                
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "系统启动操作完成");
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, 
+                    "系统启动操作", ex.Message);
+            }
         }
         
         private void ExecuteSystemPause()
@@ -1083,15 +1116,30 @@ namespace MarkingMachineFeeder.Viewmodel
         
         private void ExecuteSystemStop()
         {
-            // 停止系统
-            SystemRunningStatus = "Gray";
-            SystemRunningIsOn = false;
-            PauseStatus = "Gray";
-            PauseIsOn = false;
-            ProductionModeText = "已停止";
-            ProductionModeColor = "Gray";
-            
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.TestLogClicked);
+            try
+            {
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "用户请求停止系统");
+                
+                // 调用系统控制服务停止系统
+                _systemControlService.StopSystem();
+                
+                // 更新界面状态
+                SystemRunningStatus = "Gray";
+                SystemRunningIsOn = false;
+                EmergencyStopIsOn = false;
+                EmergencyStopStatus = "Gray";
+                PauseStatus = "Gray";
+                PauseIsOn = false;
+                ProductionModeText = "已停止";
+                ProductionModeColor = "Gray";
+                
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "系统停止操作完成");
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, 
+                    "系统停止操作", ex.Message);
+            }
         }
         
         #endregion
