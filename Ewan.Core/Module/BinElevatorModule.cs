@@ -51,8 +51,8 @@ namespace Ewan.Core.Module
         private const int BIN3_AXIS_ID = 2; // 料仓3轴ID
         
         // 机械手信号IO配置
-        private const int ROBOT_LOADING_COMPLETE_SIGNAL = 8;  // 机械手下料完成信号
-        private const int ROBOT_UNLOADING_COMPLETE_SIGNAL = 10; // 机械手上料完成信号
+        private const int ROBOT_LOADING_COMPLETE_SIGNAL = 8;  // 机械手装载完成信号（放入料仓）
+        private const int ROBOT_UNLOADING_COMPLETE_SIGNAL = 10; // 机械手卸载完成信号（从料仓取出）
         
         // 料仓选择信号IO配置
         private const int BIN1_SELECT_SIGNAL = 11; // Y11 - 料仓1选择信号
@@ -157,13 +157,13 @@ namespace Ewan.Core.Module
         {
             try
             {
-                // 检查机械手下料完成信号
+                // 检查机械手装载完成信号
                 if (_ioManager.LayeredIO.ReadFallingBit(ROBOT_LOADING_COMPLETE_SIGNAL))
                 {
                     var materialOperationStatus = new MaterialOperationStatus
                     {
-                        Loading = false,
-                        Unloading = true
+                        LoadingCompleted = true,
+                        UnloadingCompleted = false
                     };
 
                     PushLoadingandunloading(materialOperationStatus);
@@ -172,13 +172,13 @@ namespace Ewan.Core.Module
                     ResetSelectedBinStates(BinElevatorMode.Loading);
                 }
 
-                // 检查机械手上料完成信号
+                // 检查机械手卸载完成信号
                 if (_ioManager.LayeredIO.ReadFallingBit(ROBOT_UNLOADING_COMPLETE_SIGNAL))
                 {
                     var materialOperationStatus = new MaterialOperationStatus
                     {
-                        Loading = true,
-                        Unloading = false
+                        LoadingCompleted = false,
+                        UnloadingCompleted = true
                     };
 
                     PushLoadingandunloading(materialOperationStatus);

@@ -1,6 +1,7 @@
 using Ewan.Core.IO;
 using Ewan.Core.Msg;
 using Ewan.Core.ScanCode;
+using Ewan.Model;
 using Ewan.Model.Production;
 using System;
 using System.Threading;
@@ -22,6 +23,8 @@ namespace Ewan.Core.Module
         
         // 消息队列相关
         private MsgListener _msgManager;
+
+        private MsgListener _msgManager2;
 
         private LayeredIOManager _ioManager;
 
@@ -45,6 +48,9 @@ namespace Ewan.Core.Module
         private bool _unloadingcomplete = false;
         private int _selectedBin = 1; // 选择的料仓编号 (1, 2, 3)
 
+
+        private bool _ringLineunload = false;
+
         protected override void OnInit()
         {
             _uiLogger.Info(() => Ewan.Resources.LogMessages.ModuleInitialized, "MaterialUnloadingModule");
@@ -53,6 +59,9 @@ namespace Ewan.Core.Module
 
             _msgManager = new MsgListener(MsgSubject.LoadingandunloadingState, CallBackShow);
             MsgManager.Instance().RegisterListener(_msgManager);
+
+            _msgManager2 = new MsgListener(MsgSubject.RingLineData, CallBackShow1);
+            MsgManager.Instance().RegisterListener(_msgManager2);
 
             // 初始化状态
             lock (_stateLock)
@@ -71,6 +80,13 @@ namespace Ewan.Core.Module
                     switch (_currentState)
                     {
                         case MaterialUnloadingState.Idle:
+                            // 监控环线信号，触发取料流程
+                            if (_ringLineunload && !_unloadingRequested)
+                            {
+                                // 设置默认料仓为1号（可根据需要修改）
+                                RequestUnloading(1);
+                                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "环线信号触发，开始取料流程");
+                            }
                             break;
                             
                         case MaterialUnloadingState.PickingMaterial:
@@ -300,8 +316,17 @@ namespace Ewan.Core.Module
         private void CallBackShow(MessageModel msg)
         {
             var data = msg.GetData<MaterialOperationStatus>();
-            _unloadingcomplete = data.Unloading;
+            _unloadingcomplete = data.LoadingCompleted;
         }
+
+        private void CallBackShow1(MessageModel msg)
+        {
+            var data = msg.GetData<RingLineModel>();
+            _ringLineunload = data.IsLoading;
+        }
+
+
+        
 
         #endregion
     }
