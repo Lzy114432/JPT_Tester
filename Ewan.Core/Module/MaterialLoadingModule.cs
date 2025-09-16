@@ -62,6 +62,13 @@ namespace Ewan.Core.Module
         {
             try
             {
+                // 暂停时保持当前状态，不执行状态机
+                if (_sharedState?.IsSystemPaused() == true)
+                {
+                    Thread.Sleep(_scanInterval);
+                    return true;
+                }
+                
                 lock (_stateLock)
                 {
                     switch (_currentState)

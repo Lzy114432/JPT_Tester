@@ -8,7 +8,6 @@ using Prism.Mvvm;
 using System;
 using System.Globalization;
 using System.Linq;
-using System.Windows;
 
 namespace MarkingMachineFeeder.Viewmodel
 {
@@ -37,6 +36,8 @@ namespace MarkingMachineFeeder.Viewmodel
         private string _axisConfigMenuHeader = "";
         private string _axisControlMenuHeader = "";
         private string _hardwareControlMenuHeader = "";
+        private string _systemPauseButtonText = "";
+        private string _systemResumeButtonText = "";
         private bool _canControlCamera = false;
         private bool _canControlUPS = false;
         private bool _canViewSettings = false;
@@ -244,6 +245,18 @@ namespace MarkingMachineFeeder.Viewmodel
             get { return _axisControlMenuHeader; }
             set { SetProperty(ref _axisControlMenuHeader, value); }
         }
+
+        public string SystemPauseButtonText
+        {
+            get { return _systemPauseButtonText; }
+            set { SetProperty(ref _systemPauseButtonText, value); }
+        }
+
+        public string SystemResumeButtonText
+        {
+            get { return _systemResumeButtonText; }
+            set { SetProperty(ref _systemResumeButtonText, value); }
+        }
         
         public DelegateCommand<string> SwitchLanguageCommand { get; }
         public DelegateCommand TestLogCommand { get; }
@@ -273,6 +286,7 @@ namespace MarkingMachineFeeder.Viewmodel
         public DelegateCommand ClearAlarmCommand { get; }
         public DelegateCommand SystemStartCommand { get; }
         public DelegateCommand SystemPauseCommand { get; }
+        public DelegateCommand SystemResumeCommand { get; }
         public DelegateCommand SystemStopCommand { get; }
         
         // 机械手手动控制命令 - 对应OUT11-OUT13, OUT17
@@ -334,6 +348,7 @@ namespace MarkingMachineFeeder.Viewmodel
             ClearAlarmCommand = new DelegateCommand(ExecuteClearAlarm);
             SystemStartCommand = new DelegateCommand(ExecuteSystemStart);
             SystemPauseCommand = new DelegateCommand(ExecuteSystemPause);
+            SystemResumeCommand = new DelegateCommand(ExecuteSystemResume);
             SystemStopCommand = new DelegateCommand(ExecuteSystemStop);
             
             // 初始化机械手手动控制命令
@@ -602,6 +617,8 @@ namespace MarkingMachineFeeder.Viewmodel
             AxisConfigMenuHeader = Ewan.Resources.UIStrings.AxisConfigMenu;
             AxisControlMenuHeader = "轴手动控制"; // Using fallback text since AxisControlMenu property is not generating properly
             HardwareControlMenuHeader = Ewan.Resources.UIStrings.HardwareControlMenu;
+            SystemPauseButtonText = "暂停";
+            SystemResumeButtonText = "复原";
             
             // 强制触发所有相关属性的PropertyChanged事件
             RaisePropertyChanged(nameof(Title));
@@ -619,6 +636,8 @@ namespace MarkingMachineFeeder.Viewmodel
             RaisePropertyChanged(nameof(IOMappingConfigMenuHeader));
             RaisePropertyChanged(nameof(AxisConfigMenuHeader));
             RaisePropertyChanged(nameof(HardwareControlMenuHeader));
+            RaisePropertyChanged(nameof(SystemPauseButtonText));
+            RaisePropertyChanged(nameof(SystemResumeButtonText));
         }
         private void UpdatePermissions()
         {
@@ -1077,8 +1096,7 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             try
             {
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "用户请求启动系统");
-                
+               
                 // 调用系统控制服务启动系统
                 _systemControlService.StartSystem();
                 
@@ -1091,8 +1109,6 @@ namespace MarkingMachineFeeder.Viewmodel
                 PauseIsOn = false;
                 ProductionModeText = "运行中";
                 ProductionModeColor = "Green";
-                
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "系统启动操作完成");
             }
             catch (Exception ex)
             {
@@ -1103,15 +1119,56 @@ namespace MarkingMachineFeeder.Viewmodel
         
         private void ExecuteSystemPause()
         {
-            // 暂停系统
-            SystemRunningStatus = "Yellow";
-            SystemRunningIsOn = true;
-            PauseStatus = "Yellow";
-            PauseIsOn = true;
-            ProductionModeText = "暂停中";
-            ProductionModeColor = "Orange";
-            
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.TestLogClicked);
+            try
+            {
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "用户请求暂停系统");
+                
+                // 调用系统控制服务暂停系统
+                _systemControlService.PauseSystem();
+                
+                // 更新界面状态
+                SystemRunningStatus = "Yellow";
+                SystemRunningIsOn = true;
+                PauseStatus = "Yellow";
+                PauseIsOn = true;
+                ProductionModeText = "暂停中";
+                ProductionModeColor = "Orange";
+                
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "系统暂停操作完成");
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, 
+                    "系统暂停操作", ex.Message);
+            }
+        }
+
+        private void ExecuteSystemResume()
+        {
+            try
+            {
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "用户请求恢复系统");
+                
+                // 调用系统控制服务恢复系统
+                _systemControlService.ResumeSystem();
+                
+                // 更新界面状态
+                SystemRunningStatus = "Green";
+                SystemRunningIsOn = true;
+                EmergencyStopIsOn = false;
+                EmergencyStopStatus = "Gray";
+                PauseStatus = "Gray";
+                PauseIsOn = false;
+                ProductionModeText = "运行中";
+                ProductionModeColor = "Green";
+                
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "系统恢复操作完成");
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, 
+                    "系统恢复操作", ex.Message);
+            }
         }
         
         private void ExecuteSystemStop()

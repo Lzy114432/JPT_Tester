@@ -13,6 +13,8 @@ namespace Ewan.Core.Module
         private readonly object _stateLock = new object();
         private bool _loadingCompleted = false;
         private bool _unloadingCompleted = false;
+        private bool _systemPaused = false;
+        private bool _requireReinit = false;
 
         #endregion
 
@@ -113,6 +115,54 @@ namespace Ewan.Core.Module
         }
 
         /// <summary>
+        /// 获取系统暂停状态
+        /// </summary>
+        /// <returns>是否暂停</returns>
+        public bool IsSystemPaused()
+        {
+            lock (_stateLock)
+            {
+                return _systemPaused;
+            }
+        }
+
+        /// <summary>
+        /// 设置系统暂停状态
+        /// </summary>
+        /// <param name="paused">是否暂停</param>
+        public void SetSystemPaused(bool paused)
+        {
+            lock (_stateLock)
+            {
+                _systemPaused = paused;
+            }
+        }
+
+        /// <summary>
+        /// 获取是否需要重新初始化
+        /// </summary>
+        /// <returns>是否需要重新初始化</returns>
+        public bool RequireReinit()
+        {
+            lock (_stateLock)
+            {
+                return _requireReinit;
+            }
+        }
+
+        /// <summary>
+        /// 设置是否需要重新初始化
+        /// </summary>
+        /// <param name="require">是否需要重新初始化</param>
+        public void SetRequireReinit(bool require)
+        {
+            lock (_stateLock)
+            {
+                _requireReinit = require;
+            }
+        }
+
+        /// <summary>
         /// 重置所有状态
         /// </summary>
         public void ResetAllStates()
@@ -121,6 +171,8 @@ namespace Ewan.Core.Module
             {
                 _loadingCompleted = false;
                 _unloadingCompleted = false;
+                _systemPaused = false;
+                _requireReinit = false;
             }
         }
 

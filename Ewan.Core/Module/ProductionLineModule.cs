@@ -20,6 +20,8 @@ namespace Ewan.Core.Module
         private int _scanInterval = 100; // 扫描间隔，毫秒
         private bool _systemReady = false;
         private bool _isRunning = false; // 控制OnRun是否进行循环的变量
+        private bool _isPaused = false; // 暂停状态标志
+        private readonly object _stateLock = new object();
         private MsgListener _systemControlListener; // 系统控制消息监听器
 
         #endregion
@@ -160,6 +162,53 @@ namespace Ewan.Core.Module
             }
         }
 
+        /// <summary>
+        /// 暂停生产线运行
+        /// </summary>
+        public void PauseProduction()
+        {
+            try
+            {
+                lock (_stateLock)
+                {
+                    _isPaused = true;
+                    _sharedState?.SetSystemPaused(true);
+                    
+                    _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "生产线暂停");
+                }
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, 
+                    "生产线暂停", ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 恢复生产线运行
+        /// </summary>
+        public void ResumeProduction()
+        {
+            try
+            {
+                lock (_stateLock)
+                {
+                    _isPaused = false;
+                    _sharedState?.SetSystemPaused(false);
+                    
+                    // 触发BinElevator重新初始化
+                    _sharedState?.SetRequireReinit(true);
+                    
+                    _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "生产线恢复，料仓重新初始化");
+                }
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, 
+                    "生产线恢复", ex.Message);
+            }
+        }
+
         #endregion
 
         #region 私有方法
@@ -223,6 +272,12 @@ namespace Ewan.Core.Module
                             break;
                         case SystemControlCommand.EmergencyStop:
                             EmergencyStop();
+                            break;
+                        case SystemControlCommand.Pause:
+                            PauseProduction();
+                            break;
+                        case SystemControlCommand.Resume:
+                            ResumeProduction();
                             break;
                         default:
                             _uiLogger.Warn(() => Ewan.Resources.LogMessages.ProcessingError, 

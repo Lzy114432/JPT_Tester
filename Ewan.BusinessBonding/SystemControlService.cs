@@ -35,6 +35,18 @@ namespace Ewan.BusinessBonding
             _uiLogger.Warn(() => Ewan.Resources.LogMessages.ProcessingCompleted, "系统紧急停止命令已发送");
         }
 
+        public void PauseSystem()
+        {
+            Push(SystemControlCommand.Pause);
+            _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "系统暂停命令已发送");
+        }
+
+        public void ResumeSystem()
+        {
+            Push(SystemControlCommand.Resume);
+            _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "系统恢复命令已发送");
+        }
+
 
 
 

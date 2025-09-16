@@ -237,4 +237,10 @@
   <data name="AxisControlMenu" xml:space="preserve">
     <value>轴手动控制</value>
   </data>
+  <data name="SystemPauseButton" xml:space="preserve">
+    <value>暂停</value>
+  </data>
+  <data name="SystemResumeButton" xml:space="preserve">
+    <value>复原</value>
+  </data>
 </root>

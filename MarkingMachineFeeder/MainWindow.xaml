@@ -1073,6 +1073,15 @@
                                 Height="35"
                                 Command="{Binding SystemStopCommand}"
                                 Margin="4,2"/>
+                                
+                        <!-- 复原按钮 -->
+                            <Button Content="复原"
+                                Style="{StaticResource IndustrialTestButton}"
+                                Background="#17A2B8"
+                                FontSize="12"
+                                Height="35"
+                                Command="{Binding SystemResumeCommand}"
+                                Margin="4,2"/>
                     </StackPanel>
                 </GroupBox>
             </Grid>

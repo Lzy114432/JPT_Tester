@@ -129,6 +129,39 @@ namespace Ewan.Core.Module
             {
                 lock (_stateLock)
                 {
+                    // 检查暂停状态
+                    if (_sharedState?.IsSystemPaused() == true)
+                    {
+                        // 暂停状态：停止所有轴运动但不退出循环
+                        if (_binElevatorMode != BinElevatorMode.Stopped)
+                        {
+                            StopAllBinMovements();
+                            _binElevatorMode = BinElevatorMode.Stopped;
+                            _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "料仓升降模块已暂停");
+                        }
+                        Thread.Sleep(_scanInterval);
+                        return true;
+                    }
+                    
+                    // 检查是否需要重新初始化
+                    if (_sharedState?.RequireReinit() == true)
+                    {
+                        _sharedState.SetRequireReinit(false);
+                        
+                        // 重置到初始化状态
+                        _binElevatorMode = BinElevatorMode.Init;
+                        _bin1State = BinElevatorState.Unknown;
+                        _bin2State = BinElevatorState.Unknown; 
+                        _bin3State = BinElevatorState.Unknown;
+                        
+                        // 重置初始化标志
+                        _bin1ReachedSensor = false;
+                        _bin2ReachedSensor = false;
+                        _bin3ReachedSensor = false;
+                        
+                        _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "料仓重新初始化开始");
+                    }
+                    
                     // 先统一检查机械手信号，避免在每个料仓处理中重复检查
                     CheckRobotSignals();
                     

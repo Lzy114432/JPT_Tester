@@ -18,6 +18,16 @@
         /// <summary>
         /// 紧急停止
         /// </summary>
-        EmergencyStop
+        EmergencyStop,
+
+        /// <summary>
+        /// 暂停系统
+        /// </summary>
+        Pause,
+
+        /// <summary>
+        /// 恢复系统
+        /// </summary>
+        Resume
     }
 }
