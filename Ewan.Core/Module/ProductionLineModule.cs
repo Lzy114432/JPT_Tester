@@ -60,8 +60,12 @@ namespace Ewan.Core.Module
 
                 // 顺序调用子模块，让它们各自处理状态机
                 // 通过共享状态自动协调工作
-                _materialLoading.Run();
-                _binElevator.Run();
+                // 添加空值检查，防止关闭时的空引用异常
+                if (_materialLoading != null)
+                    _materialLoading.Run();
+                    
+                if (_binElevator != null)
+                    _binElevator.Run();
                 
                 // 添加必要的延时
                
