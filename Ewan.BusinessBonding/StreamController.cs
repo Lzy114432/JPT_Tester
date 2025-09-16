@@ -85,6 +85,8 @@ namespace Ewan.BusinessBonding
             
             #region  //构造主流程的节点并加入到对应runner
             
+            // 使用统一的生产线模块（包含物料装载和料仓升降）
+            _mainModules.Add(new ProductionLineModule());
             
             //_mainModules.Add(new PlcModule());//测试可以换成数据模拟节点 根据配置决定加载哪个PLC节点
             //_mainModules.Add(new AlarmModule<PlcModel>());
@@ -121,13 +123,11 @@ namespace Ewan.BusinessBonding
             
             #endregion
 
-            #region //构造料仓升降控制流程的节点并加入到对应runner
+            #region //构造料仓升降控制流程的节点并加入到对应runner（已合并到主流程）
             
-            // 添加BinElevatorModule用于料仓升降控制
-            _binElevatorModules.Add(new BinElevatorModule());
-            
-            // 创建料仓升降流程runner
-            _binElevatorRunner = new StreamRunner(_binElevatorModules);
+            // BinElevatorModule已合并到主流程，此流程不再使用
+            // _binElevatorModules.Add(new BinElevatorModule());
+            // _binElevatorRunner = new StreamRunner(_binElevatorModules);
             
             #endregion
 

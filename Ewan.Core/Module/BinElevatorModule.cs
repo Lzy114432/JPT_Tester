@@ -15,8 +15,11 @@ namespace Ewan.Core.Module
     {
         #region 私有字段
 
-        private int _scanInterval = 90; // 扫描间隔，毫秒
+        private int _scanInterval = 1; // 扫描间隔，毫秒
         private readonly object _stateLock = new object();
+        
+        // 共享状态（用于与其他模块通信）
+        private ProductionLineSharedState _sharedState;
         
         // 系统状态
         private bool _systemStarted = false;
@@ -62,6 +65,7 @@ namespace Ewan.Core.Module
 
         #endregion
 
+
         #region 枚举定义
 
         /// <summary>
@@ -74,6 +78,20 @@ namespace Ewan.Core.Module
             Elevated,     // 已升高
             Moving,        // 正在移动
             Stopped       // 已停止
+        }
+
+        #endregion
+
+        #region 构造函数
+
+        
+        /// <summary>
+        /// 带共享状态的构造函数
+        /// </summary>
+        /// <param name="sharedState">共享状态对象</param>
+        public BinElevatorModule(ProductionLineSharedState sharedState)
+        {
+            _sharedState = sharedState;
         }
 
         #endregion
@@ -160,13 +178,8 @@ namespace Ewan.Core.Module
                 // 检查机械手装载完成信号
                 if (_ioManager.LayeredIO.ReadFallingBit(ROBOT_LOADING_COMPLETE_SIGNAL))
                 {
-                    var materialOperationStatus = new MaterialOperationStatus
-                    {
-                        LoadingCompleted = true,
-                        UnloadingCompleted = false
-                    };
-
-                    PushLoadingandunloading(materialOperationStatus);
+                    // 设置装载完成状态
+                    SetLoadingCompleted(true);
 
                     _ioManager.LayeredIO.ClearFallingBit(ROBOT_LOADING_COMPLETE_SIGNAL);
                     ResetSelectedBinStates(BinElevatorMode.Loading);
@@ -175,13 +188,8 @@ namespace Ewan.Core.Module
                 // 检查机械手卸载完成信号
                 if (_ioManager.LayeredIO.ReadFallingBit(ROBOT_UNLOADING_COMPLETE_SIGNAL))
                 {
-                    var materialOperationStatus = new MaterialOperationStatus
-                    {
-                        LoadingCompleted = false,
-                        UnloadingCompleted = true
-                    };
-
-                    PushLoadingandunloading(materialOperationStatus);
+                    // 设置卸载完成状态
+                    SetUnloadingCompleted(true);
 
                     _ioManager.LayeredIO.ClearFallingBit(ROBOT_UNLOADING_COMPLETE_SIGNAL);
 
@@ -734,12 +742,55 @@ namespace Ewan.Core.Module
         #endregion
 
 
-        private void PushLoadingandunloading(MaterialOperationStatus materialOperationStatus)
+        #region 共享状态访问方法
+
+        /// <summary>
+        /// 设置装载完成状态
+        /// </summary>
+        private void SetLoadingCompleted(bool completed)
         {
-            MessageModel msg = new MessageModel(MsgSubject.LoadingandunloadingState, materialOperationStatus);
-            MsgManager.Instance().PushMsg(msg);
+            if (_sharedState != null)
+            {
+                _sharedState.SetLoadingCompleted(completed);
+            }
         }
 
+        /// <summary>
+        /// 设置卸载完成状态
+        /// </summary>
+        private void SetUnloadingCompleted(bool completed)
+        {
+            if (_sharedState != null)
+            {
+                _sharedState.SetUnloadingCompleted(completed);
+            }
+        }
+
+        /// <summary>
+        /// 获取装载完成状态
+        /// </summary>
+        private bool GetLoadingCompleted()
+        {
+            if (_sharedState != null)
+            {
+                return _sharedState.GetLoadingCompleted();
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 获取卸载完成状态
+        /// </summary>
+        private bool GetUnloadingCompleted()
+        {
+            if (_sharedState != null)
+            {
+                return _sharedState.GetUnloadingCompleted();
+            }
+            return false;
+        }
+
+        #endregion
 
     }
 }

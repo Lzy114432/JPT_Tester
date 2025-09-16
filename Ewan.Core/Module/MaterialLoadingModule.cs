@@ -15,16 +15,13 @@ namespace Ewan.Core.Module
     {
         private MaterialLoadingState _currentState = MaterialLoadingState.Idle;
         private readonly object _stateLock = new object();
-        private int _scanInterval = 100; // 扫描间隔，毫秒
+        private int _scanInterval = 1; // 扫描间隔，毫秒
         private bool _emergencyStopTriggered = false;
         private bool _loadingRequested = false;
         private bool _stopRequested = false;
         
-     
-        // 消息队列相关
-        private MsgListener _msgManager;
-
-
+        // 共享状态（用于与其他模块通信）
+        private ProductionLineSharedState _sharedState;
 
         private LayeredIOManager _ioManager;
         private const int MATERIAL_DETECT_SIGNAL = 3;      // 料片检测信号X3
@@ -37,21 +34,21 @@ namespace Ewan.Core.Module
         private const int BIN2_SELECT_SIGNAL = 12; // Y12 - 料仓2选择信号
         private const int BIN3_SELECT_SIGNAL = 13; // Y13 - 料仓3选择信号
 
-
-
-        private bool _loadingcomplete = false;
-        private bool _unloadingcomplete = false;
+        
+        /// <summary>
+        /// 带共享状态的构造函数
+        /// </summary>
+        /// <param name="sharedState">共享状态对象</param>
+        public MaterialLoadingModule(ProductionLineSharedState sharedState)
+        {
+            _sharedState = sharedState;
+        }
 
         protected override void OnInit()
         {
             _uiLogger.Info(() => Ewan.Resources.LogMessages.ModuleInitialized, "MaterialLoadingModule");
             
-
             _ioManager = LayeredIOManager.Instance();
-
-            _msgManager = new MsgListener(MsgSubject.LoadingandunloadingState, CallBackShow);
-            MsgManager.Instance().RegisterListener(_msgManager);
-
 
             // 初始化状态
             lock (_stateLock)
@@ -120,11 +117,6 @@ namespace Ewan.Core.Module
         {
             _uiLogger.Info(() => Ewan.Resources.LogMessages.ModuleDestroyed, "MaterialLoadingModule");
             
-            // 注销消息监听器
-            if (_msgManager != null)
-            {
-                MsgManager.Instance().UnRegisterListener(_msgManager);
-            }
         }
 
         #region 核心流程处理
@@ -160,9 +152,10 @@ namespace Ewan.Core.Module
         /// </summary>
         private void ProcessAtScanPosition()
         {
-            if(DLManager.Instance().TriggerScan() != "")
-            {
-                // 根据扫码信息指定目标料仓 ，现在暂时为1
+            DLManager.Instance().TriggerScan(); // 触发扫码,调试模式不需要结果
+            //if(DLManager.Instance().TriggerScan() != "")
+            //{
+            // 根据扫码信息指定目标料仓 ，现在暂时为1
                 _ioManager.LayeredIO.WriteOutBit(BIN1_SELECT_SIGNAL,true);
 
                 // 触发放入料仓信号
@@ -171,7 +164,7 @@ namespace Ewan.Core.Module
                 // 转换到移动到料仓状态
                 _currentState = MaterialLoadingState.MovingToBinByScanInfo;
                 _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "开始移动到料仓位置");
-            }
+            //}
         }
 
         /// <summary>
@@ -181,14 +174,15 @@ namespace Ewan.Core.Module
         private void ProcessMovingToBin()
         {
             // 检查下料完成状态
-            if (_loadingcomplete)
+            bool loadingCompleted = GetLoadingCompleted();
+            if (loadingCompleted)
             {
                 // 下料完成，清除信号
                 _ioManager.LayeredIO.WriteOutBit(TRIGGER_LOADING_SIGNAL, false);
                 _ioManager.LayeredIO.WriteOutBit(BIN1_SELECT_SIGNAL, false);
                 
                 // 重置标志并返回空闲状态
-                _loadingcomplete = false;
+                SetLoadingCompleted(false);
                 _currentState = MaterialLoadingState.Idle;
                 
                 _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "下料完成，返回空闲状态");
@@ -232,12 +226,47 @@ namespace Ewan.Core.Module
 
 
 
+        /// <summary>
+        /// 消息回调处理（向后兼容性，仅在无共享状态时使用）
+        /// </summary>
         private void CallBackShow(MessageModel msg)
         {
-            var data = msg.GetData<MaterialOperationStatus>();
-            _loadingcomplete = data.LoadingCompleted;
-            //_unloadingcomplete = data.UnloadingCompleted;
+            if (_sharedState == null)
+            {
+                // 兼容性模式：通过本地变量处理
+                var data = msg.GetData<MaterialOperationStatus>();
+                // _loadingcomplete = data.LoadingCompleted;
+                // 注意：需要添加本地变量支持兼容性模式
+            }
         }
+
+        #region 共享状态访问方法
+
+        /// <summary>
+        /// 获取装载完成状态
+        /// </summary>
+        private bool GetLoadingCompleted()
+        {
+            if (_sharedState != null)
+            {
+                return _sharedState.GetLoadingCompleted();
+            }
+            // 兼容性：如果没有共享状态，返回默认值
+            return false;
+        }
+
+        /// <summary>
+        /// 设置装载完成状态
+        /// </summary>
+        private void SetLoadingCompleted(bool completed)
+        {
+            if (_sharedState != null)
+            {
+                _sharedState.SetLoadingCompleted(completed);
+            }
+        }
+
+        #endregion
 
 
 
