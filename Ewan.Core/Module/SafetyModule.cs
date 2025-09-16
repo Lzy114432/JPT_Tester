@@ -29,11 +29,14 @@ namespace Ewan.Core.Module
         private long _syncCount = 0;
         private double _avgSyncTime = 0;
         
-        // 报警监控
-        private bool _lastEmergencyButtonState = false;
-        private bool _lastSafetyDoorState = false;
-        private bool _lastMotorAlarmState = false;
-        private bool _lastPressureLowState = false;
+        // 报警监控状态记录 - 使用LayeredIO内置边缘检测，不再需要手动状态跟踪
+        // private bool _lastEmergencyButtonState = false;
+        // private bool _lastRobotAlarmState = false;
+        // private bool _lastLowerCameraAlarmState = false;
+        // private bool _lastCylinderAlarmState = false;
+        // private bool _lastBin1LimitAlarmState = false;
+        // private bool _lastBin2LimitAlarmState = false;
+        // private bool _lastBin3LimitAlarmState = false;
         private int _alarmCheckInterval = 5; // 报警检查计数器（5次同步检查一次报警）
         private int _alarmCheckCounter = 0;
 
@@ -149,42 +152,70 @@ namespace Ewan.Core.Module
         {
             try
             {
-                // 检查急停按钮
-                bool emergencyButton = ReadInput(AlarmIOMapping.EMERGENCY_BUTTON);
-                if (emergencyButton && emergencyButton != _lastEmergencyButtonState)
-                {
-                    SendSafetyAlert(SafetyAlertType.EmergencyStop, SafetyAlertLevel.Critical, "急停按钮被按下", true);
-                }
-                _lastEmergencyButtonState = emergencyButton;
-
-                // 检查安全门
-                bool safetyDoor = ReadInput(AlarmIOMapping.SAFETY_DOOR);
-                if (!safetyDoor && safetyDoor != _lastSafetyDoorState) // 安全门打开（假设常闭）
-                {
-                    SendSafetyAlert(SafetyAlertType.SafetyDoorOpen, SafetyAlertLevel.Warning, "安全门已打开", false);
-                }
-                _lastSafetyDoorState = safetyDoor;
-
-                // 检查电机报警
-                bool motorAlarm = ReadInput(AlarmIOMapping.MOTOR_ALARM);
-                if (motorAlarm && motorAlarm != _lastMotorAlarmState)
-                {
-                    SendSafetyAlert(SafetyAlertType.MotorAlarm, SafetyAlertLevel.Alarm, "电机报警信号", true);
-                }
-                _lastMotorAlarmState = motorAlarm;
-
-                // 检查气压不足
-                bool pressureLow = ReadInput(AlarmIOMapping.PRESSURE_LOW);
-                if (pressureLow && pressureLow != _lastPressureLowState)
-                {
-                    SendSafetyAlert(SafetyAlertType.PressureLow, SafetyAlertLevel.Warning, "气压不足", false);
-                }
-                _lastPressureLowState = pressureLow;
+                // 检查暂停级报警 - X12, X13, X14
+                CheckPauseAlarms();
+                
+                // 检查紧急停机报警 - X0, X15, X17, X19
+                CheckEmergencyAlarms();
             }
             catch (Exception ex)
             {
                 _uiLogger.Error(() => Ewan.Resources.LogMessages.ModuleRunError, 
                     "SafetyModule-CheckAlarmInputs", ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 检查暂停级报警 - X12, X13, X14
+        /// </summary>
+        private void CheckPauseAlarms()
+        {
+            // X12 - 料仓1下限位置信号（使用LayeredIO内置上升沿检测）
+            if (ReadRisingEdge(AlarmIOMapping.BIN1_LIMIT_ALARM))
+            {
+                SendPauseCommand("料仓1下限位置异常");
+            }
+
+            // X13 - 料仓2下限位置信号（使用LayeredIO内置上升沿检测）
+            if (ReadRisingEdge(AlarmIOMapping.BIN2_LIMIT_ALARM))
+            {
+                SendPauseCommand("料仓2下限位置异常");
+            }
+
+            // X14 - 料仓3下限位置信号（使用LayeredIO内置上升沿检测）
+            if (ReadRisingEdge(AlarmIOMapping.BIN3_LIMIT_ALARM))
+            {
+                SendPauseCommand("料仓3下限位置异常");
+            }
+        }
+
+        /// <summary>
+        /// 检查紧急停机报警 - X0, X15, X17, X19
+        /// </summary>
+        private void CheckEmergencyAlarms()
+        {
+            // X0 - 急停按钮（使用LayeredIO内置上升沿检测）
+            if (ReadRisingEdge(AlarmIOMapping.EMERGENCY_BUTTON))
+            {
+                SendEmergencyStopCommand("急停按钮被按下");
+            }
+
+            // X15 - 机械手报警信号（使用LayeredIO内置上升沿检测）
+            if (ReadRisingEdge(AlarmIOMapping.ROBOT_ALARM))
+            {
+                SendEmergencyStopCommand("机械手报警信号");
+            }
+
+            // X17 - 下相机报警信号（使用LayeredIO内置上升沿检测）
+            if (ReadRisingEdge(AlarmIOMapping.LOWER_CAMERA_ALARM))
+            {
+                SendEmergencyStopCommand("下相机报警信号");
+            }
+
+            // X19 - 机械臂气缸报警信号（使用LayeredIO内置上升沿检测）
+            if (ReadRisingEdge(AlarmIOMapping.CYLINDER_ALARM))
+            {
+                SendEmergencyStopCommand("机械臂气缸报警信号");
             }
         }
 
@@ -200,6 +231,98 @@ namespace Ewan.Core.Module
             catch
             {
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// 读取输入点位上升沿（使用LayeredIO内置边缘检测）
+        /// </summary>
+        private bool ReadRisingEdge(int index)
+        {
+            try
+            {
+                bool hasEdge = _layeredIO?.ReadRisingBit(index, true) ?? false;
+                if (hasEdge)
+                {
+                    // 立即清除边缘标志，确保报警只处理一次
+                    _layeredIO?.ClearRisingBit(index, true);
+                }
+                return hasEdge;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 清除指定输入点位的上升沿标志
+        /// </summary>
+        private void ClearRisingEdge(int index)
+        {
+            try
+            {
+                _layeredIO?.ClearRisingBit(index, true);
+            }
+            catch
+            {
+                // 忽略清除失败
+            }
+        }
+
+        /// <summary>
+        /// 发送暂停命令（双重消息：系统控制+状态指示）
+        /// </summary>
+        /// <param name="reason">暂停原因</param>
+        private void SendPauseCommand(string reason)
+        {
+            try
+            {
+                // 发送系统控制命令到ProductionLineModule
+                var systemControlMsg = new MessageModel(MsgSubject.SystemControl, SystemControlCommand.Pause);
+                _msgManager.PushMsg(systemControlMsg);
+                
+                // 发送状态指示命令到SystemStatusIndicatorModule
+                var statusIndicatorCommand = new StatusIndicatorCommand(SystemStatus.Warning, reason, false);
+                var statusMsg = new MessageModel(MsgSubject.StatusIndicator, statusIndicatorCommand);
+                _msgManager.PushMsg(statusMsg);
+                
+                // 记录日志
+                _uiLogger.Warn(() => Ewan.Resources.LogMessages.ProcessingCompleted, 
+                    $"系统暂停命令已发送: {reason}");
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ModuleRunError, 
+                    "SafetyModule-SendPauseCommand", ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 发送紧急停机命令（双重消息：系统控制+状态指示）
+        /// </summary>
+        /// <param name="reason">紧急停机原因</param>
+        private void SendEmergencyStopCommand(string reason)
+        {
+            try
+            {
+                // 发送系统控制命令到ProductionLineModule
+                var systemControlMsg = new MessageModel(MsgSubject.SystemControl, SystemControlCommand.EmergencyStop);
+                _msgManager.PushMsg(systemControlMsg);
+                
+                // 发送状态指示命令到SystemStatusIndicatorModule
+                var statusIndicatorCommand = new StatusIndicatorCommand(SystemStatus.Critical, reason, true);
+                var statusMsg = new MessageModel(MsgSubject.StatusIndicator, statusIndicatorCommand);
+                _msgManager.PushMsg(statusMsg);
+                
+                // 记录日志
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingCompleted, 
+                    $"紧急停机命令已发送: {reason}");
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ModuleRunError, 
+                    "SafetyModule-SendEmergencyStopCommand", ex.Message);
             }
         }
 

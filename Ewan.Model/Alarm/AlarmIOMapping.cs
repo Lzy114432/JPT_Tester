@@ -17,10 +17,17 @@ namespace Ewan.Model.Alarm
         public const int MAIN_STOP = 5;      // Y24 - 主停机信号
         public const int EMERGENCY_STOP = 6; // Y25 - 紧急停机信号
         
-        // 报警输入检测点位
-        public const int EMERGENCY_BUTTON = 0;   // X10 - 急停按钮
-        public const int SAFETY_DOOR = 11;        // X11 - 安全门
-        public const int MOTOR_ALARM = 12;        // X12 - 电机报警
-        public const int PRESSURE_LOW = 13;       // X13 - 气压不足
+        // 严重报警输入点位 - 触发紧急停机
+        public const int EMERGENCY_BUTTON = 0;    // X0 - 急停按钮
+        public const int ROBOT_ALARM = 15;        // X15 - 机械手报警信号
+        public const int LOWER_CAMERA_ALARM = 17; // X17 - 下相机报警信号
+        public const int CYLINDER_ALARM = 19;     // X19 - 机械臂气缸报警信号
+
+        // 暂停级报警输入点位 - 触发系统暂停
+        public const int BIN1_LIMIT_ALARM = 12;   // X12 - 料仓1下限位置信号
+        public const int BIN2_LIMIT_ALARM = 13;   // X13 - 料仓2下限位置信号
+        public const int BIN3_LIMIT_ALARM = 14;   // X14 - 料仓3下限位置信号
+
+
     }
 }
