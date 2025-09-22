@@ -1,5 +1,6 @@
 using Ewan.Core.IO;
 using Ewan.Core.Msg;
+using Ewan.Core.Plc;
 using Ewan.Core.ScanCode;
 using Ewan.Model;
 using Ewan.Model.Production;
@@ -28,6 +29,8 @@ namespace Ewan.Core.Module
 
         private LayeredIOManager _ioManager;
 
+        private ModbusRTUManager _modbusRTUManager;
+
         // 扫码位置到达信号X7
         private const int SCAN_POSITION_SIGNAL = 7;
 
@@ -45,16 +48,26 @@ namespace Ewan.Core.Module
         private const int BIN2_SELECT_SIGNAL = 12; // Y12 - 料仓2选择信号
         private const int BIN3_SELECT_SIGNAL = 13; // Y13 - 料仓3选择信号
 
+        // Modbus寄存器地址定义
+        private const string CART_COMPLETION_REGISTER = "153"; // 放入小车完成寄存器地址
+        private const string QR_CODE_START_REGISTER = "180";   // 二维码起始寄存器地址
+        private const string QR_CODE_END_REGISTER = "199";     // 二维码结束寄存器地址
+        private const string QR_CODE_REGISTER_COUNT = "20";    // 二维码寄存器数量(180-199)
+
         private bool _unloadingcomplete = false;
         private int _selectedBin = 1; // 选择的料仓编号 (1, 2, 3)
 
+        // 存储扫码结果
+        private string _lastScannedQrCode = string.Empty;
 
         private bool _ringLineunload = false;
 
         protected override void OnInit()
         {
             _uiLogger.Info(() => Ewan.Resources.LogMessages.ModuleInitialized, "MaterialUnloadingModule");
-            
+
+            _modbusRTUManager = ModbusRTUManager.Instance();
+
             _ioManager = LayeredIOManager.Instance();
 
             _msgManager = new MsgListener(MsgSubject.LoadingandunloadingState, CallBackShow);
@@ -136,6 +149,18 @@ namespace Ewan.Core.Module
             {
                 MsgManager.Instance().UnRegisterListener(_msgManager);
             }
+            if (_msgManager2 != null)
+            {
+                MsgManager.Instance().UnRegisterListener(_msgManager2);
+            }
+            if (_ioManager != null)
+            {
+                _ioManager = null;
+            }
+            if (_modbusRTUManager != null)
+            {
+                _modbusRTUManager = null;
+            }
         }
 
         #region 核心流程处理
@@ -178,13 +203,17 @@ namespace Ewan.Core.Module
         /// </summary>
         private void ProcessScanning()
         {
-            if (DLManager.Instance().TriggerScan() != "")
+            string scannedCode = DLManager.Instance().TriggerScan();
+            if (!string.IsNullOrEmpty(scannedCode))
             {
+                // 保存扫码结果
+                _lastScannedQrCode = scannedCode;
+                
                 _currentState = MaterialUnloadingState.PuttingToCart;
 
                 // 发送放入小车信号
                 _ioManager.LayeredIO.WriteOutBit(PUT_TO_CART_SIGNAL, true);
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "扫码完成，放入小车");
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, $"扫码完成: {scannedCode}，放入小车");
             }
         }
 
@@ -194,16 +223,21 @@ namespace Ewan.Core.Module
         private void ProcessPuttingToCart()
         {
             // 检查小车脉冲信号X11
-            if (_ioManager.LayeredIO.ReadInBit(CART_PULSE_SIGNAL))
+            if (_ioManager.LayeredIO.ReadRisingBit(CART_PULSE_SIGNAL))
             {
                 // 清除放入小车信号
-                _ioManager.LayeredIO.WriteOutBit(PUT_TO_CART_SIGNAL, false);
+                _ioManager.LayeredIO.ClearRisingBit(PUT_TO_CART_SIGNAL);
+
+                // 发送完成信号到Modbus寄存器153
+                SendCartCompletionToModbus();
+                
                 
                 // 重置标志并返回空闲状态
                 _unloadingRequested = false;
+                _lastScannedQrCode = string.Empty; // 清空扫码结果
                 _currentState = MaterialUnloadingState.Idle;
                 
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "物料已放入小车，流程完成");
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "物料已放入小车，完成信号已发送到Modbus");
             }
         }
 
@@ -325,8 +359,23 @@ namespace Ewan.Core.Module
             _ringLineunload = data.IsLoading;
         }
 
+        /// <summary>
+        /// 发送放入小车完成信号到Modbus寄存器153
+        /// </summary>
+        private void SendCartCompletionToModbus()
+        {
+            try
+            {
+                // 发送完成信号值为1到寄存器153
+                _modbusRTUManager.WriteAny(CART_COMPLETION_REGISTER, 1);
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, $"放入小车完成信号已发送到寄存器{CART_COMPLETION_REGISTER}");
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, $"发送完成信号到Modbus失败: {ex.Message}");
+            }
+        }
 
-        
 
         #endregion
     }

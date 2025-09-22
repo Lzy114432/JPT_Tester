@@ -50,6 +50,10 @@ namespace Ewan.Core.Module
             
             _ioManager = LayeredIOManager.Instance();
 
+            // 暂时
+
+            _ioManager.LayeredIO.WriteOutBit(14, true);  // 默认下料，后续环线线根据判断
+
             // 初始化状态
             lock (_stateLock)
             {
@@ -75,7 +79,7 @@ namespace Ewan.Core.Module
                     {
                         case MaterialLoadingState.Idle:
                             // 在空闲状态检测料片
-                            if (_ioManager.LayeredIO.ReadInBit(MATERIAL_DETECT_SIGNAL))
+                            if (_ioManager.LayeredIO.ReadInBit(SCAN_POSITION_SIGNAL))
                             {
                                 _currentState = MaterialLoadingState.MaterialDetected;
                                 _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "检测到料片，准备取料");
@@ -134,9 +138,9 @@ namespace Ewan.Core.Module
         private void ProcessMaterialDetected()
         {
             // 触发取料信号Y14
-            _ioManager.LayeredIO.WriteOutBit(PICK_MATERIAL_SIGNAL, true);
+            //_ioManager.LayeredIO.WriteOutBit(PICK_MATERIAL_SIGNAL, true);
             _currentState = MaterialLoadingState.PickingMaterial;
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "开始取料到扫码区");
+            //_uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "开始取料到扫码区");
         }
 
         /// <summary>
@@ -144,14 +148,14 @@ namespace Ewan.Core.Module
         /// </summary>
         private void ProcessPickingMaterial()
         {
-            // 在取料过程中检测是否到达扫码位置X7
-            if (_ioManager.LayeredIO.ReadInBit(SCAN_POSITION_SIGNAL))
-            {
-                // 关闭取料信号
-                _ioManager.LayeredIO.WriteOutBit(PICK_MATERIAL_SIGNAL, false);
+            //// 在取料过程中检测是否到达扫码位置X7
+            //if (_ioManager.LayeredIO.ReadInBit(SCAN_POSITION_SIGNAL))
+            //{
+            //    // 关闭取料信号
+            //    _ioManager.LayeredIO.WriteOutBit(PICK_MATERIAL_SIGNAL, false);
                 _currentState = MaterialLoadingState.AtScanPosition;
                 _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "取料完成，到达扫码位置，开始扫码流程");
-            }
+            //}
         }
 
         /// <summary>
@@ -160,10 +164,14 @@ namespace Ewan.Core.Module
         private void ProcessAtScanPosition()
         {
             DLManager.Instance().TriggerScan(); // 触发扫码,调试模式不需要结果
-            //if(DLManager.Instance().TriggerScan() != "")
-            //{
+                                                //if(DLManager.Instance().TriggerScan() != "")
+                                                //{
+
+            _ioManager.LayeredIO.WriteOutBit(9, true);  // 扫码完成
+
+
             // 根据扫码信息指定目标料仓 ，现在暂时为1
-                _ioManager.LayeredIO.WriteOutBit(BIN1_SELECT_SIGNAL,true);
+            _ioManager.LayeredIO.WriteOutBit(BIN1_SELECT_SIGNAL,true);
 
                 // 触发放入料仓信号
                 _ioManager.LayeredIO.WriteOutBit(TRIGGER_LOADING_SIGNAL,true);
@@ -187,7 +195,9 @@ namespace Ewan.Core.Module
                 // 下料完成，清除信号
                 _ioManager.LayeredIO.WriteOutBit(TRIGGER_LOADING_SIGNAL, false);
                 _ioManager.LayeredIO.WriteOutBit(BIN1_SELECT_SIGNAL, false);
-                
+
+                _ioManager.LayeredIO.WriteOutBit(9, false);  // 扫码完成
+
                 // 重置标志并返回空闲状态
                 SetLoadingCompleted(false);
                 _currentState = MaterialLoadingState.Idle;

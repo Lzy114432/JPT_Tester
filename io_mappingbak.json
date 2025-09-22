@@ -1,0 +1,454 @@
+{
+  "HardwareType": "SMC606IO",
+  "ConnectionString": "192.168.5.11",
+  "InputMappings": [
+    {
+      "LogicalIndex": 0,
+      "PhysicalIndex": 0,
+      "Name": "急停(常闭)",
+      "IsNormallyOpen": false
+    },
+    {
+      "LogicalIndex": 1,
+      "PhysicalIndex": 1,
+      "Name": "停止",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 2,
+      "PhysicalIndex": 2,
+      "Name": "启动",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 3,
+      "PhysicalIndex": 3,
+      "Name": "检测到料片信号",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 4,
+      "PhysicalIndex": 4,
+      "Name": "机械臂抓取完成信号",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 5,
+      "PhysicalIndex": 5,
+      "Name": "下相机精定位完成信号",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 6,
+      "PhysicalIndex": 6,
+      "Name": "机械臂定位完成信号",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 7,
+      "PhysicalIndex": 7,
+      "Name": "移至扫码区到位信号",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 8,
+      "PhysicalIndex": 8,
+      "Name": "机械臂放置完成信号",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 9,
+      "PhysicalIndex": 9,
+      "Name": "初始化信号",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 10,
+      "PhysicalIndex": 10,
+      "Name": "机械臂取料完成信号",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 11,
+      "PhysicalIndex": 11,
+      "Name": "放入小车完成信号",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 12,
+      "PhysicalIndex": 12,
+      "Name": "料仓1下限位置信号(常闭)",
+      "IsNormallyOpen": false
+    },
+    {
+      "LogicalIndex": 13,
+      "PhysicalIndex": 13,
+      "Name": "料仓2下限位置信号(常闭)",
+      "IsNormallyOpen": false
+    },
+    {
+      "LogicalIndex": 14,
+      "PhysicalIndex": 14,
+      "Name": "料仓3下限位置信号(常闭)",
+      "IsNormallyOpen": false
+    },
+    {
+      "LogicalIndex": 15,
+      "PhysicalIndex": 15,
+      "Name": "机械手报警信号",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 16,
+      "PhysicalIndex": 16,
+      "Name": "X16",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 17,
+      "PhysicalIndex": 17,
+      "Name": "下相机报警信号",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 18,
+      "PhysicalIndex": 18,
+      "Name": "X18",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 19,
+      "PhysicalIndex": 19,
+      "Name": "机械臂气缸报警信号",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 20,
+      "PhysicalIndex": 20,
+      "Name": "机械手忙碌状态信号",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 21,
+      "PhysicalIndex": 21,
+      "Name": "X21",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 22,
+      "PhysicalIndex": 22,
+      "Name": "X22",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 23,
+      "PhysicalIndex": 23,
+      "Name": "X23",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 24,
+      "PhysicalIndex": 24,
+      "Name": "前门电磁感应信号",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 25,
+      "PhysicalIndex": 25,
+      "Name": "后门电磁感应信号",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 26,
+      "PhysicalIndex": 26,
+      "Name": "侧门电磁感应信号",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 27,
+      "PhysicalIndex": 27,
+      "Name": "料仓1有料感应",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 28,
+      "PhysicalIndex": 28,
+      "Name": "料仓2有料感应",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 29,
+      "PhysicalIndex": 29,
+      "Name": "料仓3有料感应",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 30,
+      "PhysicalIndex": 30,
+      "Name": "X30",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 31,
+      "PhysicalIndex": 31,
+      "Name": "X31",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 32,
+      "PhysicalIndex": 32,
+      "Name": "X32",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 33,
+      "PhysicalIndex": 33,
+      "Name": "X33",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 34,
+      "PhysicalIndex": 34,
+      "Name": "X34",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 35,
+      "PhysicalIndex": 35,
+      "Name": "X35",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 36,
+      "PhysicalIndex": 36,
+      "Name": "X36",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 37,
+      "PhysicalIndex": 37,
+      "Name": "X37",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 38,
+      "PhysicalIndex": 38,
+      "Name": "X38",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 39,
+      "PhysicalIndex": 39,
+      "Name": "X39",
+      "IsNormallyOpen": true
+    }
+  ],
+  "OutputMappings": [
+    {
+      "LogicalIndex": 0,
+      "PhysicalIndex": 0,
+      "Name": "绿灯",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 1,
+      "PhysicalIndex": 1,
+      "Name": "黄灯",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 2,
+      "PhysicalIndex": 2,
+      "Name": "红灯",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 3,
+      "PhysicalIndex": 3,
+      "Name": "蜂鸣器",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 4,
+      "PhysicalIndex": 4,
+      "Name": "主控启动信号",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 5,
+      "PhysicalIndex": 5,
+      "Name": "开始",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 6,
+      "PhysicalIndex": 6,
+      "Name": "暂停",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 7,
+      "PhysicalIndex": 7,
+      "Name": "复位",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 8,
+      "PhysicalIndex": 8,
+      "Name": "Y8",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 9,
+      "PhysicalIndex": 9,
+      "Name": "发送扫码完成信号",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 10,
+      "PhysicalIndex": 10,
+      "Name": "触发机械手放置料仓",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 11,
+      "PhysicalIndex": 11,
+      "Name": "料仓1选择信号",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 12,
+      "PhysicalIndex": 12,
+      "Name": "料仓2选择信号",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 13,
+      "PhysicalIndex": 13,
+      "Name": "料仓3选择信号",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 14,
+      "PhysicalIndex": 14,
+      "Name": "Y14",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 15,
+      "PhysicalIndex": 15,
+      "Name": "发送取料指令",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 16,
+      "PhysicalIndex": 16,
+      "Name": "Y16",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 17,
+      "PhysicalIndex": 17,
+      "Name": "发送放入小车指令",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 18,
+      "PhysicalIndex": 18,
+      "Name": "料仓1定位电磁阀",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 19,
+      "PhysicalIndex": 19,
+      "Name": "料仓1吹气电磁阀",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 20,
+      "PhysicalIndex": 20,
+      "Name": "料仓2定位电磁阀",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 21,
+      "PhysicalIndex": 21,
+      "Name": "料仓2吹气电磁阀",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 22,
+      "PhysicalIndex": 22,
+      "Name": "料仓定3位电磁阀",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 23,
+      "PhysicalIndex": 23,
+      "Name": "料仓吹3气电磁阀",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 24,
+      "PhysicalIndex": 24,
+      "Name": "Y24",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 25,
+      "PhysicalIndex": 25,
+      "Name": "清除报警",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 26,
+      "PhysicalIndex": 26,
+      "Name": "Y26",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 27,
+      "PhysicalIndex": 27,
+      "Name": "Y27",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 28,
+      "PhysicalIndex": 28,
+      "Name": "Y28",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 29,
+      "PhysicalIndex": 29,
+      "Name": "Y29",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 30,
+      "PhysicalIndex": 30,
+      "Name": "Y30",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 31,
+      "PhysicalIndex": 31,
+      "Name": "Y31",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 32,
+      "PhysicalIndex": 32,
+      "Name": "Y32",
+      "IsNormallyOpen": true
+    },
+    {
+      "LogicalIndex": 33,
+      "PhysicalIndex": 33,
+      "Name": "Y33",
+      "IsNormallyOpen": true
+    }
+  ],
+  "SimulatedInputs": {},
+  "SaveTime": "0001-01-01T00:00:00"
+}
