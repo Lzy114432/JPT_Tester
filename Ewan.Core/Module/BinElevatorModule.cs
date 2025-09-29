@@ -352,11 +352,11 @@ namespace Ewan.Core.Module
 
                     
                 case BinElevatorState.Lowered:
-                    // 正在下降中，检查是否到达感应位置
-                    if (ReadBinSensor(binNumber))
+                    // 正在下降中，检查是否脱离感应位置
+                    if (!ReadBinSensor(binNumber))
                     {
                         StopBinAxis(binNumber, axisId);
-                        
+
                         // 标记该料仓初始化完成
                         switch (binNumber)
                         {
@@ -376,13 +376,14 @@ namespace Ewan.Core.Module
                         {
                             _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, 
                                 "所有料仓初始化完成，切换到停止模式");
-                            
+
                             // 重置标志
                             _bin1ReachedSensor = false;
                             _bin2ReachedSensor = false;
                             _bin3ReachedSensor = false;
-                            currentState = BinElevatorState.Stopped;
                         }
+
+                        currentState = BinElevatorState.Stopped;
                     }
                     break;
             }
@@ -474,7 +475,7 @@ namespace Ewan.Core.Module
 
                 case BinElevatorState.Lowered:
                     // 正在下降中，检查是否脱离感应位置
-                    if (ReadBinSensor(binNumber))
+                    if (!ReadBinSensor(binNumber))
                     {
                         StopBinAxis(binNumber, axisId);
                         currentState = BinElevatorState.Stopped;
