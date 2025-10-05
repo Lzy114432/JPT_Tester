@@ -199,6 +199,31 @@ namespace Ewan.Core.Module
 
         #endregion
 
+        #region 公共方法
+
+        /// <summary>
+        /// 执行料仓升降硬件初始化（公共方法，供外部调用）
+        /// 将模式设置为Init，触发料仓初始化流程
+        /// </summary>
+        public void PerformHardwareInitialization()
+        {
+            lock (_stateLock)
+            {
+                _binElevatorMode = BinElevatorMode.Init;
+                _bin1State = BinElevatorState.Unknown;
+                _bin2State = BinElevatorState.Unknown;
+                _bin3State = BinElevatorState.Unknown;
+
+                _bin1ReachedSensor = false;
+                _bin2ReachedSensor = false;
+                _bin3ReachedSensor = false;
+
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "料仓升降硬件初始化开始");
+            }
+        }
+
+        #endregion
+
         #region 核心升降控制逻辑
 
         /// <summary>

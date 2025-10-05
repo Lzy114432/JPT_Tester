@@ -11,6 +11,11 @@ namespace Ewan.BusinessBonding
     public class SystemControlService : BaseManager<SystemControlService>
     {
 
+        public void InitializeSystem()
+        {
+            Push(SystemControlCommand.Initialize);
+            _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "系统初始化命令已发送");
+        }
 
         public void StartSystem()
         {

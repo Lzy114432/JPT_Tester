@@ -2,6 +2,7 @@ using Ewan.Core.IO;
 using Ewan.Core.Msg;
 using Ewan.Core.ScanCode;
 using Ewan.Model.Production;
+using Ewan.Model.System;
 using System;
 using System.Threading;
 
@@ -62,10 +63,7 @@ namespace Ewan.Core.Module
 
             _ioManager = LayeredIOManager.Instance();
 
-            // 执行上料机初始化序列
-            PerformInitialization();
-
-            // 初始化状态
+            // 初始化状态（不执行硬件初始化，等待外部调用）
             lock (_stateLock)
             {
                 _currentState = MaterialLoadingState.Idle;
@@ -74,14 +72,28 @@ namespace Ewan.Core.Module
         }
 
         /// <summary>
-        /// 执行上料机初始化序列
+        /// 执行上料机硬件初始化序列（公共方法，供外部调用）
         /// 按照顺序：OUT6(true)->等0.5s->OUT6(false)->OUT16(true)->等0.5s->OUT5(true)->等0.5s->OUT5(false)->OUT14(true)
+        /// 初始化过程中绿灯闪烁，完成后黄灯闪烁
+        /// </summary>
+        public void PerformHardwareInitialization()
+        {
+            PerformInitialization();
+        }
+
+        /// <summary>
+        /// 执行上料机初始化序列（内部实现）
+        /// 按照顺序：OUT6(true)->等0.5s->OUT6(false)->OUT16(true)->等0.5s->OUT5(true)->等0.5s->OUT5(false)->OUT14(true)
+        /// 初始化过程中绿灯闪烁，完成后黄灯闪烁
         /// </summary>
         private void PerformInitialization()
         {
             try
             {
                 _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "上料机初始化开始");
+
+                // 发送初始化中状态 - 绿灯闪烁
+                SendStatusMessage(SystemStatus.Running, "上料机初始化中");
 
                 // 步骤1: OUT_STOP置位true（停止信号）
                 _ioManager.LayeredIO.WriteOutBit(OUT_STOP, true);
@@ -111,12 +123,19 @@ namespace Ewan.Core.Module
                 _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "OUT_ALLOW_PICK置位true");
 
                 _initialized = true;
+
+                // 发送初始化完成状态 - 黄灯闪烁
+                SendStatusMessage(SystemStatus.Warning, "上料机初始化完成");
+
                 _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "上料机初始化完成");
             }
             catch (Exception ex)
             {
                 _uiLogger.Error(() => Ewan.Resources.LogMessages.ModuleRunError, "上料机初始化失败: " + ex.Message);
                 _initialized = false;
+
+                // 发送初始化失败状态 - 红灯闪烁
+                SendStatusMessage(SystemStatus.Alarm, "上料机初始化失败: " + ex.Message);
             }
         }
 
@@ -268,7 +287,27 @@ namespace Ewan.Core.Module
 
         #region 公共方法
 
-      
+        /// <summary>
+        /// 发送系统状态消息到状态指示器模块
+        /// </summary>
+        private void SendStatusMessage(SystemStatus status, string description, bool isCritical = false)
+        {
+            try
+            {
+                var command = new StatusIndicatorCommand(status, description, isCritical);
+                var message = new MessageModel(MsgSubject.StatusIndicator, command);
+
+                MsgManager.Instance().PushMsg(message);
+
+                _uiLogger.Debug(() => $"发送状态消息: {status} - {description}");
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ModuleRunError,
+                    "MaterialLoadingModule-SendStatusMessage", ex.Message);
+            }
+        }
+
         /// <summary>
         /// 停止装载流程
         /// </summary>

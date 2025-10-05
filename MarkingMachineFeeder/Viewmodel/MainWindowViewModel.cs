@@ -1040,19 +1040,31 @@ namespace MarkingMachineFeeder.Viewmodel
         
         private void ExecuteSystemReset()
         {
-            // 复位系统状态
-            SystemRunningStatus = "Green";
-            SystemRunningIsOn = true;
-            EmergencyStopStatus = "Gray";
-            EmergencyStopIsOn = false;
-            AlarmStatus = "Gray";
-            AlarmIsOn = false;
-            PauseStatus = "Gray";
-            PauseIsOn = false;
-            ProductionModeText = "自动模式";
-            ProductionModeColor = "Blue";
-            
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.TestLogClicked); // 使用现有的日志消息作为占位符
+            try
+            {
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "用户触发系统复位（硬件初始化）");
+
+                // 调用系统控制服务执行硬件初始化
+                _systemControlService.InitializeSystem();
+
+                // 复位系统状态
+                SystemRunningStatus = "Green";
+                SystemRunningIsOn = true;
+                EmergencyStopStatus = "Gray";
+                EmergencyStopIsOn = false;
+                AlarmStatus = "Gray";
+                AlarmIsOn = false;
+                PauseStatus = "Gray";
+                PauseIsOn = false;
+                ProductionModeText = "自动模式";
+                ProductionModeColor = "Blue";
+
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "系统复位完成");
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "系统复位", ex.Message);
+            }
         }
         
         private void ExecuteEmergencyStop()

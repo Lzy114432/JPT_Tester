@@ -6,6 +6,11 @@
     public enum SystemControlCommand
     {
         /// <summary>
+        /// 硬件初始化
+        /// </summary>
+        Initialize,
+
+        /// <summary>
         /// 启动系统
         /// </summary>
         Start,

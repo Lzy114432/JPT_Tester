@@ -19,6 +19,7 @@ namespace Ewan.Core.Module
         
         private int _scanInterval = 100; // 扫描间隔，毫秒
         private bool _systemReady = false;
+        private bool _initialized = false; // 硬件初始化标志
         private bool _isRunning = false; // 控制OnRun是否进行循环的变量
         private bool _isPaused = false; // 暂停状态标志
         private readonly object _stateLock = new object();
@@ -125,10 +126,40 @@ namespace Ewan.Core.Module
         #region 公共方法
 
         /// <summary>
-        /// 启动生产线运行
+        /// 执行硬件初始化（独立命令）
+        /// </summary>
+        public void PerformHardwareInitialization()
+        {
+            try
+            {
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "生产线硬件初始化开始");
+
+                _materialLoading?.PerformHardwareInitialization();
+                _binElevator?.PerformHardwareInitialization();
+
+                _initialized = true;
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "生产线硬件初始化完成");
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
+                    "生产线硬件初始化", ex.Message);
+                _initialized = false;
+            }
+        }
+
+        /// <summary>
+        /// 启动生产线运行（独立命令）
         /// </summary>
         public void StartProduction()
         {
+            if (!_initialized)
+            {
+                _uiLogger.Warn(() => Ewan.Resources.LogMessages.ProcessingError,
+                    "生产线未初始化", "请先执行硬件初始化");
+                return;
+            }
+
             _isRunning = true;
             _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "生产线启动");
         }
@@ -264,6 +295,9 @@ namespace Ewan.Core.Module
                 {
                     switch (command)
                     {
+                        case SystemControlCommand.Initialize:
+                            PerformHardwareInitialization();
+                            break;
                         case SystemControlCommand.Start:
                             StartProduction();
                             break;
@@ -280,7 +314,7 @@ namespace Ewan.Core.Module
                             ResumeProduction();
                             break;
                         default:
-                            _uiLogger.Warn(() => Ewan.Resources.LogMessages.ProcessingError, 
+                            _uiLogger.Warn(() => Ewan.Resources.LogMessages.ProcessingError,
                                 "未知系统控制命令", command.ToString());
                             break;
                     }
