@@ -19,20 +19,32 @@ namespace Ewan.Core.Module
         private bool _emergencyStopTriggered = false;
         private bool _loadingRequested = false;
         private bool _stopRequested = false;
-        
+        private bool _initialized = false; // 初始化标志
+
         // 共享状态（用于与其他模块通信）
         private ProductionLineSharedState _sharedState;
 
         private LayeredIOManager _ioManager;
+
+        // 输入信号常量
         private const int MATERIAL_DETECT_SIGNAL = 3;      // 料片检测信号X3
-        private const int PICK_MATERIAL_SIGNAL = 14;       // 触发取料信号Y14
         private const int SCAN_POSITION_SIGNAL = 7;         // 到达扫码位置信号X7
-        private const int TRIGGER_LOADING_SIGNAL = 10;         // 触发放入料仓信号Y10
+
+        // 输出信号常量 - 初始化相关
+        private const int OUT_START = 5;                   // OUT5 - 开始信号
+        private const int OUT_STOP = 6;                    // OUT6 - 停止信号
+        private const int OUT_ALLOW_PICK = 14;             // OUT14 - 触发机械手皮带线允许取料
+        private const int OUT_SEND_PICK_CMD = 15;          // OUT15 - 发送取料指令
+        private const int OUT_HIGH_SPEED = 16;             // OUT16 - 高速运行
+
+        // 输出信号常量 - 流程控制
+        private const int OUT_SCAN_COMPLETE = 9;           // OUT9 - 发送扫码完成信号
+        private const int TRIGGER_LOADING_SIGNAL = 10;     // OUT10 - 触发放入料仓信号
 
         // 料仓选择信号IO配置
-        private const int BIN1_SELECT_SIGNAL = 11; // Y11 - 料仓1选择信号
-        private const int BIN2_SELECT_SIGNAL = 12; // Y12 - 料仓2选择信号
-        private const int BIN3_SELECT_SIGNAL = 13; // Y13 - 料仓3选择信号
+        private const int BIN1_SELECT_SIGNAL = 11;         // OUT11 - 料仓1选择信号
+        private const int BIN2_SELECT_SIGNAL = 12;         // OUT12 - 料仓2选择信号
+        private const int BIN3_SELECT_SIGNAL = 13;         // OUT13 - 料仓3选择信号
 
         
         /// <summary>
@@ -47,18 +59,64 @@ namespace Ewan.Core.Module
         protected override void OnInit()
         {
             _uiLogger.Info(() => Ewan.Resources.LogMessages.ModuleInitialized, "MaterialLoadingModule");
-            
+
             _ioManager = LayeredIOManager.Instance();
 
-            // 暂时
-
-            _ioManager.LayeredIO.WriteOutBit(14, true);  // 默认下料，后续环线线根据判断
+            // 执行上料机初始化序列
+            PerformInitialization();
 
             // 初始化状态
             lock (_stateLock)
             {
                 _currentState = MaterialLoadingState.Idle;
                 _emergencyStopTriggered = false;
+            }
+        }
+
+        /// <summary>
+        /// 执行上料机初始化序列
+        /// 按照顺序：OUT6(true)->等0.5s->OUT6(false)->OUT16(true)->等0.5s->OUT5(true)->等0.5s->OUT5(false)->OUT14(true)
+        /// </summary>
+        private void PerformInitialization()
+        {
+            try
+            {
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "上料机初始化开始");
+
+                // 步骤1: OUT_STOP置位true（停止信号）
+                _ioManager.LayeredIO.WriteOutBit(OUT_STOP, true);
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "OUT_STOP置位true");
+                Thread.Sleep(500);
+
+                // 步骤2: OUT_STOP置位false
+                _ioManager.LayeredIO.WriteOutBit(OUT_STOP, false);
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "OUT_STOP置位false");
+
+                // 步骤3: OUT_HIGH_SPEED置位true（高速运行）
+                _ioManager.LayeredIO.WriteOutBit(OUT_HIGH_SPEED, true);
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "OUT_HIGH_SPEED置位true");
+                Thread.Sleep(500);
+
+                // 步骤4: OUT_START置位true（开始信号）
+                _ioManager.LayeredIO.WriteOutBit(OUT_START, true);
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "OUT_START置位true");
+                Thread.Sleep(500);
+
+                // 步骤5: OUT_START置位false
+                _ioManager.LayeredIO.WriteOutBit(OUT_START, false);
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "OUT_START置位false");
+
+                // 步骤6: OUT_ALLOW_PICK置位true（触发机械手皮带线允许取料）
+                _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, true);
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "OUT_ALLOW_PICK置位true");
+
+                _initialized = true;
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "上料机初始化完成");
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ModuleRunError, "上料机初始化失败: " + ex.Message);
+                _initialized = false;
             }
         }
 
@@ -167,14 +225,14 @@ namespace Ewan.Core.Module
                                                 //if(DLManager.Instance().TriggerScan() != "")
                                                 //{
 
-            _ioManager.LayeredIO.WriteOutBit(9, true);  // 扫码完成
+            _ioManager.LayeredIO.WriteOutBit(OUT_SCAN_COMPLETE, true);  // 扫码完成
 
 
             // 根据扫码信息指定目标料仓 ，现在暂时为1
-            _ioManager.LayeredIO.WriteOutBit(BIN1_SELECT_SIGNAL,true);
+            _ioManager.LayeredIO.WriteOutBit(BIN1_SELECT_SIGNAL, true);
 
                 // 触发放入料仓信号
-                _ioManager.LayeredIO.WriteOutBit(TRIGGER_LOADING_SIGNAL,true);
+                _ioManager.LayeredIO.WriteOutBit(TRIGGER_LOADING_SIGNAL, true);
                 
                 // 转换到移动到料仓状态
                 _currentState = MaterialLoadingState.MovingToBinByScanInfo;
@@ -196,7 +254,7 @@ namespace Ewan.Core.Module
                 _ioManager.LayeredIO.WriteOutBit(TRIGGER_LOADING_SIGNAL, false);
                 _ioManager.LayeredIO.WriteOutBit(BIN1_SELECT_SIGNAL, false);
 
-                _ioManager.LayeredIO.WriteOutBit(9, false);  // 扫码完成
+                _ioManager.LayeredIO.WriteOutBit(OUT_SCAN_COMPLETE, false);  // 扫码完成
 
                 // 重置标志并返回空闲状态
                 SetLoadingCompleted(false);
