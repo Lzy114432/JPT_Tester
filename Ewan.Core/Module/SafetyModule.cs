@@ -37,8 +37,18 @@ namespace Ewan.Core.Module
         // private bool _lastBin1LimitAlarmState = false;
         // private bool _lastBin2LimitAlarmState = false;
         // private bool _lastBin3LimitAlarmState = false;
-        private int _alarmCheckInterval = 5; // 报警检查计数器（5次同步检查一次报警）
+        private int _alarmCheckInterval = 2; // 报警检查计数器（2次同步检查一次报警，约20ms）- 优化：减少边沿遗漏风险
         private int _alarmCheckCounter = 0;
+
+        // 报警防抖机制 - 避免同一报警在短时间内重复触发，防止日志刷屏
+        private DateTime _lastEmergencyButtonTime = DateTime.MinValue;
+        private DateTime _lastRobotAlarmTime = DateTime.MinValue;
+        private DateTime _lastLowerCameraAlarmTime = DateTime.MinValue;
+        private DateTime _lastCylinderAlarmTime = DateTime.MinValue;
+        private DateTime _lastBin1LimitTime = DateTime.MinValue;
+        private DateTime _lastBin2LimitTime = DateTime.MinValue;
+        private DateTime _lastBin3LimitTime = DateTime.MinValue;
+        private TimeSpan _alarmDebounceTime = TimeSpan.FromMilliseconds(500); // 报警防抖时间500ms
 
         #endregion
 
@@ -170,22 +180,39 @@ namespace Ewan.Core.Module
         /// </summary>
         private void CheckPauseAlarms()
         {
-            // X12 - 料仓1下限位置信号（使用LayeredIO内置上升沿检测）
+            // X12 - 料仓1下限位置信号（使用LayeredIO内置上升沿检测 + 防抖）
             if (ReadRisingEdge(AlarmIOMapping.BIN1_LIMIT_ALARM))
             {
-                SendPauseCommand("料仓1下限位置异常");
+                // 无论是否通过防抖，都清除边沿标志，避免重复检测
+                ClearRisingEdge(AlarmIOMapping.BIN1_LIMIT_ALARM);
+
+                // 防抖检查通过才发送命令和日志
+                if (CanTriggerAlarm(ref _lastBin1LimitTime))
+                {
+                    SendPauseCommand("料仓1下限位置异常");
+                }
             }
 
-            // X13 - 料仓2下限位置信号（使用LayeredIO内置上升沿检测）
+            // X13 - 料仓2下限位置信号（使用LayeredIO内置上升沿检测 + 防抖）
             if (ReadRisingEdge(AlarmIOMapping.BIN2_LIMIT_ALARM))
             {
-                SendPauseCommand("料仓2下限位置异常");
+                ClearRisingEdge(AlarmIOMapping.BIN2_LIMIT_ALARM);
+
+                if (CanTriggerAlarm(ref _lastBin2LimitTime))
+                {
+                    SendPauseCommand("料仓2下限位置异常");
+                }
             }
 
-            // X14 - 料仓3下限位置信号（使用LayeredIO内置上升沿检测）
+            // X14 - 料仓3下限位置信号（使用LayeredIO内置上升沿检测 + 防抖）
             if (ReadRisingEdge(AlarmIOMapping.BIN3_LIMIT_ALARM))
             {
-                SendPauseCommand("料仓3下限位置异常");
+                ClearRisingEdge(AlarmIOMapping.BIN3_LIMIT_ALARM);
+
+                if (CanTriggerAlarm(ref _lastBin3LimitTime))
+                {
+                    SendPauseCommand("料仓3下限位置异常");
+                }
             }
         }
 
@@ -194,28 +221,50 @@ namespace Ewan.Core.Module
         /// </summary>
         private void CheckEmergencyAlarms()
         {
-            // X0 - 急停按钮（使用LayeredIO内置上升沿检测）
+            // X0 - 急停按钮（使用LayeredIO内置上升沿检测 + 防抖）
             if (ReadRisingEdge(AlarmIOMapping.EMERGENCY_BUTTON))
             {
-                SendEmergencyStopCommand("急停按钮被按下");
+                // 无论是否通过防抖，都清除边沿标志，避免重复检测
+                ClearRisingEdge(AlarmIOMapping.EMERGENCY_BUTTON);
+
+                // 防抖检查通过才发送命令和日志
+                if (CanTriggerAlarm(ref _lastEmergencyButtonTime))
+                {
+                    SendEmergencyStopCommand("急停按钮被按下");
+                }
             }
 
-            // X15 - 机械手报警信号（使用LayeredIO内置上升沿检测）
+            // X15 - 机械手报警信号（使用LayeredIO内置上升沿检测 + 防抖）
             if (ReadRisingEdge(AlarmIOMapping.ROBOT_ALARM))
             {
-                SendEmergencyStopCommand("机械手报警信号");
+                ClearRisingEdge(AlarmIOMapping.ROBOT_ALARM);
+
+                if (CanTriggerAlarm(ref _lastRobotAlarmTime))
+                {
+                    SendEmergencyStopCommand("机械手报警信号");
+                }
             }
 
-            // X17 - 下相机报警信号（使用LayeredIO内置上升沿检测）
+            // X17 - 下相机报警信号（使用LayeredIO内置上升沿检测 + 防抖）
             if (ReadRisingEdge(AlarmIOMapping.LOWER_CAMERA_ALARM))
             {
-                SendEmergencyStopCommand("下相机报警信号");
+                ClearRisingEdge(AlarmIOMapping.LOWER_CAMERA_ALARM);
+
+                if (CanTriggerAlarm(ref _lastLowerCameraAlarmTime))
+                {
+                    SendEmergencyStopCommand("下相机报警信号");
+                }
             }
 
-            // X19 - 机械臂气缸报警信号（使用LayeredIO内置上升沿检测）
+            // X19 - 机械臂气缸报警信号（使用LayeredIO内置上升沿检测 + 防抖）
             if (ReadRisingEdge(AlarmIOMapping.CYLINDER_ALARM))
             {
-                SendEmergencyStopCommand("机械臂气缸报警信号");
+                ClearRisingEdge(AlarmIOMapping.CYLINDER_ALARM);
+
+                if (CanTriggerAlarm(ref _lastCylinderAlarmTime))
+                {
+                    SendEmergencyStopCommand("机械臂气缸报警信号");
+                }
             }
         }
 
@@ -236,18 +285,14 @@ namespace Ewan.Core.Module
 
         /// <summary>
         /// 读取输入点位上升沿（使用LayeredIO内置边缘检测）
+        /// 注意：不立即清除边沿标志，由调用方在处理后清除，避免边沿遗漏
         /// </summary>
         private bool ReadRisingEdge(int index)
         {
             try
             {
-                bool hasEdge = _layeredIO?.ReadRisingBit(index, true) ?? false;
-                if (hasEdge)
-                {
-                    // 立即清除边缘标志，确保报警只处理一次
-                    _layeredIO?.ClearRisingBit(index, true);
-                }
-                return hasEdge;
+                // 只读取边沿状态，不清除标志
+                return _layeredIO?.ReadRisingBit(index, true) ?? false;
             }
             catch
             {
@@ -268,6 +313,27 @@ namespace Ewan.Core.Module
             {
                 // 忽略清除失败
             }
+        }
+
+        /// <summary>
+        /// 检查是否可以触发报警（防抖机制）
+        /// </summary>
+        /// <param name="lastTriggerTime">上次触发时间的引用</param>
+        /// <returns>true=可以触发，false=在防抖时间内，忽略</returns>
+        private bool CanTriggerAlarm(ref DateTime lastTriggerTime)
+        {
+            DateTime now = DateTime.Now;
+            TimeSpan elapsed = now - lastTriggerTime;
+
+            // 如果距离上次触发超过防抖时间，允许触发
+            if (elapsed >= _alarmDebounceTime)
+            {
+                lastTriggerTime = now; // 更新触发时间
+                return true;
+            }
+
+            // 在防抖时间内，忽略此次触发
+            return false;
         }
 
         /// <summary>
