@@ -63,6 +63,7 @@
     <Compile Include="IOController.cs" />
     <Compile Include="MainController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RobotController.cs" />
     <Compile Include="StreamController.cs" />
     <Compile Include="SystemControlService.cs" />
   </ItemGroup>

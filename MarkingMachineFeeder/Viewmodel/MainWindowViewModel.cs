@@ -17,6 +17,7 @@ namespace MarkingMachineFeeder.Viewmodel
         private readonly CultureManager _cultureManager;
         private readonly SecurityManager _securityManager;
         private readonly SystemControlService _systemControlService;
+        private readonly RobotController _robotController;
 
         private string _title = "MarkingMachineFeeder";
         private string _languageMenuHeader = "Language";
@@ -295,15 +296,15 @@ namespace MarkingMachineFeeder.Viewmodel
         public DelegateCommand OUT13_Bin3SelectCommand { get; }
         public DelegateCommand OUT17_InsertCartCommand { get; }
         
-        // 新增机械手操作命令 - 对应Y10,Y11,Y12,Y13,Y14,Y15,Y17
-        public DelegateCommand Y14_GrabToScanCommand { get; }       // 抓上物料皮带到扫码区
-        public DelegateCommand Y10_PlaceToBin1Command { get; }      // 放置到料仓1 (Y10+Y11)
-        public DelegateCommand Y10_PlaceToBin2Command { get; }      // 放置到料仓2 (Y10+Y12)
-        public DelegateCommand Y10_PlaceToBin3Command { get; }      // 放置到料仓3 (Y10+Y13)
-        public DelegateCommand Y15_PickFromBin1Command { get; }     // 从料仓1取料到扫码区 (Y15+Y11)
-        public DelegateCommand Y15_PickFromBin2Command { get; }     // 从料仓2取料到扫码区 (Y15+Y12)
-        public DelegateCommand Y15_PickFromBin3Command { get; }     // 从料仓3取料到扫码区 (Y15+Y13)
-        public DelegateCommand Y17_PlaceToCartCommand { get; }      // 放入小车
+        // 机械手操作命令
+        public DelegateCommand GrabToScanCommand { get; }           // 抓上物料皮带到扫码区
+        public DelegateCommand PlaceToBin1Command { get; }          // 放置到料仓1
+        public DelegateCommand PlaceToBin2Command { get; }          // 放置到料仓2
+        public DelegateCommand PlaceToBin3Command { get; }          // 放置到料仓3
+        public DelegateCommand PickFromBin1Command { get; }         // 从料仓1取料到扫码区
+        public DelegateCommand PickFromBin2Command { get; }         // 从料仓2取料到扫码区
+        public DelegateCommand PickFromBin3Command { get; }         // 从料仓3取料到扫码区
+        public DelegateCommand PlaceToCartCommand { get; }          // 放入小车
 
         public MainWindowViewModel()
         {
@@ -319,6 +320,7 @@ namespace MarkingMachineFeeder.Viewmodel
             _securityManager.UserLoggedOut += OnUserLoggedOut;
 
             _systemControlService = SystemControlService.Instance();
+            _robotController = RobotController.Instance();
 
             SwitchLanguageCommand = new DelegateCommand<string>(ExecuteSwitchLanguage);
             TestLogCommand = new DelegateCommand(ExecuteTestLog);
@@ -357,15 +359,15 @@ namespace MarkingMachineFeeder.Viewmodel
             OUT13_Bin3SelectCommand = new DelegateCommand(ExecuteOUT13_Bin3Select);
             OUT17_InsertCartCommand = new DelegateCommand(ExecuteOUT17_InsertCart);
             
-            // 初始化新增机械手操作命令
-            Y14_GrabToScanCommand = new DelegateCommand(ExecuteY14_GrabToScan);
-            Y10_PlaceToBin1Command = new DelegateCommand(ExecuteY10_PlaceToBin1);
-            Y10_PlaceToBin2Command = new DelegateCommand(ExecuteY10_PlaceToBin2);
-            Y10_PlaceToBin3Command = new DelegateCommand(ExecuteY10_PlaceToBin3);
-            Y15_PickFromBin1Command = new DelegateCommand(ExecuteY15_PickFromBin1);
-            Y15_PickFromBin2Command = new DelegateCommand(ExecuteY15_PickFromBin2);
-            Y15_PickFromBin3Command = new DelegateCommand(ExecuteY15_PickFromBin3);
-            Y17_PlaceToCartCommand = new DelegateCommand(ExecuteY17_PlaceToCart);
+            // 初始化机械手操作命令
+            GrabToScanCommand = new DelegateCommand(ExecuteGrabToScan);
+            PlaceToBin1Command = new DelegateCommand(ExecutePlaceToBin1);
+            PlaceToBin2Command = new DelegateCommand(ExecutePlaceToBin2);
+            PlaceToBin3Command = new DelegateCommand(ExecutePlaceToBin3);
+            PickFromBin1Command = new DelegateCommand(ExecutePickFromBin1);
+            PickFromBin2Command = new DelegateCommand(ExecutePickFromBin2);
+            PickFromBin3Command = new DelegateCommand(ExecutePickFromBin3);
+            PlaceToCartCommand = new DelegateCommand(ExecutePlaceToCart);
 
             UpdateUITexts();
             UpdateUserInfo();
@@ -1241,104 +1243,102 @@ namespace MarkingMachineFeeder.Viewmodel
 
         #endregion
 
-        #region 新增机械手操作命令方法
+        #region 机械手操作命令方法
 
-        private void ExecuteY14_GrabToScan()
+        private async void ExecuteGrabToScan()
         {
-            // Y14 - 抓取上料皮带物料到扫码区
-            _uiLogger.Info(() => "机械手执行: 抓取上料皮带物料到扫码区 (Y14)");
-            
-            // TODO: 实际的IO控制逻辑
-            // var ioManager = LayeredIOManager.Instance();
-            // ioManager.SetOutput("Y14", true);
+            try
+            {
+                await _robotController.GrabFromBeltToScanArea();
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "抓取操作异常", ex.Message);
+            }
         }
 
-        private void ExecuteY10_PlaceToBin1()
+        private async void ExecutePlaceToBin1()
         {
-            // Y10+Y11 - 将物料放置到料仓1
-            _uiLogger.Info(() => "机械手执行: 将物料放置到料仓1 (Y10+Y11)");
-            
-            // TODO: 实际的IO控制逻辑
-            // var ioManager = LayeredIOManager.Instance();
-            // ioManager.SetOutput("Y11", true);  // 先选择料仓1
-            // ioManager.SetOutput("Y12", false);
-            // ioManager.SetOutput("Y13", false);
-            // ioManager.SetOutput("Y10", true);  // 执行放置动作
+            try
+            {
+                await _robotController.PlaceToBin(1);
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "放置到料仓1异常", ex.Message);
+            }
         }
 
-        private void ExecuteY10_PlaceToBin2()
+        private async void ExecutePlaceToBin2()
         {
-            // Y10+Y12 - 将物料放置到料仓2
-            _uiLogger.Info(() => "机械手执行: 将物料放置到料仓2 (Y10+Y12)");
-            
-            // TODO: 实际的IO控制逻辑
-            // var ioManager = LayeredIOManager.Instance();
-            // ioManager.SetOutput("Y11", false);
-            // ioManager.SetOutput("Y12", true);  // 先选择料仓2
-            // ioManager.SetOutput("Y13", false);
-            // ioManager.SetOutput("Y10", true);  // 执行放置动作
+            try
+            {
+                await _robotController.PlaceToBin(2);
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "放置到料仓2异常", ex.Message);
+            }
         }
 
-        private void ExecuteY10_PlaceToBin3()
+        private async void ExecutePlaceToBin3()
         {
-            // Y10+Y13 - 将物料放置到料仓3
-            _uiLogger.Info(() => "机械手执行: 将物料放置到料仓3 (Y10+Y13)");
-            
-            // TODO: 实际的IO控制逻辑
-            // var ioManager = LayeredIOManager.Instance();
-            // ioManager.SetOutput("Y11", false);
-            // ioManager.SetOutput("Y12", false);
-            // ioManager.SetOutput("Y13", true);  // 先选择料仓3
-            // ioManager.SetOutput("Y10", true);  // 执行放置动作
+            try
+            {
+                await _robotController.PlaceToBin(3);
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "放置到料仓3异常", ex.Message);
+            }
         }
 
-        private void ExecuteY15_PickFromBin1()
+        private async void ExecutePickFromBin1()
         {
-            // Y15+Y11 - 从料仓1取料到扫码区
-            _uiLogger.Info(() => "机械手执行: 从料仓1取料到扫码区 (Y15+Y11)");
-            
-            // TODO: 实际的IO控制逻辑
-            // var ioManager = LayeredIOManager.Instance();
-            // ioManager.SetOutput("Y11", true);  // 先选择料仓1
-            // ioManager.SetOutput("Y12", false);
-            // ioManager.SetOutput("Y13", false);
-            // ioManager.SetOutput("Y15", true);  // 执行取料动作
+            try
+            {
+                await _robotController.PickFromBinToScanArea(1);
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "从料仓1取料异常", ex.Message);
+            }
         }
 
-        private void ExecuteY15_PickFromBin2()
+        private async void ExecutePickFromBin2()
         {
-            // Y15+Y12 - 从料仓2取料到扫码区
-            _uiLogger.Info(() => "机械手执行: 从料仓2取料到扫码区 (Y15+Y12)");
-            
-            // TODO: 实际的IO控制逻辑
-            // var ioManager = LayeredIOManager.Instance();
-            // ioManager.SetOutput("Y11", false);
-            // ioManager.SetOutput("Y12", true);  // 先选择料仓2
-            // ioManager.SetOutput("Y13", false);
-            // ioManager.SetOutput("Y15", true);  // 执行取料动作
+            try
+            {
+                await _robotController.PickFromBinToScanArea(2);
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "从料仓2取料异常", ex.Message);
+            }
         }
 
-        private void ExecuteY15_PickFromBin3()
+        private async void ExecutePickFromBin3()
         {
-            // Y15+Y13 - 从料仓3取料到扫码区
-            _uiLogger.Info(() => "机械手执行: 从料仓3取料到扫码区 (Y15+Y13)");
-            
-            // TODO: 实际的IO控制逻辑
-            // var ioManager = LayeredIOManager.Instance();
-            // ioManager.SetOutput("Y11", false);
-            // ioManager.SetOutput("Y12", false);
-            // ioManager.SetOutput("Y13", true);  // 先选择料仓3
-            // ioManager.SetOutput("Y15", true);  // 执行取料动作
+            try
+            {
+                await _robotController.PickFromBinToScanArea(3);
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "从料仓3取料异常", ex.Message);
+            }
         }
 
-        private void ExecuteY17_PlaceToCart()
+        private async void ExecutePlaceToCart()
         {
-            // Y17 - 将物料放入小车
-            _uiLogger.Info(() => "机械手执行: 将物料放入小车 (Y17)");
-            
-            // TODO: 实际的IO控制逻辑
-            // var ioManager = LayeredIOManager.Instance();
-            // ioManager.SetOutput("Y17", true);
+            try
+            {
+                await _robotController.PlaceToCart();
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "放入小车异常", ex.Message);
+            }
         }
 
         #endregion

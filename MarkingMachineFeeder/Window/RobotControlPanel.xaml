@@ -103,80 +103,80 @@
             </Grid.RowDefinitions>
             
             <!-- Row 1: 抓料操作和放置到料仓1 -->
-            <Button Grid.Row="0" Grid.Column="0" 
+            <Button Grid.Row="0" Grid.Column="0"
                     Content="抓上物料到扫码区"
-                    Command="{Binding Y14_GrabToScanCommand}"
+                    Command="{Binding GrabToScanCommand}"
                     Style="{StaticResource IndustrialTestButton}"
                     FontSize="10"
                     Height="30"
-                    Margin="2" 
-                    ToolTip="抓取上料皮带物料到扫码区 (Y14)"/>
-                    
-            <Button Grid.Row="0" Grid.Column="1" 
+                    Margin="2"
+                    ToolTip="抓取上料皮带物料到扫码区"/>
+
+            <Button Grid.Row="0" Grid.Column="1"
                     Content="放置到料仓1"
-                    Command="{Binding Y10_PlaceToBin1Command}"
+                    Command="{Binding PlaceToBin1Command}"
                     Style="{StaticResource IndustrialTestButton}"
                     FontSize="10"
                     Height="30"
-                    Margin="2" 
-                    ToolTip="将物料放置到料仓1 (Y10+Y11)"/>
+                    Margin="2"
+                    ToolTip="将物料放置到料仓1"/>
             
             <!-- Row 2: 放置到料仓2和料仓3 -->
-            <Button Grid.Row="1" Grid.Column="0" 
+            <Button Grid.Row="1" Grid.Column="0"
                     Content="放置到料仓2"
-                    Command="{Binding Y10_PlaceToBin2Command}"
+                    Command="{Binding PlaceToBin2Command}"
                     Style="{StaticResource IndustrialTestButton}"
                     FontSize="10"
                     Height="30"
-                    Margin="2" 
-                    ToolTip="将物料放置到料仓2 (Y10+Y12)"/>
+                    Margin="2"
+                    ToolTip="将物料放置到料仓2"/>
 
-            <Button Grid.Row="1" Grid.Column="1" 
+            <Button Grid.Row="1" Grid.Column="1"
                     Content="放置到料仓3"
-                    Command="{Binding Y10_PlaceToBin3Command}"
+                    Command="{Binding PlaceToBin3Command}"
                     Style="{StaticResource IndustrialTestButton}"
                     FontSize="10"
                     Height="30"
-                    Margin="2" 
-                    ToolTip="将物料放置到料仓3 (Y10+Y13)"/>
+                    Margin="2"
+                    ToolTip="将物料放置到料仓3"/>
             
             <!-- Row 3: 从料仓取料到扫码区 -->
-            <Button Grid.Row="2" Grid.Column="0" 
+            <Button Grid.Row="2" Grid.Column="0"
                     Content="料仓1取料到扫码区"
-                    Command="{Binding Y15_PickFromBin1Command}"
+                    Command="{Binding PickFromBin1Command}"
                     Style="{StaticResource IndustrialTestButton}"
                     FontSize="9"
                     Height="30"
-                    Margin="2" 
-                    ToolTip="从料仓1取料到扫码区 (Y15+Y11)"/>
-                    
-            <Button Grid.Row="2" Grid.Column="1" 
+                    Margin="2"
+                    ToolTip="从料仓1取料到扫码区"/>
+
+            <Button Grid.Row="2" Grid.Column="1"
                     Content="料仓2取料到扫码区"
-                    Command="{Binding Y15_PickFromBin2Command}"
+                    Command="{Binding PickFromBin2Command}"
                     Style="{StaticResource IndustrialTestButton}"
                     FontSize="9"
                     Height="30"
-                    Margin="2" 
-                    ToolTip="从料仓2取料到扫码区 (Y15+Y12)"/>
+                    Margin="2"
+                    ToolTip="从料仓2取料到扫码区"/>
 
             <!-- Row 4: 料仓3取料和放入小车 -->
-            <Button Grid.Row="3" Grid.Column="0" 
+            <Button Grid.Row="3" Grid.Column="0"
                     Content="料仓3取料到扫码区"
-                    Command="{Binding Y15_PickFromBin3Command}"
+                    Command="{Binding PickFromBin3Command}"
                     Style="{StaticResource IndustrialTestButton}"
                     FontSize="9"
                     Height="30"
-                    Margin="2" 
-                    ToolTip="从料仓3取料到扫码区 (Y15+Y13)"/>
+                    Margin="2"
+                    ToolTip="从料仓3取料到扫码区"/>
 
-            <Button Grid.Row="3" Grid.Column="1" 
+            <Button Grid.Row="3" Grid.Column="1"
                     Content="放入小车"
-                    Command="{Binding Y17_PlaceToCartCommand}"
+                    Command="{Binding PlaceToCartCommand}"
                     Style="{StaticResource IndustrialTestButton}"
                     FontSize="10"
                     Height="30"
-                    Margin="2" 
-                    ToolTip="将物料放入小车 (Y17)"/>
+                    Margin="2"
+                    ToolTip="将物料放入小车"/>
         </Grid>
     </GroupBox>
 </UserControl>
