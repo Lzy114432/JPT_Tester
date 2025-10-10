@@ -116,35 +116,35 @@ namespace Ewan.Core.Module
                 case SystemStatus.Initializing:
                     // 初始化状态 - 所有灯关闭
                     SetLights(false, false, false);
-                    _uiLogger.Info(() => $"状态指示器: 初始化状态 - {command.Description}");
+                    _uiLogger.Debug(() => $"状态指示器: 初始化状态 - {command.Description}");
                     break;
-                    
+
                 case SystemStatus.Standby:
                     SetStandbyStatus();
                     break;
-                    
+
                 case SystemStatus.Running:
                     SetRunningStatus();
                     break;
-                    
+
                 case SystemStatus.Paused:
                     SetPausedStatus();
                     break;
-                    
+
                 case SystemStatus.Warning:
                     SetWarningStatus();
                     break;
-                    
+
                 case SystemStatus.Alarm:
                 case SystemStatus.Critical:
                     SetAlarmStatus(command.IsCritical || command.Status == SystemStatus.Critical);
                     break;
-                    
+
                 case SystemStatus.Stopped:
                     // 停止状态 - 所有灯关闭
                     StopAllTasks();
                     SetLights(false, false, false);
-                    _uiLogger.Info(() => $"状态指示器: 停止状态 - {command.Description}");
+                    _uiLogger.Debug(() => $"状态指示器: 停止状态 - {command.Description}");
                     break;
             }
         }
@@ -161,7 +161,7 @@ namespace Ewan.Core.Module
         {
             StopAllTasks();
             SetLights(false, false, true);
-            _uiLogger.Info(() => "三色灯: 待机状态 - 绿灯常亮");
+            _uiLogger.Debug(() => "三色灯: 待机状态 - 绿灯常亮");
         }
 
         /// <summary>
@@ -171,7 +171,7 @@ namespace Ewan.Core.Module
         {
             StopAllTasks();
             StartGreenLightFlashing();
-            _uiLogger.Info(() => "三色灯: 运行状态 - 绿灯闪烁");
+            _uiLogger.Debug(() => "三色灯: 运行状态 - 绿灯闪烁");
         }
 
         /// <summary>
@@ -181,7 +181,7 @@ namespace Ewan.Core.Module
         {
             StopAllTasks();
             SetLights(false, true, false);
-            _uiLogger.Info(() => "三色灯: 暂停状态 - 黄灯常亮");
+            _uiLogger.Debug(() => "三色灯: 暂停状态 - 黄灯常亮");
         }
 
         /// <summary>
@@ -191,7 +191,7 @@ namespace Ewan.Core.Module
         {
             StopAllTasks();
             StartYellowLightFlashing();
-            _uiLogger.Info(() => "三色灯: 警告状态 - 黄灯闪烁");
+            _uiLogger.Debug(() => "三色灯: 警告状态 - 黄灯闪烁");
         }
 
         /// <summary>

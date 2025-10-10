@@ -319,7 +319,7 @@ namespace Ewan.BusinessBonding
             if (_binElevatorRunner != null)
             {
                 _binElevatorRunner.Start();
-                _uiLogger.Info(() => "料仓升降控制流程已启动");
+                _uiLogger.Debug(() => "料仓升降控制流程已启动");
             }
         }
 
@@ -329,7 +329,7 @@ namespace Ewan.BusinessBonding
         private void StopBinElevatorStream()
         {
             _binElevatorRunner?.Stop();
-            _uiLogger.Info(() => "料仓升降控制流程已停止");
+            _uiLogger.Debug(() => "料仓升降控制流程已停止");
         }
 
         /// <summary>
@@ -362,7 +362,7 @@ namespace Ewan.BusinessBonding
             if (_statusIndicatorRunner != null)
             {
                 _statusIndicatorRunner.Start();
-                _uiLogger.Info(() => "系统状态指示器流程已启动");
+                _uiLogger.Debug(() => "系统状态指示器流程已启动");
             }
         }
 
@@ -372,7 +372,7 @@ namespace Ewan.BusinessBonding
         private void StopStatusIndicatorStream()
         {
             _statusIndicatorRunner?.Stop();
-            _uiLogger.Info(() => "系统状态指示器流程已停止");
+            _uiLogger.Debug(() => "系统状态指示器流程已停止");
         }
 
         /// <summary>
@@ -384,10 +384,10 @@ namespace Ewan.BusinessBonding
             {
                 var command = new StatusIndicatorCommand(status, description, isCritical);
                 var message = new MessageModel(MsgSubject.StatusIndicator, command);
-                
+
                 MsgManager.Instance().PushMsg(message);
-                
-                _uiLogger.Info(() => $"发送系统状态消息: {status} - {description}");
+
+                _uiLogger.Debug(() => $"发送系统状态消息: {status} - {description}");
             }
             catch (Exception ex)
             {
