@@ -80,6 +80,7 @@
     <Compile Include="Logger\UILogger.cs" />
     <Compile Include="Axis\LTSMC.cs" />
     <Compile Include="Module\BaseModule.cs" />
+    <Compile Include="Module\BeltConveyorModule.cs" />
     <Compile Include="Module\BinElevatorModule.cs" />
     <Compile Include="Module\Interface\IModule.cs" />
     <Compile Include="Module\IOPollingModule.cs" />

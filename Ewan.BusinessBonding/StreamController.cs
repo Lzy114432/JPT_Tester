@@ -49,6 +49,11 @@ namespace Ewan.BusinessBonding
         private StreamRunner _statusIndicatorRunner;
 
         /// <summary>
+        /// 皮带输送控制流程runner
+        /// </summary>
+        private StreamRunner _beltConveyorRunner;
+
+        /// <summary>
         /// 报警流程runner（暂时注释，调试时启用）
         /// </summary>
         // private StreamRunner _alarmRunner;
@@ -63,7 +68,8 @@ namespace Ewan.BusinessBonding
         private List<IModule> _ioPollingModules = new List<IModule>();
         private List<IModule> _binElevatorModules = new List<IModule>();
         private List<IModule> _statusIndicatorModules = new List<IModule>();
-        
+        private List<IModule> _beltConveyorModules = new List<IModule>();
+
         /// <summary>
         /// 报警模块集合（暂时注释，调试时启用）
         /// </summary>
@@ -131,6 +137,16 @@ namespace Ewan.BusinessBonding
             
             #endregion
 
+            #region //构造皮带输送控制流程的节点并加入到对应runner
+
+            // 添加皮带输送控制模块，在自动模式下控制皮带持续运行
+            _beltConveyorModules.Add(new BeltConveyorModule());
+
+            // 创建皮带输送控制流程runner
+            _beltConveyorRunner = new StreamRunner(_beltConveyorModules);
+
+            #endregion
+
             #region //构造报警流程的节点并加入到对应runner（暂时注释，调试时启用）
             
             // 极简的报警系统 - 只检测信号和执行停机
@@ -170,10 +186,12 @@ namespace Ewan.BusinessBonding
                 StartMainStream();
                 //5.运行料仓升降控制流程
                 StartBinElevatorStream();
-                //6.运行报警流程（暂时注释，调试时启用）
+                //6.运行皮带输送控制流程
+                StartBeltConveyorStream();
+                //7.运行报警流程（暂时注释，调试时启用）
                 //StartAlarmStream();
-                
-                ////6.运行plc产能统计流程
+
+                ////8.运行plc产能统计流程
                 //StartPlcProductCapacityStream();
 
                 ////...n.运行其他流程
@@ -202,18 +220,20 @@ namespace Ewan.BusinessBonding
             StopPlcHeartStream();
             //3.停止料仓升降流程
             StopBinElevatorStream();
-            //4.停止报警流程（暂时注释，调试时启用）
+            //4.停止皮带输送流程
+            StopBeltConveyorStream();
+            //5.停止报警流程（暂时注释，调试时启用）
             //StopAlarmStream();
-            //5.停止IO轮询流程
+            //6.停止IO轮询流程
             StopIOPollingStream();
 
 
             // 通过消息队列通知系统状态变为停止（关闭所有指示灯）
             SendSystemStatusMessage(SystemStatus.Stopped, "流程停止");
 
-            //6.停止系统状态指示器流程
+            //7.停止系统状态指示器流程
             StopStatusIndicatorStream();
-            //7.停止安全流程（最后停止，确保安全监控到最后一刻）
+            //8.停止安全流程（最后停止，确保安全监控到最后一刻）
             StopSafetyStream();
             //StopAlarmStream();
             
@@ -330,6 +350,27 @@ namespace Ewan.BusinessBonding
         {
             _binElevatorRunner?.Stop();
             _uiLogger.Debug(() => "料仓升降控制流程已停止");
+        }
+
+        /// <summary>
+        /// 启动皮带输送流程
+        /// </summary>
+        private void StartBeltConveyorStream()
+        {
+            if (_beltConveyorRunner != null)
+            {
+                _beltConveyorRunner.Start();
+                _uiLogger.Debug(() => "皮带输送控制流程已启动");
+            }
+        }
+
+        /// <summary>
+        /// 停止皮带输送流程
+        /// </summary>
+        private void StopBeltConveyorStream()
+        {
+            _beltConveyorRunner?.Stop();
+            _uiLogger.Debug(() => "皮带输送控制流程已停止");
         }
 
         /// <summary>
