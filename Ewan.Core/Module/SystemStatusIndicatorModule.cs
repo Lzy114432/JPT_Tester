@@ -155,22 +155,22 @@ namespace Ewan.Core.Module
         #region 公共方法
 
         /// <summary>
-        /// 设置待机状态 - 绿灯常亮
+        /// 设置待机状态 - 黄灯常亮
         /// </summary>
         public void SetStandbyStatus()
         {
             StopAllTasks();
-            SetLights(false, false, true);
+            SetLights(false, true, false);
             _uiLogger.Debug(() => Ewan.Resources.LogMessages.TrafficLightStandby);
         }
 
         /// <summary>
-        /// 设置运行状态 - 绿灯闪烁
+        /// 设置运行状态 - 绿灯常亮
         /// </summary>
         public void SetRunningStatus()
         {
             StopAllTasks();
-            StartGreenLightFlashing();
+            SetLights(false, false, true);
             _uiLogger.Debug(() => Ewan.Resources.LogMessages.TrafficLightRunning);
         }
 
@@ -185,35 +185,36 @@ namespace Ewan.Core.Module
         }
 
         /// <summary>
-        /// 设置警告状态 - 黄灯闪烁
+        /// 设置警告状态 - 黄灯常亮
         /// </summary>
         public void SetWarningStatus()
         {
             StopAllTasks();
-            StartYellowLightFlashing();
+            SetLights(false, true, false);
             _uiLogger.Debug(() => Ewan.Resources.LogMessages.TrafficLightWarning);
         }
 
         /// <summary>
-        /// 设置报警状态 - 红灯 + 蜂鸣器
+        /// 设置报警状态 - 红灯常亮 + 蜂鸣器
         /// </summary>
         public void SetAlarmStatus(bool critical = false)
         {
             StopAllTasks();
-            
+
+            // 所有报警统一为红灯常亮 + 蜂鸣器
+            SetLights(true, false, false);
+
             if (critical)
             {
                 // 严重报警 - 红灯常亮 + 蜂鸣器10秒
-                SetLights(true, false, false);
                 StartBuzzer(10000);
                 _uiLogger.Error(() => "三色灯: 严重报警 - 红灯常亮 + 蜂鸣器");
             }
             else
             {
-                // 一般报警 - 红灯闪烁 + 蜂鸣器5秒
-                StartRedLightFlashing();
+                // 一般报警 - 红灯常亮 + 蜂鸣器5秒
                 StartBuzzer(5000);
-                _uiLogger.Warn(() => "三色灯: 报警状态 - 红灯闪烁 + 蜂鸣器");
+                _uiLogger.Warn(() => "三色灯: 报警状态 - 红灯常亮 + 蜂鸣器");
             }
         }
 
