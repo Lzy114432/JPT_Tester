@@ -284,7 +284,7 @@ namespace Ewan.Core.Module
 
                 MsgManager.Instance().PushMsg(message);
 
-                _uiLogger.Debug(() => $"发送系统状态消息: {status} - {description}");
+                _uiLogger.Debug(() => Ewan.Resources.LogMessages.SystemStatusMessageSent, status, description);
             }
             catch (Exception ex)
             {

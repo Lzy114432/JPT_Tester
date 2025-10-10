@@ -547,4 +547,49 @@
   <data name="AxisConfigurationLoadFailed" xml:space="preserve">
     <value>Failed to load axis configuration: {0}</value>
   </data>
+  <data name="SystemStatusIndicatorInitializing" xml:space="preserve">
+    <value>Status indicator: Initializing - {0}</value>
+  </data>
+  <data name="SystemStatusIndicatorStopped" xml:space="preserve">
+    <value>Status indicator: Stopped - {0}</value>
+  </data>
+  <data name="TrafficLightStandby" xml:space="preserve">
+    <value>Traffic light: Standby - Green light ON</value>
+  </data>
+  <data name="TrafficLightRunning" xml:space="preserve">
+    <value>Traffic light: Running - Green light flashing</value>
+  </data>
+  <data name="TrafficLightPaused" xml:space="preserve">
+    <value>Traffic light: Paused - Yellow light ON</value>
+  </data>
+  <data name="TrafficLightWarning" xml:space="preserve">
+    <value>Traffic light: Warning - Yellow light flashing</value>
+  </data>
+  <data name="TrafficLightSetExpected" xml:space="preserve">
+    <value>Expected setting: Red={0}, Yellow={1}, Green={2}</value>
+  </data>
+  <data name="BuzzerStarted" xml:space="preserve">
+    <value>Buzzer started: {0} (Y{1})</value>
+  </data>
+  <data name="BuzzerStartWithDuration" xml:space="preserve">
+    <value>Buzzer started, duration: {0}ms</value>
+  </data>
+  <data name="BuzzerStopped" xml:space="preserve">
+    <value>Buzzer stopped: {0} (Y{1})</value>
+  </data>
+  <data name="SystemStatusMessageSent" xml:space="preserve">
+    <value>System status message sent: {0} - {1}</value>
+  </data>
+  <data name="StatusMessageSent" xml:space="preserve">
+    <value>Status message sent: {0} - {1}</value>
+  </data>
+  <data name="SystemStatusUpdated" xml:space="preserve">
+    <value>System status updated: {0} - {1}</value>
+  </data>
+  <data name="StatusIndicatorStreamStarted" xml:space="preserve">
+    <value>Status indicator stream started</value>
+  </data>
+  <data name="StatusIndicatorStreamStopped" xml:space="preserve">
+    <value>Status indicator stream stopped</value>
+  </data>
 </root>

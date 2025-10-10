@@ -299,7 +299,7 @@ namespace Ewan.Core.Module
 
                 MsgManager.Instance().PushMsg(message);
 
-                _uiLogger.Debug(() => $"发送状态消息: {status} - {description}");
+                _uiLogger.Debug(() => Ewan.Resources.LogMessages.StatusMessageSent, status, description);
             }
             catch (Exception ex)
             {

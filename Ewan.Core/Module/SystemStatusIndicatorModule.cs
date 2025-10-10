@@ -116,7 +116,7 @@ namespace Ewan.Core.Module
                 case SystemStatus.Initializing:
                     // 初始化状态 - 所有灯关闭
                     SetLights(false, false, false);
-                    _uiLogger.Debug(() => $"状态指示器: 初始化状态 - {command.Description}");
+                    _uiLogger.Debug(() => Ewan.Resources.LogMessages.SystemStatusIndicatorInitializing, command.Description);
                     break;
 
                 case SystemStatus.Standby:
@@ -144,7 +144,7 @@ namespace Ewan.Core.Module
                     // 停止状态 - 所有灯关闭
                     StopAllTasks();
                     SetLights(false, false, false);
-                    _uiLogger.Debug(() => $"状态指示器: 停止状态 - {command.Description}");
+                    _uiLogger.Debug(() => Ewan.Resources.LogMessages.SystemStatusIndicatorStopped, command.Description);
                     break;
             }
         }
@@ -161,7 +161,7 @@ namespace Ewan.Core.Module
         {
             StopAllTasks();
             SetLights(false, false, true);
-            _uiLogger.Debug(() => "三色灯: 待机状态 - 绿灯常亮");
+            _uiLogger.Debug(() => Ewan.Resources.LogMessages.TrafficLightStandby);
         }
 
         /// <summary>
@@ -171,7 +171,7 @@ namespace Ewan.Core.Module
         {
             StopAllTasks();
             StartGreenLightFlashing();
-            _uiLogger.Debug(() => "三色灯: 运行状态 - 绿灯闪烁");
+            _uiLogger.Debug(() => Ewan.Resources.LogMessages.TrafficLightRunning);
         }
 
         /// <summary>
@@ -181,7 +181,7 @@ namespace Ewan.Core.Module
         {
             StopAllTasks();
             SetLights(false, true, false);
-            _uiLogger.Debug(() => "三色灯: 暂停状态 - 黄灯常亮");
+            _uiLogger.Debug(() => Ewan.Resources.LogMessages.TrafficLightPaused);
         }
 
         /// <summary>
@@ -191,7 +191,7 @@ namespace Ewan.Core.Module
         {
             StopAllTasks();
             StartYellowLightFlashing();
-            _uiLogger.Debug(() => "三色灯: 警告状态 - 黄灯闪烁");
+            _uiLogger.Debug(() => Ewan.Resources.LogMessages.TrafficLightWarning);
         }
 
         /// <summary>
@@ -267,7 +267,7 @@ namespace Ewan.Core.Module
                 else
                 {
                     _uiLogger.Warn(() => "IO管理器未连接，无法控制三色灯");
-                    _uiLogger.Debug(() => $"预期设置: 红灯={red}, 黄灯={yellow}, 绿灯={green}");
+                    _uiLogger.Debug(() => Ewan.Resources.LogMessages.TrafficLightSetExpected, red, yellow, green);
                 }
             }
             catch (Exception ex)
@@ -392,7 +392,7 @@ namespace Ewan.Core.Module
                 if (_ioManager != null && _ioManager.IsConnected)
                 {
                     bool buzzerResult = _ioManager.LayeredIO.WriteOutBit(AlarmIOMapping.BUZZER, true);
-                    _uiLogger.Debug(() => $"蜂鸣器启动: {(buzzerResult ? "成功" : "失败")} (Y{AlarmIOMapping.BUZZER})");
+                    _uiLogger.Debug(() => Ewan.Resources.LogMessages.BuzzerStarted, buzzerResult ? "成功" : "失败", AlarmIOMapping.BUZZER);
 
                     if (!buzzerResult)
                     {
@@ -427,8 +427,8 @@ namespace Ewan.Core.Module
                         "SystemStatusIndicator-BuzzerTimeout", ex.Message);
                 }
             }, _buzzerCancellation.Token);
-            
-            _uiLogger.Debug(() => $"蜂鸣器启动，持续时间: {duration}ms");
+
+            _uiLogger.Debug(() => Ewan.Resources.LogMessages.BuzzerStartWithDuration, duration);
         }
 
         /// <summary>
@@ -454,7 +454,7 @@ namespace Ewan.Core.Module
                 if (_ioManager != null && _ioManager.IsConnected)
                 {
                     bool buzzerResult = _ioManager.LayeredIO.WriteOutBit(AlarmIOMapping.BUZZER, false);
-                    _uiLogger.Debug(() => $"蜂鸣器停止: {(buzzerResult ? "成功" : "失败")} (Y{AlarmIOMapping.BUZZER})");
+                    _uiLogger.Debug(() => Ewan.Resources.LogMessages.BuzzerStopped, buzzerResult ? "成功" : "失败", AlarmIOMapping.BUZZER);
 
                     if (!buzzerResult)
                     {

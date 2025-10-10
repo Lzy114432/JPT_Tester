@@ -362,7 +362,7 @@ namespace Ewan.BusinessBonding
             if (_statusIndicatorRunner != null)
             {
                 _statusIndicatorRunner.Start();
-                _uiLogger.Debug(() => "系统状态指示器流程已启动");
+                _uiLogger.Debug(() => Ewan.Resources.LogMessages.StatusIndicatorStreamStarted);
             }
         }
 
@@ -372,7 +372,7 @@ namespace Ewan.BusinessBonding
         private void StopStatusIndicatorStream()
         {
             _statusIndicatorRunner?.Stop();
-            _uiLogger.Debug(() => "系统状态指示器流程已停止");
+            _uiLogger.Debug(() => Ewan.Resources.LogMessages.StatusIndicatorStreamStopped);
         }
 
         /// <summary>
@@ -387,7 +387,7 @@ namespace Ewan.BusinessBonding
 
                 MsgManager.Instance().PushMsg(message);
 
-                _uiLogger.Debug(() => $"发送系统状态消息: {status} - {description}");
+                _uiLogger.Debug(() => Ewan.Resources.LogMessages.SystemStatusMessageSent, status, description);
             }
             catch (Exception ex)
             {

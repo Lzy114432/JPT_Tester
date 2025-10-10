@@ -1527,5 +1527,140 @@ namespace Ewan.Resources {
                 return ResourceManager.GetString("WarningMessage", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   查找类似 Status indicator: Initializing - {0} 的本地化字符串。
+        /// </summary>
+        public static string SystemStatusIndicatorInitializing {
+            get {
+                return ResourceManager.GetString("SystemStatusIndicatorInitializing", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Status indicator: Stopped - {0} 的本地化字符串。
+        /// </summary>
+        public static string SystemStatusIndicatorStopped {
+            get {
+                return ResourceManager.GetString("SystemStatusIndicatorStopped", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Traffic light: Standby - Green light ON 的本地化字符串。
+        /// </summary>
+        public static string TrafficLightStandby {
+            get {
+                return ResourceManager.GetString("TrafficLightStandby", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Traffic light: Running - Green light flashing 的本地化字符串。
+        /// </summary>
+        public static string TrafficLightRunning {
+            get {
+                return ResourceManager.GetString("TrafficLightRunning", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Traffic light: Paused - Yellow light ON 的本地化字符串。
+        /// </summary>
+        public static string TrafficLightPaused {
+            get {
+                return ResourceManager.GetString("TrafficLightPaused", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Traffic light: Warning - Yellow light flashing 的本地化字符串。
+        /// </summary>
+        public static string TrafficLightWarning {
+            get {
+                return ResourceManager.GetString("TrafficLightWarning", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Expected setting: Red={0}, Yellow={1}, Green={2} 的本地化字符串。
+        /// </summary>
+        public static string TrafficLightSetExpected {
+            get {
+                return ResourceManager.GetString("TrafficLightSetExpected", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Buzzer started: {0} (Y{1}) 的本地化字符串。
+        /// </summary>
+        public static string BuzzerStarted {
+            get {
+                return ResourceManager.GetString("BuzzerStarted", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Buzzer started, duration: {0}ms 的本地化字符串。
+        /// </summary>
+        public static string BuzzerStartWithDuration {
+            get {
+                return ResourceManager.GetString("BuzzerStartWithDuration", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Buzzer stopped: {0} (Y{1}) 的本地化字符串。
+        /// </summary>
+        public static string BuzzerStopped {
+            get {
+                return ResourceManager.GetString("BuzzerStopped", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 System status message sent: {0} - {1} 的本地化字符串。
+        /// </summary>
+        public static string SystemStatusMessageSent {
+            get {
+                return ResourceManager.GetString("SystemStatusMessageSent", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Status message sent: {0} - {1} 的本地化字符串。
+        /// </summary>
+        public static string StatusMessageSent {
+            get {
+                return ResourceManager.GetString("StatusMessageSent", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 System status updated: {0} - {1} 的本地化字符串。
+        /// </summary>
+        public static string SystemStatusUpdated {
+            get {
+                return ResourceManager.GetString("SystemStatusUpdated", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Status indicator stream started 的本地化字符串。
+        /// </summary>
+        public static string StatusIndicatorStreamStarted {
+            get {
+                return ResourceManager.GetString("StatusIndicatorStreamStarted", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Status indicator stream stopped 的本地化字符串。
+        /// </summary>
+        public static string StatusIndicatorStreamStopped {
+            get {
+                return ResourceManager.GetString("StatusIndicatorStreamStopped", resourceCulture);
+            }
+        }
     }
 }
