@@ -1,8 +1,10 @@
 using Ewan.BusinessBonding;
 using Ewan.Core.Culture;
 using Ewan.Core.Logger;
+using Ewan.Core.Msg;
 using Ewan.Core.Security;
 using Ewan.Model.Security;
+using Ewan.Model.System;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
@@ -18,6 +20,7 @@ namespace MarkingMachineFeeder.Viewmodel
         private readonly SecurityManager _securityManager;
         private readonly SystemControlService _systemControlService;
         private readonly RobotController _robotController;
+        private MsgListener _statusIndicatorListener; // 系统状态监听器
 
         private string _title = "MarkingMachineFeeder";
         private string _languageMenuHeader = "Language";
@@ -372,7 +375,10 @@ namespace MarkingMachineFeeder.Viewmodel
             UpdateUITexts();
             UpdateUserInfo();
             UpdatePermissions();
-            
+
+            // 注册系统状态指示器监听器
+            RegisterStatusIndicatorListener();
+
             _uiLogger.Info(() => Ewan.Resources.LogMessages.MainWindowStarted);
         }
 
@@ -1339,6 +1345,204 @@ namespace MarkingMachineFeeder.Viewmodel
             {
                 _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "放入小车异常", ex.Message);
             }
+        }
+
+        #endregion
+
+        #region 系统状态监听
+
+        /// <summary>
+        /// 注册系统状态指示器监听器
+        /// </summary>
+        private void RegisterStatusIndicatorListener()
+        {
+            try
+            {
+                _statusIndicatorListener = new MsgListener(MsgSubject.StatusIndicator, OnSystemStatusChanged);
+                MsgManager.Instance().RegisterListener(_statusIndicatorListener);
+                _uiLogger.Debug(() => "系统状态监听器注册成功");
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
+                    "系统状态监听器注册", ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 取消注册系统状态指示器监听器
+        /// </summary>
+        private void UnregisterStatusIndicatorListener()
+        {
+            try
+            {
+                if (_statusIndicatorListener != null)
+                {
+                    MsgManager.Instance().UnRegisterListener(_statusIndicatorListener);
+                    _statusIndicatorListener = null;
+                    _uiLogger.Debug(() => "系统状态监听器取消注册");
+                }
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
+                    "系统状态监听器取消注册", ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 系统状态变化回调
+        /// </summary>
+        private void OnSystemStatusChanged(MessageModel msg)
+        {
+            try
+            {
+                var command = msg.GetData<StatusIndicatorCommand>();
+                if (command == null) return;
+
+                // 在UI线程上更新状态
+                System.Windows.Application.Current?.Dispatcher.Invoke(() =>
+                {
+                    UpdateSystemStatusDisplay(command.Status, command.Description);
+                });
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
+                    "处理系统状态变化", ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 更新系统状态显示
+        /// </summary>
+        private void UpdateSystemStatusDisplay(SystemStatus status, string description)
+        {
+            switch (status)
+            {
+                case SystemStatus.Initializing:
+                    // 初始化中 - 所有灯关闭
+                    SystemRunningStatus = "Gray";
+                    SystemRunningIsOn = false;
+                    EmergencyStopStatus = "Gray";
+                    EmergencyStopIsOn = false;
+                    AlarmStatus = "Gray";
+                    AlarmIsOn = false;
+                    PauseStatus = "Gray";
+                    PauseIsOn = false;
+                    ProductionModeText = "初始化中";
+                    ProductionModeColor = "Gray";
+                    break;
+
+                case SystemStatus.Standby:
+                    // 待机 - 绿灯常亮
+                    SystemRunningStatus = "Green";
+                    SystemRunningIsOn = true;
+                    EmergencyStopStatus = "Gray";
+                    EmergencyStopIsOn = false;
+                    AlarmStatus = "Gray";
+                    AlarmIsOn = false;
+                    PauseStatus = "Gray";
+                    PauseIsOn = false;
+                    ProductionModeText = "待机";
+                    ProductionModeColor = "Green";
+                    break;
+
+                case SystemStatus.Running:
+                    // 运行中 - 绿灯闪烁（UI显示为绿色）
+                    SystemRunningStatus = "Green";
+                    SystemRunningIsOn = true;
+                    EmergencyStopStatus = "Gray";
+                    EmergencyStopIsOn = false;
+                    AlarmStatus = "Gray";
+                    AlarmIsOn = false;
+                    PauseStatus = "Gray";
+                    PauseIsOn = false;
+                    ProductionModeText = "运行中";
+                    ProductionModeColor = "Green";
+                    break;
+
+                case SystemStatus.Paused:
+                    // 暂停 - 黄灯常亮
+                    SystemRunningStatus = "Yellow";
+                    SystemRunningIsOn = true;
+                    EmergencyStopStatus = "Gray";
+                    EmergencyStopIsOn = false;
+                    AlarmStatus = "Gray";
+                    AlarmIsOn = false;
+                    PauseStatus = "Yellow";
+                    PauseIsOn = true;
+                    ProductionModeText = "暂停中";
+                    ProductionModeColor = "Orange";
+                    break;
+
+                case SystemStatus.Warning:
+                    // 警告 - 黄灯闪烁（UI显示为黄色）
+                    SystemRunningStatus = "Yellow";
+                    SystemRunningIsOn = true;
+                    EmergencyStopStatus = "Gray";
+                    EmergencyStopIsOn = false;
+                    AlarmStatus = "Yellow";
+                    AlarmIsOn = true;
+                    PauseStatus = "Gray";
+                    PauseIsOn = false;
+                    ProductionModeText = "警告";
+                    ProductionModeColor = "Yellow";
+                    break;
+
+                case SystemStatus.Alarm:
+                    // 报警 - 红灯闪烁（UI显示为红色）
+                    SystemRunningStatus = "Red";
+                    SystemRunningIsOn = false;
+                    EmergencyStopStatus = "Gray";
+                    EmergencyStopIsOn = false;
+                    AlarmStatus = "Red";
+                    AlarmIsOn = true;
+                    PauseStatus = "Gray";
+                    PauseIsOn = false;
+                    ProductionModeText = "报警";
+                    ProductionModeColor = "Red";
+                    break;
+
+                case SystemStatus.Critical:
+                    // 严重故障 - 红灯常亮
+                    SystemRunningStatus = "Red";
+                    SystemRunningIsOn = false;
+                    EmergencyStopStatus = "Red";
+                    EmergencyStopIsOn = true;
+                    AlarmStatus = "Red";
+                    AlarmIsOn = true;
+                    PauseStatus = "Gray";
+                    PauseIsOn = false;
+                    ProductionModeText = "严重故障";
+                    ProductionModeColor = "Red";
+                    break;
+
+                case SystemStatus.Stopped:
+                    // 停止 - 所有灯关闭
+                    SystemRunningStatus = "Gray";
+                    SystemRunningIsOn = false;
+                    EmergencyStopStatus = "Gray";
+                    EmergencyStopIsOn = false;
+                    AlarmStatus = "Gray";
+                    AlarmIsOn = false;
+                    PauseStatus = "Gray";
+                    PauseIsOn = false;
+                    ProductionModeText = "已停止";
+                    ProductionModeColor = "Gray";
+                    break;
+            }
+
+            // 记录状态变化日志
+            _uiLogger.Info(() => $"系统状态更新: {status} - {description}");
+        }
+
+        /// <summary>
+        /// 析构函数 - 清理资源
+        /// </summary>
+        ~MainWindowViewModel()
+        {
+            UnregisterStatusIndicatorListener();
         }
 
         #endregion

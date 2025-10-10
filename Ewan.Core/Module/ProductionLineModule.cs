@@ -134,17 +134,26 @@ namespace Ewan.Core.Module
             {
                 _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "生产线硬件初始化开始");
 
+                // 发送初始化中状态
+                SendStatusMessage(SystemStatus.Initializing, "生产线硬件初始化中");
+
                 _materialLoading?.PerformHardwareInitialization();
                 _binElevator?.PerformHardwareInitialization();
 
                 _initialized = true;
                 _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "生产线硬件初始化完成");
+
+                // 初始化完成后进入待机状态
+                SendStatusMessage(SystemStatus.Standby, "生产线初始化完成，等待启动");
             }
             catch (Exception ex)
             {
                 _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
                     "生产线硬件初始化", ex.Message);
                 _initialized = false;
+
+                // 初始化失败，发送严重故障状态
+                SendStatusMessage(SystemStatus.Critical, "生产线初始化失败: " + ex.Message, true);
             }
         }
 
@@ -157,11 +166,15 @@ namespace Ewan.Core.Module
             {
                 _uiLogger.Warn(() => Ewan.Resources.LogMessages.ProcessingError,
                     "生产线未初始化", "请先执行硬件初始化");
+                SendStatusMessage(SystemStatus.Warning, "生产线未初始化，无法启动");
                 return;
             }
 
             _isRunning = true;
             _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "生产线启动");
+
+            // 发送运行状态
+            SendStatusMessage(SystemStatus.Running, "生产线运行中");
         }
 
         /// <summary>
@@ -171,6 +184,9 @@ namespace Ewan.Core.Module
         {
             _isRunning = false;
             _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "生产线停止");
+
+            // 发送停止状态
+            SendStatusMessage(SystemStatus.Stopped, "生产线已停止");
         }
 
         /// <summary>
@@ -183,13 +199,19 @@ namespace Ewan.Core.Module
                 _isRunning = false;
                 _materialLoading?.ForceStopLoading();
                 // 如果BinElevatorModule有紧急停止方法，可以在这里调用
-                
+
                 _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "生产线紧急停止");
+
+                // 发送严重报警状态
+                SendStatusMessage(SystemStatus.Critical, "生产线紧急停止", true);
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, 
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
                     "生产线紧急停止", ex.Message);
+
+                // 发送严重故障状态
+                SendStatusMessage(SystemStatus.Critical, "紧急停止失败: " + ex.Message, true);
             }
         }
 
@@ -204,13 +226,16 @@ namespace Ewan.Core.Module
                 {
                     _isPaused = true;
                     _sharedState?.SetSystemPaused(true);
-                    
+
                     _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "生产线暂停");
+
+                    // 发送暂停状态
+                    SendStatusMessage(SystemStatus.Paused, "生产线已暂停");
                 }
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, 
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
                     "生产线暂停", ex.Message);
             }
         }
@@ -226,16 +251,19 @@ namespace Ewan.Core.Module
                 {
                     _isPaused = false;
                     _sharedState?.SetSystemPaused(false);
-                    
+
                     // 触发BinElevator重新初始化
                     _sharedState?.SetRequireReinit(true);
-                    
+
                     _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "生产线恢复，料仓重新初始化");
+
+                    // 发送运行状态
+                    SendStatusMessage(SystemStatus.Running, "生产线已恢复运行");
                 }
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, 
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
                     "生产线恢复", ex.Message);
             }
         }
@@ -243,6 +271,27 @@ namespace Ewan.Core.Module
         #endregion
 
         #region 私有方法
+
+        /// <summary>
+        /// 发送系统状态消息
+        /// </summary>
+        private void SendStatusMessage(SystemStatus status, string description, bool isCritical = false)
+        {
+            try
+            {
+                var command = new StatusIndicatorCommand(status, description, isCritical);
+                var message = new MessageModel(MsgSubject.StatusIndicator, command);
+
+                MsgManager.Instance().PushMsg(message);
+
+                _uiLogger.Debug(() => $"发送系统状态消息: {status} - {description}");
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ModuleRunError,
+                    "ProductionLineModule-SendStatusMessage", ex.Message);
+            }
+        }
 
         /// <summary>
         /// 注册系统控制消息监听器
