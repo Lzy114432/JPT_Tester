@@ -1,4 +1,6 @@
 using Ewan.Core.Axis;
+using Ewan.Core.Msg;
+using Ewan.Model.System;
 using System;
 using System.Threading;
 
@@ -7,6 +9,7 @@ namespace Ewan.Core.Module
     /// <summary>
     /// 皮带输送控制模块
     /// 负责控制皮带轴持续反向运行
+    /// 响应系统控制命令（急停、暂停）
     /// </summary>
     public class BeltConveyorModule : BaseModule<BeltConveyorModule>
     {
@@ -17,9 +20,12 @@ namespace Ewan.Core.Module
 
         // 皮带状态
         private bool _beltRunning = false;
+        private bool _shouldStop = false; // 是否应该停止（急停、暂停、关闭等）
 
-        // 轴控制器
+        // 轴控制器和消息管理器
         private AxisManager _axisManager;
+        private MsgManager _msgManager;
+        private MsgListener _systemControlListener;
 
         // 皮带轴配置
         private const int BELT_AXIS_ID = 3; // 皮带轴ID
@@ -34,8 +40,13 @@ namespace Ewan.Core.Module
             {
                 _uiLogger.Info(() => Ewan.Resources.LogMessages.ModuleInitialized, "BeltConveyorModule");
 
-                // 初始化轴管理器
+                // 初始化轴管理器和消息管理器
                 _axisManager = AxisManager.Instance();
+                _msgManager = MsgManager.Instance();
+
+                // 注册系统控制消息监听器（监听急停、暂停等命令）
+                _systemControlListener = new MsgListener(MsgSubject.SystemControl, OnSystemControlMessage);
+                _msgManager.RegisterListener(_systemControlListener);
 
                 _uiLogger.Info(() => Ewan.Resources.LogMessages.InitializationCompleted, "皮带输送控制系统");
             }
@@ -52,11 +63,22 @@ namespace Ewan.Core.Module
             {
                 lock (_stateLock)
                 {
-                    // 皮带始终运行（只要模块在运行状态）
-                    // 如果皮带未运行，启动皮带反向运行
-                    if (!_beltRunning)
+                    // 检查是否应该停止
+                    if (_shouldStop)
                     {
-                        StartBeltReverse();
+                        // 停止皮带
+                        if (_beltRunning)
+                        {
+                            StopBelt();
+                        }
+                    }
+                    else
+                    {
+                        // 正常运行 - 如果皮带未运行，启动皮带反向运行
+                        if (!_beltRunning)
+                        {
+                            StartBeltReverse();
+                        }
                     }
                 }
 
@@ -77,6 +99,13 @@ namespace Ewan.Core.Module
             {
                 // 停止皮带运行
                 StopBelt();
+
+                // 取消注册系统控制消息监听
+                if (_systemControlListener != null)
+                {
+                    _msgManager.UnRegisterListener(_systemControlListener);
+                    _systemControlListener = null;
+                }
 
                 _uiLogger.Info(() => Ewan.Resources.LogMessages.ModuleDestroyed, "BeltConveyorModule");
             }
@@ -155,6 +184,83 @@ namespace Ewan.Core.Module
             {
                 _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
                     "皮带轴停止", ex.Message);
+            }
+        }
+
+        #endregion
+
+        #region 系统控制消息处理
+
+        /// <summary>
+        /// 处理系统控制消息（急停、暂停等）
+        /// </summary>
+        private void OnSystemControlMessage(MessageModel message)
+        {
+            try
+            {
+                if (message.Data is SystemControlCommand command)
+                {
+                    lock (_stateLock)
+                    {
+                        switch (command)
+                        {
+                            case SystemControlCommand.EmergencyStop:
+                                // 紧急停止 - 立即停止皮带
+                                _shouldStop = true;
+                                if (_beltRunning)
+                                {
+                                    StopBelt();
+                                }
+                                _uiLogger.Warn(() => Ewan.Resources.LogMessages.ProcessingCompleted,
+                                    "皮带紧急停止");
+                                break;
+
+                            case SystemControlCommand.Pause:
+                                // 暂停 - 停止皮带
+                                _shouldStop = true;
+                                if (_beltRunning)
+                                {
+                                    StopBelt();
+                                }
+                                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted,
+                                    "皮带已暂停");
+                                break;
+
+                            case SystemControlCommand.Resume:
+                                // 恢复运行 - 允许皮带重新启动
+                                _shouldStop = false;
+                                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted,
+                                    "皮带恢复运行");
+                                break;
+
+                            case SystemControlCommand.Stop:
+                                // 停止 - 停止皮带
+                                _shouldStop = true;
+                                if (_beltRunning)
+                                {
+                                    StopBelt();
+                                }
+                                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted,
+                                    "皮带已停止");
+                                break;
+
+                            case SystemControlCommand.Initialize:
+                                // 初始化/复位 - 允许皮带重新启动
+                                _shouldStop = false;
+                                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted,
+                                    "皮带系统已初始化");
+                                break;
+
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
+                    "处理系统控制消息", ex.Message);
             }
         }
 
