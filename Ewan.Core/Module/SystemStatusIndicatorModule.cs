@@ -348,13 +348,32 @@ namespace Ewan.Core.Module
         /// </summary>
         private void StopFlashing()
         {
-            if (_flashingCancellation != null)
+            try
             {
-                _flashingCancellation.Cancel();
-                _flashingCancellation.Dispose();
-                _flashingCancellation = null;
+                var cancellation = _flashingCancellation;
+                if (cancellation != null)
+                {
+                    _flashingCancellation = null; // 先置空，避免重复调用
+
+                    if (!cancellation.IsCancellationRequested)
+                    {
+                        cancellation.Cancel();
+                    }
+                    cancellation.Dispose();
+                }
             }
-            _lightFlashingActive = false;
+            catch (ObjectDisposedException)
+            {
+                // 对象已释放，忽略
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => $"停止闪烁时发生错误: {ex.Message}");
+            }
+            finally
+            {
+                _lightFlashingActive = false;
+            }
         }
 
         /// <summary>
@@ -417,21 +436,26 @@ namespace Ewan.Core.Module
         /// </summary>
         private void StopBuzzer()
         {
-            if (_buzzerCancellation != null)
-            {
-                _buzzerCancellation.Cancel();
-                _buzzerCancellation.Dispose();
-                _buzzerCancellation = null;
-            }
-            
             try
             {
-                // 实际控制蜂鸣器IO输出
+                var cancellation = _buzzerCancellation;
+                if (cancellation != null)
+                {
+                    _buzzerCancellation = null; // 先置空，避免重复调用
+
+                    if (!cancellation.IsCancellationRequested)
+                    {
+                        cancellation.Cancel();
+                    }
+                    cancellation.Dispose();
+                }
+
+                // 关闭蜂鸣器IO输出
                 if (_ioManager != null && _ioManager.IsConnected)
                 {
                     bool buzzerResult = _ioManager.LayeredIO.WriteOutBit(AlarmIOMapping.BUZZER, false);
                     _uiLogger.Info(() => $"蜂鸣器停止: {(buzzerResult ? "成功" : "失败")} (Y{AlarmIOMapping.BUZZER})");
-                    
+
                     if (!buzzerResult)
                     {
                         _uiLogger.Warn(() => "蜂鸣器停止失败");
@@ -442,12 +466,18 @@ namespace Ewan.Core.Module
                     _uiLogger.Warn(() => "IO管理器未连接，无法停止蜂鸣器");
                 }
             }
+            catch (ObjectDisposedException)
+            {
+                // 对象已释放，忽略
+            }
             catch (Exception ex)
             {
                 _uiLogger.Error(() => Ewan.Resources.LogMessages.IOWriteError, "Buzzer", ex.Message);
             }
-            
-            _buzzerActive = false;
+            finally
+            {
+                _buzzerActive = false;
+            }
         }
 
         /// <summary>
