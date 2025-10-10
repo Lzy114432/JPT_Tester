@@ -392,8 +392,8 @@ namespace Ewan.Core.Module
                 if (_ioManager != null && _ioManager.IsConnected)
                 {
                     bool buzzerResult = _ioManager.LayeredIO.WriteOutBit(AlarmIOMapping.BUZZER, true);
-                    _uiLogger.Info(() => $"蜂鸣器启动: {(buzzerResult ? "成功" : "失败")} (Y{AlarmIOMapping.BUZZER})");
-                    
+                    _uiLogger.Debug(() => $"蜂鸣器启动: {(buzzerResult ? "成功" : "失败")} (Y{AlarmIOMapping.BUZZER})");
+
                     if (!buzzerResult)
                     {
                         _uiLogger.Warn(() => "蜂鸣器启动失败");
@@ -454,7 +454,7 @@ namespace Ewan.Core.Module
                 if (_ioManager != null && _ioManager.IsConnected)
                 {
                     bool buzzerResult = _ioManager.LayeredIO.WriteOutBit(AlarmIOMapping.BUZZER, false);
-                    _uiLogger.Info(() => $"蜂鸣器停止: {(buzzerResult ? "成功" : "失败")} (Y{AlarmIOMapping.BUZZER})");
+                    _uiLogger.Debug(() => $"蜂鸣器停止: {(buzzerResult ? "成功" : "失败")} (Y{AlarmIOMapping.BUZZER})");
 
                     if (!buzzerResult)
                     {

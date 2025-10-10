@@ -1534,7 +1534,7 @@ namespace MarkingMachineFeeder.Viewmodel
             }
 
             // 记录状态变化日志
-            _uiLogger.Info(() => $"系统状态更新: {status} - {description}");
+            _uiLogger.Debug(() => $"系统状态更新: {status} - {description}");
         }
 
         /// <summary>
