@@ -70,13 +70,13 @@ namespace Ewan.Core.Module
             {
                 MsgManager.Instance().UnRegisterListener(_msgListener);
             }
-            
+
             // 停止所有任务
             StopAllTasks();
-            
-            // 关闭所有指示器
-            SetLights(false, false, false);
-            
+
+            // 程序关闭时 - 黄灯常亮
+            SetLights(false, true, false);
+
             _uiLogger.Info(() => Ewan.Resources.LogMessages.ModuleDestroyed, "SystemStatusIndicatorModule");
         }
 
@@ -141,9 +141,9 @@ namespace Ewan.Core.Module
                     break;
 
                 case SystemStatus.Stopped:
-                    // 停止状态 - 所有灯关闭
+                    // 停止状态 - 黄灯常亮
                     StopAllTasks();
-                    SetLights(false, false, false);
+                    SetLights(false, true, false);
                     _uiLogger.Debug(() => Ewan.Resources.LogMessages.SystemStatusIndicatorStopped, command.Description);
                     break;
             }
