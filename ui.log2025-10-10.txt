@@ -1,78 +1,89 @@
-﻿2025-10-10 11:13:02,624 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
-2025-10-10 11:13:02,638 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
-2025-10-10 11:13:02,665 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=SMC606IO, ConnectionString=192.168.5.11, MappingPath=Config\io_mapping.json 
-2025-10-10 11:13:02,714 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:214] [IOHardwareCreated] IO硬件已创建: SMC606IO 
-2025-10-10 11:13:02,716 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
-2025-10-10 11:13:02,782 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 文化已更改为 zh-CN 
-2025-10-10 11:13:02,811 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 4个轴配置 
-2025-10-10 11:13:02,885 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] 系统初始化成功 
-2025-10-10 11:13:03,021 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:428] [IOConnected] IO已连接: 192.168.5.11 
-2025-10-10 11:13:03,050 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:233] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
-2025-10-10 11:13:03,051 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:256] [IOConfigurationLoaded] IO配置已从以下位置加载: 使用现有映射: 输入=40, 输出=34 
-2025-10-10 11:13:03,062 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:79] [ModuleInitialized] 模块初始化成功: SafetyModule 
-2025-10-10 11:13:03,099 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
-2025-10-10 11:13:03,131 [DEBUG] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:457] [UnknownResource] [Missing Resource: UnknownResource] 
-2025-10-10 11:13:03,142 [DEBUG] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:164] [UnknownResource] [Missing Resource: UnknownResource] 
-2025-10-10 11:13:03,143 [INFO ] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:50] [ModuleInitialized] 模块初始化成功: SystemStatusIndicatorModule 
-2025-10-10 11:13:03,145 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
-2025-10-10 11:13:03,149 [DEBUG] [thread-1] [Ewan.BusinessBonding.StreamController:365] [UnknownResource] [Missing Resource: UnknownResource] 
-2025-10-10 11:13:03,154 [DEBUG] [thread-1] [Ewan.BusinessBonding.StreamController:390] [UnknownResource] [Missing Resource: UnknownResource] 
-2025-10-10 11:13:03,162 [DEBUG] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:457] [UnknownResource] [Missing Resource: UnknownResource] 
-2025-10-10 11:13:03,164 [DEBUG] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:174] [UnknownResource] [Missing Resource: UnknownResource] 
-2025-10-10 11:13:03,260 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] 模块初始化成功: IOPollingModule: IO映射名称加载成功 
-2025-10-10 11:13:03,262 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] 模块初始化成功: IOPollingModule 
-2025-10-10 11:13:03,263 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
-2025-10-10 11:13:03,266 [INFO ] [thread-1] [Ewan.Core.Module.ProductionLineModule:36] [ModuleInitialized] 模块初始化成功: ProductionLineModule 
-2025-10-10 11:13:03,268 [INFO ] [thread-1] [Ewan.Core.Module.ProductionLineModule:305] [ProcessingCompleted] 处理已完成: 系统控制消息监听器注册 
-2025-10-10 11:13:03,271 [INFO ] [thread-1] [Ewan.Core.Module.MaterialLoadingModule:62] [ModuleInitialized] 模块初始化成功: MaterialLoadingModule 
-2025-10-10 11:13:03,273 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:105] [ModuleInitialized] 模块初始化成功: BinElevatorModule 
-2025-10-10 11:13:03,275 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:117] [InitializationCompleted] 初始化已完成: 料仓升降控制系统 
-2025-10-10 11:13:03,277 [INFO ] [thread-1] [Ewan.Core.Module.ProductionLineModule:53] [InitializationCompleted] 初始化已完成: 生产线控制系统 
-2025-10-10 11:13:03,278 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
-2025-10-10 11:13:03,280 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] 流处理已启动 
-2025-10-10 11:13:03,283 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator已配置 
-2025-10-10 11:13:03,615 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
-2025-10-10 11:13:03,722 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
-2025-10-10 11:13:03,833 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
-2025-10-10 11:13:03,944 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
-2025-10-10 11:13:04,061 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
-2025-10-10 11:13:04,143 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1363] [UnknownResource] [Missing Resource: UnknownResource] 
-2025-10-10 11:13:04,144 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:382] [MainWindowStarted] 主窗口已启动 
-2025-10-10 11:13:09,320 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1053] [ProcessingStarted] 处理已开始: 用户触发系统复位（硬件初始化） 
-2025-10-10 11:13:09,323 [INFO ] [thread-1] [Ewan.BusinessBonding.SystemControlService:17] [ProcessingCompleted] 处理已完成: 系统初始化命令已发送 
-2025-10-10 11:13:09,329 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1070] [ProcessingCompleted] 处理已完成: 系统复位完成 
-2025-10-10 11:13:09,329 [INFO ] [thread-8] [Ewan.Core.Module.ProductionLineModule:135] [ProcessingStarted] 处理已开始: 生产线硬件初始化开始 
-2025-10-10 11:13:09,345 [DEBUG] [thread-8] [Ewan.Core.Module.ProductionLineModule:287] [UnknownResource] [Missing Resource: UnknownResource] 
-2025-10-10 11:13:09,352 [INFO ] [thread-8] [Ewan.Core.Module.MaterialLoadingModule:93] [ProcessingStarted] 处理已开始: 上料机初始化开始 
-2025-10-10 11:13:09,359 [DEBUG] [thread-8] [Ewan.Core.Module.MaterialLoadingModule:302] [UnknownResource] [Missing Resource: UnknownResource] 
-2025-10-10 11:13:09,363 [INFO ] [thread-8] [Ewan.Core.Module.MaterialLoadingModule:100] [ProcessingStarted] 处理已开始: OUT_STOP置位true 
-2025-10-10 11:13:09,866 [INFO ] [thread-8] [Ewan.Core.Module.MaterialLoadingModule:105] [ProcessingStarted] 处理已开始: OUT_STOP置位false 
-2025-10-10 11:13:09,868 [INFO ] [thread-8] [Ewan.Core.Module.MaterialLoadingModule:109] [ProcessingStarted] 处理已开始: OUT_HIGH_SPEED置位true 
-2025-10-10 11:13:10,370 [INFO ] [thread-8] [Ewan.Core.Module.MaterialLoadingModule:114] [ProcessingStarted] 处理已开始: OUT_START置位true 
-2025-10-10 11:13:10,872 [INFO ] [thread-8] [Ewan.Core.Module.MaterialLoadingModule:119] [ProcessingStarted] 处理已开始: OUT_START置位false 
-2025-10-10 11:13:10,874 [INFO ] [thread-8] [Ewan.Core.Module.MaterialLoadingModule:123] [ProcessingStarted] 处理已开始: OUT_ALLOW_PICK置位true 
-2025-10-10 11:13:10,878 [DEBUG] [thread-8] [Ewan.Core.Module.MaterialLoadingModule:302] [UnknownResource] [Missing Resource: UnknownResource] 
-2025-10-10 11:13:10,881 [INFO ] [thread-8] [Ewan.Core.Module.MaterialLoadingModule:130] [ProcessingCompleted] 处理已完成: 上料机初始化完成 
-2025-10-10 11:13:10,886 [INFO ] [thread-8] [Ewan.Core.Module.BinElevatorModule:221] [ProcessingStarted] 处理已开始: 料仓升降硬件初始化开始 
-2025-10-10 11:13:10,888 [INFO ] [thread-8] [Ewan.Core.Module.ProductionLineModule:144] [ProcessingCompleted] 处理已完成: 生产线硬件初始化完成 
-2025-10-10 11:13:10,890 [DEBUG] [thread-8] [Ewan.Core.Module.ProductionLineModule:287] [UnknownResource] [Missing Resource: UnknownResource] 
-2025-10-10 11:13:10,893 [DEBUG] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:119] [UnknownResource] [Missing Resource: UnknownResource] 
-2025-10-10 11:13:10,906 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1537] [UnknownResource] [Missing Resource: UnknownResource] 
-2025-10-10 11:13:10,907 [DEBUG] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:457] [UnknownResource] [Missing Resource: UnknownResource] 
-2025-10-10 11:13:10,967 [DEBUG] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:174] [UnknownResource] [Missing Resource: UnknownResource] 
-2025-10-10 11:13:10,971 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1537] [UnknownResource] [Missing Resource: UnknownResource] 
-2025-10-10 11:13:10,972 [DEBUG] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:457] [UnknownResource] [Missing Resource: UnknownResource] 
-2025-10-10 11:13:11,008 [DEBUG] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:194] [UnknownResource] [Missing Resource: UnknownResource] 
-2025-10-10 11:13:11,009 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1537] [UnknownResource] [Missing Resource: UnknownResource] 
-2025-10-10 11:13:11,010 [DEBUG] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:457] [UnknownResource] [Missing Resource: UnknownResource] 
-2025-10-10 11:13:11,047 [DEBUG] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:164] [UnknownResource] [Missing Resource: UnknownResource] 
-2025-10-10 11:13:11,051 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1537] [UnknownResource] [Missing Resource: UnknownResource] 
-2025-10-10 11:13:14,489 [INFO ] [thread-8] [Ewan.Core.Module.ProductionLineModule:174] [ProcessingCompleted] 处理已完成: 生产线启动 
-2025-10-10 11:13:14,489 [INFO ] [thread-1] [Ewan.BusinessBonding.SystemControlService:24] [ProcessingCompleted] 处理已完成: 系统启动命令已发送 
-2025-10-10 11:13:14,491 [DEBUG] [thread-8] [Ewan.Core.Module.ProductionLineModule:287] [UnknownResource] [Missing Resource: UnknownResource] 
-2025-10-10 11:13:14,496 [DEBUG] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:457] [UnknownResource] [Missing Resource: UnknownResource] 
-2025-10-10 11:13:14,498 [DEBUG] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:174] [UnknownResource] [Missing Resource: UnknownResource] 
-2025-10-10 11:13:14,570 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1537] [UnknownResource] [Missing Resource: UnknownResource] 
-2025-10-10 11:13:14,613 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:580] [ProcessingStarted] 处理已开始: 料仓1开始Jog上升，速度:50 
-2025-10-10 11:13:14,740 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:541] [ProcessingStarted] 处理已开始: 料仓2开始Jog下降，速度:50 
-2025-10-10 11:13:14,751 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:541] [ProcessingStarted] 处理已开始: 料仓3开始Jog下降，速度:50 
+﻿2025-10-10 14:52:45,640 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-10-10 14:52:45,644 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-10-10 14:52:45,665 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=SMC606IO, ConnectionString=192.168.5.11, MappingPath=Config\io_mapping.json 
+2025-10-10 14:52:45,691 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:214] [IOHardwareCreated] IO硬件已创建: SMC606IO 
+2025-10-10 14:52:45,694 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-10-10 14:52:45,746 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 文化已更改为 zh-CN 
+2025-10-10 14:52:45,784 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 4个轴配置 
+2025-10-10 14:52:45,855 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] 系统初始化成功 
+2025-10-10 14:52:45,924 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:428] [IOConnected] IO已连接: 192.168.5.11 
+2025-10-10 14:52:45,953 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:233] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-10-10 14:52:45,954 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:256] [IOConfigurationLoaded] IO配置已从以下位置加载: 使用现有映射: 输入=40, 输出=34 
+2025-10-10 14:52:45,956 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:79] [ModuleInitialized] 模块初始化成功: SafetyModule 
+2025-10-10 14:52:45,957 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-10-10 14:52:45,969 [DEBUG] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:458] [BuzzerStopped] 蜂鸣器停止: 成功 (Y3) 
+2025-10-10 14:52:45,973 [DEBUG] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:164] [TrafficLightStandby] 三色灯: 待机状态 - 绿灯常亮 
+2025-10-10 14:52:45,975 [INFO ] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:50] [ModuleInitialized] 模块初始化成功: SystemStatusIndicatorModule 
+2025-10-10 14:52:46,013 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-10-10 14:52:46,017 [DEBUG] [thread-1] [Ewan.BusinessBonding.StreamController:406] [StatusIndicatorStreamStarted] 系统状态指示器流程已启动 
+2025-10-10 14:52:46,063 [DEBUG] [thread-1] [Ewan.BusinessBonding.StreamController:431] [SystemStatusMessageSent] 发送系统状态消息: Running - 流程启动 
+2025-10-10 14:52:46,067 [DEBUG] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:458] [BuzzerStopped] 蜂鸣器停止: 成功 (Y3) 
+2025-10-10 14:52:46,070 [DEBUG] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:174] [TrafficLightRunning] 三色灯: 运行状态 - 绿灯闪烁 
+2025-10-10 14:52:46,298 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] 模块初始化成功: IOPollingModule: IO映射名称加载成功 
+2025-10-10 14:52:46,299 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] 模块初始化成功: IOPollingModule 
+2025-10-10 14:52:46,300 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-10-10 14:52:46,306 [INFO ] [thread-1] [Ewan.Core.Module.ProductionLineModule:36] [ModuleInitialized] 模块初始化成功: ProductionLineModule 
+2025-10-10 14:52:46,308 [INFO ] [thread-1] [Ewan.Core.Module.ProductionLineModule:305] [ProcessingCompleted] 处理已完成: 系统控制消息监听器注册 
+2025-10-10 14:52:46,312 [INFO ] [thread-1] [Ewan.Core.Module.MaterialLoadingModule:62] [ModuleInitialized] 模块初始化成功: MaterialLoadingModule 
+2025-10-10 14:52:46,316 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:105] [ModuleInitialized] 模块初始化成功: BinElevatorModule 
+2025-10-10 14:52:46,317 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:117] [InitializationCompleted] 初始化已完成: 料仓升降控制系统 
+2025-10-10 14:52:46,319 [INFO ] [thread-1] [Ewan.Core.Module.ProductionLineModule:53] [InitializationCompleted] 初始化已完成: 生产线控制系统 
+2025-10-10 14:52:46,326 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-10-10 14:52:46,330 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:44] [ModuleInitialized] 模块初始化成功: BeltConveyorModule 
+2025-10-10 14:52:46,331 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:55] [InitializationCompleted] 初始化已完成: 皮带输送控制系统 
+2025-10-10 14:52:46,332 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-10-10 14:52:46,342 [DEBUG] [thread-1] [Ewan.BusinessBonding.StreamController:363] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-10-10 14:52:46,344 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] 流处理已启动 
+2025-10-10 14:52:46,348 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-10-10 14:52:46,834 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-10-10 14:52:46,939 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-10-10 14:52:47,063 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-10-10 14:52:47,180 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-10-10 14:52:47,298 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-10-10 14:52:47,343 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1363] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-10-10 14:52:47,345 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:382] [MainWindowStarted] 主窗口已启动 
+2025-10-10 14:52:52,685 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1053] [ProcessingStarted] 处理已开始: 用户触发系统复位（硬件初始化） 
+2025-10-10 14:52:52,692 [INFO ] [thread-1] [Ewan.BusinessBonding.SystemControlService:17] [ProcessingCompleted] 处理已完成: 系统初始化命令已发送 
+2025-10-10 14:52:52,697 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1070] [ProcessingCompleted] 处理已完成: 系统复位完成 
+2025-10-10 14:52:52,697 [INFO ] [thread-8] [Ewan.Core.Module.ProductionLineModule:135] [ProcessingStarted] 处理已开始: 生产线硬件初始化开始 
+2025-10-10 14:52:52,700 [DEBUG] [thread-8] [Ewan.Core.Module.ProductionLineModule:287] [SystemStatusMessageSent] 发送系统状态消息: Initializing - 生产线硬件初始化中 
+2025-10-10 14:52:52,715 [INFO ] [thread-8] [Ewan.Core.Module.MaterialLoadingModule:93] [ProcessingStarted] 处理已开始: 上料机初始化开始 
+2025-10-10 14:52:52,717 [DEBUG] [thread-8] [Ewan.Core.Module.MaterialLoadingModule:302] [StatusMessageSent] 发送状态消息: Running - 上料机初始化中 
+2025-10-10 14:52:52,719 [INFO ] [thread-8] [Ewan.Core.Module.MaterialLoadingModule:100] [ProcessingStarted] 处理已开始: OUT_STOP置位true 
+2025-10-10 14:52:52,774 [ERROR] [thread-4] [Ewan.Core.Module.SafetyModule:385] [ProcessingCompleted] 处理已完成: 紧急停机命令已发送: 机械臂气缸报警信号 
+2025-10-10 14:52:53,226 [INFO ] [thread-8] [Ewan.Core.Module.MaterialLoadingModule:105] [ProcessingStarted] 处理已开始: OUT_STOP置位false 
+2025-10-10 14:52:53,229 [INFO ] [thread-8] [Ewan.Core.Module.MaterialLoadingModule:109] [ProcessingStarted] 处理已开始: OUT_HIGH_SPEED置位true 
+2025-10-10 14:52:53,731 [INFO ] [thread-8] [Ewan.Core.Module.MaterialLoadingModule:114] [ProcessingStarted] 处理已开始: OUT_START置位true 
+2025-10-10 14:52:54,234 [INFO ] [thread-8] [Ewan.Core.Module.MaterialLoadingModule:119] [ProcessingStarted] 处理已开始: OUT_START置位false 
+2025-10-10 14:52:54,235 [INFO ] [thread-8] [Ewan.Core.Module.MaterialLoadingModule:123] [ProcessingStarted] 处理已开始: OUT_ALLOW_PICK置位true 
+2025-10-10 14:52:54,235 [DEBUG] [thread-8] [Ewan.Core.Module.MaterialLoadingModule:302] [StatusMessageSent] 发送状态消息: Warning - 上料机初始化完成 
+2025-10-10 14:52:54,236 [INFO ] [thread-8] [Ewan.Core.Module.MaterialLoadingModule:130] [ProcessingCompleted] 处理已完成: 上料机初始化完成 
+2025-10-10 14:52:54,237 [INFO ] [thread-8] [Ewan.Core.Module.BinElevatorModule:221] [ProcessingStarted] 处理已开始: 料仓升降硬件初始化开始 
+2025-10-10 14:52:54,238 [INFO ] [thread-8] [Ewan.Core.Module.ProductionLineModule:144] [ProcessingCompleted] 处理已完成: 生产线硬件初始化完成 
+2025-10-10 14:52:54,239 [DEBUG] [thread-8] [Ewan.Core.Module.ProductionLineModule:287] [SystemStatusMessageSent] 发送系统状态消息: Standby - 生产线初始化完成，等待启动 
+2025-10-10 14:52:54,241 [DEBUG] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:119] [SystemStatusIndicatorInitializing] 状态指示器: 初始化状态 - 生产线硬件初始化中 
+2025-10-10 14:52:54,252 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1537] [SystemStatusUpdated] 系统状态更新: Initializing - 生产线硬件初始化中 
+2025-10-10 14:52:54,254 [DEBUG] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:458] [BuzzerStopped] 蜂鸣器停止: 成功 (Y3) 
+2025-10-10 14:52:54,255 [DEBUG] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:174] [TrafficLightRunning] 三色灯: 运行状态 - 绿灯闪烁 
+2025-10-10 14:52:54,278 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1537] [SystemStatusUpdated] 系统状态更新: Running - 上料机初始化中 
+2025-10-10 14:52:54,282 [INFO ] [thread-8] [Ewan.Core.Module.MaterialLoadingModule:336] [ProcessingCompleted] 处理已完成: 强制停止装载 
+2025-10-10 14:52:54,284 [INFO ] [thread-8] [Ewan.Core.Module.ProductionLineModule:203] [ProcessingCompleted] 处理已完成: 生产线紧急停止 
+2025-10-10 14:52:54,286 [DEBUG] [thread-8] [Ewan.Core.Module.ProductionLineModule:287] [SystemStatusMessageSent] 发送系统状态消息: Critical - 生产线紧急停止 
+2025-10-10 14:52:54,294 [DEBUG] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:458] [BuzzerStopped] 蜂鸣器停止: 成功 (Y3) 
+2025-10-10 14:52:54,299 [DEBUG] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:458] [BuzzerStopped] 蜂鸣器停止: 成功 (Y3) 
+2025-10-10 14:52:54,301 [DEBUG] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:396] [BuzzerStarted] 蜂鸣器启动: 成功 (Y3) 
+2025-10-10 14:52:54,303 [DEBUG] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:432] [BuzzerStartWithDuration] 蜂鸣器启动，持续时间: 10000ms 
+2025-10-10 14:52:54,309 [ERROR] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:211] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-10-10 14:52:54,311 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1537] [SystemStatusUpdated] 系统状态更新: Critical - 机械臂气缸报警信号 
+2025-10-10 14:52:54,408 [DEBUG] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:458] [BuzzerStopped] 蜂鸣器停止: 成功 (Y3) 
+2025-10-10 14:52:54,408 [DEBUG] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:194] [TrafficLightWarning] 三色灯: 警告状态 - 黄灯闪烁 
+2025-10-10 14:52:54,411 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1537] [SystemStatusUpdated] 系统状态更新: Warning - 上料机初始化完成 
+2025-10-10 14:52:54,412 [DEBUG] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:458] [BuzzerStopped] 蜂鸣器停止: 成功 (Y3) 
+2025-10-10 14:52:54,413 [DEBUG] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:164] [TrafficLightStandby] 三色灯: 待机状态 - 绿灯常亮 
+2025-10-10 14:52:54,415 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1537] [SystemStatusUpdated] 系统状态更新: Standby - 生产线初始化完成，等待启动 
+2025-10-10 14:52:54,416 [DEBUG] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:458] [BuzzerStopped] 蜂鸣器停止: 成功 (Y3) 
+2025-10-10 14:52:54,416 [DEBUG] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:458] [BuzzerStopped] 蜂鸣器停止: 成功 (Y3) 
+2025-10-10 14:52:54,417 [DEBUG] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:396] [BuzzerStarted] 蜂鸣器启动: 成功 (Y3) 
+2025-10-10 14:52:54,418 [DEBUG] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:432] [BuzzerStartWithDuration] 蜂鸣器启动，持续时间: 10000ms 
+2025-10-10 14:52:54,419 [ERROR] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:211] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-10-10 14:52:54,422 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1537] [SystemStatusUpdated] 系统状态更新: Critical - 生产线紧急停止 
