@@ -175,8 +175,8 @@ namespace Ewan.BusinessBonding
                 //1.启动系统状态指示器流程（第二优先级，用于状态显示）
                 StartStatusIndicatorStream();
 
-                // 通过消息队列通知系统状态变为运行中（三色灯变为绿灯闪烁）
-                SendSystemStatusMessage(SystemStatus.Running, "流程启动");
+                // 通过消息队列通知系统状态变为待机（三色灯变为黄灯常亮）
+                SendSystemStatusMessage(SystemStatus.Standby, "流程启动 - 待机状态");
 
                 //2.运行IO轮询流程（第三优先级，为其他流程提供IO数据）
                 StartIOPollingStream();
