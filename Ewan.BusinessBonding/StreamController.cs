@@ -54,6 +54,11 @@ namespace Ewan.BusinessBonding
         private StreamRunner _beltConveyorRunner;
 
         /// <summary>
+        /// Station心跳流程runner
+        /// </summary>
+        private StreamRunner _stationHeartbeatRunner;
+
+        /// <summary>
         /// 报警流程runner（暂时注释，调试时启用）
         /// </summary>
         // private StreamRunner _alarmRunner;
@@ -69,6 +74,7 @@ namespace Ewan.BusinessBonding
         private List<IModule> _binElevatorModules = new List<IModule>();
         private List<IModule> _statusIndicatorModules = new List<IModule>();
         private List<IModule> _beltConveyorModules = new List<IModule>();
+        private List<IModule> _stationHeartbeatModules = new List<IModule>();
 
         /// <summary>
         /// 报警模块集合（暂时注释，调试时启用）
@@ -147,6 +153,16 @@ namespace Ewan.BusinessBonding
 
             #endregion
 
+            #region //构造Station心跳流程的节点并加入到对应runner
+
+            // 添加Station心跳模块，每1秒向寄存器170写入1
+            _stationHeartbeatModules.Add(new StationHeartbeatModule());
+
+            // 创建Station心跳流程runner
+            _stationHeartbeatRunner = new StreamRunner(_stationHeartbeatModules);
+
+            #endregion
+
             #region //构造报警流程的节点并加入到对应runner（暂时注释，调试时启用）
             
             // 极简的报警系统 - 只检测信号和执行停机
@@ -188,7 +204,9 @@ namespace Ewan.BusinessBonding
                 StartBinElevatorStream();
                 //6.运行皮带输送控制流程
                 StartBeltConveyorStream();
-                //7.运行报警流程（暂时注释，调试时启用）
+                //7.运行Station心跳流程
+                StartStationHeartbeatStream();
+                //8.运行报警流程（暂时注释，调试时启用）
                 //StartAlarmStream();
 
                 ////8.运行plc产能统计流程
@@ -222,9 +240,11 @@ namespace Ewan.BusinessBonding
             StopBinElevatorStream();
             //4.停止皮带输送流程
             StopBeltConveyorStream();
-            //5.停止报警流程（暂时注释，调试时启用）
+            //5.停止Station心跳流程
+            StopStationHeartbeatStream();
+            //6.停止报警流程（暂时注释，调试时启用）
             //StopAlarmStream();
-            //6.停止IO轮询流程
+            //7.停止IO轮询流程
             StopIOPollingStream();
 
 
@@ -371,6 +391,27 @@ namespace Ewan.BusinessBonding
         {
             _beltConveyorRunner?.Stop();
             _uiLogger.Debug(() => "皮带输送控制流程已停止");
+        }
+
+        /// <summary>
+        /// 启动Station心跳流程
+        /// </summary>
+        private void StartStationHeartbeatStream()
+        {
+            if (_stationHeartbeatRunner != null)
+            {
+                _stationHeartbeatRunner.Start();
+                _uiLogger.Debug(() => "Station心跳流程已启动");
+            }
+        }
+
+        /// <summary>
+        /// 停止Station心跳流程
+        /// </summary>
+        private void StopStationHeartbeatStream()
+        {
+            _stationHeartbeatRunner?.Stop();
+            _uiLogger.Debug(() => "Station心跳流程已停止");
         }
 
         /// <summary>

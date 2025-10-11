@@ -1,11 +1,13 @@
 ﻿using Ewan.Core.Module.Interface;
 using Ewan.Core.Logger;
+using Ewan.LogManager.Logger;
 
 namespace Ewan.Core.Module
 {
     public abstract class BaseModule<M> : IModule
     {
         protected readonly UILogger _uiLogger = new UILogger(typeof(Ewan.Resources.LogMessages));
+        protected readonly AppLogger _appLogger = AppLogger.Instance;
 
         /// <summary>
         /// 一般用于存放当前节点的结果数据

@@ -1,4 +1,5 @@
-﻿using HslCommunication;
+﻿using Ewan.Core.Attribute;
+using HslCommunication;
 using HslCommunication.ModBus;
 using HslCommunication.Profinet.Keyence;
 using System;
@@ -10,6 +11,7 @@ namespace Ewan.Core.Plc
     /// Modbus RTU管理器 - RS485串口通信实现
     /// 支持RS485网络通信，有效距离50米，支持多从站
     /// </summary>
+    [Manager(Priority = 1)]
     public class ModbusRTUManager : BaseManager<ModbusRTUManager>
     {
         private byte mStationNo;
