@@ -31,8 +31,11 @@ namespace Ewan.Core.Module
 
             try
             {
-                var data = ModbusRTUManager.Instance().ReadAny(isLoadingAddr, 1);
-                Push(new RingLineModel {  IsLoading= data[0] == 1 });
+                var data = ModbusRTUManager.Instance().Read(isLoadingAddr, 1);
+                if (data != null && data.Length > 0)
+                {
+                    Push(new RingLineModel { IsLoading = data[0] == 1 });
+                }
             }
             catch (Exception ex)
             {
