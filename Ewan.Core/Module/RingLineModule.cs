@@ -31,10 +31,13 @@ namespace Ewan.Core.Module
 
             try
             {
-                var data = ModbusRTUManager.Instance().Read(isLoadingAddr, 1);
-                if (data != null && data.Length > 0)
+                // 读取u16类型需要2个字节
+                var data = ModbusRTUManager.Instance().Read(isLoadingAddr, 2);
+                if (data != null && data.Length >= 2)
                 {
-                    Push(new RingLineModel { IsLoading = data[0] == 1 });
+                    // Modbus大端字节序: 高字节在前，低字节在后
+                    ushort value = (ushort)((data[0] << 8) | data[1]);
+                    Push(new RingLineModel { IsLoading = value == 1 });
                 }
             }
             catch (Exception ex)
