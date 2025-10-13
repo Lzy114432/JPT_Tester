@@ -13,7 +13,7 @@ namespace Ewan.Core.Module
         private ModbusRTUManager _modbusManager;
         private const int HEARTBEAT_INTERVAL = 1000; // 1秒
         private const string HEARTBEAT_ADDRESS = "170"; // STATION-ALIVE寄存器地址
-        private const ushort HEARTBEAT_VALUE = 1; // 心跳值
+        private const byte HEARTBEAT_VALUE = 1; // 心跳值（u8类型）
 
         protected override void OnInit()
         {

@@ -156,16 +156,45 @@ namespace Ewan.Core.Plc
             {
                 case byte[] bytes:
                     return bytes;
+                case byte b:
+                    // u8: 单字节，Modbus寄存器写入需要2字节（高字节为0）
+                    return new byte[] { 0x00, b };
+                case ushort us:
+                    // u16: 大端字节序（Modbus标准）
+                    return new byte[] { (byte)(us >> 8), (byte)(us & 0xFF) };
                 case short s:
-                    return BitConverter.GetBytes(s);
+                    // i16: 大端字节序
+                    ushort usValue = (ushort)s;
+                    return new byte[] { (byte)(usValue >> 8), (byte)(usValue & 0xFF) };
                 case int i:
-                    return BitConverter.GetBytes(i);
+                    // i32: 大端字节序
+                    uint uiValue = (uint)i;
+                    return new byte[] {
+                        (byte)(uiValue >> 24),
+                        (byte)((uiValue >> 16) & 0xFF),
+                        (byte)((uiValue >> 8) & 0xFF),
+                        (byte)(uiValue & 0xFF)
+                    };
+                case uint ui:
+                    // u32: 大端字节序
+                    return new byte[] {
+                        (byte)(ui >> 24),
+                        (byte)((ui >> 16) & 0xFF),
+                        (byte)((ui >> 8) & 0xFF),
+                        (byte)(ui & 0xFF)
+                    };
                 case float f:
-                    return BitConverter.GetBytes(f);
+                    // float: 转为字节后确保大端
+                    byte[] floatBytes = BitConverter.GetBytes(f);
+                    if (BitConverter.IsLittleEndian)
+                        Array.Reverse(floatBytes);
+                    return floatBytes;
                 case double d:
-                    return BitConverter.GetBytes(d);
-                //case bool[] bools:
-                //    return BoolArrayToBytes(bools);
+                    // double: 转为字节后确保大端
+                    byte[] doubleBytes = BitConverter.GetBytes(d);
+                    if (BitConverter.IsLittleEndian)
+                        Array.Reverse(doubleBytes);
+                    return doubleBytes;
                 default:
                     throw new ArgumentException($"Unsupported data type: {value.GetType()}");
             }
