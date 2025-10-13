@@ -59,6 +59,11 @@ namespace Ewan.BusinessBonding
         private StreamRunner _stationHeartbeatRunner;
 
         /// <summary>
+        /// 环线通信流程runner
+        /// </summary>
+        private StreamRunner _ringLineRunner;
+
+        /// <summary>
         /// 报警流程runner（暂时注释，调试时启用）
         /// </summary>
         // private StreamRunner _alarmRunner;
@@ -75,6 +80,7 @@ namespace Ewan.BusinessBonding
         private List<IModule> _statusIndicatorModules = new List<IModule>();
         private List<IModule> _beltConveyorModules = new List<IModule>();
         private List<IModule> _stationHeartbeatModules = new List<IModule>();
+        private List<IModule> _ringLineModules = new List<IModule>();
 
         /// <summary>
         /// 报警模块集合（暂时注释，调试时启用）
@@ -163,6 +169,16 @@ namespace Ewan.BusinessBonding
 
             #endregion
 
+            #region //构造环线通信流程的节点并加入到对应runner
+
+            // 添加环线通信模块，读取寄存器152 (环线要料信号)
+            _ringLineModules.Add(new RingLineModule());
+
+            // 创建环线通信流程runner
+            _ringLineRunner = new StreamRunner(_ringLineModules);
+
+            #endregion
+
             #region //构造报警流程的节点并加入到对应runner（暂时注释，调试时启用）
             
             // 极简的报警系统 - 只检测信号和执行停机
@@ -206,7 +222,9 @@ namespace Ewan.BusinessBonding
                 StartBeltConveyorStream();
                 //7.运行Station心跳流程
                 StartStationHeartbeatStream();
-                //8.运行报警流程（暂时注释，调试时启用）
+                //8.运行环线通信流程
+                StartRingLineStream();
+                //9.运行报警流程（暂时注释，调试时启用）
                 //StartAlarmStream();
 
                 ////8.运行plc产能统计流程
@@ -242,9 +260,11 @@ namespace Ewan.BusinessBonding
             StopBeltConveyorStream();
             //5.停止Station心跳流程
             StopStationHeartbeatStream();
-            //6.停止报警流程（暂时注释，调试时启用）
+            //6.停止环线通信流程
+            StopRingLineStream();
+            //7.停止报警流程（暂时注释，调试时启用）
             //StopAlarmStream();
-            //7.停止IO轮询流程
+            //8.停止IO轮询流程
             StopIOPollingStream();
 
 
@@ -412,6 +432,27 @@ namespace Ewan.BusinessBonding
         {
             _stationHeartbeatRunner?.Stop();
             _uiLogger.Debug(() => "Station心跳流程已停止");
+        }
+
+        /// <summary>
+        /// 启动环线通信流程
+        /// </summary>
+        private void StartRingLineStream()
+        {
+            if (_ringLineRunner != null)
+            {
+                _ringLineRunner.Start();
+                _uiLogger.Debug(() => "环线通信流程已启动");
+            }
+        }
+
+        /// <summary>
+        /// 停止环线通信流程
+        /// </summary>
+        private void StopRingLineStream()
+        {
+            _ringLineRunner?.Stop();
+            _uiLogger.Debug(() => "环线通信流程已停止");
         }
 
         /// <summary>

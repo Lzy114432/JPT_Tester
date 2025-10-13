@@ -155,11 +155,13 @@ namespace Ewan.Core.Module
                     switch (_currentState)
                     {
                         case MaterialLoadingState.Idle:
-                            // 在空闲状态检测料片
-                            if (_ioManager.LayeredIO.ReadInBit(SCAN_POSITION_SIGNAL))
+                            // 在空闲状态检测料片到达扫码位
+                            // 检测到X7到位 && 能获取流程锁
+                            if (_ioManager.LayeredIO.ReadInBit(SCAN_POSITION_SIGNAL) &&
+                                _sharedState?.TryStartLoading() == true)
                             {
                                 _currentState = MaterialLoadingState.MaterialDetected;
-                                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "检测到料片，准备取料");
+                                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "检测到料片到达扫码位(X7=true)，获取流程锁，开始装料流程");
                             }
                             break;
                             
@@ -272,14 +274,16 @@ namespace Ewan.Core.Module
                 // 下料完成，清除信号
                 _ioManager.LayeredIO.WriteOutBit(TRIGGER_LOADING_SIGNAL, false);
                 _ioManager.LayeredIO.WriteOutBit(BIN1_SELECT_SIGNAL, false);
+                _ioManager.LayeredIO.WriteOutBit(OUT_SCAN_COMPLETE, false);
 
-                _ioManager.LayeredIO.WriteOutBit(OUT_SCAN_COMPLETE, false);  // 扫码完成
+                // 释放流程锁
+                _sharedState?.FinishProcess();
 
                 // 重置标志并返回空闲状态
                 SetLoadingCompleted(false);
                 _currentState = MaterialLoadingState.Idle;
-                
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "下料完成，返回空闲状态");
+
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "装料完成，释放流程锁，返回空闲状态");
             }
         }
 

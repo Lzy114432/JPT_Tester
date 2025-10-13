@@ -21,7 +21,10 @@ namespace Ewan.Core.Module
         private bool _emergencyStopTriggered = false;
         private bool _unloadingRequested = false;
         private bool _stopRequested = false;
-        
+
+        // 共享状态（用于与其他模块通信）
+        private ProductionLineSharedState _sharedState;
+
         // 消息队列相关
         private MsgListener _msgManager;
 
@@ -31,17 +34,15 @@ namespace Ewan.Core.Module
 
         private ModbusRTUManager _modbusRTUManager;
 
-        // 扫码位置到达信号X7
-        private const int SCAN_POSITION_SIGNAL = 7;
+        // 输入信号常量
+        private const int MATERIAL_DETECT_SIGNAL = 3;       // X3 - 料片检测信号
+        private const int SCAN_POSITION_SIGNAL = 7;         // X7 - 扫码位置到达信号
+        private const int CART_PULSE_SIGNAL = 11;           // X11 - 小车脉冲完成信号
 
-        // 小车脉冲完成信号X11
-        private const int CART_PULSE_SIGNAL = 11;
-
-        // 触发取料信号Y15
-        private const int TRIGGER_PICKUP_SIGNAL = 15;
-
-        // 放入小车信号Y17
-        private const int PUT_TO_CART_SIGNAL = 17;
+        // 输出信号常量
+        private const int OUT_ALLOW_PICK = 14;              // OUT14 - 允许取料信号
+        private const int TRIGGER_PICKUP_SIGNAL = 15;       // Y15 - 触发取料信号
+        private const int PUT_TO_CART_SIGNAL = 17;          // Y17 - 放入小车信号
 
         // 料仓选择信号IO配置（复用装料时的信号）
         private const int BIN1_SELECT_SIGNAL = 11; // Y11 - 料仓1选择信号
@@ -61,6 +62,15 @@ namespace Ewan.Core.Module
         private string _lastScannedQrCode = string.Empty;
 
         private bool _ringLineunload = false;
+
+        /// <summary>
+        /// 带共享状态的构造函数
+        /// </summary>
+        /// <param name="sharedState">共享状态对象</param>
+        public MaterialUnloadingModule(ProductionLineSharedState sharedState)
+        {
+            _sharedState = sharedState;
+        }
 
         protected override void OnInit()
         {
@@ -94,11 +104,18 @@ namespace Ewan.Core.Module
                     {
                         case MaterialUnloadingState.Idle:
                             // 监控环线信号，触发取料流程
-                            if (_ringLineunload && !_unloadingRequested)
+                            // 必须同时满足：1.环线要料(152=1)  2.X3=false(无外部料片)  3.能获取流程锁
+                            if (_ringLineunload &&
+                                !_unloadingRequested &&
+                                !_ioManager.LayeredIO.ReadInBit(MATERIAL_DETECT_SIGNAL) &&  // X3必须为false
+                                _sharedState?.TryStartUnloading() == true)
                             {
+                                // 禁止后台程序取料，避免与装料流程冲突
+                                _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, false);
+
                                 // 设置默认料仓为1号（可根据需要修改）
                                 RequestUnloading(1);
-                                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "环线信号触发，开始取料流程");
+                                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "环线要料且无外部料片(X3=false)，禁止取料(OUT14=false)，开始下料流程");
                             }
                             break;
                             
@@ -230,14 +247,19 @@ namespace Ewan.Core.Module
 
                 // 发送完成信号到Modbus寄存器153
                 SendCartCompletionToModbus();
-                
-                
+
+                // 恢复允许取料
+                _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, true);
+
+                // 释放流程锁
+                _sharedState?.FinishProcess();
+
                 // 重置标志并返回空闲状态
                 _unloadingRequested = false;
                 _lastScannedQrCode = string.Empty; // 清空扫码结果
                 _currentState = MaterialUnloadingState.Idle;
-                
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "物料已放入小车，完成信号已发送到Modbus");
+
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "下料完成，恢复允许取料(OUT14=true)，释放流程锁");
             }
         }
 

@@ -14,9 +14,10 @@ namespace Ewan.Core.Module
         #region 私有字段
 
         private MaterialLoadingModule _materialLoading;
+        private MaterialUnloadingModule _materialUnloading;
         private BinElevatorModule _binElevator;
         private ProductionLineSharedState _sharedState;
-        
+
         private int _scanInterval = 100; // 扫描间隔，毫秒
         private bool _systemReady = false;
         private bool _initialized = false; // 硬件初始化标志
@@ -40,13 +41,15 @@ namespace Ewan.Core.Module
                 
                 // 创建共享状态
                 _sharedState = new ProductionLineSharedState();
-                
+
                 // 创建子模块并传递共享状态
                 _materialLoading = new MaterialLoadingModule(_sharedState);
+                _materialUnloading = new MaterialUnloadingModule(_sharedState);
                 _binElevator = new BinElevatorModule(_sharedState);
-                
+
                 // 初始化子模块
                 _materialLoading.Init();
+                _materialUnloading.Init();
                 _binElevator.Init();
                 
                 _systemReady = true;
@@ -73,7 +76,10 @@ namespace Ewan.Core.Module
                 // 添加空值检查，防止关闭时的空引用异常
                 if (_materialLoading != null)
                     _materialLoading.Run();
-                    
+
+                if (_materialUnloading != null)
+                    _materialUnloading.Run();
+
                 if (_binElevator != null)
                     _binElevator.Run();
                 
@@ -98,13 +104,19 @@ namespace Ewan.Core.Module
                 
                 // 取消注册消息监听器
                 UnregisterSystemControlListener();
-                
+
                 if (_materialLoading != null)
                 {
                     _materialLoading.Destroy();
                     _materialLoading = null;
                 }
-                
+
+                if (_materialUnloading != null)
+                {
+                    _materialUnloading.Destroy();
+                    _materialUnloading = null;
+                }
+
                 if (_binElevator != null)
                 {
                     _binElevator.Destroy();

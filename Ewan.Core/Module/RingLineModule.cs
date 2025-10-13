@@ -18,7 +18,7 @@ namespace Ewan.Core.Module
         private int _interval = 200;
 
 
-        private const string isLoadingAddr = "52";
+        private const string isLoadingAddr = "152";
 
         protected override void OnInit()
         {
@@ -31,8 +31,8 @@ namespace Ewan.Core.Module
 
             try
             {
-                var data = ModbusRTUManager.Instance().ReadCoil(isLoadingAddr, 1);
-                Push(new RingLineModel {  IsLoading= data[0] });
+                var data = ModbusRTUManager.Instance().ReadAny(isLoadingAddr, 1);
+                Push(new RingLineModel {  IsLoading= data[0] == 1 });
             }
             catch (Exception ex)
             {
