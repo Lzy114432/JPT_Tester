@@ -410,7 +410,7 @@ namespace Ewan.BusinessBonding
         private void StopBeltConveyorStream()
         {
             _beltConveyorRunner?.Stop();
-            _uiLogger.Debug(() => "皮带输送控制流程已停止");
+            _uiLogger.Debug("皮带输送控制流程已停止");
         }
 
         /// <summary>
@@ -421,7 +421,7 @@ namespace Ewan.BusinessBonding
             if (_stationHeartbeatRunner != null)
             {
                 _stationHeartbeatRunner.Start();
-                _uiLogger.Debug(() => "Station心跳流程已启动");
+                _uiLogger.Debug("Station心跳流程已启动");
             }
         }
 
@@ -431,7 +431,7 @@ namespace Ewan.BusinessBonding
         private void StopStationHeartbeatStream()
         {
             _stationHeartbeatRunner?.Stop();
-            _uiLogger.Debug(() => "Station心跳流程已停止");
+            _uiLogger.Debug("Station心跳流程已停止");
         }
 
         /// <summary>
@@ -442,7 +442,7 @@ namespace Ewan.BusinessBonding
             if (_ringLineRunner != null)
             {
                 _ringLineRunner.Start();
-                _uiLogger.Debug(() => "环线通信流程已启动");
+                _uiLogger.Debug("环线通信流程已启动");
             }
         }
 
@@ -452,7 +452,7 @@ namespace Ewan.BusinessBonding
         private void StopRingLineStream()
         {
             _ringLineRunner?.Stop();
-            _uiLogger.Debug(() => "环线通信流程已停止");
+            _uiLogger.Debug("环线通信流程已停止");
         }
 
         /// <summary>

@@ -1566,7 +1566,7 @@ namespace MarkingMachineFeeder.Viewmodel
 
                 if (modbusManager == null || !modbusManager.IsConnected())
                 {
-                    _uiLogger.Warn("Modbus RTU未连接，无法读取环线要料信号");
+                    _uiLogger.Warn($"Modbus RTU未连接，无法读取环线要料信号");
                     System.Windows.MessageBox.Show("Modbus RTU未连接", "警告",
                         System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
                     return;
@@ -1579,7 +1579,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 {
                     // Modbus大端字节序: 高字节在前，低字节在后
                     ushort value = (ushort)((data[0] << 8) | data[1]);
-                    _uiLogger.Info($"读取环线要料信号成功: 值 = {value}");
+                    _uiLogger.Info($"环线要料信号读取成功: 值 = {value}");
                     System.Windows.MessageBox.Show($"环线要料信号(寄存器152): {value}", "读取成功",
                         System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
                 }
@@ -1592,7 +1592,7 @@ namespace MarkingMachineFeeder.Viewmodel
             }
             catch (Exception ex)
             {
-                _uiLogger.Error($"读取环线要料信号异常: {ex.Message}", ex);
+                _uiLogger.Error($"读取环线要料信号异常: {ex.Message}");
                 System.Windows.MessageBox.Show($"读取异常: {ex.Message}", "错误",
                     System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
@@ -1609,7 +1609,7 @@ namespace MarkingMachineFeeder.Viewmodel
 
                 if (modbusManager == null || !modbusManager.IsConnected())
                 {
-                    _uiLogger.Warn("Modbus RTU未连接，无法写入下料完成信号");
+                    _uiLogger.Warn($"Modbus RTU未连接，无法写入下料完成信号");
                     System.Windows.MessageBox.Show("Modbus RTU未连接", "警告",
                         System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
                     return;
@@ -1634,7 +1634,7 @@ namespace MarkingMachineFeeder.Viewmodel
             }
             catch (Exception ex)
             {
-                _uiLogger.Error($"写入下料完成信号异常: {ex.Message}", ex);
+                _uiLogger.Error($"写入下料完成信号异常: {ex.Message}");
                 System.Windows.MessageBox.Show($"写入异常: {ex.Message}", "错误",
                     System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }

@@ -22,7 +22,7 @@ namespace Ewan.Core.Module
 
         protected override void OnInit()
         {
-            _uiLogger.Info($"RingLineModule OnInit...");
+            _uiLogger.Info("环线模块已初始化");
         }
 
         protected override bool OnRun()
@@ -39,7 +39,7 @@ namespace Ewan.Core.Module
             }
             catch (Exception ex)
             {
-                _uiLogger.Error($"RingLineModule run occur an exception{ex}");
+                _uiLogger.Error($"环线模块运行异常: {ex.Message}");
             }
             return true;
         }
