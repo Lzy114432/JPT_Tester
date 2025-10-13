@@ -29,8 +29,8 @@ namespace Ewan.Core.Plc
             {
                 // 默认RS485串口参数配置
                 mStationNo = 1;
-                mComPort = "COM3";
-                mBaudRate = 9600;
+                mComPort = "COM7";
+                mBaudRate = 115200;
                 mDataBits = 8;
                 mStopBits = StopBits.One;
                 mParity = Parity.None;
