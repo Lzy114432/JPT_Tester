@@ -207,9 +207,12 @@ namespace Ewan.Core.Module
         /// </summary>
         private void ProcessWaitingForScanPosition()
         {
-            // 检查是否到达扫码位置X7
-            if (_ioManager.LayeredIO.ReadInBit(SCAN_POSITION_SIGNAL))
+            // 使用边缘检测读取扫码位置脉冲信号X7
+            if (_ioManager.LayeredIO.ReadRisingBit(SCAN_POSITION_SIGNAL))
             {
+                // 清除当前边缘检测状态
+                _ioManager.LayeredIO.ClearRisingBit(SCAN_POSITION_SIGNAL);
+
                 _currentState = MaterialUnloadingState.Scanning;
                 _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "已到达扫码位置，开始扫码");
             }
