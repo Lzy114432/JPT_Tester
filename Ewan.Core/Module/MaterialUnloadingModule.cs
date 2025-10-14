@@ -38,6 +38,7 @@ namespace Ewan.Core.Module
         private const int CART_PULSE_SIGNAL = 11;           // X11 - 小车脉冲完成信号
 
         // 输出信号常量
+        private const int OUT_SCAN_COMPLETE = 9;            // OUT9 - 发送扫码完成信号
         private const int OUT_ALLOW_PICK = 14;              // OUT14 - 允许取料信号
         private const int TRIGGER_PICKUP_SIGNAL = 15;       // Y15 - 触发取料信号
         private const int PUT_TO_CART_SIGNAL = 17;          // Y17 - 放入小车信号
@@ -220,12 +221,15 @@ namespace Ewan.Core.Module
             {
                 // 保存扫码结果
                 _lastScannedQrCode = scannedCode;
-                
+
+                // 发送扫码完成信号给机械臂
+                _ioManager.LayeredIO.WriteOutBit(OUT_SCAN_COMPLETE, true);
+
                 _currentState = MaterialUnloadingState.PuttingToCart;
 
                 // 发送放入小车信号
                 _ioManager.LayeredIO.WriteOutBit(PUT_TO_CART_SIGNAL, true);
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, $"扫码完成: {scannedCode}，放入小车");
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, $"扫码完成: {scannedCode}，发送扫码完成信号(OUT9)，放入小车");
             }
         }
 
@@ -239,6 +243,9 @@ namespace Ewan.Core.Module
             {
                 // 清除放入小车信号
                 _ioManager.LayeredIO.ClearRisingBit(PUT_TO_CART_SIGNAL);
+
+                // 清除扫码完成信号
+                _ioManager.LayeredIO.WriteOutBit(OUT_SCAN_COMPLETE, false);
 
                 // 发送完成信号到Modbus寄存器153
                 SendCartCompletionToModbus();
@@ -254,7 +261,7 @@ namespace Ewan.Core.Module
                 _lastScannedQrCode = string.Empty; // 清空扫码结果
                 _currentState = MaterialUnloadingState.Idle;
 
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "下料完成，恢复允许取料(OUT14=true)，释放流程锁");
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "下料完成，清除扫码完成信号(OUT9)，恢复允许取料(OUT14=true)，释放流程锁");
             }
         }
 
@@ -350,10 +357,11 @@ namespace Ewan.Core.Module
             lock (_stateLock)
             {
                 // 清除所有输出信号
+                _ioManager.LayeredIO.WriteOutBit(OUT_SCAN_COMPLETE, false);
                 _ioManager.LayeredIO.WriteOutBit(TRIGGER_PICKUP_SIGNAL, false);
                 _ioManager.LayeredIO.WriteOutBit(PUT_TO_CART_SIGNAL, false);
                 ClearBinSelectSignals();
-                
+
                 // 重置状态
                 _currentState = MaterialUnloadingState.Idle;
                 _stopRequested = false;
