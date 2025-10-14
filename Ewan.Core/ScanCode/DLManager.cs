@@ -10,6 +10,7 @@ namespace Ewan.Core.ScanCode
     /// <summary>
     /// 扫码器管理器 - 通过TCP与扫码器通信
     /// </summary>
+    [Manager(Priority = 1)]
     public class DLManager : BaseManager<DLManager>
     {
         #region 私有字段
