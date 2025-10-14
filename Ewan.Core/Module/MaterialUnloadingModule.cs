@@ -26,8 +26,6 @@ namespace Ewan.Core.Module
         private ProductionLineSharedState _sharedState;
 
         // 消息队列相关
-        private MsgListener _msgManager;
-
         private MsgListener _msgManager2;
 
         private LayeredIOManager _ioManager;
@@ -55,7 +53,6 @@ namespace Ewan.Core.Module
         private const string QR_CODE_END_REGISTER = "199";     // 二维码结束寄存器地址
         private const string QR_CODE_REGISTER_COUNT = "20";    // 二维码寄存器数量(180-199)
 
-        private bool _unloadingcomplete = false;
         private int _selectedBin = 1; // 选择的料仓编号 (1, 2, 3)
 
         // 存储扫码结果
@@ -79,9 +76,6 @@ namespace Ewan.Core.Module
             _modbusRTUManager = ModbusRTUManager.Instance();
 
             _ioManager = LayeredIOManager.Instance();
-
-            _msgManager = new MsgListener(MsgSubject.LoadingandunloadingState, CallBackShow);
-            MsgManager.Instance().RegisterListener(_msgManager);
 
             _msgManager2 = new MsgListener(MsgSubject.RingLineData, CallBackShow1);
             MsgManager.Instance().RegisterListener(_msgManager2);
@@ -160,12 +154,8 @@ namespace Ewan.Core.Module
         protected override void OnDestroy()
         {
             _uiLogger.Info(() => Ewan.Resources.LogMessages.ModuleDestroyed, "MaterialUnloadingModule");
-            
+
             // 注销消息监听器
-            if (_msgManager != null)
-            {
-                MsgManager.Instance().UnRegisterListener(_msgManager);
-            }
             if (_msgManager2 != null)
             {
                 MsgManager.Instance().UnRegisterListener(_msgManager2);
@@ -187,17 +177,19 @@ namespace Ewan.Core.Module
         /// </summary>
         private void ProcessPickingMaterial()
         {
-            // 检查取料完成状态
-            if (_unloadingcomplete)
+            // 检查取料完成状态 - 从SharedState读取（BinElevatorModule通过X10信号更新这个状态）
+            if (_sharedState?.GetUnloadingCompleted() == true)
             {
-                // 取料完成，清除信号
+                // 取料完成，清除SharedState标志
+                _sharedState.SetUnloadingCompleted(false);
+
+                // 清除信号
                 _ioManager.LayeredIO.WriteOutBit(TRIGGER_PICKUP_SIGNAL, false);
                 ClearBinSelectSignals();
-                
-                // 重置标志并转换到等待扫码位置状态
-                _unloadingcomplete = false;
+
+                // 转换到等待扫码位置状态
                 _currentState = MaterialUnloadingState.WaitingForScanPosition;
-                
+
                 _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "取料完成，等待到达扫码位置");
             }
         }
@@ -366,16 +358,9 @@ namespace Ewan.Core.Module
                 _currentState = MaterialUnloadingState.Idle;
                 _stopRequested = false;
                 _unloadingRequested = false;
-                _unloadingcomplete = false;
-                
+
                 _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "强制停止卸料，所有信号已清除");
             }
-        }
-
-        private void CallBackShow(MessageModel msg)
-        {
-            var data = msg.GetData<MaterialOperationStatus>();
-            _unloadingcomplete = data.LoadingCompleted;
         }
 
         private void CallBackShow1(MessageModel msg)
