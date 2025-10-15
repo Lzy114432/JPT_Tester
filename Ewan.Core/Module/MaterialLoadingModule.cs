@@ -97,30 +97,30 @@ namespace Ewan.Core.Module
 
                 // 步骤1: OUT_STOP置位true（停止信号）
                 _ioManager.LayeredIO.WriteOutBit(OUT_STOP, true);
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "OUT_STOP置位true");
+                _appLogger.Info("OUT_STOP置位true");
                 Thread.Sleep(500);
 
                 // 步骤2: OUT_STOP置位false
                 _ioManager.LayeredIO.WriteOutBit(OUT_STOP, false);
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "OUT_STOP置位false");
+                _appLogger.Info("OUT_STOP置位false");
 
                 // 步骤3: OUT_HIGH_SPEED置位true（高速运行）
                 _ioManager.LayeredIO.WriteOutBit(OUT_HIGH_SPEED, true);
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "OUT_HIGH_SPEED置位true");
+                _appLogger.Info("OUT_HIGH_SPEED置位true");
                 Thread.Sleep(500);
 
                 // 步骤4: OUT_START置位true（开始信号）
                 _ioManager.LayeredIO.WriteOutBit(OUT_START, true);
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "OUT_START置位true");
+                _appLogger.Info("OUT_START置位true");
                 Thread.Sleep(500);
 
                 // 步骤5: OUT_START置位false
                 _ioManager.LayeredIO.WriteOutBit(OUT_START, false);
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "OUT_START置位false");
+                _appLogger.Info("OUT_START置位false");
 
                 // 步骤6: OUT_ALLOW_PICK置位true（触发机械手皮带线允许取料）
                 _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, true);
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "OUT_ALLOW_PICK置位true");
+                _appLogger.Info("OUT_ALLOW_PICK置位true");
 
                 _initialized = true;
 
