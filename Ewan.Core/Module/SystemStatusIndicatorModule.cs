@@ -43,15 +43,15 @@ namespace Ewan.Core.Module
                 // 注册消息监听器
                 _msgListener = new MsgListener(MsgSubject.StatusIndicator, CallBackStatusIndicator);
                 MsgManager.Instance().RegisterListener(_msgListener);
-                
+
                 // 初始化状态 - 设置为待机
                 SetStandbyStatus();
 
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ModuleInitialized, "SystemStatusIndicatorModule");
+                _appLogger.Info("SystemStatusIndicatorModule 初始化完成");
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ModuleInitializationFailed, "SystemStatusIndicatorModule", ex.Message);
+                _appLogger.Error($"SystemStatusIndicatorModule 初始化失败: {ex.Message}");
                 throw;
             }
         }
@@ -77,7 +77,7 @@ namespace Ewan.Core.Module
             // 程序关闭时 - 黄灯常亮
             SetLights(false, true, false);
 
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.ModuleDestroyed, "SystemStatusIndicatorModule");
+            _appLogger.Info("SystemStatusIndicatorModule 已销毁");
         }
 
         #endregion
@@ -99,8 +99,7 @@ namespace Ewan.Core.Module
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ModuleRunError, 
-                    "SystemStatusIndicator-MessageCallback", ex.Message);
+                _appLogger.Error($"SystemStatusIndicator 消息回调错误: {ex.Message}");
             }
         }
 
@@ -116,7 +115,7 @@ namespace Ewan.Core.Module
                 case SystemStatus.Initializing:
                     // 初始化状态 - 所有灯关闭
                     SetLights(false, false, false);
-                    _uiLogger.Debug(() => Ewan.Resources.LogMessages.SystemStatusIndicatorInitializing, command.Description);
+                    _appLogger.Debug($"系统状态指示器: 初始化 - {command.Description}");
                     break;
 
                 case SystemStatus.Standby:
@@ -144,7 +143,7 @@ namespace Ewan.Core.Module
                     // 停止状态 - 黄灯常亮
                     StopAllTasks();
                     SetLights(false, true, false);
-                    _uiLogger.Debug(() => Ewan.Resources.LogMessages.SystemStatusIndicatorStopped, command.Description);
+                    _appLogger.Debug($"系统状态指示器: 停止 - {command.Description}");
                     break;
             }
         }
@@ -161,7 +160,7 @@ namespace Ewan.Core.Module
         {
             StopAllTasks();
             SetLights(false, true, false);
-            _uiLogger.Debug(() => Ewan.Resources.LogMessages.TrafficLightStandby);
+            _appLogger.Debug("三色灯: 待机状态 - 黄灯常亮");
         }
 
         /// <summary>
@@ -171,7 +170,7 @@ namespace Ewan.Core.Module
         {
             StopAllTasks();
             SetLights(false, false, true);
-            _uiLogger.Debug(() => Ewan.Resources.LogMessages.TrafficLightRunning);
+            _appLogger.Debug("三色灯: 运行状态 - 绿灯常亮");
         }
 
         /// <summary>
@@ -181,7 +180,7 @@ namespace Ewan.Core.Module
         {
             StopAllTasks();
             SetLights(false, true, false);
-            _uiLogger.Debug(() => Ewan.Resources.LogMessages.TrafficLightPaused);
+            _appLogger.Debug("三色灯: 暂停状态 - 黄灯常亮");
         }
 
         /// <summary>
@@ -191,7 +190,7 @@ namespace Ewan.Core.Module
         {
             StopAllTasks();
             SetLights(false, true, false);
-            _uiLogger.Debug(() => Ewan.Resources.LogMessages.TrafficLightWarning);
+            _appLogger.Debug("三色灯: 警告状态 - 黄灯常亮");
         }
 
         /// <summary>
@@ -208,13 +207,13 @@ namespace Ewan.Core.Module
             {
                 // 严重报警 - 红灯常亮 + 蜂鸣器10秒
                 StartBuzzer(10000);
-                _uiLogger.Error(() => "三色灯: 严重报警 - 红灯常亮 + 蜂鸣器");
+                _appLogger.Error("三色灯: 严重报警 - 红灯常亮 + 蜂鸣器");
             }
             else
             {
                 // 一般报警 - 红灯常亮 + 蜂鸣器5秒
                 StartBuzzer(5000);
-                _uiLogger.Warn(() => "三色灯: 报警状态 - 红灯常亮 + 蜂鸣器");
+                _appLogger.Warn("三色灯: 报警状态 - 红灯常亮 + 蜂鸣器");
             }
         }
 
@@ -242,7 +241,7 @@ namespace Ewan.Core.Module
                 {
                     // 控制红灯 (Y2)
                     //bool redResult = _ioManager.WriteOutput(AlarmIOMapping.RED_LIGHT, red);
-                    //// 控制黄灯 (Y1) 
+                    //// 控制黄灯 (Y1)
                     //bool yellowResult = _ioManager.WriteOutput(AlarmIOMapping.YELLOW_LIGHT, yellow);
                     //// 控制绿灯 (Y0)
                     //bool greenResult = _ioManager.WriteOutput(AlarmIOMapping.GREEN_LIGHT, green);
@@ -251,29 +250,29 @@ namespace Ewan.Core.Module
 
                     // 控制红灯 (Y2)
                     bool redResult = _ioManager.LayeredIO.WriteOutBit(AlarmIOMapping.RED_LIGHT, red);
-                    // 控制黄灯 (Y1) 
+                    // 控制黄灯 (Y1)
                     bool yellowResult = _ioManager.LayeredIO.WriteOutBit(AlarmIOMapping.YELLOW_LIGHT, yellow);
                     // 控制绿灯 (Y0)
                     bool greenResult = _ioManager.LayeredIO.WriteOutBit(AlarmIOMapping.GREEN_LIGHT, green);
 
                     // 记录操作结果
-                    //_uiLogger.Info(() => $"三色灯控制: 红灯={red}({(redResult ? "成功" : "失败")}), 黄灯={yellow}({(yellowResult ? "成功" : "失败")}), 绿灯={green}({(greenResult ? "成功" : "失败")})");
-                    
+                    //_appLogger.Info(() => $"三色灯控制: 红灯={red}({(redResult ? "成功" : "失败")}), 黄灯={yellow}({(yellowResult ? "成功" : "失败")}), 绿灯={green}({(greenResult ? "成功" : "失败")})");
+
                     // 如果有任何一个灯控制失败，记录警告
                     if (!redResult || !yellowResult || !greenResult)
                     {
-                        _uiLogger.Warn(() => $"部分三色灯控制失败");
+                        _appLogger.Warn("部分三色灯控制失败");
                     }
                 }
                 else
                 {
-                    _uiLogger.Warn(() => "IO管理器未连接，无法控制三色灯");
-                    _uiLogger.Debug(() => Ewan.Resources.LogMessages.TrafficLightSetExpected, red, yellow, green);
+                    _appLogger.Warn("IO管理器未连接，无法控制三色灯");
+                    _appLogger.Debug($"预期三色灯状态: 红={red}, 黄={yellow}, 绿={green}");
                 }
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.IOWriteError, "Lights", ex.Message);
+                _appLogger.Error($"三色灯IO写入错误: {ex.Message}");
             }
         }
 
@@ -334,8 +333,7 @@ namespace Ewan.Core.Module
                 }
                 catch (Exception ex)
                 {
-                    _uiLogger.Error(() => Ewan.Resources.LogMessages.ModuleRunError, 
-                        "SystemStatusIndicator-LightFlashing", ex.Message);
+                    _appLogger.Error($"SystemStatusIndicator 灯光闪烁错误: {ex.Message}");
                 }
                 finally
                 {
@@ -369,7 +367,7 @@ namespace Ewan.Core.Module
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => $"停止闪烁时发生错误: {ex.Message}");
+                _appLogger.Error($"停止闪烁时发生错误: {ex.Message}");
             }
             finally
             {
@@ -393,21 +391,21 @@ namespace Ewan.Core.Module
                 if (_ioManager != null && _ioManager.IsConnected)
                 {
                     bool buzzerResult = _ioManager.LayeredIO.WriteOutBit(AlarmIOMapping.BUZZER, true);
-                    _uiLogger.Debug(() => Ewan.Resources.LogMessages.BuzzerStarted, buzzerResult ? "成功" : "失败", AlarmIOMapping.BUZZER);
+                    _appLogger.Debug($"蜂鸣器启动{(buzzerResult ? "成功" : "失败")}, 地址: {AlarmIOMapping.BUZZER}");
 
                     if (!buzzerResult)
                     {
-                        _uiLogger.Warn(() => "蜂鸣器启动失败");
+                        _appLogger.Warn("蜂鸣器启动失败");
                     }
                 }
                 else
                 {
-                    _uiLogger.Warn(() => "IO管理器未连接，无法启动蜂鸣器");
+                    _appLogger.Warn("IO管理器未连接，无法启动蜂鸣器");
                 }
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.IOWriteError, "Buzzer", ex.Message);
+                _appLogger.Error($"蜂鸣器IO写入错误: {ex.Message}");
             }
             
             // 异步停止蜂鸣器
@@ -424,12 +422,11 @@ namespace Ewan.Core.Module
                 }
                 catch (Exception ex)
                 {
-                    _uiLogger.Error(() => Ewan.Resources.LogMessages.ModuleRunError, 
-                        "SystemStatusIndicator-BuzzerTimeout", ex.Message);
+                    _appLogger.Error($"SystemStatusIndicator 蜂鸣器超时错误: {ex.Message}");
                 }
             }, _buzzerCancellation.Token);
 
-            _uiLogger.Debug(() => Ewan.Resources.LogMessages.BuzzerStartWithDuration, duration);
+            _appLogger.Debug($"蜂鸣器将在 {duration}ms 后自动停止");
         }
 
         /// <summary>
@@ -455,16 +452,16 @@ namespace Ewan.Core.Module
                 if (_ioManager != null && _ioManager.IsConnected)
                 {
                     bool buzzerResult = _ioManager.LayeredIO.WriteOutBit(AlarmIOMapping.BUZZER, false);
-                    _uiLogger.Debug(() => Ewan.Resources.LogMessages.BuzzerStopped, buzzerResult ? "成功" : "失败", AlarmIOMapping.BUZZER);
+                    _appLogger.Debug($"蜂鸣器停止{(buzzerResult ? "成功" : "失败")}, 地址: {AlarmIOMapping.BUZZER}");
 
                     if (!buzzerResult)
                     {
-                        _uiLogger.Warn(() => "蜂鸣器停止失败");
+                        _appLogger.Warn("蜂鸣器停止失败");
                     }
                 }
                 else
                 {
-                    _uiLogger.Warn(() => "IO管理器未连接，无法停止蜂鸣器");
+                    _appLogger.Warn("IO管理器未连接，无法停止蜂鸣器");
                 }
             }
             catch (ObjectDisposedException)
@@ -473,7 +470,7 @@ namespace Ewan.Core.Module
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.IOWriteError, "Buzzer", ex.Message);
+                _appLogger.Error($"蜂鸣器IO写入错误: {ex.Message}");
             }
             finally
             {
