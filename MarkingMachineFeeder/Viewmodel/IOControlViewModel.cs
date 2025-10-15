@@ -827,9 +827,6 @@ namespace MarkingMachineFeeder.Viewmodel
                 // 计算页数（每页16个点）
                 _inputPageCount = Math.Max(1, (int)Math.Ceiling((double)_actualInputCount / POINTS_PER_PAGE));
                 _outputPageCount = Math.Max(1, (int)Math.Ceiling((double)_actualOutputCount / POINTS_PER_PAGE));
-                
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.IOConfigurationLoaded,
-                    $"检测到输入点数: {_actualInputCount} (页数: {_inputPageCount}), 输出点数: {_actualOutputCount} (页数: {_outputPageCount})");
             }
             catch (Exception ex)
             {
@@ -972,9 +969,6 @@ namespace MarkingMachineFeeder.Viewmodel
                 // 使用加载的映射名称初始化界面
                 _realIO = initialStatus;
                 UpdateAllIOPoints();
-
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ModuleInitialized,
-                    "IOControlViewModel: 映射名称初始化成功");
             }
             catch (Exception ex)
             {
@@ -1026,9 +1020,6 @@ namespace MarkingMachineFeeder.Viewmodel
                             }
                         }
                     }
-
-                    _uiLogger.Info(() => Ewan.Resources.LogMessages.IOConfigurationLoaded,
-                        "映射名称加载成功");
                 }
             }
             catch (Exception ex)
