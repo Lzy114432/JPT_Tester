@@ -1368,7 +1368,7 @@ namespace MarkingMachineFeeder.Viewmodel
             {
                 _statusIndicatorListener = new MsgListener(MsgSubject.StatusIndicator, OnSystemStatusChanged);
                 MsgManager.Instance().RegisterListener(_statusIndicatorListener);
-                _uiLogger.Debug(() => "系统状态监听器注册成功");
+                // _uiLogger.Debug(() => "系统状态监听器注册成功");
             }
             catch (Exception ex)
             {
@@ -1388,7 +1388,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 {
                     MsgManager.Instance().UnRegisterListener(_statusIndicatorListener);
                     _statusIndicatorListener = null;
-                    _uiLogger.Debug(() => "系统状态监听器取消注册");
+                    // _uiLogger.Debug(() => "系统状态监听器取消注册");
                 }
             }
             catch (Exception ex)
