@@ -4,10 +4,12 @@ using Ewan.Core.IO;
 using Ewan.Core.Logger;
 using Ewan.Core.Msg;
 using Ewan.Model.IO;
+using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -386,9 +388,12 @@ namespace MarkingMachineFeeder.Viewmodel
 
             // Set initial connection status
             IsConnected = false;
-            
+
             // Set design-time default values
             SetDesignTimeDefaults();
+
+            // 主动从 LayeredIOManager 获取初始状态，避免依赖消息延迟
+            InitializeFromIOManager();
         }
         
         private void SetDesignTimeDefaults()
@@ -945,6 +950,92 @@ namespace MarkingMachineFeeder.Viewmodel
             // 更新当前页显示
             UpdateInputPageDisplay();
             UpdateOutputPageDisplay();
+        }
+
+        #endregion
+
+        #region Active Initialization
+
+        /// <summary>
+        /// 从配置文件主动加载映射名称进行初始化
+        /// </summary>
+        private void InitializeFromIOManager()
+        {
+            try
+            {
+                // 创建临时 IOStatus 对象并填充映射名称
+                var initialStatus = new IOStatus();
+
+                // 从配置文件读取映射名称
+                LoadMappingNamesFromConfig(initialStatus);
+
+                // 使用加载的映射名称初始化界面
+                _realIO = initialStatus;
+                UpdateAllIOPoints();
+
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.ModuleInitialized,
+                    "IOControlViewModel: 映射名称初始化成功");
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Warn(() => Ewan.Resources.LogMessages.ModuleInitializationFailed,
+                    "IOControlViewModel: 映射名称初始化失败，将等待消息更新", ex.Message);
+                // 失败不影响，仍然可以依赖后续的消息更新
+            }
+        }
+
+        /// <summary>
+        /// 从配置文件加载映射名称
+        /// </summary>
+        private void LoadMappingNamesFromConfig(IOStatus status)
+        {
+            try
+            {
+                string configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+                    "Config", "io_mapping.json");
+
+                if (File.Exists(configPath))
+                {
+                    string json = File.ReadAllText(configPath);
+                    dynamic config = JsonConvert.DeserializeObject(json);
+
+                    // 加载输入映射名称
+                    if (config?.InputMappings != null)
+                    {
+                        foreach (var mapping in config.InputMappings)
+                        {
+                            int logicalIndex = (int)mapping.LogicalIndex;
+                            string name = (string)mapping.Name;
+                            if (logicalIndex >= 0 && logicalIndex < IOStatus.IO_COUNT)
+                            {
+                                status.XMappedNames[logicalIndex] = name;
+                            }
+                        }
+                    }
+
+                    // 加载输出映射名称
+                    if (config?.OutputMappings != null)
+                    {
+                        foreach (var mapping in config.OutputMappings)
+                        {
+                            int logicalIndex = (int)mapping.LogicalIndex;
+                            string name = (string)mapping.Name;
+                            if (logicalIndex >= 0 && logicalIndex < IOStatus.IO_COUNT)
+                            {
+                                status.YMappedNames[logicalIndex] = name;
+                            }
+                        }
+                    }
+
+                    _uiLogger.Info(() => Ewan.Resources.LogMessages.IOConfigurationLoaded,
+                        "映射名称加载成功");
+                }
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Warn(() => Ewan.Resources.LogMessages.IOConfigurationLoaded,
+                    "加载映射名称失败: " + ex.Message);
+            }
         }
 
         #endregion
