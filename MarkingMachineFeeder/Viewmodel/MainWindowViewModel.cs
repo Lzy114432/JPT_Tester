@@ -1054,14 +1054,35 @@ namespace MarkingMachineFeeder.Viewmodel
         
         #region 系统控制命令方法
         
-        private void ExecuteSystemReset()
+        private async void ExecuteSystemReset()
         {
             try
             {
                 _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "用户触发系统复位（硬件初始化）");
 
-                // 调用系统控制服务执行硬件初始化
+                var robotController = Ewan.BusinessBonding.RobotController.Instance();
+
+                // 步骤1: OUT7 清除报警
+                _uiLogger.Info(() => "步骤1: 清除报警信号(OUT7)");
+                bool clearResult = await robotController.ClearAlarm();
+                if (!clearResult)
+                {
+                    _uiLogger.Warn(() => "清除报警信号失败，继续执行复位流程");
+                }
+
+                // 步骤2: 设置低速运行（OUT16=false）
+                _uiLogger.Info(() => "步骤2: 设置低速运行模式");
+                robotController.SetHighSpeedMode(false);
+                await System.Threading.Tasks.Task.Delay(300); // 等待低速模式设置生效
+
+                // 步骤3: 调用系统控制服务执行硬件初始化
+                _uiLogger.Info(() => "步骤3: 执行系统复位");
                 _systemControlService.InitializeSystem();
+                await System.Threading.Tasks.Task.Delay(4000); // 等待4秒复位完成
+
+                // 步骤4: 设置高速运行（OUT16=true）
+                _uiLogger.Info(() => "步骤4: 设置高速运行模式");
+                robotController.SetHighSpeedMode(true);
 
                 // 复位系统状态
                 SystemRunningStatus = "Green";
@@ -1111,13 +1132,34 @@ namespace MarkingMachineFeeder.Viewmodel
             }
         }
         
-        private void ExecuteClearAlarm()
+        private async void ExecuteClearAlarm()
         {
-            // 清除报警
-            AlarmStatus = "Gray";
-            AlarmIsOn = false;
-            
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.TestLogClicked);
+            try
+            {
+                _uiLogger.Info(() => "用户触发清除报警");
+                
+                var robotController = Ewan.BusinessBonding.RobotController.Instance();
+                
+                // 调用RobotController清除报警（OUT7）
+                bool result = await robotController.ClearAlarm();
+                
+                if (result)
+                {
+                    // 清除报警界面状态
+                    AlarmStatus = "Gray";
+                    AlarmIsOn = false;
+                    
+                    _uiLogger.Info(() => "清除报警完成");
+                }
+                else
+                {
+                    _uiLogger.Warn(() => "清除报警失败");
+                }
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "清除报警", ex.Message);
+            }
         }
         
         private void ExecuteSystemStart()
