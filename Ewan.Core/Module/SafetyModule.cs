@@ -72,15 +72,15 @@ namespace Ewan.Core.Module
                     bool connected = _ioManager.Connect();
                     if (!connected)
                     {
-                        _uiLogger.Warn(() => Ewan.Resources.LogMessages.IOConnectionFailed, "SafetyModule初始化");
+                        _uiLogger.Warn("IO连接失败: {0}", "SafetyModule初始化");
                     }
                 }
 
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ModuleInitialized, "SafetyModule");
+                _uiLogger.Info("模块初始化成功: {0}", "SafetyModule");
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ModuleInitializationFailed, "SafetyModule", ex.Message);
+                _uiLogger.Error("模块初始化失败: {0} - {1}", "SafetyModule", ex.Message);
                 throw;
             }
         }
@@ -132,7 +132,7 @@ namespace Ewan.Core.Module
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ModuleRunError, "SafetyModule", ex.Message);
+                _uiLogger.Error("模块运行错误: {0} - {1}", "SafetyModule", ex.Message);
                 return false; // 停止运行
             }
         }
@@ -148,7 +148,7 @@ namespace Ewan.Core.Module
                 _ioManager.Disconnect();
             }
             
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.ModuleDestroyed, "SafetyModule");
+            _uiLogger.Info("模块已销毁: {0}", "SafetyModule");
         }
 
         #endregion
@@ -170,7 +170,7 @@ namespace Ewan.Core.Module
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ModuleRunError, 
+                _uiLogger.Error("模块运行错误: {0} - {1}", 
                     "SafetyModule-CheckAlarmInputs", ex.Message);
             }
         }
@@ -354,12 +354,12 @@ namespace Ewan.Core.Module
                 _msgManager.PushMsg(statusMsg);
                 
                 // 记录日志
-                _uiLogger.Warn(() => Ewan.Resources.LogMessages.ProcessingCompleted, 
+                _uiLogger.Warn("处理已完成: {0}", 
                     $"系统暂停命令已发送: {reason}");
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ModuleRunError, 
+                _uiLogger.Error("模块运行错误: {0} - {1}", 
                     "SafetyModule-SendPauseCommand", ex.Message);
             }
         }
@@ -382,12 +382,12 @@ namespace Ewan.Core.Module
                 _msgManager.PushMsg(statusMsg);
                 
                 // 记录日志
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingCompleted, 
+                _uiLogger.Error("处理已完成: {0}", 
                     $"紧急停机命令已发送: {reason}");
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ModuleRunError, 
+                _uiLogger.Error("模块运行错误: {0} - {1}", 
                     "SafetyModule-SendEmergencyStopCommand", ex.Message);
             }
         }
@@ -411,7 +411,7 @@ namespace Ewan.Core.Module
                 _msgManager.PushMsg(msg);
                 
                 // 记录日志
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ErrorOccurred, 
+                _uiLogger.Error("发生错误: {0}", 
                     "安全报警触发: " + description);
                 
                 // 同时发送给状态指示器（保持原有功能）
@@ -424,7 +424,7 @@ namespace Ewan.Core.Module
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ModuleRunError, 
+                _uiLogger.Error("模块运行错误: {0} - {1}", 
                     "SafetyModule-SendSafetyAlert", ex.Message);
             }
         }

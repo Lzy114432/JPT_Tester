@@ -31,7 +31,7 @@ namespace Ewan.Core.Axis
             //short res = LTSMC.smc_board_init(card, 2, ip, 115200);//ec则认为只有一个卡
             //if (res != 0)
             //{
-            //    _uiLogger.Error(() => Ewan.Resources.LogMessages.AxisManagerInitFailed, res);
+            //    _uiLogger.Error("轴管理器初始化失败: {0}", res);
             //    return false;
             //}
 
@@ -44,7 +44,7 @@ namespace Ewan.Core.Axis
             //short res = LTSMC.smc_board_close(card);
             //if (res != 0)
             //{
-            //    _uiLogger.Error(() => Ewan.Resources.LogMessages.AxisManagerDestroyFailed, res);
+            //    _uiLogger.Error("轴管理器销毁失败: {0}", res);
             //}
             base.Destroy();
         }
@@ -71,18 +71,18 @@ namespace Ewan.Core.Axis
                     // 如果文件不存在但成功加载了默认配置，需要保存到文件
                     if (!fileExists)
                     {
-                        _uiLogger.Info(() => Ewan.Resources.LogMessages.AxisConfigurationLoadFailed, "配置文件不存在，创建默认配置");
+                        _uiLogger.Info("加载轴配置失败: {0}", "配置文件不存在，创建默认配置");
                         SaveAxisConfiguration();
                     }
                     else
                     {
-                        _uiLogger.Info(() => Ewan.Resources.LogMessages.AxisConfigurationLoaded, $"{_configManager.AxisConfigs.Count}个轴配置");
+                        _uiLogger.Info("轴配置已从以下位置加载: {0}", $"{_configManager.AxisConfigs.Count}个轴配置");
                     }
                     return true;
                 }
                 else
                 {
-                    _uiLogger.Info(() => Ewan.Resources.LogMessages.AxisConfigurationLoadFailed, "配置为空，创建默认配置");
+                    _uiLogger.Info("加载轴配置失败: {0}", "配置为空，创建默认配置");
                     _configManager = AxisConfigManager.CreateDefault();
                     SaveAxisConfiguration();
                     return true;
@@ -90,7 +90,7 @@ namespace Ewan.Core.Axis
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.AxisConfigurationLoadFailed, ex.Message);
+                _uiLogger.Error("加载轴配置失败: {0}", ex.Message);
                 _configManager = AxisConfigManager.CreateDefault();
                 SaveAxisConfiguration(); // 保存默认配置到文件
                 return true; // 虽然加载失败，但创建了默认配置，返回true
@@ -107,18 +107,18 @@ namespace Ewan.Core.Axis
             {
                 if (_configManager?.SaveToFile(_configFilePath) == true)
                 {
-                    _uiLogger.Info(() => Ewan.Resources.LogMessages.AxisConfigurationSaved, _configFilePath);
+                    _uiLogger.Info("轴配置已保存到: {0}", _configFilePath);
                     return true;
                 }
                 else
                 {
-                    _uiLogger.Error(() => Ewan.Resources.LogMessages.AxisConfigurationSaveFailed, "保存失败");
+                    _uiLogger.Error("保存轴配置失败: {0}", "保存失败");
                     return false;
                 }
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.AxisConfigurationSaveFailed, ex.Message);
+                _uiLogger.Error("保存轴配置失败: {0}", ex.Message);
                 return false;
             }
         }
@@ -132,7 +132,7 @@ namespace Ewan.Core.Axis
             bool result = LoadAxisConfiguration();
             if (result)
             {
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.AxisConfigurationLoaded, "轴配置已重新加载");
+                _uiLogger.Info("轴配置已从以下位置加载: {0}", "轴配置已重新加载");
                 
                 // 触发配置更新事件
                 ConfigurationUpdated?.Invoke(this, EventArgs.Empty);

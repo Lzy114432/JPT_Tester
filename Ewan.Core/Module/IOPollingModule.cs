@@ -35,11 +35,11 @@ namespace Ewan.Core.Module
                 
                 _lastSyncTime = DateTime.Now;
                 
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ModuleInitialized, "IOPollingModule");
+                _uiLogger.Info("模块初始化成功: {0}", "IOPollingModule");
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ModuleInitializationFailed, "IOPollingModule", ex.Message);
+                _uiLogger.Error("模块初始化失败: {0} - {1}", "IOPollingModule", ex.Message);
             }
         }
 
@@ -65,7 +65,7 @@ namespace Ewan.Core.Module
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ModuleRunError, "IOPollingModule", ex.Message);
+                _uiLogger.Error("模块运行错误: {0} - {1}", "IOPollingModule", ex.Message);
                 Thread.Sleep(1000); // 出错时等待1秒
                 return true; // 继续运行
             }
@@ -129,7 +129,7 @@ namespace Ewan.Core.Module
             {
                 _ioStatus.IsConnected = false;
                 _ioStatus.ErrorMessage = ex.Message;
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ModuleRunError, "IOPollingModule IO Read", ex.Message);
+                _uiLogger.Error("模块运行错误: {0} - {1}", "IOPollingModule IO Read", ex.Message);
             }
         }
 
@@ -146,7 +146,7 @@ namespace Ewan.Core.Module
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ModuleRunError, "IOPollingModule Message Send", ex.Message);
+                _uiLogger.Error("模块运行错误: {0} - {1}", "IOPollingModule Message Send", ex.Message);
             }
         }
 
@@ -197,19 +197,19 @@ namespace Ewan.Core.Module
                         }
                     }
                     
-                    _uiLogger.Info(() => Ewan.Resources.LogMessages.ModuleInitialized, "IOPollingModule: IO映射名称加载成功");
+                    _uiLogger.Info("模块初始化成功: {0}", "IOPollingModule: IO映射名称加载成功");
                 }
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ModuleInitializationFailed, "IOPollingModule: IO映射名称加载失败", ex.Message);
+                _uiLogger.Error("模块初始化失败: {0} - {1}", "IOPollingModule: IO映射名称加载失败", ex.Message);
                 // 使用默认名称
             }
         }
 
         protected override void OnDestroy()
         {
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.ModuleDestroyed, "IOPollingModule");
+            _uiLogger.Info("模块已销毁: {0}", "IOPollingModule");
         }
     }
 }

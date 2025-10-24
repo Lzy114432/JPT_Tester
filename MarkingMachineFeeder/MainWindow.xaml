@@ -466,20 +466,6 @@
                                   Command="{Binding OpenPermissionConfigCommand}"
                                   Style="{StaticResource IndustrialSubMenuItem}"
                                   Visibility="{Binding CanViewSettings, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                        <!-- 语言切换子菜单 -->
-                        <MenuItem Header="{Binding LanguageMenuHeader}"
-                                  d:Header="语言"
-                                  Style="{StaticResource IndustrialSubMenuItem}"
-                                  Visibility="{Binding CanSwitchLanguage, Converter={StaticResource BooleanToVisibilityConverter}}">
-                            <MenuItem Header="English" 
-                                      Command="{Binding SwitchLanguageCommand}" 
-                                      CommandParameter="en-US"
-                                      Style="{StaticResource IndustrialSubMenuItem}"/>
-                            <MenuItem Header="中文" 
-                                      Command="{Binding SwitchLanguageCommand}" 
-                                      CommandParameter="zh-CN"
-                                      Style="{StaticResource IndustrialSubMenuItem}"/>
-                        </MenuItem>
                         <!-- 退出菜单 -->
                         <MenuItem Header="{Binding ExitMenuHeader}" 
                                   d:Header="退出"

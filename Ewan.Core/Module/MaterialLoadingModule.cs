@@ -59,7 +59,7 @@ namespace Ewan.Core.Module
 
         protected override void OnInit()
         {
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.ModuleInitialized, "MaterialLoadingModule");
+            _uiLogger.Info("模块初始化成功: {0}", "MaterialLoadingModule");
 
             _ioManager = LayeredIOManager.Instance();
 
@@ -90,7 +90,7 @@ namespace Ewan.Core.Module
         {
             try
             {
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "上料机初始化开始");
+                _uiLogger.Info("处理已开始: {0}", "上料机初始化开始");
 
                 // 发送初始化中状态 - 绿灯闪烁
                 SendStatusMessage(SystemStatus.Running, "上料机初始化中");
@@ -127,11 +127,11 @@ namespace Ewan.Core.Module
                 // 发送初始化完成状态 - 黄灯闪烁
                 SendStatusMessage(SystemStatus.Warning, "上料机初始化完成");
 
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "上料机初始化完成");
+                _uiLogger.Info("处理已完成: {0}", "上料机初始化完成");
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ModuleRunError, "上料机初始化失败: " + ex.Message);
+                _uiLogger.Error("模块运行错误: {0} - {1}", "上料机初始化失败: " + ex.Message);
                 _initialized = false;
 
                 // 发送初始化失败状态 - 红灯闪烁
@@ -161,7 +161,7 @@ namespace Ewan.Core.Module
                                 _sharedState?.TryStartLoading() == true)
                             {
                                 _currentState = MaterialLoadingState.MaterialDetected;
-                                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "检测到料片到达扫码位(X7=true)，获取流程锁，开始装料流程");
+                                _uiLogger.Info("处理已开始: {0}", "检测到料片到达扫码位(X7=true)，获取流程锁，开始装料流程");
                             }
                             break;
                             
@@ -196,7 +196,7 @@ namespace Ewan.Core.Module
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ModuleRunError, "MaterialLoadingModule: " + ex.Message);
+                _uiLogger.Error("模块运行错误: {0} - {1}", "MaterialLoadingModule: " + ex.Message);
                 _currentState = MaterialLoadingState.Idle;
                 Thread.Sleep(1000);
                 return true;
@@ -205,7 +205,7 @@ namespace Ewan.Core.Module
 
         protected override void OnDestroy()
         {
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.ModuleDestroyed, "MaterialLoadingModule");
+            _uiLogger.Info("模块已销毁: {0}", "MaterialLoadingModule");
             
         }
 
@@ -219,7 +219,7 @@ namespace Ewan.Core.Module
             // 触发取料信号Y14
             //_ioManager.LayeredIO.WriteOutBit(PICK_MATERIAL_SIGNAL, true);
             _currentState = MaterialLoadingState.PickingMaterial;
-            //_uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "开始取料到扫码区");
+            //_uiLogger.Info("处理已开始: {0}", "开始取料到扫码区");
         }
 
         /// <summary>
@@ -233,7 +233,7 @@ namespace Ewan.Core.Module
             //    // 关闭取料信号
             //    _ioManager.LayeredIO.WriteOutBit(PICK_MATERIAL_SIGNAL, false);
                 _currentState = MaterialLoadingState.AtScanPosition;
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "取料完成，到达扫码位置，开始扫码流程");
+                _uiLogger.Info("处理已完成: {0}", "取料完成，到达扫码位置，开始扫码流程");
             //}
         }
 
@@ -257,7 +257,7 @@ namespace Ewan.Core.Module
                 
                 // 转换到移动到料仓状态
                 _currentState = MaterialLoadingState.MovingToBinByScanInfo;
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "开始移动到料仓位置");
+                _uiLogger.Info("处理已开始: {0}", "开始移动到料仓位置");
             //}
         }
 
@@ -283,7 +283,7 @@ namespace Ewan.Core.Module
                 SetLoadingCompleted(false);
                 _currentState = MaterialLoadingState.Idle;
 
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "装料完成，释放流程锁，返回空闲状态");
+                _uiLogger.Info("处理已完成: {0}", "装料完成，释放流程锁，返回空闲状态");
             }
         }
 
@@ -303,11 +303,11 @@ namespace Ewan.Core.Module
 
                 MsgManager.Instance().PushMsg(message);
 
-                _uiLogger.Debug(() => Ewan.Resources.LogMessages.StatusMessageSent, status, description);
+                _uiLogger.Debug("发送状态消息: {0} - {1}", status, description);
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ModuleRunError,
+                _uiLogger.Error("模块运行错误: {0} - {1}",
                     "MaterialLoadingModule-SendStatusMessage", ex.Message);
             }
         }
@@ -321,7 +321,7 @@ namespace Ewan.Core.Module
             {
                 _stopRequested = true;
                 _loadingRequested = false;
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "请求停止装载");
+                _uiLogger.Info("处理已开始: {0}", "请求停止装载");
             }
         }
 
@@ -337,7 +337,7 @@ namespace Ewan.Core.Module
                 _loadingRequested = false;
                 
                 
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "强制停止装载");
+                _uiLogger.Info("处理已完成: {0}", "强制停止装载");
             }
         }
 

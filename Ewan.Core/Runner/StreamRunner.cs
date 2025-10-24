@@ -25,7 +25,7 @@ namespace Ewan.Core.Run
         public void Start()
         {
             InitStream();
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.StreamRunnerModulesInitialized);
+            _uiLogger.Info("流运行器模块初始化完成: {0}");
             //开启子线程运行各节点
             Task.Run(() =>
             {

@@ -30,7 +30,7 @@ namespace Ewan.Core.Msg
                     }
                     catch (Exception ex)
                     {
-                        _uiLogger.Warn(() => Ewan.Resources.LogMessages.MsgManagerProcessError, ex.StackTrace);
+                        _uiLogger.Warn("消息管理器处理错误: {0}", ex.StackTrace);
                     }
                 }
             }, TaskCreationOptions.LongRunning);
@@ -64,7 +64,7 @@ namespace Ewan.Core.Msg
             if (!r)
             {
                 //队列已满
-                _uiLogger.Warn(() => Ewan.Resources.LogMessages.MsgManagerQueueFull);
+                _uiLogger.Warn("消息队列已满，丢弃消息");
             }
         }
         private void NotifyListeners(MessageModel msg)

@@ -26,7 +26,7 @@ namespace Ewan.Core
         /// </summary>
         public virtual bool Init()
         {
-            _appLogger.Debug(Ewan.Resources.LogMessages.BaseManagerInitialized + ": " + GetType().Name);
+            _appLogger.Debug("基础管理器初始化成功: " + GetType().Name);
             return true;
         }
 
@@ -35,7 +35,7 @@ namespace Ewan.Core
         /// </summary>
         public virtual void Destroy()
         {
-            _appLogger.Debug(Ewan.Resources.LogMessages.BaseManagerDestroyed + ": " + GetType().Name);
+            _appLogger.Debug("基础管理器已销毁: " + GetType().Name);
         }
 
         private static class InstanceHolder

@@ -66,12 +66,12 @@ namespace Ewan.Core.IO
                 // 创建LayeredIO实例
                 CreateLayeredIO();
                 
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ManagerInitialized, "LayeredIOManager");
+                _uiLogger.Info("管理器初始化成功: {0}", "LayeredIOManager");
                 return base.Init();
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ManagerInitializationFailed, "LayeredIOManager", ex.Message);
+                _uiLogger.Error("管理器初始化失败: {0} - {1}", "LayeredIOManager", ex.Message);
                 return false;
             }
         }
@@ -90,7 +90,7 @@ namespace Ewan.Core.IO
             _mappingConfigPath = Path.Combine("Config", "io_mapping.json");
             _enableLogging = true;
             
-            _uiLogger.Debug(() => Ewan.Resources.LogMessages.IOConfigurationLoaded, 
+            _uiLogger.Debug("IO配置已从以下位置加载: {0}", 
                 $"HardwareType={_hardwareType}, ConnectionString={_connectionString}, MappingPath={_mappingConfigPath}");
         }
 
@@ -135,7 +135,7 @@ namespace Ewan.Core.IO
             if (configFileExists)
             {
                 builder.WithMappingConfig(_mappingConfigPath);
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.IOConfigFileLoaded, _mappingConfigPath);
+                _uiLogger.Info("IO配置文件已加载: {0}", _mappingConfigPath);
             }
 
             _layeredIO = builder.Build();
@@ -161,15 +161,15 @@ namespace Ewan.Core.IO
                 if (!hasMappings)
                 {
                     CreateDefaultMappings();
-                    _uiLogger.Info(() => Ewan.Resources.LogMessages.IODefaultMappingsCreated);
+                    _uiLogger.Info("默认IO映射已创建");
                 }
                 else
                 {
-                    _uiLogger.Info(() => Ewan.Resources.LogMessages.IOAutoConfigLoaded);
+                    _uiLogger.Info("自动配置已加载");
                 }
             }
             
-            _uiLogger.Debug(() => Ewan.Resources.LogMessages.IOHardwareCreated, "MitsubishiPLC");
+            _uiLogger.Debug("IO硬件已创建: {0}", "MitsubishiPLC");
         }
 
         /// <summary>
@@ -190,7 +190,7 @@ namespace Ewan.Core.IO
                 EnableLogging = _enableLogging
             };
             
-            _uiLogger.Debug(() => Ewan.Resources.LogMessages.IOHardwareCreated, "IOC0640");
+            _uiLogger.Debug("IO硬件已创建: {0}", "IOC0640");
         }
 
         /// <summary>
@@ -211,7 +211,7 @@ namespace Ewan.Core.IO
                 EnableLogging = _enableLogging
             };
             
-            _uiLogger.Debug(() => Ewan.Resources.LogMessages.IOHardwareCreated, "SMC606IO");
+            _uiLogger.Debug("IO硬件已创建: {0}", "SMC606IO");
         }
 
         /// <summary>
@@ -230,7 +230,7 @@ namespace Ewan.Core.IO
                 if (configFileExists)
                 {
                     _layeredIO.LoadMappingConfiguration(_mappingConfigPath);
-                    _uiLogger.Info(() => Ewan.Resources.LogMessages.IOConfigFileLoaded, _mappingConfigPath);
+                    _uiLogger.Info("IO配置文件已加载: {0}", _mappingConfigPath);
                     
                     // 检查现有映射数量是否与实际IO数量匹配
                     int existingInputMappings = 0;
@@ -253,18 +253,18 @@ namespace Ewan.Core.IO
                     // 如果映射数量匹配，直接使用现有映射
                     if (existingInputMappings == actualInputCount && existingOutputMappings == actualOutputCount)
                     {
-                        _uiLogger.Info(() => Ewan.Resources.LogMessages.IOConfigurationLoaded, 
+                        _uiLogger.Info("IO配置已从以下位置加载: {0}", 
                             $"使用现有映射: 输入={existingInputMappings}, 输出={existingOutputMappings}");
                         return;
                     }
                     
                     // 映射数量不匹配，重新创建
-                    _uiLogger.Info(() => Ewan.Resources.LogMessages.IOConfigurationLoaded, 
+                    _uiLogger.Info("IO配置已从以下位置加载: {0}", 
                         $"映射数量不匹配，重新创建: 现有(输入={existingInputMappings}, 输出={existingOutputMappings}) vs 实际(输入={actualInputCount}, 输出={actualOutputCount})");
                     
                     // 清除现有映射，重新创建
                     CreateSMC606IODefaultMappings();
-                    _uiLogger.Info(() => Ewan.Resources.LogMessages.IODefaultMappingsCreated);
+                    _uiLogger.Info("默认IO映射已创建");
                     return;
                 }
 
@@ -286,26 +286,26 @@ namespace Ewan.Core.IO
                 if (!hasMappings)
                 {
                     CreateSMC606IODefaultMappings();
-                    _uiLogger.Info(() => Ewan.Resources.LogMessages.IODefaultMappingsCreated);
+                    _uiLogger.Info("默认IO映射已创建");
                 }
                 else
                 {
-                    _uiLogger.Info(() => Ewan.Resources.LogMessages.IOAutoConfigLoaded);
+                    _uiLogger.Info("自动配置已加载");
                 }
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.IOConfigFileSaveError, _mappingConfigPath, ex.Message);
+                _uiLogger.Error("保存IO配置失败: {0}", _mappingConfigPath, ex.Message);
                 
                 // 加载失败时，创建默认映射
                 try
                 {
                     CreateSMC606IODefaultMappings();
-                    _uiLogger.Info(() => Ewan.Resources.LogMessages.IODefaultMappingsCreated);
+                    _uiLogger.Info("默认IO映射已创建");
                 }
                 catch (Exception createEx)
                 {
-                    _uiLogger.Error(() => Ewan.Resources.LogMessages.IOConfigFileSaveError, "DefaultMappings", createEx.Message);
+                    _uiLogger.Error("保存IO配置失败: {0}", "DefaultMappings", createEx.Message);
                 }
             }
         }
@@ -319,7 +319,7 @@ namespace Ewan.Core.IO
             int actualInputCount = _layeredIO.InputCount;
             int actualOutputCount = _layeredIO.OutputCount;
             
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.IOConfigurationLoaded, 
+            _uiLogger.Info("IO配置已从以下位置加载: {0}", 
                 $"SMC606IO检测到输入点数: {actualInputCount}, 输出点数: {actualOutputCount}");
 
             // 根据实际输入点数创建映射
@@ -327,14 +327,14 @@ namespace Ewan.Core.IO
             {
                 _layeredIO.AddInputMapping(i, i, $"X{i}", true);
             }
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.IOInputMappingsCreated, actualInputCount);
+            _uiLogger.Info("已创建 {0} 个输入映射", actualInputCount);
             
             // 根据实际输出点数创建映射
             for (int i = 0; i < actualOutputCount; i++)
             {
                 _layeredIO.AddOutputMapping(i, i, $"Y{i}", true);
             }
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.IOOutputMappingsCreated, actualOutputCount);
+            _uiLogger.Info("已创建 {0} 个输出映射", actualOutputCount);
             
             // 保存默认映射到配置文件
             SaveDefaultMappingConfiguration();
@@ -351,7 +351,7 @@ namespace Ewan.Core.IO
             {
                 _layeredIO.AddInputMapping(i, i, $"X{i}", true);  // 从X0开始
             }
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.IOInputMappingsCreated, inputCount);
+            _uiLogger.Info("已创建 {0} 个输入映射", inputCount);
             
             // 根据硬件实际的输出点数创建映射
             int outputCount = _layeredIO.OutputCount;
@@ -359,7 +359,7 @@ namespace Ewan.Core.IO
             {
                 _layeredIO.AddOutputMapping(i, i, $"Y{i}", true);  // 从Y0开始
             }
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.IOOutputMappingsCreated, outputCount);
+            _uiLogger.Info("已创建 {0} 个输出映射", outputCount);
             
             // 保存默认映射到配置文件
             SaveDefaultMappingConfiguration();
@@ -377,7 +377,7 @@ namespace Ewan.Core.IO
                 if (!string.IsNullOrEmpty(configDir) && !Directory.Exists(configDir))
                 {
                     Directory.CreateDirectory(configDir);
-                    _uiLogger.Info(() => Ewan.Resources.LogMessages.DirectoryCreated, configDir);
+                    _uiLogger.Info("目录已创建: {0}", configDir);
                 }
                 
                 // 先保存映射配置到文件
@@ -395,11 +395,11 @@ namespace Ewan.Core.IO
                 string updatedJson = Newtonsoft.Json.JsonConvert.SerializeObject(config, Newtonsoft.Json.Formatting.Indented);
                 File.WriteAllText(_mappingConfigPath, updatedJson);
                 
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.IOConfigFileSaved, _mappingConfigPath);
+                _uiLogger.Info("IO配置已保存到: {0}", _mappingConfigPath);
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.IOConfigFileSaveError, _mappingConfigPath, ex.Message);
+                _uiLogger.Error("保存IO配置失败: {0}", _mappingConfigPath, ex.Message);
             }
         }
 
@@ -414,7 +414,7 @@ namespace Ewan.Core.IO
             {
                 if (_layeredIO == null)
                 {
-                    _uiLogger.Error(() => Ewan.Resources.LogMessages.IONotInitialized);
+                    _uiLogger.Error("IO未初始化");
                     return false;
                 }
 
@@ -425,7 +425,7 @@ namespace Ewan.Core.IO
                     
                     if (result)
                     {
-                        _uiLogger.Info(() => Ewan.Resources.LogMessages.IOConnected, connStr);
+                        _uiLogger.Info("IO已连接: {0}", connStr);
                         
                         // SMC606IO连接成功后，检查并创建映射配置
                         if (_hardwareType == HardwareType.SMC606IO)
@@ -435,14 +435,14 @@ namespace Ewan.Core.IO
                     }
                     else
                     {
-                        _uiLogger.Error(() => Ewan.Resources.LogMessages.IOConnectionFailed, connStr);
+                        _uiLogger.Error("IO连接失败: {0}", connStr);
                     }
                     
                     return result;
                 }
                 catch (Exception ex)
                 {
-                    _uiLogger.Error(() => Ewan.Resources.LogMessages.IOConnectionError, ex.Message);
+                    _uiLogger.Error("IO连接错误: {0}", ex.Message);
                     return false;
                 }
             }
@@ -458,7 +458,7 @@ namespace Ewan.Core.IO
                 if (_layeredIO != null && _layeredIO.IsOpen)
                 {
                     _layeredIO.Close();
-                    _uiLogger.Info(() => Ewan.Resources.LogMessages.IODisconnected);
+                    _uiLogger.Info("IO已断开连接");
                 }
             }
         }
@@ -487,7 +487,7 @@ namespace Ewan.Core.IO
             {
                 if (_layeredIO == null)
                 {
-                    _uiLogger.Error(() => Ewan.Resources.LogMessages.IONotInitialized);
+                    _uiLogger.Error("IO未初始化");
                     return false;
                 }
 
@@ -510,12 +510,12 @@ namespace Ewan.Core.IO
                             break;
                     }
                     
-                    _uiLogger.Debug(() => Ewan.Resources.LogMessages.IOSimulateSet, $"X{index}", modeName);
+                    _uiLogger.Debug("IO模拟模式设置: {0} = {1}", $"X{index}", modeName);
                     return true;
                 }
                 catch (Exception ex)
                 {
-                    _uiLogger.Error(() => Ewan.Resources.LogMessages.IOSimulateError, $"X{index}", ex.Message);
+                    _uiLogger.Error("IO模拟错误: {0} - {1}", $"X{index}", ex.Message);
                     return false;
                 }
             }
@@ -542,7 +542,7 @@ namespace Ewan.Core.IO
                 }
                 catch (Exception ex)
                 {
-                    _uiLogger.Error(() => Ewan.Resources.LogMessages.IOSimulateError, $"X{index}", ex.Message);
+                    _uiLogger.Error("IO模拟错误: {0} - {1}", $"X{index}", ex.Message);
                     return SimulateMode.None;
                 }
             }
@@ -559,7 +559,7 @@ namespace Ewan.Core.IO
             {
                 if (_layeredIO == null)
                 {
-                    _uiLogger.Error(() => Ewan.Resources.LogMessages.IONotInitialized);
+                    _uiLogger.Error("IO未初始化");
                     return false;
                 }
 
@@ -571,12 +571,12 @@ namespace Ewan.Core.IO
                         _layeredIO.SetInputSimulate(i, SimulateMode.None, useMapping);
                     }
                     
-                    _uiLogger.Info(() => Ewan.Resources.LogMessages.IOSimulateCleared);
+                    _uiLogger.Info("清除所有IO模拟状态");
                     return true;
                 }
                 catch (Exception ex)
                 {
-                    _uiLogger.Error(() => Ewan.Resources.LogMessages.IOSimulateError, "Clear", ex.Message);
+                    _uiLogger.Error("IO模拟错误: {0} - {1}", "Clear", ex.Message);
                     return false;
                 }
             }
@@ -623,7 +623,7 @@ namespace Ewan.Core.IO
                 }
                 catch (Exception ex)
                 {
-                    _uiLogger.Error(() => Ewan.Resources.LogMessages.IORecreationFailed, ex.Message);
+                    _uiLogger.Error("重新创建IO失败: {0}", ex.Message);
                     return false;
                 }
             }
@@ -641,26 +641,26 @@ namespace Ewan.Core.IO
                 {
                     if (_layeredIO == null || !_layeredIO.IsOpen)
                     {
-                        _uiLogger.Error(() => Ewan.Resources.LogMessages.IONotConnected);
+                        _uiLogger.Error("IO未连接");
                         return false;
                     }
 
                     if (_hardwareType == HardwareType.SMC606IO)
                     {
                         CreateSMC606IODefaultMappings();
-                        _uiLogger.Info(() => Ewan.Resources.LogMessages.IODefaultMappingsCreated);
+                        _uiLogger.Info("默认IO映射已创建");
                         return true;
                     }
                     else
                     {
                         CreateDefaultMappings();
-                        _uiLogger.Info(() => Ewan.Resources.LogMessages.IODefaultMappingsCreated);
+                        _uiLogger.Info("默认IO映射已创建");
                         return true;
                     }
                 }
                 catch (Exception ex)
                 {
-                    _uiLogger.Error(() => Ewan.Resources.LogMessages.IOConfigFileSaveError, "ForceRecreateIOMapping", ex.Message);
+                    _uiLogger.Error("保存IO配置失败: {0}", "ForceRecreateIOMapping", ex.Message);
                     return false;
                 }
             }

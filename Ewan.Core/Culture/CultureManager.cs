@@ -38,7 +38,7 @@ namespace Ewan.Core.Culture
                 }
                 catch (Exception ex)
                 {
-                    _uiLogger.Warn(() => Ewan.Resources.LogMessages.CultureManagerInitError, ex.Message);
+                    _uiLogger.Warn("文化管理器初始化错误: {0}", ex.Message);
                     SetCulture("en-US");
                 }
             }
@@ -52,11 +52,11 @@ namespace Ewan.Core.Culture
                 var culture = new CultureInfo(cultureName);
                 CurrentCulture = culture;
                 SaveLanguage(cultureName);
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.CultureChanged, cultureName);
+                _uiLogger.Info("文化已更改为 {0}", cultureName);
             }
             catch (CultureNotFoundException ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.InvalidCulture, cultureName, ex.Message);
+                _uiLogger.Error("无效的文化: {0}", cultureName, ex.Message);
                 throw;
             }
         }
@@ -101,7 +101,7 @@ namespace Ewan.Core.Culture
             }
             catch (Exception ex)
             {
-                _uiLogger.Warn(() => Ewan.Resources.LogMessages.SaveLanguageError, ex.Message);
+                _uiLogger.Warn("保存语言设置错误: {0}", ex.Message);
             }
         }
     }

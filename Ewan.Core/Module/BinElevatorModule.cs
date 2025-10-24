@@ -102,7 +102,7 @@ namespace Ewan.Core.Module
         {
             try
             {
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ModuleInitialized, "BinElevatorModule");
+                _uiLogger.Info("模块初始化成功: {0}", "BinElevatorModule");
                 
                 // 初始化轴管理器、IO管理器和消息队列
                 _axisManager = AxisManager.Instance();
@@ -114,11 +114,11 @@ namespace Ewan.Core.Module
                 _msgManager.RegisterListener(_systemStatusListener);
                 
                            
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.InitializationCompleted, "料仓升降控制系统");
+                _uiLogger.Info("初始化已完成: {0}", "料仓升降控制系统");
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ModuleInitializationFailed, "BinElevatorModule", ex.Message);
+                _uiLogger.Error("模块初始化失败: {0} - {1}", "BinElevatorModule", ex.Message);
                 throw;
             }
         }
@@ -137,7 +137,7 @@ namespace Ewan.Core.Module
                         {
                             StopAllBinMovements();
                             _binElevatorMode = BinElevatorMode.Stopped;
-                            _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "料仓升降模块已暂停");
+                            _uiLogger.Info("处理已完成: {0}", "料仓升降模块已暂停");
                         }
                         Thread.Sleep(_scanInterval);
                         return true;
@@ -159,7 +159,7 @@ namespace Ewan.Core.Module
                         _bin2ReachedSensor = false;
                         _bin3ReachedSensor = false;
                         
-                        _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "料仓重新初始化开始");
+                        _uiLogger.Info("处理已开始: {0}", "料仓重新初始化开始");
                     }
                     
                     // 先统一检查机械手信号，避免在每个料仓处理中重复检查
@@ -176,7 +176,7 @@ namespace Ewan.Core.Module
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ModuleRunError, "BinElevatorModule", ex.Message);
+                _uiLogger.Error("模块运行错误: {0} - {1}", "BinElevatorModule", ex.Message);
                 Thread.Sleep(1000); // 错误时等待更长时间
                 return true;
             }
@@ -189,11 +189,11 @@ namespace Ewan.Core.Module
                 // 停止所有料仓升降动作
                 StopAllBinMovements();
                 
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ModuleDestroyed, "BinElevatorModule");
+                _uiLogger.Info("模块已销毁: {0}", "BinElevatorModule");
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "BinElevatorModule销毁", ex.Message);
+                _uiLogger.Error("处理错误: {0} - {1}", "BinElevatorModule销毁", ex.Message);
             }
         }
 
@@ -218,7 +218,7 @@ namespace Ewan.Core.Module
                 _bin2ReachedSensor = false;
                 _bin3ReachedSensor = false;
 
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "料仓升降硬件初始化开始");
+                _uiLogger.Info("处理已开始: {0}", "料仓升降硬件初始化开始");
             }
         }
 
@@ -258,7 +258,7 @@ namespace Ewan.Core.Module
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "机械手信号检查", ex.Message);
+                _uiLogger.Error("处理错误: {0} - {1}", "机械手信号检查", ex.Message);
             }
         }
 
@@ -313,14 +313,14 @@ namespace Ewan.Core.Module
                         
                     default:
                         // 未知模式 - 记录警告
-                        _uiLogger.Warn(() => Ewan.Resources.LogMessages.ProcessingError, 
+                        _uiLogger.Warn("处理错误: {0} - {1}", 
                             "料仓" + binNumber + "未知的料仓状态机模式", _binElevatorMode.ToString());
                         break;
                 }
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, 
+                _uiLogger.Error("处理错误: {0} - {1}", 
                     "料仓" + binNumber + "升降处理", ex.Message);
             }
         }
@@ -351,7 +351,7 @@ namespace Ewan.Core.Module
                     {
                         // 如果已经有感应，直接进入下降阶段
                         currentState = BinElevatorState.Elevated;
-                        //_uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, 
+                        //_uiLogger.Info("处理已开始: {0}", 
                         //    "料仓" + binNumber + "初始化：已在感应位置，准备下降");
                     }
                     break;
@@ -361,7 +361,7 @@ namespace Ewan.Core.Module
                     {
                         StopBinAxis(binNumber, axisId);
                         //currentState = BinElevatorState.Elevated;
-                        //_uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted,
+                        //_uiLogger.Info("处理已完成: {0}",
                         //    "料仓" + binNumber + "初始化：已到达感应位置，准备下降");
                     }
                     break;
@@ -370,7 +370,7 @@ namespace Ewan.Core.Module
                     // 第二步：从感应位置下降
                     StartBinJogDown(binNumber, axisId);
                     currentState = BinElevatorState.Lowered; // 标记为正在下降
-                    //_uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, 
+                    //_uiLogger.Info("处理已开始: {0}", 
                     //    "料仓" + binNumber + "初始化：开始从感应位置下降");
                     break;
 
@@ -399,7 +399,7 @@ namespace Ewan.Core.Module
                         // 检查是否所有料仓都初始化完成
                         if (_bin1ReachedSensor && _bin2ReachedSensor && _bin3ReachedSensor)
                         {
-                            _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, 
+                            _uiLogger.Info("处理已完成: {0}", 
                                 "所有料仓初始化完成，切换到停止模式");
 
                             // 重置标志
@@ -429,14 +429,14 @@ namespace Ewan.Core.Module
                         // 开始下降动作
                         StartBinJogDown(binNumber, axisId);
                         currentState = BinElevatorState.Moving;
-                        //_uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted,
+                        //_uiLogger.Info("处理已开始: {0}",
                         //    "料仓" + binNumber + "上料模式：开始下降");
                     }
                     else
                     {
                         // 感应器已经为true，直接完成
                         currentState = BinElevatorState.Stopped;
-                        //_uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted,
+                        //_uiLogger.Info("处理已完成: {0}",
                         //    "料仓" + binNumber + "上料模式：已在感应位置");
                     }
                     break;
@@ -468,14 +468,14 @@ namespace Ewan.Core.Module
                     {
                         StartBinJogUp(binNumber, axisId);
                         currentState = BinElevatorState.Moving;
-                        //_uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted,
+                        //_uiLogger.Info("处理已开始: {0}",
                         //    "料仓" + binNumber + "初始化：开始上升到感应位置");
                     }
                     else
                     {
                         // 如果已经有感应，直接进入下降阶段
                         currentState = BinElevatorState.Elevated;
-                        //_uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted,
+                        //_uiLogger.Info("处理已开始: {0}",
                         //    "料仓" + binNumber + "初始化：已在感应位置，准备下降");
                     }
                     break;
@@ -485,7 +485,7 @@ namespace Ewan.Core.Module
                     {
                         StopBinAxis(binNumber, axisId);
                         currentState = BinElevatorState.Elevated;
-                        //_uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted,
+                        //_uiLogger.Info("处理已完成: {0}",
                         //    "料仓" + binNumber + "初始化：已到达感应位置，准备下降");
                     }
                     break;
@@ -494,7 +494,7 @@ namespace Ewan.Core.Module
                     // 第二步：从感应位置下降
                     StartBinJogDown(binNumber, axisId);
                     currentState = BinElevatorState.Lowered; // 标记为正在下降
-                    //_uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted,
+                    //_uiLogger.Info("处理已开始: {0}",
                     //    "料仓" + binNumber + "初始化：开始从感应位置下降");
                     break;
 
@@ -538,24 +538,24 @@ namespace Ewan.Core.Module
                     {
                         // 使用JogDown进行下降，速度使用配置中的速度
                         _axisManager.JogDown(axisConfig);
-                        _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted,
+                        _uiLogger.Info("处理已开始: {0}",
                             "料仓" + binNumber + "开始Jog下降，速度:" + axisConfig.Speed);
                     }
                     else
                     {
-                        _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
+                        _uiLogger.Error("处理错误: {0} - {1}",
                             "料仓" + binNumber + "轴配置未找到", "轴ID:" + axisId);
                     }
                 }
                 else
                 {
-                    _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
+                    _uiLogger.Error("处理错误: {0} - {1}",
                         "AxisManager未初始化", "");
                 }
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
+                _uiLogger.Error("处理错误: {0} - {1}",
                     "料仓" + binNumber + "Jog下降", ex.Message);
             }
         }
@@ -577,24 +577,24 @@ namespace Ewan.Core.Module
                     {
                         // 使用JogUp进行上升，速度使用配置中的速度
                         _axisManager.JogUp(axisConfig);
-                        _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted,
+                        _uiLogger.Info("处理已开始: {0}",
                             "料仓" + binNumber + "开始Jog上升，速度:" + axisConfig.Speed);
                     }
                     else
                     {
-                        _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
+                        _uiLogger.Error("处理错误: {0} - {1}",
                             "料仓" + binNumber + "轴配置未找到", "轴ID:" + axisId);
                     }
                 }
                 else
                 {
-                    _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
+                    _uiLogger.Error("处理错误: {0} - {1}",
                         "AxisManager未初始化", "");
                 }
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
+                _uiLogger.Error("处理错误: {0} - {1}",
                     "料仓" + binNumber + "Jog上升", ex.Message);
             }
         }
@@ -616,24 +616,24 @@ namespace Ewan.Core.Module
                     {
                         // 使用JogStop停止Jog运动
                         _axisManager.JogStop(axisConfig);
-                        //_uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, 
+                        //_uiLogger.Info("处理已开始: {0}", 
                         //    "料仓" + binNumber + "Jog停止");
                     }
                     else
                     {
-                        _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
+                        _uiLogger.Error("处理错误: {0} - {1}",
                             "料仓" + binNumber + "轴配置未找到", "轴ID:" + axisId);
                     }
                 }
                 else
                 {
-                    _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
+                    _uiLogger.Error("处理错误: {0} - {1}",
                         "AxisManager未初始化", "");
                 }
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
+                _uiLogger.Error("处理错误: {0} - {1}",
                     "料仓" + binNumber + "停止", ex.Message);
             }
         }
@@ -703,7 +703,7 @@ namespace Ewan.Core.Module
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.IOReadError, 
+                _uiLogger.Error("读取 {0} 错误: {1}", 
                     "料仓" + binNumber + "感应器", ex.Message);
                 return false;
             }
@@ -721,7 +721,7 @@ namespace Ewan.Core.Module
         {
             try
             {
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "停止所有料仓Jog运动");
+                _uiLogger.Info("处理已开始: {0}", "停止所有料仓Jog运动");
                 
                 // 停止所有轴的Jog移动
                 StopBinAxis(1, BIN1_AXIS_ID);
@@ -733,11 +733,11 @@ namespace Ewan.Core.Module
                 _bin2State = BinElevatorState.Unknown;
                 _bin3State = BinElevatorState.Unknown;
                 
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "所有料仓Jog运动已停止");
+                _uiLogger.Info("处理已完成: {0}", "所有料仓Jog运动已停止");
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "停止料仓Jog运动", ex.Message);
+                _uiLogger.Error("处理错误: {0} - {1}", "停止料仓Jog运动", ex.Message);
             }
         }
 
@@ -766,7 +766,7 @@ namespace Ewan.Core.Module
             //            {
             //                case SystemStatusChangeType.SystemStarted:
             //                    _systemStarted = statusMsg.IsStarted;
-            //                    _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, 
+            //                    _uiLogger.Info("处理已开始: {0}", 
             //                        "料仓升降系统" + (statusMsg.IsStarted ? "启动" : "停止"));
 
             //                    if (!statusMsg.IsStarted)
@@ -778,7 +778,7 @@ namespace Ewan.Core.Module
 
             //                case SystemStatusChangeType.SystemModeChanged:
             //                    _currentMode = statusMsg.SystemMode;
-            //                    _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, 
+            //                    _uiLogger.Info("处理已开始: {0}", 
             //                        "料仓升降模式切换到" + (statusMsg.SystemMode == SystemMode.Auto ? "自动" : "手动"));
 
             //                    if (statusMsg.SystemMode != SystemMode.Auto)
@@ -793,7 +793,7 @@ namespace Ewan.Core.Module
             //}
             //catch (Exception ex)
             //{
-            //    _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, 
+            //    _uiLogger.Error("处理错误: {0} - {1}", 
             //        "处理系统状态消息", ex.Message);
             //}
         }

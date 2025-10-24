@@ -127,17 +127,17 @@ namespace MarkingMachineFeeder.Windows
         /// <summary>
         /// "是"按钮文本
         /// </summary>
-        public string YesButtonText => Ewan.Resources.UIStrings.ButtonYes;
+        public string YesButtonText => "是";
 
         /// <summary>
         /// "否"按钮文本
         /// </summary>
-        public string NoButtonText => Ewan.Resources.UIStrings.ButtonNo;
+        public string NoButtonText => "否";
 
         /// <summary>
         /// "取消"按钮文本
         /// </summary>
-        public string CancelButtonText => Ewan.Resources.UIStrings.ButtonCancel;
+        public string CancelButtonText => "取消";
 
         /// <summary>
         /// "取消"按钮可见性

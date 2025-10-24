@@ -25,17 +25,17 @@ namespace MarkingMachineFeeder
             // 设置 IOLogger 的资源类型
             Ewan.LogManager.Logger.IOLogger.Instance.SetResourceType(typeof(Ewan.Resources.LogMessages));
             
-            _appLogger.Info(Ewan.Resources.LogMessages.Log4netConfigLoaded);
+            _appLogger.Info("Log4net配置已加载");
 
 
             // 初始化Ewan.BusinessBonding MainController (包含所有Managers)
             if (MainController.Instance().Initialize())
             {
-                _appLogger.Info(Ewan.Resources.LogMessages.MainControllerInitialized);
+                _appLogger.Info("MainController初始化成功");
             }
             else
             {
-                _appLogger.Error(Ewan.Resources.LogMessages.MainControllerInitializationFailed);
+                _appLogger.Error("MainController初始化失败: {0}");
                 MessageBox.Show("系统初始化失败，程序将退出。", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                 Shutdown();
                 return;
@@ -45,18 +45,18 @@ namespace MarkingMachineFeeder
             var securityManager = SecurityManager.Instance();
             if (!securityManager.Authenticate("operator", "1"))
             {
-                _appLogger.Error(Ewan.Resources.LogMessages.LoginError + ": 默认操作员登录失败");
+                _appLogger.Error("登录错误: {0}" + ": 默认操作员登录失败");
                 MessageBox.Show("默认用户登录失败，程序将退出。", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                 Shutdown();
                 return;
             }
 
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.SystemInitialized);
+            _uiLogger.Info("系统初始化成功");
 
             // 启动流程
             var streamController = StreamController.Instance();
             streamController.StartRun();
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.StreamProcessStarted);
+            _uiLogger.Info("流处理已启动");
 
             // 手动配置Prism ViewModelLocator
             ConfigureViewModelLocator();
@@ -70,7 +70,7 @@ namespace MarkingMachineFeeder
             ViewModelLocationProvider.Register<MainWindow, MainWindowViewModel>();
             ViewModelLocationProvider.Register<Windows.LogWindow, LogWindowViewModel>();
             
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.ViewModelLocatorConfigured);
+            _uiLogger.Info("ViewModelLocator已配置");
         }
 
         protected override void OnExit(ExitEventArgs e)
@@ -78,7 +78,7 @@ namespace MarkingMachineFeeder
             // 停止所有流程
             var streamController = StreamController.Instance();
             streamController.StopRun();
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.StreamProcessStopped);
+            _uiLogger.Info("流处理已停止");
 
             // 调用基类方法
             base.OnExit(e);

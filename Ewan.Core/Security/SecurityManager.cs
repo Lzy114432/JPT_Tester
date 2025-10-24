@@ -44,7 +44,7 @@ namespace Ewan.Core.Security
         {
             LoadUsers();
             InitializeDefaultUsers();
-            _appLogger.Info(Ewan.Resources.LogMessages.SecurityManagerInitialized);
+            _appLogger.Info("安全管理器初始化成功");
             return base.Init();
         }
 
@@ -58,25 +58,25 @@ namespace Ewan.Core.Security
         {
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
             {
-                _uiLogger.Warn(() => Ewan.Resources.LogMessages.LoginInvalidInput);
+                _uiLogger.Warn("登录失败 - 输入无效");
                 return false;
             }
 
             var user = _users.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
             if (user == null || !user.IsActive)
             {
-                _uiLogger.Warn(() => Ewan.Resources.LogMessages.LoginUserNotFound, username);
+                _uiLogger.Warn("登录失败 - 用户未找到: {0}", username);
                 return false;
             }
 
             if (!VerifyPassword(password, user.PasswordHash))
             {
-                _uiLogger.Warn(() => Ewan.Resources.LogMessages.LoginPasswordIncorrect, username);
+                _uiLogger.Warn("登录失败 - 用户密码错误: {0}", username);
                 return false;
             }
 
             _currentUser = user;
-            _appLogger.Info(Ewan.Resources.LogMessages.LoginSuccessful + ": " + username);
+            _appLogger.Info("用户登录成功: " + username);
             UserAuthenticated?.Invoke(this, user);
             return true;
         }
@@ -88,7 +88,7 @@ namespace Ewan.Core.Security
         {
             if (_currentUser != null)
             {
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.UserLoggedOut, _currentUser.Username);
+                _uiLogger.Info("用户已注销: {0}", _currentUser.Username);
                 _currentUser = null;
                 UserLoggedOut?.Invoke(this, EventArgs.Empty);
             }
@@ -104,7 +104,7 @@ namespace Ewan.Core.Security
         {
             if (!IsAuthenticated)
             {
-                _uiLogger.Debug(() => Ewan.Resources.LogMessages.PermissionCheckNotAuthenticated, resource, action);
+                _uiLogger.Debug("权限检查失败：用户未认证，资源 {0}.{1}", resource, action);
                 return false;
             }
 
@@ -208,7 +208,7 @@ namespace Ewan.Core.Security
 
             if (_users.Any(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase)))
             {
-                _uiLogger.Warn(() => Ewan.Resources.LogMessages.UserAlreadyExists, username);
+                _uiLogger.Warn("用户已存在: {0}", username);
                 return false;
             }
 
@@ -223,7 +223,7 @@ namespace Ewan.Core.Security
 
             _users.Add(user);
             SaveUsers();
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.UserCreated, username);
+            _uiLogger.Info("用户已创建: {0}", username);
             return true;
         }
 
@@ -248,14 +248,14 @@ namespace Ewan.Core.Security
                 if (admin != null && admin.Roles.Count > 0)
                 {
                     var permissions = admin.Roles.FirstOrDefault()?.Permissions.Count ?? 0;
-                    _uiLogger.Info(() => Ewan.Resources.LogMessages.AdminUserCreated, admin.Roles.Count, permissions);
+                    _uiLogger.Info("管理员用户创建成功", admin.Roles.Count, permissions);
                 }
                 else
                 {
-                    _uiLogger.Error(() => Ewan.Resources.LogMessages.AdminUserCreateFailed);
+                    _uiLogger.Error("创建管理员用户失败");
                 }
 
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.DefaultUsersCreated);
+                _uiLogger.Info("默认用户创建成功");
             }
         }
 
@@ -267,7 +267,6 @@ namespace Ewan.Core.Security
             var role = new Role(RoleNames.Administrator, "系统管理员", "拥有所有权限");
             role.Permissions.AddRange(new[]
             {
-                new Permission(PermissionResources.Language, PermissionActions.Control, "切换语言"),
                 new Permission(PermissionResources.PermissionConfig, PermissionActions.View, "查看权限配置"),
                 new Permission(PermissionResources.PermissionConfig, PermissionActions.Control, "修改权限配置"),
                 new Permission(PermissionResources.SystemControl, PermissionActions.Control, "系统控制（包括退出应用程序）"),
@@ -284,7 +283,6 @@ namespace Ewan.Core.Security
             var role = new Role(RoleNames.Engineer, "工程师", "部分控制权限");
             role.Permissions.AddRange(new[]
             {
-                new Permission(PermissionResources.Language, PermissionActions.Control, "切换语言"),
                 new Permission(PermissionResources.PermissionConfig, PermissionActions.View, "查看权限配置"),
                 new Permission(PermissionResources.SystemControl, PermissionActions.Control, "系统控制（包括退出应用程序）"),
                 new Permission(PermissionResources.HardwareControl, PermissionActions.Control, "硬件控制（包括IO控制）")
@@ -300,7 +298,6 @@ namespace Ewan.Core.Security
             var role = new Role(RoleNames.Operator, "操作员", "基本操作权限");
             role.Permissions.AddRange(new[]
             {
-                new Permission(PermissionResources.Language, PermissionActions.Control, "切换语言"),
                 new Permission(PermissionResources.SystemControl, PermissionActions.Control, "系统控制（包括退出应用程序）")
             });
             return role;
@@ -322,13 +319,13 @@ namespace Ewan.Core.Security
                     if (users != null)
                     {
                         _users = users;
-                        _uiLogger.Info(() => Ewan.Resources.LogMessages.UsersLoaded, _users.Count);
+                        _uiLogger.Info("已加载 {0} 个用户", _users.Count);
                         
                         // 在加载后验证数据
                         var admin = _users.FirstOrDefault(u => u.Username == "admin");
                         if (admin != null)
                         {
-                            _uiLogger.Info(() => Ewan.Resources.LogMessages.AdminUserLoadCheck, 
+                            _uiLogger.Info("管理员用户检查: {0}", 
                                 admin.Roles.Count, 
                                 admin.Roles.FirstOrDefault()?.Permissions.Count ?? 0);
                         }
@@ -337,7 +334,7 @@ namespace Ewan.Core.Security
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.UsersLoadError, ex.Message);
+                _uiLogger.Error("加载用户失败: {0}", ex.Message);
             }
         }
 
@@ -353,7 +350,7 @@ namespace Ewan.Core.Security
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.UsersSaveError, ex.Message);
+                _uiLogger.Error("保存用户失败: {0}", ex.Message);
             }
         }
 
