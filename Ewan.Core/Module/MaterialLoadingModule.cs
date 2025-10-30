@@ -156,13 +156,13 @@ namespace Ewan.Core.Module
                     switch (_currentState)
                     {
                         case MaterialLoadingState.Idle:
-                            // 在空闲状态检测料片到达扫码位
-                            // 检测到X7到位 && 能获取流程锁
-                            if (_ioManager.LayeredIO.ReadInBit(SCAN_POSITION_SIGNAL) &&
+                            // 在空闲状态检测皮带来料
+                            // 检测到X3物料到达 && 能获取流程锁
+                            if (_ioManager.LayeredIO.ReadInBit(MATERIAL_DETECT_SIGNAL) &&
                                 _sharedState?.TryStartLoading() == true)
                             {
                                 _currentState = MaterialLoadingState.MaterialDetected;
-                                _uiLogger.Info("处理已开始: {0}", "检测到料片到达扫码位(X7=true)，获取流程锁，开始装料流程");
+                                _uiLogger.Info("处理已开始: {0}", "检测到皮带来料(X3=true)，获取流程锁，开始装料流程");
                             }
                             break;
                             
@@ -228,14 +228,12 @@ namespace Ewan.Core.Module
         /// </summary>
         private void ProcessPickingMaterial()
         {
-            //// 在取料过程中检测是否到达扫码位置X7
-            //if (_ioManager.LayeredIO.ReadInBit(SCAN_POSITION_SIGNAL))
-            //{
-            //    // 关闭取料信号
-            //    _ioManager.LayeredIO.WriteOutBit(PICK_MATERIAL_SIGNAL, false);
+            // 在取料过程中检测是否到达扫码位置X7
+            if (_ioManager.LayeredIO.ReadInBit(SCAN_POSITION_SIGNAL))
+            {
                 _currentState = MaterialLoadingState.AtScanPosition;
-                _uiLogger.Info("处理已完成: {0}", "取料完成，到达扫码位置，开始扫码流程");
-            //}
+                _uiLogger.Info("处理已完成: {0}", "料片已到达扫码位置(X7=true)，开始扫码流程");
+            }
         }
 
         /// <summary>
