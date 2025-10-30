@@ -132,10 +132,15 @@ namespace Ewan.Core.Module
                                 // 设置默认料仓为1号（可根据需要修改）
                                 RequestUnloading(1);
                                 _uiLogger.InfoRaw("处理已开始: {0}", "环线要料上升沿触发且无外部料片(X3=false)，禁止取料(OUT14=false)，开始下料流程");
+                                
+                                // 成功触发下料，更新边缘检测状态
+                                _lastRingLineunload = _ringLineunload;
                             }
-                            
-                            // 更新边缘检测状态
-                            _lastRingLineunload = _ringLineunload;
+                            else if (!_ringLineunload && _lastRingLineunload)
+                            {
+                                // 检测到下降沿(True→False)，更新状态以便下次能检测到上升沿
+                                _lastRingLineunload = false;
+                            }
                             break;
                             
                         case MaterialUnloadingState.PickingMaterial:
