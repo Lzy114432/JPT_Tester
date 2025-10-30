@@ -1054,53 +1054,69 @@ namespace MarkingMachineFeeder.Viewmodel
         
         #region 系统控制命令方法
         
+        // 复位状态标志，防止重复执行
+        private bool _isResetting = false;
+        
         private async void ExecuteSystemReset()
         {
+            // 防止重复执行
+            if (_isResetting)
+            {
+                _uiLogger.WarnRaw("系统复位正在进行中，请等待完成");
+                return;
+            }
+            
             try
             {
+                _isResetting = true;
+                
                 _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "用户触发系统复位（硬件初始化）");
 
                 var robotController = Ewan.BusinessBonding.RobotController.Instance();
 
                 // 步骤1: OUT7 清除报警
-                _uiLogger.Info(() => "步骤1: 清除报警信号(OUT7)");
+                _uiLogger.InfoRaw("步骤1: 清除报警信号(OUT7)");
                 bool clearResult = await robotController.ClearAlarm();
                 if (!clearResult)
                 {
-                    _uiLogger.Warn(() => "清除报警信号失败，继续执行复位流程");
+                    _uiLogger.WarnRaw("清除报警信号失败，继续执行复位流程");
                 }
 
                 // 步骤2: 设置低速运行（OUT16=false）
-                _uiLogger.Info(() => "步骤2: 设置低速运行模式");
+                _uiLogger.InfoRaw("步骤2: 设置低速运行模式");
                 robotController.SetHighSpeedMode(false);
-                await System.Threading.Tasks.Task.Delay(300); // 等待低速模式设置生效
+                await System.Threading.Tasks.Task.Delay(500); // 等待低速模式设置生效
 
-                // 步骤3: 调用系统控制服务执行硬件初始化
-                _uiLogger.Info(() => "步骤3: 执行系统复位");
+                // 步骤3: 执行系统初始化（初始化过程保持低速，不会自动切换高速）
+                _uiLogger.InfoRaw("步骤3: 执行系统复位初始化（低速模式）");
                 _systemControlService.InitializeSystem();
-                await System.Threading.Tasks.Task.Delay(4000); // 等待4秒复位完成
+                await System.Threading.Tasks.Task.Delay(4000); // 等待初始化完成
 
-                // 步骤4: 设置高速运行（OUT16=true）
-                _uiLogger.Info(() => "步骤4: 设置高速运行模式");
-                robotController.SetHighSpeedMode(true);
+                // 步骤4: 初始化完成，保持低速待机状态
+                // 注意：不在这里设置高速，等待用户点击"启动"后再切换高速
+                _uiLogger.InfoRaw("步骤4: 系统复位完成，保持低速待机状态");
 
                 // 复位系统状态
-                SystemRunningStatus = "Green";
-                SystemRunningIsOn = true;
+                SystemRunningStatus = "Yellow"; // 黄色表示待机状态
+                SystemRunningIsOn = false;      // 待机状态，未运行
                 EmergencyStopStatus = "Gray";
                 EmergencyStopIsOn = false;
                 AlarmStatus = "Gray";
                 AlarmIsOn = false;
                 PauseStatus = "Gray";
                 PauseIsOn = false;
-                ProductionModeText = "自动模式";
-                ProductionModeColor = "Blue";
+                ProductionModeText = "待机模式（低速）";
+                ProductionModeColor = "Orange";
 
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "系统复位完成");
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "系统复位完成，低速待机中");
             }
             catch (Exception ex)
             {
                 _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "系统复位", ex.Message);
+            }
+            finally
+            {
+                _isResetting = false;
             }
         }
         
@@ -1136,7 +1152,7 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             try
             {
-                _uiLogger.Info(() => "用户触发清除报警");
+                _uiLogger.InfoRaw("用户触发清除报警");
                 
                 var robotController = Ewan.BusinessBonding.RobotController.Instance();
                 
@@ -1149,11 +1165,11 @@ namespace MarkingMachineFeeder.Viewmodel
                     AlarmStatus = "Gray";
                     AlarmIsOn = false;
                     
-                    _uiLogger.Info(() => "清除报警完成");
+                    _uiLogger.InfoRaw("清除报警完成");
                 }
                 else
                 {
-                    _uiLogger.Warn(() => "清除报警失败");
+                    _uiLogger.WarnRaw("清除报警失败");
                 }
             }
             catch (Exception ex)
@@ -1166,8 +1182,15 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             try
             {
-               
-                // 调用系统控制服务启动系统
+                _uiLogger.InfoRaw("用户触发系统启动");
+                
+                var robotController = Ewan.BusinessBonding.RobotController.Instance();
+                
+                // 步骤1: 切换到高速运行模式（自动模式下使用高速）
+                _uiLogger.InfoRaw("设置高速运行模式");
+                robotController.SetHighSpeedMode(true);
+                
+                // 步骤2: 调用系统控制服务启动系统
                 _systemControlService.StartSystem();
                 
                 // 更新界面状态
@@ -1177,8 +1200,10 @@ namespace MarkingMachineFeeder.Viewmodel
                 EmergencyStopStatus = "Gray";
                 PauseStatus = "Gray";
                 PauseIsOn = false;
-                ProductionModeText = "运行中";
+                ProductionModeText = "运行中（高速）";
                 ProductionModeColor = "Green";
+                
+                _uiLogger.InfoRaw("系统启动完成，高速运行中");
             }
             catch (Exception ex)
             {

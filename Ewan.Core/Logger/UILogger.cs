@@ -18,7 +18,7 @@ namespace Ewan.Core.Logger
         }
 
         /// <summary>
-        /// 记录信息级别日志
+        /// 记录信息级别日志（使用资源键）
         /// </summary>
         /// <param name="messageKey">消息键</param>
         /// <param name="parameters">参数</param>
@@ -41,7 +41,7 @@ namespace Ewan.Core.Logger
         }
 
         /// <summary>
-        /// 记录警告级别日志
+        /// 记录警告级别日志（使用资源键）
         /// </summary>
         /// <param name="messageKey">消息键</param>
         /// <param name="parameters">参数</param>
@@ -64,7 +64,7 @@ namespace Ewan.Core.Logger
         }
 
         /// <summary>
-        /// 记录错误级别日志
+        /// 记录错误级别日志（使用资源键）
         /// </summary>
         /// <param name="messageKey">消息键</param>
         /// <param name="parameters">参数</param>
@@ -110,7 +110,7 @@ namespace Ewan.Core.Logger
         }
 
         /// <summary>
-        /// 记录致命错误级别日志
+        /// 记录致命错误级别日志（使用资源键）
         /// </summary>
         /// <param name="messageKey">消息键</param>
         /// <param name="parameters">参数</param>
@@ -118,6 +118,56 @@ namespace Ewan.Core.Logger
         {
             LogToUI(LogLevel.Fatal, messageKey, parameters);
             LogLocalized(LogLevel.Fatal, messageKey, parameters);
+        }
+
+        /// <summary>
+        /// 记录信息级别原始日志（直接输出字符串）
+        /// </summary>
+        /// <param name="message">原始消息</param>
+        /// <param name="parameters">格式化参数</param>
+        public void InfoRaw(string message, params object[] parameters)
+        {
+            LogRawMessage(LogLevel.Info, message, parameters);
+        }
+
+        /// <summary>
+        /// 记录警告级别原始日志（直接输出字符串）
+        /// </summary>
+        /// <param name="message">原始消息</param>
+        /// <param name="parameters">格式化参数</param>
+        public void WarnRaw(string message, params object[] parameters)
+        {
+            LogRawMessage(LogLevel.Warn, message, parameters);
+        }
+
+        /// <summary>
+        /// 记录错误级别原始日志（直接输出字符串）
+        /// </summary>
+        /// <param name="message">原始消息</param>
+        /// <param name="parameters">格式化参数</param>
+        public void ErrorRaw(string message, params object[] parameters)
+        {
+            LogRawMessage(LogLevel.Error, message, parameters);
+        }
+
+        /// <summary>
+        /// 记录调试级别原始日志（直接输出字符串）
+        /// </summary>
+        /// <param name="message">原始消息</param>
+        /// <param name="parameters">格式化参数</param>
+        public void DebugRaw(string message, params object[] parameters)
+        {
+            LogRawMessage(LogLevel.Debug, message, parameters);
+        }
+
+        /// <summary>
+        /// 记录致命级别原始日志（直接输出字符串）
+        /// </summary>
+        /// <param name="message">原始消息</param>
+        /// <param name="parameters">格式化参数</param>
+        public void FatalRaw(string message, params object[] parameters)
+        {
+            LogRawMessage(LogLevel.Fatal, message, parameters);
         }
 
         /// <summary>
@@ -183,6 +233,39 @@ namespace Ewan.Core.Logger
             catch (Exception ex)
             {
                 base.Error($"Failed to push raw UI log message: {rawMessage}", ex);
+            }
+        }
+
+        /// <summary>
+        /// 使用原始字符串记录日志
+        /// </summary>
+        private void LogRawMessage(LogLevel level, string message, object[] parameters)
+        {
+            var formattedMessage = FormatMessage(message, parameters);
+            LogToUIRaw(level, formattedMessage);
+            base.LogWithCallerInfo(level, formattedMessage);
+        }
+
+        private static string FormatMessage(string message, object[] parameters)
+        {
+            if (string.IsNullOrEmpty(message))
+            {
+                return string.Empty;
+            }
+
+            if (parameters == null || parameters.Length == 0)
+            {
+                return message;
+            }
+
+            try
+            {
+                return string.Format(message, parameters);
+            }
+            catch (FormatException)
+            {
+                // 如果格式化失败，返回原始消息并附带参数列表
+                return message + " " + string.Join(", ", parameters);
             }
         }
         

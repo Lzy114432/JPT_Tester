@@ -73,7 +73,8 @@ namespace Ewan.Core.Module
 
         /// <summary>
         /// 执行上料机硬件初始化序列（公共方法，供外部调用）
-        /// 按照顺序：OUT6(true)->等0.5s->OUT6(false)->OUT16(true)->等0.5s->OUT5(true)->等0.5s->OUT5(false)->OUT14(true)
+        /// 按照顺序：OUT6(true)->等0.5s->OUT6(false)->等0.5s->OUT5(true)->等0.5s->OUT5(false)->OUT14(true)
+        /// 注意：不再设置OUT16速度，由外部调用者控制速度模式（复位时低速，运行时高速）
         /// 初始化过程中绿灯闪烁，完成后黄灯闪烁
         /// </summary>
         public void PerformHardwareInitialization()
@@ -83,7 +84,8 @@ namespace Ewan.Core.Module
 
         /// <summary>
         /// 执行上料机初始化序列（内部实现）
-        /// 按照顺序：OUT6(true)->等0.5s->OUT6(false)->OUT16(true)->等0.5s->OUT5(true)->等0.5s->OUT5(false)->OUT14(true)
+        /// 按照顺序：OUT6(true)->等0.5s->OUT6(false)->等0.5s->OUT5(true)->等0.5s->OUT5(false)->OUT14(true)
+        /// 注意：不再设置OUT16速度，由外部调用者控制速度模式（复位时低速，运行时高速）
         /// 初始化过程中绿灯闪烁，完成后黄灯闪烁
         /// </summary>
         private void PerformInitialization()
@@ -103,22 +105,21 @@ namespace Ewan.Core.Module
                 // 步骤2: OUT_STOP置位false
                 _ioManager.LayeredIO.WriteOutBit(OUT_STOP, false);
                 _appLogger.Info("OUT_STOP置位false");
-
-                // 步骤3: OUT_HIGH_SPEED置位true（高速运行）
-                _ioManager.LayeredIO.WriteOutBit(OUT_HIGH_SPEED, true);
-                _appLogger.Info("OUT_HIGH_SPEED置位true");
                 Thread.Sleep(500);
 
-                // 步骤4: OUT_START置位true（开始信号）
+                // 注意：移除了OUT_HIGH_SPEED的设置，由外部调用者控制速度
+                // 复位时保持低速，自动运行时切换高速
+
+                // 步骤3: OUT_START置位true（开始信号）
                 _ioManager.LayeredIO.WriteOutBit(OUT_START, true);
                 _appLogger.Info("OUT_START置位true");
                 Thread.Sleep(500);
 
-                // 步骤5: OUT_START置位false
+                // 步骤4: OUT_START置位false
                 _ioManager.LayeredIO.WriteOutBit(OUT_START, false);
                 _appLogger.Info("OUT_START置位false");
 
-                // 步骤6: OUT_ALLOW_PICK置位true（触发机械手皮带线允许取料）
+                // 步骤5: OUT_ALLOW_PICK置位true（触发机械手皮带线允许取料）
                 _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, true);
                 _appLogger.Info("OUT_ALLOW_PICK置位true");
 
