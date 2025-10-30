@@ -241,8 +241,11 @@ namespace Ewan.Core.Module
             // 检查小车脉冲信号X11
             if (_ioManager.LayeredIO.ReadRisingBit(CART_PULSE_SIGNAL))
             {
+                // 清除小车脉冲信号X11的边缘检测状态
+                _ioManager.LayeredIO.ClearRisingBit(CART_PULSE_SIGNAL);
+
                 // 清除放入小车信号
-                _ioManager.LayeredIO.ClearRisingBit(PUT_TO_CART_SIGNAL);
+                _ioManager.LayeredIO.WriteOutBit(PUT_TO_CART_SIGNAL, false);
 
                 // 清除扫码完成信号
                 _ioManager.LayeredIO.WriteOutBit(OUT_SCAN_COMPLETE, false);
