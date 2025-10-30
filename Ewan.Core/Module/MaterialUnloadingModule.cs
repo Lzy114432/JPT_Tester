@@ -60,6 +60,7 @@ namespace Ewan.Core.Module
         private string _lastScannedQrCode = string.Empty;
 
         private bool _ringLineunload = false;
+        private bool _lastRingLineunload = false; // 用于边缘检测
 
         /// <summary>
         /// 带共享状态的构造函数
@@ -86,6 +87,8 @@ namespace Ewan.Core.Module
             {
                 _currentState = MaterialUnloadingState.Idle;
                 _emergencyStopTriggered = false;
+                _ringLineunload = false;
+                _lastRingLineunload = false;
             }
         }
 
@@ -99,8 +102,10 @@ namespace Ewan.Core.Module
                     {
                         case MaterialUnloadingState.Idle:
                             // 监控环线信号，触发取料流程
-                            // 必须同时满足：1.环线要料(152=1)  2.X3=false(无外部料片)  3.能获取流程锁
-                            if (_ringLineunload &&
+                            // 必须同时满足：1.环线要料上升沿(从false变为true)  2.X3=false(无外部料片)  3.能获取流程锁
+                            bool ringLineRisingEdge = _ringLineunload && !_lastRingLineunload; // 检测上升沿
+                            
+                            if (ringLineRisingEdge &&
                                 !_unloadingRequested &&
                                 !_ioManager.LayeredIO.ReadInBit(MATERIAL_DETECT_SIGNAL) &&  // X3必须为false
                                 _sharedState?.TryStartUnloading() == true)
@@ -110,8 +115,11 @@ namespace Ewan.Core.Module
 
                                 // 设置默认料仓为1号（可根据需要修改）
                                 RequestUnloading(1);
-                                _uiLogger.Info("处理已开始: {0}", "环线要料且无外部料片(X3=false)，禁止取料(OUT14=false)，开始下料流程");
+                                _uiLogger.Info("处理已开始: {0}", "环线要料上升沿触发且无外部料片(X3=false)，禁止取料(OUT14=false)，开始下料流程");
                             }
+                            
+                            // 更新边缘检测状态
+                            _lastRingLineunload = _ringLineunload;
                             break;
                             
                         case MaterialUnloadingState.PickingMaterial:
@@ -369,6 +377,7 @@ namespace Ewan.Core.Module
                 _currentState = MaterialUnloadingState.Idle;
                 _stopRequested = false;
                 _unloadingRequested = false;
+                _lastRingLineunload = _ringLineunload; // 重置边缘检测状态，避免立即重新触发
 
                 _uiLogger.Info("处理已完成: {0}", "强制停止卸料，所有信号已清除");
             }
