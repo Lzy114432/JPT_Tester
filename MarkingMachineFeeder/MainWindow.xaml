@@ -466,6 +466,12 @@
                                   Command="{Binding OpenPermissionConfigCommand}"
                                   Style="{StaticResource IndustrialSubMenuItem}"
                                   Visibility="{Binding CanViewSettings, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                        <!-- 参数设置菜单 -->
+                        <MenuItem Header="{Binding ParameterSettingsMenuHeader}" 
+                                  d:Header="系统参数设置"
+                                  Command="{Binding OpenParameterSettingsCommand}"
+                                  Style="{StaticResource IndustrialSubMenuItem}"
+                                  Visibility="{Binding CanViewSettings, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                         <!-- 退出菜单 -->
                         <MenuItem Header="{Binding ExitMenuHeader}" 
                                   d:Header="退出"

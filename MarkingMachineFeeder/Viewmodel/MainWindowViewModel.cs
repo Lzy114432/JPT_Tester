@@ -32,6 +32,7 @@ namespace MarkingMachineFeeder.Viewmodel
         private string _switchUserButtonText = "";
         private string _systemManagementMenuHeader = "";
         private string _permissionConfigMenuHeader = "";
+        private string _parameterSettingsMenuHeader = "";
         private string _settingsMenuHeader = "";
         private string _systemMenuHeader = "";
         private string _exitMenuHeader = "";
@@ -179,6 +180,12 @@ namespace MarkingMachineFeeder.Viewmodel
             set { SetProperty(ref _permissionConfigMenuHeader, value); }
         }
 
+        public string ParameterSettingsMenuHeader
+        {
+            get { return _parameterSettingsMenuHeader; }
+            set { SetProperty(ref _parameterSettingsMenuHeader, value); }
+        }
+
         public string SettingsMenuHeader
         {
             get { return _settingsMenuHeader; }
@@ -267,6 +274,7 @@ namespace MarkingMachineFeeder.Viewmodel
         public DelegateCommand LoginCommand { get; }
         public DelegateCommand SwitchUserCommand { get; }
         public DelegateCommand OpenPermissionConfigCommand { get; }
+        public DelegateCommand OpenParameterSettingsCommand { get; }
         public DelegateCommand OpenSettingsCommand { get; }
         public DelegateCommand OpenIOControlCommand { get; }
         public DelegateCommand OpenIOMappingConfigCommand { get; }
@@ -334,6 +342,7 @@ namespace MarkingMachineFeeder.Viewmodel
             LoginCommand = new DelegateCommand(ExecuteLogin);
             SwitchUserCommand = new DelegateCommand(ExecuteSwitchUser);
             OpenPermissionConfigCommand = new DelegateCommand(ExecuteOpenPermissionConfig, CanOpenPermissionConfig);
+            OpenParameterSettingsCommand = new DelegateCommand(ExecuteOpenParameterSettings, CanOpenParameterSettings);
             OpenSettingsCommand = new DelegateCommand(ExecuteOpenSettings, CanOpenSettings);
             OpenIOControlCommand = new DelegateCommand(ExecuteOpenIOControl, CanOpenIOControl);
             OpenIOMappingConfigCommand = new DelegateCommand(ExecuteOpenIOMappingConfig, CanOpenIOMappingConfig);
@@ -456,6 +465,12 @@ namespace MarkingMachineFeeder.Viewmodel
             }
         }
 
+        private void ExecuteOpenParameterSettings()
+        {
+            var parameterWindow = new MarkingMachineFeeder.Windows.ParameterSettingsWindow();
+            parameterWindow.ShowDialog();
+        }
+
         private void ExecuteOpenSettings()
         {
             // 打开设置窗口的逻辑
@@ -518,6 +533,12 @@ namespace MarkingMachineFeeder.Viewmodel
         private bool CanOpenPermissionConfig()
         {
             // 基于权限系统检查用户是否有权访问权限配置
+            return _securityManager.HasPermission(PermissionResources.PermissionConfig, PermissionActions.View);
+        }
+
+        private bool CanOpenParameterSettings()
+        {
+            // 基于权限系统检查用户是否有权访问参数设置
             return _securityManager.HasPermission(PermissionResources.PermissionConfig, PermissionActions.View);
         }
 
@@ -623,6 +644,7 @@ namespace MarkingMachineFeeder.Viewmodel
             SwitchUserButtonText = Ewan.Resources.UIStrings.SwitchUserButton;
             SystemManagementMenuHeader = Ewan.Resources.UIStrings.SystemManagementMenu;
             PermissionConfigMenuHeader = Ewan.Resources.UIStrings.PermissionConfigMenu;
+            ParameterSettingsMenuHeader = "系统参数设置";
             // 使用ResourceManager直接获取资源字符串，如果资源不存在则使用默认值
             SettingsMenuHeader = Ewan.Resources.UIStrings.ResourceManager.GetString("SettingsMenu", Ewan.Resources.UIStrings.Culture) ?? "设置";
             SystemMenuHeader = Ewan.Resources.UIStrings.ResourceManager.GetString("SystemMenu", Ewan.Resources.UIStrings.Culture) ?? "系统";
@@ -681,6 +703,7 @@ namespace MarkingMachineFeeder.Viewmodel
             
             // 刷新依赖权限的命令状态
             OpenPermissionConfigCommand.RaiseCanExecuteChanged();
+            OpenParameterSettingsCommand.RaiseCanExecuteChanged();
             OpenSettingsCommand.RaiseCanExecuteChanged();
             ExitCommand.RaiseCanExecuteChanged();
             OpenIOControlCommand.RaiseCanExecuteChanged();
@@ -1073,6 +1096,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "用户触发系统复位（硬件初始化）");
 
                 var robotController = Ewan.BusinessBonding.RobotController.Instance();
+                var parameters = Ewan.Model.System.SystemParametersManager.Instance.Parameters;
 
                 // 步骤1: OUT7 清除报警
                 _uiLogger.InfoRaw("步骤1: 清除报警信号(OUT7)");
@@ -1085,12 +1109,12 @@ namespace MarkingMachineFeeder.Viewmodel
                 // 步骤2: 设置低速运行（OUT16=false）
                 _uiLogger.InfoRaw("步骤2: 设置低速运行模式");
                 robotController.SetHighSpeedMode(false);
-                await System.Threading.Tasks.Task.Delay(500); // 等待低速模式设置生效
+                await System.Threading.Tasks.Task.Delay(parameters.LowSpeedSetupDelayMs);
 
                 // 步骤3: 执行系统初始化（初始化过程保持低速，不会自动切换高速）
                 _uiLogger.InfoRaw("步骤3: 执行系统复位初始化（低速模式）");
                 _systemControlService.InitializeSystem();
-                await System.Threading.Tasks.Task.Delay(4000); // 等待初始化完成
+                await System.Threading.Tasks.Task.Delay(parameters.ResetDelayMs);
 
                 // 步骤4: 初始化完成，保持低速待机状态
                 // 注意：不在这里设置高速，等待用户点击"启动"后再切换高速
@@ -1185,10 +1209,19 @@ namespace MarkingMachineFeeder.Viewmodel
                 _uiLogger.InfoRaw("用户触发系统启动");
                 
                 var robotController = Ewan.BusinessBonding.RobotController.Instance();
+                var parameters = Ewan.Model.System.SystemParametersManager.Instance.Parameters;
                 
-                // 步骤1: 调试阶段保持低速运行模式
-                _uiLogger.InfoRaw("保持低速运行模式（调试阶段）");
-                robotController.SetHighSpeedMode(false);
+                // 步骤1: 根据参数设置运行模式
+                if (parameters.HighSpeedModeEnabled)
+                {
+                    _uiLogger.InfoRaw("启用高速运行模式");
+                    robotController.SetHighSpeedMode(true);
+                }
+                else
+                {
+                    _uiLogger.InfoRaw("保持低速运行模式");
+                    robotController.SetHighSpeedMode(false);
+                }
                 
                 // 步骤2: 调用系统控制服务启动系统
                 _systemControlService.StartSystem();
