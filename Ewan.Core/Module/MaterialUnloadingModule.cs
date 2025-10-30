@@ -384,8 +384,8 @@ namespace Ewan.Core.Module
         {
             try
             {
-                // 发送完成信号值为1到寄存器153
-                _modbusRTUManager.WriteAny(CART_COMPLETION_REGISTER, 1);
+                // 发送完成信号值为1到寄存器153 (u16类型)
+                _modbusRTUManager.WriteAny(CART_COMPLETION_REGISTER, (ushort)1);
                 _uiLogger.Info("处理已完成: {0}", $"放入小车完成信号已发送到寄存器{CART_COMPLETION_REGISTER}");
             }
             catch (Exception ex)
