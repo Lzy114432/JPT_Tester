@@ -21,6 +21,10 @@ namespace Ewan.Core.Module
         private bool _emergencyStopTriggered = false;
         private bool _unloadingRequested = false;
         private bool _stopRequested = false;
+        
+        // 诊断日志相关
+        private long _lastPickingLogTicks = DateTime.Now.Ticks;
+        private long _lastIdleLogTicks = DateTime.Now.Ticks; // 最后一次记录Idle状态日志的时间
 
         // 共享状态（用于与其他模块通信）
         private ProductionLineSharedState _sharedState;
@@ -104,10 +108,22 @@ namespace Ewan.Core.Module
                             // 监控环线信号，触发取料流程
                             // 必须同时满足：1.环线要料上升沿(从false变为true)  2.X3=false(无外部料片)  3.能获取流程锁
                             bool ringLineRisingEdge = _ringLineunload && !_lastRingLineunload; // 检测上升沿
+                            bool x3Signal = _ioManager.LayeredIO.ReadInBit(MATERIAL_DETECT_SIGNAL);
+                            
+                            // 诊断日志：定期输出下料条件状态（每5秒记录一次）
+                            long currentTicks = DateTime.Now.Ticks;
+                            long elapsedSeconds = (currentTicks - _lastIdleLogTicks) / TimeSpan.TicksPerSecond;
+                            if (elapsedSeconds >= 5)
+                            {
+                                var currentProcess = _sharedState?.GetCurrentProcess().ToString() ?? "Unknown";
+                                _uiLogger.DebugRaw("[下料诊断-Idle] 环线要料={0}, 上升沿={1}, X3={2}, UnloadingReq={3}, CurrentProcess={4}",
+                                    _ringLineunload, ringLineRisingEdge, x3Signal, _unloadingRequested, currentProcess);
+                                _lastIdleLogTicks = currentTicks;
+                            }
                             
                             if (ringLineRisingEdge &&
                                 !_unloadingRequested &&
-                                !_ioManager.LayeredIO.ReadInBit(MATERIAL_DETECT_SIGNAL) &&  // X3必须为false
+                                !x3Signal &&  // X3必须为false
                                 _sharedState?.TryStartUnloading() == true)
                             {
                                 // 禁止后台程序取料，避免与装料流程冲突
@@ -187,7 +203,21 @@ namespace Ewan.Core.Module
         private void ProcessPickingMaterial()
         {
             // 检查取料完成状态 - 从SharedState读取（BinElevatorModule通过X10信号更新这个状态）
-            if (_sharedState?.GetUnloadingCompleted() == true)
+            bool unloadingCompleted = _sharedState?.GetUnloadingCompleted() == true;
+            
+            // 诊断日志：定期输出等待状态（每5秒记录一次）
+            if (!unloadingCompleted)
+            {
+                long currentTicks = DateTime.Now.Ticks;
+                long elapsedSeconds = (currentTicks - _lastPickingLogTicks) / TimeSpan.TicksPerSecond;
+                if (elapsedSeconds >= 5)
+                {
+                    _uiLogger.DebugRaw("[下料诊断] 等待取料完成: UnloadingCompleted={0}", unloadingCompleted);
+                    _lastPickingLogTicks = currentTicks;
+                }
+            }
+            
+            if (unloadingCompleted)
             {
                 // 取料完成，清除SharedState标志
                 _sharedState.SetUnloadingCompleted(false);
