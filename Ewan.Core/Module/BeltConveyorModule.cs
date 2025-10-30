@@ -38,7 +38,7 @@ namespace Ewan.Core.Module
         {
             try
             {
-                _uiLogger.Info("模块初始化成功: {0}", "BeltConveyorModule");
+                _uiLogger.InfoRaw("模块初始化成功: {0}", "BeltConveyorModule");
 
                 // 初始化轴管理器和消息管理器
                 _axisManager = AxisManager.Instance();
@@ -48,11 +48,11 @@ namespace Ewan.Core.Module
                 _systemControlListener = new MsgListener(MsgSubject.SystemControl, OnSystemControlMessage);
                 _msgManager.RegisterListener(_systemControlListener);
 
-                _uiLogger.Info("初始化已完成: {0}", "皮带输送控制系统");
+                _uiLogger.InfoRaw("初始化已完成: {0}", "皮带输送控制系统");
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("模块初始化失败: {0} - {1}", "BeltConveyorModule", ex.Message);
+                _uiLogger.ErrorRaw("模块初始化失败: {0} - {1}", "BeltConveyorModule", ex.Message);
                 throw;
             }
         }
@@ -87,7 +87,7 @@ namespace Ewan.Core.Module
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("模块运行错误: {0} - {1}", "BeltConveyorModule", ex.Message);
+                _uiLogger.ErrorRaw("模块运行错误: {0} - {1}", "BeltConveyorModule", ex.Message);
                 Thread.Sleep(1000); // 错误时等待更长时间
                 return true;
             }
@@ -107,11 +107,11 @@ namespace Ewan.Core.Module
                     _systemControlListener = null;
                 }
 
-                _uiLogger.Info("模块已销毁: {0}", "BeltConveyorModule");
+                _uiLogger.InfoRaw("模块已销毁: {0}", "BeltConveyorModule");
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("处理错误: {0} - {1}", "BeltConveyorModule销毁", ex.Message);
+                _uiLogger.ErrorRaw("处理错误: {0} - {1}", "BeltConveyorModule销毁", ex.Message);
             }
         }
 
@@ -136,24 +136,24 @@ namespace Ewan.Core.Module
                         _axisManager.JogDown(axisConfig);
                         _beltRunning = true;
 
-                        _uiLogger.Info("处理已开始: {0}",
+                        _uiLogger.InfoRaw("处理已开始: {0}",
                             "皮带轴开始反向运行，速度:" + axisConfig.Speed);
                     }
                     else
                     {
-                        _uiLogger.Warn("处理错误: {0} - {1}",
+                        _uiLogger.WarnRaw("处理错误: {0} - {1}",
                             "皮带轴配置未找到或未启用", "轴ID:" + BELT_AXIS_ID);
                     }
                 }
                 else
                 {
-                    _uiLogger.Error("处理错误: {0} - {1}",
+                    _uiLogger.ErrorRaw("处理错误: {0} - {1}",
                         "AxisManager未初始化", "");
                 }
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("处理错误: {0} - {1}",
+                _uiLogger.ErrorRaw("处理错误: {0} - {1}",
                     "皮带轴启动", ex.Message);
             }
         }
@@ -175,14 +175,14 @@ namespace Ewan.Core.Module
                         _axisManager.JogStop(axisConfig);
                         _beltRunning = false;
 
-                        _uiLogger.Info("处理已完成: {0}",
+                        _uiLogger.InfoRaw("处理已完成: {0}",
                             "皮带轴已停止");
                     }
                 }
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("处理错误: {0} - {1}",
+                _uiLogger.ErrorRaw("处理错误: {0} - {1}",
                     "皮带轴停止", ex.Message);
             }
         }
@@ -211,7 +211,7 @@ namespace Ewan.Core.Module
                                 {
                                     StopBelt();
                                 }
-                                _uiLogger.Warn("处理已完成: {0}",
+                                _uiLogger.WarnRaw("处理已完成: {0}",
                                     "皮带紧急停止");
                                 break;
 
@@ -222,14 +222,14 @@ namespace Ewan.Core.Module
                                 {
                                     StopBelt();
                                 }
-                                _uiLogger.Info("处理已完成: {0}",
+                                _uiLogger.InfoRaw("处理已完成: {0}",
                                     "皮带已暂停");
                                 break;
 
                             case SystemControlCommand.Resume:
                                 // 恢复运行 - 允许皮带重新启动
                                 _shouldStop = false;
-                                _uiLogger.Info("处理已开始: {0}",
+                                _uiLogger.InfoRaw("处理已开始: {0}",
                                     "皮带恢复运行");
                                 break;
 
@@ -240,14 +240,14 @@ namespace Ewan.Core.Module
                                 {
                                     StopBelt();
                                 }
-                                _uiLogger.Info("处理已完成: {0}",
+                                _uiLogger.InfoRaw("处理已完成: {0}",
                                     "皮带已停止");
                                 break;
 
                             case SystemControlCommand.Initialize:
                                 // 初始化/复位 - 允许皮带重新启动
                                 _shouldStop = false;
-                                _uiLogger.Info("处理已开始: {0}",
+                                _uiLogger.InfoRaw("处理已开始: {0}",
                                     "皮带系统已初始化");
                                 break;
 
@@ -259,7 +259,7 @@ namespace Ewan.Core.Module
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("处理错误: {0} - {1}",
+                _uiLogger.ErrorRaw("处理错误: {0} - {1}",
                     "处理系统控制消息", ex.Message);
             }
         }

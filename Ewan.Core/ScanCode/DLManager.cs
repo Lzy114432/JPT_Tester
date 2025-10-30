@@ -40,7 +40,7 @@ namespace Ewan.Core.ScanCode
 
         public override bool Init()
         {
-            _uiLogger.Info("模块初始化成功: {0}", "DLManager");
+            _uiLogger.InfoRaw("模块初始化成功: {0}", "DLManager");
             
             try
             {
@@ -51,14 +51,14 @@ namespace Ewan.Core.ScanCode
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("初始化失败: {0}", "DLManager初始化失败: " + ex.Message);
+                _uiLogger.ErrorRaw("初始化失败: {0}", "DLManager初始化失败: " + ex.Message);
                 return false;
             }
         }
 
         public override void Destroy()
         {
-            _uiLogger.Info("模块已销毁: {0}", "DLManager");
+            _uiLogger.InfoRaw("模块已销毁: {0}", "DLManager");
             
             try
             {          
@@ -67,7 +67,7 @@ namespace Ewan.Core.ScanCode
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("处理错误: {0} - {1}", "DLManager销毁错误: " + ex.Message);
+                _uiLogger.ErrorRaw("处理错误: {0} - {1}", "DLManager销毁错误: " + ex.Message);
             }
             
             base.Destroy();
@@ -92,7 +92,7 @@ namespace Ewan.Core.ScanCode
                         DisconnectFromScanner();
                     }
 
-                    _uiLogger.Info("处理已开始: {0}", 
+                    _uiLogger.InfoRaw("处理已开始: {0}", 
                         $"连接扫码器 {SCANNER_IP}:{SCANNER_PORT}");
 
                     _tcpClient = new TcpClient();
@@ -107,7 +107,7 @@ namespace Ewan.Core.ScanCode
                         _networkStream = _tcpClient.GetStream();
                         _isConnected = true;
                         
-                        _uiLogger.Info("处理已完成: {0}", "扫码器连接成功");
+                        _uiLogger.InfoRaw("处理已完成: {0}", "扫码器连接成功");
                         
                         
                         return true;
@@ -116,7 +116,7 @@ namespace Ewan.Core.ScanCode
                     {
                         _tcpClient?.Close();
                         _tcpClient = null;
-                        _uiLogger.Error("操作失败: {0}", "扫码器连接超时");
+                        _uiLogger.ErrorRaw("操作失败: {0}", "扫码器连接超时");
                         return false;
                     }
                 }
@@ -126,7 +126,7 @@ namespace Ewan.Core.ScanCode
                     _tcpClient = null;
                     _isConnected = false;
                     
-                    _uiLogger.Error("操作失败: {0}", "扫码器连接失败: " + ex.Message);
+                    _uiLogger.ErrorRaw("操作失败: {0}", "扫码器连接失败: " + ex.Message);
                     return false;
                 }
             }
@@ -155,12 +155,12 @@ namespace Ewan.Core.ScanCode
 
                     _isConnected = false;
                     
-                    _uiLogger.Info("处理已完成: {0}", "扫码器连接已断开");
+                    _uiLogger.InfoRaw("处理已完成: {0}", "扫码器连接已断开");
                     
                 }
                 catch (Exception ex)
                 {
-                    _uiLogger.Error("处理错误: {0} - {1}", "断开扫码器连接错误: " + ex.Message);
+                    _uiLogger.ErrorRaw("处理错误: {0} - {1}", "断开扫码器连接错误: " + ex.Message);
                 }
             }
         }
@@ -181,7 +181,7 @@ namespace Ewan.Core.ScanCode
                 {
                     if (!_isConnected || _networkStream == null)
                     {
-                        _uiLogger.Error("操作失败: {0}", "扫码器未连接，无法触发扫码");
+                        _uiLogger.ErrorRaw("操作失败: {0}", "扫码器未连接，无法触发扫码");
                         return "";
                     }
 
@@ -190,25 +190,25 @@ namespace Ewan.Core.ScanCode
                     _networkStream.Write(data, 0, data.Length);
                     _networkStream.Flush();
                     
-                    _uiLogger.Info("处理已开始: {0}", "发送扫码触发命令: " + TRIGGER_COMMAND);
+                    _uiLogger.InfoRaw("处理已开始: {0}", "发送扫码触发命令: " + TRIGGER_COMMAND);
                     
                     // 等待并接收扫码结果
                     string scanResult = ReceiveScanResult();
                     
                     if (!string.IsNullOrEmpty(scanResult))
                     {
-                        _uiLogger.Info("处理已完成: {0}", "扫码成功，结果: " + scanResult);
+                        _uiLogger.InfoRaw("处理已完成: {0}", "扫码成功，结果: " + scanResult);
                     }
                     else
                     {
-                        _uiLogger.Error("操作失败: {0}", "扫码失败，未收到有效结果");
+                        _uiLogger.ErrorRaw("操作失败: {0}", "扫码失败，未收到有效结果");
                     }
                     
                     return scanResult;
                 }
                 catch (Exception ex)
                 {
-                    _uiLogger.Error("操作失败: {0}", "触发扫码失败: " + ex.Message);
+                    _uiLogger.ErrorRaw("操作失败: {0}", "触发扫码失败: " + ex.Message);
                     
                     // 连接可能已断开，标记为未连接
                     _isConnected = false;
@@ -269,12 +269,12 @@ namespace Ewan.Core.ScanCode
                 }
                 
                 // 超时或没有收到数据
-                _uiLogger.Error("操作失败: {0}", "接收扫码结果超时");
+                _uiLogger.ErrorRaw("操作失败: {0}", "接收扫码结果超时");
                 return "";
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("处理错误: {0} - {1}", "接收扫码结果错误: " + ex.Message);
+                _uiLogger.ErrorRaw("处理错误: {0} - {1}", "接收扫码结果错误: " + ex.Message);
                 return "";
             }
         }
@@ -333,7 +333,7 @@ namespace Ewan.Core.ScanCode
         /// <returns>重连是否成功</returns>
         public bool Reconnect()
         {
-            _uiLogger.Info("处理已开始: {0}", "手动重连扫码器");
+            _uiLogger.InfoRaw("处理已开始: {0}", "手动重连扫码器");
             return ConnectToScanner();
         }
 
@@ -372,12 +372,12 @@ namespace Ewan.Core.ScanCode
                 // var statusMsg = new ScannerConnectionMessage(isConnected, SCANNER_IP, SCANNER_PORT);
                 // _msgManager.PushMsg(new MessageModel(MsgSubject.ScannerStatus, statusMsg));
                 
-                _uiLogger.Info("处理已完成: {0}", 
+                _uiLogger.InfoRaw("处理已完成: {0}", 
                     $"发送扫码器连接状态消息: {(isConnected ? "已连接" : "已断开")}");
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("处理错误: {0} - {1}", 
+                _uiLogger.ErrorRaw("处理错误: {0} - {1}", 
                     "发送连接状态消息错误: " + ex.Message);
             }
         }

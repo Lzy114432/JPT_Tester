@@ -73,7 +73,7 @@ namespace Ewan.Core.Module
 
         protected override void OnInit()
         {
-            _uiLogger.Info("模块初始化成功: {0}", "MaterialUnloadingModule");
+            _uiLogger.InfoRaw("模块初始化成功: {0}", "MaterialUnloadingModule");
 
             _modbusRTUManager = ModbusRTUManager.Instance();
 
@@ -115,7 +115,7 @@ namespace Ewan.Core.Module
 
                                 // 设置默认料仓为1号（可根据需要修改）
                                 RequestUnloading(1);
-                                _uiLogger.Info("处理已开始: {0}", "环线要料上升沿触发且无外部料片(X3=false)，禁止取料(OUT14=false)，开始下料流程");
+                                _uiLogger.InfoRaw("处理已开始: {0}", "环线要料上升沿触发且无外部料片(X3=false)，禁止取料(OUT14=false)，开始下料流程");
                             }
                             
                             // 更新边缘检测状态
@@ -153,7 +153,7 @@ namespace Ewan.Core.Module
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("模块运行错误: {0} - {1}", "MaterialUnloadingModule: " + ex.Message);
+                _uiLogger.ErrorRaw("模块运行错误: {0} - {1}", "MaterialUnloadingModule: " + ex.Message);
                 _currentState = MaterialUnloadingState.Idle;
                 Thread.Sleep(1000);
                 return true;
@@ -162,7 +162,7 @@ namespace Ewan.Core.Module
 
         protected override void OnDestroy()
         {
-            _uiLogger.Info("模块已销毁: {0}", "MaterialUnloadingModule");
+            _uiLogger.InfoRaw("模块已销毁: {0}", "MaterialUnloadingModule");
 
             // 注销消息监听器
             if (_msgManager2 != null)
@@ -199,7 +199,7 @@ namespace Ewan.Core.Module
                 // 转换到等待扫码位置状态
                 _currentState = MaterialUnloadingState.WaitingForScanPosition;
 
-                _uiLogger.Info("处理已完成: {0}", "取料完成，等待到达扫码位置");
+                _uiLogger.InfoRaw("处理已完成: {0}", "取料完成，等待到达扫码位置");
             }
         }
 
@@ -215,7 +215,7 @@ namespace Ewan.Core.Module
                 _ioManager.LayeredIO.ClearRisingBit(SCAN_POSITION_SIGNAL);
 
                 _currentState = MaterialUnloadingState.Scanning;
-                _uiLogger.Info("处理已开始: {0}", "已到达扫码位置，开始扫码");
+                _uiLogger.InfoRaw("处理已开始: {0}", "已到达扫码位置，开始扫码");
             }
         }
 
@@ -237,7 +237,7 @@ namespace Ewan.Core.Module
 
                 // 发送放入小车信号
                 _ioManager.LayeredIO.WriteOutBit(PUT_TO_CART_SIGNAL, true);
-                _uiLogger.Info("处理已开始: {0}", $"扫码完成: {scannedCode}，发送扫码完成信号(OUT9)，放入小车");
+                _uiLogger.InfoRaw("处理已开始: {0}", $"扫码完成: {scannedCode}，发送扫码完成信号(OUT9)，放入小车");
             }
         }
 
@@ -272,7 +272,7 @@ namespace Ewan.Core.Module
                 _lastScannedQrCode = string.Empty; // 清空扫码结果
                 _currentState = MaterialUnloadingState.Idle;
 
-                _uiLogger.Info("处理已完成: {0}", "下料完成，清除扫码完成信号(OUT9)，恢复允许取料(OUT14=true)，释放流程锁");
+                _uiLogger.InfoRaw("处理已完成: {0}", "下料完成，清除扫码完成信号(OUT9)，恢复允许取料(OUT14=true)，释放流程锁");
             }
         }
 
@@ -308,7 +308,7 @@ namespace Ewan.Core.Module
                     _ioManager.LayeredIO.WriteOutBit(BIN3_SELECT_SIGNAL, true);
                     break;
                 default:
-                    _uiLogger.Error("处理错误: {0} - {1}", $"无效的料仓编号: {binNumber}");
+                    _uiLogger.ErrorRaw("处理错误: {0} - {1}", $"无效的料仓编号: {binNumber}");
                     break;
             }
         }
@@ -327,7 +327,7 @@ namespace Ewan.Core.Module
             {
                 if (_currentState != MaterialUnloadingState.Idle)
                 {
-                    _uiLogger.Warn("处理错误: {0} - {1}", $"当前状态为 {_currentState}，无法开始新的卸料流程");
+                    _uiLogger.WarnRaw("处理错误: {0} - {1}", $"当前状态为 {_currentState}，无法开始新的卸料流程");
                     return;
                 }
 
@@ -343,7 +343,7 @@ namespace Ewan.Core.Module
                 // 转换到取料状态
                 _currentState = MaterialUnloadingState.PickingMaterial;
                 
-                _uiLogger.Info("处理已开始: {0}", $"请求从料仓{binNumber}开始取料");
+                _uiLogger.InfoRaw("处理已开始: {0}", $"请求从料仓{binNumber}开始取料");
             }
         }
 
@@ -356,7 +356,7 @@ namespace Ewan.Core.Module
             {
                 _stopRequested = true;
                 _unloadingRequested = false;
-                _uiLogger.Info("处理已开始: {0}", "请求停止卸料");
+                _uiLogger.InfoRaw("处理已开始: {0}", "请求停止卸料");
             }
         }
 
@@ -379,7 +379,7 @@ namespace Ewan.Core.Module
                 _unloadingRequested = false;
                 _lastRingLineunload = _ringLineunload; // 重置边缘检测状态，避免立即重新触发
 
-                _uiLogger.Info("处理已完成: {0}", "强制停止卸料，所有信号已清除");
+                _uiLogger.InfoRaw("处理已完成: {0}", "强制停止卸料，所有信号已清除");
             }
         }
 
@@ -398,11 +398,11 @@ namespace Ewan.Core.Module
             {
                 // 发送完成信号值为1到寄存器153 (u16类型)
                 _modbusRTUManager.WriteAny(CART_COMPLETION_REGISTER, (ushort)1);
-                _uiLogger.Info("处理已完成: {0}", $"放入小车完成信号已发送到寄存器{CART_COMPLETION_REGISTER}");
+                _uiLogger.InfoRaw("处理已完成: {0}", $"放入小车完成信号已发送到寄存器{CART_COMPLETION_REGISTER}");
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("处理错误: {0} - {1}", $"发送完成信号到Modbus失败: {ex.Message}");
+                _uiLogger.ErrorRaw("处理错误: {0} - {1}", $"发送完成信号到Modbus失败: {ex.Message}");
             }
         }
 

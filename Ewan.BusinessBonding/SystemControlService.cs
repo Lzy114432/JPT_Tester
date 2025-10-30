@@ -14,14 +14,14 @@ namespace Ewan.BusinessBonding
         public void InitializeSystem()
         {
             Push(SystemControlCommand.Initialize);
-            _uiLogger.Info("处理已完成: {0}", "系统初始化命令已发送");
+            _uiLogger.InfoRaw("处理已完成: {0}", "系统初始化命令已发送");
         }
 
         public void StartSystem()
         {
 
             Push(SystemControlCommand.Start);
-            _uiLogger.Info("处理已完成: {0}", "系统启动命令已发送");
+            _uiLogger.InfoRaw("处理已完成: {0}", "系统启动命令已发送");
 
         }
 
@@ -29,7 +29,7 @@ namespace Ewan.BusinessBonding
         {
 
             Push(SystemControlCommand.Stop);
-            _uiLogger.Info("处理已完成: {0}", "系统停止命令已发送");
+            _uiLogger.InfoRaw("处理已完成: {0}", "系统停止命令已发送");
 
         }
 
@@ -37,19 +37,19 @@ namespace Ewan.BusinessBonding
         {
 
             Push(SystemControlCommand.EmergencyStop);
-            _uiLogger.Warn("处理已完成: {0}", "系统紧急停止命令已发送");
+            _uiLogger.WarnRaw("处理已完成: {0}", "系统紧急停止命令已发送");
         }
 
         public void PauseSystem()
         {
             Push(SystemControlCommand.Pause);
-            _uiLogger.Info("处理已完成: {0}", "系统暂停命令已发送");
+            _uiLogger.InfoRaw("处理已完成: {0}", "系统暂停命令已发送");
         }
 
         public void ResumeSystem()
         {
             Push(SystemControlCommand.Resume);
-            _uiLogger.Info("处理已完成: {0}", "系统恢复命令已发送");
+            _uiLogger.InfoRaw("处理已完成: {0}", "系统恢复命令已发送");
         }
 
 

@@ -17,16 +17,16 @@ namespace Ewan.BusinessBonding
                 
                 if (result)
                 {
-                    _uiLogger.Info("成功写入 {0} = {1}", $"Y{index}", value ? "ON" : "OFF");
+                    _uiLogger.InfoRaw("成功写入 {0} = {1}", $"Y{index}", value ? "ON" : "OFF");
                 }
                 else
                 {
-                    _uiLogger.Warn("写入 {0} 失败", $"Y{index}");
+                    _uiLogger.WarnRaw("写入 {0} 失败", $"Y{index}");
                 }
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("写入 {0} 错误: {1}", $"Y{index}", ex.Message);
+                _uiLogger.ErrorRaw("写入 {0} 错误: {1}", $"Y{index}", ex.Message);
             }
         }
 
@@ -62,12 +62,12 @@ namespace Ewan.BusinessBonding
                             break;
                     }
                     
-                    _uiLogger.Info("IO模拟模式设置: {0} = {1}", $"X{index}", modeName);
+                    _uiLogger.InfoRaw("IO模拟模式设置: {0} = {1}", $"X{index}", modeName);
                 }
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("IO模拟错误: {0} - {1}", $"X{index}", ex.Message);
+                _uiLogger.ErrorRaw("IO模拟错误: {0} - {1}", $"X{index}", ex.Message);
             }
         }
 
@@ -83,12 +83,12 @@ namespace Ewan.BusinessBonding
                 
                 if (result)
                 {
-                    _uiLogger.Info("清除所有IO模拟状态");
+                    _uiLogger.InfoRaw("清除所有IO模拟状态");
                 }
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("IO模拟错误: {0} - {1}", "Clear", ex.Message);
+                _uiLogger.ErrorRaw("IO模拟错误: {0} - {1}", "Clear", ex.Message);
             }
         }
     }

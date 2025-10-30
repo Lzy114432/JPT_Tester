@@ -34,7 +34,7 @@ namespace Ewan.Core.Module
         {
             try
             {
-                _uiLogger.Info("模块初始化成功: {0}", "ProductionLineModule");
+                _uiLogger.InfoRaw("模块初始化成功: {0}", "ProductionLineModule");
                 
                 // 注册系统控制消息监听器
                 RegisterSystemControlListener();
@@ -53,11 +53,11 @@ namespace Ewan.Core.Module
                 _binElevator.Init();
                 
                 _systemReady = true;
-                _uiLogger.Info("初始化已完成: {0}", "生产线控制系统");
+                _uiLogger.InfoRaw("初始化已完成: {0}", "生产线控制系统");
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("模块初始化失败: {0} - {1}", 
+                _uiLogger.ErrorRaw("模块初始化失败: {0} - {1}", 
                     "ProductionLineModule", ex.Message);
                 throw;
             }
@@ -89,7 +89,7 @@ namespace Ewan.Core.Module
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("模块运行错误: {0} - {1}", 
+                _uiLogger.ErrorRaw("模块运行错误: {0} - {1}", 
                     "ProductionLineModule", ex.Message);
                 return true;
             }
@@ -124,11 +124,11 @@ namespace Ewan.Core.Module
                 }
                 
                 _systemReady = false;
-                _uiLogger.Info("模块已销毁: {0}", "ProductionLineModule");
+                _uiLogger.InfoRaw("模块已销毁: {0}", "ProductionLineModule");
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("处理错误: {0} - {1}", 
+                _uiLogger.ErrorRaw("处理错误: {0} - {1}", 
                     "ProductionLineModule销毁", ex.Message);
             }
         }
@@ -144,7 +144,7 @@ namespace Ewan.Core.Module
         {
             try
             {
-                _uiLogger.Info("处理已开始: {0}", "生产线硬件初始化开始");
+                _uiLogger.InfoRaw("处理已开始: {0}", "生产线硬件初始化开始");
 
                 // 发送初始化中状态
                 SendStatusMessage(SystemStatus.Initializing, "生产线硬件初始化中");
@@ -153,14 +153,14 @@ namespace Ewan.Core.Module
                 _binElevator?.PerformHardwareInitialization();
 
                 _initialized = true;
-                _uiLogger.Info("处理已完成: {0}", "生产线硬件初始化完成");
+                _uiLogger.InfoRaw("处理已完成: {0}", "生产线硬件初始化完成");
 
                 // 初始化完成后进入待机状态
                 SendStatusMessage(SystemStatus.Standby, "生产线初始化完成，等待启动");
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("处理错误: {0} - {1}",
+                _uiLogger.ErrorRaw("处理错误: {0} - {1}",
                     "生产线硬件初始化", ex.Message);
                 _initialized = false;
 
@@ -176,14 +176,14 @@ namespace Ewan.Core.Module
         {
             if (!_initialized)
             {
-                _uiLogger.Warn("处理错误: {0} - {1}",
+                _uiLogger.WarnRaw("处理错误: {0} - {1}",
                     "生产线未初始化", "请先执行硬件初始化");
                 SendStatusMessage(SystemStatus.Warning, "生产线未初始化，无法启动");
                 return;
             }
 
             _isRunning = true;
-            _uiLogger.Info("处理已完成: {0}", "生产线启动");
+            _uiLogger.InfoRaw("处理已完成: {0}", "生产线启动");
 
             // 发送运行状态
             SendStatusMessage(SystemStatus.Running, "生产线运行中");
@@ -195,7 +195,7 @@ namespace Ewan.Core.Module
         public void StopProduction()
         {
             _isRunning = false;
-            _uiLogger.Info("处理已完成: {0}", "生产线停止");
+            _uiLogger.InfoRaw("处理已完成: {0}", "生产线停止");
 
             // 发送停止状态
             SendStatusMessage(SystemStatus.Stopped, "生产线已停止");
@@ -212,14 +212,14 @@ namespace Ewan.Core.Module
                 _materialLoading?.ForceStopLoading();
                 // 如果BinElevatorModule有紧急停止方法，可以在这里调用
 
-                _uiLogger.Info("处理已完成: {0}", "生产线紧急停止");
+                _uiLogger.InfoRaw("处理已完成: {0}", "生产线紧急停止");
 
                 // 发送严重报警状态
                 SendStatusMessage(SystemStatus.Critical, "生产线紧急停止", true);
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("处理错误: {0} - {1}",
+                _uiLogger.ErrorRaw("处理错误: {0} - {1}",
                     "生产线紧急停止", ex.Message);
 
                 // 发送严重故障状态
@@ -239,7 +239,7 @@ namespace Ewan.Core.Module
                     _isPaused = true;
                     _sharedState?.SetSystemPaused(true);
 
-                    _uiLogger.Info("处理已完成: {0}", "生产线暂停");
+                    _uiLogger.InfoRaw("处理已完成: {0}", "生产线暂停");
 
                     // 发送暂停状态
                     SendStatusMessage(SystemStatus.Paused, "生产线已暂停");
@@ -247,7 +247,7 @@ namespace Ewan.Core.Module
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("处理错误: {0} - {1}",
+                _uiLogger.ErrorRaw("处理错误: {0} - {1}",
                     "生产线暂停", ex.Message);
             }
         }
@@ -267,7 +267,7 @@ namespace Ewan.Core.Module
                     // 触发BinElevator重新初始化
                     _sharedState?.SetRequireReinit(true);
 
-                    _uiLogger.Info("处理已完成: {0}", "生产线恢复，料仓重新初始化");
+                    _uiLogger.InfoRaw("处理已完成: {0}", "生产线恢复，料仓重新初始化");
 
                     // 发送运行状态
                     SendStatusMessage(SystemStatus.Running, "生产线已恢复运行");
@@ -275,7 +275,7 @@ namespace Ewan.Core.Module
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("处理错误: {0} - {1}",
+                _uiLogger.ErrorRaw("处理错误: {0} - {1}",
                     "生产线恢复", ex.Message);
             }
         }
@@ -296,11 +296,11 @@ namespace Ewan.Core.Module
 
                 MsgManager.Instance().PushMsg(message);
 
-                _uiLogger.Debug("发送系统状态消息: {0} - {1}", status, description);
+                _uiLogger.DebugRaw("发送系统状态消息: {0} - {1}", status, description);
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("模块运行错误: {0} - {1}",
+                _uiLogger.ErrorRaw("模块运行错误: {0} - {1}",
                     "ProductionLineModule-SendStatusMessage", ex.Message);
             }
         }
@@ -314,11 +314,11 @@ namespace Ewan.Core.Module
             {
                 _systemControlListener = new MsgListener(MsgSubject.SystemControl, OnSystemControlMessage);
                 MsgManager.Instance().RegisterListener(_systemControlListener);
-                _uiLogger.Info("处理已完成: {0}", "系统控制消息监听器注册");
+                _uiLogger.InfoRaw("处理已完成: {0}", "系统控制消息监听器注册");
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("处理错误: {0} - {1}", 
+                _uiLogger.ErrorRaw("处理错误: {0} - {1}", 
                     "系统控制消息监听器注册", ex.Message);
             }
         }
@@ -334,12 +334,12 @@ namespace Ewan.Core.Module
                 {
                     MsgManager.Instance().UnRegisterListener(_systemControlListener);
                     _systemControlListener = null;
-                    _uiLogger.Info("处理已完成: {0}", "系统控制消息监听器取消注册");
+                    _uiLogger.InfoRaw("处理已完成: {0}", "系统控制消息监听器取消注册");
                 }
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("处理错误: {0} - {1}", 
+                _uiLogger.ErrorRaw("处理错误: {0} - {1}", 
                     "系统控制消息监听器取消注册", ex.Message);
             }
         }
@@ -375,20 +375,20 @@ namespace Ewan.Core.Module
                             ResumeProduction();
                             break;
                         default:
-                            _uiLogger.Warn("处理错误: {0} - {1}",
+                            _uiLogger.WarnRaw("处理错误: {0} - {1}",
                                 "未知系统控制命令", command.ToString());
                             break;
                     }
                 }
                 else
                 {
-                    _uiLogger.Warn("处理错误: {0} - {1}", 
+                    _uiLogger.WarnRaw("处理错误: {0} - {1}", 
                         "系统控制消息数据类型错误", message.Data?.GetType().Name ?? "null");
                 }
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("处理错误: {0} - {1}", 
+                _uiLogger.ErrorRaw("处理错误: {0} - {1}", 
                     "处理系统控制消息", ex.Message);
             }
         }
