@@ -1,0 +1,85 @@
+﻿2025-10-30 19:10:01,166 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1217] 启用高速运行模式 
+2025-10-30 19:10:01,172 [INFO ] [thread-1] [Ewan.BusinessBonding.IOController:20] 成功写入 Y16 = ON 
+2025-10-30 19:10:01,174 [INFO ] [thread-1] [Ewan.BusinessBonding.RobotController:235] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-10-30 19:10:01,176 [INFO ] [thread-1] [Ewan.BusinessBonding.SystemControlService:24] 处理已完成: 系统启动命令已发送 
+2025-10-30 19:10:01,176 [INFO ] [thread-10] [Ewan.Core.Module.ProductionLineModule:186] 处理已完成: 生产线启动 
+2025-10-30 19:10:01,177 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1239] 系统启动完成，低速运行中（调试模式） 
+2025-10-30 19:10:01,178 [DEBUG] [thread-10] [Ewan.Core.Module.ProductionLineModule:299] 发送系统状态消息: Running - 生产线运行中 
+2025-10-30 19:10:01,193 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1645] [SystemStatusUpdated] 系统状态更新: Running - 生产线运行中 
+2025-10-30 19:10:01,315 [DEBUG] [thread-12] [Ewan.Core.Module.MaterialUnloadingModule:119] [下料诊断-Idle] 环线要料=True, 上升沿=True, X3=False, UnloadingReq=False, CurrentProcess=None 
+2025-10-30 19:10:01,320 [INFO ] [thread-12] [Ewan.Core.Module.MaterialUnloadingModule:381] 处理已开始: 请求从料仓1开始取料 
+2025-10-30 19:10:01,323 [INFO ] [thread-12] [Ewan.Core.Module.MaterialUnloadingModule:134] 处理已开始: 环线要料上升沿触发且无外部料片(X3=false)，禁止取料(OUT14=false)，开始下料流程 
+2025-10-30 19:10:01,444 [DEBUG] [thread-12] [Ewan.Core.Module.BinElevatorModule:246] [料仓诊断] 机械手信号: X8(LoadingComplete)=False, X10(UnloadingComplete)=False, Mode=Init 
+2025-10-30 19:10:01,469 [INFO ] [thread-12] [Ewan.Core.Module.BinElevatorModule:602] 处理已开始: 料仓1开始Jog上升，速度:50 
+2025-10-30 19:10:01,488 [INFO ] [thread-12] [Ewan.Core.Module.BinElevatorModule:602] 处理已开始: 料仓2开始Jog上升，速度:50 
+2025-10-30 19:10:01,496 [INFO ] [thread-12] [Ewan.Core.Module.BinElevatorModule:602] 处理已开始: 料仓3开始Jog上升，速度:50 
+2025-10-30 19:10:01,645 [DEBUG] [thread-12] [Ewan.Core.Module.MaterialUnloadingModule:220] [下料诊断] 等待取料完成: UnloadingCompleted=False 
+2025-10-30 19:10:03,031 [INFO ] [thread-12] [Ewan.Core.Module.BinElevatorModule:266] [料仓诊断] 检测到X10下降沿，设置UnloadingCompleted=true 
+2025-10-30 19:10:03,051 [INFO ] [thread-12] [Ewan.Core.Module.BinElevatorModule:602] 处理已开始: 料仓1开始Jog上升，速度:50 
+2025-10-30 19:10:03,215 [INFO ] [thread-12] [Ewan.Core.Module.MaterialUnloadingModule:237] 处理已完成: 取料完成，等待到达扫码位置 
+2025-10-30 19:10:03,350 [INFO ] [thread-12] [Ewan.Core.Module.BinElevatorModule:563] 处理已开始: 料仓2开始Jog下降，速度:50 
+2025-10-30 19:10:03,359 [INFO ] [thread-12] [Ewan.Core.Module.BinElevatorModule:563] 处理已开始: 料仓3开始Jog下降，速度:50 
+2025-10-30 19:10:05,603 [INFO ] [thread-12] [Ewan.Core.Module.MaterialUnloadingModule:253] 处理已开始: 已到达扫码位置，开始扫码 
+2025-10-30 19:10:05,816 [INFO ] [thread-12] [Ewan.Core.ScanCode.DLManager:193] 处理已开始: 发送扫码触发命令: T 
+2025-10-30 19:10:05,852 [INFO ] [thread-12] [Ewan.Core.ScanCode.DLManager:200] 处理已完成: 扫码成功，结果: NG 
+2025-10-30 19:10:05,856 [INFO ] [thread-12] [Ewan.Core.Module.MaterialUnloadingModule:275] 处理已开始: 扫码完成: NG，发送扫码完成信号(OUT9)，放入小车 
+2025-10-30 19:10:06,582 [DEBUG] [thread-12] [Ewan.Core.Module.BinElevatorModule:246] [料仓诊断] 机械手信号: X8(LoadingComplete)=False, X10(UnloadingComplete)=False, Mode=Unloading 
+2025-10-30 19:10:09,028 [INFO ] [thread-12] [Ewan.Core.Module.MaterialUnloadingModule:436] 处理已完成: 放入小车完成信号已发送到寄存器153 
+2025-10-30 19:10:09,030 [INFO ] [thread-12] [Ewan.Core.Module.MaterialUnloadingModule:310] 处理已完成: 下料完成，清除扫码完成信号(OUT9)，恢复允许取料(OUT14=true)，释放流程锁 
+2025-10-30 19:10:09,239 [DEBUG] [thread-12] [Ewan.Core.Module.MaterialUnloadingModule:119] [下料诊断-Idle] 环线要料=True, 上升沿=False, X3=False, UnloadingReq=False, CurrentProcess=None 
+2025-10-30 19:10:09,657 [INFO ] [thread-12] [Ewan.Core.Module.MaterialLoadingModule:168] 处理已开始: 检测到皮带来料(X3=true)，获取流程锁，开始装料流程 
+2025-10-30 19:10:11,639 [DEBUG] [thread-12] [Ewan.Core.Module.BinElevatorModule:246] [料仓诊断] 机械手信号: X8(LoadingComplete)=False, X10(UnloadingComplete)=False, Mode=Unloading 
+2025-10-30 19:10:14,244 [DEBUG] [thread-12] [Ewan.Core.Module.MaterialUnloadingModule:119] [下料诊断-Idle] 环线要料=False, 上升沿=False, X3=True, UnloadingReq=False, CurrentProcess=Loading 
+2025-10-30 19:10:16,646 [DEBUG] [thread-12] [Ewan.Core.Module.BinElevatorModule:246] [料仓诊断] 机械手信号: X8(LoadingComplete)=False, X10(UnloadingComplete)=False, Mode=Unloading 
+2025-10-30 19:10:19,256 [DEBUG] [thread-12] [Ewan.Core.Module.MaterialUnloadingModule:119] [下料诊断-Idle] 环线要料=False, 上升沿=False, X3=True, UnloadingReq=False, CurrentProcess=Loading 
+2025-10-30 19:10:21,652 [DEBUG] [thread-12] [Ewan.Core.Module.BinElevatorModule:246] [料仓诊断] 机械手信号: X8(LoadingComplete)=False, X10(UnloadingComplete)=False, Mode=Unloading 
+2025-10-30 19:10:24,261 [DEBUG] [thread-12] [Ewan.Core.Module.MaterialUnloadingModule:119] [下料诊断-Idle] 环线要料=True, 上升沿=True, X3=True, UnloadingReq=False, CurrentProcess=Loading 
+2025-10-30 19:10:26,655 [DEBUG] [thread-12] [Ewan.Core.Module.BinElevatorModule:246] [料仓诊断] 机械手信号: X8(LoadingComplete)=False, X10(UnloadingComplete)=False, Mode=Unloading 
+2025-10-30 19:10:29,265 [DEBUG] [thread-12] [Ewan.Core.Module.MaterialUnloadingModule:119] [下料诊断-Idle] 环线要料=True, 上升沿=True, X3=True, UnloadingReq=False, CurrentProcess=Loading 
+2025-10-30 19:10:31,662 [DEBUG] [thread-12] [Ewan.Core.Module.BinElevatorModule:246] [料仓诊断] 机械手信号: X8(LoadingComplete)=False, X10(UnloadingComplete)=False, Mode=Unloading 
+2025-10-30 19:10:34,272 [DEBUG] [thread-12] [Ewan.Core.Module.MaterialUnloadingModule:119] [下料诊断-Idle] 环线要料=True, 上升沿=True, X3=True, UnloadingReq=False, CurrentProcess=Loading 
+2025-10-30 19:10:36,674 [DEBUG] [thread-12] [Ewan.Core.Module.BinElevatorModule:246] [料仓诊断] 机械手信号: X8(LoadingComplete)=False, X10(UnloadingComplete)=False, Mode=Unloading 
+2025-10-30 19:10:39,283 [DEBUG] [thread-12] [Ewan.Core.Module.MaterialUnloadingModule:119] [下料诊断-Idle] 环线要料=True, 上升沿=True, X3=True, UnloadingReq=False, CurrentProcess=Loading 
+2025-10-30 19:10:41,677 [DEBUG] [thread-12] [Ewan.Core.Module.BinElevatorModule:246] [料仓诊断] 机械手信号: X8(LoadingComplete)=False, X10(UnloadingComplete)=False, Mode=Unloading 
+2025-10-30 19:10:44,286 [DEBUG] [thread-12] [Ewan.Core.Module.MaterialUnloadingModule:119] [下料诊断-Idle] 环线要料=True, 上升沿=True, X3=True, UnloadingReq=False, CurrentProcess=Loading 
+2025-10-30 19:10:46,690 [DEBUG] [thread-12] [Ewan.Core.Module.BinElevatorModule:246] [料仓诊断] 机械手信号: X8(LoadingComplete)=False, X10(UnloadingComplete)=False, Mode=Unloading 
+2025-10-30 19:10:49,299 [DEBUG] [thread-12] [Ewan.Core.Module.MaterialUnloadingModule:119] [下料诊断-Idle] 环线要料=True, 上升沿=True, X3=True, UnloadingReq=False, CurrentProcess=Loading 
+2025-10-30 19:10:51,693 [DEBUG] [thread-12] [Ewan.Core.Module.BinElevatorModule:246] [料仓诊断] 机械手信号: X8(LoadingComplete)=False, X10(UnloadingComplete)=False, Mode=Unloading 
+2025-10-30 19:10:54,314 [DEBUG] [thread-12] [Ewan.Core.Module.MaterialUnloadingModule:119] [下料诊断-Idle] 环线要料=True, 上升沿=True, X3=True, UnloadingReq=False, CurrentProcess=Loading 
+2025-10-30 19:10:55,771 [INFO ] [thread-12] [Ewan.Core.Module.MaterialLoadingModule:238] 处理已完成: 料片已到达扫码位置(X7=true)，开始扫码流程 
+2025-10-30 19:10:55,983 [INFO ] [thread-12] [Ewan.Core.ScanCode.DLManager:193] 处理已开始: 发送扫码触发命令: T 
+2025-10-30 19:10:56,018 [INFO ] [thread-12] [Ewan.Core.ScanCode.DLManager:200] 处理已完成: 扫码成功，结果: NG 
+2025-10-30 19:10:56,020 [INFO ] [thread-12] [Ewan.Core.Module.MaterialLoadingModule:262] 处理已开始: 开始移动到料仓位置 
+2025-10-30 19:10:56,229 [DEBUG] [thread-12] [Ewan.Core.Module.MaterialLoadingModule:282] [装料诊断] 等待装料完成: LoadingCompleted=False 
+2025-10-30 19:10:56,749 [DEBUG] [thread-12] [Ewan.Core.Module.BinElevatorModule:246] [料仓诊断] 机械手信号: X8(LoadingComplete)=False, X10(UnloadingComplete)=False, Mode=Unloading 
+2025-10-30 19:10:58,016 [INFO ] [thread-12] [Ewan.Core.Module.BinElevatorModule:563] 处理已开始: 料仓1开始Jog下降，速度:50 
+2025-10-30 19:10:58,439 [INFO ] [thread-12] [Ewan.Core.Module.BinElevatorModule:254] [料仓诊断] 检测到X8下降沿，设置LoadingCompleted=true 
+2025-10-30 19:10:58,444 [DEBUG] [thread-12] [Ewan.Core.Module.BinElevatorModule:447] [料仓诊断] 料仓1上料模式-Unknown: 感应器=False 
+2025-10-30 19:10:58,446 [INFO ] [thread-12] [Ewan.Core.Module.BinElevatorModule:460] [料仓诊断] 料仓1上料模式: 感应器已为false，无需下降 
+2025-10-30 19:10:58,552 [INFO ] [thread-12] [Ewan.Core.Module.MaterialLoadingModule:301] 处理已完成: 装料完成，释放流程锁，返回空闲状态 
+2025-10-30 19:10:58,555 [INFO ] [thread-12] [Ewan.Core.Module.MaterialUnloadingModule:381] 处理已开始: 请求从料仓1开始取料 
+2025-10-30 19:10:58,556 [INFO ] [thread-12] [Ewan.Core.Module.MaterialUnloadingModule:134] 处理已开始: 环线要料上升沿触发且无外部料片(X3=false)，禁止取料(OUT14=false)，开始下料流程 
+2025-10-30 19:10:58,765 [DEBUG] [thread-12] [Ewan.Core.Module.MaterialUnloadingModule:220] [下料诊断] 等待取料完成: UnloadingCompleted=False 
+2025-10-30 19:11:01,783 [DEBUG] [thread-12] [Ewan.Core.Module.BinElevatorModule:246] [料仓诊断] 机械手信号: X8(LoadingComplete)=False, X10(UnloadingComplete)=False, Mode=Loading 
+2025-10-30 19:11:03,973 [DEBUG] [thread-12] [Ewan.Core.Module.MaterialUnloadingModule:220] [下料诊断] 等待取料完成: UnloadingCompleted=False 
+2025-10-30 19:11:06,790 [DEBUG] [thread-12] [Ewan.Core.Module.BinElevatorModule:246] [料仓诊断] 机械手信号: X8(LoadingComplete)=False, X10(UnloadingComplete)=False, Mode=Loading 
+2025-10-30 19:11:08,987 [DEBUG] [thread-12] [Ewan.Core.Module.MaterialUnloadingModule:220] [下料诊断] 等待取料完成: UnloadingCompleted=False 
+2025-10-30 19:11:11,809 [DEBUG] [thread-12] [Ewan.Core.Module.BinElevatorModule:246] [料仓诊断] 机械手信号: X8(LoadingComplete)=False, X10(UnloadingComplete)=False, Mode=Loading 
+2025-10-30 19:11:14,001 [DEBUG] [thread-12] [Ewan.Core.Module.MaterialUnloadingModule:220] [下料诊断] 等待取料完成: UnloadingCompleted=False 
+2025-10-30 19:11:16,816 [DEBUG] [thread-12] [Ewan.Core.Module.BinElevatorModule:246] [料仓诊断] 机械手信号: X8(LoadingComplete)=False, X10(UnloadingComplete)=False, Mode=Loading 
+2025-10-30 19:11:19,010 [DEBUG] [thread-12] [Ewan.Core.Module.MaterialUnloadingModule:220] [下料诊断] 等待取料完成: UnloadingCompleted=False 
+2025-10-30 19:11:21,818 [DEBUG] [thread-12] [Ewan.Core.Module.BinElevatorModule:246] [料仓诊断] 机械手信号: X8(LoadingComplete)=False, X10(UnloadingComplete)=False, Mode=Loading 
+2025-10-30 19:11:24,012 [DEBUG] [thread-12] [Ewan.Core.Module.MaterialUnloadingModule:220] [下料诊断] 等待取料完成: UnloadingCompleted=False 
+2025-10-30 19:11:26,826 [DEBUG] [thread-12] [Ewan.Core.Module.BinElevatorModule:246] [料仓诊断] 机械手信号: X8(LoadingComplete)=False, X10(UnloadingComplete)=False, Mode=Loading 
+2025-10-30 19:11:29,032 [DEBUG] [thread-12] [Ewan.Core.Module.MaterialUnloadingModule:220] [下料诊断] 等待取料完成: UnloadingCompleted=False 
+2025-10-30 19:11:31,848 [DEBUG] [thread-12] [Ewan.Core.Module.BinElevatorModule:246] [料仓诊断] 机械手信号: X8(LoadingComplete)=False, X10(UnloadingComplete)=False, Mode=Loading 
+2025-10-30 19:11:34,228 [DEBUG] [thread-12] [Ewan.Core.Module.MaterialUnloadingModule:220] [下料诊断] 等待取料完成: UnloadingCompleted=False 
+2025-10-30 19:11:36,894 [DEBUG] [thread-12] [Ewan.Core.Module.BinElevatorModule:246] [料仓诊断] 机械手信号: X8(LoadingComplete)=False, X10(UnloadingComplete)=False, Mode=Loading 
+2025-10-30 19:11:39,363 [DEBUG] [thread-12] [Ewan.Core.Module.MaterialUnloadingModule:220] [下料诊断] 等待取料完成: UnloadingCompleted=False 
+2025-10-30 19:11:42,028 [DEBUG] [thread-12] [Ewan.Core.Module.BinElevatorModule:246] [料仓诊断] 机械手信号: X8(LoadingComplete)=False, X10(UnloadingComplete)=False, Mode=Loading 
+2025-10-30 19:11:44,497 [DEBUG] [thread-12] [Ewan.Core.Module.MaterialUnloadingModule:220] [下料诊断] 等待取料完成: UnloadingCompleted=False 
+2025-10-30 19:11:47,159 [DEBUG] [thread-12] [Ewan.Core.Module.BinElevatorModule:246] [料仓诊断] 机械手信号: X8(LoadingComplete)=False, X10(UnloadingComplete)=False, Mode=Loading 
+2025-10-30 19:11:49,609 [DEBUG] [thread-12] [Ewan.Core.Module.MaterialUnloadingModule:220] [下料诊断] 等待取料完成: UnloadingCompleted=False 
+2025-10-30 19:11:52,304 [DEBUG] [thread-12] [Ewan.Core.Module.BinElevatorModule:246] [料仓诊断] 机械手信号: X8(LoadingComplete)=False, X10(UnloadingComplete)=False, Mode=Loading 
+2025-10-30 19:11:54,790 [DEBUG] [thread-12] [Ewan.Core.Module.MaterialUnloadingModule:220] [下料诊断] 等待取料完成: UnloadingCompleted=False 
+2025-10-30 19:11:55,624 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1306] [ProcessingCompleted] 处理已完成: 用户请求停止系统 

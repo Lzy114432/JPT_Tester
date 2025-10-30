@@ -291,14 +291,25 @@ namespace Ewan.Core.Module
                 _ioManager.LayeredIO.WriteOutBit(BIN1_SELECT_SIGNAL, false);
                 _ioManager.LayeredIO.WriteOutBit(OUT_SCAN_COMPLETE, false);
 
-                // 释放流程锁
-                _sharedState?.FinishProcess();
+                // 检查X3信号，确保机械手已完全离开
+                bool x3Signal = _ioManager.LayeredIO.ReadInBit(MATERIAL_DETECT_SIGNAL);
+                
+                if (!x3Signal)
+                {
+                    // X3为false，机械手已离开，可以安全释放流程锁
+                    _sharedState?.FinishProcess();
 
-                // 重置标志并返回空闲状态
-                SetLoadingCompleted(false);
-                _currentState = MaterialLoadingState.Idle;
+                    // 重置标志并返回空闲状态
+                    SetLoadingCompleted(false);
+                    _currentState = MaterialLoadingState.Idle;
 
-                _uiLogger.InfoRaw("处理已完成: {0}", "装料完成，释放流程锁，返回空闲状态");
+                    _uiLogger.InfoRaw("处理已完成: {0}", "装料完成且X3=false，机械手已离开，释放流程锁");
+                }
+                else
+                {
+                    // X3仍为true，说明机械手还在或有新料片，等待下一循环
+                    _uiLogger.DebugRaw("[装料诊断] 装料完成但X3仍为true，等待机械手离开或处理新料片");
+                }
             }
         }
 
