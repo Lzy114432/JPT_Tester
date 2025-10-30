@@ -1186,9 +1186,9 @@ namespace MarkingMachineFeeder.Viewmodel
                 
                 var robotController = Ewan.BusinessBonding.RobotController.Instance();
                 
-                // 步骤1: 切换到高速运行模式（自动模式下使用高速）
-                _uiLogger.InfoRaw("设置高速运行模式");
-                robotController.SetHighSpeedMode(true);
+                // 步骤1: 调试阶段保持低速运行模式
+                _uiLogger.InfoRaw("保持低速运行模式（调试阶段）");
+                robotController.SetHighSpeedMode(false);
                 
                 // 步骤2: 调用系统控制服务启动系统
                 _systemControlService.StartSystem();
@@ -1200,10 +1200,10 @@ namespace MarkingMachineFeeder.Viewmodel
                 EmergencyStopStatus = "Gray";
                 PauseStatus = "Gray";
                 PauseIsOn = false;
-                ProductionModeText = "运行中（高速）";
+                ProductionModeText = "运行中（低速-调试）";
                 ProductionModeColor = "Green";
                 
-                _uiLogger.InfoRaw("系统启动完成，高速运行中");
+                _uiLogger.InfoRaw("系统启动完成，低速运行中（调试模式）");
             }
             catch (Exception ex)
             {
