@@ -313,14 +313,14 @@ namespace Ewan.Core.Module
                 }
                 else
                 {
-                    // X3仍为true，有新料片到达，释放流程锁并返回Idle状态以处理新料片
-                    _sharedState?.FinishProcess();
+                    //// X3仍为true，有新料片到达，释放流程锁并返回Idle状态以处理新料片
+                    //_sharedState?.FinishProcess();
                     
-                    // 重置标志并返回空闲状态
-                    SetLoadingCompleted(false);
-                    _currentState = MaterialLoadingState.Idle;
+                    //// 重置标志并返回空闲状态
+                    //SetLoadingCompleted(false);
+                    _currentState = MaterialLoadingState.MaterialDetected;
                     
-                    _uiLogger.InfoRaw("处理已完成: {0}", "装料完成但X3=true，检测到新料片，释放流程锁，返回Idle状态");
+                    _uiLogger.InfoRaw("处理已完成: {0}", "装料完成但X3=true，检测到新料片，释放流程锁，返回MaterialDetected状态");
                 }
             }
         }
