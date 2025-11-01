@@ -24,6 +24,11 @@ namespace Ewan.Model.System
         public int LowSpeedSetupDelayMs { get; set; } = 500;
 
         /// <summary>
+        /// 环线上料请求超时时间（秒）
+        /// </summary>
+        public int RingLineTimeoutSeconds { get; set; } = 30;
+
+        /// <summary>
         /// 创建默认参数配置
         /// </summary>
         public static SystemParameters CreateDefault()
@@ -32,7 +37,8 @@ namespace Ewan.Model.System
             {
                 HighSpeedModeEnabled = false,
                 ResetDelayMs = 4000,
-                LowSpeedSetupDelayMs = 500
+                LowSpeedSetupDelayMs = 500,
+                RingLineTimeoutSeconds = 30
             };
         }
 
@@ -41,7 +47,7 @@ namespace Ewan.Model.System
         /// </summary>
         public bool Validate()
         {
-            return ResetDelayMs > 0 && LowSpeedSetupDelayMs > 0;
+            return ResetDelayMs > 0 && LowSpeedSetupDelayMs > 0 && RingLineTimeoutSeconds > 0;
         }
     }
 }

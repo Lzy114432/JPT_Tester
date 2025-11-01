@@ -328,7 +328,7 @@
                             </Border>
                             
                             <!-- 低速模式设置延迟 -->
-                            <Border Background="#FAFAFA" CornerRadius="8" Padding="20">
+                            <Border Background="#FAFAFA" CornerRadius="8" Padding="20" Margin="0,0,0,10">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
@@ -350,6 +350,34 @@
                                     
                                     <TextBlock Grid.Row="4" 
                                               Text="设置低速运行模式后的等待时间"
+                                              FontSize="12" 
+                                              Foreground="#9CA3AF"/>
+                                </Grid>
+                            </Border>
+                            
+                            <!-- 环线上料超时时间 -->
+                            <Border Background="#FAFAFA" CornerRadius="8" Padding="20">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="10"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="5"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    
+                                    <TextBlock Grid.Row="0" 
+                                              Text="环线上料请求超时时间 (秒)"
+                                              FontSize="14" 
+                                              FontWeight="Medium" 
+                                              Foreground="#495057"/>
+                                    
+                                    <TextBox Grid.Row="2" 
+                                            Text="{Binding RingLineTimeoutSeconds, UpdateSourceTrigger=PropertyChanged}"
+                                            Style="{StaticResource ModernTextBox}"/>
+                                    
+                                    <TextBlock Grid.Row="4" 
+                                              Text="环线上料请求等待响应的超时时间"
                                               FontSize="12" 
                                               Foreground="#9CA3AF"/>
                                 </Grid>

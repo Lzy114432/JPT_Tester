@@ -21,6 +21,7 @@ namespace Ewan.Core.Module
         private bool _loadingRequested = false;
         private bool _stopRequested = false;
         private bool _initialized = false; // 初始化标志
+        private bool _isRingLineTimeoutLoading = false; // 是否为环线超时上料
 
         // 共享状态（用于与其他模块通信）
         private ProductionLineSharedState _sharedState;
@@ -156,11 +157,24 @@ namespace Ewan.Core.Module
                     switch (_currentState)
                     {
                         case MaterialLoadingState.Idle:
-                            // 在空闲状态检测皮带来料
-                            // 检测到X3物料到达 && 能获取流程锁
-                            if (_ioManager.LayeredIO.ReadInBit(MATERIAL_DETECT_SIGNAL) &&
+                            // 首先检查环线请求是否超时
+                            if (_sharedState?.IsRingLineRequestTimeout() == true &&
                                 _sharedState?.TryStartLoading() == true)
                             {
+                                // 环线请求超时，触发紧急上料
+                                _sharedState.MarkRingLineTimeoutTriggered();
+                                _isRingLineTimeoutLoading = true;
+                                _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, true);  
+                                
+                                // 直接跳到扫码位置状态（模拟料片已经在扫码位置）
+                                _currentState = MaterialLoadingState.AtScanPosition;
+                                _uiLogger.InfoRaw("处理已开始: {0}", "环线请求超时30秒，触发紧急上料流程");
+                            }
+                            // 正常的皮带来料检测
+                            else if (_ioManager.LayeredIO.ReadInBit(MATERIAL_DETECT_SIGNAL) &&
+                                _sharedState?.TryStartLoading() == true)
+                            {
+                                _isRingLineTimeoutLoading = false; // 正常上料
                                 _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, true);  
 
                                 _currentState = MaterialLoadingState.MaterialDetected;
@@ -243,6 +257,8 @@ namespace Ewan.Core.Module
         /// </summary>
         private void ProcessAtScanPosition()
         {
+            _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, false); // 先暂停机械手自动从皮带取料
+
             DLManager.Instance().TriggerScan(); // 触发扫码,调试模式不需要结果
                                                 //if(DLManager.Instance().TriggerScan() != "")
                                                 //{
@@ -278,15 +294,12 @@ namespace Ewan.Core.Module
                 _ioManager.LayeredIO.WriteOutBit(BIN1_SELECT_SIGNAL, false);
                 _ioManager.LayeredIO.WriteOutBit(OUT_SCAN_COMPLETE, false);
 
-                // 等待0.3秒后再检查X3信号，确保机械手已完全离开
-                Thread.Sleep(300);
+             
+                Thread.Sleep(300); // 因为取完料，会X3会闪一下，所以等一会再读
                 bool x3Signal = _ioManager.LayeredIO.ReadInBit(MATERIAL_DETECT_SIGNAL);
                 
-                if (!x3Signal)
-                {
-                    // X3为false，机械手已离开，禁止机械臂自动取料
-                    _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, false);
-                    
+                if (!x3Signal) // X3为false，没有料片到达
+                {   
                     // 释放流程锁
                     _sharedState?.FinishProcess();
 
@@ -296,16 +309,32 @@ namespace Ewan.Core.Module
 
                     _uiLogger.InfoRaw("处理已完成: {0}", "装料完成且X3=false，机械手已离开，OUT_ALLOW_PICK=false，释放流程锁");
                 }
-                else
+                else // X3为true
                 {
-                    //// X3仍为true，有新料片到达，释放流程锁并返回Idle状态以处理新料片
-                    //_sharedState?.FinishProcess();
-                    
-                    //// 重置标志并返回空闲状态
-                    //SetLoadingCompleted(false);
-                    _currentState = MaterialLoadingState.MaterialDetected;
-                    
-                    _uiLogger.InfoRaw("处理已完成: {0}", "装料完成但X3=true，检测到新料片，释放流程锁，返回MaterialDetected状态");
+
+                    // 如果是环线超时上料，不继续装填
+                    if (_isRingLineTimeoutLoading)
+                    {
+                        _sharedState?.StopRingLineRequest();
+                        _isRingLineTimeoutLoading = false;
+                        // 释放流程锁
+                        _sharedState?.FinishProcess();
+                        // 重置标志并返回空闲状态
+                        SetLoadingCompleted(false);
+                        _currentState = MaterialLoadingState.Idle;
+                        _uiLogger.InfoRaw("处理已完成: {0}", "装料完成且为环线超时上料，停止环线请求计时，释放流程锁");
+
+                    }
+                    else // 继续装填
+                    {
+                        // 重置装载完成标志，准备处理新料片
+                        SetLoadingCompleted(false);
+                        _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, true);
+                        _currentState = MaterialLoadingState.MaterialDetected;
+
+                        _uiLogger.InfoRaw("处理已完成: {0}", "装料完成但X3=true，继续装填，返回MaterialDetected状态");
+
+                    }
                 }
             }
         }
@@ -358,7 +387,10 @@ namespace Ewan.Core.Module
                 _currentState = MaterialLoadingState.Idle;
                 _stopRequested = false;
                 _loadingRequested = false;
+                _isRingLineTimeoutLoading = false;
                 
+                // 如果是环线超时上料，停止环线请求计时
+                _sharedState?.StopRingLineRequest();
                 
                 _uiLogger.InfoRaw("处理已完成: {0}", "强制停止装载");
             }

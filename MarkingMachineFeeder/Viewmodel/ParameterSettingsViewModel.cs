@@ -33,6 +33,13 @@ namespace MarkingMachineFeeder.Viewmodel
             get => _lowSpeedSetupDelayMs;
             set => SetProperty(ref _lowSpeedSetupDelayMs, value);
         }
+
+        private int _ringLineTimeoutSeconds;
+        public int RingLineTimeoutSeconds
+        {
+            get => _ringLineTimeoutSeconds;
+            set => SetProperty(ref _ringLineTimeoutSeconds, value);
+        }
         #endregion
 
         #region Commands
@@ -58,6 +65,7 @@ namespace MarkingMachineFeeder.Viewmodel
             HighSpeedModeEnabled = parameters.HighSpeedModeEnabled;
             ResetDelayMs = parameters.ResetDelayMs;
             LowSpeedSetupDelayMs = parameters.LowSpeedSetupDelayMs;
+            RingLineTimeoutSeconds = parameters.RingLineTimeoutSeconds;
         }
 
         private void ExecuteSave()
@@ -95,7 +103,8 @@ namespace MarkingMachineFeeder.Viewmodel
                 {
                     HighSpeedModeEnabled = HighSpeedModeEnabled,
                     ResetDelayMs = ResetDelayMs,
-                    LowSpeedSetupDelayMs = LowSpeedSetupDelayMs
+                    LowSpeedSetupDelayMs = LowSpeedSetupDelayMs,
+                    RingLineTimeoutSeconds = RingLineTimeoutSeconds
                 };
 
                 if (!parameters.Validate())

@@ -3,7 +3,6 @@ using Ewan.Core.Msg;
 using Ewan.Core.Plc;
 using Ewan.Core.ScanCode;
 using Ewan.Model;
-using Ewan.Model.Production;
 using System;
 using System.Threading;
 
@@ -102,29 +101,20 @@ namespace Ewan.Core.Module
                     {
                         case MaterialUnloadingState.Idle:
                             // 监控环线信号，触发取料流程
-                            // 必须同时满足：1.环线要料上升沿(从false变为true)  2.X3=false(无外部料片)  3.能获取流程锁
+                            // 必须同时满足：1.环线要料上升沿(从false变为true) 2.能获取流程锁
                             bool ringLineRisingEdge = _ringLineunload && !_lastRingLineunload; // 检测上升沿
                             
                             if (ringLineRisingEdge &&
                                 !_unloadingRequested &&
-                                !_ioManager.LayeredIO.ReadInBit(MATERIAL_DETECT_SIGNAL) &&  // X3必须为false
                                 _sharedState?.TryStartUnloading() == true)
                             {
-                                // 禁止后台程序取料，避免与装料流程冲突
-                                _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, false);
-
                                 // 设置默认料仓为1号（可根据需要修改）
                                 RequestUnloading(1);
-                                _uiLogger.InfoRaw("处理已开始: {0}", "环线要料上升沿触发且无外部料片(X3=false)，禁止取料(OUT14=false)，开始下料流程");
-                                
-                                // 成功触发下料，更新边缘检测状态
-                                _lastRingLineunload = _ringLineunload;
+                                _uiLogger.InfoRaw("处理已开始: {0}", "环线要料上升沿触发，开始下料流程");
                             }
-                            else if (!_ringLineunload && _lastRingLineunload)
-                            {
-                                // 检测到下降沿(True→False)，更新状态以便下次能检测到上升沿
-                                _lastRingLineunload = false;
-                            }
+                            
+                            // 更新边缘检测状态（无论是否成功触发下料都要更新）
+                            _lastRingLineunload = _ringLineunload;
                             break;
                             
                         case MaterialUnloadingState.PickingMaterial:
@@ -268,6 +258,9 @@ namespace Ewan.Core.Module
                 // 发送完成信号到Modbus寄存器153
                 SendCartCompletionToModbus();
 
+                // 环线需求已满足，停止环线请求计时
+                _sharedState?.StopRingLineRequest();
+
                 // 恢复允许取料
                 _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, true);
 
@@ -279,7 +272,7 @@ namespace Ewan.Core.Module
                 _lastScannedQrCode = string.Empty; // 清空扫码结果
                 _currentState = MaterialUnloadingState.Idle;
 
-                _uiLogger.InfoRaw("处理已完成: {0}", "下料完成，清除扫码完成信号(OUT9)，恢复允许取料(OUT14=true)，释放流程锁");
+                _uiLogger.InfoRaw("处理已完成: {0}", "下料完成，环线需求已满足，清除扫码完成信号(OUT9)，恢复允许取料(OUT14=true)，释放流程锁");
             }
         }
 
@@ -394,6 +387,19 @@ namespace Ewan.Core.Module
         {
             var data = msg.GetData<RingLineModel>();
             _ringLineunload = data.IsLoading;
+            
+            // 当环线请求激活时开始计时
+            if (_ringLineunload && !_lastRingLineunload)
+            {
+                _sharedState?.StartRingLineRequest();
+                _uiLogger.InfoRaw("处理已开始: {0}", "环线请求开始计时");
+            }
+            // 当环线请求结束时停止计时
+            else if (!_ringLineunload && _lastRingLineunload)
+            {
+                _sharedState?.StopRingLineRequest();
+                _uiLogger.InfoRaw("处理已完成: {0}", "环线请求计时停止");
+            }
         }
 
         /// <summary>
