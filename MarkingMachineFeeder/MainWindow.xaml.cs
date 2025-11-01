@@ -55,5 +55,36 @@ namespace MarkingMachineFeeder
             // 确保主窗体真正获得焦点
             this.Focus();
         }
+
+        /// <summary>
+        /// 最小化按钮点击事件
+        /// </summary>
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+        /// <summary>
+        /// 最大化/还原按钮点击事件
+        /// </summary>
+        private void MaximizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.WindowState == WindowState.Maximized)
+            {
+                this.WindowState = WindowState.Normal;
+            }
+            else
+            {
+                this.WindowState = WindowState.Maximized;
+            }
+        }
+
+        /// <summary>
+        /// 关闭按钮点击事件
+        /// </summary>
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

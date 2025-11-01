@@ -460,6 +460,11 @@
                     <MenuItem Header="{Binding SystemMenuHeader}"
                               d:Header="系统"
                               Style="{StaticResource IndustrialMenuItem}">
+                        <!-- 登录菜单 -->
+                        <MenuItem Header="{Binding LoginButtonText}" 
+                                  d:Header="登录"
+                                  Command="{Binding LoginCommand}"
+                                  Style="{StaticResource IndustrialSubMenuItem}"/>
                         <!-- 权限配置菜单 -->
                         <MenuItem Header="{Binding PermissionConfigMenuHeader}" 
                                   d:Header="权限配置"
@@ -472,17 +477,134 @@
                                   Command="{Binding OpenParameterSettingsCommand}"
                                   Style="{StaticResource IndustrialSubMenuItem}"
                                   Visibility="{Binding CanViewSettings, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                        <!-- 退出菜单 -->
-                        <MenuItem Header="{Binding ExitMenuHeader}" 
-                                  d:Header="退出"
-                                  Command="{Binding ExitCommand}"
-                                  Style="{StaticResource IndustrialSubMenuItem}"
-                                  Visibility="{Binding CanExit, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                     </MenuItem>
                 </Menu>
                 
-                <!-- 右侧 - 用户信息 -->
+                <!-- 右侧 - 系统按钮 -->
                 <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="0,8,15,8">
+                    <!-- 系统按钮区域 -->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                        <!-- 最小化按钮 -->
+                        <Button x:Name="MinimizeButton"
+                                Width="30" Height="30"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Cursor="Hand"
+                                Click="MinimizeButton_Click"
+                                ToolTip="最小化">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}" 
+                                                        CornerRadius="3">
+                                                    <Path Data="M0,0 L10,0" 
+                                                          Stroke="White" 
+                                                          StrokeThickness="2"
+                                                          HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#555555"/>
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter Property="Background" Value="#333333"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        
+                        <!-- 最大化/还原按钮 -->
+                        <Button x:Name="MaximizeButton"
+                                Width="30" Height="30"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Cursor="Hand"
+                                Click="MaximizeButton_Click"
+                                ToolTip="最大化"
+                                Margin="2,0,0,0">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}" 
+                                                        CornerRadius="3">
+                                                    <Path Data="M0,0 L10,0 L10,10 L0,10 Z" 
+                                                          Stroke="White" 
+                                                          StrokeThickness="2"
+                                                          Fill="Transparent"
+                                                          HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#555555"/>
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter Property="Background" Value="#333333"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        
+                        <!-- 关闭按钮 -->
+                        <Button x:Name="CloseButton"
+                                Width="30" Height="30"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Cursor="Hand"
+                                Click="CloseButton_Click"
+                                ToolTip="关闭"
+                                Margin="2,0,0,0">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}" 
+                                                        CornerRadius="3">
+                                                    <Path Data="M0,0 L10,10 M10,0 L0,10" 
+                                                          Stroke="White" 
+                                                          StrokeThickness="2"
+                                                          HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#E81123"/>
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter Property="Background" Value="#C50F1F"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+                
+                <!-- 填充空间 -->
+                <Grid/>
+            </DockPanel>
+            
+            <!-- 下部菜单栏 - 包含操作按钮 -->
+            <DockPanel Grid.Row="1" Background="{StaticResource BackgroundGradient}" LastChildFill="True" MouseLeftButtonDown="DockPanel_MouseLeftButtonDown">
+                <!-- 右侧 - 用户信息 -->
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="15,8">
                     <TextBlock Text="{Binding CurrentUserLabel}" 
                               d:Text="当前用户："
                               VerticalAlignment="Center" 
@@ -496,22 +618,6 @@
                               Foreground="#FFFFFF"
                               FontSize="13"
                               Margin="8,0,0,0"/>
-                </StackPanel>
-                
-                <!-- 填充空间 -->
-                <Grid/>
-            </DockPanel>
-            
-            <!-- 下部菜单栏 - 包含操作按钮 -->
-            <DockPanel Grid.Row="1" Background="{StaticResource BackgroundGradient}" LastChildFill="True" MouseLeftButtonDown="DockPanel_MouseLeftButtonDown">
-                <!-- 右侧 - 登录按钮 -->
-                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="15,8">
-                    <Button Content="{Binding LoginButtonText}" 
-                            d:Content="登录"
-                            Command="{Binding LoginCommand}" 
-                            Style="{StaticResource LoginButton}"
-                            Width="90" Height="32" 
-                            Margin="5,0"/>
                 </StackPanel>
                 
                 <!-- 左侧 - 测试日志按钮 (已隐藏) -->
