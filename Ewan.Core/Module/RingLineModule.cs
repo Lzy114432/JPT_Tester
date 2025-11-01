@@ -17,12 +17,17 @@ namespace Ewan.Core.Module
         /// </summary>
         private int _interval = 200;
 
-
         private const string isLoadingAddr = "152";
+
+        /// <summary>
+        /// 上一次的IsLoading状态，用于边缘检测
+        /// </summary>
+        private bool _lastIsLoading = false;
 
         protected override void OnInit()
         {
             _uiLogger.Info("环线模块已初始化");
+            _lastIsLoading = false;
         }
 
         protected override bool OnRun()
@@ -37,7 +42,22 @@ namespace Ewan.Core.Module
                 {
                     // Modbus大端字节序: 高字节在前，低字节在后
                     ushort value = (ushort)((data[0] << 8) | data[1]);
-                    Push(new RingLineModel { IsLoading = value == 1 });
+                    bool currentIsLoading = value == 1;
+                    
+                    // 边缘检测
+                    bool risingEdge = currentIsLoading && !_lastIsLoading;   // 上升沿: False → True
+                    bool fallingEdge = !currentIsLoading && _lastIsLoading;  // 下降沿: True → False
+                    
+                    // 推送包含边缘检测结果的数据
+                    Push(new RingLineModel 
+                    { 
+                        IsLoading = currentIsLoading,
+                        RisingEdge = risingEdge,
+                        FallingEdge = fallingEdge
+                    });
+                    
+                    // 更新上一次状态
+                    _lastIsLoading = currentIsLoading;
                 }
             }
             catch (Exception ex)

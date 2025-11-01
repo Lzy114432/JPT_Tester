@@ -21,9 +21,6 @@ namespace Ewan.Core.Module
         // 共享状态（用于与其他模块通信）
         private ProductionLineSharedState _sharedState;
         
-        // 诊断日志相关
-        private long _lastRobotSignalCheckTicks = DateTime.Now.Ticks;
-        
         // 系统状态
         private bool _systemStarted = false;
         private SystemMode _currentMode = SystemMode.Manual;
@@ -236,23 +233,9 @@ namespace Ewan.Core.Module
         {
             try
             {
-                // 诊断日志：定期检查机械手信号状态（每5秒记录一次）
-                long currentTicks = DateTime.Now.Ticks;
-                long elapsedSeconds = (currentTicks - _lastRobotSignalCheckTicks) / TimeSpan.TicksPerSecond;
-                if (elapsedSeconds >= 5)
-                {
-                    bool x8 = _ioManager.LayeredIO.ReadInBit(ROBOT_LOADING_COMPLETE_SIGNAL);
-                    bool x10 = _ioManager.LayeredIO.ReadInBit(ROBOT_UNLOADING_COMPLETE_SIGNAL);
-                    _uiLogger.DebugRaw("[料仓诊断] 机械手信号: X8(LoadingComplete)={0}, X10(UnloadingComplete)={1}, Mode={2}", 
-                        x8, x10, _binElevatorMode);
-                    _lastRobotSignalCheckTicks = currentTicks;
-                }
-                
                 // 检查机械手装载完成信号
                 if (_ioManager.LayeredIO.ReadFallingBit(ROBOT_LOADING_COMPLETE_SIGNAL))
                 {
-                    _uiLogger.InfoRaw("[料仓诊断] 检测到X8下降沿，设置LoadingCompleted=true");
-                    
                     // 设置装载完成状态
                     SetLoadingCompleted(true);
 
@@ -263,8 +246,6 @@ namespace Ewan.Core.Module
                 // 检查机械手卸载完成信号
                 if (_ioManager.LayeredIO.ReadFallingBit(ROBOT_UNLOADING_COMPLETE_SIGNAL))
                 {
-                    _uiLogger.InfoRaw("[料仓诊断] 检测到X10下降沿，设置UnloadingCompleted=true");
-                    
                     // 设置卸载完成状态
                     SetUnloadingCompleted(true);
 
@@ -443,32 +424,25 @@ namespace Ewan.Core.Module
             {
                 case BinElevatorState.Unknown:
                     // 检查当前感应器状态
-                    bool sensorState = ReadBinSensor(binNumber);
-                    _uiLogger.DebugRaw("[料仓诊断] 料仓{0}上料模式-Unknown: 感应器={1}", binNumber, sensorState);
-                    
-                    if (sensorState) 
+                    if (ReadBinSensor(binNumber)) 
                     {
                         // 开始下降动作
                         StartBinJogDown(binNumber, axisId);
                         currentState = BinElevatorState.Moving;
-                        _uiLogger.InfoRaw("[料仓诊断] 料仓{0}上料模式: 开始下降", binNumber);
                     }
                     else
                     {
                         // 感应器已经为false，直接完成
                         currentState = BinElevatorState.Stopped;
-                        _uiLogger.InfoRaw("[料仓诊断] 料仓{0}上料模式: 感应器已为false，无需下降", binNumber);
                     }
                     break;
 
                 case BinElevatorState.Moving:
                     // 正在下降中，检查是否到达感应位置
-                    bool movingSensorState = ReadBinSensor(binNumber);
-                    if (!movingSensorState)
+                    if (!ReadBinSensor(binNumber))
                     {
                         StopBinAxis(binNumber, axisId);
                         currentState = BinElevatorState.Stopped;
-                        _uiLogger.InfoRaw("[料仓诊断] 料仓{0}上料模式: 感应器变为false，停止下降", binNumber);
                     }
                     break;
                 case BinElevatorState.Stopped:
