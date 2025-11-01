@@ -40,6 +40,7 @@ namespace MarkingMachineFeeder.Viewmodel
         private string _ioMappingConfigMenuHeader = "";
         private string _axisConfigMenuHeader = "";
         private string _axisControlMenuHeader = "";
+        private string _loopInteractionMenuHeader = "";
         private string _hardwareControlMenuHeader = "";
         private string _systemPauseButtonText = "";
         private string _systemResumeButtonText = "";
@@ -55,6 +56,7 @@ namespace MarkingMachineFeeder.Viewmodel
         private MarkingMachineFeeder.Windows.IOMappingConfigWindow _ioMappingConfigWindow;
         private MarkingMachineFeeder.Windows.AxisConfigWindow _axisConfigWindow;
         private MarkingMachineFeeder.Windows.AxisControlWindow _axisControlWindow;
+        private MarkingMachineFeeder.Windows.LoopInteractionWindow _loopInteractionWindow;
 
         // IO状态属性 - 根据io.csv定义的交互信号
         // 输入信号：IN3-IN11, IN15-IN17, IN19-IN20
@@ -257,6 +259,12 @@ namespace MarkingMachineFeeder.Viewmodel
             set { SetProperty(ref _axisControlMenuHeader, value); }
         }
 
+        public string LoopInteractionMenuHeader
+        {
+            get { return _loopInteractionMenuHeader; }
+            set { SetProperty(ref _loopInteractionMenuHeader, value); }
+        }
+
         public string SystemPauseButtonText
         {
             get { return _systemPauseButtonText; }
@@ -280,6 +288,7 @@ namespace MarkingMachineFeeder.Viewmodel
         public DelegateCommand OpenIOMappingConfigCommand { get; }
         public DelegateCommand OpenAxisConfigCommand { get; }
         public DelegateCommand OpenAxisControlCommand { get; }
+        public DelegateCommand OpenLoopInteractionCommand { get; }
         public DelegateCommand ExitCommand { get; }
         
         // 物料优先级调整命令
@@ -317,10 +326,6 @@ namespace MarkingMachineFeeder.Viewmodel
         public DelegateCommand PickFromBin3Command { get; }         // 从料仓3取料到扫码区
         public DelegateCommand PlaceToCartCommand { get; }          // 放入小车
 
-        // 环线交互命令
-        public DelegateCommand ReadRingLineRequestCommand { get; }      // 读取环线要料信号(寄存器152)
-        public DelegateCommand WriteUnloadCompleteCommand { get; }      // 写入下料完成信号(寄存器153)
-
         public MainWindowViewModel()
         {
             // 运行时逻辑
@@ -348,6 +353,7 @@ namespace MarkingMachineFeeder.Viewmodel
             OpenIOMappingConfigCommand = new DelegateCommand(ExecuteOpenIOMappingConfig, CanOpenIOMappingConfig);
             OpenAxisConfigCommand = new DelegateCommand(ExecuteOpenAxisConfig, CanOpenAxisConfig);
             OpenAxisControlCommand = new DelegateCommand(ExecuteOpenAxisControl, CanOpenAxisControl);
+            OpenLoopInteractionCommand = new DelegateCommand(ExecuteOpenLoopInteraction, CanOpenLoopInteraction);
             ExitCommand = new DelegateCommand(ExecuteExit, CanExecuteExit);
             
             // 初始化物料优先级调整命令
@@ -384,10 +390,6 @@ namespace MarkingMachineFeeder.Viewmodel
             PickFromBin2Command = new DelegateCommand(ExecutePickFromBin2);
             PickFromBin3Command = new DelegateCommand(ExecutePickFromBin3);
             PlaceToCartCommand = new DelegateCommand(ExecutePlaceToCart);
-
-            // 初始化环线交互命令
-            ReadRingLineRequestCommand = new DelegateCommand(ExecuteReadRingLineRequest);
-            WriteUnloadCompleteCommand = new DelegateCommand(ExecuteWriteUnloadComplete);
 
             UpdateUITexts();
             UpdateUserInfo();
@@ -654,6 +656,7 @@ namespace MarkingMachineFeeder.Viewmodel
             IOMappingConfigMenuHeader = Ewan.Resources.UIStrings.IOMappingConfigMenu;
             AxisConfigMenuHeader = Ewan.Resources.UIStrings.AxisConfigMenu;
             AxisControlMenuHeader = "轴手动控制"; // Using fallback text since AxisControlMenu property is not generating properly
+            LoopInteractionMenuHeader = "环线交互"; // Using fallback text for LoopInteractionMenu
             HardwareControlMenuHeader = Ewan.Resources.UIStrings.HardwareControlMenu;
             SystemPauseButtonText = "暂停";
             SystemResumeButtonText = "复原";
@@ -673,6 +676,7 @@ namespace MarkingMachineFeeder.Viewmodel
             RaisePropertyChanged(nameof(IOControlMenuHeader));
             RaisePropertyChanged(nameof(IOMappingConfigMenuHeader));
             RaisePropertyChanged(nameof(AxisConfigMenuHeader));
+            RaisePropertyChanged(nameof(LoopInteractionMenuHeader));
             RaisePropertyChanged(nameof(HardwareControlMenuHeader));
             RaisePropertyChanged(nameof(SystemPauseButtonText));
             RaisePropertyChanged(nameof(SystemResumeButtonText));
@@ -710,6 +714,7 @@ namespace MarkingMachineFeeder.Viewmodel
             OpenIOMappingConfigCommand.RaiseCanExecuteChanged();
             OpenAxisConfigCommand.RaiseCanExecuteChanged();
             OpenAxisControlCommand.RaiseCanExecuteChanged();
+            OpenLoopInteractionCommand.RaiseCanExecuteChanged();
         }
 
         private void ExecuteOpenAxisConfig()
@@ -772,6 +777,37 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             // 检查用户是否有权限访问轴手动控制 - 使用权限配置的查看权限
             return _securityManager.HasPermission(PermissionResources.PermissionConfig, PermissionActions.View);
+        }
+
+        private void ExecuteOpenLoopInteraction()
+        {
+            try
+            {
+                // 单例模式：检查是否已存在环线交互窗口
+                if (_loopInteractionWindow == null || !_loopInteractionWindow.IsLoaded)
+                {
+                    _loopInteractionWindow = new MarkingMachineFeeder.Windows.LoopInteractionWindow();
+                    _loopInteractionWindow.Closed += (s, e) => _loopInteractionWindow = null; // 窗口关闭时清除引用
+                    _loopInteractionWindow.Show();
+                }
+                else
+                {
+                    // 如果窗口已存在，激活并置顶
+                    _loopInteractionWindow.Activate();
+                    _loopInteractionWindow.Focus();
+                }
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingComplete, "环线交互");
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "环线交互", ex.Message);
+            }
+        }
+
+        private bool CanOpenLoopInteraction()
+        {
+            // 检查用户是否有权限访问环线交互 - 使用硬件控制权限
+            return _securityManager.HasPermission(PermissionResources.HardwareControl, PermissionActions.Control);
         }
 
         #region 交互IO状态属性 - 根据io.csv定义
@@ -1652,95 +1688,6 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             UnregisterStatusIndicatorListener();
         }
-
-        #region 环线交互命令
-
-        /// <summary>
-        /// 执行读取环线要料信号命令 - 寄存器152(u16类型)
-        /// </summary>
-        private void ExecuteReadRingLineRequest()
-        {
-            try
-            {
-                var modbusManager = Ewan.Core.Plc.ModbusRTUManager.Instance();
-
-                if (modbusManager == null || !modbusManager.IsConnected())
-                {
-                    _uiLogger.Warn($"Modbus RTU未连接，无法读取环线要料信号");
-                    System.Windows.MessageBox.Show("Modbus RTU未连接", "警告",
-                        System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
-                    return;
-                }
-
-                // 读取寄存器152，u16需要读取2个字节
-                byte[] data = modbusManager.Read("152", 2);
-
-                if (data != null && data.Length >= 2)
-                {
-                    // Modbus大端字节序: 高字节在前，低字节在后
-                    ushort value = (ushort)((data[0] << 8) | data[1]);
-                    _uiLogger.Info($"环线要料信号读取成功: 值 = {value}");
-                    System.Windows.MessageBox.Show($"环线要料信号(寄存器152): {value}", "读取成功",
-                        System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
-                }
-                else
-                {
-                    _uiLogger.Error("读取环线要料信号失败: 返回数据为空或长度不足");
-                    System.Windows.MessageBox.Show("读取失败: 返回数据无效", "错误",
-                        System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
-                }
-            }
-            catch (Exception ex)
-            {
-                _uiLogger.Error($"读取环线要料信号异常: {ex.Message}");
-                System.Windows.MessageBox.Show($"读取异常: {ex.Message}", "错误",
-                    System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
-            }
-        }
-
-        /// <summary>
-        /// 执行写入下料完成信号命令 - 寄存器153(u16类型)
-        /// </summary>
-        private void ExecuteWriteUnloadComplete()
-        {
-            try
-            {
-                var modbusManager = Ewan.Core.Plc.ModbusRTUManager.Instance();
-
-                if (modbusManager == null || !modbusManager.IsConnected())
-                {
-                    _uiLogger.Warn($"Modbus RTU未连接，无法写入下料完成信号");
-                    System.Windows.MessageBox.Show("Modbus RTU未连接", "警告",
-                        System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
-                    return;
-                }
-
-                // 写入值1到寄存器153 (u16类型)
-                ushort valueToWrite = 1;
-                var result = modbusManager.WriteAny("153", valueToWrite);
-
-                if (result.IsSuccess)
-                {
-                    _uiLogger.Info($"写入下料完成信号成功: 值 = {valueToWrite}");
-                    System.Windows.MessageBox.Show($"成功写入下料完成信号 {valueToWrite} 到寄存器153", "写入成功",
-                        System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
-                }
-                else
-                {
-                    _uiLogger.Error($"写入下料完成信号失败: {result.Message}");
-                    System.Windows.MessageBox.Show($"写入失败: {result.Message}", "错误",
-                        System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
-                }
-            }
-            catch (Exception ex)
-            {
-                _uiLogger.Error($"写入下料完成信号异常: {ex.Message}");
-                System.Windows.MessageBox.Show($"写入异常: {ex.Message}", "错误",
-                    System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
-            }
-        }
-
-        #endregion
 
         #endregion
     }

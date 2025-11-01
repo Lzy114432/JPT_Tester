@@ -453,6 +453,11 @@
                                       d:Header="轴手动控制"
                                       Command="{Binding OpenAxisControlCommand}"
                                       Style="{StaticResource IndustrialSubMenuItem}"/>
+                            <!-- 环线交互子菜单 -->
+                            <MenuItem Header="{Binding LoopInteractionMenuHeader}" 
+                                      d:Header="环线交互"
+                                      Command="{Binding OpenLoopInteractionCommand}"
+                                      Style="{StaticResource IndustrialSubMenuItem}"/>
                         </MenuItem>
                     </MenuItem>
                     
@@ -638,42 +643,12 @@
         <!-- Main Content -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="280" MinWidth="250"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="200" MinWidth="150"/>
             </Grid.ColumnDefinitions>
         
-        <!-- Left Panel - Using UserControls -->
-        <Border Grid.Column="0" BorderBrush="Gray" BorderThickness="1" Margin="5">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                
-                <!-- Header -->
-                <TextBlock Grid.Row="0" Text="系统控制面板" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5,5,5,15" FontWeight="Bold" FontSize="14"/>
-                
-                <!-- Safety IO Panel -->
-                <controls:SafetyIOPanel Grid.Row="1" Margin="0,0,0,15"/>
-                
-                <!-- Interactive IO Panel -->
-                <controls:InteractiveIOPanel Grid.Row="2" Margin="0,0,0,15"/>
-                
-                <!-- Conveyor IO Panel -->
-                <controls:ConveyorIOPanel Grid.Row="3" Margin="0,0,0,15"/>
-                
-                <!-- Robot Control Panel -->
-                <controls:RobotControlPanel Grid.Row="4" Margin="0,0,0,5"/>
-                
-            </Grid>
-        </Border>
-        
         <!-- Middle Panel - Camera (Top) and Log (Bottom) -->
-        <Grid Grid.Column="1" Margin="5">
+        <Grid Grid.Column="0" Margin="5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
@@ -1031,12 +1006,11 @@
             </Grid>
         </Grid>
         
-        <!-- Right Panel - Reserved & System Control -->
-        <Border Grid.Column="2" BorderBrush="Gray" BorderThickness="1" Margin="5">
+        <!-- Right Panel - System Control -->
+        <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="1" Margin="5">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
@@ -1044,87 +1018,8 @@
                 <!-- Header -->
                 <TextBlock Grid.Row="0" Text="系统控制区域" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5" FontWeight="Bold" FontSize="14"/>
                 
-                <!-- Reserved Content Area -->
-                <Border Grid.Row="1" Background="#F8F9FA" Margin="8" CornerRadius="6" BorderBrush="#DEE2E6" BorderThickness="1" Padding="10">
-                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <!-- 读取环线要料信号按钮 -->
-                        <Button Content="读取环线要料信号"
-                                Command="{Binding ReadRingLineRequestCommand}"
-                                Width="150"
-                                Height="35"
-                                Margin="5"
-                                FontSize="13"
-                                Background="#0D6EFD"
-                                Foreground="White"
-                                BorderThickness="0"
-                                Cursor="Hand">
-                            <Button.Style>
-                                <Style TargetType="Button">
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="Button">
-                                                <Border Background="{TemplateBinding Background}"
-                                                        CornerRadius="4"
-                                                        BorderThickness="{TemplateBinding BorderThickness}"
-                                                        BorderBrush="{TemplateBinding BorderBrush}">
-                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                </Border>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="#0B5ED7"/>
-                                        </Trigger>
-                                        <Trigger Property="IsPressed" Value="True">
-                                            <Setter Property="Background" Value="#0A58CA"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-                        </Button>
-
-                        <!-- 写入下料完成信号按钮 -->
-                        <Button Content="写入下料完成信号"
-                                Command="{Binding WriteUnloadCompleteCommand}"
-                                Width="150"
-                                Height="35"
-                                Margin="5"
-                                FontSize="13"
-                                Background="#198754"
-                                Foreground="White"
-                                BorderThickness="0"
-                                Cursor="Hand">
-                            <Button.Style>
-                                <Style TargetType="Button">
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="Button">
-                                                <Border Background="{TemplateBinding Background}"
-                                                        CornerRadius="4"
-                                                        BorderThickness="{TemplateBinding BorderThickness}"
-                                                        BorderBrush="{TemplateBinding BorderBrush}">
-                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                </Border>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="#157347"/>
-                                        </Trigger>
-                                        <Trigger Property="IsPressed" Value="True">
-                                            <Setter Property="Background" Value="#146C43"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-                        </Button>
-                    </StackPanel>
-                </Border>
-                
                 <!-- System Status Display -->
-                <GroupBox Grid.Row="2" Header="系统状态" Margin="8,4" Padding="8" FontSize="12" FontWeight="Medium">
+                <GroupBox Grid.Row="1" Header="系统状态" Margin="8,4" Padding="8" FontSize="12" FontWeight="Medium">
                     <StackPanel>
                         <!-- 系统运行状态 -->
                         <ewanControls:EwanIO 
@@ -1190,7 +1085,7 @@
                 </GroupBox>
                 
                 <!-- System Control Buttons -->
-                <GroupBox Grid.Row="3" Header="系统控制" Margin="8,4,8,8" Padding="8" FontSize="12" FontWeight="Medium">
+                <GroupBox Grid.Row="2" Header="系统控制" Margin="8,4,8,8" Padding="8" FontSize="12" FontWeight="Medium">
                     <StackPanel>
                         <!-- 复位按钮 -->
                         <Button Content="复位"
@@ -1228,14 +1123,7 @@
                                 Command="{Binding SystemStartCommand}"
                                 Margin="4,2"/>
                                 
-                        <!-- 暂停按钮 -->
-                        <Button Content="暂停"
-                                Style="{StaticResource IndustrialTestButton}"
-                                Background="#FFC107"
-                                FontSize="12"
-                                Height="35"
-                                Command="{Binding SystemPauseCommand}"
-                                Margin="4,2"/>
+
                                 
                         <!-- 停止按钮 -->
                         <Button Content="停止"
@@ -1246,14 +1134,7 @@
                                 Command="{Binding SystemStopCommand}"
                                 Margin="4,2"/>
                                 
-                        <!-- 复原按钮 -->
-                            <Button Content="复原"
-                                Style="{StaticResource IndustrialTestButton}"
-                                Background="#17A2B8"
-                                FontSize="12"
-                                Height="35"
-                                Command="{Binding SystemResumeCommand}"
-                                Margin="4,2"/>
+
                     </StackPanel>
                 </GroupBox>
             </Grid>

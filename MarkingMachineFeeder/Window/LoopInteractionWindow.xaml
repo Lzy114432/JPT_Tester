@@ -1,0 +1,231 @@
+<Window x:Class="MarkingMachineFeeder.Windows.LoopInteractionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:MarkingMachineFeeder.Viewmodel"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=vm:LoopInteractionViewModel, IsDesignTimeCreatable=True}"
+        Title="环线交互" 
+        Height="400" Width="500"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ResizeMode="NoResize">
+    
+    <Window.Resources>
+        <!-- 主题颜色 -->
+        <SolidColorBrush x:Key="PrimaryColor" Color="#4682B4"/>
+        <SolidColorBrush x:Key="SecondaryColor" Color="#5A9FD4"/>
+        
+        <!-- 窗口背景渐变 -->
+        <LinearGradientBrush x:Key="WindowBackground" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#F8F9FA" Offset="0"/>
+            <GradientStop Color="#E9ECEF" Offset="1"/>
+        </LinearGradientBrush>
+        
+        <!-- 标题栏背景渐变 -->
+        <LinearGradientBrush x:Key="HeaderGradient" StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="#4682B4" Offset="0"/>
+            <GradientStop Color="#5A9FD4" Offset="1"/>
+        </LinearGradientBrush>
+        
+        <!-- 按钮样式 -->
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="Width" Value="180"/>
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="6"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}">
+                            <Border.Effect>
+                                <DropShadowEffect Color="Black" BlurRadius="5" ShadowDepth="2" Opacity="0.3"/>
+                            </Border.Effect>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    
+    <Border Background="{StaticResource WindowBackground}" 
+            CornerRadius="10" 
+            BorderBrush="{StaticResource PrimaryColor}" 
+            BorderThickness="2">
+        <Border.Effect>
+            <DropShadowEffect Color="Black" BlurRadius="20" ShadowDepth="5" Opacity="0.5"/>
+        </Border.Effect>
+        
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <!-- 标题栏 -->
+            <Border Grid.Row="0" 
+                    Background="{StaticResource HeaderGradient}" 
+                    CornerRadius="8,8,0,0" 
+                    MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+                <Grid>
+                    <TextBlock Text="环线交互控制" 
+                               FontSize="20" 
+                               FontWeight="Bold" 
+                               Foreground="White" 
+                               VerticalAlignment="Center" 
+                               HorizontalAlignment="Center"/>
+                    
+                    <!-- 关闭按钮 -->
+                    <Button x:Name="CloseButton"
+                            Width="35" Height="35"
+                            HorizontalAlignment="Right"
+                            Margin="0,0,15,0"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Cursor="Hand"
+                            Click="CloseButton_Click">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}" 
+                                                    CornerRadius="4">
+                                                <Path Data="M0,0 L10,10 M10,0 L0,10" 
+                                                      Stroke="White" 
+                                                      StrokeThickness="2"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#E81123"/>
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter Property="Background" Value="#C50F1F"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </Grid>
+            </Border>
+            
+            <!-- 主内容区域 -->
+            <Grid Grid.Row="1" Margin="20">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <!-- 读取环线要料信号按钮 -->
+                    <Button Content="读取环线要料信号"
+                            Command="{Binding ReadRingLineRequestCommand}">
+                        <Button.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#0D6EFD" Offset="0"/>
+                                <GradientStop Color="#0B5ED7" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource ActionButton}">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background">
+                                            <Setter.Value>
+                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                    <GradientStop Color="#0B5ED7" Offset="0"/>
+                                                    <GradientStop Color="#0A58CA" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter Property="Background">
+                                            <Setter.Value>
+                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                    <GradientStop Color="#0A58CA" Offset="0"/>
+                                                    <GradientStop Color="#084298" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+                    <!-- 写入下料完成信号按钮 -->
+                    <Button Content="写入下料完成信号"
+                            Command="{Binding WriteUnloadCompleteCommand}">
+                        <Button.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#198754" Offset="0"/>
+                                <GradientStop Color="#157347" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource ActionButton}">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background">
+                                            <Setter.Value>
+                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                    <GradientStop Color="#157347" Offset="0"/>
+                                                    <GradientStop Color="#146C43" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter Property="Background">
+                                            <Setter.Value>
+                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                    <GradientStop Color="#146C43" Offset="0"/>
+                                                    <GradientStop Color="#0D5132" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    
+                    <!-- 说明文字 -->
+                    <Border Background="#F0F8FF" 
+                            BorderBrush="#87CEEB" 
+                            BorderThickness="1" 
+                            CornerRadius="4" 
+                            Padding="15" 
+                            Margin="10,20,10,10">
+                        <StackPanel>
+                            <TextBlock Text="功能说明：" 
+                                      FontWeight="Bold" 
+                                      FontSize="12" 
+                                      Foreground="#2E5BBA" 
+                                      Margin="0,0,0,8"/>
+                            <TextBlock Text="• 读取环线要料信号：读取Modbus寄存器152的值(u16)" 
+                                      FontSize="11" 
+                                      Foreground="#4682B4" 
+                                      Margin="0,0,0,4"/>
+                            <TextBlock Text="• 写入下料完成信号：向Modbus寄存器153写入值1(u16)" 
+                                      FontSize="11" 
+                                      Foreground="#4682B4"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>
