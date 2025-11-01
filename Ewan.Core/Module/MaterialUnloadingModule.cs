@@ -105,6 +105,26 @@ namespace Ewan.Core.Module
                             // 监控环线信号，触发取料流程
                             // 第一次：直接检测信号状态
                             // 后续：使用上升沿检测(从false变为true)
+                            
+                            // 先处理环线请求的计时逻辑
+                            bool ringLineRisingEdge = _ringLineunload && !_lastRingLineunload;
+                            bool ringLineFallingEdge = !_ringLineunload && _lastRingLineunload;
+                            
+                            // 上升沿时开始计时
+                            if (ringLineRisingEdge)
+                            {
+                                _sharedState?.StartRingLineRequest();
+                                _uiLogger.InfoRaw("处理已开始: {0}", "环线请求开始计时");
+                            }
+                            
+                            // 下降沿时停止计时
+                            if (ringLineFallingEdge)
+                            {
+                                _sharedState?.StopRingLineRequest();
+                                _uiLogger.InfoRaw("处理已完成: {0}", "环线请求计时停止");
+                            }
+                            
+                            // 判断是否需要触发下料
                             bool shouldTrigger = false;
                             
                             if (_isFirstUnloading)
@@ -118,8 +138,7 @@ namespace Ewan.Core.Module
                             }
                             else
                             {
-                                // 后续使用边沿检测
-                                bool ringLineRisingEdge = _ringLineunload && !_lastRingLineunload;
+                                // 后续使用上升沿检测
                                 shouldTrigger = ringLineRisingEdge;
                                 if (shouldTrigger)
                                 {
@@ -414,20 +433,8 @@ namespace Ewan.Core.Module
             var data = msg.GetData<RingLineModel>();
             _ringLineunload = data.IsLoading;
             
-            // 当环线请求激活时开始计时
-            if (_ringLineunload && !_lastRingLineunload)
-            {
-                _sharedState?.StartRingLineRequest();
-                _lastRingLineunload = true; // 立即更新状态，避免重复触发
-                _uiLogger.InfoRaw("处理已开始: {0}", "环线请求开始计时");
-            }
-            // 当环线请求结束时停止计时
-            else if (!_ringLineunload && _lastRingLineunload)
-            {
-                _sharedState?.StopRingLineRequest();
-                _lastRingLineunload = false; // 立即更新状态，避免重复触发
-                _uiLogger.InfoRaw("处理已完成: {0}", "环线请求计时停止");
-            }
+            // 注意：不要在这里更新 _lastRingLineunload
+            // 边沿检测应该完全由 OnRun 方法管理
         }
 
         /// <summary>
