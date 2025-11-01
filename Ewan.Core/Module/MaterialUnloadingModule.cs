@@ -108,6 +108,8 @@ namespace Ewan.Core.Module
                                 !_unloadingRequested &&
                                 _sharedState?.TryStartUnloading() == true)
                             {
+
+                                _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, false);
                                 // 设置默认料仓为1号（可根据需要修改）
                                 RequestUnloading(1);
                                 _uiLogger.InfoRaw("处理已开始: {0}", "环线要料上升沿触发，开始下料流程");
