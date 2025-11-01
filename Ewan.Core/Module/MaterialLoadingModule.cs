@@ -48,7 +48,11 @@ namespace Ewan.Core.Module
         private const int BIN2_SELECT_SIGNAL = 12;         // OUT12 - 料仓2选择信号
         private const int BIN3_SELECT_SIGNAL = 13;         // OUT13 - 料仓3选择信号
 
-        
+        // IN20	机械手忙碌状态信号
+        private const int ROBOT_BUSY_SIGNAL = 20;          // 机械手忙碌状态信号
+
+
+
         /// <summary>
         /// 带共享状态的构造函数
         /// </summary>
@@ -158,23 +162,7 @@ namespace Ewan.Core.Module
                     {
                         case MaterialLoadingState.Idle:
                             // 首先检查环线请求是否超时
-                            if (_sharedState?.IsRingLineRequestTimeout() == true &&
-                                _sharedState?.TryStartLoading() == true)
-                            {
-
-                                _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, false);
-                                _sharedState?.StopRingLineRequest();
-                                _isRingLineTimeoutLoading = false;
-                                // 释放流程锁
-                                _sharedState?.FinishProcess();
-                                // 重置标志并返回空闲状态
-                                SetLoadingCompleted(false);
-
-
-                                _uiLogger.InfoRaw("处理已开始: {0}", "环线请求超时30秒，触发紧急上料流程");
-                            }
-                            // 正常的皮带来料检测
-                            else if (_ioManager.LayeredIO.ReadInBit(MATERIAL_DETECT_SIGNAL) &&
+                           if (_ioManager.LayeredIO.ReadInBit(MATERIAL_DETECT_SIGNAL) &&
                                 _sharedState?.TryStartLoading() == true)
                             {
                                 _isRingLineTimeoutLoading = false; // 正常上料
@@ -247,6 +235,25 @@ namespace Ewan.Core.Module
         /// </summary>
         private void ProcessPickingMaterial()
         {
+            // 如果下料流程等待超时，且机械手不忙碌，强制结束当前装料流程
+            if (_sharedState != null &&
+                _sharedState.IsRingLineRequestTimeout() == true &&
+                !_ioManager.LayeredIO.ReadInBit(ROBOT_BUSY_SIGNAL))
+            {
+                _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, false);
+                _sharedState?.StopRingLineRequest();
+                _isRingLineTimeoutLoading = false;
+                // 释放流程锁
+                _sharedState?.FinishProcess();
+                // 重置标志并返回空闲状态
+                SetLoadingCompleted(false);
+
+                _currentState = MaterialLoadingState.Idle;
+
+                _uiLogger.InfoRaw("处理已完成: {0}", "装料超时且机械手不忙碌，强制结束当前装料流程，释放流程锁");
+                return;
+            }
+
             // 在取料过程中检测是否到达扫码位置X7
             if (_ioManager.LayeredIO.ReadInBit(SCAN_POSITION_SIGNAL))
             {
