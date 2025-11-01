@@ -1,5 +1,4 @@
 using System;
-using Ewan.Model.System;
 
 namespace Ewan.Core.Module
 {
@@ -46,10 +45,6 @@ namespace Ewan.Core.Module
         /// 当前正在执行的流程
         /// </summary>
         private ActiveProcess _currentProcess = ActiveProcess.None;
-
-        // 环线请求计时相关
-        private DateTime? _ringLineRequestTime = null; // 环线请求开始时间
-        private bool _ringLineRequestActive = false;   // 环线请求是否激活
 
         #endregion
 
@@ -209,8 +204,6 @@ namespace Ewan.Core.Module
                 _systemPaused = false;
                 _requireReinit = false;
                 _currentProcess = ActiveProcess.None;
-                _ringLineRequestTime = null;
-                _ringLineRequestActive = false;
             }
         }
 
@@ -296,65 +289,6 @@ namespace Ewan.Core.Module
             lock (_stateLock)
             {
                 return _currentProcess == ActiveProcess.Unloading;
-            }
-        }
-
-        #endregion
-
-        #region 环线请求计时方法
-
-        /// <summary>
-        /// 开始环线请求计时
-        /// </summary>
-        public void StartRingLineRequest()
-        {
-            lock (_stateLock)
-            {
-                if (!_ringLineRequestActive)
-                {
-                    _ringLineRequestTime = DateTime.Now;
-                    _ringLineRequestActive = true;
-                }
-            }
-        }
-
-        /// <summary>
-        /// 停止环线请求计时
-        /// </summary>
-        public void StopRingLineRequest()
-        {
-            lock (_stateLock)
-            {
-                _ringLineRequestTime = null;
-                _ringLineRequestActive = false;
-            }
-        }
-
-        /// <summary>
-        /// 获取环线请求是否激活
-        /// </summary>
-        public bool IsRingLineRequestActive()
-        {
-            lock (_stateLock)
-            {
-                return _ringLineRequestActive;
-            }
-        }
-
-        /// <summary>
-        /// 获取环线请求等待时间（秒）
-        /// </summary>
-        /// <returns>等待时间，如果未激活返回0</returns>
-        public double GetRingLineWaitTime()
-        {
-            lock (_stateLock)
-            {
-                if (_ringLineRequestActive && _ringLineRequestTime.HasValue)
-                {
-                    TimeSpan elapsed = DateTime.Now - _ringLineRequestTime.Value;
-                    return elapsed.TotalSeconds;
-                }
-                return 0;
             }
         }
 

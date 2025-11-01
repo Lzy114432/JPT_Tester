@@ -21,7 +21,9 @@ namespace Ewan.Core.Module
         private bool _loadingRequested = false;
         private bool _stopRequested = false;
         private bool _initialized = false; // 初始化标志
-        private int _ringLineTimeoutSeconds = 10; // 环线请求超时阈值(秒)
+        
+        // 诊断日志相关
+        private long _lastMovingToBinLogTicks = DateTime.Now.Ticks; // 最后一次记录MovingToBin日志的时间
 
         // 共享状态（用于与其他模块通信）
         private ProductionLineSharedState _sharedState;
@@ -48,11 +50,7 @@ namespace Ewan.Core.Module
         private const int BIN2_SELECT_SIGNAL = 12;         // OUT12 - 料仓2选择信号
         private const int BIN3_SELECT_SIGNAL = 13;         // OUT13 - 料仓3选择信号
 
-        // IN20	机械手忙碌状态信号
-        private const int ROBOT_BUSY_SIGNAL = 20;          // 机械手忙碌状态信号
-
-
-
+        
         /// <summary>
         /// 带共享状态的构造函数
         /// </summary>
@@ -161,11 +159,12 @@ namespace Ewan.Core.Module
                     switch (_currentState)
                     {
                         case MaterialLoadingState.Idle:
-                            // 首先检查环线请求是否超时
-                           if (_ioManager.LayeredIO.ReadInBit(MATERIAL_DETECT_SIGNAL) &&
+                            // 在空闲状态检测皮带来料
+                            // 检测到X3物料到达 && 能获取流程锁
+                            if (_ioManager.LayeredIO.ReadInBit(MATERIAL_DETECT_SIGNAL) &&
                                 _sharedState?.TryStartLoading() == true)
                             {
-                                _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, true);
+                                _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, true);  
 
                                 _currentState = MaterialLoadingState.MaterialDetected;
                                 _uiLogger.InfoRaw("处理已开始: {0}", "检测到皮带来料(X3=true)，获取流程锁，开始装料流程");
@@ -247,8 +246,6 @@ namespace Ewan.Core.Module
         /// </summary>
         private void ProcessAtScanPosition()
         {
-            _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, false); // 先暂停机械手自动从皮带取料
-
             DLManager.Instance().TriggerScan(); // 触发扫码,调试模式不需要结果
                                                 //if(DLManager.Instance().TriggerScan() != "")
                                                 //{
@@ -277,6 +274,18 @@ namespace Ewan.Core.Module
             // 检查下料完成状态
             bool loadingCompleted = GetLoadingCompleted();
             
+            // 诊断日志：定期输出等待状态（每5秒记录一次，避免刷屏）
+            if (!loadingCompleted)
+            {
+                long currentTicks = DateTime.Now.Ticks;
+                long elapsedSeconds = (currentTicks - _lastMovingToBinLogTicks) / TimeSpan.TicksPerSecond;
+                if (elapsedSeconds >= 5)
+                {
+                    _uiLogger.DebugRaw("[装料诊断] 等待装料完成: LoadingCompleted={0}", loadingCompleted);
+                    _lastMovingToBinLogTicks = currentTicks;
+                }
+            }
+            
             if (loadingCompleted)
             {
                 // 下料完成，清除信号
@@ -284,12 +293,15 @@ namespace Ewan.Core.Module
                 _ioManager.LayeredIO.WriteOutBit(BIN1_SELECT_SIGNAL, false);
                 _ioManager.LayeredIO.WriteOutBit(OUT_SCAN_COMPLETE, false);
 
-             
-                Thread.Sleep(300); // 因为取完料，会X3会闪一下，所以等一会再读
+                // 等待0.3秒后再检查X3信号，确保机械手已完全离开
+                Thread.Sleep(300);
                 bool x3Signal = _ioManager.LayeredIO.ReadInBit(MATERIAL_DETECT_SIGNAL);
-
-                if (!x3Signal) // X3为false，没有料片到达
+                
+                if (!x3Signal)
                 {
+                    // X3为false，机械手已离开，禁止机械臂自动取料
+                    _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, false);
+                    
                     // 释放流程锁
                     _sharedState?.FinishProcess();
 
@@ -297,35 +309,18 @@ namespace Ewan.Core.Module
                     SetLoadingCompleted(false);
                     _currentState = MaterialLoadingState.Idle;
 
-                    _uiLogger.InfoRaw("处理已完成: {0}", "装料完成且X3=false，机械手已离开，释放流程锁");
+                    _uiLogger.InfoRaw("处理已完成: {0}", "装料完成且X3=false，机械手已离开，OUT_ALLOW_PICK=false，释放流程锁");
                 }
-                else // X3为true，还有料片
+                else
                 {
-                    // 检查环线是否超时,如果超时则释放锁,优先让下料执行
-                    double waitTime = _sharedState?.GetRingLineWaitTime() ?? 0;
-                    bool isTimeout = waitTime >= _ringLineTimeoutSeconds;
-
-                    if (isTimeout)
-                    {
-                        // 环线请求超时,优先下料
-                        _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, false); // 禁止自动取料
-                        _sharedState?.FinishProcess(); // 释放流程锁
-                        SetLoadingCompleted(false);
-                        _currentState = MaterialLoadingState.Idle;
-
-                        _uiLogger.InfoRaw("处理已完成: {0}",
-                            $"装填完成但环线请求超时(等待{waitTime:F1}秒,超时阈值{_ringLineTimeoutSeconds}秒),释放流程锁优先下料,OUT_ALLOW_PICK=false");
-                    }
-                    else
-                    {
-                        // 环线未超时,继续装填
-                        SetLoadingCompleted(false);
-                        _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, true); // 允许取下一片料
-                        _currentState = MaterialLoadingState.MaterialDetected;
-
-                        _uiLogger.InfoRaw("处理已完成: {0}",
-                            $"装填完成且X3=true,环线未超时(已等待{waitTime:F1}秒),继续装填");
-                    }
+                    //// X3仍为true，有新料片到达，释放流程锁并返回Idle状态以处理新料片
+                    //_sharedState?.FinishProcess();
+                    
+                    //// 重置标志并返回空闲状态
+                    //SetLoadingCompleted(false);
+                    _currentState = MaterialLoadingState.MaterialDetected;
+                    
+                    _uiLogger.InfoRaw("处理已完成: {0}", "装料完成但X3=true，检测到新料片，释放流程锁，返回MaterialDetected状态");
                 }
             }
         }
@@ -378,7 +373,8 @@ namespace Ewan.Core.Module
                 _currentState = MaterialLoadingState.Idle;
                 _stopRequested = false;
                 _loadingRequested = false;
-
+                
+                
                 _uiLogger.InfoRaw("处理已完成: {0}", "强制停止装载");
             }
         }

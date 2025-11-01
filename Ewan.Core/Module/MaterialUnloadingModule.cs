@@ -3,6 +3,7 @@ using Ewan.Core.Msg;
 using Ewan.Core.Plc;
 using Ewan.Core.ScanCode;
 using Ewan.Model;
+using Ewan.Model.Production;
 using System;
 using System.Threading;
 
@@ -20,6 +21,10 @@ namespace Ewan.Core.Module
         private bool _emergencyStopTriggered = false;
         private bool _unloadingRequested = false;
         private bool _stopRequested = false;
+        
+        // 诊断日志相关
+        private long _lastPickingLogTicks = DateTime.Now.Ticks;
+        private long _lastIdleLogTicks = DateTime.Now.Ticks; // 最后一次记录Idle状态日志的时间
 
         // 共享状态（用于与其他模块通信）
         private ProductionLineSharedState _sharedState;
@@ -60,9 +65,6 @@ namespace Ewan.Core.Module
 
         private bool _ringLineunload = false;
         private bool _lastRingLineunload = false; // 用于边缘检测
-        private bool _isFirstUnloading = true; // 标记是否是第一次检测
-        private bool _ringLineRisingEdgeDetected = false; // 边缘检测标志
-        private int _ringLineTimeoutSeconds = 10; // 环线请求超时阈值(秒)
 
         /// <summary>
         /// 带共享状态的构造函数
@@ -91,7 +93,6 @@ namespace Ewan.Core.Module
                 _emergencyStopTriggered = false;
                 _ringLineunload = false;
                 _lastRingLineunload = false;
-                _isFirstUnloading = true; // 初始化为第一次检测
             }
         }
 
@@ -104,51 +105,41 @@ namespace Ewan.Core.Module
                     switch (_currentState)
                     {
                         case MaterialUnloadingState.Idle:
-                            // 判断是否需要触发下料
-                            bool shouldTrigger = false;
-
-                            if (_isFirstUnloading)
+                            // 监控环线信号，触发取料流程
+                            // 必须同时满足：1.环线要料上升沿(从false变为true)  2.X3=false(无外部料片)  3.能获取流程锁
+                            bool ringLineRisingEdge = _ringLineunload && !_lastRingLineunload; // 检测上升沿
+                            bool x3Signal = _ioManager.LayeredIO.ReadInBit(MATERIAL_DETECT_SIGNAL);
+                            
+                            // 诊断日志：定期输出下料条件状态（每5秒记录一次）
+                            long currentTicks = DateTime.Now.Ticks;
+                            long elapsedSeconds = (currentTicks - _lastIdleLogTicks) / TimeSpan.TicksPerSecond;
+                            if (elapsedSeconds >= 5)
                             {
-                                // 第一次直接检测信号为true就触发
-                                shouldTrigger = _ringLineunload;
-                                if (shouldTrigger)
-                                {
-                                    _uiLogger.InfoRaw("处理已开始: {0}", "首次检测环线要料信号为true");
-                                }
+                                var currentProcess = _sharedState?.GetCurrentProcess().ToString() ?? "Unknown";
+                                _uiLogger.DebugRaw("[下料诊断-Idle] 环线要料={0}, 上升沿={1}, X3={2}, UnloadingReq={3}, CurrentProcess={4}",
+                                    _ringLineunload, ringLineRisingEdge, x3Signal, _unloadingRequested, currentProcess);
+                                _lastIdleLogTicks = currentTicks;
                             }
-                            else
+                            
+                            if (ringLineRisingEdge &&
+                                !_unloadingRequested &&
+                                !x3Signal &&  // X3必须为false
+                                _sharedState?.TryStartUnloading() == true)
                             {
-                                // 后续使用边缘检测标志(在回调中设置)
-                                shouldTrigger = _ringLineRisingEdgeDetected;
-                                if (shouldTrigger)
-                                {
-                                    _ringLineRisingEdgeDetected = false; // 清除标志
-                                    _uiLogger.InfoRaw("处理已开始: {0}", "环线要料上升沿触发");
-                                }
+                                // 禁止后台程序取料，避免与装料流程冲突
+                                _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, false);
+
+                                // 设置默认料仓为1号（可根据需要修改）
+                                RequestUnloading(1);
+                                _uiLogger.InfoRaw("处理已开始: {0}", "环线要料上升沿触发且无外部料片(X3=false)，禁止取料(OUT14=false)，开始下料流程");
+                                
+                                // 成功触发下料，更新边缘检测状态
+                                _lastRingLineunload = _ringLineunload;
                             }
-
-                            // 尝试获取流程锁并开始下料
-                            if (shouldTrigger && !_unloadingRequested)
+                            else if (!_ringLineunload && _lastRingLineunload)
                             {
-                                if (_sharedState?.TryStartUnloading() == true)
-                                {
-                                    // 成功获取流程锁
-                                    _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, false);
-                                    RequestUnloading(1);
-                                    _isFirstUnloading = false;
-
-                                    double waitTime = _sharedState?.GetRingLineWaitTime() ?? 0;
-                                    _uiLogger.InfoRaw("处理已开始: {0}",
-                                        $"环线要料触发,成功获取流程锁,开始下料流程(等待时间:{waitTime:F1}秒)");
-                                }
-                                else
-                                {
-                                    // 流程锁被占用,输出详细信息
-                                    var currentProcess = _sharedState?.GetCurrentProcess();
-                                    double waitTime = _sharedState?.GetRingLineWaitTime() ?? 0;
-                                    _uiLogger.WarnRaw("警告: {0}",
-                                        $"环线要料触发但流程锁被占用(当前流程:{currentProcess}),已等待{waitTime:F1}秒");
-                                }
+                                // 检测到下降沿(True→False)，更新状态以便下次能检测到上升沿
+                                _lastRingLineunload = false;
                             }
                             break;
                             
@@ -218,6 +209,18 @@ namespace Ewan.Core.Module
         {
             // 检查取料完成状态 - 从SharedState读取（BinElevatorModule通过X10信号更新这个状态）
             bool unloadingCompleted = _sharedState?.GetUnloadingCompleted() == true;
+            
+            // 诊断日志：定期输出等待状态（每5秒记录一次）
+            if (!unloadingCompleted)
+            {
+                long currentTicks = DateTime.Now.Ticks;
+                long elapsedSeconds = (currentTicks - _lastPickingLogTicks) / TimeSpan.TicksPerSecond;
+                if (elapsedSeconds >= 5)
+                {
+                    _uiLogger.DebugRaw("[下料诊断] 等待取料完成: UnloadingCompleted={0}", unloadingCompleted);
+                    _lastPickingLogTicks = currentTicks;
+                }
+            }
             
             if (unloadingCompleted)
             {
@@ -293,9 +296,6 @@ namespace Ewan.Core.Module
                 // 发送完成信号到Modbus寄存器153
                 SendCartCompletionToModbus();
 
-                // 环线需求已满足，停止环线请求计时
-                _sharedState?.StopRingLineRequest();
-
                 // 恢复允许取料
                 _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, true);
 
@@ -307,7 +307,7 @@ namespace Ewan.Core.Module
                 _lastScannedQrCode = string.Empty; // 清空扫码结果
                 _currentState = MaterialUnloadingState.Idle;
 
-                _uiLogger.InfoRaw("处理已完成: {0}", "下料完成，环线需求已满足，清除扫码完成信号(OUT9)，恢复允许取料(OUT14=true)，释放流程锁");
+                _uiLogger.InfoRaw("处理已完成: {0}", "下料完成，清除扫码完成信号(OUT9)，恢复允许取料(OUT14=true)，释放流程锁");
             }
         }
 
@@ -421,30 +421,7 @@ namespace Ewan.Core.Module
         private void CallBackShow1(MessageModel msg)
         {
             var data = msg.GetData<RingLineModel>();
-            bool newValue = data.IsLoading;
-
-            // 在回调中做边缘检测,避免丢失
-            bool risingEdge = newValue && !_lastRingLineunload;
-            bool fallingEdge = !newValue && _lastRingLineunload;
-
-            // 上升沿: 开始计时
-            if (risingEdge)
-            {
-                _sharedState?.StartRingLineRequest();
-                _ringLineRisingEdgeDetected = true; // 设置标志让OnRun处理
-                _uiLogger.InfoRaw("处理已开始: {0}", "环线要料上升沿检测,开始计时");
-            }
-
-            // 下降沿: 停止计时
-            if (fallingEdge)
-            {
-                _sharedState?.StopRingLineRequest();
-                _uiLogger.InfoRaw("处理已完成: {0}", "环线要料下降沿检测,停止计时");
-            }
-
-            // 更新状态
-            _lastRingLineunload = newValue;
-            _ringLineunload = newValue;
+            _ringLineunload = data.IsLoading;
         }
 
         /// <summary>
