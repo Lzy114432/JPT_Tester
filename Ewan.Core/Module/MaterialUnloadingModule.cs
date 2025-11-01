@@ -394,12 +394,14 @@ namespace Ewan.Core.Module
             if (_ringLineunload && !_lastRingLineunload)
             {
                 _sharedState?.StartRingLineRequest();
+                _lastRingLineunload = true; // 立即更新状态，避免重复触发
                 _uiLogger.InfoRaw("处理已开始: {0}", "环线请求开始计时");
             }
             // 当环线请求结束时停止计时
             else if (!_ringLineunload && _lastRingLineunload)
             {
                 _sharedState?.StopRingLineRequest();
+                _lastRingLineunload = false; // 立即更新状态，避免重复触发
                 _uiLogger.InfoRaw("处理已完成: {0}", "环线请求计时停止");
             }
         }
