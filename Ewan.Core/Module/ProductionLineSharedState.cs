@@ -50,8 +50,6 @@ namespace Ewan.Core.Module
         // 环线请求计时相关
         private DateTime? _ringLineRequestTime = null; // 环线请求开始时间
         private bool _ringLineRequestActive = false;   // 环线请求是否激活
-        private bool _ringLineTimeoutTriggered = false; // 环线请求是否已超时触发
-        private readonly SystemParametersManager _parametersManager = SystemParametersManager.Instance;
 
         #endregion
 
@@ -213,7 +211,6 @@ namespace Ewan.Core.Module
                 _currentProcess = ActiveProcess.None;
                 _ringLineRequestTime = null;
                 _ringLineRequestActive = false;
-                _ringLineTimeoutTriggered = false;
             }
         }
 
@@ -317,7 +314,6 @@ namespace Ewan.Core.Module
                 {
                     _ringLineRequestTime = DateTime.Now;
                     _ringLineRequestActive = true;
-                    _ringLineTimeoutTriggered = false;
                 }
             }
         }
@@ -331,39 +327,6 @@ namespace Ewan.Core.Module
             {
                 _ringLineRequestTime = null;
                 _ringLineRequestActive = false;
-                _ringLineTimeoutTriggered = false;
-            }
-        }
-
-        /// <summary>
-        /// 检查环线请求是否超时
-        /// </summary>
-        /// <returns>如果超时且未处理返回true</returns>
-        public bool IsRingLineRequestTimeout()
-        {
-            lock (_stateLock)
-            {
-                if (_ringLineRequestActive && _ringLineRequestTime.HasValue && !_ringLineTimeoutTriggered)
-                {
-                    TimeSpan elapsed = DateTime.Now - _ringLineRequestTime.Value;
-                    int timeoutSeconds = _parametersManager.Parameters.RingLineTimeoutSeconds;
-                    if (elapsed.TotalSeconds >= timeoutSeconds)
-                    {
-                        return true;
-                    }
-                }
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// 标记环线请求超时已触发
-        /// </summary>
-        public void MarkRingLineTimeoutTriggered()
-        {
-            lock (_stateLock)
-            {
-                _ringLineTimeoutTriggered = true;
             }
         }
 
