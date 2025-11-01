@@ -8,397 +8,563 @@
         xmlns:vm="clr-namespace:MarkingMachineFeeder.Viewmodel"
         xmlns:ewanControls="clr-namespace:Ewan.Controls;assembly=Ewan.Controls"
         mc:Ignorable="d"
-        Title="{Binding Title}" WindowState="Maximized"
+        Title="{Binding Title}"
+        Width="1280"
+        Height="1024"
+        WindowState="Maximized"
         WindowStyle="None"
         AllowsTransparency="True"
         BorderBrush="Transparent"
         BorderThickness="0"
         d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel, IsDesignTimeCreatable=False}">
-    
     <Window.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-        
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <!-- Industrial Background Gradient -->
-        <LinearGradientBrush x:Key="BackgroundGradient" StartPoint="0,0" EndPoint="0,1">
-            <GradientStop Color="#4682B4" Offset="0"/>
-            <GradientStop Color="#36648B" Offset="0.5"/>
-            <GradientStop Color="#27408B" Offset="1"/>
+        <LinearGradientBrush x:Key="BackgroundGradient"
+                             StartPoint="0,0"
+                             EndPoint="0,1">
+            <GradientStop Color="#4682B4"
+                          Offset="0" />
+            <GradientStop Color="#36648B"
+                          Offset="0.5" />
+            <GradientStop Color="#27408B"
+                          Offset="1" />
         </LinearGradientBrush>
-        
         <!-- Industrial Menu Item Style -->
-        <Style x:Key="IndustrialMenuItem" TargetType="MenuItem">
-            <Setter Property="Background" Value="{StaticResource BackgroundGradient}"/>
-            <Setter Property="Foreground" Value="#FFFFFF"/>
-            <Setter Property="BorderBrush" Value="#555555"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="12,8,28,8"/>
-            <Setter Property="Margin" Value="2"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="FontWeight" Value="Medium"/>
+        <Style x:Key="IndustrialMenuItem"
+               TargetType="MenuItem">
+            <Setter Property="Background"
+                    Value="{StaticResource BackgroundGradient}" />
+            <Setter Property="Foreground"
+                    Value="#FFFFFF" />
+            <Setter Property="BorderBrush"
+                    Value="#555555" />
+            <Setter Property="BorderThickness"
+                    Value="1" />
+            <Setter Property="Padding"
+                    Value="12,8,28,8" />
+            <Setter Property="Margin"
+                    Value="2" />
+            <Setter Property="FontSize"
+                    Value="13" />
+            <Setter Property="FontWeight"
+                    Value="Medium" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="MenuItem">
-                        <Border x:Name="Border" 
+                        <Border x:Name="Border"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="3">
                             <Border.Effect>
-                                <DropShadowEffect Color="Black" Opacity="0.3" ShadowDepth="2" BlurRadius="4"/>
+                                <DropShadowEffect Color="Black"
+                                                  Opacity="0.3"
+                                                  ShadowDepth="2"
+                                                  BlurRadius="4" />
                             </Border.Effect>
                             <Grid>
                                 <!-- Header Content -->
-                                <ContentPresenter x:Name="HeaderHost" 
-                                                ContentSource="Header" 
-                                                Margin="{TemplateBinding Padding}"
-                                                VerticalAlignment="Center"
-                                                HorizontalAlignment="Left"
-                                                RecognizesAccessKey="True"/>
+                                <ContentPresenter x:Name="HeaderHost"
+                                                  ContentSource="Header"
+                                                  Margin="{TemplateBinding Padding}"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Left"
+                                                  RecognizesAccessKey="True" />
                                 <!-- Submenu Arrow -->
-                                <Path x:Name="ArrowPath" 
+                                <Path x:Name="ArrowPath"
                                       Visibility="Collapsed"
-                                      HorizontalAlignment="Right" 
-                                      VerticalAlignment="Center" 
+                                      HorizontalAlignment="Right"
+                                      VerticalAlignment="Center"
                                       Margin="0,0,6,0"
                                       Fill="{TemplateBinding Foreground}"
-                                      Data="M0,0 L4,4 L0,8 Z"/>
+                                      Data="M0,0 L4,4 L0,8 Z" />
                                 <!-- Popup for submenu -->
-                                <Popup x:Name="SubMenuPopup" 
-                                       Placement="Bottom" 
+                                <Popup x:Name="SubMenuPopup"
+                                       Placement="Bottom"
                                        IsOpen="{Binding Path=IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}"
-                                       AllowsTransparency="True" 
+                                       AllowsTransparency="True"
                                        Focusable="False">
-                                    <Border Background="{StaticResource BackgroundGradient}" 
-                                            BorderBrush="#666666" 
+                                    <Border Background="{StaticResource BackgroundGradient}"
+                                            BorderBrush="#666666"
                                             BorderThickness="1"
                                             CornerRadius="3"
                                             Margin="0,0,5,5">
                                         <Border.Effect>
-                                            <DropShadowEffect Color="Black" Opacity="0.4" ShadowDepth="3" BlurRadius="6"/>
+                                            <DropShadowEffect Color="Black"
+                                                              Opacity="0.4"
+                                                              ShadowDepth="3"
+                                                              BlurRadius="6" />
                                         </Border.Effect>
-                                        <StackPanel IsItemsHost="True" 
+                                        <StackPanel IsItemsHost="True"
                                                     KeyboardNavigation.DirectionalNavigation="Cycle"
-                                                    Margin="2"/>
+                                                    Margin="2" />
                                     </Border>
                                 </Popup>
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
                             <!-- Has submenu items -->
-                            <Trigger Property="HasItems" Value="True">
-                                <Setter TargetName="ArrowPath" Property="Visibility" Value="Visible"/>
+                            <Trigger Property="HasItems"
+                                     Value="True">
+                                <Setter TargetName="ArrowPath"
+                                        Property="Visibility"
+                                        Value="Visible" />
                             </Trigger>
                             <!-- Mouse over effect -->
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Border" Property="Background">
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+                                <Setter TargetName="Border"
+                                        Property="Background">
                                     <Setter.Value>
-                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                            <GradientStop Color="#5A5A5A" Offset="0"/>
-                                            <GradientStop Color="#3D3D40" Offset="0.5"/>
-                                            <GradientStop Color="#2E2E2E" Offset="1"/>
+                                        <LinearGradientBrush StartPoint="0,0"
+                                                             EndPoint="0,1">
+                                            <GradientStop Color="#5A5A5A"
+                                                          Offset="0" />
+                                            <GradientStop Color="#3D3D40"
+                                                          Offset="0.5" />
+                                            <GradientStop Color="#2E2E2E"
+                                                          Offset="1" />
                                         </LinearGradientBrush>
                                     </Setter.Value>
                                 </Setter>
-                                <Setter TargetName="Border" Property="BorderBrush" Value="#777777"/>
-                                <Setter Property="Foreground" Value="#FFFF00"/>
+                                <Setter TargetName="Border"
+                                        Property="BorderBrush"
+                                        Value="#777777" />
+                                <Setter Property="Foreground"
+                                        Value="#FFFF00" />
                             </Trigger>
                             <!-- Pressed effect -->
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="Border" Property="Background">
+                            <Trigger Property="IsPressed"
+                                     Value="True">
+                                <Setter TargetName="Border"
+                                        Property="Background">
                                     <Setter.Value>
-                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                            <GradientStop Color="#3A3A3A" Offset="0"/>
-                                            <GradientStop Color="#1D1D20" Offset="0.5"/>
-                                            <GradientStop Color="#0E0E0E" Offset="1"/>
+                                        <LinearGradientBrush StartPoint="0,0"
+                                                             EndPoint="0,1">
+                                            <GradientStop Color="#3A3A3A"
+                                                          Offset="0" />
+                                            <GradientStop Color="#1D1D20"
+                                                          Offset="0.5" />
+                                            <GradientStop Color="#0E0E0E"
+                                                          Offset="1" />
                                         </LinearGradientBrush>
                                     </Setter.Value>
                                 </Setter>
-                                <Setter TargetName="Border" Property="BorderBrush" Value="#999999"/>
+                                <Setter TargetName="Border"
+                                        Property="BorderBrush"
+                                        Value="#999999" />
                             </Trigger>
                             <!-- Disabled effect -->
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Foreground" Value="#666666"/>
-                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                            <Trigger Property="IsEnabled"
+                                     Value="False">
+                                <Setter Property="Foreground"
+                                        Value="#666666" />
+                                <Setter TargetName="Border"
+                                        Property="Opacity"
+                                        Value="0.5" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-        
         <!-- Industrial Sub Menu Item Style -->
-        <Style x:Key="IndustrialSubMenuItem" TargetType="MenuItem">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="#E0E0E0"/>
-            <Setter Property="Padding" Value="10,6"/>
-            <Setter Property="FontSize" Value="12"/>
+        <Style x:Key="IndustrialSubMenuItem"
+               TargetType="MenuItem">
+            <Setter Property="Background"
+                    Value="Transparent" />
+            <Setter Property="Foreground"
+                    Value="#E0E0E0" />
+            <Setter Property="Padding"
+                    Value="10,6" />
+            <Setter Property="FontSize"
+                    Value="12" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="MenuItem">
-                        <Border x:Name="Border" 
+                        <Border x:Name="Border"
                                 Background="{TemplateBinding Background}"
                                 Padding="{TemplateBinding Padding}">
                             <Grid>
                                 <!-- Header Content -->
-                                <ContentPresenter x:Name="HeaderPresenter" 
-                                                ContentSource="Header"
-                                                VerticalAlignment="Center"
-                                                HorizontalAlignment="Left"
-                                                Margin="0,0,20,0"/>
+                                <ContentPresenter x:Name="HeaderPresenter"
+                                                  ContentSource="Header"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Left"
+                                                  Margin="0,0,20,0" />
                                 <!-- Submenu Arrow for nested items -->
-                                <Path x:Name="ArrowPath" 
+                                <Path x:Name="ArrowPath"
                                       Visibility="Collapsed"
-                                      HorizontalAlignment="Right" 
-                                      VerticalAlignment="Center" 
+                                      HorizontalAlignment="Right"
+                                      VerticalAlignment="Center"
                                       Margin="0,0,5,0"
                                       Fill="{TemplateBinding Foreground}"
-                                      Data="M0,0 L4,4 L0,8 Z"/>
+                                      Data="M0,0 L4,4 L0,8 Z" />
                                 <!-- Popup for nested submenu -->
-                                <Popup x:Name="SubMenuPopup" 
-                                       Placement="Right" 
+                                <Popup x:Name="SubMenuPopup"
+                                       Placement="Right"
                                        IsOpen="{Binding Path=IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}"
-                                       AllowsTransparency="True" 
+                                       AllowsTransparency="True"
                                        Focusable="False"
                                        HorizontalOffset="2"
                                        VerticalOffset="-3">
-                                    <Border Background="{StaticResource BackgroundGradient}" 
-                                            BorderBrush="#666666" 
+                                    <Border Background="{StaticResource BackgroundGradient}"
+                                            BorderBrush="#666666"
                                             BorderThickness="1"
                                             CornerRadius="3"
                                             Margin="0,0,5,5">
                                         <Border.Effect>
-                                            <DropShadowEffect Color="Black" Opacity="0.4" ShadowDepth="3" BlurRadius="6"/>
+                                            <DropShadowEffect Color="Black"
+                                                              Opacity="0.4"
+                                                              ShadowDepth="3"
+                                                              BlurRadius="6" />
                                         </Border.Effect>
-                                        <StackPanel IsItemsHost="True" 
+                                        <StackPanel IsItemsHost="True"
                                                     KeyboardNavigation.DirectionalNavigation="Cycle"
-                                                    Margin="2"/>
+                                                    Margin="2" />
                                     </Border>
                                 </Popup>
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
                             <!-- Has submenu items -->
-                            <Trigger Property="HasItems" Value="True">
-                                <Setter TargetName="ArrowPath" Property="Visibility" Value="Visible"/>
+                            <Trigger Property="HasItems"
+                                     Value="True">
+                                <Setter TargetName="ArrowPath"
+                                        Property="Visibility"
+                                        Value="Visible" />
                             </Trigger>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Border" Property="Background" Value="#4A4A4A"/>
-                                <Setter Property="Foreground" Value="#FFFF00"/>
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+                                <Setter TargetName="Border"
+                                        Property="Background"
+                                        Value="#4A4A4A" />
+                                <Setter Property="Foreground"
+                                        Value="#FFFF00" />
                             </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="Border" Property="Background" Value="#2A2A2A"/>
+                            <Trigger Property="IsPressed"
+                                     Value="True">
+                                <Setter TargetName="Border"
+                                        Property="Background"
+                                        Value="#2A2A2A" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-        
         <!-- Industrial Test Button Style -->
-        <Style x:Key="IndustrialTestButton" TargetType="Button">
-            <Setter Property="Background" Value="{StaticResource BackgroundGradient}"/>
-            <Setter Property="Foreground" Value="#FFFFFF"/>
-            <Setter Property="BorderBrush" Value="#555555"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="12,6"/>
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="FontWeight" Value="Medium"/>
-            <Setter Property="Cursor" Value="Hand"/>
+        <Style x:Key="IndustrialTestButton"
+               TargetType="Button">
+            <Setter Property="Background"
+                    Value="{StaticResource BackgroundGradient}" />
+            <Setter Property="Foreground"
+                    Value="#FFFFFF" />
+            <Setter Property="BorderBrush"
+                    Value="#555555" />
+            <Setter Property="BorderThickness"
+                    Value="1" />
+            <Setter Property="Padding"
+                    Value="12,6" />
+            <Setter Property="FontSize"
+                    Value="12" />
+            <Setter Property="FontWeight"
+                    Value="Medium" />
+            <Setter Property="Cursor"
+                    Value="Hand" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border x:Name="border" 
+                        <Border x:Name="border"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="4"
                                 SnapsToDevicePixels="true">
                             <Border.Effect>
-                                <DropShadowEffect Color="Black" Opacity="0.1" ShadowDepth="1" BlurRadius="3"/>
+                                <DropShadowEffect Color="Black"
+                                                  Opacity="0.1"
+                                                  ShadowDepth="1"
+                                                  BlurRadius="3" />
                             </Border.Effect>
-                            <ContentPresenter x:Name="contentPresenter" 
-                                            Focusable="False" 
-                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
-                                            Margin="{TemplateBinding Padding}" 
-                                            RecognizesAccessKey="True" 
-                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
-                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            <ContentPresenter x:Name="contentPresenter"
+                                              Focusable="False"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              Margin="{TemplateBinding Padding}"
+                                              RecognizesAccessKey="True"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                         </Border>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsDefaulted" Value="true">
-                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                            <Trigger Property="IsDefaulted"
+                                     Value="true">
+                                <Setter Property="BorderBrush"
+                                        TargetName="border"
+                                        Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
                             </Trigger>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter TargetName="border" Property="Background">
+                            <Trigger Property="IsMouseOver"
+                                     Value="true">
+                                <Setter TargetName="border"
+                                        Property="Background">
                                     <Setter.Value>
-                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                            <GradientStop Color="#5A5A5A" Offset="0"/>
-                                            <GradientStop Color="#3D3D40" Offset="0.5"/>
-                                            <GradientStop Color="#2E2E2E" Offset="1"/>
+                                        <LinearGradientBrush StartPoint="0,0"
+                                                             EndPoint="0,1">
+                                            <GradientStop Color="#5A5A5A"
+                                                          Offset="0" />
+                                            <GradientStop Color="#3D3D40"
+                                                          Offset="0.5" />
+                                            <GradientStop Color="#2E2E2E"
+                                                          Offset="1" />
                                         </LinearGradientBrush>
                                     </Setter.Value>
                                 </Setter>
-                                <Setter TargetName="border" Property="BorderBrush" Value="#777777"/>
-                                <Setter Property="Foreground" Value="#FFFF00"/>
+                                <Setter TargetName="border"
+                                        Property="BorderBrush"
+                                        Value="#777777" />
+                                <Setter Property="Foreground"
+                                        Value="#FFFF00" />
                             </Trigger>
-                            <Trigger Property="IsPressed" Value="true">
-                                <Setter TargetName="border" Property="Background">
+                            <Trigger Property="IsPressed"
+                                     Value="true">
+                                <Setter TargetName="border"
+                                        Property="Background">
                                     <Setter.Value>
-                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                            <GradientStop Color="#3A3A3A" Offset="0"/>
-                                            <GradientStop Color="#1D1D20" Offset="0.5"/>
-                                            <GradientStop Color="#0E0E0E" Offset="1"/>
+                                        <LinearGradientBrush StartPoint="0,0"
+                                                             EndPoint="0,1">
+                                            <GradientStop Color="#3A3A3A"
+                                                          Offset="0" />
+                                            <GradientStop Color="#1D1D20"
+                                                          Offset="0.5" />
+                                            <GradientStop Color="#0E0E0E"
+                                                          Offset="1" />
                                         </LinearGradientBrush>
                                     </Setter.Value>
                                 </Setter>
-                                <Setter TargetName="border" Property="BorderBrush" Value="#999999"/>
+                                <Setter TargetName="border"
+                                        Property="BorderBrush"
+                                        Value="#999999" />
                             </Trigger>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter TargetName="border" Property="Background" Value="#F4F4F4"/>
-                                <Setter TargetName="border" Property="BorderBrush" Value="#E0E0E0"/>
-                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="#999999"/>
-                                <Setter TargetName="border" Property="Opacity" Value="0.6"/>
+                            <Trigger Property="IsEnabled"
+                                     Value="false">
+                                <Setter TargetName="border"
+                                        Property="Background"
+                                        Value="#F4F4F4" />
+                                <Setter TargetName="border"
+                                        Property="BorderBrush"
+                                        Value="#E0E0E0" />
+                                <Setter Property="TextElement.Foreground"
+                                        TargetName="contentPresenter"
+                                        Value="#999999" />
+                                <Setter TargetName="border"
+                                        Property="Opacity"
+                                        Value="0.6" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-        
         <!-- Modern Button Style -->
-        <Style x:Key="ModernButton" TargetType="Button">
-            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
-            <Setter Property="BorderBrush" Value="#CCCCCC"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="12,6"/>
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="FontWeight" Value="Medium"/>
-            <Setter Property="Cursor" Value="Hand"/>
+        <Style x:Key="ModernButton"
+               TargetType="Button">
+            <Setter Property="Background"
+                    Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+            <Setter Property="BorderBrush"
+                    Value="#CCCCCC" />
+            <Setter Property="BorderThickness"
+                    Value="1" />
+            <Setter Property="Padding"
+                    Value="12,6" />
+            <Setter Property="FontSize"
+                    Value="12" />
+            <Setter Property="FontWeight"
+                    Value="Medium" />
+            <Setter Property="Cursor"
+                    Value="Hand" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border x:Name="border" 
+                        <Border x:Name="border"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="4"
                                 SnapsToDevicePixels="true">
                             <Border.Effect>
-                                <DropShadowEffect Color="Black" Opacity="0.1" ShadowDepth="1" BlurRadius="3"/>
+                                <DropShadowEffect Color="Black"
+                                                  Opacity="0.1"
+                                                  ShadowDepth="1"
+                                                  BlurRadius="3" />
                             </Border.Effect>
-                            <ContentPresenter x:Name="contentPresenter" 
-                                            Focusable="False" 
-                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
-                                            Margin="{TemplateBinding Padding}" 
-                                            RecognizesAccessKey="True" 
-                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
-                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            <ContentPresenter x:Name="contentPresenter"
+                                              Focusable="False"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              Margin="{TemplateBinding Padding}"
+                                              RecognizesAccessKey="True"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                         </Border>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsDefaulted" Value="true">
-                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                            <Trigger Property="IsDefaulted"
+                                     Value="true">
+                                <Setter Property="BorderBrush"
+                                        TargetName="border"
+                                        Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
                             </Trigger>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Background" TargetName="border">
+                            <Trigger Property="IsMouseOver"
+                                     Value="true">
+                                <Setter Property="Background"
+                                        TargetName="border">
                                     <Setter.Value>
-                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                            <GradientStop Color="#F8F8F8" Offset="0"/>
-                                            <GradientStop Color="#E8E8E8" Offset="1"/>
+                                        <LinearGradientBrush StartPoint="0,0"
+                                                             EndPoint="0,1">
+                                            <GradientStop Color="#F8F8F8"
+                                                          Offset="0" />
+                                            <GradientStop Color="#E8E8E8"
+                                                          Offset="1" />
                                         </LinearGradientBrush>
                                     </Setter.Value>
                                 </Setter>
-                                <Setter Property="BorderBrush" TargetName="border" Value="#999999"/>
+                                <Setter Property="BorderBrush"
+                                        TargetName="border"
+                                        Value="#999999" />
                             </Trigger>
-                            <Trigger Property="IsPressed" Value="true">
-                                <Setter Property="Background" TargetName="border">
+                            <Trigger Property="IsPressed"
+                                     Value="true">
+                                <Setter Property="Background"
+                                        TargetName="border">
                                     <Setter.Value>
-                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                            <GradientStop Color="#D8D8D8" Offset="0"/>
-                                            <GradientStop Color="#C8C8C8" Offset="1"/>
+                                        <LinearGradientBrush StartPoint="0,0"
+                                                             EndPoint="0,1">
+                                            <GradientStop Color="#D8D8D8"
+                                                          Offset="0" />
+                                            <GradientStop Color="#C8C8C8"
+                                                          Offset="1" />
                                         </LinearGradientBrush>
                                     </Setter.Value>
                                 </Setter>
-                                <Setter Property="BorderBrush" TargetName="border" Value="#777777"/>
+                                <Setter Property="BorderBrush"
+                                        TargetName="border"
+                                        Value="#777777" />
                             </Trigger>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="Background" TargetName="border" Value="#F4F4F4"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="#E0E0E0"/>
-                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="#999999"/>
-                                <Setter Property="Opacity" Value="0.6"/>
+                            <Trigger Property="IsEnabled"
+                                     Value="false">
+                                <Setter Property="Background"
+                                        TargetName="border"
+                                        Value="#F4F4F4" />
+                                <Setter Property="BorderBrush"
+                                        TargetName="border"
+                                        Value="#E0E0E0" />
+                                <Setter Property="TextElement.Foreground"
+                                        TargetName="contentPresenter"
+                                        Value="#999999" />
+                                <Setter Property="Opacity"
+                                        Value="0.6" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-        
         <!-- Logout Button Style (Red Theme) -->
-        <Style x:Key="LogoutButton" TargetType="Button" BasedOn="{StaticResource ModernButton}">
+        <Style x:Key="LogoutButton"
+               TargetType="Button"
+               BasedOn="{StaticResource ModernButton}">
             <Setter Property="Background">
                 <Setter.Value>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Color="#F0F0F0" Offset="0"/>
-                        <GradientStop Color="#E8E8E8" Offset="1"/>
+                    <LinearGradientBrush StartPoint="0,0"
+                                         EndPoint="0,1">
+                        <GradientStop Color="#F0F0F0"
+                                      Offset="0" />
+                        <GradientStop Color="#E8E8E8"
+                                      Offset="1" />
                     </LinearGradientBrush>
                 </Setter.Value>
             </Setter>
-            <Setter Property="Foreground" Value="#C62D42"/>
-            <Setter Property="BorderBrush" Value="#D4A5A5"/>
+            <Setter Property="Foreground"
+                    Value="#C62D42" />
+            <Setter Property="BorderBrush"
+                    Value="#D4A5A5" />
             <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
+                <Trigger Property="IsMouseOver"
+                         Value="True">
                     <Setter Property="Background">
                         <Setter.Value>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                <GradientStop Color="#FFE8E8" Offset="0"/>
-                                <GradientStop Color="#FFD8D8" Offset="1"/>
+                            <LinearGradientBrush StartPoint="0,0"
+                                                 EndPoint="0,1">
+                                <GradientStop Color="#FFE8E8"
+                                              Offset="0" />
+                                <GradientStop Color="#FFD8D8"
+                                              Offset="1" />
                             </LinearGradientBrush>
                         </Setter.Value>
                     </Setter>
-                    <Setter Property="BorderBrush" Value="#C62D42"/>
+                    <Setter Property="BorderBrush"
+                            Value="#C62D42" />
                 </Trigger>
-                <Trigger Property="IsPressed" Value="True">
+                <Trigger Property="IsPressed"
+                         Value="True">
                     <Setter Property="Background">
                         <Setter.Value>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                <GradientStop Color="#FFD0D0" Offset="0"/>
-                                <GradientStop Color="#FFC0C0" Offset="1"/>
+                            <LinearGradientBrush StartPoint="0,0"
+                                                 EndPoint="0,1">
+                                <GradientStop Color="#FFD0D0"
+                                              Offset="0" />
+                                <GradientStop Color="#FFC0C0"
+                                              Offset="1" />
                             </LinearGradientBrush>
                         </Setter.Value>
                     </Setter>
                 </Trigger>
             </Style.Triggers>
         </Style>
-        
         <!-- Login Button Style (Blue Theme) -->
-        <Style x:Key="LoginButton" TargetType="Button" BasedOn="{StaticResource ModernButton}">
+        <Style x:Key="LoginButton"
+               TargetType="Button"
+               BasedOn="{StaticResource ModernButton}">
             <Setter Property="Background">
                 <Setter.Value>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Color="#F0F8FF" Offset="0"/>
-                        <GradientStop Color="#E0E8F0" Offset="1"/>
+                    <LinearGradientBrush StartPoint="0,0"
+                                         EndPoint="0,1">
+                        <GradientStop Color="#F0F8FF"
+                                      Offset="0" />
+                        <GradientStop Color="#E0E8F0"
+                                      Offset="1" />
                     </LinearGradientBrush>
                 </Setter.Value>
             </Setter>
-            <Setter Property="Foreground" Value="#2E5BBA"/>
-            <Setter Property="BorderBrush" Value="#A5C4E4"/>
+            <Setter Property="Foreground"
+                    Value="#2E5BBA" />
+            <Setter Property="BorderBrush"
+                    Value="#A5C4E4" />
             <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
+                <Trigger Property="IsMouseOver"
+                         Value="True">
                     <Setter Property="Background">
                         <Setter.Value>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                <GradientStop Color="#E8F4FF" Offset="0"/>
-                                <GradientStop Color="#D8E8FF" Offset="1"/>
+                            <LinearGradientBrush StartPoint="0,0"
+                                                 EndPoint="0,1">
+                                <GradientStop Color="#E8F4FF"
+                                              Offset="0" />
+                                <GradientStop Color="#D8E8FF"
+                                              Offset="1" />
                             </LinearGradientBrush>
                         </Setter.Value>
                     </Setter>
-                    <Setter Property="BorderBrush" Value="#2E5BBA"/>
+                    <Setter Property="BorderBrush"
+                            Value="#2E5BBA" />
                 </Trigger>
-                <Trigger Property="IsPressed" Value="True">
+                <Trigger Property="IsPressed"
+                         Value="True">
                     <Setter Property="Background">
                         <Setter.Value>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                <GradientStop Color="#D0E8FF" Offset="0"/>
-                                <GradientStop Color="#C0D8FF" Offset="1"/>
+                            <LinearGradientBrush StartPoint="0,0"
+                                                 EndPoint="0,1">
+                                <GradientStop Color="#D0E8FF"
+                                              Offset="0" />
+                                <GradientStop Color="#C0D8FF"
+                                              Offset="1" />
                             </LinearGradientBrush>
                         </Setter.Value>
                     </Setter>
@@ -406,92 +572,98 @@
             </Style.Triggers>
         </Style>
     </Window.Resources>
-    
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        
         <!-- Top Menu Area (Upper & Lower) -->
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>  <!-- 上部菜单栏 -->
-                <RowDefinition Height="Auto"/>  <!-- 下部菜单栏 -->
+                <RowDefinition Height="Auto" />
+                <!-- 上部菜单栏 -->
+                <RowDefinition Height="Auto" />
+                <!-- 下部菜单栏 -->
             </Grid.RowDefinitions>
-            
             <!-- 上部菜单栏 - 包含语言切换和系统管理 -->
-            <DockPanel Grid.Row="0" Background="{StaticResource BackgroundGradient}" LastChildFill="True" MouseLeftButtonDown="DockPanel_MouseLeftButtonDown">
+            <DockPanel Grid.Row="0"
+                       Background="{StaticResource BackgroundGradient}"
+                       LastChildFill="True"
+                       MouseLeftButtonDown="DockPanel_MouseLeftButtonDown">
                 <!-- 左侧 - 设置和系统菜单 -->
-                <Menu DockPanel.Dock="Left" Background="Transparent" Margin="15,8,10,8">
+                <Menu DockPanel.Dock="Left"
+                      Background="Transparent"
+                      Margin="15,8,10,8">
                     <!-- 设置菜单 -->
-                    <MenuItem Header="{Binding SettingsMenuHeader}" 
+                    <MenuItem Header="{Binding SettingsMenuHeader}"
                               d:Header="设置"
                               Style="{StaticResource IndustrialMenuItem}">
                         <!-- 硬件控制菜单 -->
-                        <MenuItem Header="{Binding HardwareControlMenuHeader}" 
+                        <MenuItem Header="{Binding HardwareControlMenuHeader}"
                                   d:Header="硬件控制"
                                   Style="{StaticResource IndustrialSubMenuItem}"
                                   Visibility="{Binding CanAccessHardwareControl, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <!-- IO控制子菜单 -->
-                            <MenuItem Header="{Binding IOControlMenuHeader}" 
+                            <MenuItem Header="{Binding IOControlMenuHeader}"
                                       d:Header="IO控制"
                                       Command="{Binding OpenIOControlCommand}"
-                                      Style="{StaticResource IndustrialSubMenuItem}"/>
+                                      Style="{StaticResource IndustrialSubMenuItem}" />
                             <!-- IO映射配置子菜单 -->
-                            <MenuItem Header="{Binding IOMappingConfigMenuHeader}" 
+                            <MenuItem Header="{Binding IOMappingConfigMenuHeader}"
                                       d:Header="IO映射配置"
                                       Command="{Binding OpenIOMappingConfigCommand}"
-                                      Style="{StaticResource IndustrialSubMenuItem}"/>
+                                      Style="{StaticResource IndustrialSubMenuItem}" />
                             <!-- 轴配置子菜单 -->
-                            <MenuItem Header="{Binding AxisConfigMenuHeader}" 
+                            <MenuItem Header="{Binding AxisConfigMenuHeader}"
                                       d:Header="轴配置"
                                       Command="{Binding OpenAxisConfigCommand}"
-                                      Style="{StaticResource IndustrialSubMenuItem}"/>
+                                      Style="{StaticResource IndustrialSubMenuItem}" />
                             <!-- 轴手动控制子菜单 -->
-                            <MenuItem Header="{Binding AxisControlMenuHeader}" 
+                            <MenuItem Header="{Binding AxisControlMenuHeader}"
                                       d:Header="轴手动控制"
                                       Command="{Binding OpenAxisControlCommand}"
-                                      Style="{StaticResource IndustrialSubMenuItem}"/>
+                                      Style="{StaticResource IndustrialSubMenuItem}" />
                             <!-- 环线交互子菜单 -->
-                            <MenuItem Header="{Binding LoopInteractionMenuHeader}" 
+                            <MenuItem Header="{Binding LoopInteractionMenuHeader}"
                                       d:Header="环线交互"
                                       Command="{Binding OpenLoopInteractionCommand}"
-                                      Style="{StaticResource IndustrialSubMenuItem}"/>
+                                      Style="{StaticResource IndustrialSubMenuItem}" />
                         </MenuItem>
                     </MenuItem>
-                    
                     <!-- 系统菜单 -->
                     <MenuItem Header="{Binding SystemMenuHeader}"
                               d:Header="系统"
                               Style="{StaticResource IndustrialMenuItem}">
                         <!-- 登录菜单 -->
-                        <MenuItem Header="{Binding LoginButtonText}" 
+                        <MenuItem Header="{Binding LoginButtonText}"
                                   d:Header="登录"
                                   Command="{Binding LoginCommand}"
-                                  Style="{StaticResource IndustrialSubMenuItem}"/>
+                                  Style="{StaticResource IndustrialSubMenuItem}" />
                         <!-- 权限配置菜单 -->
-                        <MenuItem Header="{Binding PermissionConfigMenuHeader}" 
+                        <MenuItem Header="{Binding PermissionConfigMenuHeader}"
                                   d:Header="权限配置"
                                   Command="{Binding OpenPermissionConfigCommand}"
                                   Style="{StaticResource IndustrialSubMenuItem}"
-                                  Visibility="{Binding CanViewSettings, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                  Visibility="{Binding CanViewSettings, Converter={StaticResource BooleanToVisibilityConverter}}" />
                         <!-- 参数设置菜单 -->
-                        <MenuItem Header="{Binding ParameterSettingsMenuHeader}" 
+                        <MenuItem Header="{Binding ParameterSettingsMenuHeader}"
                                   d:Header="系统参数设置"
                                   Command="{Binding OpenParameterSettingsCommand}"
                                   Style="{StaticResource IndustrialSubMenuItem}"
-                                  Visibility="{Binding CanViewSettings, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                  Visibility="{Binding CanViewSettings, Converter={StaticResource BooleanToVisibilityConverter}}" />
                     </MenuItem>
                 </Menu>
-                
                 <!-- 右侧 - 系统按钮 -->
-                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="0,8,15,8">
+                <StackPanel DockPanel.Dock="Right"
+                            Orientation="Horizontal"
+                            Margin="0,8,15,8">
                     <!-- 系统按钮区域 -->
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                    <StackPanel Orientation="Horizontal"
+                                Margin="0,0,0,0">
                         <!-- 最小化按钮 -->
                         <Button x:Name="MinimizeButton"
-                                Width="30" Height="30"
+                                Width="30"
+                                Height="30"
                                 Background="Transparent"
                                 BorderThickness="0"
                                 Cursor="Hand"
@@ -502,32 +674,36 @@
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="Button">
-                                                <Border Background="{TemplateBinding Background}" 
+                                                <Border Background="{TemplateBinding Background}"
                                                         CornerRadius="3">
-                                                    <Path Data="M0,0 L10,0" 
-                                                          Stroke="White" 
+                                                    <Path Data="M0,0 L10,0"
+                                                          Stroke="White"
                                                           StrokeThickness="2"
                                                           HorizontalAlignment="Center"
-                                                          VerticalAlignment="Center"/>
+                                                          VerticalAlignment="Center" />
                                                 </Border>
                                             </ControlTemplate>
                                         </Setter.Value>
                                     </Setter>
                                     <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="#555555"/>
+                                        <Trigger Property="IsMouseOver"
+                                                 Value="True">
+                                            <Setter Property="Background"
+                                                    Value="#555555" />
                                         </Trigger>
-                                        <Trigger Property="IsPressed" Value="True">
-                                            <Setter Property="Background" Value="#333333"/>
+                                        <Trigger Property="IsPressed"
+                                                 Value="True">
+                                            <Setter Property="Background"
+                                                    Value="#333333" />
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
                             </Button.Style>
                         </Button>
-                        
                         <!-- 最大化/还原按钮 -->
                         <Button x:Name="MaximizeButton"
-                                Width="30" Height="30"
+                                Width="30"
+                                Height="30"
                                 Background="Transparent"
                                 BorderThickness="0"
                                 Cursor="Hand"
@@ -539,33 +715,37 @@
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="Button">
-                                                <Border Background="{TemplateBinding Background}" 
+                                                <Border Background="{TemplateBinding Background}"
                                                         CornerRadius="3">
-                                                    <Path Data="M0,0 L10,0 L10,10 L0,10 Z" 
-                                                          Stroke="White" 
+                                                    <Path Data="M0,0 L10,0 L10,10 L0,10 Z"
+                                                          Stroke="White"
                                                           StrokeThickness="2"
                                                           Fill="Transparent"
                                                           HorizontalAlignment="Center"
-                                                          VerticalAlignment="Center"/>
+                                                          VerticalAlignment="Center" />
                                                 </Border>
                                             </ControlTemplate>
                                         </Setter.Value>
                                     </Setter>
                                     <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="#555555"/>
+                                        <Trigger Property="IsMouseOver"
+                                                 Value="True">
+                                            <Setter Property="Background"
+                                                    Value="#555555" />
                                         </Trigger>
-                                        <Trigger Property="IsPressed" Value="True">
-                                            <Setter Property="Background" Value="#333333"/>
+                                        <Trigger Property="IsPressed"
+                                                 Value="True">
+                                            <Setter Property="Background"
+                                                    Value="#333333" />
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
                             </Button.Style>
                         </Button>
-                        
                         <!-- 关闭按钮 -->
                         <Button x:Name="CloseButton"
-                                Width="30" Height="30"
+                                Width="30"
+                                Height="30"
                                 Background="Transparent"
                                 BorderThickness="0"
                                 Cursor="Hand"
@@ -577,23 +757,27 @@
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="Button">
-                                                <Border Background="{TemplateBinding Background}" 
+                                                <Border Background="{TemplateBinding Background}"
                                                         CornerRadius="3">
-                                                    <Path Data="M0,0 L10,10 M10,0 L0,10" 
-                                                          Stroke="White" 
+                                                    <Path Data="M0,0 L10,10 M10,0 L0,10"
+                                                          Stroke="White"
                                                           StrokeThickness="2"
                                                           HorizontalAlignment="Center"
-                                                          VerticalAlignment="Center"/>
+                                                          VerticalAlignment="Center" />
                                                 </Border>
                                             </ControlTemplate>
                                         </Setter.Value>
                                     </Setter>
                                     <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="#E81123"/>
+                                        <Trigger Property="IsMouseOver"
+                                                 Value="True">
+                                            <Setter Property="Background"
+                                                    Value="#E81123" />
                                         </Trigger>
-                                        <Trigger Property="IsPressed" Value="True">
-                                            <Setter Property="Background" Value="#C50F1F"/>
+                                        <Trigger Property="IsPressed"
+                                                 Value="True">
+                                            <Setter Property="Background"
+                                                    Value="#C50F1F" />
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
@@ -601,544 +785,729 @@
                         </Button>
                     </StackPanel>
                 </StackPanel>
-                
                 <!-- 填充空间 -->
-                <Grid/>
+                <Grid />
             </DockPanel>
-            
             <!-- 下部菜单栏 - 包含操作按钮 -->
-            <DockPanel Grid.Row="1" Background="{StaticResource BackgroundGradient}" LastChildFill="True" MouseLeftButtonDown="DockPanel_MouseLeftButtonDown">
+            <DockPanel Grid.Row="1"
+                       Background="{StaticResource BackgroundGradient}"
+                       LastChildFill="True"
+                       MouseLeftButtonDown="DockPanel_MouseLeftButtonDown">
                 <!-- 右侧 - 用户信息 -->
-                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="15,8">
-                    <TextBlock Text="{Binding CurrentUserLabel}" 
-                              d:Text="当前用户："
-                              VerticalAlignment="Center" 
-                              FontWeight="Medium" 
-                              Foreground="#CCCCCC"
-                              FontSize="13"/>
-                    <TextBlock Text="{Binding CurrentUser}" 
-                              d:Text="游客"
-                              VerticalAlignment="Center" 
-                              FontWeight="Bold" 
-                              Foreground="#FFFFFF"
-                              FontSize="13"
-                              Margin="8,0,0,0"/>
+                <StackPanel DockPanel.Dock="Right"
+                            Orientation="Horizontal"
+                            Margin="15,8">
+                    <TextBlock Text="{Binding CurrentUserLabel}"
+                               d:Text="当前用户："
+                               VerticalAlignment="Center"
+                               FontWeight="Medium"
+                               Foreground="#CCCCCC"
+                               FontSize="13" />
+                    <TextBlock Text="{Binding CurrentUser}"
+                               d:Text="游客"
+                               VerticalAlignment="Center"
+                               FontWeight="Bold"
+                               Foreground="#FFFFFF"
+                               FontSize="13"
+                               Margin="8,0,0,0" />
                 </StackPanel>
-                
                 <!-- 左侧 - 测试日志按钮 (已隐藏) -->
-                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" Margin="15,8">
-                    <Button Content="{Binding TestLogButtonText}" 
+                <StackPanel DockPanel.Dock="Left"
+                            Orientation="Horizontal"
+                            Margin="15,8">
+                    <Button Content="{Binding TestLogButtonText}"
                             d:Content="测试日志"
-                            Command="{Binding TestLogCommand}" 
+                            Command="{Binding TestLogCommand}"
                             Style="{StaticResource IndustrialTestButton}"
-                            Width="120" Height="32" Margin="0,0,10,0"
-                            Visibility="Hidden"/>
+                            Width="120"
+                            Height="32"
+                            Margin="0,0,10,0"
+                            Visibility="Hidden" />
                 </StackPanel>
-                
                 <!-- 填充空间 -->
-                <Grid/>
+                <Grid />
             </DockPanel>
         </Grid>
-        
         <!-- Main Content -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="200" MinWidth="150"/>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="200"
+                                  MinWidth="150" />
             </Grid.ColumnDefinitions>
-        
-        <!-- Middle Panel - Camera (Top) and Log (Bottom) -->
-        <Grid Grid.Column="0" Margin="5">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            
-            <!-- Camera Section -->
-            <Border Grid.Row="0" BorderBrush="#CCCCCC" BorderThickness="1" Margin="0,0,0,2.5" CornerRadius="5">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="3*"/>
-                        <ColumnDefinition Width="2*"/>
-                    </Grid.ColumnDefinitions>
-                    
-                    <!-- Left Side - UPH Section -->
-                    <Border Grid.Column="0" BorderBrush="#DDDDDD" BorderThickness="0,0,1,0" Margin="10">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            
-                            <!-- UPH Header -->
-                            <TextBlock Grid.Row="0" Text="生产效率(UPH)" 
-                                      HorizontalAlignment="Center" 
-                                      VerticalAlignment="Center" 
-                                      Margin="10,15,10,10" 
-                                      FontWeight="Bold" 
-                                      FontSize="20"
-                                      Foreground="#2E5BBA"/>
-                            
-                            <!-- UPH Display -->
-                            <Grid Grid.Row="1" Margin="10">
+            <!-- Middle Panel - Camera (Top) and Log (Bottom) -->
+            <Grid Grid.Column="0"
+                  Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <!-- Camera Section -->
+                <Border Grid.Row="0"
+                        BorderBrush="#CCCCCC"
+                        BorderThickness="1"
+                        Margin="0,0,0,2.5"
+                        CornerRadius="5">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*" />
+                            <ColumnDefinition Width="2*" />
+                        </Grid.ColumnDefinitions>
+                        <!-- Left Side - UPH Section -->
+                        <Border Grid.Column="0"
+                                BorderBrush="#DDDDDD"
+                                BorderThickness="0,0,1,0"
+                                Margin="10">
+                            <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
-                                
-                                <!-- 上料 UPH -->
-                                <Border Grid.Row="0" Background="#F0F8FF" Margin="5,10,5,10" CornerRadius="10" BorderBrush="#4682B4" BorderThickness="2">
-                                    <Border.Effect>
-                                        <DropShadowEffect Color="#4682B4" Opacity="0.2" ShadowDepth="2" BlurRadius="5"/>
-                                    </Border.Effect>
-                                    <Grid Margin="15">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" Text="上料速率:" VerticalAlignment="Center" Margin="10,0" FontSize="18" FontWeight="SemiBold"/>
-                                        <TextBlock Grid.Column="1" Text="{Binding LoadingUPH, FallbackValue='1,250'}" 
-                                                  VerticalAlignment="Center" 
-                                                  HorizontalAlignment="Right" 
-                                                  Margin="0,0,15,0" 
-                                                  FontSize="28" 
-                                                  FontWeight="Bold" 
-                                                  Foreground="#2E5BBA"/>
-                                    </Grid>
-                                </Border>
-                                
-                                <!-- 下料 UPH -->
-                                <Border Grid.Row="1" Background="#F0FFF0" Margin="5,10,5,10" CornerRadius="10" BorderBrush="#32CD32" BorderThickness="2">
-                                    <Border.Effect>
-                                        <DropShadowEffect Color="#32CD32" Opacity="0.2" ShadowDepth="2" BlurRadius="5"/>
-                                    </Border.Effect>
-                                    <Grid Margin="15">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" Text="下料速率:" VerticalAlignment="Center" Margin="10,0" FontSize="18" FontWeight="SemiBold"/>
-                                        <TextBlock Grid.Column="1" Text="{Binding UnloadingUPH, FallbackValue='1,180'}" 
-                                                  VerticalAlignment="Center" 
-                                                  HorizontalAlignment="Right" 
-                                                  Margin="0,0,15,0" 
-                                                  FontSize="28" 
-                                                  FontWeight="Bold" 
-                                                  Foreground="#228B22"/>
-                                    </Grid>
-                                </Border>
+                                <!-- UPH Header -->
+                                <TextBlock Grid.Row="0"
+                                           Text="生产效率(UPH)"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Margin="10,15,10,10"
+                                           FontWeight="Bold"
+                                           FontSize="20"
+                                           Foreground="#2E5BBA" />
+                                <!-- UPH Display -->
+                                <Grid Grid.Row="1"
+                                      Margin="10">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <!-- 上料 UPH -->
+                                    <Border Grid.Row="0"
+                                            Background="#F0F8FF"
+                                            Margin="5,10,5,10"
+                                            CornerRadius="10"
+                                            BorderBrush="#4682B4"
+                                            BorderThickness="2">
+                                        <Border.Effect>
+                                            <DropShadowEffect Color="#4682B4"
+                                                              Opacity="0.2"
+                                                              ShadowDepth="2"
+                                                              BlurRadius="5" />
+                                        </Border.Effect>
+                                        <Grid Margin="15">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0"
+                                                       Text="上料速率:"
+                                                       VerticalAlignment="Center"
+                                                       Margin="10,0"
+                                                       FontSize="18"
+                                                       FontWeight="SemiBold" />
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding LoadingUPH, FallbackValue='1,250'}"
+                                                       VerticalAlignment="Center"
+                                                       HorizontalAlignment="Right"
+                                                       Margin="0,0,15,0"
+                                                       FontSize="28"
+                                                       FontWeight="Bold"
+                                                       Foreground="#2E5BBA" />
+                                        </Grid>
+                                    </Border>
+                                    <!-- 下料 UPH -->
+                                    <Border Grid.Row="1"
+                                            Background="#F0FFF0"
+                                            Margin="5,10,5,10"
+                                            CornerRadius="10"
+                                            BorderBrush="#32CD32"
+                                            BorderThickness="2">
+                                        <Border.Effect>
+                                            <DropShadowEffect Color="#32CD32"
+                                                              Opacity="0.2"
+                                                              ShadowDepth="2"
+                                                              BlurRadius="5" />
+                                        </Border.Effect>
+                                        <Grid Margin="15">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0"
+                                                       Text="下料速率:"
+                                                       VerticalAlignment="Center"
+                                                       Margin="10,0"
+                                                       FontSize="18"
+                                                       FontWeight="SemiBold" />
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding UnloadingUPH, FallbackValue='1,180'}"
+                                                       VerticalAlignment="Center"
+                                                       HorizontalAlignment="Right"
+                                                       Margin="0,0,15,0"
+                                                       FontSize="28"
+                                                       FontWeight="Bold"
+                                                       Foreground="#228B22" />
+                                        </Grid>
+                                    </Border>
+                                </Grid>
                             </Grid>
-                        </Grid>
-                    </Border>
-                    
-                    <!-- Right Side - Material Section -->
-                    <Grid Grid.Column="1" Margin="10">
+                        </Border>
+                        <!-- Right Side - Material Section -->
+                        <Grid Grid.Column="1"
+                              Margin="10">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-                            
                             <!-- Material Header -->
-                            <TextBlock Grid.Row="0" Text="物料管理" 
-                                      HorizontalAlignment="Center" 
-                                      VerticalAlignment="Center" 
-                                      Margin="5,8,5,5" 
-                                      FontWeight="Bold" 
-                                      FontSize="16"
-                                      Foreground="#2E5BBA"/>
-                            
+                            <TextBlock Grid.Row="0"
+                                       Text="物料管理"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Margin="5,8,5,5"
+                                       FontWeight="Bold"
+                                       FontSize="16"
+                                       Foreground="#2E5BBA" />
                             <!-- Material Barcode Section (Ultra-Compact Layout) -->
-                            <StackPanel Grid.Row="1" Margin="3,0,3,3">
+                            <StackPanel Grid.Row="1"
+                                        Margin="3,0,3,3">
                                 <!-- A料 -->
-                                <Border Background="#E6F3FF" Margin="0,1" CornerRadius="4" BorderBrush="#87CEEB" BorderThickness="1">
-                                    <Grid Margin="5,4">
+                                <Border Background="#E6F3FF"
+                                        Margin="0,3"
+                                        CornerRadius="6"
+                                        BorderBrush="#87CEEB"
+                                        BorderThickness="2">
+                                    <Grid Margin="10,8">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="42"/>
-                                            <ColumnDefinition Width="35"/>
-                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="75" />
+                                            <ColumnDefinition Width="45" />
+                                            <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        
-                                        <Button Grid.Column="0" Content="清料" 
-                                               Style="{StaticResource ModernButton}" 
-                                               Width="40" Height="24" 
-                                               FontSize="10" FontWeight="Bold"
-                                               Command="{Binding MaterialA_ClearCommand}"
-                                               ToolTip="清空A料"
-                                               Margin="0,0,3,0"
-                                               Padding="2,1"/>
-                                        <TextBlock Grid.Column="1" Text="A:" VerticalAlignment="Center" FontWeight="Bold" FontSize="11" Foreground="#4682B4"/>
-                                        <TextBox Grid.Column="2" 
-                                                Text="{Binding MaterialA_Barcode, FallbackValue='A240912001'}" 
-                                                VerticalAlignment="Center" FontSize="10" Padding="3,2" 
-                                                Height="22" 
-                                                HorizontalAlignment="Stretch"
-                                                ToolTip="{Binding MaterialA_Barcode}"/>
+                                        <Button Grid.Column="0"
+                                                Content="清料"
+                                                Style="{StaticResource ModernButton}"
+                                                Width="70"
+                                                Height="36"
+                                                FontSize="15"
+                                                FontWeight="Bold"
+                                                Command="{Binding MaterialA_ClearCommand}"
+                                                ToolTip="清空A料"
+                                                Margin="0,0,5,0"
+                                                Padding="4,3" />
+                                        <TextBlock Grid.Column="1"
+                                                   Text="A:"
+                                                   VerticalAlignment="Center"
+                                                   FontWeight="Bold"
+                                                   FontSize="16"
+                                                   Foreground="#4682B4" />
+                                        <TextBox Grid.Column="2"
+                                                 Text="{Binding MaterialA_Barcode, FallbackValue='A240912001'}"
+                                                 VerticalAlignment="Center"
+                                                 FontSize="15"
+                                                 Padding="6,4"
+                                                 Height="34"
+                                                 HorizontalAlignment="Stretch"
+                                                 ToolTip="{Binding MaterialA_Barcode}" />
                                     </Grid>
                                 </Border>
-                                
                                 <!-- B料 -->
-                                <Border Background="#F0FFF0" Margin="0,1" CornerRadius="4" BorderBrush="#90EE90" BorderThickness="1">
-                                    <Grid Margin="5,4">
+                                <Border Background="#F0FFF0"
+                                        Margin="0,3"
+                                        CornerRadius="6"
+                                        BorderBrush="#90EE90"
+                                        BorderThickness="2">
+                                    <Grid Margin="10,8">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="42"/>
-                                            <ColumnDefinition Width="35"/>
-                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="75" />
+                                            <ColumnDefinition Width="45" />
+                                            <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        
-                                        <Button Grid.Column="0" Content="清料" 
-                                               Style="{StaticResource ModernButton}" 
-                                               Width="40" Height="24" 
-                                               FontSize="10" FontWeight="Bold"
-                                               Command="{Binding MaterialB_ClearCommand}"
-                                               ToolTip="清空B料"
-                                               Margin="0,0,3,0"
-                                               Padding="2,1"/>
-                                        <TextBlock Grid.Column="1" Text="B:" VerticalAlignment="Center" FontWeight="Bold" FontSize="11" Foreground="#228B22"/>
-                                        <TextBox Grid.Column="2" 
-                                                Text="{Binding MaterialB_Barcode, FallbackValue='B240912002'}" 
-                                                VerticalAlignment="Center" FontSize="10" Padding="3,2" 
-                                                Height="22"
-                                                HorizontalAlignment="Stretch"
-                                                ToolTip="{Binding MaterialB_Barcode}"/>
+                                        <Button Grid.Column="0"
+                                                Content="清料"
+                                                Style="{StaticResource ModernButton}"
+                                                Width="70"
+                                                Height="36"
+                                                FontSize="15"
+                                                FontWeight="Bold"
+                                                Command="{Binding MaterialB_ClearCommand}"
+                                                ToolTip="清空B料"
+                                                Margin="0,0,5,0"
+                                                Padding="4,3" />
+                                        <TextBlock Grid.Column="1"
+                                                   Text="B:"
+                                                   VerticalAlignment="Center"
+                                                   FontWeight="Bold"
+                                                   FontSize="16"
+                                                   Foreground="#228B22" />
+                                        <TextBox Grid.Column="2"
+                                                 Text="{Binding MaterialB_Barcode, FallbackValue='B240912002'}"
+                                                 VerticalAlignment="Center"
+                                                 FontSize="15"
+                                                 Padding="6,4"
+                                                 Height="34"
+                                                 HorizontalAlignment="Stretch"
+                                                 ToolTip="{Binding MaterialB_Barcode}" />
                                     </Grid>
                                 </Border>
-                                
                                 <!-- NG料 -->
-                                <Border Background="#FFF0F0" Margin="0,1" CornerRadius="4" BorderBrush="#FFB6C1" BorderThickness="1">
-                                    <Grid Margin="5,4">
+                                <Border Background="#FFF0F0"
+                                        Margin="0,3"
+                                        CornerRadius="6"
+                                        BorderBrush="#FFB6C1"
+                                        BorderThickness="2">
+                                    <Grid Margin="10,8">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="42"/>
-                                            <ColumnDefinition Width="35"/>
-                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="75" />
+                                            <ColumnDefinition Width="45" />
+                                            <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        
-                                        <Button Grid.Column="0" Content="清料" 
-                                               Style="{StaticResource ModernButton}" 
-                                               Width="40" Height="24" 
-                                               FontSize="10" FontWeight="Bold"
-                                               Command="{Binding MaterialNG_ClearCommand}"
-                                               ToolTip="清空NG料"
-                                               Margin="0,0,3,0"
-                                               Padding="2,1"/>
-                                        <TextBlock Grid.Column="1" Text="NG:" VerticalAlignment="Center" FontWeight="Bold" FontSize="11" Foreground="#DC143C"/>
-                                        <TextBox Grid.Column="2" 
-                                                Text="{Binding MaterialNG_Barcode, FallbackValue='NG240912003'}" 
-                                                VerticalAlignment="Center" FontSize="10" Padding="3,2" 
-                                                Height="22"
-                                                HorizontalAlignment="Stretch"
-                                                ToolTip="{Binding MaterialNG_Barcode}"/>
+                                        <Button Grid.Column="0"
+                                                Content="清料"
+                                                Style="{StaticResource ModernButton}"
+                                                Width="70"
+                                                Height="36"
+                                                FontSize="15"
+                                                FontWeight="Bold"
+                                                Command="{Binding MaterialNG_ClearCommand}"
+                                                ToolTip="清空NG料"
+                                                Margin="0,0,5,0"
+                                                Padding="4,3" />
+                                        <TextBlock Grid.Column="1"
+                                                   Text="NG:"
+                                                   VerticalAlignment="Center"
+                                                   FontWeight="Bold"
+                                                   FontSize="16"
+                                                   Foreground="#DC143C" />
+                                        <TextBox Grid.Column="2"
+                                                 Text="{Binding MaterialNG_Barcode, FallbackValue='NG240912003'}"
+                                                 VerticalAlignment="Center"
+                                                 FontSize="15"
+                                                 Padding="6,4"
+                                                 Height="34"
+                                                 HorizontalAlignment="Stretch"
+                                                 ToolTip="{Binding MaterialNG_Barcode}" />
                                     </Grid>
                                 </Border>
                             </StackPanel>
-                            
                             <!-- Material Storage Panel (Ultra-Compact) -->
-                            <GroupBox Grid.Row="2" Header="设备物料存量" Margin="3,3,3,2" Padding="5,3" 
-                                     FontSize="12" FontWeight="Bold" Foreground="#2E5BBA">
+                            <GroupBox Grid.Row="2"
+                                      Header="设备物料存量"
+                                      Margin="3,3,3,2"
+                                      Padding="5,3"
+                                      FontSize="12"
+                                      FontWeight="Bold"
+                                      Foreground="#2E5BBA">
                                 <Grid>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
-                                    
                                     <!-- Material Inventory Status (Ultra-Compact) -->
-                                    <Grid Grid.Row="0" Margin="1">
+                                    <Grid Grid.Row="0"
+                                          Margin="1">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        
                                         <!-- A Material Inventory -->
-                                        <Border Grid.Column="0" Background="#E6F3FF" Margin="1" Padding="5,6" CornerRadius="4" BorderBrush="#87CEEB" BorderThickness="1">
+                                        <Border Grid.Column="0"
+                                                Background="#E6F3FF"
+                                                Margin="1"
+                                                Padding="5,6"
+                                                CornerRadius="4"
+                                                BorderBrush="#87CEEB"
+                                                BorderThickness="1">
                                             <StackPanel>
-                                                <TextBlock Text="A料" FontWeight="Bold" FontSize="10" HorizontalAlignment="Center" Foreground="#4682B4"/>
-                                                <TextBlock Text="{Binding MaterialA_Count, FallbackValue='150'}" 
-                                                          FontWeight="Bold" FontSize="16" Foreground="#4682B4" 
-                                                          HorizontalAlignment="Center" Margin="0,2,0,0"/>
-                                                <TextBlock Text="件" FontSize="9" HorizontalAlignment="Center" Foreground="#4682B4"/>
+                                                <TextBlock Text="A料"
+                                                           FontWeight="Bold"
+                                                           FontSize="10"
+                                                           HorizontalAlignment="Center"
+                                                           Foreground="#4682B4" />
+                                                <TextBlock Text="{Binding MaterialA_Count, FallbackValue='150'}"
+                                                           FontWeight="Bold"
+                                                           FontSize="16"
+                                                           Foreground="#4682B4"
+                                                           HorizontalAlignment="Center"
+                                                           Margin="0,2,0,0" />
+                                                <TextBlock Text="件"
+                                                           FontSize="9"
+                                                           HorizontalAlignment="Center"
+                                                           Foreground="#4682B4" />
                                             </StackPanel>
                                         </Border>
-                                        
                                         <!-- B Material Inventory -->
-                                        <Border Grid.Column="1" Background="#F0FFF0" Margin="1" Padding="5,6" CornerRadius="4" BorderBrush="#90EE90" BorderThickness="1">
+                                        <Border Grid.Column="1"
+                                                Background="#F0FFF0"
+                                                Margin="1"
+                                                Padding="5,6"
+                                                CornerRadius="4"
+                                                BorderBrush="#90EE90"
+                                                BorderThickness="1">
                                             <StackPanel>
-                                                <TextBlock Text="B料" FontWeight="Bold" FontSize="10" HorizontalAlignment="Center" Foreground="#228B22"/>
-                                                <TextBlock Text="{Binding MaterialB_Count, FallbackValue='89'}" 
-                                                          FontWeight="Bold" FontSize="16" Foreground="#228B22" 
-                                                          HorizontalAlignment="Center" Margin="0,2,0,0"/>
-                                                <TextBlock Text="件" FontSize="9" HorizontalAlignment="Center" Foreground="#228B22"/>
+                                                <TextBlock Text="B料"
+                                                           FontWeight="Bold"
+                                                           FontSize="10"
+                                                           HorizontalAlignment="Center"
+                                                           Foreground="#228B22" />
+                                                <TextBlock Text="{Binding MaterialB_Count, FallbackValue='89'}"
+                                                           FontWeight="Bold"
+                                                           FontSize="16"
+                                                           Foreground="#228B22"
+                                                           HorizontalAlignment="Center"
+                                                           Margin="0,2,0,0" />
+                                                <TextBlock Text="件"
+                                                           FontSize="9"
+                                                           HorizontalAlignment="Center"
+                                                           Foreground="#228B22" />
                                             </StackPanel>
                                         </Border>
-                                        
                                         <!-- NG Material Inventory -->
-                                        <Border Grid.Column="2" Background="#FFF0F0" Margin="1" Padding="5,6" CornerRadius="4" BorderBrush="#FFB6C1" BorderThickness="1">
+                                        <Border Grid.Column="2"
+                                                Background="#FFF0F0"
+                                                Margin="1"
+                                                Padding="5,6"
+                                                CornerRadius="4"
+                                                BorderBrush="#FFB6C1"
+                                                BorderThickness="1">
                                             <StackPanel>
-                                                <TextBlock Text="NG料" FontWeight="Bold" FontSize="10" HorizontalAlignment="Center" Foreground="#DC143C"/>
-                                                <TextBlock Text="{Binding MaterialNG_Count, FallbackValue='12'}" 
-                                                          FontWeight="Bold" FontSize="16" Foreground="#DC143C" 
-                                                          HorizontalAlignment="Center" Margin="0,2,0,0"/>
-                                                <TextBlock Text="件" FontSize="9" HorizontalAlignment="Center" Foreground="#DC143C"/>
+                                                <TextBlock Text="NG料"
+                                                           FontWeight="Bold"
+                                                           FontSize="10"
+                                                           HorizontalAlignment="Center"
+                                                           Foreground="#DC143C" />
+                                                <TextBlock Text="{Binding MaterialNG_Count, FallbackValue='12'}"
+                                                           FontWeight="Bold"
+                                                           FontSize="16"
+                                                           Foreground="#DC143C"
+                                                           HorizontalAlignment="Center"
+                                                           Margin="0,2,0,0" />
+                                                <TextBlock Text="件"
+                                                           FontSize="9"
+                                                           HorizontalAlignment="Center"
+                                                           Foreground="#DC143C" />
                                             </StackPanel>
                                         </Border>
                                     </Grid>
-                                    
                                     <!-- Total and Capacity (Compact) -->
-                                    <Border Grid.Row="1" Background="#F8F9FA" Margin="2,4,2,2" Padding="6,4" CornerRadius="3">
+                                    <Border Grid.Row="1"
+                                            Background="#F8F9FA"
+                                            Margin="2,4,2,2"
+                                            Padding="6,4"
+                                            CornerRadius="3">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
-                                            
-                                            <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left">
-                                                <TextBlock Text="总量:" FontWeight="Bold" FontSize="10" VerticalAlignment="Center"/>
-                                                <TextBlock Text="{Binding TotalMaterialCount, FallbackValue='251'}" 
-                                                          FontWeight="Bold" FontSize="11" Foreground="#0066CC" 
-                                                          Margin="3,0,0,0" VerticalAlignment="Center"/>
-                                                <TextBlock Text="件" FontSize="9" Margin="2,0,0,0" VerticalAlignment="Center"/>
+                                            <StackPanel Grid.Column="0"
+                                                        Orientation="Horizontal"
+                                                        HorizontalAlignment="Left">
+                                                <TextBlock Text="总量:"
+                                                           FontWeight="Bold"
+                                                           FontSize="10"
+                                                           VerticalAlignment="Center" />
+                                                <TextBlock Text="{Binding TotalMaterialCount, FallbackValue='251'}"
+                                                           FontWeight="Bold"
+                                                           FontSize="11"
+                                                           Foreground="#0066CC"
+                                                           Margin="3,0,0,0"
+                                                           VerticalAlignment="Center" />
+                                                <TextBlock Text="件"
+                                                           FontSize="9"
+                                                           Margin="2,0,0,0"
+                                                           VerticalAlignment="Center" />
                                             </StackPanel>
-                                            
-                                            <Rectangle Grid.Column="1" Width="1" Fill="#CCCCCC" Margin="6,2"/>
-                                            
-                                            <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                                                <TextBlock Text="满载:" FontWeight="Bold" FontSize="10" VerticalAlignment="Center"/>
-                                                <TextBlock Text="{Binding MaxCapacity, FallbackValue='1500'}" 
-                                                          FontWeight="Bold" FontSize="11" Foreground="#666666" 
-                                                          Margin="3,0,0,0" VerticalAlignment="Center"/>
-                                                <TextBlock Text="件" FontSize="9" Margin="2,0,0,0" VerticalAlignment="Center"/>
+                                            <Rectangle Grid.Column="1"
+                                                       Width="1"
+                                                       Fill="#CCCCCC"
+                                                       Margin="6,2" />
+                                            <StackPanel Grid.Column="2"
+                                                        Orientation="Horizontal"
+                                                        HorizontalAlignment="Right">
+                                                <TextBlock Text="满载:"
+                                                           FontWeight="Bold"
+                                                           FontSize="10"
+                                                           VerticalAlignment="Center" />
+                                                <TextBlock Text="{Binding MaxCapacity, FallbackValue='1500'}"
+                                                           FontWeight="Bold"
+                                                           FontSize="11"
+                                                           Foreground="#666666"
+                                                           Margin="3,0,0,0"
+                                                           VerticalAlignment="Center" />
+                                                <TextBlock Text="件"
+                                                           FontSize="9"
+                                                           Margin="2,0,0,0"
+                                                           VerticalAlignment="Center" />
                                             </StackPanel>
                                         </Grid>
                                     </Border>
-                                    
                                     <!-- Status (Compact) -->
-                                    <Border Grid.Row="2" Background="#E8F5E8" Margin="2" Padding="4,3" CornerRadius="3">
+                                    <Border Grid.Row="2"
+                                            Background="#E8F5E8"
+                                            Margin="2"
+                                            Padding="4,3"
+                                            CornerRadius="3">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
-                                            
-                                            <StackPanel Grid.Column="0" Orientation="Horizontal">
-                                                <TextBlock Text="状态:" FontSize="9" VerticalAlignment="Center"/>
-                                                <TextBlock Text="{Binding InventoryStatusText, FallbackValue='正常'}" 
-                                                          FontSize="9" FontWeight="Bold" Foreground="#228B22"
-                                                          Margin="3,0,0,0" VerticalAlignment="Center"/>
+                                            <StackPanel Grid.Column="0"
+                                                        Orientation="Horizontal">
+                                                <TextBlock Text="状态:"
+                                                           FontSize="9"
+                                                           VerticalAlignment="Center" />
+                                                <TextBlock Text="{Binding InventoryStatusText, FallbackValue='正常'}"
+                                                           FontSize="9"
+                                                           FontWeight="Bold"
+                                                           Foreground="#228B22"
+                                                           Margin="3,0,0,0"
+                                                           VerticalAlignment="Center" />
                                             </StackPanel>
-                                            
-                                            <TextBlock Grid.Column="1" Text="{Binding LastUpdateTime, FallbackValue='14:32'}" 
-                                                      FontSize="8" Foreground="#666666" 
-                                                      VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding LastUpdateTime, FallbackValue='14:32'}"
+                                                       FontSize="8"
+                                                       Foreground="#666666"
+                                                       VerticalAlignment="Center" />
                                         </Grid>
                                     </Border>
                                 </Grid>
                             </GroupBox>
-                            
                             <!-- Material Operation Quick Actions (Ultra-Compact) -->
-                            <Grid Grid.Row="3" Margin="3,2,3,3">
+                            <Grid Grid.Row="3"
+                                  Margin="3,3,3,3">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                
-                                <Button Grid.Column="0" Content="全部清料" 
-                                       Style="{StaticResource ModernButton}" 
-                                       Height="28" FontSize="10" FontWeight="Bold"
-                                       Command="{Binding ClearAllMaterialsCommand}"
-                                       Background="#FFE6E6" BorderBrush="#FFB6C1"
-                                       ToolTip="清空所有物料" Margin="2,0"
-                                       Padding="4,2"/>
-                                
-                                <Button Grid.Column="1" Content="重置计数" 
-                                       Style="{StaticResource ModernButton}" 
-                                       Height="28" FontSize="10" FontWeight="Bold"
-                                       Command="{Binding ResetAllCountCommand}"
-                                       Background="#E6F3FF" BorderBrush="#87CEEB"
-                                       ToolTip="重置所有计数器" Margin="2,0"
-                                       Padding="4,2"/>
+                                <Button Grid.Column="0"
+                                        Content="全部清料"
+                                        Style="{StaticResource ModernButton}"
+                                        Height="45"
+                                        FontSize="16"
+                                        FontWeight="Bold"
+                                        Command="{Binding ClearAllMaterialsCommand}"
+                                        Background="#FFE6E6"
+                                        BorderBrush="#FFB6C1"
+                                        ToolTip="清空所有物料"
+                                        Margin="2,0"
+                                        Padding="8,5" />
+                                <Button Grid.Column="1"
+                                        Content="重置计数"
+                                        Style="{StaticResource ModernButton}"
+                                        Height="45"
+                                        FontSize="16"
+                                        FontWeight="Bold"
+                                        Command="{Binding ResetAllCountCommand}"
+                                        Background="#E6F3FF"
+                                        BorderBrush="#87CEEB"
+                                        ToolTip="重置所有计数器"
+                                        Margin="2,0"
+                                        Padding="8,5" />
                             </Grid>
+                        </Grid>
                     </Grid>
+                </Border>
+                <!-- Log Section -->
+                <Grid Grid.Row="1"
+                      Margin="0,2.5,0,0">
+                    <controls:LogWindow />
+                </Grid>
+            </Grid>
+            <!-- Right Panel - System Control -->
+            <Border Grid.Column="1"
+                    BorderBrush="Gray"
+                    BorderThickness="1"
+                    Margin="5">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <!-- Header -->
+                    <TextBlock Grid.Row="0"
+                               Text="系统控制区域"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Margin="5"
+                               FontWeight="Bold"
+                               FontSize="14" />
+                    <!-- System Status Display -->
+                    <GroupBox Grid.Row="1"
+                              Margin="8,4"
+                              Padding="4"
+                              FontSize="13"
+                              FontWeight="Bold"
+                              HorizontalContentAlignment="Center">
+                        <GroupBox.Header>
+                            <TextBlock Text="系统运行状态"
+                                       HorizontalAlignment="Center" />
+                        </GroupBox.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <!-- 系统运行状态 -->
+                            <Border Grid.Row="0"
+                                    Margin="0.5"
+                                    Padding="1"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Center">
+                                <ewanControls:EwanIO LabelText="系统运行"
+                                                     IsOn="{Binding SystemRunningIsOn, FallbackValue=True}"
+                                                     IconSize="32"
+                                                     LabelFontSize="16"
+                                                     LabelFontWeight="SemiBold"
+                                                     OnColor="{Binding SystemRunningStatus, FallbackValue=Green}"
+                                                     OffColor="#696969"
+                                                     ShowGlowEffect="True"
+                                                     EnableAnimation="True"
+                                                     HorizontalAlignment="Center"
+                                                     VerticalAlignment="Center" />
+                            </Border>
+                            <!-- 急停状态 -->
+                            <Border Grid.Row="1"
+                                    Margin="0.5"
+                                    Padding="1"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Center">
+                                <ewanControls:EwanIO LabelText="急停状态"
+                                                     IsOn="{Binding EmergencyStopIsOn, FallbackValue=False}"
+                                                     IconSize="32"
+                                                     LabelFontSize="16"
+                                                     LabelFontWeight="SemiBold"
+                                                     OnColor="{Binding EmergencyStopStatus, FallbackValue=Red}"
+                                                     OffColor="#696969"
+                                                     ShowGlowEffect="True"
+                                                     EnableAnimation="True"
+                                                     HorizontalAlignment="Center"
+                                                     VerticalAlignment="Center" />
+                            </Border>
+                            <!-- 报警状态 -->
+                            <Border Grid.Row="2"
+                                    Margin="0.5"
+                                    Padding="1"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Center">
+                                <ewanControls:EwanIO LabelText="报警状态"
+                                                     IsOn="{Binding AlarmIsOn, FallbackValue=False}"
+                                                     IconSize="32"
+                                                     LabelFontSize="16"
+                                                     LabelFontWeight="SemiBold"
+                                                     OnColor="{Binding AlarmStatus, FallbackValue=Red}"
+                                                     OffColor="#696969"
+                                                     ShowGlowEffect="True"
+                                                     EnableAnimation="True"
+                                                     HorizontalAlignment="Center"
+                                                     VerticalAlignment="Center" />
+                            </Border>
+                            <!-- 暂停状态 -->
+                            <Border Grid.Row="3"
+                                    Margin="0.5"
+                                    Padding="1"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Center">
+                                <ewanControls:EwanIO LabelText="暂停状态"
+                                                     IsOn="{Binding PauseIsOn, FallbackValue=False}"
+                                                     IconSize="32"
+                                                     LabelFontSize="16"
+                                                     LabelFontWeight="SemiBold"
+                                                     OnColor="{Binding PauseStatus, FallbackValue=Yellow}"
+                                                     OffColor="#696969"
+                                                     ShowGlowEffect="True"
+                                                     EnableAnimation="True"
+                                                     HorizontalAlignment="Center"
+                                                     VerticalAlignment="Center" />
+                            </Border>
+                            <!-- 生产模式状态 -->
+                            <Border Grid.Row="4"
+                                    Margin="0.5"
+                                    Padding="1"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Center">
+                                <ewanControls:EwanIO LabelText="{Binding ProductionModeText, FallbackValue='自动模式'}"
+                                                     IsOn="True"
+                                                     IconSize="32"
+                                                     LabelFontSize="16"
+                                                     LabelFontWeight="Bold"
+                                                     OnColor="{Binding ProductionModeColor, FallbackValue=Blue}"
+                                                     OffColor="#696969"
+                                                     ShowGlowEffect="True"
+                                                     EnableAnimation="True"
+                                                     HorizontalAlignment="Center"
+                                                     VerticalAlignment="Center" />
+                            </Border>
+                        </Grid>
+                    </GroupBox>
+                    <!-- System Control Buttons -->
+                    <GroupBox Grid.Row="2"
+                              Header="系统控制"
+                              Margin="8,4,8,8"
+                              Padding="8"
+                              FontSize="12"
+                              FontWeight="Medium">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <!-- 复位按钮 -->
+                            <Button Grid.Row="0"
+                                    Content="复位"
+                                    Style="{StaticResource IndustrialTestButton}"
+                                    Background="#6C757D"
+                                    FontSize="12"
+                                    Command="{Binding SystemResetCommand}"
+                                    Margin="4,2" />
+                            <!-- 急停按钮 -->
+                            <Button Grid.Row="1"
+                                    Content="急停"
+                                    Style="{StaticResource IndustrialTestButton}"
+                                    Background="#DC3545"
+                                    FontSize="12"
+                                    Command="{Binding EmergencyStopCommand}"
+                                    Margin="4,2" />
+                            <!-- 清除报警按钮 -->
+                            <Button Grid.Row="2"
+                                    Content="清除报警"
+                                    Style="{StaticResource IndustrialTestButton}"
+                                    Background="#FD7E14"
+                                    FontSize="12"
+                                    Command="{Binding ClearAlarmCommand}"
+                                    Margin="4,2" />
+                            <!-- 启动按钮 -->
+                            <Button Grid.Row="3"
+                                    Content="启动"
+                                    Style="{StaticResource IndustrialTestButton}"
+                                    Background="#28A745"
+                                    FontSize="12"
+                                    Command="{Binding SystemStartCommand}"
+                                    Margin="4,2" />
+                            <!-- 停止按钮 -->
+                            <Button Grid.Row="4"
+                                    Content="停止"
+                                    Style="{StaticResource IndustrialTestButton}"
+                                    Background="#DC3545"
+                                    FontSize="12"
+                                    Command="{Binding SystemStopCommand}"
+                                    Margin="4,2" />
+                        </Grid>
+                    </GroupBox>
                 </Grid>
             </Border>
-            
-            <!-- Log Section -->
-            <Grid Grid.Row="1" Margin="0,2.5,0,0">
-                <controls:LogWindow/>
-            </Grid>
-        </Grid>
-        
-        <!-- Right Panel - System Control -->
-        <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="1" Margin="5">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                
-                <!-- Header -->
-                <TextBlock Grid.Row="0" Text="系统控制区域" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5" FontWeight="Bold" FontSize="14"/>
-                
-                <!-- System Status Display -->
-                <GroupBox Grid.Row="1" Margin="8,4" Padding="4" FontSize="13" FontWeight="Bold" HorizontalContentAlignment="Center">
-                    <GroupBox.Header>
-                        <TextBlock Text="系统运行状态" HorizontalAlignment="Center"/>
-                    </GroupBox.Header>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        
-                        <!-- 系统运行状态 -->
-                        <Border Grid.Row="0" Margin="1" Padding="2" HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                            <ewanControls:EwanIO 
-                                LabelText="系统运行"
-                                IsOn="{Binding SystemRunningIsOn, FallbackValue=True}"
-                                IconSize="20"
-                                LabelFontSize="11"
-                                LabelFontWeight="SemiBold"
-                                OnColor="{Binding SystemRunningStatus, FallbackValue=Green}"
-                                OffColor="#696969"
-                                ShowGlowEffect="True"
-                                EnableAnimation="True"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"/>
-                        </Border>
-                        
-                        <!-- 急停状态 -->
-                        <Border Grid.Row="1" Margin="1" Padding="2" HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                            <ewanControls:EwanIO 
-                                LabelText="急停状态"
-                                IsOn="{Binding EmergencyStopIsOn, FallbackValue=False}"
-                                IconSize="20"
-                                LabelFontSize="11"
-                                LabelFontWeight="SemiBold"
-                                OnColor="{Binding EmergencyStopStatus, FallbackValue=Red}"
-                                OffColor="#696969"
-                                ShowGlowEffect="True"
-                                EnableAnimation="True"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"/>
-                        </Border>
-                        
-                        <!-- 报警状态 -->
-                        <Border Grid.Row="2" Margin="1" Padding="2" HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                            <ewanControls:EwanIO 
-                                LabelText="报警状态"
-                                IsOn="{Binding AlarmIsOn, FallbackValue=False}"
-                                IconSize="20"
-                                LabelFontSize="11"
-                                LabelFontWeight="SemiBold"
-                                OnColor="{Binding AlarmStatus, FallbackValue=Red}"
-                                OffColor="#696969"
-                                ShowGlowEffect="True"
-                                EnableAnimation="True"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"/>
-                        </Border>
-                        
-                        <!-- 暂停状态 -->
-                        <Border Grid.Row="3" Margin="1" Padding="2" HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                            <ewanControls:EwanIO 
-                                LabelText="暂停状态"
-                                IsOn="{Binding PauseIsOn, FallbackValue=False}"
-                                IconSize="20"
-                                LabelFontSize="11"
-                                LabelFontWeight="SemiBold"
-                                OnColor="{Binding PauseStatus, FallbackValue=Yellow}"
-                                OffColor="#696969"
-                                ShowGlowEffect="True"
-                                EnableAnimation="True"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"/>
-                        </Border>
-                        
-                        <!-- 生产模式状态 -->
-                        <Border Grid.Row="4" Margin="1" Padding="2" HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                            <ewanControls:EwanIO 
-                                LabelText="{Binding ProductionModeText, FallbackValue='自动模式'}"
-                                IsOn="True"
-                                IconSize="20"
-                                LabelFontSize="11"
-                                LabelFontWeight="Bold"
-                                OnColor="{Binding ProductionModeColor, FallbackValue=Blue}"
-                                OffColor="#696969"
-                                ShowGlowEffect="True"
-                                EnableAnimation="True"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"/>
-                        </Border>
-                    </Grid>
-                </GroupBox>
-                
-                <!-- System Control Buttons -->
-                <GroupBox Grid.Row="2" Header="系统控制" Margin="8,4,8,8" Padding="8" FontSize="12" FontWeight="Medium">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        
-                        <!-- 复位按钮 -->
-                        <Button Grid.Row="0"
-                                Content="复位"
-                                Style="{StaticResource IndustrialTestButton}"
-                                Background="#6C757D"
-                                FontSize="12"
-                                Command="{Binding SystemResetCommand}"
-                                Margin="4,2"/>
-                                
-                        <!-- 急停按钮 -->
-                        <Button Grid.Row="1"
-                                Content="急停"
-                                Style="{StaticResource IndustrialTestButton}"
-                                Background="#DC3545"
-                                FontSize="12"
-                                Command="{Binding EmergencyStopCommand}"
-                                Margin="4,2"/>
-                                
-                        <!-- 清除报警按钮 -->
-                        <Button Grid.Row="2"
-                                Content="清除报警"
-                                Style="{StaticResource IndustrialTestButton}"
-                                Background="#FD7E14"
-                                FontSize="12"
-                                Command="{Binding ClearAlarmCommand}"
-                                Margin="4,2"/>
-                        
-                        <!-- 启动按钮 -->
-                        <Button Grid.Row="3"
-                                Content="启动"
-                                Style="{StaticResource IndustrialTestButton}"
-                                Background="#28A745"
-                                FontSize="12"
-                                Command="{Binding SystemStartCommand}"
-                                Margin="4,2"/>
-                                
-                        <!-- 停止按钮 -->
-                        <Button Grid.Row="4"
-                                Content="停止"
-                                Style="{StaticResource IndustrialTestButton}"
-                                Background="#DC3545"
-                                FontSize="12"
-                                Command="{Binding SystemStopCommand}"
-                                Margin="4,2"/>
-                    </Grid>
-                </GroupBox>
-            </Grid>
-        </Border>
         </Grid>
     </Grid>
 </Window>
