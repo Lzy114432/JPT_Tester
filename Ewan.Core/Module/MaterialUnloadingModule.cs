@@ -60,6 +60,7 @@ namespace Ewan.Core.Module
 
         private bool _ringLineunload = false;
         private bool _lastRingLineunload = false; // 用于边缘检测
+        private bool _isFirstUnloading = true; // 标记是否是第一次检测
 
         /// <summary>
         /// 带共享状态的构造函数
@@ -88,6 +89,7 @@ namespace Ewan.Core.Module
                 _emergencyStopTriggered = false;
                 _ringLineunload = false;
                 _lastRingLineunload = false;
+                _isFirstUnloading = true; // 初始化为第一次检测
             }
         }
 
@@ -101,18 +103,40 @@ namespace Ewan.Core.Module
                     {
                         case MaterialUnloadingState.Idle:
                             // 监控环线信号，触发取料流程
-                            // 必须同时满足：1.环线要料上升沿(从false变为true) 2.能获取流程锁
-                            bool ringLineRisingEdge = _ringLineunload && !_lastRingLineunload; // 检测上升沿
+                            // 第一次：直接检测信号状态
+                            // 后续：使用上升沿检测(从false变为true)
+                            bool shouldTrigger = false;
                             
-                            if (ringLineRisingEdge &&
+                            if (_isFirstUnloading)
+                            {
+                                // 第一次直接检测信号为true就触发
+                                shouldTrigger = _ringLineunload;
+                                if (shouldTrigger)
+                                {
+                                    _uiLogger.InfoRaw("处理已开始: {0}", "首次检测环线要料信号为true，触发下料流程");
+                                }
+                            }
+                            else
+                            {
+                                // 后续使用边沿检测
+                                bool ringLineRisingEdge = _ringLineunload && !_lastRingLineunload;
+                                shouldTrigger = ringLineRisingEdge;
+                                if (shouldTrigger)
+                                {
+                                    _uiLogger.InfoRaw("处理已开始: {0}", "环线要料上升沿触发，开始下料流程");
+                                }
+                            }
+                            
+                            if (shouldTrigger &&
                                 !_unloadingRequested &&
                                 _sharedState?.TryStartUnloading() == true)
                             {
-
                                 _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, false);
                                 // 设置默认料仓为1号（可根据需要修改）
                                 RequestUnloading(1);
-                                _uiLogger.InfoRaw("处理已开始: {0}", "环线要料上升沿触发，开始下料流程");
+                                
+                                // 第一次触发后，后续使用边沿检测
+                                _isFirstUnloading = false;
                             }
                             
                             // 更新边缘检测状态（无论是否成功触发下料都要更新）
