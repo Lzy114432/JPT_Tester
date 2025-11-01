@@ -21,9 +21,6 @@ namespace Ewan.Core.Module
         private bool _loadingRequested = false;
         private bool _stopRequested = false;
         private bool _initialized = false; // 初始化标志
-        
-        // 诊断日志相关
-        private long _lastMovingToBinLogTicks = DateTime.Now.Ticks; // 最后一次记录MovingToBin日志的时间
 
         // 共享状态（用于与其他模块通信）
         private ProductionLineSharedState _sharedState;
@@ -273,18 +270,6 @@ namespace Ewan.Core.Module
         {
             // 检查下料完成状态
             bool loadingCompleted = GetLoadingCompleted();
-            
-            // 诊断日志：定期输出等待状态（每5秒记录一次，避免刷屏）
-            if (!loadingCompleted)
-            {
-                long currentTicks = DateTime.Now.Ticks;
-                long elapsedSeconds = (currentTicks - _lastMovingToBinLogTicks) / TimeSpan.TicksPerSecond;
-                if (elapsedSeconds >= 5)
-                {
-                    _uiLogger.DebugRaw("[装料诊断] 等待装料完成: LoadingCompleted={0}", loadingCompleted);
-                    _lastMovingToBinLogTicks = currentTicks;
-                }
-            }
             
             if (loadingCompleted)
             {
