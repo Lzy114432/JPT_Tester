@@ -161,13 +161,16 @@ namespace Ewan.Core.Module
                             if (_sharedState?.IsRingLineRequestTimeout() == true &&
                                 _sharedState?.TryStartLoading() == true)
                             {
-                                // 环线请求超时，触发紧急上料
-                                _sharedState.MarkRingLineTimeoutTriggered();
-                                _isRingLineTimeoutLoading = true;
-                                _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, true);  
-                                
-                                // 直接跳到扫码位置状态（模拟料片已经在扫码位置）
-                                _currentState = MaterialLoadingState.AtScanPosition;
+
+                                _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, false);
+                                _sharedState?.StopRingLineRequest();
+                                _isRingLineTimeoutLoading = false;
+                                // 释放流程锁
+                                _sharedState?.FinishProcess();
+                                // 重置标志并返回空闲状态
+                                SetLoadingCompleted(false);
+
+
                                 _uiLogger.InfoRaw("处理已开始: {0}", "环线请求超时30秒，触发紧急上料流程");
                             }
                             // 正常的皮带来料检测
