@@ -84,7 +84,17 @@ namespace MarkingMachineFeeder
         /// </summary>
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            // 创建并显示自定义确认对话框
+            var confirmDialog = new MarkingMachineFeeder.Windows.ConfirmationDialog(
+                Ewan.Resources.UIStrings.ExitConfirmTitle,
+                Ewan.Resources.UIStrings.ExitConfirmMessage,
+                false);
+
+            // 如果用户确认退出
+            if (confirmDialog.ShowDialog() == true)
+            {
+                this.Close();
+            }
         }
     }
 }
