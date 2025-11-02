@@ -200,9 +200,6 @@ namespace Ewan.Core.Module
                     // 成功获取锁，清除优先级请求
                     _sharedState?.ClearUnloadingPriority();
                     
-                    // 禁止机械臂自动取料
-                    _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, false);
-                    
                     RequestUnloading(1);
                     _uiLogger.InfoRaw("处理已开始: {0}", "装料流程已完成，开始下料流程");
                 }
@@ -307,10 +304,6 @@ namespace Ewan.Core.Module
 
                 // 清除下料优先级请求
                 _sharedState?.ClearUnloadingPriority();
-
-                // 恢复允许取料（由Idle状态根据X3控制）
-                // 这里先恢复为true，让Idle状态接管控制
-                _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, true);
 
                 // 释放流程锁
                 _sharedState?.FinishProcess();
