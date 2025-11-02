@@ -100,24 +100,7 @@ namespace Ewan.Core.Module
                     switch (_currentState)
                     {
                         case MaterialUnloadingState.Idle:
-                            // 监控环线信号，触发取料流程
-                            // 必须同时满足：1.环线要料上升沿  2.X3=false(无外部料片)  3.能获取流程锁
-                            
-                            if (_ringLineRisingEdge &&
-                                !_unloadingRequested &&
-                                !_ioManager.LayeredIO.ReadInBit(MATERIAL_DETECT_SIGNAL) &&  // X3必须为false
-                                _sharedState?.TryStartUnloading() == true)
-                            {
-                                // 禁止后台程序取料，避免与装料流程冲突
-                                _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, false);
-
-                                // 设置默认料仓为1号（可根据需要修改）
-                                RequestUnloading(1);
-                                _uiLogger.InfoRaw("处理已开始: {0}", "环线要料上升沿触发且无外部料片(X3=false)，禁止取料(OUT14=false)，开始下料流程");
-                                
-                                // 清除上升沿标志，避免重复触发
-                                _ringLineRisingEdge = false;
-                            }
+                            ProcessIdleState();
                             break;
                             
                         case MaterialUnloadingState.PickingMaterial:
@@ -178,6 +161,53 @@ namespace Ewan.Core.Module
         }
 
         #region 核心流程处理
+
+        /// <summary>
+        /// 处理Idle状态
+        /// </summary>
+        private void ProcessIdleState()
+        {
+            // 检测环线要料上升沿
+            if (_ringLineRisingEdge && !_unloadingRequested)
+            {
+                // 立即记录下料优先级请求
+                _sharedState?.RequestUnloadingPriority();
+                
+                _uiLogger.InfoRaw("处理已开始: {0}", "环线请求下料，设置优先级标志");
+                
+                // 关键检查：装料流程是否进行中（检查IN20脉冲标志）
+                bool loadingInProgress = _sharedState?.IsLoadingInProgress() ?? false;
+                
+                if (loadingInProgress)
+                {
+                    // 有IN20脉冲，说明装料流程未完成，不能开始下料
+                    _uiLogger.InfoRaw("处理已开始: {0}", 
+                        "检测到装料流程进行中(IN20脉冲)，等待装料完成后再下料");
+                    return;
+                }
+                
+                // 装料流程已完成（无IN20脉冲），尝试获取流程锁并开始下料
+                if (_sharedState?.TryStartUnloading() == true)
+                {
+                    // 成功获取锁，清除优先级请求
+                    _sharedState?.ClearUnloadingPriority();
+                    
+                    // 禁止机械臂自动取料
+                    _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, false);
+                    
+                    RequestUnloading(1);
+                    _uiLogger.InfoRaw("处理已开始: {0}", "装料流程已完成，开始下料流程");
+                    
+                    _ringLineRisingEdge = false;
+                }
+                else
+                {
+                    // 获取锁失败，可能是其他流程占用（不太可能发生）
+                    _uiLogger.WarnRaw("处理错误: {0} - {1}", 
+                        "下料流程", "装料已完成但无法获取流程锁");
+                }
+            }
+        }
 
         /// <summary>
         /// 处理正在取料状态
@@ -261,7 +291,11 @@ namespace Ewan.Core.Module
                 // 发送完成信号到Modbus寄存器153
                 SendCartCompletionToModbus();
 
-                // 恢复允许取料
+                // 清除下料优先级请求
+                _sharedState?.ClearUnloadingPriority();
+
+                // 恢复允许取料（由Idle状态根据X3控制）
+                // 这里先恢复为true，让Idle状态接管控制
                 _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, true);
 
                 // 释放流程锁
@@ -272,7 +306,8 @@ namespace Ewan.Core.Module
                 _lastScannedQrCode = string.Empty; // 清空扫码结果
                 _currentState = MaterialUnloadingState.Idle;
 
-                _uiLogger.InfoRaw("处理已完成: {0}", "下料完成，清除扫码完成信号(OUT9)，恢复允许取料(OUT14=true)，释放流程锁");
+                _uiLogger.InfoRaw("处理已完成: {0}", 
+                    "下料完成，清除优先级请求，恢复允许取料(OUT14=true)，释放流程锁");
             }
         }
 

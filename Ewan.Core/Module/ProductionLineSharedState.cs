@@ -46,6 +46,16 @@ namespace Ewan.Core.Module
         /// </summary>
         private ActiveProcess _currentProcess = ActiveProcess.None;
 
+        /// <summary>
+        /// 装料流程进行中标志（基于IN20脉冲）
+        /// </summary>
+        private bool _loadingInProgress = false;
+
+        /// <summary>
+        /// 下料优先级请求标志
+        /// </summary>
+        private bool _unloadingPriorityRequested = false;
+
         #endregion
 
         #region 公共属性
@@ -289,6 +299,80 @@ namespace Ewan.Core.Module
             lock (_stateLock)
             {
                 return _currentProcess == ActiveProcess.Unloading;
+            }
+        }
+
+        #endregion
+
+        #region 装料流程标志管理
+
+        /// <summary>
+        /// 标记装料流程开始（检测到IN20上升沿时调用）
+        /// </summary>
+        public void MarkLoadingInProgress()
+        {
+            lock (_stateLock)
+            {
+                _loadingInProgress = true;
+            }
+        }
+
+        /// <summary>
+        /// 清除装料流程标志（装料完成时调用）
+        /// </summary>
+        public void ClearLoadingInProgress()
+        {
+            lock (_stateLock)
+            {
+                _loadingInProgress = false;
+            }
+        }
+
+        /// <summary>
+        /// 检查装料流程是否进行中
+        /// </summary>
+        public bool IsLoadingInProgress()
+        {
+            lock (_stateLock)
+            {
+                return _loadingInProgress;
+            }
+        }
+
+        #endregion
+
+        #region 下料优先级管理
+
+        /// <summary>
+        /// 请求下料优先级（环线要料时调用）
+        /// </summary>
+        public void RequestUnloadingPriority()
+        {
+            lock (_stateLock)
+            {
+                _unloadingPriorityRequested = true;
+            }
+        }
+
+        /// <summary>
+        /// 清除下料优先级请求
+        /// </summary>
+        public void ClearUnloadingPriority()
+        {
+            lock (_stateLock)
+            {
+                _unloadingPriorityRequested = false;
+            }
+        }
+
+        /// <summary>
+        /// 检查是否有下料优先级请求
+        /// </summary>
+        public bool HasUnloadingPriorityRequest()
+        {
+            lock (_stateLock)
+            {
+                return _unloadingPriorityRequested;
             }
         }
 
