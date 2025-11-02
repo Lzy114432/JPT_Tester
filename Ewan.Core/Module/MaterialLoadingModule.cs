@@ -30,7 +30,6 @@ namespace Ewan.Core.Module
         // 输入信号常量
         private const int MATERIAL_DETECT_SIGNAL = 3;      // 料片检测信号X3
         private const int SCAN_POSITION_SIGNAL = 7;         // 到达扫码位置信号X7
-        private const int ROBOT_BUSY_SIGNAL = 20;           // IN20 - 机械手忙碌信号
 
         // 输出信号常量 - 初始化相关
         private const int OUT_START = 5;                   // OUT5 - 开始信号
@@ -120,8 +119,8 @@ namespace Ewan.Core.Module
                 _ioManager.LayeredIO.WriteOutBit(OUT_START, false);
                 _appLogger.Info("OUT_START置位false");
 
-                // 步骤5: OUT_ALLOW_PICK置位true（触发机械手皮带线允许取料）
-                _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, true);
+                // 步骤5: OUT_ALLOW_PICK置位false
+                _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, false);
                 _appLogger.Info("OUT_ALLOW_PICK置位true");
 
                 _initialized = true;
@@ -209,10 +208,7 @@ namespace Ewan.Core.Module
         {
             // 检查是否有下料优先级请求
             if (_sharedState?.HasUnloadingPriorityRequest() == true)
-            {
-                // 有下料请求，禁止机械臂自动取料
-                _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, false);
-                
+            {                
                 _uiLogger.InfoRaw("处理已开始: {0}", 
                     "检测到下料优先级请求，禁止自动取料(OUT14=false)，等待下料完成");
                 
@@ -220,18 +216,17 @@ namespace Ewan.Core.Module
                 return;
             }
             
-            // 无下料请求，确保允许取料（下料完成后恢复）
-            _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, true);
-            
-            // 检测 IN20 上升沿 + 获取流程锁，直接进入 PickingMaterial 状态
-            if (_ioManager.LayeredIO.ReadRisingBit(ROBOT_BUSY_SIGNAL) && 
+            // 无下料请求，检查是否有料片检测信号
+            if (_ioManager.LayeredIO.ReadInBit(MATERIAL_DETECT_SIGNAL) && 
                 _sharedState?.TryStartLoading() == true)
             {
+                // 有料片检测信号，允许取料
+                _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, true);
+                
                 _sharedState?.MarkLoadingInProgress();
-                _ioManager.LayeredIO.ClearRisingBit(ROBOT_BUSY_SIGNAL);
                 
                 _currentState = MaterialLoadingState.PickingMaterial;
-                _uiLogger.InfoRaw("处理已开始: {0}", "检测到IN20上升沿，获取流程锁，开始装料流程");
+                _uiLogger.InfoRaw("处理已开始: {0}", "检测到料片信号(X3=true)，允许取料(OUT14=true)，开始装料流程");
             }
         }
 
@@ -285,6 +280,8 @@ namespace Ewan.Core.Module
             
             if (loadingCompleted)
             {
+
+                _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, false);
                 // 清除装料信号
                 _ioManager.LayeredIO.WriteOutBit(TRIGGER_LOADING_SIGNAL, false);
                 _ioManager.LayeredIO.WriteOutBit(BIN1_SELECT_SIGNAL, false);
@@ -302,9 +299,7 @@ namespace Ewan.Core.Module
                 _currentState = MaterialLoadingState.Idle;
                 
                 _uiLogger.InfoRaw("处理已完成: {0}", "装料完成，清除IN20脉冲标志，释放流程锁，回到Idle状态");
-                
-                // 注意：不在这里控制 OUT_ALLOW_PICK
-                // 让 Idle 状态根据 X3 和下料请求统一处理
+           
             }
         }
 

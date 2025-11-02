@@ -181,20 +181,15 @@ namespace Ewan.Core.Module
                 
                 _uiLogger.InfoRaw("处理已开始: {0}", "环线请求下料，设置优先级标志");
                 
-                // 关键检查：装料流程是否进行中（检查IN20脉冲标志）
-                bool loadingInProgress = _sharedState?.IsLoadingInProgress() ?? false;
-                
-                if (loadingInProgress)
+
+                if (_ioManager.LayeredIO.ReadOutBit(OUT_ALLOW_PICK))
                 {
-                    // 有IN20脉冲，说明装料流程未完成，不能开始下料
-                    _uiLogger.InfoRaw("处理已开始: {0}", 
-                        "检测到装料流程进行中(IN20脉冲)，等待装料完成后再下料");
-                    // 重置标志，下次循环继续尝试
+                    // 正在装填等下完成
                     _requestProcessed = false;
                     return;
                 }
                 
-                // 装料流程已完成（无IN20脉冲），尝试获取流程锁并开始下料
+                // 装料流程已完成，尝试获取流程锁并开始下料
                 if (_sharedState?.TryStartUnloading() == true)
                 {
                     // 成功获取锁，清除优先级请求

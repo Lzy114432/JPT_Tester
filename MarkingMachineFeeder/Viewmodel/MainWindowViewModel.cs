@@ -1174,7 +1174,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 }
                 else
                 {
-                    _uiLogger.WarnRaw($"步骤5: 硬件初始化部分完成 ({successCount}/4 信号接收成功)");
+                    _uiLogger.WarnRaw($"步骤5: 硬件初始化部分完成 信号接收成功)");
                 }
 
                 // 复位系统状态
