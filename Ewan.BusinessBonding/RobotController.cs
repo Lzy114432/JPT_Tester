@@ -248,7 +248,7 @@ namespace Ewan.BusinessBonding
                 _ioController.WriteOutput(Y7_ClearAlarm, true);
 
                 // 2. 等待500ms后复位信号
-                await Task.Delay(500);
+                await Task.Delay(100);
 
                 // 3. 复位信号
                 _ioController.WriteOutput(Y7_ClearAlarm, false);
@@ -289,6 +289,48 @@ namespace Ewan.BusinessBonding
         public bool HasMaterial()
         {
             return ReadInput(X3_DetectMaterial);
+        }
+        
+        /// <summary>
+        /// 读取初始化信号状态
+        /// </summary>
+        public bool ReadInitializeSignal()
+        {
+            return ReadInput(X9_Initialize);
+        }
+        
+        /// <summary>
+        /// 读取料仓感应信号状态
+        /// </summary>
+        /// <param name="binNumber">料仓编号 (1, 2, 3)</param>
+        public bool ReadBinSensor(int binNumber)
+        {
+            int sensorIndex = -1;
+            switch (binNumber)
+            {
+                case 1:
+                    sensorIndex = 27; // 料仓1有料感应 LogicalIndex
+                    break;
+                case 2:
+                    sensorIndex = 28; // 料仓2有料感应 LogicalIndex
+                    break;
+                case 3:
+                    sensorIndex = 29; // 料仓3有料感应 LogicalIndex
+                    break;
+                default:
+                    _uiLogger.Error(() => $"无效的料仓编号: {binNumber}");
+                    return false;
+            }
+            
+            try
+            {
+                return LayeredIOManager.Instance().LayeredIO.ReadInBit(sensorIndex, true);
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => $"读取料仓{binNumber}感应信号失败", ex.Message);
+                return false;
+            }
         }
 
         #endregion

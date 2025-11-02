@@ -1152,9 +1152,57 @@ namespace MarkingMachineFeeder.Viewmodel
                 _systemControlService.InitializeSystem();
                 await System.Threading.Tasks.Task.Delay(parameters.ResetDelayMs);
 
-                // 步骤4: 初始化完成，保持低速待机状态
-                // 注意：不在这里设置高速，等待用户点击"启动"后再切换高速
-                _uiLogger.InfoRaw("步骤4: 系统复位完成，保持低速待机状态");
+                // 步骤4: 等待初始化信号和料仓感应信号
+                _uiLogger.InfoRaw("步骤4: 等待硬件初始化完成信号");
+                
+                // 等待初始化信号(IN9)脉冲
+                bool initSignalReceived = await WaitForSignalPulse(
+                    () => robotController.ReadInitializeSignal(),
+                    "初始化信号(IN9)",
+                    10000  // 10秒超时
+                );
+                
+                if (!initSignalReceived)
+                {
+                    _uiLogger.WarnRaw("等待初始化信号超时，继续检查料仓感应");
+                }
+                
+                // 等待料仓1有料感应脉冲
+                bool bin1SensorReceived = await WaitForSignalPulse(
+                    () => robotController.ReadBinSensor(1),
+                    "料仓1有料感应",
+                    5000  // 5秒超时
+                );
+                
+                // 等待料仓2有料感应脉冲
+                bool bin2SensorReceived = await WaitForSignalPulse(
+                    () => robotController.ReadBinSensor(2),
+                    "料仓2有料感应",
+                    5000
+                );
+                
+                // 等待料仓3有料感应脉冲
+                bool bin3SensorReceived = await WaitForSignalPulse(
+                    () => robotController.ReadBinSensor(3),
+                    "料仓3有料感应",
+                    5000
+                );
+                
+                // 检查初始化结果
+                int successCount = 0;
+                if (initSignalReceived) successCount++;
+                if (bin1SensorReceived) successCount++;
+                if (bin2SensorReceived) successCount++;
+                if (bin3SensorReceived) successCount++;
+                
+                if (successCount >= 3)
+                {
+                    _uiLogger.InfoRaw($"步骤5: 硬件初始化完成 ({successCount}/4 信号接收成功)");
+                }
+                else
+                {
+                    _uiLogger.WarnRaw($"步骤5: 硬件初始化部分完成 ({successCount}/4 信号接收成功)");
+                }
 
                 // 复位系统状态
                 SystemRunningStatus = "Yellow"; // 黄色表示待机状态
@@ -1178,6 +1226,51 @@ namespace MarkingMachineFeeder.Viewmodel
             {
                 _isResetting = false;
             }
+        }
+        
+        /// <summary>
+        /// 等待信号脉冲（上升沿） - 通过轮询检测从false到true的跳变
+        /// </summary>
+        /// <param name="readFunc">读取信号状态的函数</param>
+        /// <param name="signalName">信号名称（用于日志）</param>
+        /// <param name="timeoutMs">超时时间（毫秒）</param>
+        /// <returns>是否成功接收到脉冲</returns>
+        private async System.Threading.Tasks.Task<bool> WaitForSignalPulse(
+            Func<bool> readFunc,
+            string signalName, 
+            int timeoutMs)
+        {
+            var startTime = DateTime.Now;
+            bool lastState = false;
+            
+            _uiLogger.InfoRaw($"等待{signalName}脉冲...");
+            
+            while ((DateTime.Now - startTime).TotalMilliseconds < timeoutMs)
+            {
+                try
+                {
+                    bool currentState = readFunc();
+                    
+                    // 检测上升沿（从false到true）
+                    if (!lastState && currentState)
+                    {
+                        _uiLogger.InfoRaw($"{signalName}脉冲已接收");
+                        return true;
+                    }
+                    
+                    lastState = currentState;
+                }
+                catch (Exception ex)
+                {
+                    _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, 
+                        $"读取{signalName}", ex.Message);
+                }
+                
+                await System.Threading.Tasks.Task.Delay(50);  // 50ms检查间隔
+            }
+            
+            _uiLogger.WarnRaw($"{signalName}脉冲等待超时");
+            return false;
         }
         
         private void ExecuteEmergencyStop()
