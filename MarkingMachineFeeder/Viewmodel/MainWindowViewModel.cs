@@ -1162,42 +1162,15 @@ namespace MarkingMachineFeeder.Viewmodel
                     10000  // 10秒超时
                 );
                 
-                if (!initSignalReceived)
-                {
-                    _uiLogger.WarnRaw("等待初始化信号超时，继续检查料仓感应");
-                }
-                
-                // 等待料仓1有料感应脉冲
-                bool bin1SensorReceived = await WaitForSignalPulse(
-                    () => robotController.ReadBinSensor(1),
-                    "料仓1有料感应",
-                    5000  // 5秒超时
-                );
-                
-                // 等待料仓2有料感应脉冲
-                bool bin2SensorReceived = await WaitForSignalPulse(
-                    () => robotController.ReadBinSensor(2),
-                    "料仓2有料感应",
-                    5000
-                );
-                
-                // 等待料仓3有料感应脉冲
-                bool bin3SensorReceived = await WaitForSignalPulse(
-                    () => robotController.ReadBinSensor(3),
-                    "料仓3有料感应",
-                    5000
-                );
+               
                 
                 // 检查初始化结果
                 int successCount = 0;
                 if (initSignalReceived) successCount++;
-                if (bin1SensorReceived) successCount++;
-                if (bin2SensorReceived) successCount++;
-                if (bin3SensorReceived) successCount++;
                 
                 if (successCount >= 3)
                 {
-                    _uiLogger.InfoRaw($"步骤5: 硬件初始化完成 ({successCount}/4 信号接收成功)");
+                    _uiLogger.InfoRaw($"步骤5: 硬件初始化完成机械臂初始化完成信号接收成功)");
                 }
                 else
                 {
