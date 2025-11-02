@@ -31,6 +31,10 @@ namespace Ewan.Core.Module
         private LayeredIOManager _ioManager;
 
         private ModbusRTUManager _modbusRTUManager;
+        
+        // 环线信号状态（使用电平检测替代上升沿）
+        private bool _ringLineSignal = false;      // 当前信号电平（寄存器152的值）
+        private bool _requestProcessed = false;    // 是否已处理过此次请求
 
         // 输入信号常量
         private const int MATERIAL_DETECT_SIGNAL = 3;       // X3 - 料片检测信号
@@ -59,9 +63,6 @@ namespace Ewan.Core.Module
         // 存储扫码结果
         private string _lastScannedQrCode = string.Empty;
 
-        // 接收来自RingLineModule的边缘检测结果
-        private bool _ringLineRisingEdge = false;
-
         /// <summary>
         /// 带共享状态的构造函数
         /// </summary>
@@ -87,7 +88,8 @@ namespace Ewan.Core.Module
             {
                 _currentState = MaterialUnloadingState.Idle;
                 _emergencyStopTriggered = false;
-                _ringLineRisingEdge = false;
+                _ringLineSignal = false;
+                _requestProcessed = false;
             }
         }
 
@@ -167,9 +169,13 @@ namespace Ewan.Core.Module
         /// </summary>
         private void ProcessIdleState()
         {
-            // 检测环线要料上升沿
-            if (_ringLineRisingEdge && !_unloadingRequested)
+            // 使用电平检测替代上升沿检测
+            // 信号为1且未处理过时，开始下料流程
+            if (_ringLineSignal && !_requestProcessed)
             {
+                // 标记已处理，防止重复处理
+                _requestProcessed = true;
+                
                 // 立即记录下料优先级请求
                 _sharedState?.RequestUnloadingPriority();
                 
@@ -183,6 +189,8 @@ namespace Ewan.Core.Module
                     // 有IN20脉冲，说明装料流程未完成，不能开始下料
                     _uiLogger.InfoRaw("处理已开始: {0}", 
                         "检测到装料流程进行中(IN20脉冲)，等待装料完成后再下料");
+                    // 重置标志，下次循环继续尝试
+                    _requestProcessed = false;
                     return;
                 }
                 
@@ -197,15 +205,21 @@ namespace Ewan.Core.Module
                     
                     RequestUnloading(1);
                     _uiLogger.InfoRaw("处理已开始: {0}", "装料流程已完成，开始下料流程");
-                    
-                    _ringLineRisingEdge = false;
                 }
                 else
                 {
                     // 获取锁失败，可能是其他流程占用（不太可能发生）
                     _uiLogger.WarnRaw("处理错误: {0} - {1}", 
                         "下料流程", "装料已完成但无法获取流程锁");
+                    // 重置标志，稍后重试
+                    _requestProcessed = false;
                 }
+            }
+            // 信号变为0时，清除处理标志，准备接收下次请求
+            else if (!_ringLineSignal && _requestProcessed)
+            {
+                _requestProcessed = false;
+                _uiLogger.InfoRaw("处理已完成: {0}", "环线信号结束，准备接收下次请求");
             }
         }
 
@@ -412,7 +426,8 @@ namespace Ewan.Core.Module
                 _currentState = MaterialUnloadingState.Idle;
                 _stopRequested = false;
                 _unloadingRequested = false;
-                _ringLineRisingEdge = false; // 清除上升沿标志
+                _ringLineSignal = false;     // 清除信号电平标志
+                _requestProcessed = false;   // 清除处理标志
 
                 _uiLogger.InfoRaw("处理已完成: {0}", "强制停止卸料，所有信号已清除");
             }
@@ -421,8 +436,8 @@ namespace Ewan.Core.Module
         private void CallBackShow1(MessageModel msg)
         {
             var data = msg.GetData<RingLineModel>();
-            // 直接使用RingLineModule提供的边缘检测结果
-            _ringLineRisingEdge = data.RisingEdge;
+            // 使用电平而非边缘检测，避免上升沿丢失
+            _ringLineSignal = data.IsLoading;
         }
 
         /// <summary>
