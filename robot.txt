@@ -1,0 +1,296 @@
+Global Integer Cvt_Number		'皮带编号	
+
+Global Integer VisionConnect_Flag, VisionID, VisionPort            '视觉是否连接成功标志位,视觉通讯ID,视觉端口号
+
+Global String CCD_Dev_X$, CCD_Dev_Y$, CCD_Dev_U$		           '皮带跟踪Mark点偏移量
+
+Global String VisionIP$						   '视觉IP
+
+Global Double SafeHight						   '安全高度
+
+Global Integer IO_Index						   '触发相机拍照的IO编号
+
+Global Real Interval						   '相机IO触发间隔
+
+Global Integer Cvt_Len									'跟踪距离上限值
+
+Global String senddata1$,readdata1$,senddata2$,readdata2$       '视觉发送数据，视觉接收数据
+
+Global String cam1$(0),cam2$(0) '拆分视觉数据
+
+Global Integer PhotoFlag		'视觉标志位
+
+Function main
+    Integer PTPSpd, LineSpd		'移动速度
+    
+    '---------常用参数修改-------------'
+    Cvt_Number = 1				'皮带编号
+    VisionID   = 201				'视觉通讯ID
+    VisionIP$  = "192.168.1.200" 	         '视觉IP '机械手作为客户端与相机服务器进行连接
+    VisionPort = 9000				'视觉端口号
+    IO_Index   = 16				'触发相机拍照的IO编号
+    Interval   = 0.5				'相机IO触发间隔
+    SafeHight  = -100				'安全高度（单位MM）
+    Cvt_Len    = 750				'跟踪距离上限值 从相机拍照后物料走了多少MM，机器人放弃跟踪
+    PTPSpd     = 100				'圆弧移动速度
+    LineSpd    = 2000				'直线移动速度
+    MemOff 1		'关闭寄存器1
+    MemOff 2		'关闭寄存器2
+    MemOff 3		'关闭寄存器3
+    Off 11		'关闭下相机报警
+    Off 12		'关闭气缸报警
+    Off 0            '关闭检测到料片信号
+    Off 3            '关闭传送带跟踪中
+    Off 4            '关闭扫码区信号
+    Off 5            '关闭机器人放置完成
+    Off 6            '关闭初始化信号
+    Off 7            '关闭机器人取料完成
+    Off 8            '关闭放入小车完成
+    Off 11            '关闭下相机报警
+    Off 12            '关闭气缸报警
+    Off 13            '关闭机器人忙碌状态
+    Off 14            '关闭吸嘴电磁阀
+    
+    
+    '---------伺服/功率状态-------------'
+    Motor On		'打开伺服
+    If Sw(11) = 1 Then
+        Power High		'低速模式  
+    Else
+        Power Low		'低速模式
+    EndIf
+    
+    '-----启用线程任务及通讯端口初始化-----'
+    CloseNet All		'关闭所有视觉连接
+    Wait 0.5		'等待0.5s
+    Xqt TCP_Connect(VisionID,VisionIP$,VisionPort)		'打开视觉连接后台
+    Xqt Speed_pro()                                             '速度设置
+    Xqt Vacuum_pro()                                            '真空检测
+    Wait 1		'等待1s
+    
+    '---------速度百分比调用------------'
+    CP On
+    Speed PTPSpd		'PTP速度
+    Accel 100, 100		'设置加速度
+    SpeedS LineSpd		'Line速度
+    AccelS 100, 100		'设置插补加速度
+    
+    '-------------回原程序-------------'
+    If CY(Here) > CY(Phome) Then
+        Jump Phome		'回原点
+    Else
+        Go Here:Z(-40)
+        Jump Phome LimZ -40		'回原点
+    EndIf
+    On 6 , 0.1		'输出回原完成信号1s
+    '--------速度定义与跟踪初始化--------'
+    SpeedFactor 30				 '生产速度 1~100%
+    Xqt Trig_CCD()	         '触发传送带视觉拍照
+    SyReset Cvt_Number			          '复位皮带跟踪
+    
+    '-----------生产循环程序------------'
+    Do		'循环
+        '等待流程号
+        'sw(5)---放产品到料仓                 sw(9)---允许去皮带线取料
+        'sw(10)---从料仓取料去扫码             sw(12)---从扫码去小车放料
+        Wait Sw(5) = 1 Or Sw(9) = 1 Or Sw(10) = 1 Or Sw(12) = 1
+        If Sw(9) = 1 Then'------------------------------允许放产品到料仓---------------------------------
+            If SyGetNum(1)>0 Then
+                On 3               '打开皮带取料中信号
+                SyStart Cvt_Number			'开启皮带跟踪
+                Print SyGetPose(Cvt_Number)		'获取物料当前在传送带上的位置
+                On 13              '打开机器人运行中信号
+                SyMove SyGetPoint(Cvt_Number) :Z(SafeHight)   '到皮带跟踪点位安全高度
+                SyMove SyGetPoint(Cvt_Number) :Z(-127)	 '到皮带跟踪点
+                Wait 0.5
+                On 14		'打开吸真空
+                Wait Sw(13) = 1 , 5		'等待负压表有信号
+                SyMove SyGetPoint(Cvt_Number) :Z(SafeHight)   '到皮带跟踪点位安全高度       
+                SyEnd Cvt_Number				'关闭皮带跟踪
+                
+                Jump Photo_Down LimZ -90		'移动到下相机拍照位
+                Wait 0.5		'等待1s
+                senddata2$ = "Cam2;Snap"		'触发下相机拍照
+                MemOn 2		'置位寄存器2发送视觉数据
+                Wait MemSw(3)=On		'等待视觉数据返回置位寄存器3
+                'Wait 100000
+                MemOff 3		'复位寄存器3
+                Jump Scan+X(Val(cam2$(3)))+Y(Val(cam2$(4)))+U(Val(cam2$(5))) LimZ -90		'移动到扫码位
+                Wait 0.1		'等待1s
+                On 4 , 0.5		'触发扫码
+                Wait Sw(4)=1		'等待扫码完成
+                Off 13              '关闭机器人运行中信号
+                
+                
+                
+                Wait Sw(5)=1
+                PutAllow:		'再次放料检索标志位
+                Select 1		'检索以下IO是否等于1
+                    Case Sw(6)		'检索DI6料仓1允许放料
+                        Jump Put_P1+X(Val(cam2$(3)))+Y(Val(cam2$(4)))+U(Val(cam2$(5)))LimZ-90		'移动到料仓1放料位
+                Wait 1		'等待1s
+                        Off 14		'关闭吸真空
+                    Case Sw(7)		'检索DI7料仓2允许放料
+                        Jump Put_P2+X(Val(cam2$(3)))+Y(Val(cam2$(4)))+U(Val(cam2$(5)))LimZ-90		'移动到料仓2放料位
+                Wait 1		'等待1s
+                        Off 14		'关闭吸真空
+                    Case Sw(8)		'检索DI8料仓3允许放料
+                        Jump Put_P3+X(Val(cam2$(3)))+Y(Val(cam2$(4)))+U(Val(cam2$(5)))LimZ-90		'移动到料仓3
+                Wait 1		'等待1s
+                        Off 14		'关闭吸真空
+                    Default		'如果都不满足
+                        GoTo PutAllow		'跳转再次放料检索标志位
+                Send		'结束检索
+                Jump Phome LimZ -90		'移动回原点
+                On 5 , 0.5		'输出放置完成信号1s
+                Off 3               '关闭皮带取料中信号
+            EndIf
+        ElseIf Sw(10) = 1 Then
+            ' On 13              '打开机器人运行中信号
+                PickAllow:		'再次取料检索标志位
+                Select 1		'检索一下IO是否等于1
+                    Case Sw(6)		'检索DI6料仓1允许取料
+                        Jump Put_P1:Z(-124) LimZ-90		'移动到料仓1放料位
+                        On 14        		'打开吸真空
+                    Case Sw(7)		'检索DI7料仓2允许取料
+                        Jump Put_P2:Z(-124) LimZ-90		'移动到料仓2放料位
+                        On 14        		'打开吸真空
+                    Case Sw(8)		'检索DI7料仓3允许取料
+                        Jump Put_P3:Z(-124) LimZ-90		'移动到料仓3放料位
+                        On 14        		'打开吸真空
+                    Default		'如果都不满足
+                        GoTo PickAllow		'跳转再次取料检索标志位
+                Send		'结束检索
+                
+                Wait Sw(13) = 1 , 5		'等待负压表有信号
+                On 7 , 0.5		'输出取料完成信号1s
+                
+                
+                Jump Photo_Down LimZ -90		'移动到下相机拍照位
+                Wait 0.1		'等待1s
+                senddata2$ = "Cam2;Snap"		'触发下相机拍照
+                MemOn 2		 '置位寄存器2发送视觉数据
+                Wait MemSw(3)=On		'等待视觉数据返回置位寄存器3
+                MemOff 3		'复位寄存器3
+                Jump Scan+X(Val(cam2$(3)))+Y(Val(cam2$(4)))+U(Val(cam2$(5))) LimZ -90		'移动到扫码位
+                
+                'Jump Scan LimZ -90		'移动到扫码位
+                Wait 0.1		'等待1s
+                On 4 , 0.5		'触发扫码
+                Wait Sw(4)=1		'等待扫码完成
+                
+                Wait Sw(12)=1
+                If Sw(14)=On Then
+                    Jump Put_P2:Z(-90) LimZ -90 CP
+                    Jump Put_Car+X(Val(cam2$(3)))+Y(Val(cam2$(4)))+U(180+Val(cam2$(5))) 		'移动到小车放料位
+                Else
+                    Jump Put_P2:Z(-90) LimZ -90 CP
+                    Jump Put_Car+X(Val(cam2$(3)))+Y(Val(cam2$(4)))+U(Val(cam2$(5))) 		'移动到小车放料位
+                EndIf
+                Wait 0.5		'等待0.5s
+                Off 14		'关闭吸真空
+                Jump Phome		'移动回原点
+                'Off 13              '关闭机器人运行中信号
+                On 8 , 0.5		'输出小车放料完成
+        EndIf
+        ' Select 1
+            
+            ' '------------------------------允许放产品到料仓---------------------------------
+            ' Case Sw(5)
+                
+                ' On 13              '打开机器人运行中信号
+                ' PutAllow:		'再次放料检索标志位
+                ' Select 1		'检索以下IO是否等于1
+                    ' Case Sw(6)		'检索DI6料仓1允许放料
+                        ' Jump Put_P1+X(Val(cam2$(3)))+Y(Val(cam2$(4)))+U(Val(cam2$(5)))LimZ-90		'移动到料仓1放料位
+                        ' Off 14		'关闭吸真空
+                    ' Case Sw(7)		'检索DI7料仓2允许放料
+                        ' Jump Put_P2+X(Val(cam2$(3)))+Y(Val(cam2$(4)))+U(Val(cam2$(5)))LimZ-90		'移动到料仓2放料位
+                        ' Off 14		'关闭吸真空
+                    ' Case Sw(8)		'检索DI8料仓3允许放料
+                        ' Jump Put_P3+X(Val(cam2$(3)))+Y(Val(cam2$(4)))+U(Val(cam2$(5)))LimZ-90		'移动到料仓3
+                        ' Off 14		'关闭吸真空
+                    ' Default		'如果都不满足
+                        ' GoTo PutAllow		'跳转再次放料检索标志位
+                ' Send		'结束检索
+                ' Jump Phome LimZ -90		'移动回原点
+                ' On 5 , 0.5		'输出放置完成信号1s
+                ' Off 13              '关闭机器人运行中信号
+                ' 'Off 3               '关闭皮带取料中信号
+            
+            ' '-----------------------------------------------------------------------------
+            ' '------------------------------允许去皮带线取料---------------------------------
+            ' Case Sw(9)
+                ' Wait SyGetNum(1)>0
+                ' On 3               '打开皮带取料中信号
+                ' On 13              '打开机器人运行中信号
+                ' SyStart Cvt_Number			'开启皮带跟踪
+                ' Print SyGetPose(Cvt_Number)		'获取物料当前在传送带上的位置
+                ' SyMove SyGetPoint(Cvt_Number) :Z(SafeHight)   '到皮带跟踪点位安全高度
+                ' SyMove SyGetPoint(Cvt_Number) :Z(-126)	 '到皮带跟踪点
+                ' Wait 0.2
+                ' On 14		'打开吸真空
+                ' Wait Sw(13) = 1 , 5		'等待负压表有信号
+                ' SyMove SyGetPoint(Cvt_Number) :Z(SafeHight)   '到皮带跟踪点位安全高度       
+                ' SyEnd Cvt_Number				'关闭皮带跟踪
+                
+                ' Jump Photo_Down LimZ -90		'移动到下相机拍照位
+                ' Wait 0.1		'等待1s
+                ' senddata2$ = "Cam2;Snap"		'触发下相机拍照
+                ' MemOn 2		'置位寄存器2发送视觉数据
+                ' Wait MemSw(3)=On		'等待视觉数据返回置位寄存器3
+                ' MemOff 3		'复位寄存器3
+                
+                ' Jump Scan LimZ -90		'移动到扫码位
+                ' Wait 0.1		'等待1s
+                ' On 4 , 0.5		'触发扫码
+                ' Wait Sw(4)=1		'等待扫码完成
+                ' Off 13              '关闭机器人运行中信号
+                ' Off 3               '关闭皮带取料中信号
+            
+            ' '-----------------------------------------------------------------------------
+            ' '-----------------------------允许从料仓取料去扫码-------------------------------
+            ' Case Sw(10)
+                
+                ' On 13              '打开机器人运行中信号
+                ' PickAllow:		'再次取料检索标志位
+                ' Select 1		'检索一下IO是否等于1
+                    ' Case Sw(6)		'检索DI6料仓1允许取料
+                        ' Jump Put_P1+X(Val(cam2$(3)))+Y(Val(cam2$(4)))+U(Val(cam2$(5)))LimZ-90		'移动到料仓1放料位
+                        ' On 14        		'打开吸真空
+                    ' Case Sw(7)		'检索DI7料仓2允许取料
+                        ' Jump Put_P2+X(Val(cam2$(3)))+Y(Val(cam2$(4)))+U(Val(cam2$(5)))LimZ-90		'移动到料仓2放料位
+                        ' On 14        		'打开吸真空
+                    ' Case Sw(8)		'检索DI7料仓3允许取料
+                        ' Jump Put_P3+X(Val(cam2$(3)))+Y(Val(cam2$(4)))+U(Val(cam2$(5)))LimZ-90		'移动到料仓3放料位
+                        ' On 14        		'打开吸真空
+                    ' Default		'如果都不满足
+                        ' GoTo PickAllow		'跳转再次取料检索标志位
+                ' Send		'结束检索
+                
+                ' Wait Sw(13) = 1 , 5		'等待负压表有信号
+                ' On 7 , 0.5		'输出取料完成信号1s
+                
+                ' Jump Scan LimZ -90		'移动到扫码位
+                ' Off 13              '关闭机器人运行中信号
+                ' Wait 0.1		'等待1s
+                ' On 4 , 0.5		'触发扫码
+                ' Wait Sw(4)=1		'等待扫码完成
+                
+            ' '-----------------------------------------------------------------------------
+            ' '-----------------------------允许从扫码去小车放料-------------------------------
+            ' Case Sw(12)
+                
+                ' On 13              '打开机器人运行中信号
+                ' Jump Put_Car+X(Val(cam2$(3)))+Y(Val(cam2$(4)))+U(Val(cam2$(5)))LimZ-90		'移动到小车放料位
+                ' Off 14		'关闭吸真空
+                ' Jump Phome LimZ -90		'移动回原点
+                ' Off 13              '关闭机器人运行中信号
+                ' On 8 , 0.1		'输出小车放料完成
+            ' Default
+                
+        'Send
+              
+    Loop
+Fend
+
