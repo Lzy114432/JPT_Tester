@@ -11,11 +11,15 @@ namespace MarkingMachineFeeder.Viewmodel
 
         public DelegateCommand ReadRingLineRequestCommand { get; }
         public DelegateCommand WriteUnloadCompleteCommand { get; }
+        public DelegateCommand WriteUnloadWithMaterialCommand { get; }
+        public DelegateCommand WriteUnloadEmptyCommand { get; }
 
         public LoopInteractionViewModel()
         {
             ReadRingLineRequestCommand = new DelegateCommand(ExecuteReadRingLineRequest);
             WriteUnloadCompleteCommand = new DelegateCommand(ExecuteWriteUnloadComplete);
+            WriteUnloadWithMaterialCommand = new DelegateCommand(ExecuteWriteUnloadWithMaterial);
+            WriteUnloadEmptyCommand = new DelegateCommand(ExecuteWriteUnloadEmpty);
 
             _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "环线交互窗口初始化");
         }
@@ -100,6 +104,116 @@ namespace MarkingMachineFeeder.Viewmodel
             catch (Exception ex)
             {
                 _uiLogger.Error($"写入下料完成信号异常: {ex.Message}");
+                System.Windows.MessageBox.Show($"写入异常: {ex.Message}", "错误",
+                    System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+            }
+        }
+
+        /// <summary>
+        /// 执行写入放料完成信号命令 - 寄存器153=1, 178=1
+        /// </summary>
+        private void ExecuteWriteUnloadWithMaterial()
+        {
+            try
+            {
+                var modbusManager = Ewan.Core.Plc.ModbusRTUManager.Instance();
+
+                if (modbusManager == null || !modbusManager.IsConnected())
+                {
+                    _uiLogger.Warn($"Modbus RTU未连接，无法写入放料完成信号");
+                    System.Windows.MessageBox.Show("Modbus RTU未连接", "警告",
+                        System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+                    return;
+                }
+
+                // 写入下料完成信号到寄存器153
+                var result153 = modbusManager.WriteAny("153", (ushort)1);
+                
+                if (!result153.IsSuccess)
+                {
+                    _uiLogger.Error($"写入寄存器153失败: {result153.Message}");
+                    System.Windows.MessageBox.Show($"写入寄存器153失败: {result153.Message}", "错误",
+                        System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                    return;
+                }
+
+                // 写入放料状态到寄存器178
+                var result178 = modbusManager.WriteAny("178", (ushort)1);
+                
+                if (result178.IsSuccess)
+                {
+                    _uiLogger.Info($"放料完成信号写入成功: 寄存器153=1, 寄存器178=1");
+                    System.Windows.MessageBox.Show(
+                        $"放料完成信号写入成功\n寄存器153=1 (下料完成)\n寄存器178=1 (放料)", 
+                        "写入成功",
+                        System.Windows.MessageBoxButton.OK, 
+                        System.Windows.MessageBoxImage.Information);
+                }
+                else
+                {
+                    _uiLogger.Error($"写入寄存器178失败: {result178.Message}");
+                    System.Windows.MessageBox.Show($"写入寄存器178失败: {result178.Message}", "错误",
+                        System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error($"写入放料完成信号异常: {ex.Message}");
+                System.Windows.MessageBox.Show($"写入异常: {ex.Message}", "错误",
+                    System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+            }
+        }
+
+        /// <summary>
+        /// 执行写入排空完成信号命令 - 寄存器153=1, 178=0
+        /// </summary>
+        private void ExecuteWriteUnloadEmpty()
+        {
+            try
+            {
+                var modbusManager = Ewan.Core.Plc.ModbusRTUManager.Instance();
+
+                if (modbusManager == null || !modbusManager.IsConnected())
+                {
+                    _uiLogger.Warn($"Modbus RTU未连接，无法写入排空完成信号");
+                    System.Windows.MessageBox.Show("Modbus RTU未连接", "警告",
+                        System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+                    return;
+                }
+
+                // 写入下料完成信号到寄存器153
+                var result153 = modbusManager.WriteAny("153", (ushort)1);
+                
+                if (!result153.IsSuccess)
+                {
+                    _uiLogger.Error($"写入寄存器153失败: {result153.Message}");
+                    System.Windows.MessageBox.Show($"写入寄存器153失败: {result153.Message}", "错误",
+                        System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                    return;
+                }
+
+                // 写入排空状态到寄存器178
+                var result178 = modbusManager.WriteAny("178", (ushort)0);
+                
+                if (result178.IsSuccess)
+                {
+                    _uiLogger.Info($"排空完成信号写入成功: 寄存器153=1, 寄存器178=0");
+                    System.Windows.MessageBox.Show(
+                        $"排空完成信号写入成功\n寄存器153=1 (下料完成)\n寄存器178=0 (排空)", 
+                        "写入成功",
+                        System.Windows.MessageBoxButton.OK, 
+                        System.Windows.MessageBoxImage.Information);
+                }
+                else
+                {
+                    _uiLogger.Error($"写入寄存器178失败: {result178.Message}");
+                    System.Windows.MessageBox.Show($"写入寄存器178失败: {result178.Message}", "错误",
+                        System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error($"写入排空完成信号异常: {ex.Message}");
                 System.Windows.MessageBox.Show($"写入异常: {ex.Message}", "错误",
                     System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }

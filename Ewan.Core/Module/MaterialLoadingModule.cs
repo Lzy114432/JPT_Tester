@@ -250,6 +250,8 @@ namespace Ewan.Core.Module
         /// </summary>
         private void ProcessAtScanPosition()
         {
+            _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, false);
+
             DLManager.Instance().TriggerScan(); // 触发扫码,调试模式不需要结果
                                                 //if(DLManager.Instance().TriggerScan() != "")
                                                 //{
@@ -281,7 +283,6 @@ namespace Ewan.Core.Module
             if (loadingCompleted)
             {
 
-                _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, false);
                 // 清除装料信号
                 _ioManager.LayeredIO.WriteOutBit(TRIGGER_LOADING_SIGNAL, false);
                 _ioManager.LayeredIO.WriteOutBit(BIN1_SELECT_SIGNAL, false);

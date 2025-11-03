@@ -54,6 +54,8 @@ namespace Ewan.Core.Module
 
         // Modbus寄存器地址定义
         private const string CART_COMPLETION_REGISTER = "153"; // 放入小车完成寄存器地址
+        private const string MATERIAL_STATUS_REGISTER = "178"; // 放料状态寄存器：1=放料，0=排空
+
         private const string QR_CODE_START_REGISTER = "180";   // 二维码起始寄存器地址
         private const string QR_CODE_END_REGISTER = "199";     // 二维码结束寄存器地址
         private const string QR_CODE_REGISTER_COUNT = "20";    // 二维码寄存器数量(180-199)
@@ -437,11 +439,39 @@ namespace Ewan.Core.Module
             {
                 // 发送完成信号值为1到寄存器153 (u16类型)
                 _modbusRTUManager.WriteAny(CART_COMPLETION_REGISTER, (ushort)1);
+
+                _modbusRTUManager.WriteAny(MATERIAL_STATUS_REGISTER, (ushort)1);
+
+
                 _uiLogger.InfoRaw("处理已完成: {0}", $"放入小车完成信号已发送到寄存器{CART_COMPLETION_REGISTER}");
             }
             catch (Exception ex)
             {
                 _uiLogger.ErrorRaw("处理错误: {0} - {1}", $"发送完成信号到Modbus失败: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 写入放料状态到Modbus寄存器178
+        /// 工站定位信号到达时，根据是否有料写入1（放料）或0（排空）
+        /// </summary>
+        private void WriteMaterialStatusToModbus()
+        {
+            try
+            {
+                // 检测X3料片检测信号，判断是否有料
+                bool hasMaterial = _ioManager.LayeredIO.ReadInBit(MATERIAL_DETECT_SIGNAL);
+                
+                // 有料写入1（放料），无料写入0（排空）
+                ushort statusValue = hasMaterial ? (ushort)1 : (ushort)0;
+                _modbusRTUManager.WriteAny(MATERIAL_STATUS_REGISTER, statusValue);
+
+                _uiLogger.InfoRaw("处理已完成: {0}", 
+                    $"工站定位信号检测到，放料状态已写入寄存器{MATERIAL_STATUS_REGISTER}：{(hasMaterial ? "放料(1)" : "排空(0)")}");
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.ErrorRaw("处理错误: {0} - {1}", $"写入放料状态到Modbus失败: {ex.Message}");
             }
         }
 
