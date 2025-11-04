@@ -30,6 +30,13 @@ namespace Ewan.Core.Module
         private DateTime _lastRobotPausePulseTime = DateTime.MinValue;
         private readonly TimeSpan _robotPausePulseInterval = TimeSpan.FromMilliseconds(300);
         private const int ROBOT_PAUSE_PULSE_WIDTH_MS = 200;
+        private const int ROBOT_RECOVERY_OUTPUT = 7;
+        private readonly object _robotRecoveryPulseLock = new object();
+        private bool _robotRecoveryPulseInProgress = false;
+        private DateTime _lastRobotRecoveryPulseTime = DateTime.MinValue;
+        private readonly TimeSpan _robotRecoveryPulseInterval = TimeSpan.FromMilliseconds(300);
+        private const int ROBOT_RECOVERY_PULSE_WIDTH_MS = 200;
+        private bool _robotRecoveryPending = false;
         
         // 时间间隔设置
         private int _dataSyncInterval = 10;     // IO数据同步间隔(ms) - 保持快速响应
@@ -475,9 +482,12 @@ namespace Ewan.Core.Module
                         case SystemControlCommand.EmergencyStop:
                             TriggerRobotPausePulse(command.ToString());
                             break;
+                        case SystemControlCommand.Initialize:
+                            SetRobotPauseOutput(false, command.ToString());
+                            TriggerRobotRecoveryPulse(command.ToString());
+                            break;
                         case SystemControlCommand.Resume:
                         case SystemControlCommand.Start:
-                        case SystemControlCommand.Initialize:
                         case SystemControlCommand.Stop:
                             SetRobotPauseOutput(false, command.ToString());
                             break;
@@ -511,6 +521,7 @@ namespace Ewan.Core.Module
 
                 _robotPausePulseInProgress = true;
                 _lastRobotPausePulseTime = DateTime.Now;
+                _robotRecoveryPending = true;
             }
 
             Task.Run(() =>
@@ -538,6 +549,65 @@ namespace Ewan.Core.Module
                     lock (_robotPausePulseLock)
                     {
                         _robotPausePulseInProgress = false;
+                    }
+                }
+            });
+        }
+
+        private void TriggerRobotRecoveryPulse(string context)
+        {
+            if (_layeredIO == null)
+            {
+                return;
+            }
+
+            lock (_robotRecoveryPulseLock)
+            {
+                if (!_robotRecoveryPending)
+                {
+                    return;
+                }
+
+                if (_robotRecoveryPulseInProgress)
+                {
+                    return;
+                }
+
+                if ((DateTime.Now - _lastRobotRecoveryPulseTime) < _robotRecoveryPulseInterval)
+                {
+                    return;
+                }
+
+                _robotRecoveryPulseInProgress = true;
+                _lastRobotRecoveryPulseTime = DateTime.Now;
+                _robotRecoveryPending = false;
+            }
+
+            Task.Run(() =>
+            {
+                try
+                {
+                    bool setResult = _layeredIO.WriteOutBit(ROBOT_RECOVERY_OUTPUT, true, true);
+                    if (setResult)
+                    {
+                        Thread.Sleep(ROBOT_RECOVERY_PULSE_WIDTH_MS);
+                        _layeredIO.WriteOutBit(ROBOT_RECOVERY_OUTPUT, false, true);
+                        _uiLogger.Info("处理已完成: {0}", $"暂停复原脉冲发送: {context}");
+                    }
+                    else
+                    {
+                        _uiLogger.Warn("处理错误: {0}", $"暂停复原脉冲置位失败: {context}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _uiLogger.Error("模块运行错误: {0} - {1}", "SafetyModule-TriggerRobotRecoveryPulse", ex.Message);
+                }
+                finally
+                {
+                    lock (_robotRecoveryPulseLock)
+                    {
+                        _robotRecoveryPulseInProgress = false;
                     }
                 }
             });
