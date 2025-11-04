@@ -480,7 +480,7 @@ namespace Ewan.Core.Module
                     {
                         case SystemControlCommand.Pause:
                         case SystemControlCommand.EmergencyStop:
-                            TriggerRobotPausePulse(command.ToString());
+                            TriggerRobotPausePulse(command.ToString(), false);
                             break;
                         case SystemControlCommand.Initialize:
                             SetRobotPauseOutput(false, command.ToString());
@@ -500,7 +500,7 @@ namespace Ewan.Core.Module
             }
         }
 
-        private void TriggerRobotPausePulse(string context)
+        private void TriggerRobotPausePulse(string context, bool scheduleRecovery = true)
         {
             if (_layeredIO == null)
             {
@@ -521,7 +521,10 @@ namespace Ewan.Core.Module
 
                 _robotPausePulseInProgress = true;
                 _lastRobotPausePulseTime = DateTime.Now;
-                _robotRecoveryPending = true;
+                if (scheduleRecovery)
+                {
+                    _robotRecoveryPending = true;
+                }
             }
 
             Task.Run(() =>
