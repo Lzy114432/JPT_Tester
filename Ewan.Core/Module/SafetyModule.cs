@@ -7,6 +7,8 @@ using Ewan.Model.Safety;
 using IOLibrary.Core.Layered;
 using System;
 using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Ewan.Core.Module
 {
@@ -20,6 +22,14 @@ namespace Ewan.Core.Module
         private LayeredIOManager _ioManager;
         private LayeredIO _layeredIO;
         private MsgManager _msgManager;
+        private MsgListener _systemControlListener;
+
+        private const int ROBOT_PAUSE_OUTPUT = 8;
+        private readonly object _robotPausePulseLock = new object();
+        private bool _robotPausePulseInProgress = false;
+        private DateTime _lastRobotPausePulseTime = DateTime.MinValue;
+        private readonly TimeSpan _robotPausePulseInterval = TimeSpan.FromMilliseconds(300);
+        private const int ROBOT_PAUSE_PULSE_WIDTH_MS = 200;
         
         // 时间间隔设置
         private int _dataSyncInterval = 10;     // IO数据同步间隔(ms) - 保持快速响应
@@ -65,6 +75,11 @@ namespace Ewan.Core.Module
                 _ioManager = LayeredIOManager.Instance();
                 _layeredIO = _ioManager.LayeredIO;
                 _msgManager = MsgManager.Instance();
+
+                _systemControlListener = new MsgListener(MsgSubject.SystemControl, OnSystemControlMessage);
+                _msgManager.RegisterListener(_systemControlListener);
+
+                SetRobotPauseOutput(false, "系统启动");
 
                 // 如果未连接，则尝试连接
                 if (!_ioManager.IsConnected)
@@ -142,6 +157,21 @@ namespace Ewan.Core.Module
         /// </summary>
         protected override void OnDestroy()
         {
+            try
+            {
+                if (_systemControlListener != null)
+                {
+                    _msgManager?.UnRegisterListener(_systemControlListener);
+                    _systemControlListener = null;
+                }
+
+                SetRobotPauseOutput(false, "SafetyModule销毁");
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error("模块运行错误: {0} - {1}", "SafetyModule-OnDestroy", ex.Message);
+            }
+
             // 断开连接
             if (_ioManager != null && _ioManager.IsConnected)
             {
@@ -344,6 +374,8 @@ namespace Ewan.Core.Module
         {
             try
             {
+                TriggerRobotPausePulse(reason);
+
                 // 发送系统控制命令到ProductionLineModule
                 var systemControlMsg = new MessageModel(MsgSubject.SystemControl, SystemControlCommand.Pause);
                 _msgManager.PushMsg(systemControlMsg);
@@ -372,6 +404,8 @@ namespace Ewan.Core.Module
         {
             try
             {
+                TriggerRobotPausePulse(reason);
+
                 // 发送系统控制命令到ProductionLineModule
                 var systemControlMsg = new MessageModel(MsgSubject.SystemControl, SystemControlCommand.EmergencyStop);
                 _msgManager.PushMsg(systemControlMsg);
@@ -426,6 +460,112 @@ namespace Ewan.Core.Module
             {
                 _uiLogger.Error("模块运行错误: {0} - {1}", 
                     "SafetyModule-SendSafetyAlert", ex.Message);
+            }
+        }
+
+        private void OnSystemControlMessage(MessageModel message)
+        {
+            try
+            {
+                if (message?.Data is SystemControlCommand command)
+                {
+                    switch (command)
+                    {
+                        case SystemControlCommand.Pause:
+                        case SystemControlCommand.EmergencyStop:
+                            TriggerRobotPausePulse(command.ToString());
+                            break;
+                        case SystemControlCommand.Resume:
+                        case SystemControlCommand.Start:
+                        case SystemControlCommand.Initialize:
+                        case SystemControlCommand.Stop:
+                            SetRobotPauseOutput(false, command.ToString());
+                            break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error("模块运行错误: {0} - {1}", "SafetyModule-SystemControlMessage", ex.Message);
+            }
+        }
+
+        private void TriggerRobotPausePulse(string context)
+        {
+            if (_layeredIO == null)
+            {
+                return;
+            }
+
+            lock (_robotPausePulseLock)
+            {
+                if (_robotPausePulseInProgress)
+                {
+                    return;
+                }
+
+                if ((DateTime.Now - _lastRobotPausePulseTime) < _robotPausePulseInterval)
+                {
+                    return;
+                }
+
+                _robotPausePulseInProgress = true;
+                _lastRobotPausePulseTime = DateTime.Now;
+            }
+
+            Task.Run(() =>
+            {
+                try
+                {
+                    bool setResult = _layeredIO.WriteOutBit(ROBOT_PAUSE_OUTPUT, true, true);
+                    if (setResult)
+                    {
+                        Thread.Sleep(ROBOT_PAUSE_PULSE_WIDTH_MS);
+                        _layeredIO.WriteOutBit(ROBOT_PAUSE_OUTPUT, false, true);
+                        _uiLogger.Info("处理已完成: {0}", $"暂停输出脉冲发送: {context}");
+                    }
+                    else
+                    {
+                        _uiLogger.Warn("处理错误: {0}", $"暂停输出脉冲置位失败: {context}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _uiLogger.Error("模块运行错误: {0} - {1}", "SafetyModule-TriggerRobotPausePulse", ex.Message);
+                }
+                finally
+                {
+                    lock (_robotPausePulseLock)
+                    {
+                        _robotPausePulseInProgress = false;
+                    }
+                }
+            });
+        }
+
+        private void SetRobotPauseOutput(bool activate, string context)
+        {
+            if (_layeredIO == null)
+            {
+                return;
+            }
+
+            try
+            {
+                bool result = _layeredIO.WriteOutBit(ROBOT_PAUSE_OUTPUT, activate, true);
+                if (result)
+                {
+                    string status = activate ? "置位" : "复位";
+                    _uiLogger.Info("处理已完成: {0}", $"暂停输出{status}: {context}");
+                }
+                else
+                {
+                    _uiLogger.Warn("处理错误: {0}", $"暂停输出写入失败: {context}");
+                }
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error("模块运行错误: {0} - {1}", "SafetyModule-SetRobotPauseOutput", ex.Message);
             }
         }
 

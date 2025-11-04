@@ -144,6 +144,11 @@ namespace Ewan.Core.Module
         {
             try
             {
+                ClearPauseState(resetSharedState: true);
+
+                _materialLoading?.ForceStopLoading();
+                _materialUnloading?.ForceStopUnloading();
+
                 _uiLogger.InfoRaw("处理已开始: {0}", "生产线硬件初始化开始");
 
                 // 发送初始化中状态
@@ -182,6 +187,8 @@ namespace Ewan.Core.Module
                 return;
             }
 
+            ClearPauseState(resetSharedState: true);
+
             _isRunning = true;
             _uiLogger.InfoRaw("处理已完成: {0}", "生产线启动");
 
@@ -195,6 +202,10 @@ namespace Ewan.Core.Module
         public void StopProduction()
         {
             _isRunning = false;
+            ClearPauseState(resetSharedState: true);
+
+            _materialLoading?.ForceStopLoading();
+            _materialUnloading?.ForceStopUnloading();
             _uiLogger.InfoRaw("处理已完成: {0}", "生产线停止");
 
             // 发送停止状态
@@ -210,6 +221,8 @@ namespace Ewan.Core.Module
             {
                 _isRunning = false;
                 _materialLoading?.ForceStopLoading();
+                _materialUnloading?.ForceStopUnloading();
+                ClearPauseState(resetSharedState: true);
                 // 如果BinElevatorModule有紧急停止方法，可以在这里调用
 
                 _uiLogger.InfoRaw("处理已完成: {0}", "生产线紧急停止");
@@ -283,6 +296,26 @@ namespace Ewan.Core.Module
         #endregion
 
         #region 私有方法
+
+        /// <summary>
+        /// 清除暂停状态并根据需要重置共享状态
+        /// </summary>
+        /// <param name="resetSharedState">是否同时重置共享状态</param>
+        private void ClearPauseState(bool resetSharedState = false)
+        {
+            lock (_stateLock)
+            {
+                _isPaused = false;
+                _sharedState?.SetSystemPaused(false);
+
+                if (resetSharedState)
+                {
+                    _sharedState?.ResetAllStates();
+                }
+            }
+
+            _binElevator?.ForceStopAllBins();
+        }
 
         /// <summary>
         /// 发送系统状态消息

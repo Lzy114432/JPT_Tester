@@ -222,6 +222,25 @@ namespace Ewan.Core.Module
             }
         }
 
+        /// <summary>
+        /// 强制停止所有料仓并将状态机置为停止
+        /// </summary>
+        public void ForceStopAllBins()
+        {
+            lock (_stateLock)
+            {
+                StopAllBinMovements();
+                _binElevatorMode = BinElevatorMode.Stopped;
+                _bin1State = BinElevatorState.Stopped;
+                _bin2State = BinElevatorState.Stopped;
+                _bin3State = BinElevatorState.Stopped;
+
+                _bin1ReachedSensor = false;
+                _bin2ReachedSensor = false;
+                _bin3ReachedSensor = false;
+            }
+        }
+
         #endregion
 
         #region 核心升降控制逻辑
