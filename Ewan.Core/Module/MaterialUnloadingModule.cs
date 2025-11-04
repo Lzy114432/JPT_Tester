@@ -406,11 +406,21 @@ namespace Ewan.Core.Module
         {
             lock (_stateLock)
             {
-                // 清除所有输出信号
-                _ioManager.LayeredIO.WriteOutBit(OUT_SCAN_COMPLETE, false);
-                _ioManager.LayeredIO.WriteOutBit(TRIGGER_PICKUP_SIGNAL, false);
-                _ioManager.LayeredIO.WriteOutBit(PUT_TO_CART_SIGNAL, false);
-                ClearBinSelectSignals();
+                try
+                {
+                    if (_ioManager?.LayeredIO != null)
+                    {
+                        _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, false);
+                        _ioManager.LayeredIO.WriteOutBit(OUT_SCAN_COMPLETE, false);
+                        _ioManager.LayeredIO.WriteOutBit(TRIGGER_PICKUP_SIGNAL, false);
+                        _ioManager.LayeredIO.WriteOutBit(PUT_TO_CART_SIGNAL, false);
+                        ClearBinSelectSignals();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _uiLogger.ErrorRaw("处理错误: {0} - {1}", "强制停止卸料清除输出", ex.Message);
+                }
 
                 // 重置状态
                 _currentState = MaterialUnloadingState.Idle;
@@ -418,6 +428,10 @@ namespace Ewan.Core.Module
                 _unloadingRequested = false;
                 _ringLineSignal = false;     // 清除信号电平标志
                 _requestProcessed = false;   // 清除处理标志
+
+                _sharedState?.SetUnloadingCompleted(false);
+                _sharedState?.ClearUnloadingPriority();
+                _sharedState?.FinishProcess();
 
                 _uiLogger.InfoRaw("处理已完成: {0}", "强制停止卸料，所有信号已清除");
             }

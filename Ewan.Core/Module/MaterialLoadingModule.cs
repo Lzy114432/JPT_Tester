@@ -349,10 +349,36 @@ namespace Ewan.Core.Module
         {
             lock (_stateLock)
             {
+                // 清除所有相关输出信号，确保设备回到初始安全状态
+                try
+                {
+                    if (_ioManager?.LayeredIO != null)
+                    {
+                        _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, false);
+                        _ioManager.LayeredIO.WriteOutBit(OUT_SEND_PICK_CMD, false);
+                        _ioManager.LayeredIO.WriteOutBit(TRIGGER_LOADING_SIGNAL, false);
+                        _ioManager.LayeredIO.WriteOutBit(OUT_SCAN_COMPLETE, false);
+                        _ioManager.LayeredIO.WriteOutBit(BIN1_SELECT_SIGNAL, false);
+                        _ioManager.LayeredIO.WriteOutBit(BIN2_SELECT_SIGNAL, false);
+                        _ioManager.LayeredIO.WriteOutBit(BIN3_SELECT_SIGNAL, false);
+                        _ioManager.LayeredIO.WriteOutBit(OUT_START, false);
+                        _ioManager.LayeredIO.WriteOutBit(OUT_STOP, false);
+                        _ioManager.LayeredIO.WriteOutBit(OUT_HIGH_SPEED, false);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _uiLogger.ErrorRaw("处理错误: {0} - {1}", "强制停止装载清除输出", ex.Message);
+                }
+
                 _currentState = MaterialLoadingState.Idle;
                 _stopRequested = false;
                 _loadingRequested = false;
                 
+                _sharedState?.ClearLoadingInProgress();
+                _sharedState?.FinishProcess();
+                SetLoadingCompleted(false);
+
                 
                 _uiLogger.InfoRaw("处理已完成: {0}", "强制停止装载");
             }
