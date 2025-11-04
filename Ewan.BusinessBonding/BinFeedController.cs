@@ -27,6 +27,7 @@ namespace Ewan.BusinessBonding
         // 控制参数
         private const int SENSOR_CHECK_INTERVAL = 50; // 感应器检测间隔(ms)
         private const int OPERATION_TIMEOUT = 30000;  // 操作超时时间(ms) - 30秒
+        private const int ASCEND_COMPLETION_TIMEOUT = 10000; // 上升阶段完成超时时间(ms) - 10秒
 
         /// <summary>
         /// 料仓1下料控制
@@ -121,7 +122,16 @@ namespace Ewan.BusinessBonding
 
                 while (true)
                 {
-                    if ((DateTime.Now - startTime).TotalMilliseconds > OPERATION_TIMEOUT)
+                    var elapsed = (DateTime.Now - startTime).TotalMilliseconds;
+
+                    if (elapsed > ASCEND_COMPLETION_TIMEOUT)
+                    {
+                        StopBinAxis(binNumber, axisId);
+                        _uiLogger.InfoRaw("料仓{0}上升阶段10秒未感应，视为已到达上限位置完成", binNumber);
+                        return true;
+                    }
+
+                    if (elapsed > OPERATION_TIMEOUT)
                     {
                         StopBinAxis(binNumber, axisId);
                         _uiLogger.ErrorRaw("处理错误: {0}", $"料仓{binNumber}上升超时");
