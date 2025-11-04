@@ -10,6 +10,7 @@ using Prism.Mvvm;
 using System;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MarkingMachineFeeder.Viewmodel
 {
@@ -1161,21 +1162,45 @@ namespace MarkingMachineFeeder.Viewmodel
                     "初始化信号(IN9)",
                     10000  // 10秒超时
                 );
-                
-               
-                
-                // 检查初始化结果
-                int successCount = 0;
-                if (initSignalReceived) successCount++;
-                
-                if (successCount >= 3)
+
+                if (initSignalReceived)
                 {
-                    _uiLogger.InfoRaw($"步骤5: 硬件初始化完成机械臂初始化完成信号接收成功)");
+                    _uiLogger.InfoRaw("步骤4: 初始化信号接收完成");
                 }
                 else
                 {
-                    _uiLogger.WarnRaw($"步骤5: 硬件初始化部分完成 信号接收成功)");
+                    _uiLogger.WarnRaw("步骤4: 初始化信号未在超时时间内到达，继续执行复位流程");
                 }
+
+                _uiLogger.InfoRaw("步骤5: 执行料仓自动升降检测");
+                var binFeedController = BinFeedController.Instance();
+
+                bool[] feedResults;
+                try
+                {
+                    feedResults = await Task.WhenAll(
+                        Task.Run(() => binFeedController.FeedBin1()),
+                        Task.Run(() => binFeedController.FeedBin2()),
+                        Task.Run(() => binFeedController.FeedBin3())
+                    );
+                }
+                catch (Exception feedException)
+                {
+                    _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "料仓自动升降", feedException.Message);
+                    return;
+                }
+
+                if (!feedResults.All(result => result))
+                {
+                    _uiLogger.ErrorRaw("步骤5: 料仓自动升降检测失败，系统复位中止");
+                    SystemRunningStatus = "Red";
+                    SystemRunningIsOn = false;
+                    AlarmStatus = "Red";
+                    AlarmIsOn = true;
+                    return;
+                }
+
+                _uiLogger.InfoRaw("步骤5: 所有料仓升降循环完成");
 
                 // 复位系统状态
                 SystemRunningStatus = "Yellow"; // 黄色表示待机状态

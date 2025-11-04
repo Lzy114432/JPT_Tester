@@ -79,35 +79,19 @@ namespace Ewan.BusinessBonding
             {
                 _uiLogger.InfoRaw("处理已开始: {0}", $"料仓{binNumber}下料控制");
 
-                // 读取初始感应器状态
-                bool initialSensor = ReadBinSensor(binNumber, sensorIndex);
-
-                if (initialSensor)
+                if (!AscendUntilSensorOn(binNumber, axisId, sensorIndex))
                 {
-                    // 情况1: 感应为true，直接下降到false
-                    if (!DescendUntilSensorOff(binNumber, axisId, sensorIndex))
-                    {
-                        _uiLogger.ErrorRaw("处理错误: {0}", $"料仓{binNumber}下降失败");
-                        return false;
-                    }
-                }
-                else
-                {
-                    // 情况2: 感应为false，先上升到true，再下降到false
-                    if (!AscendUntilSensorOn(binNumber, axisId, sensorIndex))
-                    {
-                        _uiLogger.ErrorRaw("处理错误: {0}", $"料仓{binNumber}上升失败");
-                        return false;
-                    }
-
-                    if (!DescendUntilSensorOff(binNumber, axisId, sensorIndex))
-                    {
-                        _uiLogger.ErrorRaw("处理错误: {0}", $"料仓{binNumber}下降失败");
-                        return false;
-                    }
+                    _uiLogger.ErrorRaw("处理错误: {0}", $"料仓{binNumber}上升失败");
+                    return false;
                 }
 
-                _uiLogger.InfoRaw("处理已完成: {0}", $"料仓{binNumber}下料控制成功");
+                if (!DescendUntilSensorOff(binNumber, axisId, sensorIndex))
+                {
+                    _uiLogger.ErrorRaw("处理错误: {0}", $"料仓{binNumber}下降失败");
+                    return false;
+                }
+
+                _uiLogger.InfoRaw("处理已完成: {0}", $"料仓{binNumber}升降循环成功");
                 return true;
             }
             catch (Exception ex)
@@ -125,6 +109,12 @@ namespace Ewan.BusinessBonding
         {
             try
             {
+                if (ReadBinSensor(binNumber, sensorIndex))
+                {
+                    _uiLogger.DebugRaw("料仓{0}已处于上升完成状态，跳过上升动作", binNumber);
+                    return true;
+                }
+
                 StartBinJogUp(binNumber, axisId);
 
                 DateTime startTime = DateTime.Now;
@@ -162,6 +152,12 @@ namespace Ewan.BusinessBonding
         {
             try
             {
+                if (!ReadBinSensor(binNumber, sensorIndex))
+                {
+                    _uiLogger.DebugRaw("料仓{0}已处于下降完成状态，跳过下降动作", binNumber);
+                    return true;
+                }
+
                 StartBinJogDown(binNumber, axisId);
 
                 DateTime startTime = DateTime.Now;
