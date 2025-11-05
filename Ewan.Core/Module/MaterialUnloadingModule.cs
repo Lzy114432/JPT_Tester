@@ -5,6 +5,7 @@ using Ewan.Core.ScanCode;
 using Ewan.Model;
 using Ewan.Model.Production;
 using System;
+using System.IO;
 using System.Threading;
 
 namespace Ewan.Core.Module
@@ -456,12 +457,38 @@ namespace Ewan.Core.Module
 
                 _modbusRTUManager.WriteAny(MATERIAL_STATUS_REGISTER, (ushort)1);
 
-
                 _uiLogger.InfoRaw("处理已完成: {0}", $"放入小车完成信号已发送到寄存器{CART_COMPLETION_REGISTER}");
+
+                // 写入桌面日志
+                WriteToDesktopLog();
             }
             catch (Exception ex)
             {
                 _uiLogger.ErrorRaw("处理错误: {0} - {1}", $"发送完成信号到Modbus失败: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 写入桌面日志文件
+        /// </summary>
+        private void WriteToDesktopLog()
+        {
+            try
+            {
+                string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                string logFilePath = Path.Combine(desktopPath, "MaterialUnloadingLog.txt");
+
+                string logEntry = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] " +
+                                  $"放入小车完成 - 寄存器{CART_COMPLETION_REGISTER}写入完成, " +
+                                  $"寄存器{MATERIAL_STATUS_REGISTER}写入完成, " +
+                                  $"二维码: {(_lastScannedQrCode ?? "无")}" +
+                                  Environment.NewLine;
+
+                File.AppendAllText(logFilePath, logEntry);
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.ErrorRaw("处理错误: {0} - {1}", "写入桌面日志失败", ex.Message);
             }
         }
 
