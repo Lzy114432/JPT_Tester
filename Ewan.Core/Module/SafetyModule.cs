@@ -23,6 +23,7 @@ namespace Ewan.Core.Module
         private LayeredIO _layeredIO;
         private MsgManager _msgManager;
         private MsgListener _systemControlListener;
+        private SystemParametersManager _parametersManager;
 
         private const int ROBOT_PAUSE_OUTPUT = 8;
         private readonly object _robotPausePulseLock = new object();
@@ -37,6 +38,12 @@ namespace Ewan.Core.Module
         private readonly TimeSpan _robotRecoveryPulseInterval = TimeSpan.FromMilliseconds(300);
         private const int ROBOT_RECOVERY_PULSE_WIDTH_MS = 200;
         private bool _robotRecoveryPending = false;
+        private const int SYSTEM_STOP_OUTPUT = 6;
+        private readonly object _systemStopPulseLock = new object();
+        private bool _systemStopPulseInProgress = false;
+        private DateTime _lastSystemStopPulseTime = DateTime.MinValue;
+        private readonly TimeSpan _systemStopPulseInterval = TimeSpan.FromMilliseconds(300);
+        private const int SYSTEM_STOP_PULSE_WIDTH_MS = 200;
         
         // 时间间隔设置
         private int _dataSyncInterval = 10;     // IO数据同步间隔(ms) - 保持快速响应
@@ -65,6 +72,9 @@ namespace Ewan.Core.Module
         private DateTime _lastBin1LimitTime = DateTime.MinValue;
         private DateTime _lastBin2LimitTime = DateTime.MinValue;
         private DateTime _lastBin3LimitTime = DateTime.MinValue;
+        private DateTime _lastSafetyDoor1Time = DateTime.MinValue;
+        private DateTime _lastSafetyDoor2Time = DateTime.MinValue;
+        private DateTime _lastSafetyDoor3Time = DateTime.MinValue;
         private TimeSpan _alarmDebounceTime = TimeSpan.FromMilliseconds(500); // 报警防抖时间500ms
 
         #endregion
@@ -82,6 +92,7 @@ namespace Ewan.Core.Module
                 _ioManager = LayeredIOManager.Instance();
                 _layeredIO = _ioManager.LayeredIO;
                 _msgManager = MsgManager.Instance();
+                _parametersManager = SystemParametersManager.Instance;
 
                 _systemControlListener = new MsgListener(MsgSubject.SystemControl, OnSystemControlMessage);
                 _msgManager.RegisterListener(_systemControlListener);
@@ -251,6 +262,13 @@ namespace Ewan.Core.Module
                     SendPauseCommand("料仓3下限位置异常");
                 }
             }
+
+            if (!IsSafetyDoorAlarmBypassed())
+            {
+                CheckSafetyDoorAlarm(AlarmIOMapping.SAFETY_DOOR1_ALARM, ref _lastSafetyDoor1Time, "安全门1打开");
+                CheckSafetyDoorAlarm(AlarmIOMapping.SAFETY_DOOR2_ALARM, ref _lastSafetyDoor2Time, "安全门2打开");
+                CheckSafetyDoorAlarm(AlarmIOMapping.SAFETY_DOOR3_ALARM, ref _lastSafetyDoor3Time, "安全门3打开");
+            }
         }
 
         /// <summary>
@@ -411,7 +429,7 @@ namespace Ewan.Core.Module
         {
             try
             {
-                TriggerRobotPausePulse(reason);
+                TriggerSystemStopPulse(reason);
 
                 // 发送系统控制命令到ProductionLineModule
                 var systemControlMsg = new MessageModel(MsgSubject.SystemControl, SystemControlCommand.EmergencyStop);
@@ -616,6 +634,59 @@ namespace Ewan.Core.Module
             });
         }
 
+        private void TriggerSystemStopPulse(string context)
+        {
+            if (_layeredIO == null)
+            {
+                return;
+            }
+
+            lock (_systemStopPulseLock)
+            {
+                if (_systemStopPulseInProgress)
+                {
+                    return;
+                }
+
+                if ((DateTime.Now - _lastSystemStopPulseTime) < _systemStopPulseInterval)
+                {
+                    return;
+                }
+
+                _systemStopPulseInProgress = true;
+                _lastSystemStopPulseTime = DateTime.Now;
+            }
+
+            Task.Run(() =>
+            {
+                try
+                {
+                    bool setResult = _layeredIO.WriteOutBit(SYSTEM_STOP_OUTPUT, true, true);
+                    if (setResult)
+                    {
+                        Thread.Sleep(SYSTEM_STOP_PULSE_WIDTH_MS);
+                        _layeredIO.WriteOutBit(SYSTEM_STOP_OUTPUT, false, true);
+                        _uiLogger.Info("处理已完成: {0}", $"停止脉冲发送: {context}");
+                    }
+                    else
+                    {
+                        _uiLogger.Warn("处理错误: {0}", $"停止脉冲置位失败: {context}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _uiLogger.Error("模块运行错误: {0} - {1}", "SafetyModule-TriggerSystemStopPulse", ex.Message);
+                }
+                finally
+                {
+                    lock (_systemStopPulseLock)
+                    {
+                        _systemStopPulseInProgress = false;
+                    }
+                }
+            });
+        }
+
         private void SetRobotPauseOutput(bool activate, string context)
         {
             if (_layeredIO == null)
@@ -640,6 +711,24 @@ namespace Ewan.Core.Module
             {
                 _uiLogger.Error("模块运行错误: {0} - {1}", "SafetyModule-SetRobotPauseOutput", ex.Message);
             }
+        }
+
+        private void CheckSafetyDoorAlarm(int ioIndex, ref DateTime lastTrigger, string description)
+        {
+            if (ReadRisingEdge(ioIndex))
+            {
+                ClearRisingEdge(ioIndex);
+
+                if (CanTriggerAlarm(ref lastTrigger))
+                {
+                    SendPauseCommand(description);
+                }
+            }
+        }
+
+        private bool IsSafetyDoorAlarmBypassed()
+        {
+            return _parametersManager?.Parameters?.SafetyDoorAlarmBypass ?? false;
         }
 
         #endregion

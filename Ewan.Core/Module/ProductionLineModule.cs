@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Threading;
+using Ewan.Core.IO;
 using Ewan.Core.Msg;
 using Ewan.Model.System;
 
@@ -24,6 +25,9 @@ namespace Ewan.Core.Module
         private bool _isRunning = false; // 控制OnRun是否进行循环的变量
         private bool _isPaused = false; // 暂停状态标志
         private readonly object _stateLock = new object();
+        private LayeredIOManager _ioManager;
+        private const int OUT_RECOVERY = 7;
+        private const int RECOVERY_PULSE_WIDTH_MS = 200;
         private MsgListener _systemControlListener; // 系统控制消息监听器
 
         #endregion
@@ -41,6 +45,8 @@ namespace Ewan.Core.Module
                 
                 // 创建共享状态
                 _sharedState = new ProductionLineSharedState();
+
+                _ioManager = LayeredIOManager.Instance();
 
                 // 创建子模块并传递共享状态
                 _materialLoading = new MaterialLoadingModule(_sharedState);
@@ -187,7 +193,19 @@ namespace Ewan.Core.Module
                 return;
             }
 
+
+            bool wasPaused;
+            lock (_stateLock)
+            {
+                wasPaused = _isPaused;
+            }
+
             ClearPauseState(resetSharedState: true);
+
+            if (wasPaused)
+            {
+                SendRecoveryPulse();
+            }
 
             _isRunning = true;
             _uiLogger.InfoRaw("处理已完成: {0}", "生产线启动");
@@ -202,6 +220,7 @@ namespace Ewan.Core.Module
         public void StopProduction()
         {
             _isRunning = false;
+            _initialized = false;
             ClearPauseState(resetSharedState: true);
 
             _materialLoading?.ForceStopLoading();
@@ -220,6 +239,7 @@ namespace Ewan.Core.Module
             try
             {
                 _isRunning = false;
+                _initialized = false;
                 _materialLoading?.ForceStopLoading();
                 _materialUnloading?.ForceStopUnloading();
                 ClearPauseState(resetSharedState: true);
@@ -423,6 +443,44 @@ namespace Ewan.Core.Module
             {
                 _uiLogger.ErrorRaw("处理错误: {0} - {1}", 
                     "处理系统控制消息", ex.Message);
+            }
+        }
+
+        private void SendRecoveryPulse()
+        {
+            try
+            {
+                if (_ioManager == null)
+                {
+                    _ioManager = LayeredIOManager.Instance();
+                }
+
+                if (_ioManager == null)
+                {
+                    return;
+                }
+
+                if (!_ioManager.IsConnected)
+                {
+                    _ioManager.Connect();
+                }
+
+                var layered = _ioManager.LayeredIO;
+                if (layered == null)
+                {
+                    return;
+                }
+
+                if (layered.WriteOutBit(OUT_RECOVERY, true, true))
+                {
+                    Thread.Sleep(RECOVERY_PULSE_WIDTH_MS);
+                    layered.WriteOutBit(OUT_RECOVERY, false, true);
+                    _uiLogger.InfoRaw("处理已完成: {0}", "发送复原脉冲(OUT7)");
+                }
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.ErrorRaw("模块运行错误: {0} - {1}", "ProductionLineModule-SendRecoveryPulse", ex.Message);
             }
         }
 

@@ -285,11 +285,21 @@
                                          IsChecked="{Binding HighSpeedModeEnabled}"
                                          Style="{StaticResource ModernCheckBox}"/>
                             </Border>
+
+                            <Border Background="#FAFAFA" CornerRadius="8" Padding="15" Margin="0,10,0,0">
+                                <CheckBox Content="安全门报警屏蔽"
+                                         IsChecked="{Binding SafetyDoorAlarmBypass}"
+                                         Style="{StaticResource ModernCheckBox}"/>
+                            </Border>
                             
                             <TextBlock Text="启用后系统将在启动时自动切换到高速运行模式" 
                                       FontSize="12" 
                                       Foreground="#9CA3AF" 
                                       Margin="5,8,0,0"/>
+                            <TextBlock Text="勾选后启动将忽略安全门状态，不触发安全门报警"
+                                      FontSize="12"
+                                      Foreground="#9CA3AF"
+                                      Margin="5,4,0,0"/>
                         </StackPanel>
                     </Border>
                     

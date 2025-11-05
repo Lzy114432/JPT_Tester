@@ -28,6 +28,11 @@ namespace Ewan.Model.Alarm
         public const int BIN2_LIMIT_ALARM = 13;   // X13 - 料仓2下限位置信号
         public const int BIN3_LIMIT_ALARM = 14;   // X14 - 料仓3下限位置信号
 
+        // 安全门报警输入点位
+        public const int SAFETY_DOOR1_ALARM = 24; // X24 - 安全门1报警
+        public const int SAFETY_DOOR2_ALARM = 25; // X25 - 安全门2报警
+        public const int SAFETY_DOOR3_ALARM = 26; // X26 - 安全门3报警
+
 
     }
 }

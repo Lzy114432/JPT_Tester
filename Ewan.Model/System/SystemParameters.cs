@@ -29,6 +29,11 @@ namespace Ewan.Model.System
         public int RingLineTimeoutSeconds { get; set; } = 30;
 
         /// <summary>
+        /// 是否屏蔽安全门报警
+        /// </summary>
+        public bool SafetyDoorAlarmBypass { get; set; } = false;
+
+        /// <summary>
         /// 创建默认参数配置
         /// </summary>
         public static SystemParameters CreateDefault()
@@ -38,7 +43,8 @@ namespace Ewan.Model.System
                 HighSpeedModeEnabled = false,
                 ResetDelayMs = 4000,
                 LowSpeedSetupDelayMs = 500,
-                RingLineTimeoutSeconds = 30
+                RingLineTimeoutSeconds = 30,
+                SafetyDoorAlarmBypass = false
             };
         }
 

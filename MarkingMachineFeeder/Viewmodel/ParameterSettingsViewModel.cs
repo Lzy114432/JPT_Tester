@@ -40,6 +40,13 @@ namespace MarkingMachineFeeder.Viewmodel
             get => _ringLineTimeoutSeconds;
             set => SetProperty(ref _ringLineTimeoutSeconds, value);
         }
+
+        private bool _safetyDoorAlarmBypass;
+        public bool SafetyDoorAlarmBypass
+        {
+            get => _safetyDoorAlarmBypass;
+            set => SetProperty(ref _safetyDoorAlarmBypass, value);
+        }
         #endregion
 
         #region Commands
@@ -66,6 +73,7 @@ namespace MarkingMachineFeeder.Viewmodel
             ResetDelayMs = parameters.ResetDelayMs;
             LowSpeedSetupDelayMs = parameters.LowSpeedSetupDelayMs;
             RingLineTimeoutSeconds = parameters.RingLineTimeoutSeconds;
+            SafetyDoorAlarmBypass = parameters.SafetyDoorAlarmBypass;
         }
 
         private void ExecuteSave()
@@ -104,7 +112,8 @@ namespace MarkingMachineFeeder.Viewmodel
                     HighSpeedModeEnabled = HighSpeedModeEnabled,
                     ResetDelayMs = ResetDelayMs,
                     LowSpeedSetupDelayMs = LowSpeedSetupDelayMs,
-                    RingLineTimeoutSeconds = RingLineTimeoutSeconds
+                    RingLineTimeoutSeconds = RingLineTimeoutSeconds,
+                    SafetyDoorAlarmBypass = SafetyDoorAlarmBypass
                 };
 
                 if (!parameters.Validate())

@@ -1356,6 +1356,7 @@
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                             <!-- 系统运行状态 -->
                             <Border Grid.Row="0"
@@ -1496,8 +1497,16 @@
                                     FontSize="12"
                                     Command="{Binding SystemStartCommand}"
                                     Margin="4,2" />
-                            <!-- 停止按钮 -->
+                            <!-- 暂停按钮 -->
                             <Button Grid.Row="4"
+                                    Content="{Binding SystemPauseButtonText}"
+                                    Style="{StaticResource IndustrialTestButton}"
+                                    Background="#FFC107"
+                                    FontSize="12"
+                                    Command="{Binding SystemPauseCommand}"
+                                    Margin="4,2" />
+                            <!-- 停止按钮 -->
+                            <Button Grid.Row="5"
                                     Content="停止"
                                     Style="{StaticResource IndustrialTestButton}"
                                     Background="#DC3545"

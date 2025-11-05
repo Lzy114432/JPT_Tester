@@ -14,7 +14,7 @@ namespace Ewan.BusinessBonding
         private readonly IOController _ioController;
 
         // 机械臂IO定义 (基于K1控制卡的输出点)
-        private const int Y7_ClearAlarm = 7;      // 清除报警
+        private const int Y25_ClearAlarm = 25;    // 清除报警
         private const int Y10_PlaceToBin = 10;    // 触发机械手放置料仓
         private const int Y11_Bin1Select = 11;    // 料仓1选择信号
         private const int Y12_Bin2Select = 12;    // 料仓2选择信号
@@ -245,13 +245,13 @@ namespace Ewan.BusinessBonding
                 _uiLogger.Info(() => "开始执行: 清除报警");
 
                 // 1. 触发清除报警信号 (Y7)
-                _ioController.WriteOutput(Y7_ClearAlarm, true);
+                _ioController.WriteOutput(Y25_ClearAlarm, true);
 
                 // 2. 等待500ms后复位信号
                 await Task.Delay(100);
 
                 // 3. 复位信号
-                _ioController.WriteOutput(Y7_ClearAlarm, false);
+                _ioController.WriteOutput(Y25_ClearAlarm, false);
 
                 _uiLogger.Info(() => "完成: 清除报警信号已发送");
                 return true;
