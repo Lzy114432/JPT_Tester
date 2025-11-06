@@ -24,10 +24,10 @@ namespace MarkingMachineFeeder.Viewmodel
         private MsgListener _statusIndicatorListener; // 系统状态监听器
 
         private string _title = "MarkingMachineFeeder";
-        private string _languageMenuHeader = "Language";
-        private string _testLogButtonText = "Test Log";
+        private string _languageMenuHeader = "语言";
+        private string _testLogButtonText = "测试日志";
         private string _currentUserText = "未登录";
-        private string _currentUser = "Guest";
+        private string _currentUser = "游客";
         private string _currentUserLabel = "";
         private string _loginButtonText = "";
         private string _switchUserButtonText = "";
@@ -688,9 +688,9 @@ namespace MarkingMachineFeeder.Viewmodel
             CanControlCamera = false;  // 禁用相机控制
             CanControlUPS = false;     // 禁用UPS控制
             CanViewSettings = _securityManager.HasPermission(PermissionResources.PermissionConfig, PermissionActions.View);
-            
-            // 使用新的Language权限控制语言切换
-            CanSwitchLanguage = _securityManager.HasPermission(PermissionResources.Language, PermissionActions.Control);
+
+            // 国际化功能已移除，固定为中文界面
+            CanSwitchLanguage = false;
             
             // 使用SystemControl权限控制退出功能
             CanExit = _securityManager.HasPermission(PermissionResources.SystemControl, PermissionActions.Control);

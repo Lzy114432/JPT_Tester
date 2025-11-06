@@ -18,6 +18,10 @@ namespace Ewan.Core.Module
         private MaterialUnloadingModule _materialUnloading;
         private BinElevatorModule _binElevator;
         private ProductionLineSharedState _sharedState;
+        private readonly SystemParametersManager _parametersManager = SystemParametersManager.Instance;
+        private SystemParameters _currentParameters;
+        private bool _loadingEnabled = true;
+        private bool _unloadingEnabled = true;
 
         private int _scanInterval = 100; // 扫描间隔，毫秒
         private bool _systemReady = false;
@@ -48,6 +52,10 @@ namespace Ewan.Core.Module
 
                 _ioManager = LayeredIOManager.Instance();
 
+                _currentParameters = _parametersManager.Parameters;
+                _loadingEnabled = _currentParameters.EnableLoadingModule;
+                _unloadingEnabled = _currentParameters.EnableUnloadingModule;
+
                 // 创建子模块并传递共享状态
                 _materialLoading = new MaterialLoadingModule(_sharedState);
                 _materialUnloading = new MaterialUnloadingModule(_sharedState);
@@ -57,6 +65,7 @@ namespace Ewan.Core.Module
                 _materialLoading.Init();
                 _materialUnloading.Init();
                 _binElevator.Init();
+                _materialUnloading?.SetBinElevatorModule(_binElevator);
                 
                 _systemReady = true;
                 _uiLogger.InfoRaw("初始化已完成: {0}", "生产线控制系统");
@@ -77,13 +86,15 @@ namespace Ewan.Core.Module
             {
                 Thread.Sleep(_scanInterval);
 
+                RefreshModuleConfiguration();
+
                 // 顺序调用子模块，让它们各自处理状态机
                 // 通过共享状态自动协调工作
                 // 添加空值检查，防止关闭时的空引用异常
-                if (_materialLoading != null)
+                if (_loadingEnabled && _materialLoading != null)
                     _materialLoading.Run();
 
-                if (_materialUnloading != null)
+                if (_unloadingEnabled && _materialUnloading != null)
                     _materialUnloading.Run();
 
                 if (_binElevator != null)
@@ -335,6 +346,34 @@ namespace Ewan.Core.Module
             }
 
             _binElevator?.ForceStopAllBins();
+        }
+
+        private void RefreshModuleConfiguration()
+        {
+            var parameters = _parametersManager.Parameters;
+
+            if (!ReferenceEquals(parameters, _currentParameters))
+            {
+                _currentParameters = parameters;
+            }
+
+            if (parameters.EnableLoadingModule != _loadingEnabled)
+            {
+                _loadingEnabled = parameters.EnableLoadingModule;
+                if (!_loadingEnabled)
+                {
+                    _materialLoading?.ForceStopLoading();
+                }
+            }
+
+            if (parameters.EnableUnloadingModule != _unloadingEnabled)
+            {
+                _unloadingEnabled = parameters.EnableUnloadingModule;
+                if (!_unloadingEnabled)
+                {
+                    _materialUnloading?.ForceStopUnloading();
+                }
+            }
         }
 
         /// <summary>

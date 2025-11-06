@@ -243,4 +243,22 @@
   <data name="SystemResumeButton" xml:space="preserve">
     <value>复原</value>
   </data>
+  <data name="EnableLoadingOptionLabel" xml:space="preserve">
+    <value>启用装料模块</value>
+  </data>
+  <data name="EnableUnloadingOptionLabel" xml:space="preserve">
+    <value>启用下料模块</value>
+  </data>
+  <data name="BinSelectionLabel" xml:space="preserve">
+    <value>料仓选择</value>
+  </data>
+  <data name="BinOption1" xml:space="preserve">
+    <value>料仓1</value>
+  </data>
+  <data name="BinOption2" xml:space="preserve">
+    <value>料仓2</value>
+  </data>
+  <data name="BinOption3" xml:space="preserve">
+    <value>料仓3</value>
+  </data>
 </root>

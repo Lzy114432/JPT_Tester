@@ -279,6 +279,45 @@
                         <StackPanel>
                             <TextBlock Text="运行模式"
                                       Style="{StaticResource SectionTitle}"/>
+
+                            <Border Background="#FAFAFA" CornerRadius="8" Padding="15" Margin="0,10,0,0">
+                                <CheckBox Content="{Binding EnableLoadingLabel}"
+                                         IsChecked="{Binding EnableLoadingModule}"
+                                         Style="{StaticResource ModernCheckBox}"/>
+                            </Border>
+
+                            <Border Background="#FAFAFA" CornerRadius="8" Padding="15" Margin="0,10,0,0">
+                                <CheckBox Content="{Binding EnableUnloadingLabel}"
+                                         IsChecked="{Binding EnableUnloadingModule}"
+                                         Style="{StaticResource ModernCheckBox}"/>
+                            </Border>
+
+                            <Border Background="#FAFAFA" CornerRadius="8" Padding="20" Margin="0,10,0,0">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="12"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0"
+                                              Text="{Binding BinSelectionLabel}"
+                                              FontSize="14"
+                                              FontWeight="Medium"
+                                              Foreground="#495057"/>
+                                    <ComboBox Grid.Row="2"
+                                              ItemsSource="{Binding BinOptions}"
+                                              SelectedValuePath="Value"
+                                              DisplayMemberPath="Display"
+                                              SelectedValue="{Binding SelectedBin, Mode=TwoWay}"
+                                              Height="40"
+                                              FontSize="14"
+                                              Padding="12,0"
+                                              Background="#F8F9FA"
+                                              BorderBrush="#E9ECEF"
+                                              BorderThickness="1"
+                                              HorizontalContentAlignment="Center"/>
+                                </Grid>
+                            </Border>
                             
                             <Border Background="#FAFAFA" CornerRadius="8" Padding="15" Margin="0,10,0,0">
                                 <CheckBox Content="启用高速运行模式"

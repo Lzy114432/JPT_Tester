@@ -10,7 +10,8 @@ namespace Ewan.Core.Culture
     {
         public event EventHandler<CultureChangedEventArgs> CultureChanged;
         
-        private CultureInfo _currentCulture = CultureInfo.CurrentCulture;
+        private readonly CultureInfo _defaultCulture = CultureInfo.GetCultureInfo("zh-CN");
+        private CultureInfo _currentCulture = CultureInfo.GetCultureInfo("zh-CN");
         
         public CultureInfo CurrentCulture
         {
@@ -29,19 +30,9 @@ namespace Ewan.Core.Culture
 
         public override bool Init()
         {
-            var savedLanguage = GetSavedLanguage();
-            if (!string.IsNullOrEmpty(savedLanguage))
-            {
-                try
-                {
-                    SetCulture(savedLanguage);
-                }
-                catch (Exception ex)
-                {
-                    _uiLogger.Warn("文化管理器初始化错误: {0}", ex.Message);
-                    SetCulture("en-US");
-                }
-            }
+            _currentCulture = _defaultCulture;
+            ApplyCulture();
+            _uiLogger.Info("文化已设置为 {0}", _defaultCulture.Name);
             return base.Init();
         }
 
@@ -49,10 +40,14 @@ namespace Ewan.Core.Culture
         {
             try
             {
-                var culture = new CultureInfo(cultureName);
-                CurrentCulture = culture;
-                SaveLanguage(cultureName);
-                _uiLogger.Info("文化已更改为 {0}", cultureName);
+                if (!string.Equals(cultureName, _defaultCulture.Name, StringComparison.OrdinalIgnoreCase))
+                {
+                    _uiLogger.Warn("忽略不受支持的文化设置: {0}", cultureName);
+                    return;
+                }
+
+                CurrentCulture = _defaultCulture;
+                _uiLogger.Info("文化已固定为 {0}", _defaultCulture.Name);
             }
             catch (CultureNotFoundException ex)
             {
@@ -63,8 +58,18 @@ namespace Ewan.Core.Culture
 
         public void SetCulture(CultureInfo culture)
         {
-            CurrentCulture = culture ?? throw new ArgumentNullException(nameof(culture));
-            SaveLanguage(culture.Name);
+            if (culture == null)
+            {
+                throw new ArgumentNullException(nameof(culture));
+            }
+
+            if (!string.Equals(culture.Name, _defaultCulture.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                _uiLogger.Warn("忽略不受支持的文化设置: {0}", culture.Name);
+                return;
+            }
+
+            CurrentCulture = _defaultCulture;
         }
 
         private void ApplyCulture()
@@ -82,27 +87,12 @@ namespace Ewan.Core.Culture
 
         private string GetSavedLanguage()
         {
-            try
-            {
-                return Properties.Settings.Default.Language;
-            }
-            catch
-            {
-                return "en-US";
-            }
+            return _defaultCulture.Name;
         }
 
         private void SaveLanguage(string cultureName)
         {
-            try
-            {
-                Properties.Settings.Default.Language = cultureName;
-                Properties.Settings.Default.Save();
-            }
-            catch (Exception ex)
-            {
-                _uiLogger.Warn("保存语言设置错误: {0}", ex.Message);
-            }
+            // 国际化已禁用，不再持久化语言信息
         }
     }
 

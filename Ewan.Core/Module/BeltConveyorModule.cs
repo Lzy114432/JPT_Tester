@@ -21,11 +21,14 @@ namespace Ewan.Core.Module
         // 皮带状态
         private bool _beltRunning = false;
         private bool _shouldStop = false; // 是否应该停止（急停、暂停、关闭等）
+        private bool _moduleEnabled = true;
 
         // 轴控制器和消息管理器
         private AxisManager _axisManager;
         private MsgManager _msgManager;
         private MsgListener _systemControlListener;
+
+        private readonly SystemParametersManager _parametersManager = SystemParametersManager.Instance;
 
         // 皮带轴配置
         private const int BELT_AXIS_ID = 3; // 皮带轴ID
@@ -61,8 +64,29 @@ namespace Ewan.Core.Module
         {
             try
             {
+                var parameters = _parametersManager.Parameters;
+                if (!parameters.EnableLoadingModule)
+                {
+                    lock (_stateLock)
+                    {
+                        if (_beltRunning)
+                        {
+                            StopBelt();
+                        }
+                        _moduleEnabled = false;
+                    }
+
+                    Thread.Sleep(_scanInterval);
+                    return true;
+                }
+
                 lock (_stateLock)
                 {
+                    if (!_moduleEnabled)
+                    {
+                        _moduleEnabled = true;
+                    }
+
                     // 检查是否应该停止
                     if (_shouldStop)
                     {

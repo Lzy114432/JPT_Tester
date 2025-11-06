@@ -243,4 +243,22 @@
   <data name="SystemResumeButton" xml:space="preserve">
     <value>Resume</value>
   </data>
+  <data name="EnableLoadingOptionLabel" xml:space="preserve">
+    <value>Enable Loading Module</value>
+  </data>
+  <data name="EnableUnloadingOptionLabel" xml:space="preserve">
+    <value>Enable Unloading Module</value>
+  </data>
+  <data name="BinSelectionLabel" xml:space="preserve">
+    <value>Selected Bin</value>
+  </data>
+  <data name="BinOption1" xml:space="preserve">
+    <value>Bin 1</value>
+  </data>
+  <data name="BinOption2" xml:space="preserve">
+    <value>Bin 2</value>
+  </data>
+  <data name="BinOption3" xml:space="preserve">
+    <value>Bin 3</value>
+  </data>
 </root>

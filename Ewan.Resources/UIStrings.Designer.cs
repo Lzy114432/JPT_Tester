@@ -410,5 +410,59 @@ namespace Ewan.Resources {
                 return ResourceManager.GetString("UsernameLabel", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   查找类似 Enable Loading Module 的本地化字符串。
+        /// </summary>
+        public static string EnableLoadingOptionLabel {
+            get {
+                return ResourceManager.GetString("EnableLoadingOptionLabel", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Enable Unloading Module 的本地化字符串。
+        /// </summary>
+        public static string EnableUnloadingOptionLabel {
+            get {
+                return ResourceManager.GetString("EnableUnloadingOptionLabel", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Selected Bin 的本地化字符串。
+        /// </summary>
+        public static string BinSelectionLabel {
+            get {
+                return ResourceManager.GetString("BinSelectionLabel", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Bin 1 的本地化字符串。
+        /// </summary>
+        public static string BinOption1 {
+            get {
+                return ResourceManager.GetString("BinOption1", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Bin 2 的本地化字符串。
+        /// </summary>
+        public static string BinOption2 {
+            get {
+                return ResourceManager.GetString("BinOption2", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Bin 3 的本地化字符串。
+        /// </summary>
+        public static string BinOption3 {
+            get {
+                return ResourceManager.GetString("BinOption3", resourceCulture);
+            }
+        }
     }
 }

@@ -4,6 +4,7 @@ using Ewan.Core.Plc;
 using Ewan.Core.ScanCode;
 using Ewan.Model;
 using Ewan.Model.Production;
+using Ewan.Model.System;
 using System;
 using System.IO;
 using System.Threading;
@@ -22,6 +23,7 @@ namespace Ewan.Core.Module
         private bool _emergencyStopTriggered = false;
         private bool _unloadingRequested = false;
         private bool _stopRequested = false;
+        private bool _unloadingEnabled = true;
 
         // 共享状态（用于与其他模块通信）
         private ProductionLineSharedState _sharedState;
@@ -30,8 +32,11 @@ namespace Ewan.Core.Module
         private MsgListener _msgManager2;
 
         private LayeredIOManager _ioManager;
+        private readonly SystemParametersManager _parametersManager = SystemParametersManager.Instance;
 
         private ModbusRTUManager _modbusRTUManager;
+
+        private BinElevatorModule _binElevator;
         
         // 环线信号状态（使用电平检测替代上升沿）
         private bool _ringLineSignal = false;      // 当前信号电平（寄存器152的值）
@@ -100,6 +105,24 @@ namespace Ewan.Core.Module
         {
             try
             {
+                var parameters = _parametersManager.Parameters;
+                if (!parameters.EnableUnloadingModule)
+                {
+                    if (_unloadingEnabled)
+                    {
+                        ForceStopUnloading();
+                        _unloadingEnabled = false;
+                    }
+
+                    Thread.Sleep(_scanInterval);
+                    return true;
+                }
+
+                if (!_unloadingEnabled)
+                {
+                    _unloadingEnabled = true;
+                }
+
                 lock (_stateLock)
                 {
                     switch (_currentState)
@@ -198,7 +221,7 @@ namespace Ewan.Core.Module
                     // 成功获取锁，清除优先级请求
                     _sharedState?.ClearUnloadingPriority();
                     
-                    RequestUnloading(1);
+                    RequestUnloading();
                     _uiLogger.InfoRaw("处理已开始: {0}", "装料流程已完成，开始下料流程");
                 }
                 else
@@ -321,9 +344,32 @@ namespace Ewan.Core.Module
         /// </summary>
         private void ClearBinSelectSignals()
         {
+            if (_ioManager?.LayeredIO == null)
+            {
+                return;
+            }
+
             _ioManager.LayeredIO.WriteOutBit(BIN1_SELECT_SIGNAL, false);
             _ioManager.LayeredIO.WriteOutBit(BIN2_SELECT_SIGNAL, false);
             _ioManager.LayeredIO.WriteOutBit(BIN3_SELECT_SIGNAL, false);
+        }
+
+        /// <summary>
+        /// 获取当前配置的料仓编号
+        /// </summary>
+        /// <returns>料仓编号 (1-3)</returns>
+        private int GetConfiguredBinNumber()
+        {
+            var selected = _parametersManager.Parameters.SelectedBin;
+            switch (selected)
+            {
+                case BinSelection.Bin2:
+                    return 2;
+                case BinSelection.Bin3:
+                    return 3;
+                default:
+                    return 1;
+            }
         }
 
         /// <summary>
@@ -361,7 +407,7 @@ namespace Ewan.Core.Module
         /// 请求卸料操作
         /// </summary>
         /// <param name="binNumber">料仓编号 (1, 2, 3)</param>
-        public void RequestUnloading(int binNumber = 1)
+        public void RequestUnloading()
         {
             lock (_stateLock)
             {
@@ -371,11 +417,14 @@ namespace Ewan.Core.Module
                     return;
                 }
 
+                int binNumber = GetConfiguredBinNumber();
                 _selectedBin = binNumber;
                 _unloadingRequested = true;
                 
                 // 设置料仓选择信号
                 SetBinSelectSignal(binNumber);
+
+                _binElevator?.RaiseToSensor(binNumber);
                 
                 // 触发取料信号
                 _ioManager.LayeredIO.WriteOutBit(TRIGGER_PICKUP_SIGNAL, true);
@@ -385,6 +434,11 @@ namespace Ewan.Core.Module
                 
                 _uiLogger.InfoRaw("处理已开始: {0}", $"请求从料仓{binNumber}开始取料");
             }
+        }
+
+        public void SetBinElevatorModule(BinElevatorModule binElevator)
+        {
+            _binElevator = binElevator;
         }
 
         /// <summary>

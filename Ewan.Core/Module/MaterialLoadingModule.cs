@@ -21,11 +21,13 @@ namespace Ewan.Core.Module
         private bool _loadingRequested = false;
         private bool _stopRequested = false;
         private bool _initialized = false; // 初始化标志
+        private bool _loadingEnabled = true;
 
         // 共享状态（用于与其他模块通信）
         private ProductionLineSharedState _sharedState;
 
         private LayeredIOManager _ioManager;
+        private readonly SystemParametersManager _parametersManager = SystemParametersManager.Instance;
 
         // 输入信号常量
         private const int MATERIAL_DETECT_SIGNAL = 3;      // 料片检测信号X3
@@ -144,6 +146,24 @@ namespace Ewan.Core.Module
         {
             try
             {
+                var parameters = _parametersManager.Parameters;
+                if (!parameters.EnableLoadingModule)
+                {
+                    if (_loadingEnabled)
+                    {
+                        ForceStopLoading();
+                        _loadingEnabled = false;
+                    }
+
+                    Thread.Sleep(_scanInterval);
+                    return true;
+                }
+
+                if (!_loadingEnabled)
+                {
+                    _loadingEnabled = true;
+                }
+
                 // 暂停时保持当前状态，不执行状态机
                 if (_sharedState?.IsSystemPaused() == true)
                 {
@@ -259,8 +279,8 @@ namespace Ewan.Core.Module
             _ioManager.LayeredIO.WriteOutBit(OUT_SCAN_COMPLETE, true);  // 扫码完成
 
 
-            // 根据扫码信息指定目标料仓 ，现在暂时为1
-            _ioManager.LayeredIO.WriteOutBit(BIN1_SELECT_SIGNAL, true);
+            var targetBin = GetConfiguredBinNumber();
+            SetBinSelectSignal(targetBin);
 
                 // 触发放入料仓信号
                 _ioManager.LayeredIO.WriteOutBit(TRIGGER_LOADING_SIGNAL, true);
@@ -285,7 +305,7 @@ namespace Ewan.Core.Module
 
                 // 清除装料信号
                 _ioManager.LayeredIO.WriteOutBit(TRIGGER_LOADING_SIGNAL, false);
-                _ioManager.LayeredIO.WriteOutBit(BIN1_SELECT_SIGNAL, false);
+                ClearBinSelectSignals();
                 _ioManager.LayeredIO.WriteOutBit(OUT_SCAN_COMPLETE, false);
 
                 // 等待0.3秒确保机械手已离开
@@ -303,6 +323,59 @@ namespace Ewan.Core.Module
            
             }
         }
+
+#region 料仓选择控制
+
+        private int GetConfiguredBinNumber()
+        {
+            var selected = _parametersManager.Parameters.SelectedBin;
+            switch (selected)
+            {
+                case BinSelection.Bin2:
+                    return 2;
+                case BinSelection.Bin3:
+                    return 3;
+                default:
+                    return 1;
+            }
+        }
+
+        private void SetBinSelectSignal(int binNumber)
+        {
+            if (_ioManager?.LayeredIO == null)
+            {
+                return;
+            }
+
+            ClearBinSelectSignals();
+
+            switch (binNumber)
+            {
+                case 1:
+                    _ioManager.LayeredIO.WriteOutBit(BIN1_SELECT_SIGNAL, true);
+                    break;
+                case 2:
+                    _ioManager.LayeredIO.WriteOutBit(BIN2_SELECT_SIGNAL, true);
+                    break;
+                case 3:
+                    _ioManager.LayeredIO.WriteOutBit(BIN3_SELECT_SIGNAL, true);
+                    break;
+            }
+        }
+
+        private void ClearBinSelectSignals()
+        {
+            if (_ioManager?.LayeredIO == null)
+            {
+                return;
+            }
+
+            _ioManager.LayeredIO.WriteOutBit(BIN1_SELECT_SIGNAL, false);
+            _ioManager.LayeredIO.WriteOutBit(BIN2_SELECT_SIGNAL, false);
+            _ioManager.LayeredIO.WriteOutBit(BIN3_SELECT_SIGNAL, false);
+        }
+
+#endregion
 
         #endregion
 
@@ -358,9 +431,7 @@ namespace Ewan.Core.Module
                         _ioManager.LayeredIO.WriteOutBit(OUT_SEND_PICK_CMD, false);
                         _ioManager.LayeredIO.WriteOutBit(TRIGGER_LOADING_SIGNAL, false);
                         _ioManager.LayeredIO.WriteOutBit(OUT_SCAN_COMPLETE, false);
-                        _ioManager.LayeredIO.WriteOutBit(BIN1_SELECT_SIGNAL, false);
-                        _ioManager.LayeredIO.WriteOutBit(BIN2_SELECT_SIGNAL, false);
-                        _ioManager.LayeredIO.WriteOutBit(BIN3_SELECT_SIGNAL, false);
+                        ClearBinSelectSignals();
                         _ioManager.LayeredIO.WriteOutBit(OUT_START, false);
                         _ioManager.LayeredIO.WriteOutBit(OUT_STOP, false);
                         _ioManager.LayeredIO.WriteOutBit(OUT_HIGH_SPEED, false);

@@ -3,11 +3,47 @@ using System;
 namespace Ewan.Model.System
 {
     /// <summary>
+    /// 料仓选择枚举
+    /// </summary>
+    public enum BinSelection
+    {
+        /// <summary>
+        /// 料仓1
+        /// </summary>
+        Bin1 = 1,
+
+        /// <summary>
+        /// 料仓2
+        /// </summary>
+        Bin2 = 2,
+
+        /// <summary>
+        /// 料仓3
+        /// </summary>
+        Bin3 = 3
+    }
+
+    /// <summary>
     /// 系统参数配置模型
     /// </summary>
     [Serializable]
     public class SystemParameters
     {
+        /// <summary>
+        /// 是否启用装料模块
+        /// </summary>
+        public bool EnableLoadingModule { get; set; } = true;
+
+        /// <summary>
+        /// 是否启用下料模块
+        /// </summary>
+        public bool EnableUnloadingModule { get; set; } = true;
+
+        /// <summary>
+        /// 当前选择的料仓
+        /// </summary>
+        public BinSelection SelectedBin { get; set; } = BinSelection.Bin1;
+
         /// <summary>
         /// 高速模式启用状态
         /// </summary>
@@ -40,6 +76,9 @@ namespace Ewan.Model.System
         {
             return new SystemParameters
             {
+                EnableLoadingModule = true,
+                EnableUnloadingModule = true,
+                SelectedBin = BinSelection.Bin1,
                 HighSpeedModeEnabled = false,
                 ResetDelayMs = 4000,
                 LowSpeedSetupDelayMs = 500,
@@ -53,7 +92,10 @@ namespace Ewan.Model.System
         /// </summary>
         public bool Validate()
         {
-            return ResetDelayMs > 0 && LowSpeedSetupDelayMs > 0 && RingLineTimeoutSeconds > 0;
+            return ResetDelayMs > 0
+                   && LowSpeedSetupDelayMs > 0
+                   && RingLineTimeoutSeconds > 0
+                   && Enum.IsDefined(typeof(BinSelection), SelectedBin);
         }
     }
 }
