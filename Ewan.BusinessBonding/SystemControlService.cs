@@ -25,6 +25,8 @@ namespace Ewan.BusinessBonding
             AlarmIOMapping.SAFETY_DOOR2_ALARM,
             AlarmIOMapping.SAFETY_DOOR3_ALARM
         };
+        private readonly object _stateLock = new object();
+        private bool _isPaused;
 
         public void InitializeSystem()
         {
@@ -32,12 +34,14 @@ namespace Ewan.BusinessBonding
             Thread.Sleep(DEFAULT_PULSE_WIDTH_MS);
             SendPulse(OUT_START);
             Push(SystemControlCommand.Initialize);
+            UpdatePauseState(false);
             _uiLogger.InfoRaw("处理已完成: {0}", "系统初始化命令已发送");
         }
 
         public void StartSystem()
         {
             Push(SystemControlCommand.Start);
+            UpdatePauseState(false);
             _uiLogger.InfoRaw("处理已完成: {0}", "系统启动命令已发送");
 
         }
@@ -46,6 +50,7 @@ namespace Ewan.BusinessBonding
         {
             SendPulse(OUT_STOP);
             Push(SystemControlCommand.Stop);
+            UpdatePauseState(false);
             _uiLogger.InfoRaw("处理已完成: {0}", "系统停止命令已发送");
 
         }
@@ -54,6 +59,7 @@ namespace Ewan.BusinessBonding
         {
             SendPulse(OUT_STOP);
             Push(SystemControlCommand.EmergencyStop);
+            UpdatePauseState(false);
             _uiLogger.WarnRaw("处理已完成: {0}", "系统紧急停止命令已发送");
         }
 
@@ -61,18 +67,25 @@ namespace Ewan.BusinessBonding
         {
             SendPulse(OUT_PAUSE);
             Push(SystemControlCommand.Pause);
+            UpdatePauseState(true);
             _uiLogger.InfoRaw("处理已完成: {0}", "系统暂停命令已发送");
         }
 
         public void ResumeSystem()
         {
             Push(SystemControlCommand.Resume);
+            UpdatePauseState(false);
             _uiLogger.InfoRaw("处理已完成: {0}", "系统恢复命令已发送");
         }
 
         public void SendRecoveryPulse()
         {
             SendPulse(OUT_RECOVERY);
+        }
+
+        public void SendStopPulse()
+        {
+            SendPulse(OUT_STOP);
         }
 
         public bool AreSafetyDoorsClosed()
@@ -117,6 +130,34 @@ namespace Ewan.BusinessBonding
                 _uiLogger.ErrorRaw("检测安全门状态失败: {0}", ex.Message);
                 return false;
             }
+        }
+
+        public bool IsPaused()
+        {
+            lock (_stateLock)
+            {
+                return _isPaused;
+            }
+        }
+
+        public void EnsurePauseRecoveryBeforeShutdown()
+        {
+            bool needRecovery;
+            lock (_stateLock)
+            {
+                needRecovery = _isPaused;
+                _isPaused = false;
+            }
+
+            if (!needRecovery)
+            {
+                return;
+            }
+
+            _uiLogger.InfoRaw("检测到系统处于暂停状态，关闭前执行停止与复原脉冲");
+            SendStopPulse();
+            Thread.Sleep(DEFAULT_PULSE_WIDTH_MS);
+            SendRecoveryPulse();
         }
 
 
@@ -170,6 +211,14 @@ namespace Ewan.BusinessBonding
             catch (Exception ex)
             {
                 _uiLogger.ErrorRaw("发送脉冲异常: Y{0} - {1}", outputIndex, ex.Message);
+            }
+        }
+
+        private void UpdatePauseState(bool paused)
+        {
+            lock (_stateLock)
+            {
+                _isPaused = paused;
             }
         }
 

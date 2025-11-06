@@ -75,6 +75,16 @@ namespace MarkingMachineFeeder
 
         protected override void OnExit(ExitEventArgs e)
         {
+            try
+            {
+                var controlService = SystemControlService.Instance();
+                controlService.EnsurePauseRecoveryBeforeShutdown();
+            }
+            catch (System.Exception ex)
+            {
+                _uiLogger.ErrorRaw("关闭前执行停止复原脉冲失败: {0}", ex.Message);
+            }
+
             // 停止所有流程
             var streamController = StreamController.Instance();
             streamController.StopRun();
