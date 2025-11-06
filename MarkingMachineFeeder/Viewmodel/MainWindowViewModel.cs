@@ -43,7 +43,7 @@ namespace MarkingMachineFeeder.Viewmodel
         private string _axisControlMenuHeader = "";
         private string _loopInteractionMenuHeader = "";
         private string _hardwareControlMenuHeader = "";
-        private string _systemPauseButtonText = "";
+        private string _systemPauseButtonText = "暂停";
         private string _systemResumeButtonText = "";
         private bool _canControlCamera = false;
         private bool _canControlUPS = false;

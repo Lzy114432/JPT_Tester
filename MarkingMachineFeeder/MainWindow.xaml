@@ -1356,7 +1356,6 @@
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                             <!-- 系统运行状态 -->
                             <Border Grid.Row="0"
@@ -1473,16 +1472,8 @@
                                     FontSize="12"
                                     Command="{Binding SystemResetCommand}"
                                     Margin="4,2" />
-                            <!-- 急停按钮 -->
-                            <Button Grid.Row="1"
-                                    Content="急停"
-                                    Style="{StaticResource IndustrialTestButton}"
-                                    Background="#DC3545"
-                                    FontSize="12"
-                                    Command="{Binding EmergencyStopCommand}"
-                                    Margin="4,2" />
                             <!-- 清除报警按钮 -->
-                            <Button Grid.Row="2"
+                            <Button Grid.Row="1"
                                     Content="清除报警"
                                     Style="{StaticResource IndustrialTestButton}"
                                     Background="#FD7E14"
@@ -1490,7 +1481,7 @@
                                     Command="{Binding ClearAlarmCommand}"
                                     Margin="4,2" />
                             <!-- 启动按钮 -->
-                            <Button Grid.Row="3"
+                            <Button Grid.Row="2"
                                     Content="启动"
                                     Style="{StaticResource IndustrialTestButton}"
                                     Background="#28A745"
@@ -1498,7 +1489,7 @@
                                     Command="{Binding SystemStartCommand}"
                                     Margin="4,2" />
                             <!-- 暂停按钮 -->
-                            <Button Grid.Row="4"
+                            <Button Grid.Row="3"
                                     Content="{Binding SystemPauseButtonText}"
                                     Style="{StaticResource IndustrialTestButton}"
                                     Background="#FFC107"
@@ -1506,7 +1497,7 @@
                                     Command="{Binding SystemPauseCommand}"
                                     Margin="4,2" />
                             <!-- 停止按钮 -->
-                            <Button Grid.Row="5"
+                            <Button Grid.Row="4"
                                     Content="停止"
                                     Style="{StaticResource IndustrialTestButton}"
                                     Background="#DC3545"
