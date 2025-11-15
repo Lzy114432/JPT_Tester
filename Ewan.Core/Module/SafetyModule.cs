@@ -75,6 +75,7 @@ namespace Ewan.Core.Module
         private DateTime _lastSafetyDoor1Time = DateTime.MinValue;
         private DateTime _lastSafetyDoor2Time = DateTime.MinValue;
         private DateTime _lastSafetyDoor3Time = DateTime.MinValue;
+        private DateTime _lastRobotDoorMagnetTime = DateTime.MinValue;
         private TimeSpan _alarmDebounceTime = TimeSpan.FromMilliseconds(500); // 报警防抖时间500ms
 
         #endregion
@@ -268,6 +269,7 @@ namespace Ewan.Core.Module
                 CheckSafetyDoorAlarm(AlarmIOMapping.SAFETY_DOOR1_ALARM, ref _lastSafetyDoor1Time, "安全门1打开");
                 CheckSafetyDoorAlarm(AlarmIOMapping.SAFETY_DOOR2_ALARM, ref _lastSafetyDoor2Time, "安全门2打开");
                 CheckSafetyDoorAlarm(AlarmIOMapping.SAFETY_DOOR3_ALARM, ref _lastSafetyDoor3Time, "安全门3打开");
+                CheckSafetyDoorAlarm(AlarmIOMapping.ROBOT_DOOR_MAGNET, ref _lastRobotDoorMagnetTime, "机械臂门电磁感应信号断开");
             }
         }
 
@@ -356,6 +358,21 @@ namespace Ewan.Core.Module
         }
 
         /// <summary>
+        /// 读取输入点位下降沿（用于常闭信号）
+        /// </summary>
+        private bool ReadFallingEdge(int index)
+        {
+            try
+            {
+                return _layeredIO?.ReadFallingBit(index, true) ?? false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// 清除指定输入点位的上升沿标志
         /// </summary>
         private void ClearRisingEdge(int index)
@@ -363,6 +380,21 @@ namespace Ewan.Core.Module
             try
             {
                 _layeredIO?.ClearRisingBit(index, true);
+            }
+            catch
+            {
+                // 忽略清除失败
+            }
+        }
+
+        /// <summary>
+        /// 清除指定输入点位的下降沿标志
+        /// </summary>
+        private void ClearFallingEdge(int index)
+        {
+            try
+            {
+                _layeredIO?.ClearFallingBit(index, true);
             }
             catch
             {
@@ -715,9 +747,9 @@ namespace Ewan.Core.Module
 
         private void CheckSafetyDoorAlarm(int ioIndex, ref DateTime lastTrigger, string description)
         {
-            if (ReadRisingEdge(ioIndex))
+            if (ReadFallingEdge(ioIndex))
             {
-                ClearRisingEdge(ioIndex);
+                ClearFallingEdge(ioIndex);
 
                 if (CanTriggerAlarm(ref lastTrigger))
                 {
