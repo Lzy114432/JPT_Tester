@@ -3,6 +3,7 @@ using Ewan.Core.IO;
 using Ewan.Core.Msg;
 using Ewan.Model.Production;
 using System;
+using System.Diagnostics;
 using System.Threading;
 
 namespace Ewan.Core.Module
@@ -270,43 +271,68 @@ namespace Ewan.Core.Module
                 return BinMaterialCheckResult.CreateHasMaterial(binNumber);
             }
 
-            lock (_stateLock)
+            int axisId = GetAxisIdByBin(binNumber);
+            if (axisId < 0)
             {
-                _activeUnloadingBin = binNumber;
-
-                switch (binNumber)
-                {
-                    case 1:
-                        _bin1State = BinElevatorState.Unknown;
-                        break;
-                    case 2:
-                        _bin2State = BinElevatorState.Unknown;
-                        break;
-                    case 3:
-                        _bin3State = BinElevatorState.Unknown;
-                        break;
-                }
-
-                _materialDetectionInProgress = true;
-                _materialDetectionBin = binNumber;
-                _materialDetectionStartTime = DateTime.UtcNow;
-                _materialCheckResult = BinMaterialCheckResult.CreatePending(binNumber);
-                _materialCheckEvent.Reset();
-
-                _binElevatorMode = BinElevatorMode.Unloading;
+                _uiLogger.ErrorRaw("处理错误: {0} - {1}",
+                    $"料仓{binNumber}检测失败", "未找到对应轴配置");
+                return BinMaterialCheckResult.CreateFailure(binNumber);
             }
 
             _uiLogger.InfoRaw("处理已开始: {0}", $"料仓{binNumber}上升至有料感应请求");
 
-            bool completed = _materialCheckEvent.Wait(_materialDetectionTimeoutMs + 1000);
-            if (!completed)
+            lock (_stateLock)
             {
-                _uiLogger.WarnRaw("处理错误: {0} - {1}",
-                    $"料仓{binNumber}物料检测超时", "强制判定为空车");
-                return CompleteMaterialCheckTimeout(binNumber);
+                _activeUnloadingBin = binNumber;
+                _binElevatorMode = BinElevatorMode.Unloading;
             }
 
-            return _materialCheckResult ?? BinMaterialCheckResult.CreateFailure(binNumber);
+            var result = ExecuteSynchronousMaterialCheck(binNumber, axisId);
+
+            lock (_stateLock)
+            {
+                _activeUnloadingBin = 0;
+                _binElevatorMode = BinElevatorMode.Stopped;
+            }
+
+            return result;
+        }
+
+        private BinMaterialCheckResult ExecuteSynchronousMaterialCheck(int binNumber, int axisId)
+        {
+            const int pollIntervalMs = 20;
+            var stopwatch = Stopwatch.StartNew();
+
+            try
+            {
+                StartBinJogUp(binNumber, axisId);
+
+                while (stopwatch.ElapsedMilliseconds < _materialDetectionTimeoutMs)
+                {
+                    if (ReadBinSensor(binNumber))
+                    {
+                        _uiLogger.InfoRaw("处理已完成: {0}",
+                            $"料仓{binNumber}检测到物料，停止上升");
+                        return BinMaterialCheckResult.CreateHasMaterial(binNumber);
+                    }
+
+                    Thread.Sleep(pollIntervalMs);
+                }
+
+                _uiLogger.WarnRaw("处理错误: {0} - {1}",
+                    $"料仓{binNumber}无料", "超时判空");
+                return BinMaterialCheckResult.CreateEmpty(binNumber, true);
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.ErrorRaw("处理错误: {0} - {1}",
+                    $"料仓{binNumber}检测失败", ex.Message);
+                return BinMaterialCheckResult.CreateFailure(binNumber);
+            }
+            finally
+            {
+                StopBinAxis(binNumber, axisId);
+            }
         }
 
         #endregion

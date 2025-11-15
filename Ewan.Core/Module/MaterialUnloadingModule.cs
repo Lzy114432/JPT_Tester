@@ -126,6 +126,14 @@ namespace Ewan.Core.Module
 
                 lock (_stateLock)
                 {
+                    // 检查暂停状态
+                    if (_sharedState?.IsSystemPaused() == true)
+                    {
+                        // 暂停期间不执行任何状态处理
+                        Thread.Sleep(_scanInterval);
+                        return true;
+                    }
+
                     switch (_currentState)
                     {
                         case MaterialUnloadingState.Idle:
@@ -198,6 +206,13 @@ namespace Ewan.Core.Module
         /// </summary>
         private void ProcessIdleState()
         {
+            // 检查系统是否处于暂停状态
+            if (_sharedState?.IsSystemPaused() == true)
+            {
+                // 暂停期间不处理新的下料请求
+                return;
+            }
+
             // 使用电平检测替代上升沿检测
             // 信号为1且未处理过时，开始下料流程
             if (_ringLineSignal && !_requestProcessed)
