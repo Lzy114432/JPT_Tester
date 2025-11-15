@@ -63,6 +63,14 @@ namespace Ewan.Core.Module
         private const int BIN2_SELECT_SIGNAL = 12; // Y12 - 料仓2选择信号
         private const int BIN3_SELECT_SIGNAL = 13; // Y13 - 料仓3选择信号
 
+        // 下料物料检测相关
+        private readonly ManualResetEventSlim _materialCheckEvent = new ManualResetEventSlim(false);
+        private BinMaterialCheckResult _materialCheckResult = BinMaterialCheckResult.CreateFailure(0);
+        private bool _materialDetectionInProgress = false;
+        private int _materialDetectionBin = 0;
+        private DateTime _materialDetectionStartTime = DateTime.MinValue;
+        private readonly int _materialDetectionTimeoutMs = 5000;
+
 
         #endregion
 
@@ -189,6 +197,7 @@ namespace Ewan.Core.Module
             {
                 // 停止所有料仓升降动作
                 StopAllBinMovements();
+                _materialCheckEvent?.Dispose();
                 
                 _uiLogger.InfoRaw("模块已销毁: {0}", "BinElevatorModule");
             }
@@ -244,15 +253,21 @@ namespace Ewan.Core.Module
         }
 
         /// <summary>
-        /// 将指定料仓上升到有料感应位置
+        /// 将指定料仓上升到有料感应位置，并返回物料检测结果
         /// </summary>
         /// <param name="binNumber">料仓编号 (1-3)</param>
-        public void RaiseToSensor(int binNumber)
+        public BinMaterialCheckResult RaiseToSensor(int binNumber)
         {
             if (binNumber < 1 || binNumber > 3)
             {
                 _uiLogger.WarnRaw("处理错误: {0} - {1}", "RaiseToSensor", $"无效的料仓编号 {binNumber}");
-                return;
+                return BinMaterialCheckResult.CreateFailure(binNumber);
+            }
+
+            if (ReadBinSensor(binNumber))
+            {
+                _uiLogger.InfoRaw("处理已完成: {0}", $"料仓{binNumber}已检测到物料，无需上升");
+                return BinMaterialCheckResult.CreateHasMaterial(binNumber);
             }
 
             lock (_stateLock)
@@ -272,10 +287,26 @@ namespace Ewan.Core.Module
                         break;
                 }
 
+                _materialDetectionInProgress = true;
+                _materialDetectionBin = binNumber;
+                _materialDetectionStartTime = DateTime.UtcNow;
+                _materialCheckResult = BinMaterialCheckResult.CreatePending(binNumber);
+                _materialCheckEvent.Reset();
+
                 _binElevatorMode = BinElevatorMode.Unloading;
             }
 
             _uiLogger.InfoRaw("处理已开始: {0}", $"料仓{binNumber}上升至有料感应请求");
+
+            bool completed = _materialCheckEvent.Wait(_materialDetectionTimeoutMs + 1000);
+            if (!completed)
+            {
+                _uiLogger.WarnRaw("处理错误: {0} - {1}",
+                    $"料仓{binNumber}物料检测超时", "强制判定为空车");
+                return CompleteMaterialCheckTimeout(binNumber);
+            }
+
+            return _materialCheckResult ?? BinMaterialCheckResult.CreateFailure(binNumber);
         }
 
         #endregion
@@ -511,7 +542,8 @@ namespace Ewan.Core.Module
         /// </summary>
         private void ProcessUnloadingMode(int binNumber, int axisId, ref BinElevatorState currentState)
         {
-            if (_activeUnloadingBin == 0 || _activeUnloadingBin != binNumber)
+            bool isActiveBin = _activeUnloadingBin != 0 && _activeUnloadingBin == binNumber;
+            if (!isActiveBin)
             {
                 if (currentState == BinElevatorState.Moving)
                 {
@@ -521,13 +553,18 @@ namespace Ewan.Core.Module
                 return;
             }
 
+            bool detectionActive = _materialDetectionInProgress && _materialDetectionBin == binNumber;
+            double elapsedMs = detectionActive
+                ? (DateTime.UtcNow - _materialDetectionStartTime).TotalMilliseconds
+                : 0;
+
             switch (currentState)
             {
                 case BinElevatorState.Unknown:
                     if (ReadBinSensor(binNumber))
                     {
+                        HandleUnloadingReached(binNumber, detectionActive, false);
                         currentState = BinElevatorState.Stopped;
-                        CompleteUnloadingRaise(binNumber);
                     }
                     else
                     {
@@ -540,17 +577,46 @@ namespace Ewan.Core.Module
                     if (ReadBinSensor(binNumber))
                     {
                         StopBinAxis(binNumber, axisId);
+                        HandleUnloadingReached(binNumber, detectionActive, false);
                         currentState = BinElevatorState.Stopped;
-                        CompleteUnloadingRaise(binNumber);
+                    }
+                    else if (detectionActive && elapsedMs >= _materialDetectionTimeoutMs)
+                    {
+                        StopBinAxis(binNumber, axisId);
+                        HandleUnloadingReached(binNumber, true, true);
+                        currentState = BinElevatorState.Stopped;
                     }
                     break;
 
                 case BinElevatorState.Stopped:
+                    if (detectionActive)
+                    {
+                        if (ReadBinSensor(binNumber))
+                        {
+                            HandleUnloadingReached(binNumber, true, false);
+                        }
+                        else if (elapsedMs >= _materialDetectionTimeoutMs)
+                        {
+                            HandleUnloadingReached(binNumber, true, true);
+                        }
+                    }
                     break;
 
                 default:
                     currentState = BinElevatorState.Unknown;
                     break;
+            }
+        }
+
+        private void HandleUnloadingReached(int binNumber, bool detectionActive, bool timedOut)
+        {
+            if (detectionActive)
+            {
+                CompleteMaterialCheck(binNumber, !timedOut, timedOut);
+            }
+            else
+            {
+                CompleteUnloadingRaise(binNumber);
             }
         }
 
@@ -573,6 +639,81 @@ namespace Ewan.Core.Module
             _binElevatorMode = BinElevatorMode.Stopped;
 
             _uiLogger.InfoRaw("处理已完成: {0}", $"料仓{binNumber}已上升至有料感应位置");
+        }
+
+        private void CompleteMaterialCheck(int binNumber, bool hasMaterial, bool timedOut)
+        {
+            if (!_materialDetectionInProgress || _materialDetectionBin != binNumber)
+            {
+                return;
+            }
+
+            _materialCheckResult = hasMaterial
+                ? BinMaterialCheckResult.CreateHasMaterial(binNumber)
+                : BinMaterialCheckResult.CreateEmpty(binNumber, timedOut);
+
+            _materialDetectionInProgress = false;
+            _materialDetectionBin = 0;
+            _materialDetectionStartTime = DateTime.MinValue;
+            _activeUnloadingBin = 0;
+            _binElevatorMode = BinElevatorMode.Stopped;
+
+            _materialCheckEvent.Set();
+
+            if (hasMaterial)
+            {
+                _uiLogger.InfoRaw("处理已完成: {0}", $"料仓{binNumber}检测到物料");
+            }
+            else
+            {
+                string reason = timedOut ? "超时判空" : "检测判空";
+                _uiLogger.WarnRaw("处理错误: {0} - {1}", $"料仓{binNumber}无料", reason);
+            }
+        }
+
+        private BinMaterialCheckResult CompleteMaterialCheckTimeout(int binNumber)
+        {
+            int axisId = GetAxisIdByBin(binNumber);
+            if (axisId >= 0)
+            {
+                StopBinAxis(binNumber, axisId);
+            }
+
+            CompleteMaterialCheck(binNumber, false, true);
+            return _materialCheckResult ?? BinMaterialCheckResult.CreateEmpty(binNumber, true);
+        }
+
+        private void CancelMaterialDetection(string reason)
+        {
+            if (!_materialDetectionInProgress)
+            {
+                return;
+            }
+
+            int binNumber = _materialDetectionBin;
+            int axisId = GetAxisIdByBin(binNumber);
+            if (axisId >= 0)
+            {
+                StopBinAxis(binNumber, axisId);
+            }
+
+            CompleteMaterialCheck(binNumber, false, false);
+            _uiLogger.WarnRaw("处理错误: {0} - {1}", $"料仓{binNumber}物料检测被中断", reason);
+        }
+
+        private int GetAxisIdByBin(int binNumber)
+        {
+            switch (binNumber)
+            {
+                case 1:
+                    return BIN1_AXIS_ID;
+                case 2:
+                    return BIN2_AXIS_ID;
+                case 3:
+                    return BIN3_AXIS_ID;
+                default:
+                    return -1;
+            }
         }
 
 
@@ -803,6 +944,7 @@ namespace Ewan.Core.Module
                 _bin2State = BinElevatorState.Unknown;
                 _bin3State = BinElevatorState.Unknown;
                 _activeUnloadingBin = 0;
+                CancelMaterialDetection("停止所有料仓运动");
                 
                 _uiLogger.InfoRaw("处理已完成: {0}", "所有料仓Jog运动已停止");
             }
@@ -922,5 +1064,36 @@ namespace Ewan.Core.Module
 
         #endregion
 
+    }
+
+    /// <summary>
+    /// 料仓物料检测结果
+    /// </summary>
+    public class BinMaterialCheckResult
+    {
+        public int BinNumber { get; }
+        public bool HasMaterial { get; }
+        public bool IsBinEmpty { get; }
+        public bool TimedOut { get; }
+
+        private BinMaterialCheckResult(int binNumber, bool hasMaterial, bool isBinEmpty, bool timedOut)
+        {
+            BinNumber = binNumber;
+            HasMaterial = hasMaterial;
+            IsBinEmpty = isBinEmpty;
+            TimedOut = timedOut;
+        }
+
+        public static BinMaterialCheckResult CreateHasMaterial(int binNumber)
+            => new BinMaterialCheckResult(binNumber, true, false, false);
+
+        public static BinMaterialCheckResult CreateEmpty(int binNumber, bool timedOut)
+            => new BinMaterialCheckResult(binNumber, false, true, timedOut);
+
+        public static BinMaterialCheckResult CreateFailure(int binNumber)
+            => new BinMaterialCheckResult(binNumber, false, true, false);
+
+        public static BinMaterialCheckResult CreatePending(int binNumber)
+            => new BinMaterialCheckResult(binNumber, false, false, false);
     }
 }

@@ -220,9 +220,37 @@ namespace Ewan.Core.Module
                 {
                     // 成功获取锁，清除优先级请求
                     _sharedState?.ClearUnloadingPriority();
-                    
-                    RequestUnloading();
-                    _uiLogger.InfoRaw("处理已开始: {0}", "装料流程已完成，开始下料流程");
+
+                    int binNumber = GetConfiguredBinNumber();
+                    BinMaterialCheckResult materialCheckResult = null;
+
+                    if (_binElevator != null)
+                    {
+                        try
+                        {
+                            materialCheckResult = _binElevator.RaiseToSensor(binNumber);
+                        }
+                        catch (Exception ex)
+                        {
+                            _uiLogger.ErrorRaw("处理错误: {0} - {1}",
+                                $"料仓{binNumber}检测物料失败", ex.Message);
+                        }
+                    }
+                    else
+                    {
+                        _uiLogger.WarnRaw("处理错误: {0} - {1}",
+                            "BinElevatorModule未配置", "跳过有料检测并继续流程");
+                    }
+
+                    if (materialCheckResult == null || materialCheckResult.HasMaterial)
+                    {
+                        RequestUnloading();
+                        _uiLogger.InfoRaw("处理已开始: {0}", "装料流程已完成，开始下料流程");
+                    }
+                    else
+                    {
+                        HandleEmptyUnloadingResult(materialCheckResult);
+                    }
                 }
                 else
                 {
@@ -321,7 +349,7 @@ namespace Ewan.Core.Module
                 _ioManager.LayeredIO.WriteOutBit(OUT_SCAN_COMPLETE, false);
 
                 // 发送完成信号到Modbus寄存器153
-                SendCartCompletionToModbus();
+                SendCartCompletionToModbus(true);
 
                 // 清除下料优先级请求
                 _sharedState?.ClearUnloadingPriority();
@@ -337,6 +365,31 @@ namespace Ewan.Core.Module
                 _uiLogger.InfoRaw("处理已完成: {0}", 
                     "下料完成，清除优先级请求，恢复允许取料(OUT14=true)，释放流程锁");
             }
+        }
+
+        /// <summary>
+        /// 处理料仓无料场景，释放空车
+        /// </summary>
+        /// <param name="result">检测结果</param>
+        private void HandleEmptyUnloadingResult(BinMaterialCheckResult result)
+        {
+            int binNumber = result?.BinNumber ?? GetConfiguredBinNumber();
+            string reason = result?.TimedOut == true
+                ? "超时仍未检测到物料"
+                : "传感器未检测到物料";
+
+            _uiLogger.WarnRaw("处理错误: {0} - {1}",
+                $"料仓{binNumber}无料，释放空车", reason);
+
+            _lastScannedQrCode = string.Empty;
+            ClearBinSelectSignals();
+            SendCartCompletionToModbus(false);
+
+            _sharedState?.ClearUnloadingPriority();
+            _sharedState?.FinishProcess();
+
+            _unloadingRequested = false;
+            _currentState = MaterialUnloadingState.Idle;
         }
 
         /// <summary>
@@ -423,8 +476,6 @@ namespace Ewan.Core.Module
                 
                 // 设置料仓选择信号
                 SetBinSelectSignal(binNumber);
-
-                _binElevator?.RaiseToSensor(binNumber);
                 
                 // 触发取料信号
                 _ioManager.LayeredIO.WriteOutBit(TRIGGER_PICKUP_SIGNAL, true);
@@ -502,19 +553,22 @@ namespace Ewan.Core.Module
         /// <summary>
         /// 发送放入小车完成信号到Modbus寄存器153
         /// </summary>
-        private void SendCartCompletionToModbus()
+        /// <param name="hasMaterial">是否有料</param>
+        private void SendCartCompletionToModbus(bool hasMaterial)
         {
             try
             {
                 // 发送完成信号值为1到寄存器153 (u16类型)
                 _modbusRTUManager.WriteAny(CART_COMPLETION_REGISTER, (ushort)1);
 
-                _modbusRTUManager.WriteAny(MATERIAL_STATUS_REGISTER, (ushort)1);
+                ushort statusValue = hasMaterial ? (ushort)1 : (ushort)0;
+                _modbusRTUManager.WriteAny(MATERIAL_STATUS_REGISTER, statusValue);
 
-                _uiLogger.InfoRaw("处理已完成: {0}", $"放入小车完成信号已发送到寄存器{CART_COMPLETION_REGISTER}");
+                _uiLogger.InfoRaw("处理已完成: {0}",
+                    $"放入小车完成信号已发送到寄存器{CART_COMPLETION_REGISTER}，放料状态={(hasMaterial ? "放料" : "空车")}");
 
                 // 写入桌面日志
-                WriteToDesktopLog();
+                WriteToDesktopLog(hasMaterial);
             }
             catch (Exception ex)
             {
@@ -525,7 +579,7 @@ namespace Ewan.Core.Module
         /// <summary>
         /// 写入桌面日志文件
         /// </summary>
-        private void WriteToDesktopLog()
+        private void WriteToDesktopLog(bool hasMaterial)
         {
             try
             {
@@ -534,7 +588,7 @@ namespace Ewan.Core.Module
 
                 string logEntry = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] " +
                                   $"放入小车完成 - 寄存器{CART_COMPLETION_REGISTER}写入完成, " +
-                                  $"寄存器{MATERIAL_STATUS_REGISTER}写入完成, " +
+                                  $"寄存器{MATERIAL_STATUS_REGISTER}写入{(hasMaterial ? "放料(1)" : "空车(0)")}, " +
                                   $"二维码: {(_lastScannedQrCode ?? "无")}" +
                                   Environment.NewLine;
 
