@@ -358,21 +358,6 @@ namespace Ewan.Core.Module
         }
 
         /// <summary>
-        /// 读取输入点位下降沿（用于常闭信号）
-        /// </summary>
-        private bool ReadFallingEdge(int index)
-        {
-            try
-            {
-                return _layeredIO?.ReadFallingBit(index, true) ?? false;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
         /// 清除指定输入点位的上升沿标志
         /// </summary>
         private void ClearRisingEdge(int index)
@@ -380,21 +365,6 @@ namespace Ewan.Core.Module
             try
             {
                 _layeredIO?.ClearRisingBit(index, true);
-            }
-            catch
-            {
-                // 忽略清除失败
-            }
-        }
-
-        /// <summary>
-        /// 清除指定输入点位的下降沿标志
-        /// </summary>
-        private void ClearFallingEdge(int index)
-        {
-            try
-            {
-                _layeredIO?.ClearFallingBit(index, true);
             }
             catch
             {
@@ -747,9 +717,9 @@ namespace Ewan.Core.Module
 
         private void CheckSafetyDoorAlarm(int ioIndex, ref DateTime lastTrigger, string description)
         {
-            if (ReadFallingEdge(ioIndex))
+            if (ReadRisingEdge(ioIndex))
             {
-                ClearFallingEdge(ioIndex);
+                ClearRisingEdge(ioIndex);
 
                 if (CanTriggerAlarm(ref lastTrigger))
                 {
