@@ -27,11 +27,15 @@ namespace Ewan.Core.Module
         private AxisManager _axisManager;
         private MsgManager _msgManager;
         private MsgListener _systemControlListener;
+        private MsgListener _beltControlListener;
 
         private readonly SystemParametersManager _parametersManager = SystemParametersManager.Instance;
 
         // 皮带轴配置
         private const int BELT_AXIS_ID = 3; // 皮带轴ID
+
+        private bool _loadingStopRequested = false;
+        private bool _unloadingStopRequested = false;
 
         #endregion
 
@@ -50,6 +54,9 @@ namespace Ewan.Core.Module
                 // 注册系统控制消息监听器（监听急停、暂停等命令）
                 _systemControlListener = new MsgListener(MsgSubject.SystemControl, OnSystemControlMessage);
                 _msgManager.RegisterListener(_systemControlListener);
+
+                _beltControlListener = new MsgListener(MsgSubject.BeltConveyorControl, OnBeltControlMessage);
+                _msgManager.RegisterListener(_beltControlListener);
 
                 _uiLogger.InfoRaw("初始化已完成: {0}", "皮带输送控制系统");
             }
@@ -87,8 +94,10 @@ namespace Ewan.Core.Module
                         _moduleEnabled = true;
                     }
 
+                    bool hasProcessStopRequest = _loadingStopRequested || _unloadingStopRequested;
+
                     // 检查是否应该停止
-                    if (_shouldStop)
+                    if (_shouldStop || hasProcessStopRequest)
                     {
                         // 停止皮带
                         if (_beltRunning)
@@ -129,6 +138,12 @@ namespace Ewan.Core.Module
                 {
                     _msgManager.UnRegisterListener(_systemControlListener);
                     _systemControlListener = null;
+                }
+
+                if (_beltControlListener != null)
+                {
+                    _msgManager.UnRegisterListener(_beltControlListener);
+                    _beltControlListener = null;
                 }
 
                 _uiLogger.InfoRaw("模块已销毁: {0}", "BeltConveyorModule");
@@ -215,6 +230,36 @@ namespace Ewan.Core.Module
 
         #region 系统控制消息处理
 
+        private void OnBeltControlMessage(MessageModel message)
+        {
+            try
+            {
+                if (message.Data is BeltConveyorControlCommand command)
+                {
+                    lock (_stateLock)
+                    {
+                        if (command.Source == BeltConveyorControlSource.MaterialLoading)
+                        {
+                            _loadingStopRequested = command.StopRequested;
+                        }
+                        else if (command.Source == BeltConveyorControlSource.MaterialUnloading)
+                        {
+                            _unloadingStopRequested = command.StopRequested;
+                        }
+                    }
+
+                    var actionText = command.StopRequested ? "请求停止" : "释放控制";
+                    _uiLogger.InfoRaw("处理已开始: {0}",
+                        $"皮带{actionText} - 来源:{command.Source}, 原因:{command.Reason ?? "无"}");
+                }
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.ErrorRaw("处理错误: {0} - {1}",
+                    "处理皮带控制消息", ex.Message);
+            }
+        }
+
         /// <summary>
         /// 处理系统控制消息（急停、暂停等）
         /// </summary>
@@ -289,5 +334,27 @@ namespace Ewan.Core.Module
         }
 
         #endregion
+    }
+
+    public enum BeltConveyorControlSource
+    {
+        MaterialLoading,
+        MaterialUnloading
+    }
+
+    public class BeltConveyorControlCommand
+    {
+        public BeltConveyorControlCommand(BeltConveyorControlSource source, bool stopRequested, string reason = null)
+        {
+            Source = source;
+            StopRequested = stopRequested;
+            Reason = reason;
+        }
+
+        public BeltConveyorControlSource Source { get; }
+
+        public bool StopRequested { get; }
+
+        public string Reason { get; }
     }
 }

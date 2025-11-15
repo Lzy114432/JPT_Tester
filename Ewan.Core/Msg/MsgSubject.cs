@@ -19,6 +19,8 @@
 
         RingLineData,
 
-        RingLineheartData
+        RingLineheartData,
+
+        BeltConveyorControl
     }
 }

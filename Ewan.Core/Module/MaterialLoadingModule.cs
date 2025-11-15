@@ -22,6 +22,7 @@ namespace Ewan.Core.Module
         private bool _stopRequested = false;
         private bool _initialized = false; // 初始化标志
         private bool _loadingEnabled = true;
+        private volatile bool _beltStopRequested = false;
 
         // 共享状态（用于与其他模块通信）
         private ProductionLineSharedState _sharedState;
@@ -32,6 +33,7 @@ namespace Ewan.Core.Module
         // 输入信号常量
         private const int MATERIAL_DETECT_SIGNAL = 3;      // 料片检测信号X3
         private const int SCAN_POSITION_SIGNAL = 7;         // 到达扫码位置信号X7
+        private const int ROBOT_BUSY_SIGNAL = 20;           // IN20 - 机械手忙碌
 
         // 输出信号常量 - 初始化相关
         private const int OUT_START = 5;                   // OUT5 - 开始信号
@@ -170,7 +172,7 @@ namespace Ewan.Core.Module
                     Thread.Sleep(_scanInterval);
                     return true;
                 }
-                
+                var stateSnapshot = MaterialLoadingState.Idle;
                 lock (_stateLock)
                 {
                     switch (_currentState)
@@ -199,7 +201,11 @@ namespace Ewan.Core.Module
                             _currentState = MaterialLoadingState.Idle;
                             break;
                     }
+
+                    stateSnapshot = _currentState;
                 }
+
+                UpdateBeltConveyorControl(stateSnapshot);
                 
                 Thread.Sleep(_scanInterval);
                 return true;
@@ -216,7 +222,7 @@ namespace Ewan.Core.Module
         protected override void OnDestroy()
         {
             _uiLogger.InfoRaw("模块已销毁: {0}", "MaterialLoadingModule");
-            
+            ForceReleaseBeltControl("装料模块销毁");
         }
 
         #region 核心流程处理
@@ -450,6 +456,8 @@ namespace Ewan.Core.Module
                 _sharedState?.FinishProcess();
                 SetLoadingCompleted(false);
 
+                ForceReleaseBeltControl("装料强制停止");
+
                 
                 _uiLogger.InfoRaw("处理已完成: {0}", "强制停止装载");
             }
@@ -471,6 +479,60 @@ namespace Ewan.Core.Module
                 // 注意：需要添加本地变量支持兼容性模式
             }
         }
+
+        #region 皮带控制
+
+        private void UpdateBeltConveyorControl(MaterialLoadingState stateSnapshot)
+        {
+            try
+            {
+                if (_ioManager?.LayeredIO == null)
+                {
+                    return;
+                }
+
+                bool robotBusy = _ioManager.LayeredIO.ReadInBit(ROBOT_BUSY_SIGNAL);
+                bool shouldStop = stateSnapshot == MaterialLoadingState.PickingMaterial && robotBusy;
+
+                if (shouldStop == _beltStopRequested)
+                {
+                    return;
+                }
+
+                _beltStopRequested = shouldStop;
+
+                var command = new BeltConveyorControlCommand(
+                    BeltConveyorControlSource.MaterialLoading,
+                    shouldStop,
+                    shouldStop ? "机械手正在取料(IN20=1)" : "装料流程完成，释放皮带");
+
+                MsgManager.Instance().PushMsg(new MessageModel(MsgSubject.BeltConveyorControl, command));
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.ErrorRaw("处理错误: {0} - {1}",
+                    "装料皮带控制", ex.Message);
+            }
+        }
+
+        private void ForceReleaseBeltControl(string reason)
+        {
+            if (!_beltStopRequested)
+            {
+                return;
+            }
+
+            _beltStopRequested = false;
+
+            var command = new BeltConveyorControlCommand(
+                BeltConveyorControlSource.MaterialLoading,
+                false,
+                reason);
+
+            MsgManager.Instance().PushMsg(new MessageModel(MsgSubject.BeltConveyorControl, command));
+        }
+
+        #endregion
 
         #region 共享状态访问方法
 

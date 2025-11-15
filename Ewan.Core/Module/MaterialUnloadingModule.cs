@@ -24,6 +24,7 @@ namespace Ewan.Core.Module
         private bool _unloadingRequested = false;
         private bool _stopRequested = false;
         private bool _unloadingEnabled = true;
+        private volatile bool _beltStopRequested = false;
 
         // 共享状态（用于与其他模块通信）
         private ProductionLineSharedState _sharedState;
@@ -172,6 +173,8 @@ namespace Ewan.Core.Module
         protected override void OnDestroy()
         {
             _uiLogger.InfoRaw("模块已销毁: {0}", "MaterialUnloadingModule");
+
+            ForceReleaseBeltControl("下料模块销毁");
 
             // 注销消息监听器
             if (_msgManager2 != null)
@@ -362,6 +365,8 @@ namespace Ewan.Core.Module
                 _lastScannedQrCode = string.Empty; // 清空扫码结果
                 _currentState = MaterialUnloadingState.Idle;
 
+                UpdateBeltConveyorStopRequest(false, "下料流程完成");
+
                 _uiLogger.InfoRaw("处理已完成: {0}", 
                     "下料完成，清除优先级请求，恢复允许取料(OUT14=true)，释放流程锁");
             }
@@ -390,6 +395,8 @@ namespace Ewan.Core.Module
 
             _unloadingRequested = false;
             _currentState = MaterialUnloadingState.Idle;
+
+            UpdateBeltConveyorStopRequest(false, $"料仓{binNumber}无料，释放皮带");
         }
 
         /// <summary>
@@ -482,6 +489,8 @@ namespace Ewan.Core.Module
                 
                 // 转换到取料状态
                 _currentState = MaterialUnloadingState.PickingMaterial;
+
+                UpdateBeltConveyorStopRequest(true, "下料流程请求停止皮带");
                 
                 _uiLogger.InfoRaw("处理已开始: {0}", $"请求从料仓{binNumber}开始取料");
             }
@@ -541,6 +550,8 @@ namespace Ewan.Core.Module
 
                 _uiLogger.InfoRaw("处理已完成: {0}", "强制停止卸料，所有信号已清除");
             }
+
+            ForceReleaseBeltControl("下料强制停止");
         }
 
         private void CallBackShow1(MessageModel msg)
@@ -622,6 +633,41 @@ namespace Ewan.Core.Module
             {
                 _uiLogger.ErrorRaw("处理错误: {0} - {1}", $"写入放料状态到Modbus失败: {ex.Message}");
             }
+        }
+
+
+        private void UpdateBeltConveyorStopRequest(bool shouldStop, string reason)
+        {
+            if (_beltStopRequested == shouldStop)
+            {
+                return;
+            }
+
+            _beltStopRequested = shouldStop;
+
+            var command = new BeltConveyorControlCommand(
+                BeltConveyorControlSource.MaterialUnloading,
+                shouldStop,
+                reason);
+
+            MsgManager.Instance().PushMsg(new MessageModel(MsgSubject.BeltConveyorControl, command));
+        }
+
+        private void ForceReleaseBeltControl(string reason)
+        {
+            if (!_beltStopRequested)
+            {
+                return;
+            }
+
+            _beltStopRequested = false;
+
+            var command = new BeltConveyorControlCommand(
+                BeltConveyorControlSource.MaterialUnloading,
+                false,
+                reason);
+
+            MsgManager.Instance().PushMsg(new MessageModel(MsgSubject.BeltConveyorControl, command));
         }
 
 
