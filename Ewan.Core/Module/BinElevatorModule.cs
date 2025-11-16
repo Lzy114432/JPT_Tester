@@ -353,7 +353,14 @@ namespace Ewan.Core.Module
                     SetLoadingCompleted(true);
 
                     _ioManager.LayeredIO.ClearFallingBit(ROBOT_LOADING_COMPLETE_SIGNAL);
-                    ResetSelectedBinStates(BinElevatorMode.Loading);
+                    if (IsUnloadingActiveOrPending())
+                    {
+                        _uiLogger.InfoRaw("处理已开始: {0}", "检测到下料请求，跳过料仓下降");
+                    }
+                    else
+                    {
+                        ResetSelectedBinStates(BinElevatorMode.Loading);
+                    }
                 }
 
                 // 检查机械手卸载完成信号
@@ -373,6 +380,16 @@ namespace Ewan.Core.Module
             {
                 _uiLogger.ErrorRaw("处理错误: {0} - {1}", "机械手信号检查", ex.Message);
             }
+        }
+
+        private bool IsUnloadingActiveOrPending()
+        {
+            if (_sharedState == null)
+            {
+                return false;
+            }
+
+            return _sharedState.IsUnloading() || _sharedState.HasUnloadingPriorityRequest();
         }
 
         /// <summary>
