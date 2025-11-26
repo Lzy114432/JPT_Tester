@@ -171,8 +171,8 @@ namespace Ewan.Core.Module
                     var axisConfig = _axisManager.GetAxisConfig(BELT_AXIS_ID);
                     if (axisConfig != null && axisConfig.IsUsing)
                     {
-                        // 使用JogDown进行反向运行
-                        _axisManager.JogDown(axisConfig);
+                        // 使用Jog方法进行反向运行，传入负的配置速度
+                        _axisManager.Jog(axisConfig, -axisConfig.Speed);
                         _beltRunning = true;
 
                         _uiLogger.InfoRaw("处理已开始: {0}",

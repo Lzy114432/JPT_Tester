@@ -180,8 +180,8 @@ namespace Ewan.Core.Axis
 
             LTSMC.smc_set_s_profile(card, (ushort)axisConfig.AxisID, 0, axisConfig.Dec/3);//设置S段时间（0-1s)
             
-            // 使用配置中的速度参数，或者使用传入的速度
-            double maxSpeed = speed * axisConfig.Step; // 使用配置中的最大速度
+            // 使用速度绝对值计算参数，方向由dir控制
+            double maxSpeed = vel * axisConfig.Step; // 使用速度绝对值
             double startSpeed = maxSpeed * 0.1; // 起始速度为最大速度的10%
             double stopSpeed = maxSpeed * 0.05; // 停止速度为最大速度的5%
             
