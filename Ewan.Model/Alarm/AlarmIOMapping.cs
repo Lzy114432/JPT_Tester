@@ -32,7 +32,7 @@ namespace Ewan.Model.Alarm
         public const int SAFETY_DOOR1_ALARM = 24; // X24 - 安全门1报警
         public const int SAFETY_DOOR2_ALARM = 25; // X25 - 安全门2报警
         public const int SAFETY_DOOR3_ALARM = 26; // X26 - 安全门3报警
-        public const int ROBOT_DOOR_MAGNET = 30;  // X30 - 机械臂门电磁感应信号(常闭)
+        public const int ROBOT_DOOR_MAGNET = 31;  // X31 - 机械臂门电磁感应信号(常闭)
 
 
     }
