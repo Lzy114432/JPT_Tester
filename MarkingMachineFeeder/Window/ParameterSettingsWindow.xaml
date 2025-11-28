@@ -342,6 +342,48 @@
                         </StackPanel>
                     </Border>
                     
+                    <!-- 环线下料放空车设置 -->
+                    <Border Style="{StaticResource CardBorder}" Padding="25" Margin="0,0,0,15">
+                        <StackPanel>
+                            <TextBlock Text="环线下料放空车设置"
+                                      Style="{StaticResource SectionTitle}"/>
+
+                            <Border Background="#FAFAFA" CornerRadius="8" Padding="15" Margin="0,10,0,0">
+                                <CheckBox Content="启用放空车功能"
+                                         IsChecked="{Binding EnableEmptyCartRelease}"
+                                         Style="{StaticResource ModernCheckBox}"/>
+                            </Border>
+
+                            <Border Background="#FAFAFA" CornerRadius="8" Padding="20" Margin="0,10,0,0">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="10"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="5"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    
+                                    <TextBlock Grid.Row="0" 
+                                              Text="间隔多少辆放空车"
+                                              FontSize="14" 
+                                              FontWeight="Medium" 
+                                              Foreground="#495057"/>
+                                    
+                                    <TextBox Grid.Row="2" 
+                                            Text="{Binding EmptyCartReleaseInterval, UpdateSourceTrigger=PropertyChanged}"
+                                            Style="{StaticResource ModernTextBox}"
+                                            IsEnabled="{Binding EnableEmptyCartRelease}"/>
+                                    
+                                    <TextBlock Grid.Row="4" 
+                                              Text="每隔指定数量的下料车辆后，放行一辆空车"
+                                              FontSize="12" 
+                                              Foreground="#9CA3AF"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+                    
                     <!-- 时序参数设置 -->
                     <Border Style="{StaticResource CardBorder}" Padding="25">
                         <StackPanel>

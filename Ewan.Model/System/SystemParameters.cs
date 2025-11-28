@@ -70,6 +70,16 @@ namespace Ewan.Model.System
         public bool SafetyDoorAlarmBypass { get; set; } = false;
 
         /// <summary>
+        /// 环线下料是否启用放空车
+        /// </summary>
+        public bool EnableEmptyCartRelease { get; set; } = false;
+
+        /// <summary>
+        /// 环线下料间隔多少辆放空车
+        /// </summary>
+        public int EmptyCartReleaseInterval { get; set; } = 5;
+
+        /// <summary>
         /// 创建默认参数配置
         /// </summary>
         public static SystemParameters CreateDefault()
@@ -83,7 +93,9 @@ namespace Ewan.Model.System
                 ResetDelayMs = 4000,
                 LowSpeedSetupDelayMs = 500,
                 RingLineTimeoutSeconds = 30,
-                SafetyDoorAlarmBypass = false
+                SafetyDoorAlarmBypass = false,
+                EnableEmptyCartRelease = false,
+                EmptyCartReleaseInterval = 5
             };
         }
 
@@ -95,6 +107,7 @@ namespace Ewan.Model.System
             return ResetDelayMs > 0
                    && LowSpeedSetupDelayMs > 0
                    && RingLineTimeoutSeconds > 0
+                   && EmptyCartReleaseInterval > 0
                    && Enum.IsDefined(typeof(BinSelection), SelectedBin);
         }
     }
