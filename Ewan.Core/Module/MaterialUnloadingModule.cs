@@ -324,10 +324,6 @@ namespace Ewan.Core.Module
             // 发送完成信号到Modbus，标记为空车
             SendCartCompletionToModbus(false);
 
-            // 增加计数器，确保下次不会连续放空车
-            _unloadedCartCount++;
-            _uiLogger.InfoRaw("处理已完成: {0}", $"放空车后计数器增加: {_unloadedCartCount}");
-
             // 清除下料优先级请求
             _sharedState?.ClearUnloadingPriority();
 
