@@ -73,20 +73,6 @@ namespace MarkingMachineFeeder.Viewmodel
             get => _safetyDoorAlarmBypass;
             set => SetProperty(ref _safetyDoorAlarmBypass, value);
         }
-
-        private bool _enableEmptyCartRelease;
-        public bool EnableEmptyCartRelease
-        {
-            get => _enableEmptyCartRelease;
-            set => SetProperty(ref _enableEmptyCartRelease, value);
-        }
-
-        private int _emptyCartReleaseInterval = 5;
-        public int EmptyCartReleaseInterval
-        {
-            get => _emptyCartReleaseInterval;
-            set => SetProperty(ref _emptyCartReleaseInterval, value);
-        }
         #endregion
 
         public ObservableCollection<BinSelectionOption> BinOptions => _binOptions;
@@ -148,8 +134,6 @@ namespace MarkingMachineFeeder.Viewmodel
             LowSpeedSetupDelayMs = parameters.LowSpeedSetupDelayMs;
             RingLineTimeoutSeconds = parameters.RingLineTimeoutSeconds;
             SafetyDoorAlarmBypass = parameters.SafetyDoorAlarmBypass;
-            EnableEmptyCartRelease = parameters.EnableEmptyCartRelease;
-            EmptyCartReleaseInterval = parameters.EmptyCartReleaseInterval;
 
             UpdateBinOptionDisplays();
         }
@@ -255,9 +239,7 @@ namespace MarkingMachineFeeder.Viewmodel
                     ResetDelayMs = ResetDelayMs,
                     LowSpeedSetupDelayMs = LowSpeedSetupDelayMs,
                     RingLineTimeoutSeconds = RingLineTimeoutSeconds,
-                    SafetyDoorAlarmBypass = SafetyDoorAlarmBypass,
-                    EnableEmptyCartRelease = EnableEmptyCartRelease,
-                    EmptyCartReleaseInterval = EmptyCartReleaseInterval
+                    SafetyDoorAlarmBypass = SafetyDoorAlarmBypass
                 };
 
                 if (!parameters.Validate())

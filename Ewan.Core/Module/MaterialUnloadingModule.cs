@@ -43,9 +43,6 @@ namespace Ewan.Core.Module
         private bool _ringLineSignal = false;      // 当前信号电平（寄存器152的值）
         private bool _requestProcessed = false;    // 是否已处理过此次请求
 
-        // 放空车计数器
-        private int _unloadedCartCount = 0;        // 已下料车辆计数
-
         // 输入信号常量
         private const int MATERIAL_DETECT_SIGNAL = 3;       // X3 - 料片检测信号
         private const int SCAN_POSITION_SIGNAL = 7;         // X7 - 扫码位置到达信号
@@ -242,15 +239,6 @@ namespace Ewan.Core.Module
                     // 成功获取锁，清除优先级请求
                     _sharedState?.ClearUnloadingPriority();
 
-                    // 检查是否需要放空车
-                    var parameters = _parametersManager.Parameters;
-                    if (parameters.EnableEmptyCartRelease && ShouldReleaseEmptyCart(parameters.EmptyCartReleaseInterval))
-                    {
-                        // 放空车
-                        ReleaseEmptyCart();
-                        return;
-                    }
-
                     int binNumber = GetConfiguredBinNumber();
                     BinMaterialCheckResult materialCheckResult = null;
 
@@ -297,46 +285,6 @@ namespace Ewan.Core.Module
                 _requestProcessed = false;
                 _uiLogger.InfoRaw("处理已完成: {0}", "环线信号结束，准备接收下次请求");
             }
-        }
-
-        /// <summary>
-        /// 检查是否应该放空车
-        /// </summary>
-        /// <param name="interval">间隔车辆数</param>
-        /// <returns>是否放空车</returns>
-        private bool ShouldReleaseEmptyCart(int interval)
-        {
-            // 每隔interval辆车放一辆空车
-            // 例如interval=5, 则第5、10、15...辆放空车
-            return _unloadedCartCount > 0 && _unloadedCartCount % interval == 0;
-        }
-
-        /// <summary>
-        /// 放空车处理
-        /// </summary>
-        private void ReleaseEmptyCart()
-        {
-            _uiLogger.InfoRaw("处理已开始: {0}", $"放空车 - 已下料{_unloadedCartCount}辆，本次放空车");
-
-            // 清空扫码结果
-            _lastScannedQrCode = string.Empty;
-
-            // 发送完成信号到Modbus，标记为空车
-            SendCartCompletionToModbus(false);
-
-            // 清除下料优先级请求
-            _sharedState?.ClearUnloadingPriority();
-
-            // 释放流程锁
-            _sharedState?.FinishProcess();
-
-            // 重置标志并返回空闲状态
-            _unloadingRequested = false;
-            _currentState = MaterialUnloadingState.Idle;
-
-            UpdateBeltConveyorStopRequest(false, "放空车完成");
-
-            _uiLogger.InfoRaw("处理已完成: {0}", "放空车完成，释放流程锁");
         }
 
         /// <summary>
@@ -420,10 +368,6 @@ namespace Ewan.Core.Module
 
                 // 发送完成信号到Modbus寄存器153
                 SendCartCompletionToModbus(true);
-
-                // 增加已下料计数器
-                _unloadedCartCount++;
-                _uiLogger.InfoRaw("处理已完成: {0}", $"已下料车辆计数: {_unloadedCartCount}");
 
                 // 清除下料优先级请求
                 _sharedState?.ClearUnloadingPriority();
