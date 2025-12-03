@@ -142,18 +142,6 @@
     <Compile Include="Window\ParameterSettingsWindow.xaml.cs">
       <DependentUpon>ParameterSettingsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Window\SafetyIOPanel.xaml.cs">
-      <DependentUpon>SafetyIOPanel.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Window\InteractiveIOPanel.xaml.cs">
-      <DependentUpon>InteractiveIOPanel.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Window\RobotControlPanel.xaml.cs">
-      <DependentUpon>RobotControlPanel.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Window\ConveyorIOPanel.xaml.cs">
-      <DependentUpon>ConveyorIOPanel.xaml</DependentUpon>
-    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -227,22 +215,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Window\AxisConfigWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Window\SafetyIOPanel.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Window\InteractiveIOPanel.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Window\RobotControlPanel.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Window\ConveyorIOPanel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
