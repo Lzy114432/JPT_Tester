@@ -11,9 +11,9 @@ namespace MarkingMachineFeeder.Viewmodel
 {
     public class ParameterSettingsViewModel : BindableBase
     {
-        private readonly UILogger _uiLogger = new UILogger(typeof(ParameterSettingsViewModel));
-        private readonly SystemParametersManager _parametersManager = SystemParametersManager.Instance;
-        private readonly CultureManager _cultureManager = CultureManager.Instance();
+        private readonly UILogger _uiLogger;
+        private readonly SystemParametersManager _parametersManager;
+        private readonly CultureManager _cultureManager;
 
         private readonly ObservableCollection<BinSelectionOption> _binOptions = new ObservableCollection<BinSelectionOption>();
 
@@ -85,6 +85,13 @@ namespace MarkingMachineFeeder.Viewmodel
         public ObservableCollection<BinSelectionOption> BinOptions => _binOptions;
 
         #region UI Text Properties
+        private string _runModeTitle = "运行模式";
+        public string RunModeTitle
+        {
+            get => _runModeTitle;
+            set => SetProperty(ref _runModeTitle, value);
+        }
+
         private string _enableLoadingLabel = string.Empty;
         public string EnableLoadingLabel
         {
@@ -105,6 +112,97 @@ namespace MarkingMachineFeeder.Viewmodel
             get => _binSelectionLabel;
             set => SetProperty(ref _binSelectionLabel, value);
         }
+
+        private string _highSpeedModeLabel = "启用高速运行模式";
+        public string HighSpeedModeLabel
+        {
+            get => _highSpeedModeLabel;
+            set => SetProperty(ref _highSpeedModeLabel, value);
+        }
+
+        private string _highSpeedModeDesc = "启用后系统将在启动时自动切换到高速运行模式";
+        public string HighSpeedModeDesc
+        {
+            get => _highSpeedModeDesc;
+            set => SetProperty(ref _highSpeedModeDesc, value);
+        }
+
+        private string _safetyDoorBypassLabel = "安全门报警屏蔽";
+        public string SafetyDoorBypassLabel
+        {
+            get => _safetyDoorBypassLabel;
+            set => SetProperty(ref _safetyDoorBypassLabel, value);
+        }
+
+        private string _safetyDoorBypassDesc = "勾选后启动将忽略安全门状态，不触发安全门报警";
+        public string SafetyDoorBypassDesc
+        {
+            get => _safetyDoorBypassDesc;
+            set => SetProperty(ref _safetyDoorBypassDesc, value);
+        }
+
+        private string _keepEmptyCartCountLabel = "保持空车数量";
+        public string KeepEmptyCartCountLabel
+        {
+            get => _keepEmptyCartCountLabel;
+            set => SetProperty(ref _keepEmptyCartCountLabel, value);
+        }
+
+        private string _keepEmptyCartCountDesc = "当空车数量少于或等于该值时系统会自动下空车";
+        public string KeepEmptyCartCountDesc
+        {
+            get => _keepEmptyCartCountDesc;
+            set => SetProperty(ref _keepEmptyCartCountDesc, value);
+        }
+
+        private string _timingParametersTitle = "时序参数";
+        public string TimingParametersTitle
+        {
+            get => _timingParametersTitle;
+            set => SetProperty(ref _timingParametersTitle, value);
+        }
+
+        private string _systemResetDelayLabel = "系统复位延迟时间 (毫秒)";
+        public string SystemResetDelayLabel
+        {
+            get => _systemResetDelayLabel;
+            set => SetProperty(ref _systemResetDelayLabel, value);
+        }
+
+        private string _systemResetDelayDesc = "系统复位初始化完成后的等待时间";
+        public string SystemResetDelayDesc
+        {
+            get => _systemResetDelayDesc;
+            set => SetProperty(ref _systemResetDelayDesc, value);
+        }
+
+        private string _lowSpeedSetupDelayLabel = "低速模式设置延迟 (毫秒)";
+        public string LowSpeedSetupDelayLabel
+        {
+            get => _lowSpeedSetupDelayLabel;
+            set => SetProperty(ref _lowSpeedSetupDelayLabel, value);
+        }
+
+        private string _lowSpeedSetupDelayDesc = "设置低速运行模式后的等待时间";
+        public string LowSpeedSetupDelayDesc
+        {
+            get => _lowSpeedSetupDelayDesc;
+            set => SetProperty(ref _lowSpeedSetupDelayDesc, value);
+        }
+
+        private string _ringLineTimeoutLabel = "环线上料请求超时时间 (秒)";
+        public string RingLineTimeoutLabel
+        {
+            get => _ringLineTimeoutLabel;
+            set => SetProperty(ref _ringLineTimeoutLabel, value);
+        }
+
+        private string _ringLineTimeoutDesc = "环线上料请求等待响应的超时时间";
+        public string RingLineTimeoutDesc
+        {
+            get => _ringLineTimeoutDesc;
+            set => SetProperty(ref _ringLineTimeoutDesc, value);
+        }
         #endregion
 
         #region Commands
@@ -116,6 +214,27 @@ namespace MarkingMachineFeeder.Viewmodel
 
         public ParameterSettingsViewModel()
         {
+            // Design-time support
+            if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+            {
+                // Initialize dummy data for designer
+                _binOptions.Add(new BinSelectionOption(BinSelection.Bin1, "料仓 1 (设计时)"));
+                _binOptions.Add(new BinSelectionOption(BinSelection.Bin2, "料仓 2 (设计时)"));
+                _binOptions.Add(new BinSelectionOption(BinSelection.Bin3, "料仓 3 (设计时)"));
+                SelectedBin = BinSelection.Bin1;
+                
+                // Set localized strings to fallback values or dummy text
+                EnableLoadingLabel = "启用上料模块";
+                EnableUnloadingLabel = "启用下料模块";
+                BinSelectionLabel = "料仓选择";
+                
+                return;
+            }
+
+            _uiLogger = new UILogger(typeof(ParameterSettingsViewModel));
+            _parametersManager = SystemParametersManager.Instance;
+            _cultureManager = CultureManager.Instance();
+
             Ewan.Resources.UIStrings.Culture = _cultureManager.CurrentCulture;
 
             _cultureManager.CultureChanged += OnCultureChanged;

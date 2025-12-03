@@ -11,7 +11,7 @@
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
-        d:DataContext="{d:DesignInstance Type=vm:ParameterSettingsViewModel, IsDesignTimeCreatable=False}">
+        d:DataContext="{d:DesignInstance Type=vm:ParameterSettingsViewModel, IsDesignTimeCreatable=True}">
     
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
@@ -277,187 +277,182 @@
                     <!-- 运行模式设置 -->
                     <Border Style="{StaticResource CardBorder}" Padding="25" Margin="0,0,0,15">
                         <StackPanel>
-                            <TextBlock Text="运行模式"
+                            <TextBlock Text="{Binding RunModeTitle, FallbackValue='运行模式'}"
                                       Style="{StaticResource SectionTitle}"/>
 
-                            <Border Background="#FAFAFA" CornerRadius="8" Padding="15" Margin="0,10,0,0">
-                                <CheckBox Content="{Binding EnableLoadingLabel}"
-                                         IsChecked="{Binding EnableLoadingModule}"
-                                         Style="{StaticResource ModernCheckBox}"/>
-                            </Border>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="20"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
 
-                            <Border Background="#FAFAFA" CornerRadius="8" Padding="15" Margin="0,10,0,0">
-                                <CheckBox Content="{Binding EnableUnloadingLabel}"
-                                         IsChecked="{Binding EnableUnloadingModule}"
-                                         Style="{StaticResource ModernCheckBox}"/>
-                            </Border>
+                                <!-- 左侧列：基础开关和料仓选择 -->
+                                <StackPanel Grid.Column="0">
+                                    <Border Background="#FAFAFA" CornerRadius="8" Padding="15" Margin="0,0,0,10">
+                                        <CheckBox Content="{Binding EnableLoadingLabel, FallbackValue='启用上料模块'}"
+                                                 IsChecked="{Binding EnableLoadingModule}"
+                                                 Style="{StaticResource ModernCheckBox}"/>
+                                    </Border>
 
-                            <Border Background="#FAFAFA" CornerRadius="8" Padding="20" Margin="0,10,0,0">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="12"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="0"
-                                              Text="{Binding BinSelectionLabel}"
-                                              FontSize="14"
-                                              FontWeight="Medium"
-                                              Foreground="#495057"/>
-                                    <ComboBox Grid.Row="2"
-                                              ItemsSource="{Binding BinOptions}"
-                                              SelectedValuePath="Value"
-                                              DisplayMemberPath="Display"
-                                              SelectedValue="{Binding SelectedBin, Mode=TwoWay}"
-                                              Height="40"
-                                              FontSize="14"
-                                              Padding="12,0"
-                                              Background="#F8F9FA"
-                                              BorderBrush="#E9ECEF"
-                                              BorderThickness="1"
-                                              HorizontalContentAlignment="Center"/>
-                                </Grid>
-                            </Border>
-                            
-                            <Border Background="#FAFAFA" CornerRadius="8" Padding="15" Margin="0,10,0,0">
-                                <CheckBox Content="启用高速运行模式"
-                                         IsChecked="{Binding HighSpeedModeEnabled}"
-                                         Style="{StaticResource ModernCheckBox}"/>
-                            </Border>
+                                    <Border Background="#FAFAFA" CornerRadius="8" Padding="15" Margin="0,0,0,10">
+                                        <CheckBox Content="{Binding EnableUnloadingLabel, FallbackValue='启用下料模块'}"
+                                                 IsChecked="{Binding EnableUnloadingModule}"
+                                                 Style="{StaticResource ModernCheckBox}"/>
+                                    </Border>
 
-                            <Border Background="#FAFAFA" CornerRadius="8" Padding="15" Margin="0,10,0,0">
-                                <CheckBox Content="安全门报警屏蔽"
-                                         IsChecked="{Binding SafetyDoorAlarmBypass}"
-                                         Style="{StaticResource ModernCheckBox}"/>
-                            </Border>
-                            
-                            <TextBlock Text="启用后系统将在启动时自动切换到高速运行模式" 
-                                      FontSize="12" 
-                                      Foreground="#9CA3AF" 
-                                      Margin="5,8,0,0"/>
-                            <TextBlock Text="勾选后启动将忽略安全门状态，不触发安全门报警"
-                                      FontSize="12"
-                                      Foreground="#9CA3AF"
-                                      Margin="5,4,0,0"/>
+                                    <Border Background="#FAFAFA" CornerRadius="8" Padding="20">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding BinSelectionLabel, FallbackValue='料仓选择'}"
+                                                      FontSize="14"
+                                                      FontWeight="Medium"
+                                                      Foreground="#495057"
+                                                      Margin="0,0,0,10"/>
+                                            <ComboBox ItemsSource="{Binding BinOptions}"
+                                                      SelectedValuePath="Value"
+                                                      DisplayMemberPath="Display"
+                                                      SelectedValue="{Binding SelectedBin, Mode=TwoWay}"
+                                                      Height="40"
+                                                      FontSize="14"
+                                                      Padding="12,0"
+                                                      Background="#F8F9FA"
+                                                      BorderBrush="#E9ECEF"
+                                                      BorderThickness="1"
+                                                      HorizontalContentAlignment="Left"
+                                                      VerticalContentAlignment="Center"/>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
 
-                            <Border Background="#FAFAFA" CornerRadius="8" Padding="20" Margin="0,15,0,0">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="10"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="5"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
+                                <!-- 右侧列：高级选项和数值设置 -->
+                                <StackPanel Grid.Column="2">
+                                    <Border Background="#FAFAFA" CornerRadius="8" Padding="15" Margin="0,0,0,10">
+                                        <StackPanel>
+                                            <CheckBox Content="{Binding HighSpeedModeLabel, FallbackValue='启用高速运行模式'}"
+                                                     IsChecked="{Binding HighSpeedModeEnabled}"
+                                                     Style="{StaticResource ModernCheckBox}"/>
+                                            <TextBlock Text="{Binding HighSpeedModeDesc, FallbackValue='启用后系统将在启动时自动切换到高速运行模式'}" 
+                                                      FontSize="12" 
+                                                      Foreground="#9CA3AF" 
+                                                      Margin="28,5,0,0"
+                                                      TextWrapping="Wrap"/>
+                                        </StackPanel>
+                                    </Border>
 
-                                    <TextBlock Grid.Row="0"
-                                              Text="保持空车数量"
-                                              FontSize="14"
-                                              FontWeight="Medium"
-                                              Foreground="#495057"/>
+                                    <Border Background="#FAFAFA" CornerRadius="8" Padding="15" Margin="0,0,0,10">
+                                        <StackPanel>
+                                            <CheckBox Content="{Binding SafetyDoorBypassLabel, FallbackValue='安全门报警屏蔽'}"
+                                                     IsChecked="{Binding SafetyDoorAlarmBypass}"
+                                                     Style="{StaticResource ModernCheckBox}"/>
+                                            <TextBlock Text="{Binding SafetyDoorBypassDesc, FallbackValue='勾选后启动将忽略安全门状态，不触发安全门报警'}"
+                                                      FontSize="12"
+                                                      Foreground="#9CA3AF"
+                                                      Margin="28,5,0,0"
+                                                      TextWrapping="Wrap"/>
+                                        </StackPanel>
+                                    </Border>
 
-                                    <TextBox Grid.Row="2"
-                                             Text="{Binding EmptyCartReserveCount, UpdateSourceTrigger=PropertyChanged}"
-                                             Style="{StaticResource ModernTextBox}"/>
-
-                                    <TextBlock Grid.Row="4"
-                                              Text="当空车数量少于或等于该值时系统会自动下空车"
-                                              FontSize="12"
-                                              Foreground="#9CA3AF"/>
-                                </Grid>
-                            </Border>
+                                    <Border Background="#FAFAFA" CornerRadius="8" Padding="20">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding KeepEmptyCartCountLabel, FallbackValue='保持空车数量'}"
+                                                      FontSize="14"
+                                                      FontWeight="Medium"
+                                                      Foreground="#495057"
+                                                      Margin="0,0,0,10"/>
+                                            
+                                            <TextBox Text="{Binding EmptyCartReserveCount, UpdateSourceTrigger=PropertyChanged}"
+                                                     Style="{StaticResource ModernTextBox}"/>
+                                            
+                                            <TextBlock Text="{Binding KeepEmptyCartCountDesc, FallbackValue='当空车数量少于或等于该值时系统会自动下空车'}"
+                                                      FontSize="12"
+                                                      Foreground="#9CA3AF"
+                                                      Margin="0,5,0,0"
+                                                      TextWrapping="Wrap"/>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </Grid>
                         </StackPanel>
                     </Border>
                     
                     <!-- 时序参数设置 -->
                     <Border Style="{StaticResource CardBorder}" Padding="25">
                         <StackPanel>
-                            <TextBlock Text="时序参数"
+                            <TextBlock Text="{Binding TimingParametersTitle, FallbackValue='时序参数'}"
                                       Style="{StaticResource SectionTitle}"/>
                             
-                            <!-- 系统复位延迟 -->
-                            <Border Background="#FAFAFA" CornerRadius="8" Padding="20" Margin="0,10,0,10">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="10"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="5"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-                                    
-                                    <TextBlock Grid.Row="0" 
-                                              Text="系统复位延迟时间 (毫秒)"
-                                              FontSize="14" 
-                                              FontWeight="Medium" 
-                                              Foreground="#495057"/>
-                                    
-                                    <TextBox Grid.Row="2" 
-                                            Text="{Binding ResetDelayMs, UpdateSourceTrigger=PropertyChanged}"
-                                            Style="{StaticResource ModernTextBox}"/>
-                                    
-                                    <TextBlock Grid.Row="4" 
-                                              Text="系统复位初始化完成后的等待时间"
-                                              FontSize="12" 
-                                              Foreground="#9CA3AF"/>
-                                </Grid>
-                            </Border>
-                            
-                            <!-- 低速模式设置延迟 -->
-                            <Border Background="#FAFAFA" CornerRadius="8" Padding="20" Margin="0,0,0,10">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="10"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="5"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-                                    
-                                    <TextBlock Grid.Row="0" 
-                                              Text="低速模式设置延迟 (毫秒)"
-                                              FontSize="14" 
-                                              FontWeight="Medium" 
-                                              Foreground="#495057"/>
-                                    
-                                    <TextBox Grid.Row="2" 
-                                            Text="{Binding LowSpeedSetupDelayMs, UpdateSourceTrigger=PropertyChanged}"
-                                            Style="{StaticResource ModernTextBox}"/>
-                                    
-                                    <TextBlock Grid.Row="4" 
-                                              Text="设置低速运行模式后的等待时间"
-                                              FontSize="12" 
-                                              Foreground="#9CA3AF"/>
-                                </Grid>
-                            </Border>
-                            
-                            <!-- 环线上料超时时间 -->
-                            <Border Background="#FAFAFA" CornerRadius="8" Padding="20">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="10"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="5"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-                                    
-                                    <TextBlock Grid.Row="0" 
-                                              Text="环线上料请求超时时间 (秒)"
-                                              FontSize="14" 
-                                              FontWeight="Medium" 
-                                              Foreground="#495057"/>
-                                    
-                                    <TextBox Grid.Row="2" 
-                                            Text="{Binding RingLineTimeoutSeconds, UpdateSourceTrigger=PropertyChanged}"
-                                            Style="{StaticResource ModernTextBox}"/>
-                                    
-                                    <TextBlock Grid.Row="4" 
-                                              Text="环线上料请求等待响应的超时时间"
-                                              FontSize="12" 
-                                              Foreground="#9CA3AF"/>
-                                </Grid>
-                            </Border>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="20"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="10"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- 系统复位延迟 -->
+                                <Border Grid.Row="0" Grid.Column="0" Background="#FAFAFA" CornerRadius="8" Padding="20">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding SystemResetDelayLabel, FallbackValue='系统复位延迟时间 (毫秒)'}"
+                                                  FontSize="14" 
+                                                  FontWeight="Medium" 
+                                                  Foreground="#495057"
+                                                  Margin="0,0,0,10"/>
+                                        
+                                        <TextBox Text="{Binding ResetDelayMs, UpdateSourceTrigger=PropertyChanged}"
+                                                Style="{StaticResource ModernTextBox}"/>
+                                        
+                                        <TextBlock Text="{Binding SystemResetDelayDesc, FallbackValue='系统复位初始化完成后的等待时间'}"
+                                                  FontSize="12" 
+                                                  Foreground="#9CA3AF"
+                                                  Margin="0,5,0,0"
+                                                  TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </Border>
+                                
+                                <!-- 低速模式设置延迟 -->
+                                <Border Grid.Row="0" Grid.Column="2" Background="#FAFAFA" CornerRadius="8" Padding="20">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding LowSpeedSetupDelayLabel, FallbackValue='低速模式设置延迟 (毫秒)'}"
+                                                  FontSize="14" 
+                                                  FontWeight="Medium" 
+                                                  Foreground="#495057"
+                                                  Margin="0,0,0,10"/>
+                                        
+                                        <TextBox Text="{Binding LowSpeedSetupDelayMs, UpdateSourceTrigger=PropertyChanged}"
+                                                Style="{StaticResource ModernTextBox}"/>
+                                        
+                                        <TextBlock Text="{Binding LowSpeedSetupDelayDesc, FallbackValue='设置低速运行模式后的等待时间'}"
+                                                  FontSize="12" 
+                                                  Foreground="#9CA3AF"
+                                                  Margin="0,5,0,0"
+                                                  TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </Border>
+                                
+                                <!-- 环线上料超时时间 -->
+                                <Border Grid.Row="2" Grid.Column="0" Background="#FAFAFA" CornerRadius="8" Padding="20">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding RingLineTimeoutLabel, FallbackValue='环线上料请求超时时间 (秒)'}"
+                                                  FontSize="14" 
+                                                  FontWeight="Medium" 
+                                                  Foreground="#495057"
+                                                  Margin="0,0,0,10"/>
+                                        
+                                        <TextBox Text="{Binding RingLineTimeoutSeconds, UpdateSourceTrigger=PropertyChanged}"
+                                                Style="{StaticResource ModernTextBox}"/>
+                                        
+                                        <TextBlock Text="{Binding RingLineTimeoutDesc, FallbackValue='环线上料请求等待响应的超时时间'}"
+                                                  FontSize="12" 
+                                                  Foreground="#9CA3AF"
+                                                  Margin="0,5,0,0"
+                                                  TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
                         </StackPanel>
                     </Border>
                 </StackPanel>
