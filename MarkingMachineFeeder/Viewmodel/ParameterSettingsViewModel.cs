@@ -73,6 +73,13 @@ namespace MarkingMachineFeeder.Viewmodel
             get => _safetyDoorAlarmBypass;
             set => SetProperty(ref _safetyDoorAlarmBypass, value);
         }
+
+        private int _emptyCartReserveCount;
+        public int EmptyCartReserveCount
+        {
+            get => _emptyCartReserveCount;
+            set => SetProperty(ref _emptyCartReserveCount, value);
+        }
         #endregion
 
         public ObservableCollection<BinSelectionOption> BinOptions => _binOptions;
@@ -134,6 +141,7 @@ namespace MarkingMachineFeeder.Viewmodel
             LowSpeedSetupDelayMs = parameters.LowSpeedSetupDelayMs;
             RingLineTimeoutSeconds = parameters.RingLineTimeoutSeconds;
             SafetyDoorAlarmBypass = parameters.SafetyDoorAlarmBypass;
+            EmptyCartReserveCount = parameters.EmptyCartReserveCount;
 
             UpdateBinOptionDisplays();
         }
@@ -239,7 +247,8 @@ namespace MarkingMachineFeeder.Viewmodel
                     ResetDelayMs = ResetDelayMs,
                     LowSpeedSetupDelayMs = LowSpeedSetupDelayMs,
                     RingLineTimeoutSeconds = RingLineTimeoutSeconds,
-                    SafetyDoorAlarmBypass = SafetyDoorAlarmBypass
+                    SafetyDoorAlarmBypass = SafetyDoorAlarmBypass,
+                    EmptyCartReserveCount = EmptyCartReserveCount
                 };
 
                 if (!parameters.Validate())

@@ -339,6 +339,33 @@
                                       FontSize="12"
                                       Foreground="#9CA3AF"
                                       Margin="5,4,0,0"/>
+
+                            <Border Background="#FAFAFA" CornerRadius="8" Padding="20" Margin="0,15,0,0">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="10"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="5"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Grid.Row="0"
+                                              Text="保持空车数量"
+                                              FontSize="14"
+                                              FontWeight="Medium"
+                                              Foreground="#495057"/>
+
+                                    <TextBox Grid.Row="2"
+                                             Text="{Binding EmptyCartReserveCount, UpdateSourceTrigger=PropertyChanged}"
+                                             Style="{StaticResource ModernTextBox}"/>
+
+                                    <TextBlock Grid.Row="4"
+                                              Text="当空车数量少于或等于该值时系统会自动下空车"
+                                              FontSize="12"
+                                              Foreground="#9CA3AF"/>
+                                </Grid>
+                            </Border>
                         </StackPanel>
                     </Border>
                     

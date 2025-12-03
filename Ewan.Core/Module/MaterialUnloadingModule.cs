@@ -43,6 +43,8 @@ namespace Ewan.Core.Module
         private bool _ringLineSignal = false;      // 当前信号电平（寄存器152的值）
         private bool _requestProcessed = false;    // 是否已处理过此次请求
 
+        private int _emptyCount = 0;  //空车计数
+
         // 输入信号常量
         private const int MATERIAL_DETECT_SIGNAL = 3;       // X3 - 料片检测信号
         private const int SCAN_POSITION_SIGNAL = 7;         // X7 - 扫码位置到达信号
@@ -214,18 +216,29 @@ namespace Ewan.Core.Module
             }
 
             // 使用电平检测替代上升沿检测
-            // 信号为1且未处理过时，开始下料流程
+            // 信号为1且未处理过时，开始处理
             if (_ringLineSignal && !_requestProcessed)
             {
                 // 标记已处理，防止重复处理
                 _requestProcessed = true;
                 
+                // 先检查空车数量是否需要补充
+                var reserveCount = Math.Max(0, _parametersManager?.Parameters?.EmptyCartReserveCount ?? 0);
+                if (_emptyCount <= reserveCount)
+                {
+                    _uiLogger.InfoRaw("处理已开始: {0}",
+                        $"环线要料信号到达，空车数量 {_emptyCount} ≤ 设定值 {reserveCount}，执行下空车");
+                    SendCartCompletionToModbus(false);
+                    // 放空车完成后直接返回，等待信号变为0后重置_requestProcessed
+                    return;
+                }
+                
+                // 空车数量充足，继续正常下料流程
                 // 立即记录下料优先级请求
                 _sharedState?.RequestUnloadingPriority();
                 
                 _uiLogger.InfoRaw("处理已开始: {0}", "环线请求下料，设置优先级标志");
                 
-
                 if (_ioManager.LayeredIO.ReadOutBit(OUT_ALLOW_PICK))
                 {
                     // 正在装填等下完成
@@ -574,6 +587,8 @@ namespace Ewan.Core.Module
             var data = msg.GetData<RingLineModel>();
             // 使用电平而非边缘检测，避免上升沿丢失
             _ringLineSignal = data.IsLoading;
+
+            _emptyCount = data.EmptyCarCount;
         }
 
         /// <summary>

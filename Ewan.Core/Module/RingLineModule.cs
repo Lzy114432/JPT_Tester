@@ -81,7 +81,7 @@ namespace Ewan.Core.Module
                     return 0;
                 }
 
-                int length = Math.Min(emptyData.Length, EmptyCarByteLength);
+                int length = Math.Max(emptyData.Length, EmptyCarByteLength);
                 int emptyCount = 0;
                 for (int i = 0; i + 1 < length; i += 2)
                 {
@@ -91,7 +91,7 @@ namespace Ewan.Core.Module
                         emptyCount++;
                     }
                 }
-                return emptyCount;
+                return emptyCount - 1;
             }
             catch (Exception ex)
             {
