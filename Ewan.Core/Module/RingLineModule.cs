@@ -18,6 +18,8 @@ namespace Ewan.Core.Module
         private int _interval = 200;
 
         private const string isLoadingAddr = "152";
+        private const string EmptyCarStartAddress = "x=4;2040";
+        private const ushort EmptyCarByteLength = 20;
 
         /// <summary>
         /// 上一次的IsLoading状态，用于边缘检测
@@ -43,6 +45,7 @@ namespace Ewan.Core.Module
                     // Modbus大端字节序: 高字节在前，低字节在后
                     ushort value = (ushort)((data[0] << 8) | data[1]);
                     bool currentIsLoading = value == 1;
+                    int emptyCarCount = ReadEmptyCarCount();
                     
                     // 边缘检测
                     bool risingEdge = currentIsLoading && !_lastIsLoading;   // 上升沿: False → True
@@ -53,7 +56,8 @@ namespace Ewan.Core.Module
                     { 
                         IsLoading = currentIsLoading,
                         RisingEdge = risingEdge,
-                        FallingEdge = fallingEdge
+                        FallingEdge = fallingEdge,
+                        EmptyCarCount = emptyCarCount
                     });
                     
                     // 更新上一次状态
@@ -65,6 +69,35 @@ namespace Ewan.Core.Module
                 _uiLogger.Error($"环线模块运行异常: {ex.Message}");
             }
             return true;
+        }
+
+        private int ReadEmptyCarCount()
+        {
+            try
+            {
+                var emptyData = ModbusRTUManager.Instance().Read(EmptyCarStartAddress, EmptyCarByteLength, "main");
+                if (emptyData == null || emptyData.Length < 2)
+                {
+                    return 0;
+                }
+
+                int length = Math.Min(emptyData.Length, EmptyCarByteLength);
+                int emptyCount = 0;
+                for (int i = 0; i + 1 < length; i += 2)
+                {
+                    ushort carValue = (ushort)((emptyData[i] << 8) | emptyData[i + 1]);
+                    if (carValue == 0)
+                    {
+                        emptyCount++;
+                    }
+                }
+                return emptyCount;
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error($"读取空车数量失败: {ex.Message}");
+                return 0;
+            }
         }
 
         private void Push(RingLineModel ringLineModel)

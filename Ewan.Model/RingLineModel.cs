@@ -19,5 +19,10 @@ namespace Ewan.Model
         /// 下降沿标志（True → False）
         /// </summary>
         public bool FallingEdge { get; set; } = false;
+
+        /// <summary>
+        /// 空车数量
+        /// </summary>
+        public int EmptyCarCount { get; set; } = 0;
     }
 }

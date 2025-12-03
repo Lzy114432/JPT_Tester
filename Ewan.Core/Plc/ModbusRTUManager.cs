@@ -38,7 +38,7 @@ namespace Ewan.Core.Plc
                 {
                     Key = DefaultClientKey,
                     StationNo = 1,
-                    ComPort = "COM7",
+                    ComPort = "COM10",
                     BaudRate = 115200,
                     DataBits = 8,
                     StopBits = StopBits.One,
@@ -57,7 +57,7 @@ namespace Ewan.Core.Plc
                     {
                         Key = "main",
                         StationNo = 1,
-                        ComPort = "COM10",
+                        ComPort = "COM9",
                         BaudRate = 115200,
                         DataBits = 8,
                         StopBits = StopBits.One,
