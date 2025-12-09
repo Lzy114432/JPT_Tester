@@ -473,7 +473,7 @@ namespace Ewan.Core.Module
         /// <returns>料仓编号 (1-3)</returns>
         private int GetConfiguredBinNumber()
         {
-            var selected = _parametersManager.Parameters.SelectedBin;
+            var selected = _parametersManager.Parameters.UnloadingBinSelection;
             switch (selected)
             {
                 case BinSelection.Bin2:

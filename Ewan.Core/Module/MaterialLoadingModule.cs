@@ -334,7 +334,7 @@ namespace Ewan.Core.Module
 
         private int GetConfiguredBinNumber()
         {
-            var selected = _parametersManager.Parameters.SelectedBin;
+            var selected = _parametersManager.Parameters.LoadingBinSelection;
             switch (selected)
             {
                 case BinSelection.Bin2:

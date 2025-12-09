@@ -301,9 +301,10 @@
                                                  Style="{StaticResource ModernCheckBox}"/>
                                     </Border>
 
-                                    <Border Background="#FAFAFA" CornerRadius="8" Padding="20">
+                                    <!-- 装料料仓选择 -->
+                                    <Border Background="#FAFAFA" CornerRadius="8" Padding="20" Margin="0,0,0,10">
                                         <StackPanel>
-                                            <TextBlock Text="{Binding BinSelectionLabel, FallbackValue='料仓选择'}"
+                                            <TextBlock Text="{Binding LoadingBinSelectionLabel, FallbackValue='装料料仓选择'}"
                                                       FontSize="14"
                                                       FontWeight="Medium"
                                                       Foreground="#495057"
@@ -311,7 +312,30 @@
                                             <ComboBox ItemsSource="{Binding BinOptions}"
                                                       SelectedValuePath="Value"
                                                       DisplayMemberPath="Display"
-                                                      SelectedValue="{Binding SelectedBin, Mode=TwoWay}"
+                                                      SelectedValue="{Binding LoadingSelectedBin, Mode=TwoWay}"
+                                                      Height="40"
+                                                      FontSize="14"
+                                                      Padding="12,0"
+                                                      Background="#F8F9FA"
+                                                      BorderBrush="#E9ECEF"
+                                                      BorderThickness="1"
+                                                      HorizontalContentAlignment="Left"
+                                                      VerticalContentAlignment="Center"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- 下料料仓选择 -->
+                                    <Border Background="#FAFAFA" CornerRadius="8" Padding="20">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding UnloadingBinSelectionLabel, FallbackValue='下料料仓选择'}"
+                                                      FontSize="14"
+                                                      FontWeight="Medium"
+                                                      Foreground="#495057"
+                                                      Margin="0,0,0,10"/>
+                                            <ComboBox ItemsSource="{Binding BinOptions}"
+                                                      SelectedValuePath="Value"
+                                                      DisplayMemberPath="Display"
+                                                      SelectedValue="{Binding UnloadingSelectedBin, Mode=TwoWay}"
                                                       Height="40"
                                                       FontSize="14"
                                                       Padding="12,0"

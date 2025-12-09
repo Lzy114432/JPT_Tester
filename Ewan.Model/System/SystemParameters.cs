@@ -56,9 +56,20 @@ namespace Ewan.Model.System
         public bool EnableUnloadingModule { get; set; } = true;
 
         /// <summary>
-        /// 当前选择的料仓
+        /// 当前选择的料仓（已弃用，保留用于兼容旧配置）
         /// </summary>
+        [Obsolete("请使用 LoadingBinSelection 和 UnloadingBinSelection")]
         public BinSelection SelectedBin { get; set; } = BinSelection.Bin1;
+
+        /// <summary>
+        /// 装料模块选择的料仓
+        /// </summary>
+        public BinSelection LoadingBinSelection { get; set; } = BinSelection.Bin1;
+
+        /// <summary>
+        /// 下料模块选择的料仓
+        /// </summary>
+        public BinSelection UnloadingBinSelection { get; set; } = BinSelection.Bin1;
 
         /// <summary>
         /// 高速模式启用状态
@@ -109,7 +120,8 @@ namespace Ewan.Model.System
             {
                 EnableLoadingModule = true,
                 EnableUnloadingModule = true,
-                SelectedBin = BinSelection.Bin1,
+                LoadingBinSelection = BinSelection.Bin1,
+                UnloadingBinSelection = BinSelection.Bin1,
                 HighSpeedModeEnabled = false,
                 ResetDelayMs = 4000,
                 LowSpeedSetupDelayMs = 500,
@@ -131,7 +143,8 @@ namespace Ewan.Model.System
                    && RingLineTimeoutSeconds > 0
                    && EmptyCartReserveCount >= 0
                    && CuttingBridgeCarReserveCount >= 0
-                   && Enum.IsDefined(typeof(BinSelection), SelectedBin)
+                   && Enum.IsDefined(typeof(BinSelection), LoadingBinSelection)
+                   && Enum.IsDefined(typeof(BinSelection), UnloadingBinSelection)
                    && Enum.IsDefined(typeof(CartCheckMode), CartCheckMode);
         }
     }

@@ -32,11 +32,18 @@ namespace MarkingMachineFeeder.Viewmodel
             set => SetProperty(ref _enableUnloadingModule, value);
         }
 
-        private BinSelection _selectedBin = BinSelection.Bin1;
-        public BinSelection SelectedBin
+        private BinSelection _loadingSelectedBin = BinSelection.Bin1;
+        public BinSelection LoadingSelectedBin
         {
-            get => _selectedBin;
-            set => SetProperty(ref _selectedBin, value);
+            get => _loadingSelectedBin;
+            set => SetProperty(ref _loadingSelectedBin, value);
+        }
+
+        private BinSelection _unloadingSelectedBin = BinSelection.Bin1;
+        public BinSelection UnloadingSelectedBin
+        {
+            get => _unloadingSelectedBin;
+            set => SetProperty(ref _unloadingSelectedBin, value);
         }
 
         private bool _highSpeedModeEnabled;
@@ -151,11 +158,18 @@ namespace MarkingMachineFeeder.Viewmodel
             set => SetProperty(ref _enableUnloadingLabel, value);
         }
 
-        private string _binSelectionLabel = string.Empty;
-        public string BinSelectionLabel
+        private string _loadingBinSelectionLabel = string.Empty;
+        public string LoadingBinSelectionLabel
         {
-            get => _binSelectionLabel;
-            set => SetProperty(ref _binSelectionLabel, value);
+            get => _loadingBinSelectionLabel;
+            set => SetProperty(ref _loadingBinSelectionLabel, value);
+        }
+
+        private string _unloadingBinSelectionLabel = string.Empty;
+        public string UnloadingBinSelectionLabel
+        {
+            get => _unloadingBinSelectionLabel;
+            set => SetProperty(ref _unloadingBinSelectionLabel, value);
         }
 
         private string _highSpeedModeLabel = "启用高速运行模式";
@@ -266,12 +280,14 @@ namespace MarkingMachineFeeder.Viewmodel
                 _binOptions.Add(new BinSelectionOption(BinSelection.Bin1, "料仓 1 (设计时)"));
                 _binOptions.Add(new BinSelectionOption(BinSelection.Bin2, "料仓 2 (设计时)"));
                 _binOptions.Add(new BinSelectionOption(BinSelection.Bin3, "料仓 3 (设计时)"));
-                SelectedBin = BinSelection.Bin1;
+                LoadingSelectedBin = BinSelection.Bin1;
+                UnloadingSelectedBin = BinSelection.Bin1;
                 
                 // Set localized strings to fallback values or dummy text
                 EnableLoadingLabel = "启用上料模块";
                 EnableUnloadingLabel = "启用下料模块";
-                BinSelectionLabel = "料仓选择";
+                LoadingBinSelectionLabel = "装料料仓选择";
+                UnloadingBinSelectionLabel = "下料料仓选择";
                 
                 return;
             }
@@ -299,7 +315,8 @@ namespace MarkingMachineFeeder.Viewmodel
             var parameters = _parametersManager.Parameters;
             EnableLoadingModule = parameters.EnableLoadingModule;
             EnableUnloadingModule = parameters.EnableUnloadingModule;
-            SelectedBin = parameters.SelectedBin;
+            LoadingSelectedBin = parameters.LoadingBinSelection;
+            UnloadingSelectedBin = parameters.UnloadingBinSelection;
             HighSpeedModeEnabled = parameters.HighSpeedModeEnabled;
             ResetDelayMs = parameters.ResetDelayMs;
             LowSpeedSetupDelayMs = parameters.LowSpeedSetupDelayMs;
@@ -316,7 +333,8 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             EnableLoadingLabel = Ewan.Resources.UIStrings.EnableLoadingOptionLabel;
             EnableUnloadingLabel = Ewan.Resources.UIStrings.EnableUnloadingOptionLabel;
-            BinSelectionLabel = Ewan.Resources.UIStrings.BinSelectionLabel;
+            LoadingBinSelectionLabel = "装料料仓选择";
+            UnloadingBinSelectionLabel = "下料料仓选择";
 
             UpdateBinOptionDisplays();
         }
@@ -408,7 +426,8 @@ namespace MarkingMachineFeeder.Viewmodel
                 {
                     EnableLoadingModule = EnableLoadingModule,
                     EnableUnloadingModule = EnableUnloadingModule,
-                    SelectedBin = SelectedBin,
+                    LoadingBinSelection = LoadingSelectedBin,
+                    UnloadingBinSelection = UnloadingSelectedBin,
                     HighSpeedModeEnabled = HighSpeedModeEnabled,
                     ResetDelayMs = ResetDelayMs,
                     LowSpeedSetupDelayMs = LowSpeedSetupDelayMs,
