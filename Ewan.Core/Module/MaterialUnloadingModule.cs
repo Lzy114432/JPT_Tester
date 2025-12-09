@@ -44,6 +44,7 @@ namespace Ewan.Core.Module
         private bool _requestProcessed = false;    // 是否已处理过此次请求
 
         private int _emptyCount = 0;  //空车计数
+        private int _cuttingBridgeCarCount = 0;  //切栈桥车计数
 
         // 输入信号常量
         private const int MATERIAL_DETECT_SIGNAL = 3;       // X3 - 料片检测信号
@@ -222,12 +223,36 @@ namespace Ewan.Core.Module
                 // 标记已处理，防止重复处理
                 _requestProcessed = true;
                 
-                // 先检查空车数量是否需要补充
-                var reserveCount = Math.Max(0, _parametersManager?.Parameters?.EmptyCartReserveCount ?? 0);
-                if (_emptyCount <= reserveCount)
+                // 根据检测模式判断是否需要补充空车
+                var parameters = _parametersManager?.Parameters;
+                var cartCheckMode = parameters?.CartCheckMode ?? CartCheckMode.EmptyCart;
+                bool needSendEmptyCar = false;
+                
+                if (cartCheckMode == CartCheckMode.EmptyCart)
                 {
-                    _uiLogger.InfoRaw("处理已开始: {0}",
-                        $"环线要料信号到达，空车数量 {_emptyCount} ≤ 设定值 {reserveCount}，执行下空车");
+                    // 按空车数量检测
+                    var reserveCount = Math.Max(0, parameters?.EmptyCartReserveCount ?? 0);
+                    if (_emptyCount <= reserveCount)
+                    {
+                        _uiLogger.InfoRaw("处理已开始: {0}",
+                            $"环线要料信号到达，空车数量 {_emptyCount} ≤ 设定值 {reserveCount}，执行下空车");
+                        needSendEmptyCar = true;
+                    }
+                }
+                else
+                {
+                    // 按切栈桥车数量检测：切栈桥车数量 > 设定值时，释放空车
+                    var reserveCount = Math.Max(0, parameters?.CuttingBridgeCarReserveCount ?? 0);
+                    if (_cuttingBridgeCarCount > reserveCount)
+                    {
+                        _uiLogger.InfoRaw("处理已开始: {0}",
+                            $"环线要料信号到达，切栈桥车数量 {_cuttingBridgeCarCount} > 设定值 {reserveCount}，执行下空车");
+                        needSendEmptyCar = true;
+                    }
+                }
+                
+                if (needSendEmptyCar)
+                {
                     SendCartCompletionToModbus(false);
                     // 放空车完成后直接返回，等待信号变为0后重置_requestProcessed
                     return;
@@ -589,6 +614,7 @@ namespace Ewan.Core.Module
             _ringLineSignal = data.IsLoading;
 
             _emptyCount = data.EmptyCarCount;
+            _cuttingBridgeCarCount = data.CuttingBridgeCarCount;
         }
 
         /// <summary>
@@ -607,64 +633,12 @@ namespace Ewan.Core.Module
 
                 _uiLogger.InfoRaw("处理已完成: {0}",
                     $"放入小车完成信号已发送到寄存器{CART_COMPLETION_REGISTER}，放料状态={(hasMaterial ? "放料" : "空车")}");
-
-                // 写入桌面日志
-                WriteToDesktopLog(hasMaterial);
             }
             catch (Exception ex)
             {
                 _uiLogger.ErrorRaw("处理错误: {0} - {1}", $"发送完成信号到Modbus失败: {ex.Message}");
             }
         }
-
-        /// <summary>
-        /// 写入桌面日志文件
-        /// </summary>
-        private void WriteToDesktopLog(bool hasMaterial)
-        {
-            try
-            {
-                string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-                string logFilePath = Path.Combine(desktopPath, "MaterialUnloadingLog.txt");
-
-                string logEntry = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] " +
-                                  $"放入小车完成 - 寄存器{CART_COMPLETION_REGISTER}写入完成, " +
-                                  $"寄存器{MATERIAL_STATUS_REGISTER}写入{(hasMaterial ? "放料(1)" : "空车(0)")}, " +
-                                  $"二维码: {(_lastScannedQrCode ?? "无")}" +
-                                  Environment.NewLine;
-
-                File.AppendAllText(logFilePath, logEntry);
-            }
-            catch (Exception ex)
-            {
-                _uiLogger.ErrorRaw("处理错误: {0} - {1}", "写入桌面日志失败", ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// 写入放料状态到Modbus寄存器178
-        /// 工站定位信号到达时，根据是否有料写入1（放料）或0（排空）
-        /// </summary>
-        private void WriteMaterialStatusToModbus()
-        {
-            try
-            {
-                // 检测X3料片检测信号，判断是否有料
-                bool hasMaterial = _ioManager.LayeredIO.ReadInBit(MATERIAL_DETECT_SIGNAL);
-                
-                // 有料写入1（放料），无料写入0（排空）
-                ushort statusValue = hasMaterial ? (ushort)1 : (ushort)0;
-                _modbusRTUManager.WriteAny(MATERIAL_STATUS_REGISTER, statusValue);
-
-                _uiLogger.InfoRaw("处理已完成: {0}", 
-                    $"工站定位信号检测到，放料状态已写入寄存器{MATERIAL_STATUS_REGISTER}：{(hasMaterial ? "放料(1)" : "排空(0)")}");
-            }
-            catch (Exception ex)
-            {
-                _uiLogger.ErrorRaw("处理错误: {0} - {1}", $"写入放料状态到Modbus失败: {ex.Message}");
-            }
-        }
-
 
         private void UpdateBeltConveyorStopRequest(bool shouldStop, string reason)
         {

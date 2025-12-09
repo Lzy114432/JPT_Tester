@@ -354,20 +354,43 @@
 
                                     <Border Background="#FAFAFA" CornerRadius="8" Padding="20">
                                         <StackPanel>
-                                            <TextBlock Text="{Binding KeepEmptyCartCountLabel, FallbackValue='保持空车数量'}"
+                                            <TextBlock Text="小车检测模式"
                                                       FontSize="14"
                                                       FontWeight="Medium"
                                                       Foreground="#495057"
                                                       Margin="0,0,0,10"/>
                                             
-                                            <TextBox Text="{Binding EmptyCartReserveCount, UpdateSourceTrigger=PropertyChanged}"
-                                                     Style="{StaticResource ModernTextBox}"/>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
+                                                <RadioButton Content="保持空车数量" 
+                                                            IsChecked="{Binding IsEmptyCartMode, Mode=TwoWay}"
+                                                            GroupName="CartCheckMode"
+                                                            VerticalAlignment="Center"
+                                                            Margin="0,0,20,0"/>
+                                                <RadioButton Content="保持切栈桥小车数量"
+                                                            IsChecked="{Binding IsCuttingBridgeCarMode, Mode=TwoWay}"
+                                                            GroupName="CartCheckMode"
+                                                            VerticalAlignment="Center"/>
+                                            </StackPanel>
                                             
-                                            <TextBlock Text="{Binding KeepEmptyCartCountDesc, FallbackValue='当空车数量少于或等于该值时系统会自动下空车'}"
-                                                      FontSize="12"
-                                                      Foreground="#9CA3AF"
-                                                      Margin="0,5,0,0"
-                                                      TextWrapping="Wrap"/>
+                                            <StackPanel Visibility="{Binding IsEmptyCartMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <TextBox Text="{Binding EmptyCartReserveCount, UpdateSourceTrigger=PropertyChanged}"
+                                                         Style="{StaticResource ModernTextBox}"/>
+                                                <TextBlock Text="当空车数量 ≤ 该值时，系统自动下空车"
+                                                          FontSize="12"
+                                                          Foreground="#9CA3AF"
+                                                          Margin="0,5,0,0"
+                                                          TextWrapping="Wrap"/>
+                                            </StackPanel>
+                                            
+                                            <StackPanel Visibility="{Binding IsCuttingBridgeCarMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <TextBox Text="{Binding CuttingBridgeCarReserveCount, UpdateSourceTrigger=PropertyChanged}"
+                                                         Style="{StaticResource ModernTextBox}"/>
+                                                <TextBlock Text="当切栈桥车数量 > 该值时，系统自动下空车"
+                                                          FontSize="12"
+                                                          Foreground="#9CA3AF"
+                                                          Margin="0,5,0,0"
+                                                          TextWrapping="Wrap"/>
+                                            </StackPanel>
                                         </StackPanel>
                                     </Border>
                                 </StackPanel>

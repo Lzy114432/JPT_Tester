@@ -24,6 +24,22 @@ namespace Ewan.Model.System
     }
 
     /// <summary>
+    /// 小车检测模式枚举
+    /// </summary>
+    public enum CartCheckMode
+    {
+        /// <summary>
+        /// 按空车数量检测
+        /// </summary>
+        EmptyCart = 0,
+
+        /// <summary>
+        /// 按切栈桥车数量检测
+        /// </summary>
+        CuttingBridgeCar = 1
+    }
+
+    /// <summary>
     /// 系统参数配置模型
     /// </summary>
     [Serializable]
@@ -75,6 +91,16 @@ namespace Ewan.Model.System
         public int EmptyCartReserveCount { get; set; } = 0;
 
         /// <summary>
+        /// 小车检测模式
+        /// </summary>
+        public CartCheckMode CartCheckMode { get; set; } = CartCheckMode.EmptyCart;
+
+        /// <summary>
+        /// 需要保持的切栈桥车数量
+        /// </summary>
+        public int CuttingBridgeCarReserveCount { get; set; } = 0;
+
+        /// <summary>
         /// 创建默认参数配置
         /// </summary>
         public static SystemParameters CreateDefault()
@@ -89,7 +115,9 @@ namespace Ewan.Model.System
                 LowSpeedSetupDelayMs = 500,
                 RingLineTimeoutSeconds = 30,
                 SafetyDoorAlarmBypass = false,
-                EmptyCartReserveCount = 0
+                EmptyCartReserveCount = 0,
+                CartCheckMode = CartCheckMode.EmptyCart,
+                CuttingBridgeCarReserveCount = 0
             };
         }
 
@@ -102,7 +130,9 @@ namespace Ewan.Model.System
                    && LowSpeedSetupDelayMs > 0
                    && RingLineTimeoutSeconds > 0
                    && EmptyCartReserveCount >= 0
-                   && Enum.IsDefined(typeof(BinSelection), SelectedBin);
+                   && CuttingBridgeCarReserveCount >= 0
+                   && Enum.IsDefined(typeof(BinSelection), SelectedBin)
+                   && Enum.IsDefined(typeof(CartCheckMode), CartCheckMode);
         }
     }
 }

@@ -46,6 +46,7 @@ namespace Ewan.Core.Module
                     ushort value = (ushort)((data[0] << 8) | data[1]);
                     bool currentIsLoading = value == 1;
                     int emptyCarCount = ReadEmptyCarCount();
+                    int cuttingBridgeCarCount = ReadCuttingBridgeCarCount();
                     
                     // 边缘检测
                     bool risingEdge = currentIsLoading && !_lastIsLoading;   // 上升沿: False → True
@@ -57,7 +58,8 @@ namespace Ewan.Core.Module
                         IsLoading = currentIsLoading,
                         RisingEdge = risingEdge,
                         FallingEdge = fallingEdge,
-                        EmptyCarCount = emptyCarCount
+                        EmptyCarCount = emptyCarCount,
+                        CuttingBridgeCarCount = cuttingBridgeCarCount
                     });
                     
                     // 更新上一次状态
@@ -96,6 +98,35 @@ namespace Ewan.Core.Module
             catch (Exception ex)
             {
                 _uiLogger.Error($"读取空车数量失败: {ex.Message}");
+                return 0;
+            }
+        }
+
+        private int ReadCuttingBridgeCarCount()
+        {
+            try
+            {
+                var data = ModbusRTUManager.Instance().Read(EmptyCarStartAddress, EmptyCarByteLength, "main");
+                if (data == null || data.Length < 2)
+                {
+                    return 0;
+                }
+
+                int length = Math.Max(data.Length, EmptyCarByteLength);
+                int cuttingBridgeCount = 0;
+                for (int i = 0; i + 1 < length; i += 2)
+                {
+                    ushort carValue = (ushort)((data[i] << 8) | data[i + 1]);
+                    if (carValue == 1)
+                    {
+                        cuttingBridgeCount++;
+                    }
+                }
+                return cuttingBridgeCount;
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error($"读取切栈桥车数量失败: {ex.Message}");
                 return 0;
             }
         }

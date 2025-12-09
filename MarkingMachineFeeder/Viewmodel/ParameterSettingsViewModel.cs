@@ -80,6 +80,51 @@ namespace MarkingMachineFeeder.Viewmodel
             get => _emptyCartReserveCount;
             set => SetProperty(ref _emptyCartReserveCount, value);
         }
+
+        private CartCheckMode _cartCheckMode = CartCheckMode.EmptyCart;
+        public CartCheckMode CartCheckMode
+        {
+            get => _cartCheckMode;
+            set
+            {
+                if (SetProperty(ref _cartCheckMode, value))
+                {
+                    RaisePropertyChanged(nameof(IsEmptyCartMode));
+                    RaisePropertyChanged(nameof(IsCuttingBridgeCarMode));
+                }
+            }
+        }
+
+        public bool IsEmptyCartMode
+        {
+            get => _cartCheckMode == CartCheckMode.EmptyCart;
+            set
+            {
+                if (value)
+                {
+                    CartCheckMode = CartCheckMode.EmptyCart;
+                }
+            }
+        }
+
+        public bool IsCuttingBridgeCarMode
+        {
+            get => _cartCheckMode == CartCheckMode.CuttingBridgeCar;
+            set
+            {
+                if (value)
+                {
+                    CartCheckMode = CartCheckMode.CuttingBridgeCar;
+                }
+            }
+        }
+
+        private int _cuttingBridgeCarReserveCount;
+        public int CuttingBridgeCarReserveCount
+        {
+            get => _cuttingBridgeCarReserveCount;
+            set => SetProperty(ref _cuttingBridgeCarReserveCount, value);
+        }
         #endregion
 
         public ObservableCollection<BinSelectionOption> BinOptions => _binOptions;
@@ -261,6 +306,8 @@ namespace MarkingMachineFeeder.Viewmodel
             RingLineTimeoutSeconds = parameters.RingLineTimeoutSeconds;
             SafetyDoorAlarmBypass = parameters.SafetyDoorAlarmBypass;
             EmptyCartReserveCount = parameters.EmptyCartReserveCount;
+            CartCheckMode = parameters.CartCheckMode;
+            CuttingBridgeCarReserveCount = parameters.CuttingBridgeCarReserveCount;
 
             UpdateBinOptionDisplays();
         }
@@ -367,7 +414,9 @@ namespace MarkingMachineFeeder.Viewmodel
                     LowSpeedSetupDelayMs = LowSpeedSetupDelayMs,
                     RingLineTimeoutSeconds = RingLineTimeoutSeconds,
                     SafetyDoorAlarmBypass = SafetyDoorAlarmBypass,
-                    EmptyCartReserveCount = EmptyCartReserveCount
+                    EmptyCartReserveCount = EmptyCartReserveCount,
+                    CartCheckMode = CartCheckMode,
+                    CuttingBridgeCarReserveCount = CuttingBridgeCarReserveCount
                 };
 
                 if (!parameters.Validate())

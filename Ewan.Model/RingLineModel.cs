@@ -24,5 +24,10 @@ namespace Ewan.Model
         /// 空车数量
         /// </summary>
         public int EmptyCarCount { get; set; } = 0;
+
+        /// <summary>
+        /// 切栈桥车数量
+        /// </summary>
+        public int CuttingBridgeCarCount { get; set; } = 0;
     }
 }
