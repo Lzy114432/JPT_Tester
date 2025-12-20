@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlcCommunication", "Hardwar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ewan.Controls", "Ewan.Controls\Ewan.Controls.csproj", "{19ADFA5D-8754-4C88-AC93-80629734BC7B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ewan.Mes", "Ewan.Mes\Ewan.Mes.csproj", "{EA08185A-1940-492E-BEB4-0CD6AC2240D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM64 = Debug|ARM64
@@ -103,6 +105,14 @@ Global
 		{19ADFA5D-8754-4C88-AC93-80629734BC7B}.Release|ARM64.Build.0 = Release|Any CPU
 		{19ADFA5D-8754-4C88-AC93-80629734BC7B}.Release|x64.ActiveCfg = Release|Any CPU
 		{19ADFA5D-8754-4C88-AC93-80629734BC7B}.Release|x64.Build.0 = Release|Any CPU
+		{EA08185A-1940-492E-BEB4-0CD6AC2240D8}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{EA08185A-1940-492E-BEB4-0CD6AC2240D8}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{EA08185A-1940-492E-BEB4-0CD6AC2240D8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EA08185A-1940-492E-BEB4-0CD6AC2240D8}.Debug|x64.Build.0 = Debug|Any CPU
+		{EA08185A-1940-492E-BEB4-0CD6AC2240D8}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{EA08185A-1940-492E-BEB4-0CD6AC2240D8}.Release|ARM64.Build.0 = Release|Any CPU
+		{EA08185A-1940-492E-BEB4-0CD6AC2240D8}.Release|x64.ActiveCfg = Release|Any CPU
+		{EA08185A-1940-492E-BEB4-0CD6AC2240D8}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
