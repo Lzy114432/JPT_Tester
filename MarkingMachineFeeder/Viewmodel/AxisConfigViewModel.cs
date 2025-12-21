@@ -7,7 +7,6 @@ using System.Windows.Input;
 using Prism.Commands;
 using Prism.Mvvm;
 using Ewan.Model.Config;
-using Ewan.Core.Culture;
 using Ewan.Core.Security;
 using Ewan.Core;
 using Ewan.Core.Logger;
@@ -19,9 +18,8 @@ namespace MarkingMachineFeeder.Viewmodel
 {
     public class AxisConfigViewModel : BindableBase
     {
-        private readonly CultureManager _cultureManager = CultureManager.Instance();
         private readonly SecurityManager _securityManager = SecurityManager.Instance();
-        private readonly UILogger _uiLogger = new UILogger(typeof(Ewan.Resources.LogMessages));
+        private readonly UILogger _uiLogger = new UILogger();
         private readonly AxisManager _axisManager = AxisManager.Instance();
         
         #region Properties
@@ -211,7 +209,6 @@ namespace MarkingMachineFeeder.Viewmodel
             else
             {
                 UpdateUITexts();
-                _cultureManager.CultureChanged += OnCultureChanged;
             }
         }
 
@@ -343,80 +340,52 @@ namespace MarkingMachineFeeder.Viewmodel
 
         private void UpdateUITexts()
         {
-            // Update UI texts based on current culture
-            if (_cultureManager.CurrentCulture.Name == "zh-CN")
+            // 国际化已移除：界面文案固定为中文
+            WindowTitle = "轴参数配置";
+            AxisParametersText = "轴参数配置";
+            AddAxisText = "添加轴";
+            RemoveAxisText = "删除轴";
+            AxisIDHeaderText = "轴号";
+            AxisNameHeaderText = "轴名称";
+            DirectionHeaderText = "方向";
+            MotionDirHeaderText = "运动方向";
+            MaxPosHeaderText = "最大位置(mm)";
+            MinPosHeaderText = "最小位置(mm)";
+            SpeedHeaderText = "速度(mm/s)";
+            AccHeaderText = "加速度(mm/s²)";
+            DecHeaderText = "减速度(mm/s²)";
+            EnabledHeaderText = "使能";
+            OKText = "确定";
+
+            // Update direction options
+            if (DirectionOptions != null)
             {
-                WindowTitle = "轴参数配置";
-                AxisParametersText = "轴参数配置";
-                AddAxisText = "添加轴";
-                RemoveAxisText = "删除轴";
-                AxisIDHeaderText = "轴号";
-                AxisNameHeaderText = "轴名称";
-                DirectionHeaderText = "方向";
-                MotionDirHeaderText = "运动方向";
-                MaxPosHeaderText = "最大位置(mm)";
-                MinPosHeaderText = "最小位置(mm)";
-                SpeedHeaderText = "速度(mm/s)";
-                AccHeaderText = "加速度(mm/s²)";
-                DecHeaderText = "减速度(mm/s²)";
-                EnabledHeaderText = "使能";
-                OKText = "确定";
-                
-                // Update direction options
-                if (DirectionOptions != null)
+                if (DirectionOptions.Count > 0)
                 {
                     DirectionOptions[0].Display = "正向";
+                }
+                if (DirectionOptions.Count > 1)
+                {
                     DirectionOptions[1].Display = "反向";
                 }
-                
-                // Update motion direction options
-                if (MotionDirOptions != null)
+            }
+
+            // Update motion direction options
+            if (MotionDirOptions != null)
+            {
+                if (MotionDirOptions.Count > 0)
                 {
                     MotionDirOptions[0].Display = "正方向";
+                }
+                if (MotionDirOptions.Count > 1)
+                {
                     MotionDirOptions[1].Display = "负方向";
-                }
-            }
-            else
-            {
-                WindowTitle = "Axis Parameter Configuration";
-                AxisParametersText = "Axis Parameters";
-                AddAxisText = "Add Axis";
-                RemoveAxisText = "Remove Axis";
-                AxisIDHeaderText = "Axis No.";
-                AxisNameHeaderText = "Axis Name";
-                DirectionHeaderText = "Direction";
-                MotionDirHeaderText = "Motion Direction";
-                MaxPosHeaderText = "Max Position(mm)";
-                MinPosHeaderText = "Min Position(mm)";
-                SpeedHeaderText = "Speed(mm/s)";
-                AccHeaderText = "Acceleration(mm/s²)";
-                DecHeaderText = "Deceleration(mm/s²)";
-                EnabledHeaderText = "Enabled";
-                OKText = "OK";
-                
-                // Update direction options
-                if (DirectionOptions != null)
-                {
-                    DirectionOptions[0].Display = "Forward";
-                    DirectionOptions[1].Display = "Reverse";
-                }
-                
-                // Update motion direction options
-                if (MotionDirOptions != null)
-                {
-                    MotionDirOptions[0].Display = "Forward";
-                    MotionDirOptions[1].Display = "Reverse";
                 }
             }
 
             // Notify property changes
             RaisePropertyChanged(nameof(DirectionOptions));
             RaisePropertyChanged(nameof(MotionDirOptions));
-        }
-
-        private void OnCultureChanged(object sender, CultureChangedEventArgs e)
-        {
-            UpdateUITexts();
         }
 
         #region Command Implementations
@@ -439,11 +408,11 @@ namespace MarkingMachineFeeder.Viewmodel
                 };
                 AxisParameters.Add(newAxis);
                 
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.AxisAdded, nextAxisID);
+                _uiLogger.Info("已添加轴: {0}", nextAxisID);
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.AxisAddFailed, ex.Message);
+                _uiLogger.Error("添加轴失败: {0}", ex.Message);
             }
         }
 
@@ -460,12 +429,12 @@ namespace MarkingMachineFeeder.Viewmodel
                 {
                     int axisNum = SelectedAxis.AxisID;
                     AxisParameters.Remove(SelectedAxis);
-                    _uiLogger.Info(() => Ewan.Resources.LogMessages.AxisRemoved, axisNum);
+                    _uiLogger.Info("已删除轴: {0}", axisNum);
                 }
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.AxisRemoveFailed, ex.Message);
+                _uiLogger.Error("删除轴失败: {0}", ex.Message);
             }
             finally
             {
@@ -482,11 +451,11 @@ namespace MarkingMachineFeeder.Viewmodel
                 // 通知AxisManager重新加载配置
                 if (_axisManager.ReloadAxisConfiguration())
                 {
-                    _uiLogger.Info(() => Ewan.Resources.LogMessages.AxisConfigurationSaved, "轴配置已保存并应用");
+                    _uiLogger.Info("轴配置已保存并应用");
                 }
                 else
                 {
-                    _uiLogger.Warn(() => Ewan.Resources.LogMessages.AxisConfigurationLoadFailed, "轴配置保存成功，但应用失败");
+                    _uiLogger.Warn("轴配置保存成功，但应用失败");
                 }
                 
                 CloseWindow();
@@ -521,13 +490,13 @@ namespace MarkingMachineFeeder.Viewmodel
                 File.WriteAllText(configPath, jsonContent);
                 
                 System.Diagnostics.Debug.WriteLine($"轴参数配置已保存到: {configPath}");
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.AxisConfigurationSaved, configPath);
+                _uiLogger.Info("轴配置已保存到: {0}", configPath);
                 return true;
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"保存轴参数配置失败: {ex.Message}");
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.AxisConfigurationSaveFailed, ex.Message);
+                _uiLogger.Error("保存轴配置失败: {0}", ex.Message);
                 return false;
             }
         }

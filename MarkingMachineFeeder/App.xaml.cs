@@ -14,17 +14,13 @@ namespace MarkingMachineFeeder
     /// </summary>
     public partial class App : Application
     {
-        private readonly UILogger _uiLogger = new UILogger(typeof(Ewan.Resources.LogMessages));
+        private readonly UILogger _uiLogger = new UILogger();
         private readonly AppLogger _appLogger = AppLogger.Instance;
 
         protected override void OnStartup(StartupEventArgs e)
         {
             // 初始化日志系统
             Ewan.LogManager.Logger.LogManager.Initialize("log4net.config");
-            
-            // 设置 IOLogger 的资源类型
-            Ewan.LogManager.Logger.IOLogger.Instance.SetResourceType(typeof(Ewan.Resources.LogMessages));
-            
             _appLogger.Info("Log4net配置已加载");
 
 
@@ -35,7 +31,7 @@ namespace MarkingMachineFeeder
             }
             else
             {
-                _appLogger.Error("MainController初始化失败: {0}");
+                _appLogger.Error("MainController初始化失败");
                 MessageBox.Show("系统初始化失败，程序将退出。", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                 Shutdown();
                 return;
@@ -45,7 +41,7 @@ namespace MarkingMachineFeeder
             var securityManager = SecurityManager.Instance();
             if (!securityManager.Authenticate("operator", "1"))
             {
-                _appLogger.Error("登录错误: {0}" + ": 默认操作员登录失败");
+                _appLogger.Error("登录错误: 默认操作员登录失败");
                 MessageBox.Show("默认用户登录失败，程序将退出。", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                 Shutdown();
                 return;

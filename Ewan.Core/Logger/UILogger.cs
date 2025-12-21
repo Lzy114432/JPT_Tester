@@ -8,116 +8,107 @@ using LogLevel = Ewan.LogManager.Logger.LogLevel;
 namespace Ewan.Core.Logger
 {
     /// <summary>
-    /// 国际化界面日志记录器
+    /// 界面日志记录器（已移除国际化资源依赖）
     /// </summary>
     public class UILogger : FileLogger
     {
 
-        public UILogger(Type resourceType) : base("UILogger", resourceType)
+        public UILogger(Type resourceType = null) : base("UILogger", resourceType)
         {
         }
 
         /// <summary>
-        /// 记录信息级别日志（使用资源键）
+        /// 记录信息级别日志
         /// </summary>
-        /// <param name="messageKey">消息键</param>
+        /// <param name="message">消息</param>
         /// <param name="parameters">参数</param>
-        public void Info(string messageKey, params object[] parameters)
+        public void Info(string message, params object[] parameters)
         {
-            LogToUI(LogLevel.Info, messageKey, parameters);
-            LogLocalized(LogLevel.Info, messageKey, parameters);
+            InfoRaw(message, parameters);
         }
 
         /// <summary>
-        /// 记录信息级别日志 - 使用资源表达式
+        /// 记录信息级别日志 - 使用表达式
         /// </summary>
-        /// <param name="messageExpression">资源表达式</param>
+        /// <param name="messageExpression">消息表达式</param>
         /// <param name="parameters">参数</param>
         public void Info(Expression<Func<string>> messageExpression, params object[] parameters)
         {
-            var messageKey = GetResourceKeyFromExpression(messageExpression);
-            LogToUI(LogLevel.Info, messageKey, parameters);
-            LogLocalized(LogLevel.Info, messageKey, parameters);
+            var message = GetMessageFromExpression(messageExpression);
+            InfoRaw(message, parameters);
         }
 
         /// <summary>
-        /// 记录警告级别日志（使用资源键）
+        /// 记录警告级别日志
         /// </summary>
-        /// <param name="messageKey">消息键</param>
+        /// <param name="message">消息</param>
         /// <param name="parameters">参数</param>
-        public void Warn(string messageKey, params object[] parameters)
+        public void Warn(string message, params object[] parameters)
         {
-            LogToUI(LogLevel.Warn, messageKey, parameters);
-            LogLocalized(LogLevel.Warn, messageKey, parameters);
+            WarnRaw(message, parameters);
         }
 
         /// <summary>
-        /// 记录警告级别日志 - 使用资源表达式
+        /// 记录警告级别日志 - 使用表达式
         /// </summary>
-        /// <param name="messageExpression">资源表达式</param>
+        /// <param name="messageExpression">消息表达式</param>
         /// <param name="parameters">参数</param>
         public void Warn(Expression<Func<string>> messageExpression, params object[] parameters)
         {
-            var messageKey = GetResourceKeyFromExpression(messageExpression);
-            LogToUI(LogLevel.Warn, messageKey, parameters);
-            LogLocalized(LogLevel.Warn, messageKey, parameters);
+            var message = GetMessageFromExpression(messageExpression);
+            WarnRaw(message, parameters);
         }
 
         /// <summary>
-        /// 记录错误级别日志（使用资源键）
+        /// 记录错误级别日志
         /// </summary>
-        /// <param name="messageKey">消息键</param>
+        /// <param name="message">消息</param>
         /// <param name="parameters">参数</param>
-        public void Error(string messageKey, params object[] parameters)
+        public void Error(string message, params object[] parameters)
         {
-            LogToUI(LogLevel.Error, messageKey, parameters);
-            LogLocalized(LogLevel.Error, messageKey, parameters);
+            ErrorRaw(message, parameters);
         }
 
         /// <summary>
-        /// 记录错误级别日志 - 使用资源表达式
+        /// 记录错误级别日志 - 使用表达式
         /// </summary>
-        /// <param name="messageExpression">资源表达式</param>
+        /// <param name="messageExpression">消息表达式</param>
         /// <param name="parameters">参数</param>
         public void Error(Expression<Func<string>> messageExpression, params object[] parameters)
         {
-            var messageKey = GetResourceKeyFromExpression(messageExpression);
-            LogToUI(LogLevel.Error, messageKey, parameters);
-            LogLocalized(LogLevel.Error, messageKey, parameters);
+            var message = GetMessageFromExpression(messageExpression);
+            ErrorRaw(message, parameters);
         }
 
         /// <summary>
         /// 记录调试级别日志
         /// </summary>
-        /// <param name="messageKey">消息键</param>
+        /// <param name="message">消息</param>
         /// <param name="parameters">参数</param>
-        public new void Debug(string messageKey, params object[] parameters)
+        public new void Debug(string message, params object[] parameters)
         {
-            LogToUI(LogLevel.Debug, messageKey, parameters);
-            LogLocalized(LogLevel.Debug, messageKey, parameters);
+            DebugRaw(message, parameters);
         }
 
         /// <summary>
-        /// 记录调试级别日志 - 使用资源表达式
+        /// 记录调试级别日志 - 使用表达式
         /// </summary>
-        /// <param name="messageExpression">资源表达式</param>
+        /// <param name="messageExpression">消息表达式</param>
         /// <param name="parameters">参数</param>
         public void Debug(Expression<Func<string>> messageExpression, params object[] parameters)
         {
-            var messageKey = GetResourceKeyFromExpression(messageExpression);
-            LogToUI(LogLevel.Debug, messageKey, parameters);
-            LogLocalized(LogLevel.Debug, messageKey, parameters);
+            var message = GetMessageFromExpression(messageExpression);
+            DebugRaw(message, parameters);
         }
 
         /// <summary>
-        /// 记录致命错误级别日志（使用资源键）
+        /// 记录致命错误级别日志
         /// </summary>
-        /// <param name="messageKey">消息键</param>
+        /// <param name="message">消息</param>
         /// <param name="parameters">参数</param>
-        public new void Fatal(string messageKey, params object[] parameters)
+        public new void Fatal(string message, params object[] parameters)
         {
-            LogToUI(LogLevel.Fatal, messageKey, parameters);
-            LogLocalized(LogLevel.Fatal, messageKey, parameters);
+            FatalRaw(message, parameters);
         }
 
         /// <summary>
@@ -183,26 +174,20 @@ namespace Ewan.Core.Logger
 
 
 
-        /// <summary>
-        /// 从资源表达式获取消息键
-        /// </summary>
-        /// <param name="messageExpression">资源表达式</param>
-        /// <returns>消息键</returns>
-        private string GetResourceKeyFromExpression(Expression<Func<string>> messageExpression)
+        private static string GetMessageFromExpression(Expression<Func<string>> messageExpression)
         {
+            if (messageExpression == null)
+            {
+                return string.Empty;
+            }
+
             try
             {
-                // 解析表达式树获取属性名
-                if (messageExpression.Body is MemberExpression memberExpression)
-                {
-                    return memberExpression.Member.Name;
-                }
-                
-                return "UnknownResource";
+                return messageExpression.Compile().Invoke() ?? string.Empty;
             }
             catch
             {
-                return "UnknownResource";
+                return string.Empty;
             }
         }
 

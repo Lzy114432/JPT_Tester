@@ -86,8 +86,8 @@ namespace MarkingMachineFeeder
         {
             // 创建并显示自定义确认对话框
             var confirmDialog = new MarkingMachineFeeder.Windows.ConfirmationDialog(
-                Ewan.Resources.UIStrings.ExitConfirmTitle,
-                Ewan.Resources.UIStrings.ExitConfirmMessage,
+                "退出确认",
+                "确定要退出应用程序吗？",
                 false);
 
             // 如果用户确认退出

@@ -373,13 +373,9 @@ namespace MarkingMachineFeeder.Viewmodel
                 return;
             }
 
-            _uiLogger = new UILogger(typeof(ParameterSettingsViewModel));
+            _uiLogger = new UILogger();
             _parametersManager = SystemParametersManager.Instance;
             _cultureManager = CultureManager.Instance();
-
-            Ewan.Resources.UIStrings.Culture = _cultureManager.CurrentCulture;
-
-            _cultureManager.CultureChanged += OnCultureChanged;
 
             SaveCommand = new DelegateCommand(ExecuteSave);
             ApplyCommand = new DelegateCommand(ExecuteApply);
@@ -422,8 +418,8 @@ namespace MarkingMachineFeeder.Viewmodel
 
         private void UpdateUITexts()
         {
-            EnableLoadingLabel = Ewan.Resources.UIStrings.EnableLoadingOptionLabel;
-            EnableUnloadingLabel = Ewan.Resources.UIStrings.EnableUnloadingOptionLabel;
+            EnableLoadingLabel = "启用装料模块";
+            EnableUnloadingLabel = "启用下料模块";
             LoadingBinSelectionLabel = "装料料仓选择";
             UnloadingBinSelectionLabel = "下料料仓选择";
 
@@ -463,23 +459,17 @@ namespace MarkingMachineFeeder.Viewmodel
             switch (selection)
             {
                 case BinSelection.Bin2:
-                    return Ewan.Resources.UIStrings.BinOption2;
+                    return "料仓2";
                 case BinSelection.Bin3:
-                    return Ewan.Resources.UIStrings.BinOption3;
+                    return "料仓3";
                 default:
-                    return Ewan.Resources.UIStrings.BinOption1;
+                    return "料仓1";
             }
-        }
-
-        private void OnCultureChanged(object sender, CultureChangedEventArgs e)
-        {
-            Ewan.Resources.UIStrings.Culture = e.NewCulture;
-            UpdateUITexts();
         }
 
         private void Cleanup()
         {
-            _cultureManager.CultureChanged -= OnCultureChanged;
+            // 国际化已移除，无需订阅/取消订阅语言变更事件
         }
 
         private void ExecuteSave()

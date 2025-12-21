@@ -1,5 +1,4 @@
 using Ewan.Core.Axis;
-using Ewan.Core.Culture;
 using Ewan.Core.Logger;
 using Ewan.Core.Security;
 using Ewan.Model.Config;
@@ -15,10 +14,9 @@ namespace MarkingMachineFeeder.Viewmodel
 {
     public class AxisControlViewModel : BindableBase
     {
-        private readonly CultureManager _cultureManager = CultureManager.Instance();
         private readonly SecurityManager _securityManager = SecurityManager.Instance();
         private readonly AxisManager _axisManager = AxisManager.Instance();
-        private readonly UILogger _uiLogger = new UILogger(typeof(Ewan.Resources.LogMessages));
+        private readonly UILogger _uiLogger = new UILogger();
         private DispatcherTimer _statusTimer;
         
         #region Properties
@@ -145,7 +143,6 @@ namespace MarkingMachineFeeder.Viewmodel
             else
             {
                 UpdateUITexts();
-                _cultureManager.CultureChanged += OnCultureChanged;
                 
                 // 监听轴配置更新事件
                 _axisManager.ConfigurationUpdated += OnAxisConfigurationUpdated;
@@ -238,11 +235,11 @@ namespace MarkingMachineFeeder.Viewmodel
                 // 自动选择第一个启用的轴
                 SelectedAxis = AxisConfigs.FirstOrDefault(x => x.IsUsing);
                 
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.AxisConfigurationLoaded, $"{AxisConfigs.Count}个轴");
+                _uiLogger.Info("轴配置已加载：{0}", $"{AxisConfigs.Count}个轴");
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.AxisConfigurationLoadFailed, ex.Message);
+                _uiLogger.Error("加载轴配置失败: {0}", ex.Message);
             }
         }
 
@@ -277,26 +274,10 @@ namespace MarkingMachineFeeder.Viewmodel
 
         private void UpdateUITexts()
         {
-            // 根据当前语言更新UI文本
-            if (_cultureManager.CurrentCulture.Name == "zh-CN")
-            {
-                WindowTitle = "轴手动控制";
-                AxisStatusText = "轴状态信息";
-                AxisIDHeaderText = "轴号";
-                EnabledHeaderText = "使能";
-            }
-            else
-            {
-                WindowTitle = "Axis Manual Control";
-                AxisStatusText = "Axis Status";
-                AxisIDHeaderText = "Axis No.";
-                EnabledHeaderText = "Enabled";
-            }
-        }
-
-        private void OnCultureChanged(object sender, CultureChangedEventArgs e)
-        {
-            UpdateUITexts();
+            WindowTitle = "轴手动控制";
+            AxisStatusText = "轴状态信息";
+            AxisIDHeaderText = "轴号";
+            EnabledHeaderText = "使能";
         }
 
         private void RefreshAxisCommands()
@@ -333,11 +314,11 @@ namespace MarkingMachineFeeder.Viewmodel
                         _axisManager.EnableAxis(axisConfig);
                     }
                 }
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingComplete, "所有轴使能完成");
+                _uiLogger.Info("所有轴使能完成");
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.OperationFailed, "所有轴使能失败: " + ex.Message);
+                _uiLogger.Error("所有轴使能失败: {0}", ex.Message);
             }
         }
 
@@ -353,11 +334,11 @@ namespace MarkingMachineFeeder.Viewmodel
                         _axisManager.DisableAxis(axisConfig);
                     }
                 }
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingComplete, "所有轴禁用完成");
+                _uiLogger.Info("所有轴禁用完成");
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.OperationFailed, "所有轴禁用失败: " + ex.Message);
+                _uiLogger.Error("所有轴禁用失败: {0}", ex.Message);
             }
         }
 
@@ -373,11 +354,11 @@ namespace MarkingMachineFeeder.Viewmodel
                         _axisManager.DecStop(axisConfig);
                     }
                 }
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingComplete, "所有轴停止完成");
+                _uiLogger.Info("所有轴停止完成");
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.OperationFailed, "所有轴停止失败: " + ex.Message);
+                _uiLogger.Error("所有轴停止失败: {0}", ex.Message);
             }
         }
 
@@ -393,11 +374,11 @@ namespace MarkingMachineFeeder.Viewmodel
                         _axisManager.EmgStop(axisConfig);
                     }
                 }
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingComplete, "紧急停止已激活");
+                _uiLogger.Info("紧急停止已激活");
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.OperationFailed, "紧急停止失败: " + ex.Message);
+                _uiLogger.Error("紧急停止失败: {0}", ex.Message);
             }
         }
 
@@ -412,12 +393,12 @@ namespace MarkingMachineFeeder.Viewmodel
                 if (axisConfig != null)
                 {
                     _axisManager.EnableAxis(axisConfig);
-                    _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingComplete, $"轴 {SelectedAxis.AxisID} 使能完成");
+                    _uiLogger.Info($"轴 {SelectedAxis.AxisID} 使能完成");
                 }
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.OperationFailed, $"轴 {SelectedAxis.AxisID} 使能失败: {ex.Message}");
+                _uiLogger.Error($"轴 {SelectedAxis.AxisID} 使能失败: {ex.Message}");
             }
         }
 
@@ -431,12 +412,12 @@ namespace MarkingMachineFeeder.Viewmodel
                 if (axisConfig != null)
                 {
                     _axisManager.DisableAxis(axisConfig);
-                    _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingComplete, $"轴 {SelectedAxis.AxisID} 禁用完成");
+                    _uiLogger.Info($"轴 {SelectedAxis.AxisID} 禁用完成");
                 }
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.OperationFailed, $"轴 {SelectedAxis.AxisID} 禁用失败: {ex.Message}");
+                _uiLogger.Error($"轴 {SelectedAxis.AxisID} 禁用失败: {ex.Message}");
             }
         }
 
@@ -450,12 +431,12 @@ namespace MarkingMachineFeeder.Viewmodel
                 if (axisConfig != null)
                 {
                     _axisManager.Jog(axisConfig, JogSpeed);
-                    _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingComplete, $"轴 {SelectedAxis.AxisID} 正向点动开始，速度: {JogSpeed}");
+                    _uiLogger.Info($"轴 {SelectedAxis.AxisID} 正向点动开始，速度: {JogSpeed}");
                 }
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.OperationFailed, $"轴 {SelectedAxis.AxisID} 点动失败: {ex.Message}");
+                _uiLogger.Error($"轴 {SelectedAxis.AxisID} 点动失败: {ex.Message}");
             }
         }
 
@@ -469,12 +450,12 @@ namespace MarkingMachineFeeder.Viewmodel
                 if (axisConfig != null)
                 {
                     _axisManager.Jog(axisConfig, -JogSpeed);
-                    _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingComplete, $"轴 {SelectedAxis.AxisID} 负向点动开始，速度: {JogSpeed}");
+                    _uiLogger.Info($"轴 {SelectedAxis.AxisID} 负向点动开始，速度: {JogSpeed}");
                 }
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.OperationFailed, $"轴 {SelectedAxis.AxisID} 点动失败: {ex.Message}");
+                _uiLogger.Error($"轴 {SelectedAxis.AxisID} 点动失败: {ex.Message}");
             }
         }
 
@@ -488,12 +469,12 @@ namespace MarkingMachineFeeder.Viewmodel
                 if (axisConfig != null)
                 {
                     _axisManager.JogStop(axisConfig);
-                    _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingComplete, $"轴 {SelectedAxis.AxisID} 点动停止");
+                    _uiLogger.Info($"轴 {SelectedAxis.AxisID} 点动停止");
                 }
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.OperationFailed, $"轴 {SelectedAxis.AxisID} 点动停止失败: {ex.Message}");
+                _uiLogger.Error($"轴 {SelectedAxis.AxisID} 点动停止失败: {ex.Message}");
             }
         }
 
@@ -509,18 +490,17 @@ namespace MarkingMachineFeeder.Viewmodel
                     // 检查位置限制
                     if (TargetPosition < SelectedAxis.MinPos || TargetPosition > SelectedAxis.MaxPos)
                     {
-                        _uiLogger.Info(() => Ewan.Resources.LogMessages.OperationFailed, 
-                            $"轴 {SelectedAxis.AxisID} 目标位置 {TargetPosition} 超出范围 [{SelectedAxis.MinPos}, {SelectedAxis.MaxPos}]");
+                        _uiLogger.Info($"轴 {SelectedAxis.AxisID} 目标位置 {TargetPosition} 超出范围 [{SelectedAxis.MinPos}, {SelectedAxis.MaxPos}]");
                         return;
                     }
                     
                     _axisManager.AbsMove(axisConfig, TargetPosition);
-                    _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingComplete, $"轴 {SelectedAxis.AxisID} 开始移动到位置 {TargetPosition}");
+                    _uiLogger.Info($"轴 {SelectedAxis.AxisID} 开始移动到位置 {TargetPosition}");
                 }
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.OperationFailed, $"轴 {SelectedAxis.AxisID} 移动失败: {ex.Message}");
+                _uiLogger.Error($"轴 {SelectedAxis.AxisID} 移动失败: {ex.Message}");
             }
         }
 
@@ -552,7 +532,7 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             LoadAxisConfigs();
             RefreshAxisStatus();
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingComplete, "轴状态已刷新");
+            _uiLogger.Info("轴状态已刷新");
         }
 
         private void ExecuteClose()
@@ -582,14 +562,13 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             // 轴配置更新后重新加载轴配置
             LoadAxisConfigs();
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.AxisConfigurationLoaded, "轴控制界面已更新配置");
+            _uiLogger.Info("轴控制界面已更新配置");
         }
 
         // 清理资源
         public void Dispose()
         {
             _statusTimer?.Stop();
-            _cultureManager.CultureChanged -= OnCultureChanged;
             _axisManager.ConfigurationUpdated -= OnAxisConfigurationUpdated;
         }
     }

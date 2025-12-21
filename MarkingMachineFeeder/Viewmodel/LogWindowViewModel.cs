@@ -1,6 +1,5 @@
 using Ewan.Core.Logger;
 using Ewan.Core.Msg;
-using Ewan.Core.Culture;
 using Microsoft.Win32;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -64,8 +63,7 @@ namespace MarkingMachineFeeder.Viewmodel
 
     public class LogWindowViewModel : BindableBase, IDisposable
     {
-        private readonly UILogger _uiLogger = new UILogger(typeof(Ewan.Resources.LogMessages));
-        private readonly CultureManager _cultureManager;
+        private readonly UILogger _uiLogger = new UILogger();
         private MsgListener _logListener;
         private ObservableCollection<LogEntry> _logEntries;
         private bool _autoScroll = true;
@@ -174,9 +172,6 @@ namespace MarkingMachineFeeder.Viewmodel
 
         public LogWindowViewModel()
         {
-            // 初始化CultureManager
-            _cultureManager = CultureManager.Instance();
-            
             LogEntries = new ObservableCollection<LogEntry>();
             
             ClearCommand = new DelegateCommand(ExecuteClear);
@@ -186,54 +181,23 @@ namespace MarkingMachineFeeder.Viewmodel
 
             // 初始化UI文本 - 先初始化文本再订阅事件
             UpdateUITexts();
-            
-            // 订阅文化变更事件
-            _cultureManager.CultureChanged += OnCultureChanged;
 
             InitializeLogListener();
             AddSampleLogs();
         }
 
-        private void OnCultureChanged(object sender, CultureChangedEventArgs e)
-        {
-            // 同步资源文件的Culture设置
-            Ewan.Resources.LogStrings.Culture = e.NewCulture;
-            UpdateUITexts();
-        }
-
         private void UpdateUITexts()
         {
-            try
-            {
-                // 确保资源文件使用正确的语言
-                Ewan.Resources.LogStrings.Culture = _cultureManager?.CurrentCulture;
-                
-                ClearButtonText = Ewan.Resources.LogStrings.ClearLogs ?? "Clear Logs";
-                ExportButtonText = Ewan.Resources.LogStrings.ExportLogs ?? "Export Logs";
-                AutoScrollText = Ewan.Resources.LogStrings.AutoScroll ?? "Auto Scroll";
-                MaxLinesText = Ewan.Resources.LogStrings.MaxLines ?? "Max Lines:";
-                TimestampHeaderText = Ewan.Resources.LogStrings.Timestamp ?? "Time";
-                LevelHeaderText = Ewan.Resources.LogStrings.Level ?? "Level";
-                MessageHeaderText = Ewan.Resources.LogStrings.Message ?? "Message";
-                CopySelectedText = Ewan.Resources.LogStrings.CopySelected ?? "Copy Selected";
-                CopyAllText = Ewan.Resources.LogStrings.CopyAllLogs ?? "Copy All Logs";
-                ClearMenuText = Ewan.Resources.LogStrings.ClearMenuText ?? "Clear Logs";
-            }
-            catch (Exception ex)
-            {
-                // 如果资源加载失败，使用英文默认值
-                System.Diagnostics.Debug.WriteLine($"LogWindow UpdateUITexts error: {ex.Message}");
-                ClearButtonText = "Clear Logs";
-                ExportButtonText = "Export Logs";
-                AutoScrollText = "Auto Scroll";
-                MaxLinesText = "Max Lines:";
-                TimestampHeaderText = "Time";
-                LevelHeaderText = "Level";
-                MessageHeaderText = "Message";
-                CopySelectedText = "Copy Selected";
-                CopyAllText = "Copy All Logs";
-                ClearMenuText = "Clear Logs";
-            }
+            ClearButtonText = "清除日志";
+            ExportButtonText = "导出日志";
+            AutoScrollText = "自动滚动";
+            MaxLinesText = "最大行数:";
+            TimestampHeaderText = "时间";
+            LevelHeaderText = "级别";
+            MessageHeaderText = "消息";
+            CopySelectedText = "复制选中行";
+            CopyAllText = "复制所有日志";
+            ClearMenuText = "清除日志";
         }
 
         private void InitializeLogListener()
@@ -247,9 +211,9 @@ namespace MarkingMachineFeeder.Viewmodel
             try
             {
                 var logMsg = msg.GetData<UILogMsg>();
-                var message = string.IsNullOrEmpty(logMsg.RawMessage)
-                    ? _uiLogger.GetLocalizedMessage(logMsg.MessageKey, logMsg.Parameters)
-                    : logMsg.RawMessage;
+                var message = !string.IsNullOrEmpty(logMsg.RawMessage)
+                    ? logMsg.RawMessage
+                    : FormatMessage(logMsg.MessageKey, logMsg.Parameters);
 
                 var logEntry = new LogEntry
                 {
@@ -289,18 +253,40 @@ namespace MarkingMachineFeeder.Viewmodel
             }
         }
 
+        private static string FormatMessage(string template, object[] parameters)
+        {
+            if (string.IsNullOrEmpty(template))
+            {
+                return string.Empty;
+            }
+
+            if (parameters == null || parameters.Length == 0)
+            {
+                return template;
+            }
+
+            try
+            {
+                return string.Format(template, parameters);
+            }
+            catch (FormatException)
+            {
+                return template + " " + string.Join(", ", parameters);
+            }
+        }
+
         private void AddSampleLogs()
         {
             // 使用UILogger记录示例日志，实现UI显示和文件保存双重输出
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.SystemInitialized);
+            _uiLogger.Info("系统初始化成功");
             System.Threading.Thread.Sleep(100); // 确保时间戳不同
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.SystemStatusNormal);
+            _uiLogger.Info("系统状态: 正常");
             System.Threading.Thread.Sleep(100);
-            _uiLogger.Warn(() => Ewan.Resources.LogMessages.Log4netConfigNotFound);
+            _uiLogger.Warn("Log4net配置文件未找到");
             System.Threading.Thread.Sleep(100);
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.DatabaseConnected);
+            _uiLogger.Info("数据库连接成功");
             System.Threading.Thread.Sleep(100);
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.ViewModelLocatorConfigured);
+            _uiLogger.Info("ViewModelLocator已配置");
         }
 
         private void ExecuteClear()
@@ -314,16 +300,15 @@ namespace MarkingMachineFeeder.Viewmodel
             {
                 var saveFileDialog = new SaveFileDialog
                 {
-                    Filter = Ewan.Resources.LogStrings.LogExportFilter,
+                    Filter = "文本文件 (*.txt)|*.txt|CSV文件 (*.csv)|*.csv|所有文件 (*.*)|*.*",
                     DefaultExt = "txt",
-                    FileName = string.Format(Ewan.Resources.LogStrings.LogExportFileName, DateTime.Now.ToString("yyyyMMdd_HHmmss"))
+                    FileName = string.Format("日志导出_{0}", DateTime.Now.ToString("yyyyMMdd_HHmmss"))
                 };
 
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     var sb = new StringBuilder();
-                    sb.AppendLine(string.Format(Ewan.Resources.LogStrings.LogExportHeader, 
-                        TimestampHeaderText, LevelHeaderText, MessageHeaderText));
+                    sb.AppendLine(string.Format("{0}\t{1}\t{2}", TimestampHeaderText, LevelHeaderText, MessageHeaderText));
 
                     foreach (var entry in LogEntries)
                     {
@@ -332,8 +317,8 @@ namespace MarkingMachineFeeder.Viewmodel
 
                     File.WriteAllText(saveFileDialog.FileName, sb.ToString(), Encoding.UTF8);
                     MessageBox.Show(
-                        string.Format(Ewan.Resources.LogStrings.ExportSuccessMessage, saveFileDialog.FileName), 
-                        Ewan.Resources.LogStrings.ExportSuccess, 
+                        string.Format("日志已导出到: {0}", saveFileDialog.FileName), 
+                        "导出成功", 
                         MessageBoxButton.OK, 
                         MessageBoxImage.Information);
                 }
@@ -341,8 +326,8 @@ namespace MarkingMachineFeeder.Viewmodel
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    string.Format(Ewan.Resources.LogStrings.ExportFailedMessage, ex.Message), 
-                    Ewan.Resources.LogStrings.Error, 
+                    string.Format("导出日志失败: {0}", ex.Message), 
+                    "错误", 
                     MessageBoxButton.OK, 
                     MessageBoxImage.Error);
             }
@@ -365,8 +350,8 @@ namespace MarkingMachineFeeder.Viewmodel
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    string.Format(Ewan.Resources.LogStrings.CopyFailedMessage, ex.Message), 
-                    Ewan.Resources.LogStrings.Error, 
+                    string.Format("复制失败: {0}", ex.Message), 
+                    "错误", 
                     MessageBoxButton.OK, 
                     MessageBoxImage.Warning);
             }
@@ -377,8 +362,7 @@ namespace MarkingMachineFeeder.Viewmodel
             try
             {
                 var sb = new StringBuilder();
-                sb.AppendLine(string.Format(Ewan.Resources.LogStrings.LogExportHeader, 
-                    TimestampHeaderText, LevelHeaderText, MessageHeaderText));
+                sb.AppendLine(string.Format("{0}\t{1}\t{2}", TimestampHeaderText, LevelHeaderText, MessageHeaderText));
 
                 foreach (var entry in LogEntries)
                 {
@@ -387,16 +371,16 @@ namespace MarkingMachineFeeder.Viewmodel
 
                 Clipboard.SetText(sb.ToString());
                 MessageBox.Show(
-                    string.Format(Ewan.Resources.LogStrings.CopySuccessMessage, LogEntries.Count), 
-                    Ewan.Resources.LogStrings.CopySuccess, 
+                    string.Format("已复制 {0} 条日志到剪贴板", LogEntries.Count), 
+                    "复制成功", 
                     MessageBoxButton.OK, 
                     MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    string.Format(Ewan.Resources.LogStrings.CopyFailedMessage, ex.Message), 
-                    Ewan.Resources.LogStrings.Error, 
+                    string.Format("复制失败: {0}", ex.Message), 
+                    "错误", 
                     MessageBoxButton.OK, 
                     MessageBoxImage.Warning);
             }
@@ -411,10 +395,6 @@ namespace MarkingMachineFeeder.Viewmodel
                     MsgManager.Instance().UnRegisterListener(_logListener);
                 }
                 
-                if (_cultureManager != null)
-                {
-                    _cultureManager.CultureChanged -= OnCultureChanged;
-                }
             }
             catch (Exception ex)
             {

@@ -6,7 +6,7 @@ namespace Ewan.Core.Module
 {
     public abstract class BaseModule<M> : IModule
     {
-        protected readonly UILogger _uiLogger = new UILogger(typeof(Ewan.Resources.LogMessages));
+        protected readonly UILogger _uiLogger = new UILogger();
         protected readonly AppLogger _appLogger = AppLogger.Instance;
 
         /// <summary>

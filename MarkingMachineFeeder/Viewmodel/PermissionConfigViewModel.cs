@@ -1,5 +1,4 @@
 using Ewan.Core.Logger;
-using Ewan.Core.Culture;
 using Ewan.Core.Security;
 using Ewan.Model.Permission;
 using Ewan.Model.Security;
@@ -64,10 +63,37 @@ namespace MarkingMachineFeeder.Viewmodel
     /// </summary>
     public class PermissionConfigViewModel : BindableBase
     {
-        private readonly UILogger _uiLogger = new UILogger(typeof(Ewan.Resources.LogMessages));
-        private readonly CultureManager _cultureManager;
+        private readonly UILogger _uiLogger = new UILogger();
         private readonly SecurityManager _securityManager;
         private PermissionConfiguration _configuration;
+
+        private static readonly IReadOnlyDictionary<string, string> CategoryNameMap =
+            new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["SystemSettings"] = "系统设置",
+                ["SystemControl"] = "系统控制",
+                ["HardwareControl"] = "硬件控制"
+            };
+
+        private static readonly IReadOnlyDictionary<string, string> PermissionNameMap =
+            new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["LanguageSwitch"] = "语言切换",
+                ["PermissionConfigView"] = "权限配置查看",
+                ["PermissionConfigControl"] = "权限配置控制",
+                ["SystemControl"] = "退出应用程序",
+                ["HardwareControl"] = "硬件控制"
+            };
+
+        private static readonly IReadOnlyDictionary<string, string> PermissionDescriptionMap =
+            new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["LanguageSwitchDesc"] = "切换系统语言",
+                ["PermissionConfigViewDesc"] = "查看权限配置",
+                ["PermissionConfigControlDesc"] = "修改权限配置",
+                ["SystemControlDesc"] = "允许用户退出应用程序",
+                ["HardwareControlDesc"] = "允许用户访问硬件控制功能（包括IO控制）"
+            };
         
         private ObservableCollection<RolePermissionConfig> _roles;
         private ObservableCollection<PermissionCategoryViewModel> _permissionCategories;
@@ -183,13 +209,6 @@ namespace MarkingMachineFeeder.Viewmodel
             _securityManager.UserAuthenticated += OnUserAuthenticated;
             _securityManager.UserLoggedOut += OnUserLoggedOut;
             
-            // 初始化CultureManager
-            _cultureManager = CultureManager.Instance();
-            _cultureManager.CultureChanged += OnCultureChanged;
-            
-            // 确保UIStrings的Culture同步
-            Ewan.Resources.UIStrings.Culture = _cultureManager.CurrentCulture;
-            
             SaveCommand = new DelegateCommand(ExecuteSave, CanExecutePermissionControl);
             CancelCommand = new DelegateCommand(ExecuteCancel);
             CloseCommand = new DelegateCommand(ExecuteCancel); // 关闭按钮执行取消操作
@@ -221,50 +240,18 @@ namespace MarkingMachineFeeder.Viewmodel
             RefreshCommandStates();
         }
 
-        private void OnCultureChanged(object sender, CultureChangedEventArgs e)
-        {
-            // 同步UIStrings和PermissionConfigStrings的Culture设置
-            Ewan.Resources.UIStrings.Culture = e.NewCulture;
-            Ewan.Resources.PermissionConfigStrings.Culture = e.NewCulture;
-            UpdateUITexts();
-            
-            // 更新角色本地化名称
-            foreach (var role in Roles)
-            {
-                role.LocalizedRoleDisplayName = GetLocalizedRoleName(role.RoleName);
-            }
-            
-            // 刷新权限分类显示
-            if (PermissionCategories != null)
-            {
-                LoadPermissionCategories();
-                
-                // 重新加载当前选中项的权限
-                if (SelectedRole != null)
-                {
-                    LoadRolePermissions(SelectedRole);
-                }
-            }
-            
-            // 刷新命令权限状态
-            RefreshCommandStates();
-        }
-
         private void UpdateUITexts()
         {
-            // 确保资源文件使用正确的语言
-            Ewan.Resources.PermissionConfigStrings.Culture = _cultureManager.CurrentCulture;
-            
-            WindowTitle = Ewan.Resources.PermissionConfigStrings.WindowTitle;
-            WindowDescription = Ewan.Resources.PermissionConfigStrings.WindowDescription;
-            RoleListTitle = Ewan.Resources.PermissionConfigStrings.RoleListTitle;
-            SaveButtonText = Ewan.Resources.PermissionConfigStrings.SaveButton;
-            CancelButtonText = Ewan.Resources.PermissionConfigStrings.CancelButton;
+            WindowTitle = "权限配置";
+            WindowDescription = "配置不同角色和用户的系统权限";
+            RoleListTitle = "角色列表";
+            SaveButtonText = "保存";
+            CancelButtonText = "取消";
             
             // Update CurrentConfigDisplayText if it's set
             if (!string.IsNullOrEmpty(CurrentConfigName))
             {
-                CurrentConfigDisplayText = string.Format(Ewan.Resources.PermissionConfigStrings.CurrentConfig, CurrentConfigName);
+                CurrentConfigDisplayText = string.Format("当前配置：{0}", CurrentConfigName);
             }
         }
 
@@ -438,8 +425,8 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             CurrentConfigName = role.LocalizedRoleDisplayName ?? GetLocalizedRoleName(role.RoleName);
             
-            CurrentConfigDescription = Ewan.Resources.PermissionConfigStrings.RolePermissionConfiguration;
-            CurrentConfigDisplayText = string.Format(Ewan.Resources.PermissionConfigStrings.CurrentConfig, CurrentConfigName);
+            CurrentConfigDescription = "角色权限配置";
+            CurrentConfigDisplayText = string.Format("当前配置：{0}", CurrentConfigName);
             
             // 更新权限勾选状态
             foreach (var category in PermissionCategories)
@@ -521,13 +508,13 @@ namespace MarkingMachineFeeder.Viewmodel
                 DialogResult = true;
                 CloseRequested?.Invoke(this, EventArgs.Empty);
                 
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.PermissionsSaved);
+                _uiLogger.Info("权限保存成功");
             }
             catch (Exception ex)
             {
-                MessageBox.Show(string.Format(Ewan.Resources.PermissionConfigStrings.SaveFailed, ex.Message), 
-                    Ewan.Resources.PermissionConfigStrings.Error, MessageBoxButton.OK, MessageBoxImage.Error);
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.PermissionsSaveError, ex.Message);
+                MessageBox.Show(string.Format("保存失败：{0}", ex.Message),
+                    "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                _uiLogger.Error("保存权限失败: {0}", ex.Message);
             }
         }
 
@@ -589,35 +576,17 @@ namespace MarkingMachineFeeder.Viewmodel
 
         private string GetLocalizedCategoryName(string categoryKey)
         {
-            // 根据资源键获取本地化的分类名称
-            var property = typeof(Ewan.Resources.PermissionConfigStrings).GetProperty(categoryKey);
-            if (property != null)
-            {
-                return property.GetValue(null)?.ToString() ?? categoryKey;
-            }
-            return categoryKey;
+            return CategoryNameMap.TryGetValue(categoryKey, out var value) ? value : categoryKey;
         }
 
         private string GetLocalizedPermissionName(string nameKey)
         {
-            // 根据资源键获取本地化的权限名称
-            var property = typeof(Ewan.Resources.PermissionConfigStrings).GetProperty(nameKey);
-            if (property != null)
-            {
-                return property.GetValue(null)?.ToString() ?? nameKey;
-            }
-            return nameKey;
+            return PermissionNameMap.TryGetValue(nameKey, out var value) ? value : nameKey;
         }
 
         private string GetLocalizedPermissionDescription(string descKey)
         {
-            // 根据资源键获取本地化的权限描述
-            var property = typeof(Ewan.Resources.PermissionConfigStrings).GetProperty(descKey);
-            if (property != null)
-            {
-                return property.GetValue(null)?.ToString() ?? descKey;
-            }
-            return descKey;
+            return PermissionDescriptionMap.TryGetValue(descKey, out var value) ? value : descKey;
         }
 
         private string GetLocalizedRoleName(string roleName)
@@ -626,11 +595,11 @@ namespace MarkingMachineFeeder.Viewmodel
             switch (roleName)
             {
                 case "Administrator":
-                    return Ewan.Resources.PermissionConfigStrings.AdminRole;
+                    return "管理员";
                 case "Engineer":
-                    return Ewan.Resources.PermissionConfigStrings.EngineerRole;
+                    return "工程师";
                 case "Operator":
-                    return Ewan.Resources.PermissionConfigStrings.OperatorRole;
+                    return "操作员";
                 default:
                     return roleName;
             }

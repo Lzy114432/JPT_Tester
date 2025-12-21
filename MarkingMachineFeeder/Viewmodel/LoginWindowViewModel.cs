@@ -14,9 +14,8 @@ namespace MarkingMachineFeeder.Viewmodel
 {
     public class LoginWindowViewModel : BindableBase
     {
-        private readonly UILogger _uiLogger = new UILogger(typeof(Ewan.Resources.LogMessages));
+        private readonly UILogger _uiLogger = new UILogger();
         private readonly SecurityManager _securityManager;
-        private readonly CultureManager _cultureManager;
 
         private string _title = "系统登录";
         private string _applicationName = "MarkingMachineFeeder";
@@ -114,24 +113,11 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             // 运行时逻辑
             _securityManager = SecurityManager.Instance();
-            _cultureManager = CultureManager.Instance();
-            _cultureManager.CultureChanged += OnCultureChanged;
-            
-            // 初始化UIStrings的Culture
-            Ewan.Resources.UIStrings.Culture = _cultureManager.CurrentCulture;
             
             LoginCommand = new DelegateCommand<PasswordBox>(ExecuteLogin, CanExecuteLogin);
             
             // 初始化可用用户列表
             InitializeAvailableUsers();
-            
-            UpdateUITexts();
-        }
-
-        private void OnCultureChanged(object sender, CultureChangedEventArgs e)
-        {
-            // 同步UIStrings的Culture设置
-            Ewan.Resources.UIStrings.Culture = e.NewCulture;
             
             UpdateUITexts();
         }
@@ -142,13 +128,13 @@ namespace MarkingMachineFeeder.Viewmodel
 
             if (string.IsNullOrWhiteSpace(Username))
             {
-                SetError(Ewan.Resources.UIStrings.PleaseEnterUsername);
+                SetError("请输入用户名");
                 return;
             }
 
             if (passwordBox == null || string.IsNullOrWhiteSpace(passwordBox.Password))
             {
-                SetError(Ewan.Resources.UIStrings.PleaseEnterPassword);
+                SetError("请输入密码");
                 return;
             }
 
@@ -160,13 +146,13 @@ namespace MarkingMachineFeeder.Viewmodel
                 }
                 else
                 {
-                    SetError(Ewan.Resources.UIStrings.InvalidUsernamePassword);
+                    SetError("用户名或密码错误");
                 }
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.LoginError, ex.Message);
-                SetError(string.Format(Ewan.Resources.UIStrings.LoginErrorOccurred, ex.Message));
+                _uiLogger.Error("登录错误: {0}", ex.Message);
+                SetError(string.Format("登录时发生错误: {0}", ex.Message));
             }
         }
 
@@ -206,14 +192,14 @@ namespace MarkingMachineFeeder.Viewmodel
 
         private void UpdateUITexts()
         {
-            // 从资源文件加载UI文本
-            Title = Ewan.Resources.UIStrings.LoginTitle;
-            ApplicationName = Ewan.Resources.UIStrings.ApplicationName;
-            LoginHeaderText = Ewan.Resources.UIStrings.LoginHeaderText;
-            UsernameLabel = Ewan.Resources.UIStrings.UsernameLabel;
-            PasswordLabel = Ewan.Resources.UIStrings.PasswordLabel;
-            LoginButtonText = Ewan.Resources.UIStrings.LoginButtonText;
-            UserInfoText = Ewan.Resources.UIStrings.UserInfoText;
+            // 硬编码中文UI文本
+            Title = "系统登录";
+            ApplicationName = "MarkingMachineFeeder";
+            LoginHeaderText = "请输入您的登录信息";
+            UsernameLabel = "用户名";
+            PasswordLabel = "密码";
+            LoginButtonText = "登录";
+            UserInfoText = "选择用户并输入对应密码登录";
             
             // 强制触发所有相关属性的PropertyChanged事件
             RaisePropertyChanged(nameof(Title));

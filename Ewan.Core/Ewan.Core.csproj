@@ -131,10 +131,6 @@
       <Project>{e9b968b2-7577-4524-a023-9e18d7314296}</Project>
       <Name>Ewan.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ewan.Resources\Ewan.Resources.csproj">
-      <Project>{b8e5b123-4567-8901-2345-6789abcd1234}</Project>
-      <Name>Ewan.Resources</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Hardware\IO\IOLibrary.csproj">
       <Project>{aaaa1111-2222-3333-4444-555566667777}</Project>
       <Name>IOLibrary</Name>

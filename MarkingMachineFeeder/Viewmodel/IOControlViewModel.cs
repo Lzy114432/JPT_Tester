@@ -1,5 +1,4 @@
 using Ewan.BusinessBonding;
-using Ewan.Core.Culture;
 using Ewan.Core.IO;
 using Ewan.Core.Logger;
 using Ewan.Core.Msg;
@@ -17,8 +16,7 @@ namespace MarkingMachineFeeder.Viewmodel
 {
     public class IOControlViewModel : BindableBase
     {
-        private readonly CultureManager _cultureManager = CultureManager.Instance();
-        private readonly UILogger _uiLogger = new UILogger(typeof(Ewan.Resources.LogMessages));
+        private readonly UILogger _uiLogger = new UILogger();
         private readonly MsgManager _msgManager = MsgManager.Instance();
         private readonly LayeredIOManager _ioManager = LayeredIOManager.Instance();
         private DispatcherTimer _clockTimer;
@@ -376,14 +374,9 @@ namespace MarkingMachineFeeder.Viewmodel
             _ioUpdateListener = new MsgListener(MsgSubject.IOUpdate, OnIOUpdateMessage);
             _msgManager.RegisterListener(_ioUpdateListener);
 
-            // Subscribe to culture change events
-            _cultureManager.CultureChanged += OnCultureChanged;
-
             // Initialize timer
             InitializeTimer();
 
-            // Initial culture sync
-            Ewan.Resources.IOControlStrings.Culture = _cultureManager.CurrentCulture;
             UpdateUITexts();
 
             // Set initial connection status
@@ -451,32 +444,22 @@ namespace MarkingMachineFeeder.Viewmodel
             CurrentTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         }
 
-        private void OnCultureChanged(object sender, CultureChangedEventArgs e)
-        {
-            // Sync resource culture
-            Ewan.Resources.IOControlStrings.Culture = e.NewCulture;
-            Ewan.Resources.LogMessages.Culture = e.NewCulture;
-            
-            // Update all UI texts
-            UpdateUITexts();
-        }
-
         private void UpdateUITexts()
         {
-            WindowTitle = Ewan.Resources.IOControlStrings.WindowTitle;
-            EdgeDetectionText = Ewan.Resources.IOControlStrings.EdgeDetection;
-            SimulateInputText = Ewan.Resources.IOControlStrings.SimulateInput;
-            MappingConfigText = Ewan.Resources.IOControlStrings.MappingConfig;
-            OutputTestText = Ewan.Resources.IOControlStrings.OutputTest;
-            DigitalInputText = Ewan.Resources.IOControlStrings.DigitalInput;
-            DigitalOutputText = Ewan.Resources.IOControlStrings.DigitalOutput;
-            Page1Text = Ewan.Resources.IOControlStrings.Page1;
-            Page2Text = Ewan.Resources.IOControlStrings.Page2;
-            Page3Text = Ewan.Resources.IOControlStrings.Page3;
-            Page4Text = Ewan.Resources.IOControlStrings.Page4;
-            InputPointsDisplayText = Ewan.Resources.IOControlStrings.InputPointsDisplay;
-            OutputPointsDisplayText = Ewan.Resources.IOControlStrings.OutputPointsDisplay;
-            ReadyText = Ewan.Resources.IOControlStrings.Ready;
+            WindowTitle = "IO 控制面板";
+            EdgeDetectionText = "边沿检测";
+            SimulateInputText = "模拟输入";
+            MappingConfigText = "映射模式";
+            OutputTestText = "输出测试";
+            DigitalInputText = "数字输入";
+            DigitalOutputText = "数字输出";
+            Page1Text = "第 1 页 (0-15)";
+            Page2Text = "第 2 页 (16-31)";
+            Page3Text = "第 3 页 (32-47)";
+            Page4Text = "第 4 页 (48-63)";
+            InputPointsDisplayText = "输入点显示区域";
+            OutputPointsDisplayText = "输出点显示区域";
+            ReadyText = "就绪";
             
             // Update page collections - 使用动态页数
             InputPages = new ObservableCollection<string>();
@@ -521,8 +504,8 @@ namespace MarkingMachineFeeder.Viewmodel
         private void UpdateConnectionStatus()
         {
             ConnectionStatusText = IsConnected 
-                ? Ewan.Resources.IOControlStrings.Connected 
-                : Ewan.Resources.IOControlStrings.NotConnected;
+                ? "已连接"
+                : "未连接";
             RaisePropertyChanged(nameof(ConnectionStatusText));
         }
 
@@ -531,8 +514,8 @@ namespace MarkingMachineFeeder.Viewmodel
         private void ExecuteEdgeDetection()
         {
             MessageBox.Show(
-                Ewan.Resources.IOControlStrings.EdgeDetectionMessage,
-                Ewan.Resources.IOControlStrings.MessageBoxTitle,
+                "边沿检测功能正在开发中...",
+                "提示",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information);
         }
@@ -547,7 +530,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 "模拟输入模式已开启" : 
                 "模拟输入模式已关闭";
             
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.IOSimulateModeChanged, modeText);
+            _uiLogger.Info("IO模拟模式已更改: {0}", modeText);
             
             if (IsSimulateInputMode)
             {
@@ -582,12 +565,12 @@ namespace MarkingMachineFeeder.Viewmodel
             // 根据模式更新按钮文本和颜色
             if (IsSimulateInputMode)
             {
-                SimulateInputText = Ewan.Resources.IOControlStrings.SimulatingModeText; // 模拟中
+                SimulateInputText = "模拟中";
                 SimulateInputButtonBackground = "#00FF00"; // 亮绿色
             }
             else
             {
-                SimulateInputText = Ewan.Resources.IOControlStrings.SimulateInput; // 正常模式  
+                SimulateInputText = "模拟输入";
                 SimulateInputButtonBackground = "#4682B4"; // 钢蓝色
             }
         }
@@ -646,12 +629,11 @@ namespace MarkingMachineFeeder.Viewmodel
                         break;
                 }
                 
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.IOSimulateSet,
-                    point.Name, modeName);
+                _uiLogger.Info("IO模拟模式设置: {0} = {1}", point.Name, modeName);
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.IOSimulateError, point.Name, ex.Message);
+                _uiLogger.Error("IO模拟错误: {0} - {1}", point.Name, ex.Message);
             }
         }
 
@@ -665,7 +647,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 "映射模式" : 
                 "真实模式";
             
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.IOMappingModeChanged, modeText);
+            _uiLogger.Info("IO映射模式已切换至: {0}", modeText);
             
             // 切换后重新更新显示
             if (_realIO != null)
@@ -684,7 +666,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 "输出测试模式已开启" : 
                 "输出测试模式已关闭";
             
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.IOTestModeChanged, modeText);
+            _uiLogger.Info("IO测试模式: {0}", modeText);
         }
 
         private void UpdateOutputTestButtonDisplay()
@@ -692,12 +674,12 @@ namespace MarkingMachineFeeder.Viewmodel
             // 根据模式更新按钮文本和颜色
             if (IsOutputTestMode)
             {
-                OutputTestText = Ewan.Resources.IOControlStrings.TestingModeText; // 测试模式
+                OutputTestText = "测试中";
                 OutputTestButtonBackground = "#00FF00"; // 亮绿色
             }
             else
             {
-                OutputTestText = Ewan.Resources.IOControlStrings.OutputTestNormalText; // 正常模式  
+                OutputTestText = "输出测试";
                 OutputTestButtonBackground = "#FF4500"; // 橙红色
             }
         }
@@ -733,12 +715,11 @@ namespace MarkingMachineFeeder.Viewmodel
                 // 使用IOController写入输出
                 IOController.Instance().WriteOutput(point.Index, newValue, IsMappingMode);
 
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.IOOutputChanged,
-                    point.Name, newValue ? "ON" : "OFF");
+                _uiLogger.Info("输出 {0} 设置为: {1}", point.Name, newValue ? "ON" : "OFF");
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.IOOutputControlError, ex.Message);
+                _uiLogger.Error("输出控制错误: {0}", ex.Message);
             }
         }
 
@@ -792,12 +773,12 @@ namespace MarkingMachineFeeder.Viewmodel
             // 根据模式更新按钮文本和颜色
             if (IsMappingMode)
             {
-                MappingConfigText = Ewan.Resources.IOControlStrings.MappingModeText; // 映射模式
+                MappingConfigText = "映射模式";
                 MappingButtonBackground = "#32CD32"; // 绿色 (AccentColor)
             }
             else
             {
-                MappingConfigText = Ewan.Resources.IOControlStrings.RealModeText; // 真实模式  
+                MappingConfigText = "真实模式";
                 MappingButtonBackground = "#4682B4"; // 蓝色 (PrimaryColor)
             }
         }
@@ -807,7 +788,6 @@ namespace MarkingMachineFeeder.Viewmodel
         public void Cleanup()
         {
             _clockTimer?.Stop();
-            _cultureManager.CultureChanged -= OnCultureChanged;
             _msgManager.UnRegisterListener(_ioUpdateListener);
         }
 
@@ -836,8 +816,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 _inputPageCount = 4;
                 _outputPageCount = 4;
                 
-                _uiLogger.Warn(() => Ewan.Resources.LogMessages.IOConfigurationLoaded, 
-                    "获取实际IO数量失败，使用默认配置: " + ex.Message);
+                _uiLogger.Warn("获取实际IO数量失败，使用默认配置: {0}", ex.Message);
             }
         }
 
@@ -972,8 +951,7 @@ namespace MarkingMachineFeeder.Viewmodel
             }
             catch (Exception ex)
             {
-                _uiLogger.Warn(() => Ewan.Resources.LogMessages.ModuleInitializationFailed,
-                    "IOControlViewModel: 映射名称初始化失败，将等待消息更新", ex.Message);
+                _uiLogger.Warn("模块初始化失败: {0} - {1}", "IOControlViewModel: 映射名称初始化失败，将等待消息更新", ex.Message);
                 // 失败不影响，仍然可以依赖后续的消息更新
             }
         }
@@ -1024,8 +1002,7 @@ namespace MarkingMachineFeeder.Viewmodel
             }
             catch (Exception ex)
             {
-                _uiLogger.Warn(() => Ewan.Resources.LogMessages.IOConfigurationLoaded,
-                    "加载映射名称失败: " + ex.Message);
+                _uiLogger.Warn("加载映射名称失败: {0}", ex.Message);
             }
         }
 

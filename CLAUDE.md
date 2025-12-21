@@ -52,9 +52,9 @@ var cultureManager = CultureManager.Instance();
 ```
 
 ### Current Permission System (Simplified)
-- **Resources**: `Language`, `PermissionConfig`
+- **Resources**: `PermissionConfig`, `SystemControl`, `HardwareControl` (language switching disabled)
 - **Actions**: `View`, `Control`
-- **Admin**: All permissions | **Engineer**: View only | **Operator**: Language only
+- **Admin**: All permissions | **Engineer**: PermissionConfig.View + SystemControl + HardwareControl | **Operator**: SystemControl only
 
 ---
 
@@ -68,13 +68,12 @@ MarkingMachineFeeder.sln
 ├── MarkingMachineFeeder     # Main WPF application
 ├── Ewan.Core                # Framework infrastructure
 ├── Ewan.Model               # Data models and constants
-├── Ewan.BusinessBonding     # Business logic layer
-└── Ewan.Resources           # Internationalization (EN/zh-CN)
+└── Ewan.BusinessBonding     # Business logic layer
 ```
 
 **Key Features:**
 - Role-based permission system with 3 user roles
-- Dual-language support (English/Chinese)
+- Chinese-only UI (i18n disabled)
 - Unified logging (UI + file output)
 - Modular architecture with manager pattern
 
@@ -91,7 +90,7 @@ public class MyManager : BaseManager<MyManager>
 {
     public override bool Init()
     {
-        _uiLogger.Info(() => Ewan.Resources.LogMessages.MyManagerInitialized);
+        _uiLogger.Info("MyManager 初始化完成");
         return base.Init();
     }
 }
@@ -99,7 +98,7 @@ public class MyManager : BaseManager<MyManager>
 
 **Key Components:**
 - **SecurityManager**: Authentication & authorization
-- **CultureManager**: Language switching & localization
+- **CultureManager**: Thread culture (zh-CN only)
 - **UILogger**: Dual-output logging system
 - **StreamRunner**: Module pipeline orchestration
 - **MsgManager**: Thread-safe message queue
@@ -112,7 +111,7 @@ public class MyViewModel : BindableBase
 {
     private readonly SecurityManager _securityManager = SecurityManager.Instance();
     private readonly CultureManager _cultureManager = CultureManager.Instance();
-    private readonly UILogger _uiLogger = new UILogger(typeof(Ewan.Resources.LogMessages));
+    private readonly UILogger _uiLogger = new UILogger();
     
     // Subscribe to system events
     public MyViewModel()
@@ -166,7 +165,7 @@ public class YourModule : BaseModule<YourModule>
     protected override void OnInit()
     {
         // Initialize module resources
-        _uiLogger.Info(() => Ewan.Resources.LogMessages.ModuleInitialized, "YourModule");
+        _uiLogger.Info("模块初始化: {0}", nameof(YourModule));
     }
     
     protected override bool OnRun()
@@ -181,7 +180,7 @@ public class YourModule : BaseModule<YourModule>
     protected override void OnDestroy()
     {
         // Cleanup resources
-        _uiLogger.Info(() => Ewan.Resources.LogMessages.ModuleDestroyed, "YourModule");
+        _uiLogger.Info("模块销毁: {0}", nameof(YourModule));
     }
 }
 ```
@@ -309,7 +308,7 @@ public class PlcHeartModule : BaseModule<PlcHeartModule>
         
         if (!plcAlive)
         {
-            _uiLogger.Warning(() => LogMessages.PlcHeartbeatLost);
+            _uiLogger.Warn("PLC 心跳丢失");
         }
         
         Thread.Sleep(_heartbeatInterval);
@@ -348,9 +347,9 @@ private void StartSafetyStream()
 {
     if (_safetyRunner != null)
     {
-        _uiLogger.Info(() => LogMessages.StreamStarting, "Safety");
+        _uiLogger.Info("即将启动 {0} 流", "Safety");
         _safetyRunner.Start();
-        _uiLogger.Info(() => LogMessages.StreamStarted, "Safety");
+        _uiLogger.Info("{0} 流已启动", "Safety");
     }
 }
 ```
@@ -370,30 +369,19 @@ var manager = SecurityManager.Instance;
 
 ### 2. Logging Best Practices
 ```csharp
-// ✅ Always use resource-based logging for i18n
-_uiLogger.Info(() => Ewan.Resources.LogMessages.OperationCompleted, parameter);
-_uiLogger.Error(() => Ewan.Resources.LogMessages.DatabaseConnectionError, ex.Message);
+// ✅ i18n disabled: use hard-coded Chinese strings
+_uiLogger.Info("操作完成: {0}", parameter);
+_uiLogger.Error("数据库连接错误: {0}", ex.Message);
 
-// ❌ Never use hard-coded strings
-_uiLogger.Info("Operation completed");
 ```
 
 ### 3. UI Control Development (MANDATORY PROCESS)
 
-**Every UI control addition requires these 4 steps:**
+**Every UI control addition requires these 3 steps (Chinese-only UI):**
 
-**Step 1: Update Resource Files**
-```xml
-<!-- UIStrings.resx (English) -->
-<data name="SaveButtonText"><value>Save</value></data>
-
-<!-- UIStrings.zh-CN.resx (Chinese) -->
-<data name="SaveButtonText"><value>保存</value></data>
-```
-
-**Step 2: ViewModel Property**
+**Step 1: ViewModel Property (Chinese default)**
 ```csharp
-private string _saveButtonText;
+private string _saveButtonText = "保存";
 public string SaveButtonText
 {
     get => _saveButtonText;
@@ -401,16 +389,13 @@ public string SaveButtonText
 }
 ```
 
-**Step 3: UpdateUITexts Method**
+**Step 2: Update text and notify**
 ```csharp
-private void UpdateUITexts()
-{
-    SaveButtonText = Ewan.Resources.UIStrings.SaveButtonText;
-    RaisePropertyChanged(nameof(SaveButtonText)); // CRITICAL!
-}
+SaveButtonText = "保存";
+RaisePropertyChanged(nameof(SaveButtonText)); // CRITICAL!
 ```
 
-**Step 4: XAML Binding**
+**Step 3: XAML Binding**
 ```xml
 <Button Content="{Binding SaveButtonText}" Command="{Binding SaveCommand}" />
 ```
@@ -420,17 +405,18 @@ private void UpdateUITexts()
 ## Security System
 
 ### Current Permission Resources
-- **Language**: Controls language switching functionality
+- **Language**: Reserved (language switching disabled)
 - **PermissionConfig**: Controls access to permission configuration interface  
 - **SystemControl**: Controls system operations (currently: application exit)
+- **HardwareControl**: Controls hardware operations (IO control, etc.)
 
 ### Permission Matrix
-| Role          | Language.Control | PermissionConfig.View | PermissionConfig.Control | SystemControl.Control |
-| ------------- | ---------------- | --------------------- | ------------------------ | --------------------- |
-| Administrator | ✓                | ✓                     | ✓                        | ✓                     |
-| Engineer      | ✓                | ✓                     | ❌                        | ✓                     |
-| Operator      | ✓                | ❌                     | ❌                        | ✓ (configurable)     |
-| Guest         | ❌                | ❌                     | ❌                        | ❌                     |
+| Role          | Language.Control | PermissionConfig.View | PermissionConfig.Control | SystemControl.Control | HardwareControl.Control |
+| ------------- | ---------------- | --------------------- | ------------------------ | --------------------- | ----------------------- |
+| Administrator | ✓                | ✓                     | ✓                        | ✓                     | ✓                       |
+| Engineer      | ✓                | ✓                     | ❌                        | ✓                     | ✓                       |
+| Operator      | ✓                | ❌                     | ❌                        | ✓ (configurable)     | ❌                       |
+| Guest         | ❌                | ❌                     | ❌                        | ❌                     | ❌                       |
 
 ### Adding New Permission-Controlled Features
 
@@ -610,37 +596,8 @@ if (_securityManager.HasRole(RoleNames.Administrator))
 
 ## Internationalization
 
-### Culture Management
-```csharp
-public class MyViewModel : BindableBase
-{
-    private readonly CultureManager _cultureManager = CultureManager.Instance();
-    
-    public MyViewModel()
-    {
-        _cultureManager.CultureChanged += OnCultureChanged;
-        
-        // Sync initial culture
-        Ewan.Resources.UIStrings.Culture = _cultureManager.CurrentCulture;
-        UpdateUITexts();
-    }
-    
-    private void OnCultureChanged(object sender, CultureChangedEventArgs e)
-    {
-        // Sync all resource cultures
-        Ewan.Resources.UIStrings.Culture = e.NewCulture;
-        Ewan.Resources.LogMessages.Culture = e.NewCulture;
-        Ewan.Resources.PermissionConfigStrings.Culture = e.NewCulture;
-        
-        UpdateUITexts();
-    }
-}
-```
-
-### Resource Organization
-- **UIStrings**: General UI text (buttons, labels, menus)
-- **LogMessages**: System log messages
-- **PermissionConfigStrings**: Permission configuration dialog text
+### Status
+Internationalization is disabled. UI/log strings are hard-coded in Chinese, and `CultureManager` fixes the thread culture to `zh-CN` (other cultures are ignored).
 
 ---
 
@@ -777,17 +734,15 @@ private void UpdatePermissions()
 #### Problem: Compilation errors after permission changes
 
 **Check these items:**
-- All `PermissionResources` references updated to use only `Language` and `PermissionConfig`
-- Resource files contain all referenced strings
-- `LogMessages.Designer.cs` has all required properties
+- All `PermissionResources` references match configured permissions (PermissionConfig/SystemControl/HardwareControl)
 - Using statements include `Ewan.Model.Security` for constants
 
 #### Debug Logging
 ```csharp
 // Add to permission methods for debugging
-_uiLogger.Debug(() => Ewan.Resources.LogMessages.PermissionCheckResult, 
-    _securityManager.CurrentUser?.Username ?? "未登录用户", 
-    "Resource.Action", 
+_uiLogger.Debug("权限检查结果: 用户={0}, 权限={1}, 结果={2}",
+    _securityManager.CurrentUser?.Username ?? "未登录用户",
+    "Resource.Action",
     hasPermission ? "有权限" : "无权限");
 ```
 
@@ -810,7 +765,7 @@ cd "C:\Users\Administrator\source\repos\MarkingMachineFeeder" && "C:\Program Fil
 - ✅ PermissionConfigViewModel with permission-based command controls
 - ✅ MainWindowViewModel with proper PropertyChanged notifications  
 - ✅ SecurityManager permission checking system
-- ✅ All resource file references resolved correctly
+- ✅ All UI/log strings hard-coded in Chinese
 - ✅ UI permission updates working after authentication events
 
 ---

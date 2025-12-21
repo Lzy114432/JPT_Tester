@@ -8,7 +8,7 @@ namespace Ewan.Core.Run
 {
     public class StreamRunner
     {
-        private readonly UILogger _uiLogger = new UILogger(typeof(Ewan.Resources.LogMessages));
+        private readonly UILogger _uiLogger = new UILogger();
 
         /// <summary>
         /// </summary>
@@ -25,7 +25,7 @@ namespace Ewan.Core.Run
         public void Start()
         {
             InitStream();
-            _uiLogger.Info("流运行器模块初始化完成: {0}");
+            _uiLogger.Info("流运行器模块初始化完成: {0} 个节点", _modules?.Count ?? 0);
             //开启子线程运行各节点
             Task.Run(() =>
             {

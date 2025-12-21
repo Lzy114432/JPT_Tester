@@ -9,7 +9,7 @@ namespace Ewan.Core
     /// <typeparam name="T">管理类的类型</typeparam>
     public abstract class BaseManager<T>
     {
-        protected readonly UILogger _uiLogger = new UILogger(typeof(Ewan.Resources.LogMessages));
+        protected readonly UILogger _uiLogger = new UILogger();
         protected readonly AppLogger _appLogger = AppLogger.Instance;
 
         /// <summary>

@@ -78,11 +78,5 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Ewan.Resources\Ewan.Resources.csproj">
-      <Project>{b8e5b123-4567-8901-2345-6789abcd1234}</Project>
-      <Name>Ewan.Resources</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

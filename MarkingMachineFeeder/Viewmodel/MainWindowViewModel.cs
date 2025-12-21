@@ -16,7 +16,7 @@ namespace MarkingMachineFeeder.Viewmodel
 {
     public class MainWindowViewModel : BindableBase
     {
-        private readonly UILogger _uiLogger = new UILogger(typeof(Ewan.Resources.LogMessages));
+        private readonly UILogger _uiLogger = new UILogger();
         private readonly CultureManager _cultureManager;
         private readonly SecurityManager _securityManager;
         private readonly SystemControlService _systemControlService;
@@ -340,10 +340,6 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             // 运行时逻辑
             _cultureManager = CultureManager.Instance();
-            _cultureManager.CultureChanged += OnCultureChanged;
-            
-            // 初始化UIStrings的Culture
-            Ewan.Resources.UIStrings.Culture = _cultureManager.CurrentCulture;
             
             _securityManager = SecurityManager.Instance();
             _securityManager.UserAuthenticated += OnUserAuthenticated;
@@ -409,7 +405,7 @@ namespace MarkingMachineFeeder.Viewmodel
             // 注册系统状态指示器监听器
             RegisterStatusIndicatorListener();
 
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.MainWindowStarted);
+            _uiLogger.Info("主窗口已启动");
         }
 
         private void ExecuteSwitchLanguage(string cultureName)
@@ -430,22 +426,12 @@ namespace MarkingMachineFeeder.Viewmodel
 
         private void ExecuteTestLog()
         {
-            // 统一使用字符串消息键方式
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.TestLogClicked);
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.SystemStatusNormal);
-            _uiLogger.Warn(() => Ewan.Resources.LogMessages.Log4netConfigNotFound);
-            _uiLogger.Error(() => Ewan.Resources.LogMessages.DatabaseConnectionError, "Connection timeout");
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingComplete, "2.35");
-            _uiLogger.Debug(() => Ewan.Resources.LogMessages.BaseManagerInitialized, "TestManager");
-        }
-
-        private void OnCultureChanged(object sender, CultureChangedEventArgs e)
-        {
-            // 同步UIStrings的Culture设置
-            Ewan.Resources.UIStrings.Culture = e.NewCulture;
-            
-            UpdateUITexts();
-            UpdateUserInfo(); // 同时更新用户信息显示
+            _uiLogger.Info("测试日志按钮被点击");
+            _uiLogger.Info("系统状态: 正常");
+            _uiLogger.Warn("Log4net配置文件未找到");
+            _uiLogger.Error("数据库连接错误: {0}", "Connection timeout");
+            _uiLogger.Info("处理完成: {0}", "2.35");
+            _uiLogger.Debug("基础管理器初始化成功: {0}", "TestManager");
         }
 
         private void ExecuteSwitchUser()
@@ -474,7 +460,7 @@ namespace MarkingMachineFeeder.Viewmodel
             {
                 // 权限配置已保存，重新加载权限
                 UpdatePermissions();
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.SystemInitialized);
+                _uiLogger.Info("系统初始化成功");
             }
         }
 
@@ -487,7 +473,7 @@ namespace MarkingMachineFeeder.Viewmodel
         private void ExecuteOpenSettings()
         {
             // 打开设置窗口的逻辑
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.SystemInitialized);
+            _uiLogger.Info("设置功能尚未实现");
             System.Windows.MessageBox.Show("设置功能将在未来版本中实现", "提示", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
         }
 
@@ -565,8 +551,8 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             // 创建并显示自定义确认对话框
             var confirmDialog = new MarkingMachineFeeder.Windows.ConfirmationDialog(
-                Ewan.Resources.UIStrings.ExitConfirmTitle,
-                Ewan.Resources.UIStrings.ExitConfirmMessage,
+                "退出确认",
+                "确定要退出应用程序吗？",
                 false);
 
             // 如果用户确认退出
@@ -574,7 +560,7 @@ namespace MarkingMachineFeeder.Viewmodel
             {
                 // 记录当前用户退出应用程序
                 var currentUser = _securityManager.CurrentUser?.Username ?? "游客";
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.UserExiting, currentUser);
+                _uiLogger.Info("用户 {0} 正在退出应用程序", currentUser);
                 
                 System.Windows.Application.Current.Shutdown();
             }
@@ -603,13 +589,13 @@ namespace MarkingMachineFeeder.Viewmodel
                 var localizedRoleNames = string.Join(", ", user.Roles.Select(r => GetLocalizedRoleDisplayName(r.Name)));
                 
                 CurrentUser = localizedDisplayName;
-                CurrentUserText = string.Format(Ewan.Resources.UIStrings.CurrentUser, $"{localizedDisplayName} [{localizedRoleNames}]");
+                CurrentUserText = string.Format("当前用户: {0}", $"{localizedDisplayName} [{localizedRoleNames}]");
             }
             else
             {
                 // 使用硬编码值，因为UIStrings中没有对应的资源
                 CurrentUser = "游客";
-                CurrentUserText = Ewan.Resources.UIStrings.NoUserLoggedIn;
+                CurrentUserText = "无用户登录";
             }
             
             // 强制触发PropertyChanged事件
@@ -622,11 +608,11 @@ namespace MarkingMachineFeeder.Viewmodel
             switch (username.ToLower())
             {
                 case "admin":
-                    return Ewan.Resources.UIStrings.AdminUser;
+                    return "系统管理员";
                 case "engineer":
-                    return Ewan.Resources.UIStrings.EngineerUser;
+                    return "工程师";
                 case "operator":
-                    return Ewan.Resources.UIStrings.OperatorUser;
+                    return "操作员";
                 default:
                     return username; // 使用原用户名作为后备
             }
@@ -637,11 +623,11 @@ namespace MarkingMachineFeeder.Viewmodel
             switch (roleName)
             {
                 case "Administrator":
-                    return Ewan.Resources.UIStrings.AdminRole;
+                    return "管理员";
                 case "Engineer":
-                    return Ewan.Resources.UIStrings.EngineerRole;
+                    return "工程师";
                 case "Operator":
-                    return Ewan.Resources.UIStrings.OperatorRole;
+                    return "操作员";
                 default:
                     return roleName; // 使用原角色名作为后备
             }
@@ -649,26 +635,24 @@ namespace MarkingMachineFeeder.Viewmodel
 
         private void UpdateUITexts()
         {
-            Title = Ewan.Resources.UIStrings.MainWindowTitle;
-            LanguageMenuHeader = Ewan.Resources.UIStrings.LanguageMenuHeader;
-            TestLogButtonText = Ewan.Resources.UIStrings.TestLogButton;
-            // 使用资源字符串替代硬编码值
-            LoginButtonText = Ewan.Resources.UIStrings.LoginButtonText;
-            SwitchUserButtonText = Ewan.Resources.UIStrings.SwitchUserButton;
-            SystemManagementMenuHeader = Ewan.Resources.UIStrings.SystemManagementMenu;
-            PermissionConfigMenuHeader = Ewan.Resources.UIStrings.PermissionConfigMenu;
+            Title = "MarkingMachineFeeder";
+            LanguageMenuHeader = "语言";
+            TestLogButtonText = "测试日志";
+            LoginButtonText = "登录";
+            SwitchUserButtonText = "切换用户";
+            SystemManagementMenuHeader = "系统管理";
+            PermissionConfigMenuHeader = "权限配置";
             ParameterSettingsMenuHeader = "系统参数设置";
-            // 使用ResourceManager直接获取资源字符串，如果资源不存在则使用默认值
-            SettingsMenuHeader = Ewan.Resources.UIStrings.ResourceManager.GetString("SettingsMenu", Ewan.Resources.UIStrings.Culture) ?? "设置";
-            SystemMenuHeader = Ewan.Resources.UIStrings.ResourceManager.GetString("SystemMenu", Ewan.Resources.UIStrings.Culture) ?? "系统";
-            CurrentUserLabel = Ewan.Resources.UIStrings.ResourceManager.GetString("CurrentUserLabel", Ewan.Resources.UIStrings.Culture) ?? "当前用户：";
-            ExitMenuHeader = Ewan.Resources.UIStrings.ExitMenu;
-            IOControlMenuHeader = Ewan.Resources.UIStrings.IOControlMenu;
-            IOMappingConfigMenuHeader = Ewan.Resources.UIStrings.IOMappingConfigMenu;
-            AxisConfigMenuHeader = Ewan.Resources.UIStrings.AxisConfigMenu;
+            SettingsMenuHeader = "设置";
+            SystemMenuHeader = "系统";
+            CurrentUserLabel = "当前用户：";
+            ExitMenuHeader = "退出";
+            IOControlMenuHeader = "IO控制";
+            IOMappingConfigMenuHeader = "IO映射配置";
+            AxisConfigMenuHeader = "轴配置";
             AxisControlMenuHeader = "轴手动控制"; // Using fallback text since AxisControlMenu property is not generating properly
             LoopInteractionMenuHeader = "环线交互"; // Using fallback text for LoopInteractionMenu
-            HardwareControlMenuHeader = Ewan.Resources.UIStrings.HardwareControlMenu;
+            HardwareControlMenuHeader = "硬件控制";
             SystemPauseButtonText = "暂停";
             SystemResumeButtonText = "复原";
             
@@ -747,11 +731,11 @@ namespace MarkingMachineFeeder.Viewmodel
                     _axisConfigWindow.Activate();
                     _axisConfigWindow.Focus();
                 }
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingComplete);
+                _uiLogger.Info("处理已完成: {0}", "轴配置");
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "轴配置", ex.Message);
+                _uiLogger.Error("处理错误: {0} - {1}", "轴配置", ex.Message);
             }
         }
 
@@ -772,11 +756,11 @@ namespace MarkingMachineFeeder.Viewmodel
                     _axisControlWindow.Activate();
                     _axisControlWindow.Focus();
                 }
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingComplete, "轴手动控制");
+                _uiLogger.Info("处理已完成: {0}", "轴手动控制");
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "轴手动控制", ex.Message);
+                _uiLogger.Error("处理错误: {0} - {1}", "轴手动控制", ex.Message);
             }
         }
 
@@ -809,11 +793,11 @@ namespace MarkingMachineFeeder.Viewmodel
                     _loopInteractionWindow.Activate();
                     _loopInteractionWindow.Focus();
                 }
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingComplete, "环线交互");
+                _uiLogger.Info("处理已完成: {0}", "环线交互");
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "环线交互", ex.Message);
+                _uiLogger.Error("处理错误: {0} - {1}", "环线交互", ex.Message);
             }
         }
 
@@ -834,11 +818,11 @@ namespace MarkingMachineFeeder.Viewmodel
                     _mesManualSendWindow.Focus();
                 }
 
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingComplete, "MES手动发送");
+                _uiLogger.Info("处理已完成: {0}", "MES手动发送");
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "MES手动发送", ex.Message);
+                _uiLogger.Error("处理错误: {0} - {1}", "MES手动发送", ex.Message);
             }
         }
 
@@ -1104,21 +1088,21 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             MaterialA_Barcode = "";
             MaterialA_Count = "0";
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.TestLogClicked); // 使用现有的日志消息作为占位符
+            _uiLogger.Info("已清除物料A信息");
         }
         
         private void ExecuteMaterialB_Clear()
         {
             MaterialB_Barcode = "";
             MaterialB_Count = "0";
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.TestLogClicked); // 使用现有的日志消息作为占位符
+            _uiLogger.Info("已清除物料B信息");
         }
         
         private void ExecuteMaterialNG_Clear()
         {
             MaterialNG_Barcode = "";
             MaterialNG_Count = "0";
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.TestLogClicked); // 使用现有的日志消息作为占位符
+            _uiLogger.Info("已清除NG物料信息");
         }
         
         #endregion
@@ -1130,7 +1114,7 @@ namespace MarkingMachineFeeder.Viewmodel
             if (int.TryParse(MaterialA_Priority, out int currentPriority) && currentPriority > 1)
             {
                 MaterialA_Priority = (currentPriority - 1).ToString();
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.TestLogClicked); // 使用现有的日志消息作为占位符
+                _uiLogger.Info("已提升物料A优先级");
             }
         }
         
@@ -1139,7 +1123,7 @@ namespace MarkingMachineFeeder.Viewmodel
             if (int.TryParse(MaterialB_Priority, out int currentPriority) && currentPriority > 1)
             {
                 MaterialB_Priority = (currentPriority - 1).ToString();
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.TestLogClicked); // 使用现有的日志消息作为占位符
+                _uiLogger.Info("已提升物料B优先级");
             }
         }
         
@@ -1148,7 +1132,7 @@ namespace MarkingMachineFeeder.Viewmodel
             if (int.TryParse(MaterialNG_Priority, out int currentPriority) && currentPriority > 1)
             {
                 MaterialNG_Priority = (currentPriority - 1).ToString();
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.TestLogClicked); // 使用现有的日志消息作为占位符
+                _uiLogger.Info("已提升NG物料优先级");
             }
         }
         
@@ -1172,7 +1156,7 @@ namespace MarkingMachineFeeder.Viewmodel
             {
                 _isResetting = true;
                 
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingStarted, "用户触发系统复位（硬件初始化）");
+                _uiLogger.Info("处理已开始: {0}", "用户触发系统复位（硬件初始化）");
 
                 var robotController = Ewan.BusinessBonding.RobotController.Instance();
                 var parameters = Ewan.Model.System.SystemParametersManager.Instance.Parameters;
@@ -1220,7 +1204,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 }
                 catch (Exception feedException)
                 {
-                    _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "料仓自动升降", feedException.Message);
+                    _uiLogger.Error("处理错误: {0} - {1}", "料仓自动升降", feedException.Message);
                     return;
                 }
 
@@ -1248,11 +1232,11 @@ namespace MarkingMachineFeeder.Viewmodel
                 ProductionModeText = "待机模式（低速）";
                 ProductionModeColor = "Orange";
 
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "系统复位完成，低速待机中");
+                _uiLogger.Info("处理已完成: {0}", "系统复位完成，低速待机中");
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "系统复位", ex.Message);
+                _uiLogger.Error("处理错误: {0} - {1}", "系统复位", ex.Message);
             }
             finally
             {
@@ -1294,8 +1278,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 }
                 catch (Exception ex)
                 {
-                    _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, 
-                        $"读取{signalName}", ex.Message);
+                    _uiLogger.Error("处理错误: {0} - {1}", $"读取{signalName}", ex.Message);
                 }
                 
                 await System.Threading.Tasks.Task.Delay(50);  // 50ms检查间隔
@@ -1309,7 +1292,7 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             try
             {
-                _uiLogger.Warn(() => Ewan.Resources.LogMessages.ProcessingCompleted, "用户触发紧急停止");
+                _uiLogger.Warn("处理已完成: {0}", "用户触发紧急停止");
                 
                 // 调用系统控制服务紧急停止
                 _systemControlService.EmergencyStopSystem();
@@ -1324,12 +1307,11 @@ namespace MarkingMachineFeeder.Viewmodel
                 ProductionModeText = "急停状态";
                 ProductionModeColor = "Red";
                 
-                _uiLogger.Warn(() => Ewan.Resources.LogMessages.ProcessingCompleted, "紧急停止操作完成");
+                _uiLogger.Warn("处理已完成: {0}", "紧急停止操作完成");
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, 
-                    "紧急停止操作", ex.Message);
+                _uiLogger.Error("处理错误: {0} - {1}", "紧急停止操作", ex.Message);
             }
         }
         
@@ -1359,7 +1341,7 @@ namespace MarkingMachineFeeder.Viewmodel
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "清除报警", ex.Message);
+                _uiLogger.Error("处理错误: {0} - {1}", "清除报警", ex.Message);
             }
         }
         
@@ -1418,8 +1400,7 @@ namespace MarkingMachineFeeder.Viewmodel
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, 
-                    "系统启动操作", ex.Message);
+                _uiLogger.Error("处理错误: {0} - {1}", "系统启动操作", ex.Message);
             }
         }
         
@@ -1427,7 +1408,7 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             try
             {
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "用户请求暂停系统");
+                _uiLogger.Info("处理已完成: {0}", "用户请求暂停系统");
                 
                 // 调用系统控制服务暂停系统
                 _systemControlService.PauseSystem();
@@ -1440,12 +1421,11 @@ namespace MarkingMachineFeeder.Viewmodel
                 ProductionModeText = "暂停中";
                 ProductionModeColor = "Orange";
                 
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "系统暂停操作完成");
+                _uiLogger.Info("处理已完成: {0}", "系统暂停操作完成");
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, 
-                    "系统暂停操作", ex.Message);
+                _uiLogger.Error("处理错误: {0} - {1}", "系统暂停操作", ex.Message);
             }
         }
 
@@ -1453,7 +1433,7 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             try
             {
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "用户请求恢复系统");
+                _uiLogger.Info("处理已完成: {0}", "用户请求恢复系统");
                 
                 // 调用系统控制服务恢复系统
                 _systemControlService.ResumeSystem();
@@ -1468,12 +1448,11 @@ namespace MarkingMachineFeeder.Viewmodel
                 ProductionModeText = "运行中";
                 ProductionModeColor = "Green";
                 
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "系统恢复操作完成");
+                _uiLogger.Info("处理已完成: {0}", "系统恢复操作完成");
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, 
-                    "系统恢复操作", ex.Message);
+                _uiLogger.Error("处理错误: {0} - {1}", "系统恢复操作", ex.Message);
             }
         }
         
@@ -1481,7 +1460,7 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             try
             {
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "用户请求停止系统");
+                _uiLogger.Info("处理已完成: {0}", "用户请求停止系统");
                 
                 // 调用系统控制服务停止系统
                 _systemControlService.StopSystem();
@@ -1496,12 +1475,11 @@ namespace MarkingMachineFeeder.Viewmodel
                 ProductionModeText = "已停止（需复位）";
                 ProductionModeColor = "Gray";
                 
-                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "系统停止操作完成");
+                _uiLogger.Info("处理已完成: {0}", "系统停止操作完成");
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, 
-                    "系统停止操作", ex.Message);
+                _uiLogger.Error("处理错误: {0} - {1}", "系统停止操作", ex.Message);
             }
         }
         
@@ -1512,25 +1490,25 @@ namespace MarkingMachineFeeder.Viewmodel
         private void ExecuteOUT11_Bin1Select()
         {
             // OUT11 - 料仓1选择信号
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.TestLogClicked); // 使用现有的日志消息作为占位符
+            _uiLogger.Info("发送料仓1选择信号(OUT11)");
         }
 
         private void ExecuteOUT12_Bin2Select()
         {
             // OUT12 - 料仓2选择信号
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.TestLogClicked); // 使用现有的日志消息作为占位符
+            _uiLogger.Info("发送料仓2选择信号(OUT12)");
         }
 
         private void ExecuteOUT13_Bin3Select()
         {
             // OUT13 - 料仓3选择信号
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.TestLogClicked); // 使用现有的日志消息作为占位符
+            _uiLogger.Info("发送料仓3选择信号(OUT13)");
         }
 
         private void ExecuteOUT17_InsertCart()
         {
             // OUT17 - 发送插入小车指令
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.TestLogClicked); // 使用现有的日志消息作为占位符
+            _uiLogger.Info("发送插入小车指令(OUT17)");
         }
 
         #endregion
@@ -1545,7 +1523,7 @@ namespace MarkingMachineFeeder.Viewmodel
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "抓取操作异常", ex.Message);
+                _uiLogger.Error("处理错误: {0} - {1}", "抓取操作异常", ex.Message);
             }
         }
 
@@ -1557,7 +1535,7 @@ namespace MarkingMachineFeeder.Viewmodel
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "放置到料仓1异常", ex.Message);
+                _uiLogger.Error("处理错误: {0} - {1}", "放置到料仓1异常", ex.Message);
             }
         }
 
@@ -1569,7 +1547,7 @@ namespace MarkingMachineFeeder.Viewmodel
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "放置到料仓2异常", ex.Message);
+                _uiLogger.Error("处理错误: {0} - {1}", "放置到料仓2异常", ex.Message);
             }
         }
 
@@ -1581,7 +1559,7 @@ namespace MarkingMachineFeeder.Viewmodel
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "放置到料仓3异常", ex.Message);
+                _uiLogger.Error("处理错误: {0} - {1}", "放置到料仓3异常", ex.Message);
             }
         }
 
@@ -1593,7 +1571,7 @@ namespace MarkingMachineFeeder.Viewmodel
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "从料仓1取料异常", ex.Message);
+                _uiLogger.Error("处理错误: {0} - {1}", "从料仓1取料异常", ex.Message);
             }
         }
 
@@ -1605,7 +1583,7 @@ namespace MarkingMachineFeeder.Viewmodel
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "从料仓2取料异常", ex.Message);
+                _uiLogger.Error("处理错误: {0} - {1}", "从料仓2取料异常", ex.Message);
             }
         }
 
@@ -1617,7 +1595,7 @@ namespace MarkingMachineFeeder.Viewmodel
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "从料仓3取料异常", ex.Message);
+                _uiLogger.Error("处理错误: {0} - {1}", "从料仓3取料异常", ex.Message);
             }
         }
 
@@ -1629,7 +1607,7 @@ namespace MarkingMachineFeeder.Viewmodel
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "放入小车异常", ex.Message);
+                _uiLogger.Error("处理错误: {0} - {1}", "放入小车异常", ex.Message);
             }
         }
 
@@ -1650,8 +1628,7 @@ namespace MarkingMachineFeeder.Viewmodel
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
-                    "系统状态监听器注册", ex.Message);
+                _uiLogger.Error("处理错误: {0} - {1}", "系统状态监听器注册", ex.Message);
             }
         }
 
@@ -1671,8 +1648,7 @@ namespace MarkingMachineFeeder.Viewmodel
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
-                    "系统状态监听器取消注册", ex.Message);
+                _uiLogger.Error("处理错误: {0} - {1}", "系统状态监听器取消注册", ex.Message);
             }
         }
 
@@ -1694,8 +1670,7 @@ namespace MarkingMachineFeeder.Viewmodel
             }
             catch (Exception ex)
             {
-                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError,
-                    "处理系统状态变化", ex.Message);
+                _uiLogger.Error("处理错误: {0} - {1}", "处理系统状态变化", ex.Message);
             }
         }
 
@@ -1820,7 +1795,7 @@ namespace MarkingMachineFeeder.Viewmodel
             }
 
             // 记录状态变化日志
-            _uiLogger.Debug(() => Ewan.Resources.LogMessages.SystemStatusUpdated, status, description);
+            _uiLogger.Debug("系统状态更新: {0} - {1}", status, description);
         }
 
         /// <summary>

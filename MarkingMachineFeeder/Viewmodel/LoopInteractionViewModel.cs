@@ -7,7 +7,7 @@ namespace MarkingMachineFeeder.Viewmodel
 {
     public class LoopInteractionViewModel : BindableBase
     {
-        private readonly UILogger _uiLogger = new UILogger(typeof(Ewan.Resources.LogMessages));
+        private readonly UILogger _uiLogger = new UILogger();
 
         public DelegateCommand ReadRingLineRequestCommand { get; }
         public DelegateCommand WriteUnloadCompleteCommand { get; }
@@ -21,7 +21,7 @@ namespace MarkingMachineFeeder.Viewmodel
             WriteUnloadWithMaterialCommand = new DelegateCommand(ExecuteWriteUnloadWithMaterial);
             WriteUnloadEmptyCommand = new DelegateCommand(ExecuteWriteUnloadEmpty);
 
-            _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingCompleted, "环线交互窗口初始化");
+            _uiLogger.Info("环线交互窗口初始化");
         }
 
         /// <summary>

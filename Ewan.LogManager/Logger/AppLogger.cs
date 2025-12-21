@@ -18,7 +18,7 @@ namespace Ewan.LogManager.Logger
         /// <summary>
         /// 私有构造函数，确保单例
         /// </summary>
-        private AppLogger() : base("root", typeof(Ewan.Resources.LogMessages))
+        private AppLogger() : base("root")
         {
             // 使用root logger配置，写入app.log
         }
