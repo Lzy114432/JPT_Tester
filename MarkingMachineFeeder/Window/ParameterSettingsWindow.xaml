@@ -502,6 +502,136 @@
                             </Grid>
                         </StackPanel>
                     </Border>
+                    
+                    <!-- MES 参数设置 -->
+                    <Border Style="{StaticResource CardBorder}" Padding="25" Margin="0,15,0,0">
+                        <StackPanel>
+                            <TextBlock Text="MES 参数"
+                                      Style="{StaticResource SectionTitle}"/>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="20"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0">
+                                    <Border Background="#FAFAFA" CornerRadius="8" Padding="15" Margin="0,0,0,10">
+                                        <CheckBox Content="启用 MES"
+                                                 IsChecked="{Binding MesEnabled}"
+                                                 Style="{StaticResource ModernCheckBox}"/>
+                                    </Border>
+
+                                    <StackPanel IsEnabled="{Binding MesEnabled}">
+                                        <Border Background="#FAFAFA" CornerRadius="8" Padding="20" Margin="0,0,0,10">
+                                            <StackPanel>
+                                                <TextBlock Text="Broker 地址"
+                                                          FontSize="14"
+                                                          FontWeight="Medium"
+                                                          Foreground="#495057"
+                                                          Margin="0,0,0,10"/>
+                                                <TextBox Text="{Binding MesBrokerHost, UpdateSourceTrigger=PropertyChanged}"
+                                                        Style="{StaticResource ModernTextBox}"/>
+                                            </StackPanel>
+                                        </Border>
+
+                                        <Border Background="#FAFAFA" CornerRadius="8" Padding="20" Margin="0,0,0,10">
+                                            <StackPanel>
+                                                <TextBlock Text="Broker 端口"
+                                                          FontSize="14"
+                                                          FontWeight="Medium"
+                                                          Foreground="#495057"
+                                                          Margin="0,0,0,10"/>
+                                                <TextBox Text="{Binding MesBrokerPort, UpdateSourceTrigger=PropertyChanged}"
+                                                        Style="{StaticResource ModernTextBox}"/>
+                                            </StackPanel>
+                                        </Border>
+
+                                        <Border Background="#FAFAFA" CornerRadius="8" Padding="20" Margin="0,0,0,10">
+                                            <StackPanel>
+                                                <TextBlock Text="用户名"
+                                                          FontSize="14"
+                                                          FontWeight="Medium"
+                                                          Foreground="#495057"
+                                                          Margin="0,0,0,10"/>
+                                                <TextBox Text="{Binding MesUserName, UpdateSourceTrigger=PropertyChanged}"
+                                                        Style="{StaticResource ModernTextBox}"/>
+                                            </StackPanel>
+                                        </Border>
+
+                                        <Border Background="#FAFAFA" CornerRadius="8" Padding="20">
+                                            <StackPanel>
+                                                <TextBlock Text="密码"
+                                                          FontSize="14"
+                                                          FontWeight="Medium"
+                                                          Foreground="#495057"
+                                                          Margin="0,0,0,10"/>
+                                                <TextBox Text="{Binding MesPassword, UpdateSourceTrigger=PropertyChanged}"
+                                                        Style="{StaticResource ModernTextBox}"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </StackPanel>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="2" IsEnabled="{Binding MesEnabled}">
+                                    <Border Background="#FAFAFA" CornerRadius="8" Padding="15" Margin="0,0,0,10">
+                                        <CheckBox Content="CleanSession"
+                                                 IsChecked="{Binding MesCleanSession}"
+                                                 Style="{StaticResource ModernCheckBox}"/>
+                                    </Border>
+
+                                    <Border Background="#FAFAFA" CornerRadius="8" Padding="20" Margin="0,0,0,10">
+                                        <StackPanel>
+                                            <TextBlock Text="KeepAlive (秒)"
+                                                      FontSize="14"
+                                                      FontWeight="Medium"
+                                                      Foreground="#495057"
+                                                      Margin="0,0,0,10"/>
+                                            <TextBox Text="{Binding MesKeepAliveSeconds, UpdateSourceTrigger=PropertyChanged}"
+                                                    Style="{StaticResource ModernTextBox}"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Border Background="#FAFAFA" CornerRadius="8" Padding="20" Margin="0,0,0,10">
+                                        <StackPanel>
+                                            <TextBlock Text="ClientId (可空)"
+                                                      FontSize="14"
+                                                      FontWeight="Medium"
+                                                      Foreground="#495057"
+                                                      Margin="0,0,0,10"/>
+                                            <TextBox Text="{Binding MesClientId, UpdateSourceTrigger=PropertyChanged}"
+                                                    Style="{StaticResource ModernTextBox}"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Border Background="#FAFAFA" CornerRadius="8" Padding="20" Margin="0,0,0,10">
+                                        <StackPanel>
+                                            <TextBlock Text="环线设备ID"
+                                                      FontSize="14"
+                                                      FontWeight="Medium"
+                                                      Foreground="#495057"
+                                                      Margin="0,0,0,10"/>
+                                            <TextBox Text="{Binding MesRingLineDeviceId, UpdateSourceTrigger=PropertyChanged}"
+                                                    Style="{StaticResource ModernTextBox}"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Border Background="#FAFAFA" CornerRadius="8" Padding="20">
+                                        <StackPanel>
+                                            <TextBlock Text="环线设备编码"
+                                                      FontSize="14"
+                                                      FontWeight="Medium"
+                                                      Foreground="#495057"
+                                                      Margin="0,0,0,10"/>
+                                            <TextBox Text="{Binding MesRingLineDeviceCode, UpdateSourceTrigger=PropertyChanged}"
+                                                    Style="{StaticResource ModernTextBox}"/>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
                 </StackPanel>
             </ScrollViewer>
             

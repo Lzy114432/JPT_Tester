@@ -42,6 +42,7 @@ namespace MarkingMachineFeeder.Viewmodel
         private string _axisConfigMenuHeader = "";
         private string _axisControlMenuHeader = "";
         private string _loopInteractionMenuHeader = "";
+        private string _mesManualSendMenuHeader = "MES手动发送";
         private string _hardwareControlMenuHeader = "";
         private string _systemPauseButtonText = "暂停";
         private string _systemResumeButtonText = "";
@@ -58,6 +59,7 @@ namespace MarkingMachineFeeder.Viewmodel
         private MarkingMachineFeeder.Windows.AxisConfigWindow _axisConfigWindow;
         private MarkingMachineFeeder.Windows.AxisControlWindow _axisControlWindow;
         private MarkingMachineFeeder.Windows.LoopInteractionWindow _loopInteractionWindow;
+        private MarkingMachineFeeder.Windows.MesManualSendWindow _mesManualSendWindow;
 
         // IO状态属性 - 根据io.csv定义的交互信号
         // 输入信号：IN3-IN11, IN15-IN17, IN19-IN20
@@ -266,6 +268,12 @@ namespace MarkingMachineFeeder.Viewmodel
             set { SetProperty(ref _loopInteractionMenuHeader, value); }
         }
 
+        public string MesManualSendMenuHeader
+        {
+            get { return _mesManualSendMenuHeader; }
+            set { SetProperty(ref _mesManualSendMenuHeader, value); }
+        }
+
         public string SystemPauseButtonText
         {
             get { return _systemPauseButtonText; }
@@ -290,6 +298,7 @@ namespace MarkingMachineFeeder.Viewmodel
         public DelegateCommand OpenAxisConfigCommand { get; }
         public DelegateCommand OpenAxisControlCommand { get; }
         public DelegateCommand OpenLoopInteractionCommand { get; }
+        public DelegateCommand OpenMesManualSendCommand { get; }
         public DelegateCommand ExitCommand { get; }
         
         // 物料优先级调整命令
@@ -355,6 +364,7 @@ namespace MarkingMachineFeeder.Viewmodel
             OpenAxisConfigCommand = new DelegateCommand(ExecuteOpenAxisConfig, CanOpenAxisConfig);
             OpenAxisControlCommand = new DelegateCommand(ExecuteOpenAxisControl, CanOpenAxisControl);
             OpenLoopInteractionCommand = new DelegateCommand(ExecuteOpenLoopInteraction, CanOpenLoopInteraction);
+            OpenMesManualSendCommand = new DelegateCommand(ExecuteOpenMesManualSend, CanOpenMesManualSend);
             ExitCommand = new DelegateCommand(ExecuteExit, CanExecuteExit);
             
             // 初始化物料优先级调整命令
@@ -678,6 +688,7 @@ namespace MarkingMachineFeeder.Viewmodel
             RaisePropertyChanged(nameof(IOMappingConfigMenuHeader));
             RaisePropertyChanged(nameof(AxisConfigMenuHeader));
             RaisePropertyChanged(nameof(LoopInteractionMenuHeader));
+            RaisePropertyChanged(nameof(MesManualSendMenuHeader));
             RaisePropertyChanged(nameof(HardwareControlMenuHeader));
             RaisePropertyChanged(nameof(SystemPauseButtonText));
             RaisePropertyChanged(nameof(SystemResumeButtonText));
@@ -716,6 +727,7 @@ namespace MarkingMachineFeeder.Viewmodel
             OpenAxisConfigCommand.RaiseCanExecuteChanged();
             OpenAxisControlCommand.RaiseCanExecuteChanged();
             OpenLoopInteractionCommand.RaiseCanExecuteChanged();
+            OpenMesManualSendCommand.RaiseCanExecuteChanged();
         }
 
         private void ExecuteOpenAxisConfig()
@@ -803,6 +815,36 @@ namespace MarkingMachineFeeder.Viewmodel
             {
                 _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "环线交互", ex.Message);
             }
+        }
+
+        private void ExecuteOpenMesManualSend()
+        {
+            try
+            {
+                // 单例模式：检查是否已存在MES手动发送窗口
+                if (_mesManualSendWindow == null || !_mesManualSendWindow.IsLoaded)
+                {
+                    _mesManualSendWindow = new MarkingMachineFeeder.Windows.MesManualSendWindow();
+                    _mesManualSendWindow.Closed += (s, e) => _mesManualSendWindow = null;
+                    _mesManualSendWindow.Show();
+                }
+                else
+                {
+                    _mesManualSendWindow.Activate();
+                    _mesManualSendWindow.Focus();
+                }
+
+                _uiLogger.Info(() => Ewan.Resources.LogMessages.ProcessingComplete, "MES手动发送");
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error(() => Ewan.Resources.LogMessages.ProcessingError, "MES手动发送", ex.Message);
+            }
+        }
+
+        private bool CanOpenMesManualSend()
+        {
+            return _securityManager.HasPermission(PermissionResources.HardwareControl, PermissionActions.Control);
         }
 
         private bool CanOpenLoopInteraction()

@@ -133,6 +133,9 @@
     <Compile Include="Window\LoopInteractionWindow.xaml.cs">
       <DependentUpon>LoopInteractionWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Window\MesManualSendWindow.xaml.cs">
+      <DependentUpon>MesManualSendWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Window\AxisControlWindow.xaml.cs">
       <DependentUpon>AxisControlWindow.xaml</DependentUpon>
     </Compile>
@@ -155,6 +158,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Window\LoopInteractionWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Window\MesManualSendWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -185,6 +192,7 @@
     <Compile Include="Viewmodel\AxisConfigViewModel.cs" />
     <Compile Include="Viewmodel\AxisControlViewModel.cs" />
     <Compile Include="Viewmodel\LoopInteractionViewModel.cs" />
+    <Compile Include="Viewmodel\MesManualSendViewModel.cs" />
     <Compile Include="Model\IOMapping.cs" />
     <Compile Include="Model\IOMappingConfig.cs" />
     <Compile Include="Window\LoginWindow.xaml.cs">
@@ -250,6 +258,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Desktop\切栈桥和除胶\Ewan.Mes\Ewan.Mes\Ewan.Mes.csproj">
+      <Project>{EA08185A-1940-492E-BEB4-0CD6AC2240D8}</Project>
+      <Name>Ewan.Mes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Ewan.Controls\Ewan.Controls.csproj">
       <Project>{19adfa5d-8754-4c88-ac93-80629734bc7b}</Project>
       <Name>Ewan.Controls</Name>

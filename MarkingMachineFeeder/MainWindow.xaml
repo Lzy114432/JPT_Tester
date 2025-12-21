@@ -628,6 +628,11 @@
                                       d:Header="环线交互"
                                       Command="{Binding OpenLoopInteractionCommand}"
                                       Style="{StaticResource IndustrialSubMenuItem}" />
+                            <!-- MES手动发送子菜单 -->
+                            <MenuItem Header="{Binding MesManualSendMenuHeader}"
+                                      d:Header="MES手动发送"
+                                      Command="{Binding OpenMesManualSendCommand}"
+                                      Style="{StaticResource IndustrialSubMenuItem}" />
                         </MenuItem>
                     </MenuItem>
                     <!-- 系统菜单 -->

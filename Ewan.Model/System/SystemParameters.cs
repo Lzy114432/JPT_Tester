@@ -111,6 +111,60 @@ namespace Ewan.Model.System
         /// </summary>
         public int CuttingBridgeCarReserveCount { get; set; } = 0;
 
+        #region MES
+
+        /// <summary>
+        /// 是否启用 MES
+        /// </summary>
+        public bool MesEnabled { get; set; } = false;
+
+        /// <summary>
+        /// MQTT Broker 地址
+        /// </summary>
+        public string MesBrokerHost { get; set; } = "localhost";
+
+        /// <summary>
+        /// MQTT Broker 端口
+        /// </summary>
+        public int MesBrokerPort { get; set; } = 1883;
+
+        /// <summary>
+        /// MQTT 用户名
+        /// </summary>
+        public string MesUserName { get; set; } = string.Empty;
+
+        /// <summary>
+        /// MQTT 密码
+        /// </summary>
+        public string MesPassword { get; set; } = string.Empty;
+
+        /// <summary>
+        /// MQTT ClientId（为空则自动生成）
+        /// </summary>
+        public string MesClientId { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 是否 CleanSession
+        /// </summary>
+        public bool MesCleanSession { get; set; } = true;
+
+        /// <summary>
+        /// KeepAlive（秒）
+        /// </summary>
+        public int MesKeepAliveSeconds { get; set; } = 30;
+
+        /// <summary>
+        /// 环线设备ID
+        /// </summary>
+        public string MesRingLineDeviceId { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 环线设备编码
+        /// </summary>
+        public string MesRingLineDeviceCode { get; set; } = string.Empty;
+
+        #endregion
+
         /// <summary>
         /// 创建默认参数配置
         /// </summary>
@@ -129,7 +183,17 @@ namespace Ewan.Model.System
                 SafetyDoorAlarmBypass = false,
                 EmptyCartReserveCount = 0,
                 CartCheckMode = CartCheckMode.EmptyCart,
-                CuttingBridgeCarReserveCount = 0
+                CuttingBridgeCarReserveCount = 0,
+                MesEnabled = false,
+                MesBrokerHost = "localhost",
+                MesBrokerPort = 1883,
+                MesUserName = string.Empty,
+                MesPassword = string.Empty,
+                MesClientId = string.Empty,
+                MesCleanSession = true,
+                MesKeepAliveSeconds = 30,
+                MesRingLineDeviceId = string.Empty,
+                MesRingLineDeviceCode = string.Empty
             };
         }
 
@@ -138,14 +202,41 @@ namespace Ewan.Model.System
         /// </summary>
         public bool Validate()
         {
-            return ResetDelayMs > 0
-                   && LowSpeedSetupDelayMs > 0
-                   && RingLineTimeoutSeconds > 0
-                   && EmptyCartReserveCount >= 0
-                   && CuttingBridgeCarReserveCount >= 0
-                   && Enum.IsDefined(typeof(BinSelection), LoadingBinSelection)
-                   && Enum.IsDefined(typeof(BinSelection), UnloadingBinSelection)
-                   && Enum.IsDefined(typeof(CartCheckMode), CartCheckMode);
+            var baseValid = ResetDelayMs > 0
+                            && LowSpeedSetupDelayMs > 0
+                            && RingLineTimeoutSeconds > 0
+                            && EmptyCartReserveCount >= 0
+                            && CuttingBridgeCarReserveCount >= 0
+                            && Enum.IsDefined(typeof(BinSelection), LoadingBinSelection)
+                            && Enum.IsDefined(typeof(BinSelection), UnloadingBinSelection)
+                            && Enum.IsDefined(typeof(CartCheckMode), CartCheckMode);
+
+            if (!baseValid)
+            {
+                return false;
+            }
+
+            if (!MesEnabled)
+            {
+                return true;
+            }
+
+            if (string.IsNullOrWhiteSpace(MesBrokerHost))
+            {
+                return false;
+            }
+
+            if (MesBrokerPort <= 0 || MesBrokerPort > 65535)
+            {
+                return false;
+            }
+
+            if (MesKeepAliveSeconds <= 0 || MesKeepAliveSeconds > ushort.MaxValue)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

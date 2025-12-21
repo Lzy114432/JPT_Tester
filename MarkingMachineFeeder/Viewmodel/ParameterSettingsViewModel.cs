@@ -132,6 +132,76 @@ namespace MarkingMachineFeeder.Viewmodel
             get => _cuttingBridgeCarReserveCount;
             set => SetProperty(ref _cuttingBridgeCarReserveCount, value);
         }
+
+        private bool _mesEnabled;
+        public bool MesEnabled
+        {
+            get => _mesEnabled;
+            set => SetProperty(ref _mesEnabled, value);
+        }
+
+        private string _mesBrokerHost = "localhost";
+        public string MesBrokerHost
+        {
+            get => _mesBrokerHost;
+            set => SetProperty(ref _mesBrokerHost, value);
+        }
+
+        private int _mesBrokerPort = 1883;
+        public int MesBrokerPort
+        {
+            get => _mesBrokerPort;
+            set => SetProperty(ref _mesBrokerPort, value);
+        }
+
+        private string _mesUserName = string.Empty;
+        public string MesUserName
+        {
+            get => _mesUserName;
+            set => SetProperty(ref _mesUserName, value);
+        }
+
+        private string _mesPassword = string.Empty;
+        public string MesPassword
+        {
+            get => _mesPassword;
+            set => SetProperty(ref _mesPassword, value);
+        }
+
+        private string _mesClientId = string.Empty;
+        public string MesClientId
+        {
+            get => _mesClientId;
+            set => SetProperty(ref _mesClientId, value);
+        }
+
+        private bool _mesCleanSession = true;
+        public bool MesCleanSession
+        {
+            get => _mesCleanSession;
+            set => SetProperty(ref _mesCleanSession, value);
+        }
+
+        private int _mesKeepAliveSeconds = 30;
+        public int MesKeepAliveSeconds
+        {
+            get => _mesKeepAliveSeconds;
+            set => SetProperty(ref _mesKeepAliveSeconds, value);
+        }
+
+        private string _mesRingLineDeviceId = string.Empty;
+        public string MesRingLineDeviceId
+        {
+            get => _mesRingLineDeviceId;
+            set => SetProperty(ref _mesRingLineDeviceId, value);
+        }
+
+        private string _mesRingLineDeviceCode = string.Empty;
+        public string MesRingLineDeviceCode
+        {
+            get => _mesRingLineDeviceCode;
+            set => SetProperty(ref _mesRingLineDeviceCode, value);
+        }
         #endregion
 
         public ObservableCollection<BinSelectionOption> BinOptions => _binOptions;
@@ -288,6 +358,17 @@ namespace MarkingMachineFeeder.Viewmodel
                 EnableUnloadingLabel = "启用下料模块";
                 LoadingBinSelectionLabel = "装料料仓选择";
                 UnloadingBinSelectionLabel = "下料料仓选择";
+
+                MesEnabled = false;
+                MesBrokerHost = "localhost";
+                MesBrokerPort = 1883;
+                MesUserName = string.Empty;
+                MesPassword = string.Empty;
+                MesClientId = string.Empty;
+                MesCleanSession = true;
+                MesKeepAliveSeconds = 30;
+                MesRingLineDeviceId = string.Empty;
+                MesRingLineDeviceCode = string.Empty;
                 
                 return;
             }
@@ -325,6 +406,16 @@ namespace MarkingMachineFeeder.Viewmodel
             EmptyCartReserveCount = parameters.EmptyCartReserveCount;
             CartCheckMode = parameters.CartCheckMode;
             CuttingBridgeCarReserveCount = parameters.CuttingBridgeCarReserveCount;
+            MesEnabled = parameters.MesEnabled;
+            MesBrokerHost = parameters.MesBrokerHost;
+            MesBrokerPort = parameters.MesBrokerPort;
+            MesUserName = parameters.MesUserName;
+            MesPassword = parameters.MesPassword;
+            MesClientId = parameters.MesClientId;
+            MesCleanSession = parameters.MesCleanSession;
+            MesKeepAliveSeconds = parameters.MesKeepAliveSeconds;
+            MesRingLineDeviceId = parameters.MesRingLineDeviceId;
+            MesRingLineDeviceCode = parameters.MesRingLineDeviceCode;
 
             UpdateBinOptionDisplays();
         }
@@ -435,7 +526,17 @@ namespace MarkingMachineFeeder.Viewmodel
                     SafetyDoorAlarmBypass = SafetyDoorAlarmBypass,
                     EmptyCartReserveCount = EmptyCartReserveCount,
                     CartCheckMode = CartCheckMode,
-                    CuttingBridgeCarReserveCount = CuttingBridgeCarReserveCount
+                    CuttingBridgeCarReserveCount = CuttingBridgeCarReserveCount,
+                    MesEnabled = MesEnabled,
+                    MesBrokerHost = MesBrokerHost,
+                    MesBrokerPort = MesBrokerPort,
+                    MesUserName = MesUserName,
+                    MesPassword = MesPassword,
+                    MesClientId = MesClientId,
+                    MesCleanSession = MesCleanSession,
+                    MesKeepAliveSeconds = MesKeepAliveSeconds,
+                    MesRingLineDeviceId = MesRingLineDeviceId,
+                    MesRingLineDeviceCode = MesRingLineDeviceCode
                 };
 
                 if (!parameters.Validate())

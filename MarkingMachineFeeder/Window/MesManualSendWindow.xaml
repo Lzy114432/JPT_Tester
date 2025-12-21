@@ -1,0 +1,415 @@
+<Window x:Class="MarkingMachineFeeder.Windows.MesManualSendWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:MarkingMachineFeeder.Viewmodel"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=vm:MesManualSendViewModel, IsDesignTimeCreatable=True}"
+        Title="MES手动发送"
+        Height="650"
+        Width="900"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ResizeMode="NoResize">
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="PrimaryColor" Color="#4682B4" />
+        <SolidColorBrush x:Key="SecondaryColor" Color="#5A9FD4" />
+
+        <LinearGradientBrush x:Key="WindowBackground" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#F8F9FA" Offset="0" />
+            <GradientStop Color="#E9ECEF" Offset="1" />
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="HeaderGradient" StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="#4682B4" Offset="0" />
+            <GradientStop Color="#5A9FD4" Offset="1" />
+        </LinearGradientBrush>
+
+        <Style x:Key="CardBorder" TargetType="Border">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="BorderBrush" Value="#E9ECEF" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="12" />
+            <Setter Property="Margin" Value="0,0,0,12" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+        </Style>
+
+        <Style x:Key="ModernTextBox" TargetType="TextBox">
+            <Setter Property="Height" Value="32" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Padding" Value="10,0" />
+            <Setter Property="Background" Value="#F8F9FA" />
+            <Setter Property="BorderBrush" Value="#E9ECEF" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Foreground" Value="#495057" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          VerticalAlignment="Center"
+                                          Margin="10,0,10,0"
+                                          HorizontalAlignment="Stretch"
+                                          HorizontalScrollBarVisibility="Hidden"
+                                          VerticalScrollBarVisibility="Hidden" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="BorderBrush" Value="#4682B4" />
+                                <Setter Property="Background" Value="White" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ModernComboBox" TargetType="ComboBox">
+            <Setter Property="Height" Value="32" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Padding" Value="10,0" />
+            <Setter Property="Background" Value="#F8F9FA" />
+            <Setter Property="BorderBrush" Value="#E9ECEF" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="Height" Value="38" />
+            <Setter Property="Margin" Value="6" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Background" Value="#4682B4" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#5A9FD4" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#36648B" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="#B0C4DE" />
+                                <Setter Property="Cursor" Value="Arrow" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Border Background="{StaticResource WindowBackground}"
+            CornerRadius="10"
+            BorderBrush="{StaticResource PrimaryColor}"
+            BorderThickness="2">
+        <Border.Effect>
+            <DropShadowEffect Color="Black" BlurRadius="20" ShadowDepth="5" Opacity="0.4" />
+        </Border.Effect>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0"
+                    Background="{StaticResource HeaderGradient}"
+                    CornerRadius="8,8,0,0"
+                    MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+                <Grid>
+                    <TextBlock Text="MES手动发送"
+                               FontSize="20"
+                               FontWeight="Bold"
+                               Foreground="White"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center" />
+
+                    <Button x:Name="CloseButton"
+                            Width="35"
+                            Height="35"
+                            HorizontalAlignment="Right"
+                            Margin="0,0,15,0"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Cursor="Hand"
+                            Click="CloseButton_Click">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" CornerRadius="4">
+                                    <Path Data="M0,0 L10,10 M10,0 L0,10"
+                                          Stroke="White"
+                                          StrokeThickness="2"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center" />
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
+            </Border>
+
+            <Grid Grid.Row="1" Margin="15">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="380" />
+                    <ColumnDefinition Width="15" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Left -->
+                <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <Border Style="{StaticResource CardBorder}">
+                            <StackPanel>
+                                <TextBlock Text="状态"
+                                           FontSize="14"
+                                           FontWeight="Bold"
+                                           Foreground="#343A40"
+                                           Margin="0,0,0,10" />
+
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="110" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="连接：" Foreground="#6C757D" VerticalAlignment="Center" />
+                                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding ConnectionStatusText}" FontWeight="SemiBold" />
+
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="环线：" Foreground="#6C757D" VerticalAlignment="Center" />
+                                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding RingLineStatusText}" FontWeight="SemiBold" />
+
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="订阅：" Foreground="#6C757D" VerticalAlignment="Center" />
+                                    <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding ResponseSubscribeStatusText}" FontWeight="SemiBold" />
+
+                                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Broker：" Foreground="#6C757D" VerticalAlignment="Center" />
+                                    <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding BrokerEndpointText}" FontWeight="SemiBold" />
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource CardBorder}">
+                            <StackPanel>
+                                <TextBlock Text="MES配置（SystemParameters）"
+                                           FontSize="14"
+                                           FontWeight="Bold"
+                                           Foreground="#343A40"
+                                           Margin="0,0,0,10" />
+
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="110" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="启用：" Foreground="#6C757D" VerticalAlignment="Center" />
+                                    <CheckBox Grid.Row="0" Grid.Column="1" IsChecked="{Binding MesEnabled}" IsEnabled="False" VerticalAlignment="Center" />
+
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Host：" Foreground="#6C757D" VerticalAlignment="Center" />
+                                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding BrokerHost}" Style="{StaticResource ModernTextBox}" IsReadOnly="True" />
+
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Port：" Foreground="#6C757D" VerticalAlignment="Center" />
+                                    <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding BrokerPort}" Style="{StaticResource ModernTextBox}" IsReadOnly="True" />
+
+                                    <TextBlock Grid.Row="3" Grid.Column="0" Text="ClientId：" Foreground="#6C757D" VerticalAlignment="Center" />
+                                    <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding ClientId}" Style="{StaticResource ModernTextBox}" IsReadOnly="True" />
+
+                                    <TextBlock Grid.Row="4" Grid.Column="0" Text="User：" Foreground="#6C757D" VerticalAlignment="Center" />
+                                    <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding UserName}" Style="{StaticResource ModernTextBox}" IsReadOnly="True" />
+
+                                    <TextBlock Grid.Row="5" Grid.Column="0" Text="Password：" Foreground="#6C757D" VerticalAlignment="Center" />
+                                    <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Password}" Style="{StaticResource ModernTextBox}" IsReadOnly="True" />
+
+                                    <TextBlock Grid.Row="6" Grid.Column="0" Text="CleanSession：" Foreground="#6C757D" VerticalAlignment="Center" />
+                                    <CheckBox Grid.Row="6" Grid.Column="1" IsChecked="{Binding CleanSession}" IsEnabled="False" VerticalAlignment="Center" />
+
+                                    <TextBlock Grid.Row="7" Grid.Column="0" Text="KeepAlive：" Foreground="#6C757D" VerticalAlignment="Center" />
+                                    <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding KeepAliveSeconds}" Style="{StaticResource ModernTextBox}" IsReadOnly="True" />
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource CardBorder}">
+                            <StackPanel>
+                                <TextBlock Text="环线配置"
+                                           FontSize="14"
+                                           FontWeight="Bold"
+                                           Foreground="#343A40"
+                                           Margin="0,0,0,10" />
+
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="110" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="DeviceId：" Foreground="#6C757D" VerticalAlignment="Center" />
+                                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding RingLineDeviceId}" Style="{StaticResource ModernTextBox}" IsReadOnly="True" />
+
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="DeviceCode：" Foreground="#6C757D" VerticalAlignment="Center" />
+                                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding RingLineDeviceCode}" Style="{StaticResource ModernTextBox}" IsReadOnly="True" />
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource CardBorder}">
+                            <StackPanel>
+                                <TextBlock Text="发送"
+                                           FontSize="14"
+                                           FontWeight="Bold"
+                                           Foreground="#343A40"
+                                           Margin="0,0,0,10" />
+
+                                <TextBlock Text="操作类型" Foreground="#6C757D" Margin="0,0,0,4" />
+                                <ComboBox ItemsSource="{Binding ActionOptions}"
+                                          SelectedItem="{Binding SelectedAction}"
+                                          DisplayMemberPath="Text"
+                                          Style="{StaticResource ModernComboBox}"
+                                          Margin="0,0,0,10" />
+
+                                <Grid Margin="0,0,0,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="110" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <TextBox Grid.Column="0"
+                                             Text="{Binding PlateCode}"
+                                             Style="{StaticResource ModernTextBox}"
+                                             VerticalAlignment="Center"
+                                             ToolTip="PlateCode" />
+                                    <Button Grid.Column="1"
+                                            Content="触发扫码"
+                                            Command="{Binding TriggerScanCommand}"
+                                            Style="{StaticResource ActionButton}"
+                                            Margin="10,0,0,0"
+                                            Background="#28A745" />
+                                </Grid>
+
+                                <TextBox Text="{Binding BillNoWip}"
+                                         Style="{StaticResource ModernTextBox}"
+                                         Margin="0,0,0,10"
+                                         ToolTip="BillNoWip（前料仓上料使用）" />
+
+                                <TextBox Text="{Binding FeedingLiaokuangCode}"
+                                         Style="{StaticResource ModernTextBox}"
+                                         Margin="0,0,0,10"
+                                         ToolTip="FeedingLiaokuangCode（卸料/中料仓/后料仓等使用）" />
+
+                                <Button Content="发送"
+                                        Command="{Binding SendCommand}"
+                                        Style="{StaticResource ActionButton}"
+                                        Background="#FF6B35"
+                                        Margin="0" />
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource CardBorder}">
+                            <StackPanel>
+                                <TextBlock Text="快捷操作"
+                                           FontSize="14"
+                                           FontWeight="Bold"
+                                           Foreground="#343A40"
+                                           Margin="0,0,0,10" />
+
+                                <UniformGrid Columns="2">
+                                    <Button Content="刷新配置" Command="{Binding RefreshCommand}" Style="{StaticResource ActionButton}" />
+                                    <Button Content="连接" Command="{Binding ConnectCommand}" Style="{StaticResource ActionButton}" Background="#17A2B8" />
+                                    <Button Content="断开" Command="{Binding DisconnectCommand}" Style="{StaticResource ActionButton}" Background="#6C757D" />
+                                    <Button Content="初始化环线" Command="{Binding InitializeRingLineCommand}" Style="{StaticResource ActionButton}" Background="#5A9FD4" />
+                                    <Button Content="订阅响应" Command="{Binding SubscribeResponseCommand}" Style="{StaticResource ActionButton}" Background="#20C997" />
+                                    <Button Content="取消订阅" Command="{Binding UnsubscribeResponseCommand}" Style="{StaticResource ActionButton}" Background="#DC3545" />
+                                    <Button Content="清空日志" Command="{Binding ClearLogsCommand}" Style="{StaticResource ActionButton}" Background="#343A40" />
+                                </UniformGrid>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- Right -->
+                <Border Grid.Column="2" Style="{StaticResource CardBorder}" Margin="0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="日志"
+                                   FontSize="14"
+                                   FontWeight="Bold"
+                                   Foreground="#343A40"
+                                   Margin="0,0,0,10" />
+
+                        <TabControl Grid.Row="1">
+                            <TabItem Header="发送">
+                                <TextBox Text="{Binding SendLogText}"
+                                         IsReadOnly="True"
+                                         TextWrapping="Wrap"
+                                         VerticalScrollBarVisibility="Auto"
+                                         HorizontalScrollBarVisibility="Auto"
+                                         FontFamily="Consolas"
+                                         FontSize="12"
+                                         Background="#0F172A"
+                                         Foreground="#E2E8F0"
+                                         BorderThickness="0"
+                                         Padding="10" />
+                            </TabItem>
+                            <TabItem Header="接收/提示">
+                                <TextBox Text="{Binding ReceiveLogText}"
+                                         IsReadOnly="True"
+                                         TextWrapping="Wrap"
+                                         VerticalScrollBarVisibility="Auto"
+                                         HorizontalScrollBarVisibility="Auto"
+                                         FontFamily="Consolas"
+                                         FontSize="12"
+                                         Background="#0F172A"
+                                         Foreground="#E2E8F0"
+                                         BorderThickness="0"
+                                         Padding="10" />
+                            </TabItem>
+                        </TabControl>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>
+
