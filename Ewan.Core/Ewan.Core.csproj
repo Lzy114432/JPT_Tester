@@ -79,6 +79,7 @@
     <Compile Include="IO\LayeredIOManager.cs" />
     <Compile Include="Logger\UILogger.cs" />
     <Compile Include="Axis\LTSMC.cs" />
+    <Compile Include="Mes\MesManager.cs" />
     <Compile Include="Module\BaseModule.cs" />
     <Compile Include="Module\BeltConveyorModule.cs" />
     <Compile Include="Module\BinElevatorModule.cs" />
@@ -118,6 +119,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Desktop\切栈桥和除胶\Ewan.Mes\Ewan.Mes\Ewan.Mes.csproj">
+      <Project>{ea08185a-1940-492e-beb4-0cd6ac2240d8}</Project>
+      <Name>Ewan.Mes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Ewan.LogManager\Ewan.LogManager.csproj">
       <Project>{88888888-8888-8888-8888-888888888888}</Project>
       <Name>Ewan.LogManager</Name>
