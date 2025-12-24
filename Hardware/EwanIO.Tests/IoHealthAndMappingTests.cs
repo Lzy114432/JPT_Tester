@@ -399,14 +399,21 @@ namespace EwanIO.Tests
             var tempFile = Path.GetTempFileName();
             try
             {
-                var config = new MappingConfigFile();
-                config.Inputs.Add(new MappingEntry
-                {
-                    LogicalIndex = 0,
-                    PhysicalIndex = 3,
-                    IsNormallyClosed = true,
-                    Comment = "Reversed input"
-                });
+                // Mapping file is a "full mapping table": keep physical indices 1:1.
+                var config = MappingConfigManager.GenerateDefault(inputCount: 4, outputCount: 4, description: "Test mapping");
+
+                var input0 = config.Inputs.Find(e => e.LogicalIndex == 0);
+                Assert.NotNull(input0);
+                input0.PhysicalIndex = 3;
+                input0.IsNormallyClosed = true;
+                input0.Comment = "Reversed input";
+
+                // Swap logical 3 away from physical 3 to avoid conflicts (default mapping is 1:1).
+                var input3 = config.Inputs.Find(e => e.LogicalIndex == 3);
+                Assert.NotNull(input3);
+                input3.PhysicalIndex = 0;
+                input3.IsNormallyClosed = false;
+                input3.Comment = "Swap for input0";
 
                 MappingConfigManager.Save(tempFile, config);
 
@@ -452,7 +459,9 @@ namespace EwanIO.Tests
 
                 // 修改映射
                 ctx.Mapping.SetInputMapping(0, 2, isNormallyClosed: true);
+                ctx.Mapping.SetInputMapping(2, 0, isNormallyClosed: false); // keep 1:1 mapping
                 ctx.Mapping.SetOutputMapping(1, 3, isNormallyClosed: false);
+                ctx.Mapping.SetOutputMapping(3, 1, isNormallyClosed: false); // keep 1:1 mapping
 
                 // Act
                 ctx.Mapping.Save(tempFile);
@@ -638,13 +647,19 @@ namespace EwanIO.Tests
             var tempFile = Path.GetTempFileName();
             try
             {
-                var config = new MappingConfigFile();
-                config.Inputs.Add(new MappingEntry
-                {
-                    LogicalIndex = 0,
-                    PhysicalIndex = 1,
-                    IsNormallyClosed = false
-                });
+                // Mapping file is a "full mapping table": keep physical indices 1:1.
+                var config = MappingConfigManager.GenerateDefault(inputCount: 4, outputCount: 4, description: "Test mapping");
+
+                var input0 = config.Inputs.Find(e => e.LogicalIndex == 0);
+                Assert.NotNull(input0);
+                input0.PhysicalIndex = 1;
+                input0.IsNormallyClosed = false;
+
+                // Swap logical 1 away from physical 1 to avoid conflicts (default mapping is 1:1).
+                var input1 = config.Inputs.Find(e => e.LogicalIndex == 1);
+                Assert.NotNull(input1);
+                input1.PhysicalIndex = 0;
+                input1.IsNormallyClosed = false;
 
                 MappingConfigManager.Save(tempFile, config);
 
@@ -686,7 +701,9 @@ namespace EwanIO.Tests
                 .WithMapping(m =>
                 {
                     m.SetInput(0, 2, isNormallyClosed: true, comment: "Test input");
+                    m.SetInput(2, 0, isNormallyClosed: false, comment: "Swap input");
                     m.SetOutput(1, 3, isNormallyClosed: false, comment: "Test output");
+                    m.SetOutput(3, 1, isNormallyClosed: false, comment: "Swap output");
                 })
                 .Build();
 
