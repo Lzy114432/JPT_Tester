@@ -205,7 +205,7 @@ namespace Ewan.BusinessBonding
         {
             try
             {
-                return _ioManager.LayeredIO.ReadInBit(sensorIndex, true);
+                return _ioManager.Ctx.GetInput(sensorIndex);
             }
             catch (Exception ex)
             {

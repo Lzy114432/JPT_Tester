@@ -347,12 +347,11 @@ namespace Ewan.Core.Module
             try
             {
                 // 检查机械手装载完成信号
-                if (_ioManager.LayeredIO.ReadFallingBit(ROBOT_LOADING_COMPLETE_SIGNAL))
+                if (_ioManager.Ctx.Edge.F(ROBOT_LOADING_COMPLETE_SIGNAL))
                 {
                     // 设置装载完成状态
                     SetLoadingCompleted(true);
 
-                    _ioManager.LayeredIO.ClearFallingBit(ROBOT_LOADING_COMPLETE_SIGNAL);
                     if (IsUnloadingActiveOrPending())
                     {
                         _uiLogger.InfoRaw("处理已开始: {0}", "检测到下料请求，跳过料仓下降");
@@ -364,14 +363,10 @@ namespace Ewan.Core.Module
                 }
 
                 // 检查机械手卸载完成信号
-                if (_ioManager.LayeredIO.ReadFallingBit(ROBOT_UNLOADING_COMPLETE_SIGNAL))
+                if (_ioManager.Ctx.Edge.F(ROBOT_UNLOADING_COMPLETE_SIGNAL))
                 {
                     // 设置卸载完成状态
                     SetUnloadingCompleted(true);
-
-                    _ioManager.LayeredIO.ClearFallingBit(ROBOT_UNLOADING_COMPLETE_SIGNAL);
-
-
 
                     ResetSelectedBinStates(BinElevatorMode.Unloading);
                 }
@@ -907,15 +902,15 @@ namespace Ewan.Core.Module
             }
             
             // 根据Y11/Y12/Y13信号选择性重置料仓状态
-            if (_ioManager.LayeredIO.ReadOutBit(BIN1_SELECT_SIGNAL))
+            if (_ioManager.Ctx.GetOutput(BIN1_SELECT_SIGNAL))
             {
                 _bin1State = mode == BinElevatorMode.Unloading ? BinElevatorState.Stopped : BinElevatorState.Unknown;
             }
-            if (_ioManager.LayeredIO.ReadOutBit(BIN2_SELECT_SIGNAL))
+            if (_ioManager.Ctx.GetOutput(BIN2_SELECT_SIGNAL))
             {
                 _bin2State = mode == BinElevatorMode.Unloading ? BinElevatorState.Stopped : BinElevatorState.Unknown;
             }
-            if (_ioManager.LayeredIO.ReadOutBit(BIN3_SELECT_SIGNAL))
+            if (_ioManager.Ctx.GetOutput(BIN3_SELECT_SIGNAL))
             {
                 _bin3State = mode == BinElevatorMode.Unloading ? BinElevatorState.Stopped : BinElevatorState.Unknown;
             }
@@ -952,8 +947,8 @@ namespace Ewan.Core.Module
                         return false;
                 }
                 
-                // 使用LayeredIO读取感应器状态
-                return _ioManager.LayeredIO.ReadInBit(sensorIndex, true);
+                // 使用IO上下文读取感应器状态
+                return _ioManager.Ctx.GetInput(sensorIndex);
             }
             catch (Exception ex)
             {

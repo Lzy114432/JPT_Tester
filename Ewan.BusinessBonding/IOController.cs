@@ -1,7 +1,7 @@
-﻿using Ewan.Core;
-using Ewan.Core.IO;
-using IOLibrary.Core.Models;
 using System;
+using Ewan.Core;
+using Ewan.Core.IO;
+using EwanIO.Core.Simulation;
 
 namespace Ewan.BusinessBonding
 {
@@ -11,18 +11,18 @@ namespace Ewan.BusinessBonding
         {
             try
             {
-                // 使用LayeredIOManager的WriteOutput方法
-                // 根据当前映射模式决定是否使用映射
-                bool result = LayeredIOManager.Instance().LayeredIO.WriteOutBit(index, value, useMapping);
-                
-                if (result)
+                var ctx = LayeredIOManager.Instance().Ctx;
+
+                if (value)
                 {
-                    _uiLogger.InfoRaw("成功写入 {0} = {1}", $"Y{index}", value ? "ON" : "OFF");
+                    ctx.On(index);
                 }
                 else
                 {
-                    _uiLogger.WarnRaw("写入 {0} 失败", $"Y{index}");
+                    ctx.Off(index);
                 }
+
+                _uiLogger.InfoRaw("成功写入 {0} = {1}", $"Y{index}", value ? "ON" : "OFF");
             }
             catch (Exception ex)
             {
@@ -40,12 +40,12 @@ namespace Ewan.BusinessBonding
         {
             try
             {
-                // 转换为SimulateMode枚举
-                SimulateMode simulateMode = (SimulateMode)mode;
-                
+                // 转换为 SimMode 枚举 (0=None, 1=ForceOn, 2=ForceOff)
+                SimMode simulateMode = (SimMode)mode;
+
                 // 使用LayeredIOManager的SetInputSimulate方法
-                bool result = LayeredIOManager.Instance().SetInputSimulate(index, simulateMode, useMapping);
-                
+                bool result = LayeredIOManager.Instance().SetInputSimulate(index, simulateMode);
+
                 if (result)
                 {
                     string modeName;
@@ -61,7 +61,7 @@ namespace Ewan.BusinessBonding
                             modeName = "None";
                             break;
                     }
-                    
+
                     _uiLogger.InfoRaw("IO模拟模式设置: {0} = {1}", $"X{index}", modeName);
                 }
             }
@@ -79,8 +79,8 @@ namespace Ewan.BusinessBonding
             try
             {
                 // 使用LayeredIOManager的ClearAllSimulations方法
-                bool result = LayeredIOManager.Instance().ClearAllSimulations(true);
-                
+                bool result = LayeredIOManager.Instance().ClearAllSimulations();
+
                 if (result)
                 {
                     _uiLogger.InfoRaw("清除所有IO模拟状态");
@@ -93,3 +93,4 @@ namespace Ewan.BusinessBonding
         }
     }
 }
+

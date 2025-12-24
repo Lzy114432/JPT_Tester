@@ -34,11 +34,6 @@ namespace Ewan.BusinessBonding
         private StreamRunner _safetyRunner;
 
         /// <summary>
-        /// IO轮询流程runner
-        /// </summary>
-        private StreamRunner _ioPollingRunner;
-
-        /// <summary>
         /// 料仓升降控制流程runner
         /// </summary>
         private StreamRunner _binElevatorRunner;
@@ -75,7 +70,6 @@ namespace Ewan.BusinessBonding
         private List<IModule> _mainModules = new List<IModule>();
         private List<IModule> _plcHeartModules = new List<IModule>();
         private List<IModule> _safetyModules = new List<IModule>();
-        private List<IModule> _ioPollingModules = new List<IModule>();
         private List<IModule> _binElevatorModules = new List<IModule>();
         private List<IModule> _statusIndicatorModules = new List<IModule>();
         private List<IModule> _beltConveyorModules = new List<IModule>();
@@ -128,16 +122,6 @@ namespace Ewan.BusinessBonding
             
             // 创建安全流程runner
             _safetyRunner = new StreamRunner(_safetyModules);
-            
-            #endregion
-
-            #region //构造IO轮询流程的节点并加入到对应runner
-            
-            // 添加IOPollingModule用于IO数据轮询（200ms）
-            _ioPollingModules.Add(new IOPollingModule());
-            
-            // 创建IO轮询流程runner
-            _ioPollingRunner = new StreamRunner(_ioPollingModules);
             
             #endregion
 
@@ -210,19 +194,17 @@ namespace Ewan.BusinessBonding
                 // 通过消息队列通知系统状态变为待机（三色灯变为黄灯常亮）
                 SendSystemStatusMessage(SystemStatus.Standby, "流程启动 - 待机状态");
 
-                //2.运行IO轮询流程（第三优先级，为其他流程提供IO数据）
-                StartIOPollingStream();
-                //3.运行plc心跳流程
+                //2.运行plc心跳流程
                 StartPlcHeartStream();
-                //4.运行主流程
+                //3.运行主流程
                 StartMainStream();
-                //5.运行料仓升降控制流程
+                //4.运行料仓升降控制流程
                 StartBinElevatorStream();
-                //6.运行皮带输送控制流程
+                //5.运行皮带输送控制流程
                 StartBeltConveyorStream();
-                //7.运行Station心跳流程
+                //6.运行Station心跳流程
                 StartStationHeartbeatStream();
-                //8.运行环线通信流程
+                //7.运行环线通信流程
                 StartRingLineStream();
                 //9.运行报警流程（暂时注释，调试时启用）
                 //StartAlarmStream();
@@ -264,9 +246,6 @@ namespace Ewan.BusinessBonding
             StopRingLineStream();
             //7.停止报警流程（暂时注释，调试时启用）
             //StopAlarmStream();
-            //8.停止IO轮询流程
-            StopIOPollingStream();
-
 
             // 通过消息队列通知系统状态变为停止（关闭所有指示灯）
             SendSystemStatusMessage(SystemStatus.Stopped, "流程停止");
@@ -317,17 +296,6 @@ namespace Ewan.BusinessBonding
             }
         }
 
-        /// <summary>
-        /// 启动IO轮询流程
-        /// </summary>
-        private void StartIOPollingStream()
-        {
-            if (_ioPollingRunner != null)
-            {
-                _ioPollingRunner.Start();
-            }
-        }
-
         ///// <summary>
         ///// 启动产能流程
         ///// </summary>
@@ -361,14 +329,6 @@ namespace Ewan.BusinessBonding
         private void StopSafetyStream()
         {
             _safetyRunner?.Stop();
-        }
-
-        /// <summary>
-        /// 停止IO轮询流程
-        /// </summary>
-        private void StopIOPollingStream()
-        {
-            _ioPollingRunner?.Stop();
         }
 
         /// <summary>

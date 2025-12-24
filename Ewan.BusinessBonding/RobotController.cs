@@ -324,7 +324,7 @@ namespace Ewan.BusinessBonding
             
             try
             {
-                return LayeredIOManager.Instance().LayeredIO.ReadInBit(sensorIndex, true);
+                return LayeredIOManager.Instance().Ctx.GetInput(sensorIndex);
             }
             catch (Exception ex)
             {
@@ -380,7 +380,7 @@ namespace Ewan.BusinessBonding
         {
             try
             {
-                return LayeredIOManager.Instance().LayeredIO.ReadInBit(index, true);
+                return LayeredIOManager.Instance().Ctx.GetInput(index);
             }
             catch (Exception ex)
             {

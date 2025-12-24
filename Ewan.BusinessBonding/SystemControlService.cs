@@ -99,7 +99,7 @@ namespace Ewan.BusinessBonding
             try
             {
                 var ioManager = LayeredIOManager.Instance();
-                if (ioManager == null || ioManager.LayeredIO == null)
+                if (ioManager == null || ioManager.Ctx == null)
                 {
                     _uiLogger.WarnRaw("无法检测安全门状态: IO未初始化");
                     return false;
@@ -116,7 +116,7 @@ namespace Ewan.BusinessBonding
 
                 foreach (var input in SAFETY_DOOR_INPUTS)
                 {
-                    bool doorOpen = ioManager.LayeredIO.ReadInBit(input, true);
+                    bool doorOpen = ioManager.Ctx.GetInput(input);
                     if (doorOpen)
                     {
                         return false;
@@ -191,21 +191,16 @@ namespace Ewan.BusinessBonding
                     ioManager.Connect();
                 }
 
-                var layered = ioManager.LayeredIO;
-                if (layered == null)
+                var ctx = ioManager.Ctx;
+                if (ctx == null)
                 {
-                    _uiLogger.WarnRaw("发送脉冲失败: 未获取到LayeredIO实例");
+                    _uiLogger.WarnRaw("发送脉冲失败: 未获取到IO上下文实例");
                     return;
                 }
 
-                if (!layered.WriteOutBit(outputIndex, true, true))
-                {
-                    _uiLogger.WarnRaw("脉冲置位失败: Y{0}", outputIndex);
-                    return;
-                }
-
-                Thread.Sleep(pulseWidthMs);
-                layered.WriteOutBit(outputIndex, false, true);
+                int durationTicks = Math.Max(1, pulseWidthMs / 10);
+                bool now = outputIndex == OUT_STOP;
+                ctx.Pulse(outputIndex, durationTicks, now: now);
                 _uiLogger.DebugRaw("已发送脉冲: Y{0}", outputIndex);
             }
             catch (Exception ex)

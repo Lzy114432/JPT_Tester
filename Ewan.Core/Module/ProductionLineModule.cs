@@ -504,18 +504,15 @@ namespace Ewan.Core.Module
                     _ioManager.Connect();
                 }
 
-                var layered = _ioManager.LayeredIO;
-                if (layered == null)
+                var ctx = _ioManager.Ctx;
+                if (ctx == null)
                 {
                     return;
                 }
 
-                if (layered.WriteOutBit(OUT_RECOVERY, true, true))
-                {
-                    Thread.Sleep(RECOVERY_PULSE_WIDTH_MS);
-                    layered.WriteOutBit(OUT_RECOVERY, false, true);
-                    _uiLogger.InfoRaw("处理已完成: {0}", "发送复原脉冲(OUT7)");
-                }
+                int durationTicks = Math.Max(1, RECOVERY_PULSE_WIDTH_MS / 10);
+                ctx.Pulse(OUT_RECOVERY, durationTicks);
+                _uiLogger.InfoRaw("处理已完成: {0}", "发送复原脉冲(OUT7)");
             }
             catch (Exception ex)
             {

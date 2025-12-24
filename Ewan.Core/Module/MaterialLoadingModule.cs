@@ -102,12 +102,12 @@ namespace Ewan.Core.Module
                 SendStatusMessage(SystemStatus.Running, "上料机初始化中");
 
                 // 步骤1: OUT_STOP置位true（停止信号）
-                _ioManager.LayeredIO.WriteOutBit(OUT_STOP, true);
+                _ioManager.Ctx.On(OUT_STOP);
                 _appLogger.Info("OUT_STOP置位true");
                 Thread.Sleep(500);
 
                 // 步骤2: OUT_STOP置位false
-                _ioManager.LayeredIO.WriteOutBit(OUT_STOP, false);
+                _ioManager.Ctx.Off(OUT_STOP);
                 _appLogger.Info("OUT_STOP置位false");
                 Thread.Sleep(500);
 
@@ -115,16 +115,16 @@ namespace Ewan.Core.Module
                 // 复位时保持低速，自动运行时切换高速
 
                 // 步骤3: OUT_START置位true（开始信号）
-                _ioManager.LayeredIO.WriteOutBit(OUT_START, true);
+                _ioManager.Ctx.On(OUT_START);
                 _appLogger.Info("OUT_START置位true");
                 Thread.Sleep(500);
 
                 // 步骤4: OUT_START置位false
-                _ioManager.LayeredIO.WriteOutBit(OUT_START, false);
+                _ioManager.Ctx.Off(OUT_START);
                 _appLogger.Info("OUT_START置位false");
 
                 // 步骤5: OUT_ALLOW_PICK置位false
-                _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, false);
+                _ioManager.Ctx.Off(OUT_ALLOW_PICK);
                 _appLogger.Info("OUT_ALLOW_PICK置位true");
 
                 _initialized = true;
@@ -243,11 +243,11 @@ namespace Ewan.Core.Module
             }
             
             // 无下料请求，检查是否有料片检测信号
-            if (_ioManager.LayeredIO.ReadInBit(MATERIAL_DETECT_SIGNAL) && 
+            if (_ioManager.Ctx.GetInput(MATERIAL_DETECT_SIGNAL) && 
                 _sharedState?.TryStartLoading() == true)
             {
                 // 有料片检测信号，允许取料
-                _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, true);
+                _ioManager.Ctx.On(OUT_ALLOW_PICK);
                 
                 _sharedState?.MarkLoadingInProgress();
                 
@@ -264,7 +264,7 @@ namespace Ewan.Core.Module
         private void ProcessPickingMaterial()
         {
             // 在取料过程中检测是否到达扫码位置X7
-            if (_ioManager.LayeredIO.ReadInBit(SCAN_POSITION_SIGNAL))
+            if (_ioManager.Ctx.GetInput(SCAN_POSITION_SIGNAL))
             {
                 _currentState = MaterialLoadingState.AtScanPosition;
                 _uiLogger.InfoRaw("处理已完成: {0}", "料片已到达扫码位置(X7=true)，开始扫码流程");
@@ -276,20 +276,20 @@ namespace Ewan.Core.Module
         /// </summary>
         private void ProcessAtScanPosition()
         {
-            _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, false);
+            _ioManager.Ctx.Off(OUT_ALLOW_PICK);
 
             DLManager.Instance().TriggerScan(); // 触发扫码,调试模式不需要结果
                                                 //if(DLManager.Instance().TriggerScan() != "")
                                                 //{
 
-            _ioManager.LayeredIO.WriteOutBit(OUT_SCAN_COMPLETE, true);  // 扫码完成
+            _ioManager.Ctx.On(OUT_SCAN_COMPLETE);  // 扫码完成
 
 
             var targetBin = GetConfiguredBinNumber();
             SetBinSelectSignal(targetBin);
 
                 // 触发放入料仓信号
-                _ioManager.LayeredIO.WriteOutBit(TRIGGER_LOADING_SIGNAL, true);
+                _ioManager.Ctx.On(TRIGGER_LOADING_SIGNAL);
                 
                 // 转换到移动到料仓状态
                 _currentState = MaterialLoadingState.MovingToBinByScanInfo;
@@ -310,9 +310,9 @@ namespace Ewan.Core.Module
             {
 
                 // 清除装料信号
-                _ioManager.LayeredIO.WriteOutBit(TRIGGER_LOADING_SIGNAL, false);
+                _ioManager.Ctx.Off(TRIGGER_LOADING_SIGNAL);
                 ClearBinSelectSignals();
-                _ioManager.LayeredIO.WriteOutBit(OUT_SCAN_COMPLETE, false);
+                _ioManager.Ctx.Off(OUT_SCAN_COMPLETE);
 
                 // 等待0.3秒确保机械手已离开
                 Thread.Sleep(300);
@@ -348,7 +348,7 @@ namespace Ewan.Core.Module
 
         private void SetBinSelectSignal(int binNumber)
         {
-            if (_ioManager?.LayeredIO == null)
+            if (_ioManager?.Ctx == null)
             {
                 return;
             }
@@ -358,27 +358,27 @@ namespace Ewan.Core.Module
             switch (binNumber)
             {
                 case 1:
-                    _ioManager.LayeredIO.WriteOutBit(BIN1_SELECT_SIGNAL, true);
+                    _ioManager.Ctx.On(BIN1_SELECT_SIGNAL);
                     break;
                 case 2:
-                    _ioManager.LayeredIO.WriteOutBit(BIN2_SELECT_SIGNAL, true);
+                    _ioManager.Ctx.On(BIN2_SELECT_SIGNAL);
                     break;
                 case 3:
-                    _ioManager.LayeredIO.WriteOutBit(BIN3_SELECT_SIGNAL, true);
+                    _ioManager.Ctx.On(BIN3_SELECT_SIGNAL);
                     break;
             }
         }
 
         private void ClearBinSelectSignals()
         {
-            if (_ioManager?.LayeredIO == null)
+            if (_ioManager?.Ctx == null)
             {
                 return;
             }
 
-            _ioManager.LayeredIO.WriteOutBit(BIN1_SELECT_SIGNAL, false);
-            _ioManager.LayeredIO.WriteOutBit(BIN2_SELECT_SIGNAL, false);
-            _ioManager.LayeredIO.WriteOutBit(BIN3_SELECT_SIGNAL, false);
+            _ioManager.Ctx.Off(BIN1_SELECT_SIGNAL);
+            _ioManager.Ctx.Off(BIN2_SELECT_SIGNAL);
+            _ioManager.Ctx.Off(BIN3_SELECT_SIGNAL);
         }
 
 #endregion
@@ -431,16 +431,16 @@ namespace Ewan.Core.Module
                 // 清除所有相关输出信号，确保设备回到初始安全状态
                 try
                 {
-                    if (_ioManager?.LayeredIO != null)
+                    if (_ioManager?.Ctx != null)
                     {
-                        _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, false);
-                        _ioManager.LayeredIO.WriteOutBit(OUT_SEND_PICK_CMD, false);
-                        _ioManager.LayeredIO.WriteOutBit(TRIGGER_LOADING_SIGNAL, false);
-                        _ioManager.LayeredIO.WriteOutBit(OUT_SCAN_COMPLETE, false);
+                        _ioManager.Ctx.Off(OUT_ALLOW_PICK);
+                        _ioManager.Ctx.Off(OUT_SEND_PICK_CMD);
+                        _ioManager.Ctx.Off(TRIGGER_LOADING_SIGNAL);
+                        _ioManager.Ctx.Off(OUT_SCAN_COMPLETE);
                         ClearBinSelectSignals();
-                        _ioManager.LayeredIO.WriteOutBit(OUT_START, false);
-                        _ioManager.LayeredIO.WriteOutBit(OUT_STOP, false);
-                        _ioManager.LayeredIO.WriteOutBit(OUT_HIGH_SPEED, false);
+                        _ioManager.Ctx.Off(OUT_START);
+                        _ioManager.Ctx.Off(OUT_STOP);
+                        _ioManager.Ctx.Off(OUT_HIGH_SPEED);
                     }
                 }
                 catch (Exception ex)
@@ -486,12 +486,12 @@ namespace Ewan.Core.Module
         {
             try
             {
-                if (_ioManager?.LayeredIO == null)
+                if (_ioManager?.Ctx == null)
                 {
                     return;
                 }
 
-                bool robotBusy = _ioManager.LayeredIO.ReadInBit(ROBOT_BUSY_SIGNAL);
+                bool robotBusy = _ioManager.Ctx.GetInput(ROBOT_BUSY_SIGNAL);
                 bool shouldStop = stateSnapshot == MaterialLoadingState.PickingMaterial && robotBusy;
 
                 if (shouldStop == _beltStopRequested)

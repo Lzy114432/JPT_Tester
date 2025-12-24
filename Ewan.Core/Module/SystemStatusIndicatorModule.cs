@@ -248,20 +248,37 @@ namespace Ewan.Core.Module
 
 
 
-                    // 控制红灯 (Y2)
-                    bool redResult = _ioManager.LayeredIO.WriteOutBit(AlarmIOMapping.RED_LIGHT, red);
-                    // 控制黄灯 (Y1)
-                    bool yellowResult = _ioManager.LayeredIO.WriteOutBit(AlarmIOMapping.YELLOW_LIGHT, yellow);
-                    // 控制绿灯 (Y0)
-                    bool greenResult = _ioManager.LayeredIO.WriteOutBit(AlarmIOMapping.GREEN_LIGHT, green);
-
-                    // 记录操作结果
-                    //_appLogger.Info(() => $"三色灯控制: 红灯={red}({(redResult ? "成功" : "失败")}), 黄灯={yellow}({(yellowResult ? "成功" : "失败")}), 绿灯={green}({(greenResult ? "成功" : "失败")})");
-
-                    // 如果有任何一个灯控制失败，记录警告
-                    if (!redResult || !yellowResult || !greenResult)
+                    var ctx = _ioManager.Ctx;
+                    if (ctx == null)
                     {
-                        _appLogger.Warn("部分三色灯控制失败");
+                        return;
+                    }
+
+                    if (red)
+                    {
+                        ctx.On(x => x.红灯);
+                    }
+                    else
+                    {
+                        ctx.Off(x => x.红灯);
+                    }
+
+                    if (yellow)
+                    {
+                        ctx.On(x => x.黄灯);
+                    }
+                    else
+                    {
+                        ctx.Off(x => x.黄灯);
+                    }
+
+                    if (green)
+                    {
+                        ctx.On(x => x.绿灯);
+                    }
+                    else
+                    {
+                        ctx.Off(x => x.绿灯);
                     }
                 }
                 else
@@ -390,12 +407,11 @@ namespace Ewan.Core.Module
                 // 实际控制蜂鸣器IO输出
                 if (_ioManager != null && _ioManager.IsConnected)
                 {
-                    bool buzzerResult = _ioManager.LayeredIO.WriteOutBit(AlarmIOMapping.BUZZER, true);
-                    _appLogger.Debug($"蜂鸣器启动{(buzzerResult ? "成功" : "失败")}, 地址: {AlarmIOMapping.BUZZER}");
-
-                    if (!buzzerResult)
+                    var ctx = _ioManager.Ctx;
+                    if (ctx != null)
                     {
-                        _appLogger.Warn("蜂鸣器启动失败");
+                        ctx.On(x => x.蜂鸣器);
+                        _appLogger.Debug($"蜂鸣器启动, 地址: {AlarmIOMapping.BUZZER}");
                     }
                 }
                 else
@@ -451,12 +467,11 @@ namespace Ewan.Core.Module
                 // 关闭蜂鸣器IO输出
                 if (_ioManager != null && _ioManager.IsConnected)
                 {
-                    bool buzzerResult = _ioManager.LayeredIO.WriteOutBit(AlarmIOMapping.BUZZER, false);
-                    _appLogger.Debug($"蜂鸣器停止{(buzzerResult ? "成功" : "失败")}, 地址: {AlarmIOMapping.BUZZER}");
-
-                    if (!buzzerResult)
+                    var ctx = _ioManager.Ctx;
+                    if (ctx != null)
                     {
-                        _appLogger.Warn("蜂鸣器停止失败");
+                        ctx.Off(x => x.蜂鸣器);
+                        _appLogger.Debug($"蜂鸣器停止, 地址: {AlarmIOMapping.BUZZER}");
                     }
                 }
                 else

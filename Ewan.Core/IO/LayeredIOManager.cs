@@ -1,71 +1,93 @@
-﻿using Ewan.Core.Attribute;
-using IOLibrary.Core.Factory;
-using IOLibrary.Core.Interfaces;
-using IOLibrary.Core.Layered;
-using IOLibrary.Core.Models;
-using Newtonsoft.Json;
-using PlcCommunication.Implementations.MCProtocol;
 using System;
 using System.IO;
+using Ewan.Core.Attribute;
+using Ewan.Model.IO;
+using EwanIO.Core.Context;
+using EwanIO.Core.Interfaces;
+using EwanIO.Core.Simulation;
+using EwanIO.Hardware.IOC0640;
+using EwanIO.Hardware.Mitsubishi;
+using EwanIO.Hardware.SMC606IO;
+using Newtonsoft.Json.Linq;
+using PlcCommunication.Implementations.MCProtocol;
 
 namespace Ewan.Core.IO
 {
     /// <summary>
-    /// LayeredIO管理器 - 统一管理IO硬件层访问
+    /// IO管理器 - 统一管理 IO 上下文与硬件连接（EwanIO V2）
     /// Priority = 1 表示在基础配置（日志、权限等）之后，业务模块（StreamController）之前初始化
     /// </summary>
     [Manager(Priority = 1)]
     public class LayeredIOManager : BaseManager<LayeredIOManager>
     {
-        private LayeredIO _layeredIO;
-        private readonly object _lockObject = new object();
-        private HardwareType _hardwareType = HardwareType.MitsubishiPLC;
-        private string _connectionString;
-        private string _mappingConfigPath;
-        private bool _enableLogging = true;
+        private enum IoHardwareType
+        {
+            MitsubishiPLC,
+            IOC0640,
+            SMC606IO
+        }
 
-        /// <summary>
-        /// 获取LayeredIO实例
-        /// </summary>
-        public LayeredIO LayeredIO
+        private readonly object _lockObject = new object();
+
+        private IoContext<MarkingMachineFeederIOModel> _ctx;
+        private IHardwareIO _hardware;
+
+        private IoHardwareType _hardwareType = IoHardwareType.SMC606IO;
+        private string _connectionString = string.Empty;
+        private string _mappingConfigPath = string.Empty;
+        private int _inputPhysicalCount;
+        private int _outputPhysicalCount;
+
+        public IoContext<MarkingMachineFeederIOModel> Ctx
         {
             get
             {
                 lock (_lockObject)
                 {
-                    return _layeredIO;
+                    return _ctx;
                 }
             }
         }
 
-        /// <summary>
-        /// IO是否已连接
-        /// </summary>
-        public bool IsConnected => _layeredIO?.IsOpen ?? false;
+        public bool IsConnected
+        {
+            get
+            {
+                lock (_lockObject)
+                {
+                    return _hardware != null && _hardware.IsConnected;
+                }
+            }
+        }
 
-        /// <summary>
-        /// 输入点数
-        /// </summary>
-        public int InputCount => _layeredIO?.InputCount ?? 0;
+        public int InputCount
+        {
+            get
+            {
+                lock (_lockObject)
+                {
+                    return _ctx?.Meta.InputCount ?? 0;
+                }
+            }
+        }
 
-        /// <summary>
-        /// 输出点数
-        /// </summary>
-        public int OutputCount => _layeredIO?.OutputCount ?? 0;
+        public int OutputCount
+        {
+            get
+            {
+                lock (_lockObject)
+                {
+                    return _ctx?.Meta.OutputCount ?? 0;
+                }
+            }
+        }
 
-        /// <summary>
-        /// 初始化管理器
-        /// </summary>
         public override bool Init()
         {
             try
             {
-                // 从配置加载硬件类型和连接参数
                 LoadConfiguration();
-                
-                // 创建LayeredIO实例
-                CreateLayeredIO();
-                
+                CreateContext();
                 _uiLogger.Info("管理器初始化成功: {0}", "LayeredIOManager");
                 return base.Init();
             }
@@ -76,369 +98,266 @@ namespace Ewan.Core.IO
             }
         }
 
-        /// <summary>
-        /// 加载配置
-        /// </summary>
         private void LoadConfiguration()
         {
-            // TODO: 从配置文件加载设置
-            // 这里先使用默认值，后续可以从配置文件读取
-            //_hardwareType = HardwareType.MitsubishiPLC;
-            //_connectionString = "127.0.0.1:6000";
-            _hardwareType = HardwareType.SMC606IO;
-            _connectionString = "192.168.5.11";
-            _mappingConfigPath = Path.Combine("Config", "io_mapping.json");
-            _enableLogging = true;
-            
-            _uiLogger.Debug("IO配置已从以下位置加载: {0}", 
-                $"HardwareType={_hardwareType}, ConnectionString={_connectionString}, MappingPath={_mappingConfigPath}");
+            _mappingConfigPath = ResolveMappingConfigPath();
+
+            if (!File.Exists(_mappingConfigPath))
+            {
+                _uiLogger.Warn("IO配置文件不存在: {0}", _mappingConfigPath);
+                _hardwareType = IoHardwareType.SMC606IO;
+                _connectionString = "192.168.5.11";
+                _inputPhysicalCount = 0;
+                _outputPhysicalCount = 0;
+                return;
+            }
+
+            string json = File.ReadAllText(_mappingConfigPath);
+            var root = JObject.Parse(json);
+
+            string hardwareTypeText = (string)root["HardwareType"] ?? (string)root["hardwareType"] ?? string.Empty;
+            _hardwareType = ParseHardwareType(hardwareTypeText);
+
+            _connectionString = (string)root["ConnectionString"] ?? (string)root["connectionString"] ?? string.Empty;
+
+            var inputMappings = root["InputMappings"] ?? root["inputs"];
+            var outputMappings = root["OutputMappings"] ?? root["outputs"];
+            _inputPhysicalCount = GetMaxIndexPlusOne(inputMappings, "PhysicalIndex", "physical");
+            _outputPhysicalCount = GetMaxIndexPlusOne(outputMappings, "PhysicalIndex", "physical");
+
+            if (_hardwareType == IoHardwareType.SMC606IO && string.IsNullOrWhiteSpace(_connectionString))
+            {
+                _connectionString = "192.168.5.11";
+            }
+
+            _uiLogger.Debug("IO配置已加载: {0}",
+                $"HardwareType={_hardwareType}, ConnectionString={_connectionString}, MappingPath={_mappingConfigPath}, In={_inputPhysicalCount}, Out={_outputPhysicalCount}");
         }
 
-        /// <summary>
-        /// 创建LayeredIO实例
-        /// </summary>
-        private void CreateLayeredIO()
+        private static IoHardwareType ParseHardwareType(string hardwareTypeText)
+        {
+            if (string.IsNullOrWhiteSpace(hardwareTypeText))
+            {
+                return IoHardwareType.SMC606IO;
+            }
+
+            if (string.Equals(hardwareTypeText, "MitsubishiPLC", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(hardwareTypeText, "Mitsubishi", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(hardwareTypeText, "PLC", StringComparison.OrdinalIgnoreCase))
+            {
+                return IoHardwareType.MitsubishiPLC;
+            }
+
+            if (string.Equals(hardwareTypeText, "IOC0640", StringComparison.OrdinalIgnoreCase))
+            {
+                return IoHardwareType.IOC0640;
+            }
+
+            if (string.Equals(hardwareTypeText, "SMC606IO", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(hardwareTypeText, "SMC606", StringComparison.OrdinalIgnoreCase))
+            {
+                return IoHardwareType.SMC606IO;
+            }
+
+            return IoHardwareType.SMC606IO;
+        }
+
+        private static int GetMaxIndexPlusOne(JToken mappingsToken, string key1, string key2)
+        {
+            if (mappingsToken == null)
+            {
+                return 0;
+            }
+
+            var arr = mappingsToken as JArray;
+            if (arr == null)
+            {
+                return 0;
+            }
+
+            int max = -1;
+            foreach (var entry in arr)
+            {
+                int? idx = (int?)entry[key1] ?? (int?)entry[key2];
+                if (idx.HasValue && idx.Value > max)
+                {
+                    max = idx.Value;
+                }
+            }
+
+            return max + 1;
+        }
+
+        private string ResolveMappingConfigPath()
+        {
+            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+
+            string[] candidates =
+            {
+                Path.Combine(baseDir, "Config", "io_mapping.json"),
+                Path.Combine(baseDir, "config", "io_mapping.json"),
+                Path.Combine(Environment.CurrentDirectory, "Config", "io_mapping.json"),
+                Path.Combine(Environment.CurrentDirectory, "config", "io_mapping.json"),
+                Path.Combine("Config", "io_mapping.json"),
+                Path.Combine("config", "io_mapping.json")
+            };
+
+            foreach (string path in candidates)
+            {
+                try
+                {
+                    if (File.Exists(path))
+                    {
+                        return Path.GetFullPath(path);
+                    }
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
+
+            return Path.Combine(baseDir, "Config", "io_mapping.json");
+        }
+
+        private void CreateContext()
         {
             lock (_lockObject)
             {
-                switch (_hardwareType)
+                DisposeContext();
+
+                _hardware = CreateHardware();
+
+                var builder = IoContextBuilder.For<MarkingMachineFeederIOModel>()
+                    .WithId("MarkingMachineFeeder")
+                    .WithHardware(_hardware);
+
+                if (File.Exists(_mappingConfigPath))
                 {
-                    case HardwareType.MitsubishiPLC:
-                        CreateMitsubishiPLC();
-                        break;
-                    case HardwareType.IOC0640:
-                        CreateIOC0640();
-                        break;
-                    case HardwareType.SMC606IO:
-                        CreateSMC606IO();
-                        break;
-                    default:
-                        throw new NotSupportedException($"不支持的硬件类型: {_hardwareType}");
+                    builder = builder.WithMapping(_mappingConfigPath);
+                }
+
+                _ctx = builder.Build();
+
+                if (!File.Exists(_mappingConfigPath))
+                {
+                    _ctx.Mapping.GenerateDefaultMapping();
                 }
             }
         }
 
-        /// <summary>
-        /// 创建三菱PLC的LayeredIO
-        /// </summary>
-        private void CreateMitsubishiPLC()
+        private IHardwareIO CreateHardware()
         {
-            var mcPlc = new MCProtocolPlc();
-            
-            var builder = LayeredIOBuilder.Create()
-                .WithMitsubishiPLC(mcPlc, 64)
-                .WithName("MarkingMachine IO System")
-                .WithLogging(_enableLogging);
-
-            // 如果映射配置文件存在，加载它
-            bool configFileExists = File.Exists(_mappingConfigPath);
-            if (configFileExists)
+            switch (_hardwareType)
             {
-                builder.WithMappingConfig(_mappingConfigPath);
-                _uiLogger.Info("IO配置文件已加载: {0}", _mappingConfigPath);
+                case IoHardwareType.MitsubishiPLC:
+                    int ioCount = Math.Max(Math.Max(_inputPhysicalCount, _outputPhysicalCount), 64);
+                    return new MCPlc(new MCProtocolPlc(), ioCount);
+                case IoHardwareType.IOC0640:
+                    return new IOC0640DriverWrapper();
+                case IoHardwareType.SMC606IO:
+                default:
+                    return new IOSMC606DriverWrapper();
             }
-
-            _layeredIO = builder.Build();
-            
-            // 如果配置文件不存在，尝试自动加载或创建默认映射
-            if (!configFileExists)
-            {
-                // 尝试自动查找配置文件
-                _layeredIO.LoadMappingConfiguration("");
-                
-                // 检查是否成功加载了映射（检查前几个点位）
-                bool hasMappings = false;
-                for (int i = 0; i < 5; i++)
-                {
-                    if (_layeredIO.GetInputMapping(i) != null || _layeredIO.GetOutputMapping(i) != null)
-                    {
-                        hasMappings = true;
-                        break;
-                    }
-                }
-                
-                // 如果还是没有映射，创建基本的默认映射
-                if (!hasMappings)
-                {
-                    CreateDefaultMappings();
-                    _uiLogger.Info("默认IO映射已创建");
-                }
-                else
-                {
-                    _uiLogger.Info("自动配置已加载");
-                }
-            }
-            
-            _uiLogger.Debug("IO硬件已创建: {0}", "MitsubishiPLC");
         }
 
-        /// <summary>
-        /// 创建IOC0640的LayeredIO
-        /// </summary>
-        private void CreateIOC0640()
+        private string BuildSmc606ConnectionString(string rawConnectionString)
         {
-            var config = new HardwareIOConfig
+            string conn = rawConnectionString ?? string.Empty;
+            if (string.IsNullOrWhiteSpace(conn))
             {
-                Type = HardwareType.IOC0640,
-                ConnectionString = "boards=2"
-            };
-            
-            var hardware = HardwareIOFactory.Create(config);
-            _layeredIO = new LayeredIO(hardware)
+                conn = "192.168.5.11";
+            }
+
+            int inputCount = _inputPhysicalCount > 0 ? _inputPhysicalCount : InputCount;
+            int outputCount = _outputPhysicalCount > 0 ? _outputPhysicalCount : OutputCount;
+            if (inputCount <= 0)
             {
-                Name = "MarkingMachine IO System",
-                EnableLogging = _enableLogging
-            };
-            
-            _uiLogger.Debug("IO硬件已创建: {0}", "IOC0640");
+                inputCount = 40;
+            }
+
+            if (outputCount <= 0)
+            {
+                outputCount = 34;
+            }
+
+            int inputBoards = (int)Math.Ceiling(inputCount / 32.0);
+            int outputBoards = (int)Math.Ceiling(outputCount / 32.0);
+
+            if (conn.IndexOf("|", StringComparison.Ordinal) < 0)
+            {
+                return $"{conn}|input={inputCount}|output={outputCount}|inputboards={inputBoards}|outputboards={outputBoards}";
+            }
+
+            string lower = conn.ToLowerInvariant();
+            if (lower.IndexOf("input=", StringComparison.Ordinal) < 0)
+            {
+                conn += $"|input={inputCount}";
+                lower = conn.ToLowerInvariant();
+            }
+
+            if (lower.IndexOf("output=", StringComparison.Ordinal) < 0)
+            {
+                conn += $"|output={outputCount}";
+                lower = conn.ToLowerInvariant();
+            }
+
+            if (lower.IndexOf("inputboards=", StringComparison.Ordinal) < 0)
+            {
+                conn += $"|inputboards={inputBoards}";
+                lower = conn.ToLowerInvariant();
+            }
+
+            if (lower.IndexOf("outputboards=", StringComparison.Ordinal) < 0)
+            {
+                conn += $"|outputboards={outputBoards}";
+            }
+
+            return conn;
         }
 
-        /// <summary>
-        /// 创建SMC606IO的LayeredIO
-        /// </summary>
-        private void CreateSMC606IO()
-        {
-            var config = new HardwareIOConfig
-            {
-                Type = HardwareType.SMC606IO,
-                ConnectionString = _connectionString ?? ""
-            };
-            
-            var hardware = HardwareIOFactory.Create(config);
-            _layeredIO = new LayeredIO(hardware)
-            {
-                Name = "MarkingMachine IO System",
-                EnableLogging = _enableLogging
-            };
-            
-            _uiLogger.Debug("IO硬件已创建: {0}", "SMC606IO");
-        }
-
-        /// <summary>
-        /// 检查并创建SMC606IO映射配置
-        /// </summary>
-        private void CheckAndCreateSMC606IOMappings()
-        {
-            try
-            {
-                // 获取硬件实际检测到的IO数量
-                int actualInputCount = _layeredIO.InputCount;
-                int actualOutputCount = _layeredIO.OutputCount;
-                
-                // 如果映射配置文件存在，先尝试加载
-                bool configFileExists = File.Exists(_mappingConfigPath);
-                if (configFileExists)
-                {
-                    _layeredIO.LoadMappingConfiguration(_mappingConfigPath);
-                    _uiLogger.Info("IO配置文件已加载: {0}", _mappingConfigPath);
-                    
-                    // 检查现有映射数量是否与实际IO数量匹配
-                    int existingInputMappings = 0;
-                    int existingOutputMappings = 0;
-                    
-                    // 计算现有输入映射数量
-                    for (int i = 0; i < actualInputCount; i++)
-                    {
-                        if (_layeredIO.GetInputMapping(i) != null)
-                            existingInputMappings++;
-                    }
-                    
-                    // 计算现有输出映射数量
-                    for (int i = 0; i < actualOutputCount; i++)
-                    {
-                        if (_layeredIO.GetOutputMapping(i) != null)
-                            existingOutputMappings++;
-                    }
-                    
-                    // 如果映射数量匹配，直接使用现有映射
-                    if (existingInputMappings == actualInputCount && existingOutputMappings == actualOutputCount)
-                    {
-                        _uiLogger.Info("IO配置已从以下位置加载: {0}", 
-                            $"使用现有映射: 输入={existingInputMappings}, 输出={existingOutputMappings}");
-                        return;
-                    }
-                    
-                    // 映射数量不匹配，重新创建
-                    _uiLogger.Info("IO配置已从以下位置加载: {0}", 
-                        $"映射数量不匹配，重新创建: 现有(输入={existingInputMappings}, 输出={existingOutputMappings}) vs 实际(输入={actualInputCount}, 输出={actualOutputCount})");
-                    
-                    // 清除现有映射，重新创建
-                    CreateSMC606IODefaultMappings();
-                    _uiLogger.Info("默认IO映射已创建");
-                    return;
-                }
-
-                // 配置文件不存在，尝试自动查找配置文件
-                _layeredIO.LoadMappingConfiguration("");
-                
-                // 检查是否成功加载了映射（检查前几个点位）
-                bool hasMappings = false;
-                for (int i = 0; i < 5; i++)
-                {
-                    if (_layeredIO.GetInputMapping(i) != null || _layeredIO.GetOutputMapping(i) != null)
-                    {
-                        hasMappings = true;
-                        break;
-                    }
-                }
-                
-                // 如果还是没有映射，根据硬件实际IO数量创建默认映射
-                if (!hasMappings)
-                {
-                    CreateSMC606IODefaultMappings();
-                    _uiLogger.Info("默认IO映射已创建");
-                }
-                else
-                {
-                    _uiLogger.Info("自动配置已加载");
-                }
-            }
-            catch (Exception ex)
-            {
-                _uiLogger.Error("保存IO配置失败: {0}", _mappingConfigPath, ex.Message);
-                
-                // 加载失败时，创建默认映射
-                try
-                {
-                    CreateSMC606IODefaultMappings();
-                    _uiLogger.Info("默认IO映射已创建");
-                }
-                catch (Exception createEx)
-                {
-                    _uiLogger.Error("保存IO配置失败: {0}", "DefaultMappings", createEx.Message);
-                }
-            }
-        }
-
-        /// <summary>
-        /// 为SMC606IO创建默认映射，根据硬件实际检测到的IO数量
-        /// </summary>
-        private void CreateSMC606IODefaultMappings()
-        {
-            // 获取硬件实际检测到的IO数量
-            int actualInputCount = _layeredIO.InputCount;
-            int actualOutputCount = _layeredIO.OutputCount;
-            
-            _uiLogger.Info("IO配置已从以下位置加载: {0}", 
-                $"SMC606IO检测到输入点数: {actualInputCount}, 输出点数: {actualOutputCount}");
-
-            // 根据实际输入点数创建映射
-            for (int i = 0; i < actualInputCount; i++)
-            {
-                _layeredIO.AddInputMapping(i, i, $"X{i}", true);
-            }
-            _uiLogger.Info("已创建 {0} 个输入映射", actualInputCount);
-            
-            // 根据实际输出点数创建映射
-            for (int i = 0; i < actualOutputCount; i++)
-            {
-                _layeredIO.AddOutputMapping(i, i, $"Y{i}", true);
-            }
-            _uiLogger.Info("已创建 {0} 个输出映射", actualOutputCount);
-            
-            // 保存默认映射到配置文件
-            SaveDefaultMappingConfiguration();
-        }
-
-        /// <summary>
-        /// 创建默认的IO映射
-        /// </summary>
-        private void CreateDefaultMappings()
-        {
-            // 根据硬件实际的输入点数创建映射
-            int inputCount = _layeredIO.InputCount;
-            for (int i = 0; i < inputCount; i++)
-            {
-                _layeredIO.AddInputMapping(i, i, $"X{i}", true);  // 从X0开始
-            }
-            _uiLogger.Info("已创建 {0} 个输入映射", inputCount);
-            
-            // 根据硬件实际的输出点数创建映射
-            int outputCount = _layeredIO.OutputCount;
-            for (int i = 0; i < outputCount; i++)
-            {
-                _layeredIO.AddOutputMapping(i, i, $"Y{i}", true);  // 从Y0开始
-            }
-            _uiLogger.Info("已创建 {0} 个输出映射", outputCount);
-            
-            // 保存默认映射到配置文件
-            SaveDefaultMappingConfiguration();
-        }
-        
-        /// <summary>
-        /// 保存默认映射配置到文件
-        /// </summary>
-        private void SaveDefaultMappingConfiguration()
-        {
-            try
-            {
-                // 确保Config目录存在
-                string configDir = Path.GetDirectoryName(_mappingConfigPath);
-                if (!string.IsNullOrEmpty(configDir) && !Directory.Exists(configDir))
-                {
-                    Directory.CreateDirectory(configDir);
-                    _uiLogger.Info("目录已创建: {0}", configDir);
-                }
-                
-                // 先保存映射配置到文件
-                _layeredIO.SaveMappingConfiguration(_mappingConfigPath);
-                
-                // 读取刚保存的文件并添加硬件信息
-                string json = File.ReadAllText(_mappingConfigPath);
-                dynamic config = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
-                
-                // 添加硬件类型和连接字符串
-                config.HardwareType = _hardwareType.ToString();
-                config.ConnectionString = _connectionString;
-                
-                // 重新保存包含硬件信息的完整配置
-                string updatedJson = Newtonsoft.Json.JsonConvert.SerializeObject(config, Newtonsoft.Json.Formatting.Indented);
-                File.WriteAllText(_mappingConfigPath, updatedJson);
-                
-                _uiLogger.Info("IO配置已保存到: {0}", _mappingConfigPath);
-            }
-            catch (Exception ex)
-            {
-                _uiLogger.Error("保存IO配置失败: {0}", _mappingConfigPath, ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// 连接到硬件
-        /// </summary>
-        /// <param name="connectionString">连接字符串（可选，不提供则使用配置的连接字符串）</param>
-        /// <returns>连接是否成功</returns>
         public bool Connect(string connectionString = null)
         {
             lock (_lockObject)
             {
-                if (_layeredIO == null)
+                if (_hardware == null || _ctx == null)
                 {
                     _uiLogger.Error("IO未初始化");
                     return false;
                 }
 
+                if (_hardware.IsConnected)
+                {
+                    return true;
+                }
+
+                string connStr = connectionString ?? _connectionString ?? string.Empty;
+                if (_hardwareType == IoHardwareType.SMC606IO)
+                {
+                    connStr = BuildSmc606ConnectionString(connStr);
+                }
+
                 try
                 {
-                    string connStr = connectionString ?? _connectionString  ;
-                    bool result = _layeredIO.Open(connStr);
-                    
-                    if (result)
-                    {
-                        _uiLogger.Info("IO已连接: {0}", connStr);
-                        
-                        // SMC606IO连接成功后，检查并创建映射配置
-                        if (_hardwareType == HardwareType.SMC606IO)
-                        {
-                            CheckAndCreateSMC606IOMappings();
-                        }
-                    }
-                    else
+                    bool result = _hardware.Connect(connStr);
+                    if (!result)
                     {
                         _uiLogger.Error("IO连接失败: {0}", connStr);
+                        return false;
                     }
-                    
-                    return result;
+
+                    _uiLogger.Info("IO已连接: {0}", connStr);
+
+                    try
+                    {
+                        _ctx.Tick();
+                    }
+                    catch (Exception ex)
+                    {
+                        _uiLogger.Warn("IO初次Tick失败: {0}", ex.Message);
+                    }
+
+                    return true;
                 }
                 catch (Exception ex)
                 {
@@ -448,232 +367,239 @@ namespace Ewan.Core.IO
             }
         }
 
-        /// <summary>
-        /// 断开连接
-        /// </summary>
         public void Disconnect()
         {
             lock (_lockObject)
             {
-                if (_layeredIO != null && _layeredIO.IsOpen)
+                if (_hardware != null && _hardware.IsConnected)
                 {
-                    _layeredIO.Close();
+                    try
+                    {
+                        _hardware.Disconnect();
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+
                     _uiLogger.Info("IO已断开连接");
                 }
             }
         }
 
-        /// <summary>
-        /// 数据同步
-        /// </summary>
-        public void DataSync()
+        public void Tick()
         {
+            IoContext<MarkingMachineFeederIOModel> ctx;
             lock (_lockObject)
             {
-                _layeredIO?.DataSync();
+                ctx = _ctx;
             }
+
+            ctx?.Tick();
         }
 
-        /// <summary>
-        /// 设置输入点模拟状态
-        /// </summary>
-        /// <param name="index">输入点索引 (0-63)</param>
-        /// <param name="mode">模拟模式 (SimulateMode枚举)</param>
-        /// <param name="useMapping">是否使用映射 (true: 使用映射索引, false: 使用物理索引)</param>
-        /// <returns>设置是否成功</returns>
-        public bool SetInputSimulate(int index, SimulateMode mode, bool useMapping = true)
+        public IOStatus CreateStatusSnapshot()
         {
+            var status = new IOStatus
+            {
+                HardwareType = _hardwareType.ToString(),
+                IsConnected = IsConnected,
+                LastUpdateTime = DateTime.Now,
+                ErrorMessage = string.Empty
+            };
+
+            IoContext<MarkingMachineFeederIOModel> ctx;
+            IHardwareIO hw;
             lock (_lockObject)
             {
-                if (_layeredIO == null)
-                {
-                    _uiLogger.Error("IO未初始化");
-                    return false;
-                }
-
-                try
-                {
-                    // 使用LayeredIO的SetInputSimulate方法
-                    _layeredIO.SetInputSimulate(index, mode, useMapping);
-                    
-                    string modeName;
-                    switch ((int)mode)
-                    {
-                        case 1:
-                            modeName = "ForceOn";
-                            break;
-                        case 2:
-                            modeName = "ForceOff";
-                            break;
-                        default:
-                            modeName = "None";
-                            break;
-                    }
-                    
-                    _uiLogger.Debug("IO模拟模式设置: {0} = {1}", $"X{index}", modeName);
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    _uiLogger.Error("IO模拟错误: {0} - {1}", $"X{index}", ex.Message);
-                    return false;
-                }
+                ctx = _ctx;
+                hw = _hardware;
             }
+
+            if (ctx == null || hw == null)
+            {
+                status.IsConnected = false;
+                status.ErrorMessage = "IO未初始化";
+                return status;
+            }
+
+            int logicalInputCount = Math.Min(status.XMapped.Length, ctx.Meta.InputCount);
+            int logicalOutputCount = Math.Min(status.YMapped.Length, ctx.Meta.OutputCount);
+
+            for (int i = 0; i < logicalInputCount; i++)
+            {
+                bool logicalValue = ctx.GetInput(i);
+                status.XMapped[i] = logicalValue;
+                status.X[i] = logicalValue;
+                status.XMappedNames[i] = ctx.Meta.GetInputName(i);
+                status.XNames[i] = status.XMappedNames[i];
+                status.XSimulateMode[i] = (int)ctx.Sim.GetMode(i);
+            }
+
+            for (int i = 0; i < logicalOutputCount; i++)
+            {
+                bool logicalValue = ctx.GetOutput(i);
+                status.YMapped[i] = logicalValue;
+                status.Y[i] = logicalValue;
+                status.YMappedNames[i] = ctx.Meta.GetOutputName(i);
+                status.YNames[i] = status.YMappedNames[i];
+            }
+
+            int physicalInputReadCount = Math.Min(status.XReal.Length, hw.InputCount);
+            for (int i = 0; i < physicalInputReadCount; i++)
+            {
+                status.XReal[i] = hw.ReadInBit(i);
+            }
+
+            int physicalOutputReadCount = Math.Min(status.YReal.Length, hw.OutputCount);
+            for (int i = 0; i < physicalOutputReadCount; i++)
+            {
+                status.YReal[i] = hw.ReadOutBit(i);
+            }
+
+            return status;
         }
 
-        /// <summary>
-        /// 获取输入点模拟状态
-        /// </summary>
-        /// <param name="index">输入点索引 (0-63)</param>
-        /// <param name="useMapping">是否使用映射 (true: 使用映射索引, false: 使用物理索引)</param>
-        /// <returns>模拟模式</returns>
-        public SimulateMode GetInputSimulate(int index, bool useMapping = true)
+        public bool SetInputSimulate(int index, SimMode mode)
         {
+            IoContext<MarkingMachineFeederIOModel> ctx;
             lock (_lockObject)
             {
-                if (_layeredIO == null)
+                ctx = _ctx;
+            }
+
+            if (ctx == null)
+            {
+                _uiLogger.Error("IO未初始化");
+                return false;
+            }
+
+            try
+            {
+                switch (mode)
                 {
-                    return SimulateMode.None;
+                    case SimMode.ForceOn:
+                        ctx.Sim.ForceOn(index);
+                        break;
+                    case SimMode.ForceOff:
+                        ctx.Sim.ForceOff(index);
+                        break;
+                    default:
+                        ctx.Sim.ClearSimulate(index);
+                        break;
                 }
 
-                try
-                {
-                    return _layeredIO.GetInputSimulate(index, useMapping);
-                }
-                catch (Exception ex)
-                {
-                    _uiLogger.Error("IO模拟错误: {0} - {1}", $"X{index}", ex.Message);
-                    return SimulateMode.None;
-                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error("IO模拟错误: {0} - {1}", $"X{index}", ex.Message);
+                return false;
             }
         }
 
-        /// <summary>
-        /// 清除所有输入点模拟状态
-        /// </summary>
-        /// <param name="useMapping">是否使用映射</param>
-        /// <returns>清除是否成功</returns>
-        public bool ClearAllSimulations(bool useMapping = true)
+        public SimMode GetInputSimulate(int index)
         {
+            IoContext<MarkingMachineFeederIOModel> ctx;
             lock (_lockObject)
             {
-                if (_layeredIO == null)
-                {
-                    _uiLogger.Error("IO未初始化");
-                    return false;
-                }
+                ctx = _ctx;
+            }
 
-                try
-                {
-                    // 清除所有输入点的模拟状态
-                    for (int i = 0; i < InputCount; i++)
-                    {
-                        _layeredIO.SetInputSimulate(i, SimulateMode.None, useMapping);
-                    }
-                    
-                    _uiLogger.Info("清除所有IO模拟状态");
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    _uiLogger.Error("IO模拟错误: {0} - {1}", "Clear", ex.Message);
-                    return false;
-                }
+            if (ctx == null)
+            {
+                return SimMode.None;
+            }
+
+            try
+            {
+                return ctx.Sim.GetMode(index);
+            }
+            catch
+            {
+                return SimMode.None;
             }
         }
 
-        /// <summary>
-        /// 设置硬件类型（需要在Init之前调用）
-        /// </summary>
-        public void SetHardwareType(HardwareType type, string connectionString = null)
+        public bool ClearAllSimulations()
         {
-            if (_layeredIO != null)
-            {
-                throw new InvalidOperationException("不能在初始化后更改硬件类型");
-            }
-            
-            _hardwareType = type;
-            if (!string.IsNullOrEmpty(connectionString))
-            {
-                _connectionString = connectionString;
-            }
-        }
-
-        /// <summary>
-        /// 重新创建LayeredIO（用于切换硬件类型）
-        /// </summary>
-        public bool RecreateLayeredIO(HardwareType type, string connectionString)
-        {
+            IoContext<MarkingMachineFeederIOModel> ctx;
             lock (_lockObject)
             {
-                try
-                {
-                    // 断开现有连接
-                    Disconnect();
-                    
-                    // 更新配置
-                    _hardwareType = type;
-                    _connectionString = connectionString;
-                    
-                    // 重新创建
-                    CreateLayeredIO();
-                    
-                    // 连接
-                    return Connect();
-                }
-                catch (Exception ex)
-                {
-                    _uiLogger.Error("重新创建IO失败: {0}", ex.Message);
-                    return false;
-                }
+                ctx = _ctx;
             }
-        }
 
-        /// <summary>
-        /// 强制重新创建IO映射配置（根据实际检测到的IO数量）
-        /// </summary>
-        /// <returns>重新创建是否成功</returns>
-        public bool ForceRecreateIOMapping()
-        {
-            lock (_lockObject)
+            if (ctx == null)
             {
-                try
-                {
-                    if (_layeredIO == null || !_layeredIO.IsOpen)
-                    {
-                        _uiLogger.Error("IO未连接");
-                        return false;
-                    }
+                _uiLogger.Error("IO未初始化");
+                return false;
+            }
 
-                    if (_hardwareType == HardwareType.SMC606IO)
-                    {
-                        CreateSMC606IODefaultMappings();
-                        _uiLogger.Info("默认IO映射已创建");
-                        return true;
-                    }
-                    else
-                    {
-                        CreateDefaultMappings();
-                        _uiLogger.Info("默认IO映射已创建");
-                        return true;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _uiLogger.Error("保存IO配置失败: {0}", "ForceRecreateIOMapping", ex.Message);
-                    return false;
-                }
+            try
+            {
+                ctx.Sim.ClearAll();
+                _uiLogger.Info("清除所有IO模拟状态");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error("IO模拟错误: {0} - {1}", "Clear", ex.Message);
+                return false;
             }
         }
 
-        /// <summary>
-        /// 销毁管理器
-        /// </summary>
         public override void Destroy()
         {
-            Disconnect();
-            _layeredIO = null;
+            lock (_lockObject)
+            {
+                try
+                {
+                    if (_hardware != null && _hardware.IsConnected)
+                    {
+                        _hardware.Disconnect();
+                    }
+                }
+                catch
+                {
+                    // ignored
+                }
+
+                DisposeContext();
+            }
+
             base.Destroy();
+        }
+
+        private void DisposeContext()
+        {
+            if (_ctx != null)
+            {
+                try
+                {
+                    _ctx.Dispose();
+                }
+                catch
+                {
+                    // ignored
+                }
+
+                _ctx = null;
+            }
+
+            if (_hardware != null)
+            {
+                try
+                {
+                    _hardware.Dispose();
+                }
+                catch
+                {
+                    // ignored
+                }
+
+                _hardware = null;
+            }
         }
     }
 }
+

@@ -264,7 +264,7 @@ namespace Ewan.Core.Module
                 
                 _uiLogger.InfoRaw("处理已开始: {0}", "环线请求下料，设置优先级标志");
                 
-                if (_ioManager.LayeredIO.ReadOutBit(OUT_ALLOW_PICK))
+                if (_ioManager.Ctx.GetOutput(OUT_ALLOW_PICK))
                 {
                     // 正在装填等下完成
                     _requestProcessed = false;
@@ -339,7 +339,7 @@ namespace Ewan.Core.Module
                 _sharedState.SetUnloadingCompleted(false);
 
                 // 清除信号
-                _ioManager.LayeredIO.WriteOutBit(TRIGGER_PICKUP_SIGNAL, false);
+                _ioManager.Ctx.Off(TRIGGER_PICKUP_SIGNAL);
                 ClearBinSelectSignals();
 
                 // 转换到等待扫码位置状态
@@ -355,11 +355,8 @@ namespace Ewan.Core.Module
         private void ProcessWaitingForScanPosition()
         {
             // 使用边缘检测读取扫码位置脉冲信号X7
-            if (_ioManager.LayeredIO.ReadRisingBit(SCAN_POSITION_SIGNAL))
+            if (_ioManager.Ctx.Edge.R(SCAN_POSITION_SIGNAL))
             {
-                // 清除当前边缘检测状态
-                _ioManager.LayeredIO.ClearRisingBit(SCAN_POSITION_SIGNAL);
-
                 _currentState = MaterialUnloadingState.Scanning;
                 _uiLogger.InfoRaw("处理已开始: {0}", "已到达扫码位置，开始扫码");
             }
@@ -377,12 +374,12 @@ namespace Ewan.Core.Module
                 _lastScannedQrCode = scannedCode;
 
                 // 发送扫码完成信号给机械臂
-                _ioManager.LayeredIO.WriteOutBit(OUT_SCAN_COMPLETE, true);
+                _ioManager.Ctx.On(OUT_SCAN_COMPLETE);
 
                 _currentState = MaterialUnloadingState.PuttingToCart;
 
                 // 发送放入小车信号
-                _ioManager.LayeredIO.WriteOutBit(PUT_TO_CART_SIGNAL, true);
+                _ioManager.Ctx.On(PUT_TO_CART_SIGNAL);
                 _uiLogger.InfoRaw("处理已开始: {0}", $"扫码完成: {scannedCode}，发送扫码完成信号(OUT9)，放入小车");
             }
         }
@@ -393,16 +390,13 @@ namespace Ewan.Core.Module
         private void ProcessPuttingToCart()
         {
             // 检查小车脉冲信号X11
-            if (_ioManager.LayeredIO.ReadRisingBit(CART_PULSE_SIGNAL))
+            if (_ioManager.Ctx.Edge.R(CART_PULSE_SIGNAL))
             {
-                // 清除小车脉冲信号X11的边缘检测状态
-                _ioManager.LayeredIO.ClearRisingBit(CART_PULSE_SIGNAL);
-
                 // 清除放入小车信号
-                _ioManager.LayeredIO.WriteOutBit(PUT_TO_CART_SIGNAL, false);
+                _ioManager.Ctx.Off(PUT_TO_CART_SIGNAL);
 
                 // 清除扫码完成信号
-                _ioManager.LayeredIO.WriteOutBit(OUT_SCAN_COMPLETE, false);
+                _ioManager.Ctx.Off(OUT_SCAN_COMPLETE);
 
                 // 发送完成信号到Modbus寄存器153
                 SendCartCompletionToModbus(true);
@@ -457,14 +451,14 @@ namespace Ewan.Core.Module
         /// </summary>
         private void ClearBinSelectSignals()
         {
-            if (_ioManager?.LayeredIO == null)
+            if (_ioManager?.Ctx == null)
             {
                 return;
             }
 
-            _ioManager.LayeredIO.WriteOutBit(BIN1_SELECT_SIGNAL, false);
-            _ioManager.LayeredIO.WriteOutBit(BIN2_SELECT_SIGNAL, false);
-            _ioManager.LayeredIO.WriteOutBit(BIN3_SELECT_SIGNAL, false);
+            _ioManager.Ctx.Off(BIN1_SELECT_SIGNAL);
+            _ioManager.Ctx.Off(BIN2_SELECT_SIGNAL);
+            _ioManager.Ctx.Off(BIN3_SELECT_SIGNAL);
         }
 
         /// <summary>
@@ -498,13 +492,13 @@ namespace Ewan.Core.Module
             switch (binNumber)
             {
                 case 1:
-                    _ioManager.LayeredIO.WriteOutBit(BIN1_SELECT_SIGNAL, true);
+                    _ioManager.Ctx.On(BIN1_SELECT_SIGNAL);
                     break;
                 case 2:
-                    _ioManager.LayeredIO.WriteOutBit(BIN2_SELECT_SIGNAL, true);
+                    _ioManager.Ctx.On(BIN2_SELECT_SIGNAL);
                     break;
                 case 3:
-                    _ioManager.LayeredIO.WriteOutBit(BIN3_SELECT_SIGNAL, true);
+                    _ioManager.Ctx.On(BIN3_SELECT_SIGNAL);
                     break;
                 default:
                     _uiLogger.ErrorRaw("处理错误: {0} - {1}", $"无效的料仓编号: {binNumber}");
@@ -538,7 +532,7 @@ namespace Ewan.Core.Module
                 SetBinSelectSignal(binNumber);
                 
                 // 触发取料信号
-                _ioManager.LayeredIO.WriteOutBit(TRIGGER_PICKUP_SIGNAL, true);
+                _ioManager.Ctx.On(TRIGGER_PICKUP_SIGNAL);
                 
                 // 转换到取料状态
                 _currentState = MaterialUnloadingState.PickingMaterial;
@@ -576,12 +570,12 @@ namespace Ewan.Core.Module
             {
                 try
                 {
-                    if (_ioManager?.LayeredIO != null)
+                    if (_ioManager?.Ctx != null)
                     {
-                        _ioManager.LayeredIO.WriteOutBit(OUT_ALLOW_PICK, false);
-                        _ioManager.LayeredIO.WriteOutBit(OUT_SCAN_COMPLETE, false);
-                        _ioManager.LayeredIO.WriteOutBit(TRIGGER_PICKUP_SIGNAL, false);
-                        _ioManager.LayeredIO.WriteOutBit(PUT_TO_CART_SIGNAL, false);
+                        _ioManager.Ctx.Off(OUT_ALLOW_PICK);
+                        _ioManager.Ctx.Off(OUT_SCAN_COMPLETE);
+                        _ioManager.Ctx.Off(TRIGGER_PICKUP_SIGNAL);
+                        _ioManager.Ctx.Off(PUT_TO_CART_SIGNAL);
                         ClearBinSelectSignals();
                     }
                 }

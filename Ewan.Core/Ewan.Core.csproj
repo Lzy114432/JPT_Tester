@@ -84,7 +84,6 @@
     <Compile Include="Module\BeltConveyorModule.cs" />
     <Compile Include="Module\BinElevatorModule.cs" />
     <Compile Include="Module\Interface\IModule.cs" />
-    <Compile Include="Module\IOPollingModule.cs" />
     <Compile Include="Module\MaterialLoadingModule.cs" />
     <Compile Include="Module\MaterialUnloadingModule.cs" />
     <Compile Include="Module\ProductionLineModule.cs" />
@@ -122,6 +121,14 @@
     <ProjectReference Include="..\..\..\..\Desktop\切栈桥和除胶\Ewan.Mes\Ewan.Mes\Ewan.Mes.csproj">
       <Project>{ea08185a-1940-492e-beb4-0cd6ac2240d8}</Project>
       <Name>Ewan.Mes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hardware\EwanIO\EwanIO.csproj">
+      <Project>{c944c2c2-4d53-cc1b-6367-2727d54208d6}</Project>
+      <Name>EwanIO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hardware\PlcCommunication\PlcCommunication.csproj">
+      <Project>{b35afa51-8468-f513-6ce7-d6a081b5b2eb}</Project>
+      <Name>PlcCommunication</Name>
     </ProjectReference>
     <ProjectReference Include="..\Ewan.LogManager\Ewan.LogManager.csproj">
       <Project>{88888888-8888-8888-8888-888888888888}</Project>
