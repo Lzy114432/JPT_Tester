@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net472;net6.0-windows</TargetFrameworks>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <Platforms>x64;AnyCPU</Platforms>
+    <RootNamespace>EwanSMC606</RootNamespace>
+    <AssemblyName>EwanSMC606</AssemblyName>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>EwanSMC606</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Ewan</Authors>
+    <Description>Shared SMC606 connection/locking layer for using Axis + IO together safely</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="EwanSMC606.Tests" />
+  </ItemGroup>
+
+</Project>
