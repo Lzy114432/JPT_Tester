@@ -131,14 +131,6 @@
       <Project>{e9b968b2-7577-4524-a023-9e18d7314296}</Project>
       <Name>Ewan.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Hardware\IO\IOLibrary.csproj">
-      <Project>{aaaa1111-2222-3333-4444-555566667777}</Project>
-      <Name>IOLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Hardware\PlcCommunication\PlcCommunication.csproj">
-      <Project>{bbbb1111-2222-3333-4444-555566667777}</Project>
-      <Name>PlcCommunication</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="HslCommunication.dll">
