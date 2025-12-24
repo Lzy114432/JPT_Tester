@@ -7,15 +7,12 @@ using System.Windows.Input;
 using Prism.Commands;
 using Prism.Mvvm;
 using MarkingMachineFeeder.Model;
-using Ewan.Core.Culture;
 using Newtonsoft.Json;
 
 namespace MarkingMachineFeeder.Viewmodel
 {
     public class IOMappingConfigViewModel : BindableBase
     {
-        private readonly CultureManager _cultureManager = CultureManager.Instance();
-        
         #region Properties
         
         private ObservableCollection<IOMapping> _inputMappings;
@@ -161,9 +158,6 @@ namespace MarkingMachineFeeder.Viewmodel
             else
             {
                 UpdateUITexts();
-                
-                // Subscribe to culture change
-                _cultureManager.CultureChanged += OnCultureChanged;
             }
             
             // Force property change notifications for all header texts
@@ -369,57 +363,28 @@ namespace MarkingMachineFeeder.Viewmodel
 
         private void UpdateUITexts()
         {
-            // Update UI texts based on current culture
-            if (_cultureManager.CurrentCulture.Name == "zh-CN")
+            // 国际化已移除，固定为中文界面
+            WindowTitle = "IO映射配置";
+            MappingSettingsText = "映射设置";
+            InputTabText = "输入";
+            OutputTabText = "输出";
+            IndexHeaderText = "序号";
+            NameHeaderText = "名称";
+            MappingHeaderText = "映射";
+            StatusHeaderText = "状态";
+            ApplyText = "应用";
+            OKText = "确定";
+            CancelText = "取消";
+
+            // Update status options
+            if (StatusOptions != null)
             {
-                WindowTitle = "IO映射配置";
-                MappingSettingsText = "映射设置";
-                InputTabText = "输入";
-                OutputTabText = "输出";
-                IndexHeaderText = "序号";
-                NameHeaderText = "名称";
-                MappingHeaderText = "映射";
-                StatusHeaderText = "状态";
-                ApplyText = "应用";
-                OKText = "确定";
-                CancelText = "取消";
-                
-                // Update status options
-                if (StatusOptions != null)
-                {
-                    StatusOptions[0].Display = "常开";
-                    StatusOptions[1].Display = "常闭";
-                }
-            }
-            else
-            {
-                WindowTitle = "IO Mapping Configuration";
-                MappingSettingsText = "Mapping Settings";
-                InputTabText = "Input";
-                OutputTabText = "Output";
-                IndexHeaderText = "Index";
-                NameHeaderText = "Name";
-                MappingHeaderText = "Mapping";
-                StatusHeaderText = "Status";
-                ApplyText = "Apply";
-                OKText = "OK";
-                CancelText = "Cancel";
-                
-                // Update status options
-                if (StatusOptions != null)
-                {
-                    StatusOptions[0].Display = "Normally Open";
-                    StatusOptions[1].Display = "Normally Closed";
-                }
+                StatusOptions[0].Display = "常开";
+                StatusOptions[1].Display = "常闭";
             }
 
             // Notify property changes
             RaisePropertyChanged(nameof(StatusOptions));
-        }
-
-        private void OnCultureChanged(object sender, CultureChangedEventArgs e)
-        {
-            UpdateUITexts();
         }
 
         private void ExecuteApply()

@@ -1,6 +1,5 @@
 using Ewan.Core.Security;
 using Ewan.Core.Logger;
-using Ewan.Core.Culture;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;

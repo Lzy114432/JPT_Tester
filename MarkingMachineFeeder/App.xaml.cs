@@ -19,6 +19,12 @@ namespace MarkingMachineFeeder
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            var culture = System.Globalization.CultureInfo.GetCultureInfo("zh-CN");
+            System.Globalization.CultureInfo.DefaultThreadCurrentCulture = culture;
+            System.Globalization.CultureInfo.DefaultThreadCurrentUICulture = culture;
+            System.Threading.Thread.CurrentThread.CurrentCulture = culture;
+            System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
+
             // 初始化日志系统
             Ewan.LogManager.Logger.LogManager.Initialize("log4net.config");
             _appLogger.Info("Log4net配置已加载");

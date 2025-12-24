@@ -286,7 +286,7 @@ namespace Ewan.Core.Logger
         {
             try
             {
-                return Culture.CultureManager.Instance().CurrentCulture;
+                return System.Globalization.CultureInfo.GetCultureInfo("zh-CN");
             }
             catch
             {

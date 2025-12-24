@@ -1,5 +1,4 @@
 using Ewan.BusinessBonding;
-using Ewan.Core.Culture;
 using Ewan.Core.Logger;
 using Ewan.Core.Msg;
 using Ewan.Core.Security;
@@ -8,7 +7,6 @@ using Ewan.Model.System;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,14 +15,12 @@ namespace MarkingMachineFeeder.Viewmodel
     public class MainWindowViewModel : BindableBase
     {
         private readonly UILogger _uiLogger = new UILogger();
-        private readonly CultureManager _cultureManager;
         private readonly SecurityManager _securityManager;
         private readonly SystemControlService _systemControlService;
         private readonly RobotController _robotController;
         private MsgListener _statusIndicatorListener; // 系统状态监听器
 
         private string _title = "MarkingMachineFeeder";
-        private string _languageMenuHeader = "语言";
         private string _testLogButtonText = "测试日志";
         private string _currentUserText = "未登录";
         private string _currentUser = "游客";
@@ -49,7 +45,6 @@ namespace MarkingMachineFeeder.Viewmodel
         private bool _canControlCamera = false;
         private bool _canControlUPS = false;
         private bool _canViewSettings = false;
-        private bool _canSwitchLanguage = false;
         private bool _canExit = false;
         private bool _canAccessHardwareControl = false;
 
@@ -116,12 +111,6 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             get { return _title; }
             set { SetProperty(ref _title, value); }
-        }
-
-        public string LanguageMenuHeader
-        {
-            get { return _languageMenuHeader; }
-            set { SetProperty(ref _languageMenuHeader, value); }
         }
 
         public string TestLogButtonText
@@ -208,11 +197,6 @@ namespace MarkingMachineFeeder.Viewmodel
             get { return _canViewSettings; }
             set { SetProperty(ref _canViewSettings, value); }
         }
-        public bool CanSwitchLanguage
-        {
-            get { return _canSwitchLanguage; }
-            set { SetProperty(ref _canSwitchLanguage, value); }
-        }
         
         public bool CanExit
         {
@@ -286,7 +270,6 @@ namespace MarkingMachineFeeder.Viewmodel
             set { SetProperty(ref _systemResumeButtonText, value); }
         }
         
-        public DelegateCommand<string> SwitchLanguageCommand { get; }
         public DelegateCommand TestLogCommand { get; }
         public DelegateCommand LoginCommand { get; }
         public DelegateCommand SwitchUserCommand { get; }
@@ -338,9 +321,6 @@ namespace MarkingMachineFeeder.Viewmodel
 
         public MainWindowViewModel()
         {
-            // 运行时逻辑
-            _cultureManager = CultureManager.Instance();
-            
             _securityManager = SecurityManager.Instance();
             _securityManager.UserAuthenticated += OnUserAuthenticated;
             _securityManager.UserLoggedOut += OnUserLoggedOut;
@@ -348,7 +328,6 @@ namespace MarkingMachineFeeder.Viewmodel
             _systemControlService = SystemControlService.Instance();
             _robotController = RobotController.Instance();
 
-            SwitchLanguageCommand = new DelegateCommand<string>(ExecuteSwitchLanguage);
             TestLogCommand = new DelegateCommand(ExecuteTestLog);
             LoginCommand = new DelegateCommand(ExecuteLogin);
             SwitchUserCommand = new DelegateCommand(ExecuteSwitchUser);
@@ -406,22 +385,6 @@ namespace MarkingMachineFeeder.Viewmodel
             RegisterStatusIndicatorListener();
 
             _uiLogger.Info("主窗口已启动");
-        }
-
-        private void ExecuteSwitchLanguage(string cultureName)
-        {
-            try
-            {
-                _cultureManager.SetCulture(cultureName);
-            }
-            catch (CultureNotFoundException ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Culture error: {ex.Message}");
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"General error: {ex.Message}");
-            }
         }
 
         private void ExecuteTestLog()
@@ -636,7 +599,6 @@ namespace MarkingMachineFeeder.Viewmodel
         private void UpdateUITexts()
         {
             Title = "MarkingMachineFeeder";
-            LanguageMenuHeader = "语言";
             TestLogButtonText = "测试日志";
             LoginButtonText = "登录";
             SwitchUserButtonText = "切换用户";
@@ -658,7 +620,6 @@ namespace MarkingMachineFeeder.Viewmodel
             
             // 强制触发所有相关属性的PropertyChanged事件
             RaisePropertyChanged(nameof(Title));
-            RaisePropertyChanged(nameof(LanguageMenuHeader));
             RaisePropertyChanged(nameof(TestLogButtonText));
             RaisePropertyChanged(nameof(LoginButtonText));
             RaisePropertyChanged(nameof(SwitchUserButtonText));
@@ -683,9 +644,6 @@ namespace MarkingMachineFeeder.Viewmodel
             CanControlCamera = false;  // 禁用相机控制
             CanControlUPS = false;     // 禁用UPS控制
             CanViewSettings = _securityManager.HasPermission(PermissionResources.PermissionConfig, PermissionActions.View);
-
-            // 国际化功能已移除，固定为中文界面
-            CanSwitchLanguage = false;
             
             // 使用SystemControl权限控制退出功能
             CanExit = _securityManager.HasPermission(PermissionResources.SystemControl, PermissionActions.Control);
@@ -695,7 +653,6 @@ namespace MarkingMachineFeeder.Viewmodel
             
             // 触发属性变更通知，确保UI更新
             RaisePropertyChanged(nameof(CanViewSettings));
-            RaisePropertyChanged(nameof(CanSwitchLanguage));
             RaisePropertyChanged(nameof(CanControlCamera));
             RaisePropertyChanged(nameof(CanControlUPS));
             RaisePropertyChanged(nameof(CanExit));

@@ -48,7 +48,6 @@ Ewan.Core\IO\            # IO control related classes
 ```csharp
 // ✅ Always use Instance() method (not property)
 var securityManager = SecurityManager.Instance();
-var cultureManager = CultureManager.Instance();
 ```
 
 ### Current Permission System (Simplified)
@@ -98,7 +97,6 @@ public class MyManager : BaseManager<MyManager>
 
 **Key Components:**
 - **SecurityManager**: Authentication & authorization
-- **CultureManager**: Thread culture (zh-CN only)
 - **UILogger**: Dual-output logging system
 - **StreamRunner**: Module pipeline orchestration
 - **MsgManager**: Thread-safe message queue
@@ -110,14 +108,12 @@ public class MyManager : BaseManager<MyManager>
 public class MyViewModel : BindableBase
 {
     private readonly SecurityManager _securityManager = SecurityManager.Instance();
-    private readonly CultureManager _cultureManager = CultureManager.Instance();
     private readonly UILogger _uiLogger = new UILogger();
     
     // Subscribe to system events
     public MyViewModel()
     {
         _securityManager.UserAuthenticated += OnUserAuthenticated;
-        _cultureManager.CultureChanged += OnCultureChanged;
     }
 }
 ```
@@ -320,7 +316,7 @@ public class PlcHeartModule : BaseModule<PlcHeartModule>
 ### Stream Priority and Dependencies
 
 **Initialization Order (by Manager Priority):**
-1. Priority 0: SecurityManager, CultureManager
+1. Priority 0: SecurityManager (thread culture set in App.OnStartup)
 2. Priority 1: LayeredIOManager
 3. Priority 3: StreamController
 
@@ -597,7 +593,7 @@ if (_securityManager.HasRole(RoleNames.Administrator))
 ## Internationalization
 
 ### Status
-Internationalization is disabled. UI/log strings are hard-coded in Chinese, and `CultureManager` fixes the thread culture to `zh-CN` (other cultures are ignored).
+Internationalization is disabled. UI/log strings are hard-coded in Chinese, and `App.OnStartup` fixes the thread culture to `zh-CN`.
 
 ---
 

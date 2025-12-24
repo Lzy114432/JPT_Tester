@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using Prism.Commands;
 using Prism.Mvvm;
-using Ewan.Core.Culture;
 using Ewan.Core.Logger;
 using Ewan.Model.System;
 
@@ -13,7 +12,6 @@ namespace MarkingMachineFeeder.Viewmodel
     {
         private readonly UILogger _uiLogger;
         private readonly SystemParametersManager _parametersManager;
-        private readonly CultureManager _cultureManager;
 
         private readonly ObservableCollection<BinSelectionOption> _binOptions = new ObservableCollection<BinSelectionOption>();
 
@@ -375,7 +373,6 @@ namespace MarkingMachineFeeder.Viewmodel
 
             _uiLogger = new UILogger();
             _parametersManager = SystemParametersManager.Instance;
-            _cultureManager = CultureManager.Instance();
 
             SaveCommand = new DelegateCommand(ExecuteSave);
             ApplyCommand = new DelegateCommand(ExecuteApply);
