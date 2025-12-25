@@ -305,7 +305,7 @@ namespace Ewan.CodeReader.Scanners
                             string currentResult = result.ToString();
                             if (currentResult.Contains("\r") || currentResult.Contains("\n"))
                             {
-                                string cleanResult = SanitizeScanText(currentResult);
+                                string cleanResult = NormalizeScanResult(currentResult);
                                 if (!string.IsNullOrWhiteSpace(cleanResult))
                                 {
                                     return cleanResult;
@@ -350,7 +350,7 @@ namespace Ewan.CodeReader.Scanners
                                 string currentData = dataBuffer.ToString();
                                 if (currentData.Contains("\r") || currentData.Contains("\n"))
                                 {
-                                    string cleanResult = SanitizeScanText(currentData);
+                                    string cleanResult = NormalizeScanResult(currentData);
                                     dataBuffer.Clear();
 
                                     if (!string.IsNullOrWhiteSpace(cleanResult))
@@ -399,24 +399,52 @@ namespace Ewan.CodeReader.Scanners
         public float GetGain() => 0;
         public bool SetGain(float value) => false;
 
-        private static string SanitizeScanText(string scanResult)
+        /// <summary>
+        /// 坑：得利捷 TCP 返回的字符串有时会带上 <c>\0</c> / STX(0x02) / ETX(0x03) 等不可见控制字符，
+        /// 日志看起来像“空字符串”，但上层若仅用 <c>Trim()</c> / <c>string.IsNullOrWhiteSpace()</c> 判断，
+        /// 可能会误判“扫码成功”从而不触发重试；因此在驱动层统一做清洗。
+        /// 同时得利捷在无码/失败时会返回 NG/NoRead/NOREAD，这里也归一化为空字符串。
+        /// </summary>
+        private static string NormalizeScanResult(string scanResult)
         {
             if (string.IsNullOrEmpty(scanResult))
             {
                 return string.Empty;
             }
 
+            const char GroupSeparator = (char)0x1D; // GS1/FNC1 可能会用到，不要误删
             var builder = new StringBuilder(scanResult.Length);
             for (int i = 0; i < scanResult.Length; i++)
             {
                 char c = scanResult[i];
-                if (!char.IsControl(c))
+
+                if (c == '\0' || c == '\u0002' || c == '\u0003' || c == '\r' || c == '\n')
                 {
-                    builder.Append(c);
+                    continue;
                 }
+
+                if (char.IsControl(c) && c != GroupSeparator)
+                {
+                    continue;
+                }
+
+                builder.Append(c);
             }
 
-            return builder.ToString().Trim();
+            string normalized = builder.ToString().Trim();
+            if (string.IsNullOrWhiteSpace(normalized))
+            {
+                return string.Empty;
+            }
+
+            if (string.Equals(normalized, "NG", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, "NoRead", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, "NOREAD", StringComparison.OrdinalIgnoreCase))
+            {
+                return string.Empty;
+            }
+
+            return normalized;
         }
 
         private void RaiseScanResult(ScanResultEventArgs args)
