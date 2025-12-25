@@ -37,6 +37,12 @@
 > 说明：`ctx.R` 由 Layout 双缓冲 + 原子交换实现。改造原因是早期单实例逐属性同步时，读线程可能遇到“半更新读/帧撕裂”。现在读取的是完整一帧模型值。
 > 注意：`ctx.R` 返回的是当前帧对象引用，Tick 会交换前后缓冲；长期持有旧引用可能一直不变，或在后续 Tick 被复用并改写。需要长期保存请自行复制字段。
 > 注意：`ctx.R` 仅用于读取，禁止对其属性赋值；写入不会下发硬件且会污染本帧（其他线程可能读到被修改的数据），请使用 `On/Off/Pulse`。
+>
+> 另外：`ctx.PreMap/NoSim/Hw` 用于排查模拟/NO-NC 映射：
+> - `ctx.PreMap`：硬件输入 → 模拟 → **映射前**
+> - `ctx.NoSim`：硬件输入 → **映射后**（绕过模拟）
+> - `ctx.Hw`：硬件输入（绕过模拟 + 映射）
+> 同样不建议长期持有引用。
 
 ### Tick 模式
 
@@ -117,28 +123,42 @@ ctx.Dispose();
 
 | 调用 | 效果 |
 |------|------|
-| `ctx.Tick()` | 同步一次：硬件输入刷新 → 应用映射(NO/NC)与模拟 → 更新 Snapshot → 更新 Edge → 下发 dirty 输出 |
+| `ctx.Tick()` | 同步一次：硬件输入刷新 → 生成 Hw/PreMap/NoSim/R → 更新 Edge(多视图) → 下发 dirty 输出 |
 | `ctx.R.<属性>` | 读取 Snapshot 中的值；同一帧内所有属性一致 |
+| `ctx.PreMap.<属性>` | 读取映射前输入快照（模拟后、映射前）；用于排查 NO/NC 映射 |
+| `ctx.NoSim.<属性>` | 读取输入（绕过模拟，映射后）；用于排查“模拟干扰” |
+| `ctx.Hw.<属性>` | 读取硬件输入（绕过模拟+映射）；用于排查接线/现场信号 |
 | `ctx.GetInput(index)` | 按索引读取输入（值来自 Snapshot） |
+| `ctx.GetPreMapInput(index)` | 按索引读取映射前输入（模拟后、映射前；值来自 Snapshot） |
+| `ctx.GetNoSimInput(index)` | 按索引读取输入（绕过模拟，映射后；值来自 Snapshot） |
+| `ctx.GetHardwareInput(index)` | 按索引读取硬件输入（绕过模拟+映射；值来自 Snapshot） |
 | `ctx.GetOutput(index)` | 按索引读取输出（值来自 Snapshot） |
+| `ctx.GetPhysicalOutput(index)` | 按索引读取输出物理值（应用 NO/NC 映射） |
 | `ctx.On(expr/index)` | 设置输出为 ON，默认等下一次 Tick 下发 |
 | `ctx.On(expr/index, now: true)` | 设置输出为 ON 并立即下发（不做输入同步） |
 | `ctx.Off(expr/index)` | 设置输出为 OFF，默认等下一次 Tick 下发 |
 | `ctx.Off(expr/index, now: true)` | 设置输出为 OFF 并立即下发 |
 | `ctx.Pulse(expr/index, durationTicks)` | 输出脉冲（按 Tick 计数，默认 ON→OFF） |
 | `ctx.Pulse(expr/index, durationTicks, now: true, value: false)` | 反向脉冲（OFF→ON），立即下发 |
+| `ctx.OnPhysical(expr/index)` | 设置输出物理值为 ON（绕过 NO/NC 映射影响） |
+| `ctx.OffPhysical(expr/index)` | 设置输出物理值为 OFF（绕过 NO/NC 映射影响） |
+| `ctx.PulsePhysical(expr/index, durationTicks)` | 输出物理值脉冲（绕过 NO/NC 映射影响） |
 | `ctx.Flush()` | 立刻下发当前 dirty 输出（不做输入同步） |
 | `ctx.Edge.R(expr/index)` | 读取并清除上升沿 |
 | `ctx.Edge.F(expr/index)` | 读取并清除下降沿 |
 | `ctx.Edge.PeekR/PeekF` | 只读边沿，不清除 |
-| `ctx.Sim.ForceOn(expr/index)` | 强制输入为 ON（下一次 Tick 生效） |
-| `ctx.Sim.ForceOff(expr/index)` | 强制输入为 OFF |
-| `ctx.Sim.ClearSimulate/ClearAll` | 取消模拟，恢复读硬件 |
+| `ctx.EdgePreMap/EdgeNoSim/EdgeHw` | 对应输入视图的边沿检测 |
+| `ctx.Sim.ForceOn/ForceOff(expr/index)` | 强制输入逻辑值(R)为 ON/OFF（映射后；下一次 Tick 生效） |
+| `ctx.Sim.ForcePhysicalOn/ForcePhysicalOff(expr/index)` | 强制输入 PreMap 为 ON/OFF（模拟后、映射前；会再经过 NO/NC 影响 R） |
+| `ctx.Sim.ClearSimulate/ClearPhysicalSimulate/ClearAll` | 清除逻辑/物理/全部模拟 |
+| `ctx.Sim.GetMode/GetPhysicalMode` | 获取逻辑/物理模拟状态 |
 | `ctx.Mapping.Load(file)` | 加载映射配置 |
 | `ctx.Mapping.Save(file)` | 保存映射配置 |
 | `ctx.Meta.GetInputName(index)` | 获取输入属性名（用于 UI/日志） |
 | `ctx.Until(expr, expected, timeout)` | 等待输入到达期望值，返回 `IoOp<bool>` |
 | `ctx.Confirm(output, value, confirm, expected, timeout, now)` | 写输出后等待输入反馈 |
+| `ctx.UntilPreMap/UntilNoSim/UntilHw` | 使用不同输入视图等待 |
+| `ctx.ConfirmPreMap/ConfirmNoSim/ConfirmHw` | 写输出后使用不同输入视图等待反馈 |
 | `ctx.Health` | 获取健康状态（连接、性能、错误） |
 | `ctx.Dispose()` | 释放硬件资源 |
 
@@ -274,6 +294,75 @@ void ProcessThread()
 
 > 运行期修改映射会与 Tick 热路径并发读取冲突，可能出现短暂错映射或不一致。若必须调整，请先停止 Tick 并确保无并发访问，再调用 `Mapping.Set*` 或 `Mapping.Load`。
 
+### 排查映射/模拟（Hw/PreMap/NoSim/R）
+
+输入值在 Tick 内的处理顺序为：**硬件值(Hw) → 模拟 → PreMap(映射前) → NO/NC 映射 → 逻辑值(R)**，同时提供绕过模拟后的 `NoSim` 视图。
+
+```csharp
+bool hw = ctx.Hw.急停按钮;       // 硬件值（模拟前、映射前）
+bool preMap = ctx.PreMap.急停按钮;     // 模拟后、映射前
+bool noSim = ctx.NoSim.急停按钮; // 模拟前、映射后
+bool logical = ctx.R.急停按钮;   // 模拟后、映射后
+```
+
+```csharp
+// 输出：逻辑值 vs 物理值（应用 NO/NC 映射）
+bool outLogical = ctx.GetOutput(0);
+bool outPhysical = ctx.GetPhysicalOutput(0);
+
+// 需要“直接控制物理值”时（绕过 NO/NC 映射影响）
+ctx.OnPhysical(0, now: true);
+ctx.OffPhysical(0, now: true);
+```
+
+### 模拟强制（逻辑层 vs 物理层）
+
+EwanIO 的输入模拟分两层：
+
+- `Sim.ForceOn/ForceOff`：强制 **逻辑层(R)** 为 ON/OFF（映射后）；只影响 `ctx.R / GetInput / ctx.Edge`。
+- `Sim.ForcePhysicalOn/ForcePhysicalOff`：强制 **物理层(PreMap)** 为 ON/OFF（模拟后、映射前）；会再经过 NO/NC 映射影响 `ctx.R`，并影响 `ctx.PreMap / GetPreMapInput / ctx.EdgePreMap`。
+
+示例（NC）：
+
+```csharp
+ctx.Mapping.SetInputMapping(0, 0, isNormallyClosed: true);
+
+// 物理层强制：PreMap=true -> R=false (NC 反转)
+ctx.Sim.ForcePhysicalOn(0);
+ctx.Tick();
+bool preMap1 = ctx.PreMap.急停按钮; // true
+bool logical1 = ctx.R.急停按钮;     // false
+
+// 逻辑层强制：R=true（不改变 PreMap）
+ctx.Sim.ForceOn(0);
+ctx.Tick();
+bool preMap2 = ctx.PreMap.急停按钮; // 仍由硬件/物理层模拟决定
+bool logical2 = ctx.R.急停按钮;     // true
+```
+
+边沿检测同样分视图：
+
+- `Edge` 基于 `R`（会响应 `ForceOn/ForceOff`）。
+- `EdgePreMap` 基于 `PreMap`（会响应 `ForcePhysicalOn/ForcePhysicalOff`）。
+
+当只做“物理层强制”时，NO/NC 会导致 `EdgePreMap` 与 `Edge` 的边沿方向不同：
+
+| 场景 | 操作 | `EdgePreMap` | `Edge` |
+|------|------|-------------|--------|
+| NO | `ForcePhysicalOn` | 上升沿 `R` | 上升沿 `R` |
+| NO | `ForcePhysicalOff` | 下降沿 `F` | 下降沿 `F` |
+| NC | `ForcePhysicalOn` | 上升沿 `R` | 下降沿 `F` |
+| NC | `ForcePhysicalOff` | 下降沿 `F` | 上升沿 `R` |
+
+当只做“逻辑层强制”时，`PreMap` 不变，因此 `EdgePreMap` 通常不会产生边沿；`Edge` 会按 `R` 的变化产生边沿：
+
+| 操作 | `EdgePreMap` | `Edge` |
+|------|-------------|--------|
+| `ForceOn` | 无变化 | 上升沿 `R`（若上一帧为 false） |
+| `ForceOff` | 无变化 | 下降沿 `F`（若上一帧为 true） |
+
+> 提醒：边沿是比较相邻两次 `Tick()` 的值；第一次 `Tick()` 只建立基线，不会产生边沿。
+
 ```csharp
 // 正确：初始化时配置映射
 var ctx = IoContextBuilder.For<MyIOLayout>()
@@ -294,6 +383,8 @@ var ctx = IoContextBuilder.For<MyIOLayout>()
 ## Wait/Confirm 使用模式
 
 Wait/Confirm 用于"写输出 + 等待反馈确认"的场景（如真空吸取、夹爪动作）。
+
+如果某些输入被 `Sim.ForcePhysicalOn/ForcePhysicalOff`（或 `Sim.ForceOn/ForceOff`）模拟，默认 `Confirm/Until` 会基于模拟后的逻辑值判断；需要绕过模拟或绕过 NO/NC 映射时，可使用 `ConfirmNoSim/ConfirmPreMap/ConfirmHw` 或 `UntilNoSim/UntilPreMap/UntilHw`。
 
 ### 基本用法
 
@@ -386,7 +477,9 @@ switch (step)
 | `On/Off/Pulse()` | 是 | 设置输出 |
 | `GetInput()` / `GetOutput()` | 是 | 读取状态 |
 | `Edge.R()` / `Edge.F()` | 是 | 边缘检测 |
-| `Sim.ForceOn()` / `ForceOff()` | 是 | 模拟输入 |
+| `Sim.ForceOn()` / `ForceOff()` | 是 | 强制逻辑层(R)输入（映射后） |
+| `Sim.ForcePhysicalOn()` / `ForcePhysicalOff()` | 是 | 强制物理层(PreMap)输入（模拟后、映射前） |
+| `Sim.ClearSimulate()` / `ClearPhysicalSimulate()` / `ClearAll()` | 是 | 清除模拟 |
 | `Until()` / `Confirm()` | 是 | 异步等待 |
 | `Flush()` | 是 | 强制下发 |
 | 修改映射配置 | **否** | 不要在运行时修改 |
@@ -594,9 +687,9 @@ ctx.Pulse(x => x.指示灯, durationTicks: 2, value: false);
 
 ## 版本信息
 
-- **文档版本**: 1.5
+- **文档版本**: 2.0
 - **EwanIO 版本**: V2.4
-- **更新日期**: 2025-12-21
+- **更新日期**: 2025-12-25
 
 ---
 
@@ -610,3 +703,8 @@ ctx.Pulse(x => x.指示灯, durationTicks: 2, value: false);
 | 2025-12-17 | 1.3 | 添加快捷方法（On/Off/Toggle）|
 | 2025-12-20 | 1.4 | 收敛写 API（On/Off/Pulse）、补充线程安全与 Pulse 说明 |
 | 2025-12-21 | 1.5 | 增加索引越界行为配置与错误记录说明 |
+| 2025-12-25 | 1.6 | 增加 `ctx.PreMap / GetPreMapInput`（绕过 NO/NC 映射的映射前输入快照） |
+| 2025-12-25 | 1.7 | 增加 `ctx.NoSim/Hw`、`GetPhysicalOutput`、`*Physical`、`ConfirmNoSim` 等绕开视图 |
+| 2025-12-25 | 1.8 | 重命名 Raw → PreMap，消除歧义 |
+| 2025-12-25 | 1.9 | 增加 `Sim.ForcePhysicalOn/Off` 并补充边沿变化说明 |
+| 2025-12-25 | 2.0 | 调整 `Sim.ForceOn/Off` 为逻辑层，`Sim.ForcePhysicalOn/Off` 为物理层，补充模式/清除接口与文档 |

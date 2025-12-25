@@ -10,6 +10,9 @@ namespace EwanIO.Core.Data
     public class Snapshot
     {
         private readonly bool[] _inputs;
+        private readonly bool[] _preMapInputs;
+        private readonly bool[] _noSimInputs;
+        private readonly bool[] _hardwareInputs;
         private readonly bool[] _outputs;
         private long _tickCounter;
 
@@ -22,6 +25,9 @@ namespace EwanIO.Core.Data
             InputCount = inputCount;
             OutputCount = outputCount;
             _inputs = new bool[inputCount];
+            _preMapInputs = new bool[inputCount];
+            _noSimInputs = new bool[inputCount];
+            _hardwareInputs = new bool[inputCount];
             _outputs = new bool[outputCount];
             _tickCounter = 0;
         }
@@ -34,6 +40,36 @@ namespace EwanIO.Core.Data
             if (logicalIndex < 0 || logicalIndex >= InputCount)
                 return false;
             return _inputs[logicalIndex];
+        }
+
+        /// <summary>
+        /// 读取输入值（经过模拟，未应用 NO/NC 映射；映射前值）
+        /// </summary>
+        public bool GetPreMapInput(int logicalIndex)
+        {
+            if (logicalIndex < 0 || logicalIndex >= InputCount)
+                return false;
+            return _preMapInputs[logicalIndex];
+        }
+
+        /// <summary>
+        /// 读取输入值（绕过模拟，应用 NO/NC 映射）
+        /// </summary>
+        public bool GetNoSimInput(int logicalIndex)
+        {
+            if (logicalIndex < 0 || logicalIndex >= InputCount)
+                return false;
+            return _noSimInputs[logicalIndex];
+        }
+
+        /// <summary>
+        /// 读取硬件输入值（绕过模拟 + NO/NC 映射）
+        /// </summary>
+        public bool GetHardwareInput(int logicalIndex)
+        {
+            if (logicalIndex < 0 || logicalIndex >= InputCount)
+                return false;
+            return _hardwareInputs[logicalIndex];
         }
 
         /// <summary>
@@ -53,6 +89,33 @@ namespace EwanIO.Core.Data
         {
             if (logicalIndex >= 0 && logicalIndex < InputCount)
                 _inputs[logicalIndex] = value;
+        }
+
+        /// <summary>
+        /// 内部设置输入值（经过模拟，未应用 NO/NC 映射；映射前值）
+        /// </summary>
+        internal void SetPreMapInput(int logicalIndex, bool value)
+        {
+            if (logicalIndex >= 0 && logicalIndex < InputCount)
+                _preMapInputs[logicalIndex] = value;
+        }
+
+        /// <summary>
+        /// 内部设置输入值（绕过模拟，应用 NO/NC 映射）
+        /// </summary>
+        internal void SetNoSimInput(int logicalIndex, bool value)
+        {
+            if (logicalIndex >= 0 && logicalIndex < InputCount)
+                _noSimInputs[logicalIndex] = value;
+        }
+
+        /// <summary>
+        /// 内部设置硬件输入值（绕过模拟 + NO/NC 映射）
+        /// </summary>
+        internal void SetHardwareInput(int logicalIndex, bool value)
+        {
+            if (logicalIndex >= 0 && logicalIndex < InputCount)
+                _hardwareInputs[logicalIndex] = value;
         }
 
         /// <summary>
@@ -81,6 +144,21 @@ namespace EwanIO.Core.Data
         /// 获取输出数组引用（内部使用）
         /// </summary>
         internal bool[] GetOutputsRef() => _outputs;
+
+        /// <summary>
+        /// 获取输入数组引用（经过模拟，未应用 NO/NC 映射；映射前值）（内部使用）
+        /// </summary>
+        internal bool[] GetPreMapInputsRef() => _preMapInputs;
+
+        /// <summary>
+        /// 获取输入数组引用（绕过模拟，应用 NO/NC 映射）（内部使用）
+        /// </summary>
+        internal bool[] GetNoSimInputsRef() => _noSimInputs;
+
+        /// <summary>
+        /// 获取硬件输入数组引用（绕过模拟 + NO/NC 映射）（内部使用）
+        /// </summary>
+        internal bool[] GetHardwareInputsRef() => _hardwareInputs;
     }
 
     /// <summary>
@@ -129,11 +207,20 @@ namespace EwanIO.Core.Data
         internal void CopyFrontToBack()
         {
             var frontInputs = _front.GetInputsRef();
+            var frontPreMapInputs = _front.GetPreMapInputsRef();
+            var frontNoSimInputs = _front.GetNoSimInputsRef();
+            var frontHardwareInputs = _front.GetHardwareInputsRef();
             var frontOutputs = _front.GetOutputsRef();
             var backInputs = _back.GetInputsRef();
+            var backPreMapInputs = _back.GetPreMapInputsRef();
+            var backNoSimInputs = _back.GetNoSimInputsRef();
+            var backHardwareInputs = _back.GetHardwareInputsRef();
             var backOutputs = _back.GetOutputsRef();
 
             Array.Copy(frontInputs, backInputs, InputCount);
+            Array.Copy(frontPreMapInputs, backPreMapInputs, InputCount);
+            Array.Copy(frontNoSimInputs, backNoSimInputs, InputCount);
+            Array.Copy(frontHardwareInputs, backHardwareInputs, InputCount);
             Array.Copy(frontOutputs, backOutputs, OutputCount);
         }
     }

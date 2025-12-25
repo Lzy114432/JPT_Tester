@@ -28,8 +28,12 @@ namespace EwanIO.Core.Context
         private readonly IHardwareIO _hardware;
         private readonly MetaManager<TLayout> _meta;
         private readonly MappingCache _mapping;
-        private readonly SimManager _simulator;
+        private readonly SimManager _physicalSimulator; // 物理层模拟（PreMap：模拟后、映射前）
+        private readonly SimManager _logicalSimulator;  // 逻辑层模拟（R：映射后）
         private readonly EdgeManager _edgeManager;
+        private readonly EdgeManager _preMapEdgeManager;
+        private readonly EdgeManager _noSimEdgeManager;
+        private readonly EdgeManager _hwEdgeManager;
         private readonly DoubleBufferedSnapshot _snapshot;
         private readonly object _command; // Command or CommandOptimized
         private readonly bool _useBulkWrite;
@@ -41,6 +45,9 @@ namespace EwanIO.Core.Context
 
         // 子对象（对外暴露）
         private readonly EdgeAccessor _edgeAccessor;
+        private readonly EdgeAccessor _preMapEdgeAccessor;
+        private readonly EdgeAccessor _noSimEdgeAccessor;
+        private readonly EdgeAccessor _hwEdgeAccessor;
         private readonly SimAccessor _simAccessor;
         private readonly MetaAccessor _metaAccessor;
         private readonly MappingAccessor _mappingAccessor;
@@ -61,6 +68,18 @@ namespace EwanIO.Core.Context
         private TLayout _readLayoutFront;
         private TLayout _readLayoutBack;
 
+        // 映射前读取用的 Layout 实例（用于 PreMap 属性直接访问：经过模拟，绕过 NO/NC 映射）
+        private TLayout _preMapLayoutFront;
+        private TLayout _preMapLayoutBack;
+
+        // 绕过模拟读取用的 Layout 实例（用于 NoSim 属性直接访问：绕过模拟，应用 NO/NC 映射）
+        private TLayout _noSimLayoutFront;
+        private TLayout _noSimLayoutBack;
+
+        // 硬件读取用的 Layout 实例（用于 Hw 属性直接访问：绕过模拟 + NO/NC 映射）
+        private TLayout _hwLayoutFront;
+        private TLayout _hwLayoutBack;
+
         // 健康状态
         private readonly IoHealth _health;
         private System.Diagnostics.Stopwatch? _tickStopwatch;
@@ -70,7 +89,13 @@ namespace EwanIO.Core.Context
 
         public string Id => _id;
         public TLayout R => Volatile.Read(ref _readLayoutFront);
+        public TLayout PreMap => Volatile.Read(ref _preMapLayoutFront);
+        public TLayout NoSim => Volatile.Read(ref _noSimLayoutFront);
+        public TLayout Hw => Volatile.Read(ref _hwLayoutFront);
         public EdgeAccessor Edge => _edgeAccessor;
+        public EdgeAccessor EdgePreMap => _preMapEdgeAccessor;
+        public EdgeAccessor EdgeNoSim => _noSimEdgeAccessor;
+        public EdgeAccessor EdgeHw => _hwEdgeAccessor;
         public SimAccessor Sim => _simAccessor;
         public MetaAccessor Meta => _metaAccessor;
         public MappingAccessor Mapping => _mappingAccessor;
@@ -97,8 +122,12 @@ namespace EwanIO.Core.Context
             _mapping = new MappingCache(inputCount, outputCount);
 
             // 初始化模拟、边缘、快照、命令
-            _simulator = new SimManager(inputCount);
+            _physicalSimulator = new SimManager(inputCount);
+            _logicalSimulator = new SimManager(inputCount);
             _edgeManager = new EdgeManager(inputCount);
+            _preMapEdgeManager = new EdgeManager(inputCount);
+            _noSimEdgeManager = new EdgeManager(inputCount);
+            _hwEdgeManager = new EdgeManager(inputCount);
             _snapshot = new DoubleBufferedSnapshot(inputCount, outputCount);
 
             // 检测硬件是否支持批量写入
@@ -127,9 +156,18 @@ namespace EwanIO.Core.Context
             // Layout 实例
             _readLayoutFront = new TLayout();
             _readLayoutBack = new TLayout();
+            _preMapLayoutFront = new TLayout();
+            _preMapLayoutBack = new TLayout();
+            _noSimLayoutFront = new TLayout();
+            _noSimLayoutBack = new TLayout();
+            _hwLayoutFront = new TLayout();
+            _hwLayoutBack = new TLayout();
 
             // 子对象
-            _edgeAccessor = new EdgeAccessor(this);
+            _edgeAccessor = new EdgeAccessor(this, _edgeManager);
+            _preMapEdgeAccessor = new EdgeAccessor(this, _preMapEdgeManager);
+            _noSimEdgeAccessor = new EdgeAccessor(this, _noSimEdgeManager);
+            _hwEdgeAccessor = new EdgeAccessor(this, _hwEdgeManager);
             _simAccessor = new SimAccessor(this);
             _metaAccessor = new MetaAccessor(this);
             _mappingAccessor = new MappingAccessor(this);
@@ -189,9 +227,15 @@ namespace EwanIO.Core.Context
                     for (int logicalIdx = 0; logicalIdx < _mapping.InputCount; logicalIdx++)
                     {
                         int physicalIdx = _mapping.GetInputPhysicalIndex(logicalIdx);
-                        bool rawValue = _hardware.ReadInBit(physicalIdx);
-                        bool simValue = _simulator.ApplySimulate(logicalIdx, rawValue);
-                        bool logicalValue = _mapping.ApplyInputLogic(logicalIdx, simValue);
+                        bool hardwareValue = _hardware.ReadInBit(physicalIdx);
+                        bool preMapValue = _physicalSimulator.ApplySimulate(logicalIdx, hardwareValue);
+                        bool mappedValue = _mapping.ApplyInputLogic(logicalIdx, preMapValue);
+                        bool logicalValue = _logicalSimulator.ApplySimulate(logicalIdx, mappedValue);
+                        bool noSimLogicalValue = _mapping.ApplyInputLogic(logicalIdx, hardwareValue);
+
+                        back.SetHardwareInput(logicalIdx, hardwareValue);
+                        back.SetPreMapInput(logicalIdx, preMapValue);
+                        back.SetNoSimInput(logicalIdx, noSimLogicalValue);
                         back.SetInput(logicalIdx, logicalValue);
                     }
 
@@ -219,8 +263,29 @@ namespace EwanIO.Core.Context
                     var oldFront = Interlocked.Exchange(ref _readLayoutFront, _readLayoutBack);
                     _readLayoutBack = oldFront;
 
+                    // 3.2 同步映射前输入到 _preMapLayout（支持 PreMap.PropertyName 访问）
+                    _meta.SyncInputsToLayout(_preMapLayoutBack, _snapshot.Current.GetPreMapInput);
+                    _meta.SyncOutputsToLayout(_preMapLayoutBack, _snapshot.Current.GetOutput);
+                    var oldPreMapFront = Interlocked.Exchange(ref _preMapLayoutFront, _preMapLayoutBack);
+                    _preMapLayoutBack = oldPreMapFront;
+
+                    // 3.3 同步绕过模拟输入到 _noSimLayout（支持 NoSim.PropertyName 访问）
+                    _meta.SyncInputsToLayout(_noSimLayoutBack, _snapshot.Current.GetNoSimInput);
+                    _meta.SyncOutputsToLayout(_noSimLayoutBack, _snapshot.Current.GetOutput);
+                    var oldNoSimFront = Interlocked.Exchange(ref _noSimLayoutFront, _noSimLayoutBack);
+                    _noSimLayoutBack = oldNoSimFront;
+
+                    // 3.4 同步硬件输入到 _hwLayout（支持 Hw.PropertyName 访问）
+                    _meta.SyncInputsToLayout(_hwLayoutBack, _snapshot.Current.GetHardwareInput);
+                    _meta.SyncOutputsToLayout(_hwLayoutBack, _snapshot.Current.GetOutput);
+                    var oldHwFront = Interlocked.Exchange(ref _hwLayoutFront, _hwLayoutBack);
+                    _hwLayoutBack = oldHwFront;
+
                     // 4. 更新边缘检测（基于新的 Snapshot，使用数组引用避免委托开销）
                     _edgeManager.Update(_snapshot.Current.GetInputsRef());
+                    _preMapEdgeManager.Update(_snapshot.Current.GetPreMapInputsRef());
+                    _noSimEdgeManager.Update(_snapshot.Current.GetNoSimInputsRef());
+                    _hwEdgeManager.Update(_snapshot.Current.GetHardwareInputsRef());
 
                     // 5. 下发 dirty 输出
                     FlushOutputsIfDirty();
@@ -624,6 +689,44 @@ namespace EwanIO.Core.Context
         }
 
         /// <summary>
+        /// 快捷设置输出物理值为 ON（绕过 NO/NC 映射影响）
+        /// </summary>
+        /// <param name="expr">输出选择表达式</param>
+        /// <param name="now">是否立即下发（默认等 Tick）</param>
+        public void OnPhysical(Expression<Func<TLayout, OutputSignal>> expr, bool now = false)
+        {
+            int index = _meta.GetOutputIndex(expr);
+            OnPhysical(index, now);
+        }
+
+        /// <summary>
+        /// 快捷设置输出物理值为 ON（索引，绕过 NO/NC 映射影响）
+        /// </summary>
+        public void OnPhysical(int index, bool now = false)
+        {
+            WriteOutputPhysicalInternal(index, true, now, nameof(OnPhysical));
+        }
+
+        /// <summary>
+        /// 快捷设置输出物理值为 OFF（绕过 NO/NC 映射影响）
+        /// </summary>
+        /// <param name="expr">输出选择表达式</param>
+        /// <param name="now">是否立即下发（默认等 Tick）</param>
+        public void OffPhysical(Expression<Func<TLayout, OutputSignal>> expr, bool now = false)
+        {
+            int index = _meta.GetOutputIndex(expr);
+            OffPhysical(index, now);
+        }
+
+        /// <summary>
+        /// 快捷设置输出物理值为 OFF（索引，绕过 NO/NC 映射影响）
+        /// </summary>
+        public void OffPhysical(int index, bool now = false)
+        {
+            WriteOutputPhysicalInternal(index, false, now, nameof(OffPhysical));
+        }
+
+        /// <summary>
         /// 输出脉冲（按 Tick 周期计数）
         /// </summary>
         /// <param name="expr">输出选择表达式</param>
@@ -664,6 +767,51 @@ namespace EwanIO.Core.Context
             }
         }
 
+        /// <summary>
+        /// 输出物理值脉冲（按 Tick 周期计数，绕过 NO/NC 映射影响）
+        /// </summary>
+        /// <param name="expr">输出选择表达式</param>
+        /// <param name="durationTicks">脉冲持续 Tick 数</param>
+        /// <param name="now">是否立即下发（默认等 Tick）</param>
+        /// <param name="value">脉冲物理值（true=ON->OFF，false=OFF->ON）</param>
+        public void PulsePhysical(Expression<Func<TLayout, OutputSignal>> expr, int durationTicks, bool now = false, bool value = true)
+        {
+            int index = _meta.GetOutputIndex(expr);
+            PulsePhysical(index, durationTicks, now, value);
+        }
+
+        /// <summary>
+        /// 输出物理值脉冲（索引，绕过 NO/NC 映射影响）
+        /// </summary>
+        public void PulsePhysical(int index, int durationTicks, bool now = false, bool value = true)
+        {
+            if (durationTicks <= 0)
+                return;
+            if (!EnsureOutputIndex(index, nameof(PulsePhysical)))
+                return;
+
+            lock (_ioLock)
+            {
+                if (_disposed) return;
+                if (_pulseRemainingTicks[index] > 0)
+                    return;
+
+                bool isNc = _mapping.IsOutputNormallyClosed(index);
+                bool logicalStart = value ^ isNc;
+                bool logicalEnd = (!value) ^ isNc;
+
+                _pulseRemainingTicks[index] = durationTicks;
+                _pulseEndValues[index] = logicalEnd;
+
+                SetOutputInternal(index, logicalStart);
+
+                if (now)
+                {
+                    FlushOutputsIfDirty();
+                }
+            }
+        }
+
         private void WriteOutputInternal(int index, bool value, bool now, string caller)
         {
             if (!EnsureOutputIndex(index, caller))
@@ -675,6 +823,27 @@ namespace EwanIO.Core.Context
 
                 _pulseRemainingTicks[index] = 0;
                 SetOutputInternal(index, value);
+
+                if (now)
+                {
+                    FlushOutputsIfDirty();
+                }
+            }
+        }
+
+        private void WriteOutputPhysicalInternal(int index, bool physicalValue, bool now, string caller)
+        {
+            if (!EnsureOutputIndex(index, caller))
+                return;
+
+            bool logicalValue = physicalValue ^ _mapping.IsOutputNormallyClosed(index);
+
+            lock (_ioLock)
+            {
+                if (_disposed) return;
+
+                _pulseRemainingTicks[index] = 0;
+                SetOutputInternal(index, logicalValue);
 
                 if (now)
                 {
@@ -710,6 +879,36 @@ namespace EwanIO.Core.Context
         }
 
         /// <summary>
+        /// 按索引读取原始输入（经过模拟，未应用 NO/NC 映射）
+        /// </summary>
+        public bool GetPreMapInput(int index)
+        {
+            if (!EnsureInputIndex(index, nameof(GetPreMapInput)))
+                return false;
+            return _snapshot.Current.GetPreMapInput(index);
+        }
+
+        /// <summary>
+        /// 按索引读取输入（绕过模拟，应用 NO/NC 映射）
+        /// </summary>
+        public bool GetNoSimInput(int index)
+        {
+            if (!EnsureInputIndex(index, nameof(GetNoSimInput)))
+                return false;
+            return _snapshot.Current.GetNoSimInput(index);
+        }
+
+        /// <summary>
+        /// 按索引读取硬件输入（绕过模拟 + NO/NC 映射）
+        /// </summary>
+        public bool GetHardwareInput(int index)
+        {
+            if (!EnsureInputIndex(index, nameof(GetHardwareInput)))
+                return false;
+            return _snapshot.Current.GetHardwareInput(index);
+        }
+
+        /// <summary>
         /// 按表达式读取输入
         /// </summary>
         /// <param name="expr">输入选择表达式</param>
@@ -718,6 +917,39 @@ namespace EwanIO.Core.Context
         {
             int index = _meta.GetInputIndex(expr);
             return _snapshot.Current.GetInput(index);
+        }
+
+        /// <summary>
+        /// 按表达式读取原始输入（经过模拟，未应用 NO/NC 映射）
+        /// </summary>
+        /// <param name="expr">输入选择表达式</param>
+        /// <returns>输入状态</returns>
+        public bool GetPreMapInput(Expression<Func<TLayout, InputSignal>> expr)
+        {
+            int index = _meta.GetInputIndex(expr);
+            return _snapshot.Current.GetPreMapInput(index);
+        }
+
+        /// <summary>
+        /// 按表达式读取输入（绕过模拟，应用 NO/NC 映射）
+        /// </summary>
+        /// <param name="expr">输入选择表达式</param>
+        /// <returns>输入状态</returns>
+        public bool GetNoSimInput(Expression<Func<TLayout, InputSignal>> expr)
+        {
+            int index = _meta.GetInputIndex(expr);
+            return _snapshot.Current.GetNoSimInput(index);
+        }
+
+        /// <summary>
+        /// 按表达式读取硬件输入（绕过模拟 + NO/NC 映射）
+        /// </summary>
+        /// <param name="expr">输入选择表达式</param>
+        /// <returns>输入状态</returns>
+        public bool GetHardwareInput(Expression<Func<TLayout, InputSignal>> expr)
+        {
+            int index = _meta.GetInputIndex(expr);
+            return _snapshot.Current.GetHardwareInput(index);
         }
 
         /// <summary>
@@ -731,6 +963,17 @@ namespace EwanIO.Core.Context
         }
 
         /// <summary>
+        /// 按索引读取输出物理值（应用 NO/NC 映射）
+        /// </summary>
+        public bool GetPhysicalOutput(int index)
+        {
+            if (!EnsureOutputIndex(index, nameof(GetPhysicalOutput)))
+                return false;
+            bool logicalValue = _snapshot.Current.GetOutput(index);
+            return _mapping.ApplyOutputLogic(index, logicalValue);
+        }
+
+        /// <summary>
         /// 按表达式读取输出
         /// </summary>
         /// <param name="expr">输出选择表达式</param>
@@ -739,6 +982,18 @@ namespace EwanIO.Core.Context
         {
             int index = _meta.GetOutputIndex(expr);
             return _snapshot.Current.GetOutput(index);
+        }
+
+        /// <summary>
+        /// 按表达式读取输出物理值（应用 NO/NC 映射）
+        /// </summary>
+        /// <param name="expr">输出选择表达式</param>
+        /// <returns>输出物理状态</returns>
+        public bool GetPhysicalOutput(Expression<Func<TLayout, OutputSignal>> expr)
+        {
+            int index = _meta.GetOutputIndex(expr);
+            bool logicalValue = _snapshot.Current.GetOutput(index);
+            return _mapping.ApplyOutputLogic(index, logicalValue);
         }
 
         #endregion
@@ -767,6 +1022,187 @@ namespace EwanIO.Core.Context
             TimeSpan? timeout = null,
             CancellationToken cancellationToken = default)
         {
+            return UntilByIndexInternal(index, expected, timeout, cancellationToken, i => GetInput(i));
+        }
+
+        /// <summary>
+        /// 等待输入到达期望值（绕过 NO/NC 映射，保留模拟）
+        /// </summary>
+        public IoOp<bool> UntilPreMap(
+            Expression<Func<TLayout, InputSignal>> expr,
+            bool expected = true,
+            TimeSpan? timeout = null,
+            CancellationToken cancellationToken = default)
+        {
+            int index = _meta.GetInputIndex(expr);
+            return UntilPreMapByIndex(index, expected, timeout, cancellationToken);
+        }
+
+        /// <summary>
+        /// 等待输入到达期望值（按索引，绕过 NO/NC 映射，保留模拟）
+        /// </summary>
+        public IoOp<bool> UntilPreMapByIndex(
+            int index,
+            bool expected = true,
+            TimeSpan? timeout = null,
+            CancellationToken cancellationToken = default)
+        {
+            return UntilByIndexInternal(index, expected, timeout, cancellationToken, i => GetPreMapInput(i));
+        }
+
+        /// <summary>
+        /// 等待输入到达期望值（绕过模拟，应用 NO/NC 映射）
+        /// </summary>
+        public IoOp<bool> UntilNoSim(
+            Expression<Func<TLayout, InputSignal>> expr,
+            bool expected = true,
+            TimeSpan? timeout = null,
+            CancellationToken cancellationToken = default)
+        {
+            int index = _meta.GetInputIndex(expr);
+            return UntilNoSimByIndex(index, expected, timeout, cancellationToken);
+        }
+
+        /// <summary>
+        /// 等待输入到达期望值（按索引，绕过模拟，应用 NO/NC 映射）
+        /// </summary>
+        public IoOp<bool> UntilNoSimByIndex(
+            int index,
+            bool expected = true,
+            TimeSpan? timeout = null,
+            CancellationToken cancellationToken = default)
+        {
+            return UntilByIndexInternal(index, expected, timeout, cancellationToken, i => GetNoSimInput(i));
+        }
+
+        /// <summary>
+        /// 等待输入到达期望值（绕过模拟 + NO/NC 映射）
+        /// </summary>
+        public IoOp<bool> UntilHw(
+            Expression<Func<TLayout, InputSignal>> expr,
+            bool expected = true,
+            TimeSpan? timeout = null,
+            CancellationToken cancellationToken = default)
+        {
+            int index = _meta.GetInputIndex(expr);
+            return UntilHwByIndex(index, expected, timeout, cancellationToken);
+        }
+
+        /// <summary>
+        /// 等待输入到达期望值（按索引，绕过模拟 + NO/NC 映射）
+        /// </summary>
+        public IoOp<bool> UntilHwByIndex(
+            int index,
+            bool expected = true,
+            TimeSpan? timeout = null,
+            CancellationToken cancellationToken = default)
+        {
+            return UntilByIndexInternal(index, expected, timeout, cancellationToken, i => GetHardwareInput(i));
+        }
+
+        /// <summary>
+        /// 写输出 + 等待输入反馈
+        /// </summary>
+        public IoOp<bool> Confirm(
+            Expression<Func<TLayout, OutputSignal>> output,
+            bool value,
+            Expression<Func<TLayout, InputSignal>> confirm,
+            bool expected = true,
+            TimeSpan? timeout = null,
+            bool now = false,
+            CancellationToken cancellationToken = default)
+        {
+            if (value)
+            {
+                On(output, now);
+            }
+            else
+            {
+                Off(output, now);
+            }
+
+            return Until(confirm, expected, timeout, cancellationToken);
+        }
+
+        /// <summary>
+        /// 写输出 + 等待输入反馈（绕过 NO/NC 映射，保留模拟）
+        /// </summary>
+        public IoOp<bool> ConfirmPreMap(
+            Expression<Func<TLayout, OutputSignal>> output,
+            bool value,
+            Expression<Func<TLayout, InputSignal>> confirm,
+            bool expected = true,
+            TimeSpan? timeout = null,
+            bool now = false,
+            CancellationToken cancellationToken = default)
+        {
+            if (value)
+            {
+                On(output, now);
+            }
+            else
+            {
+                Off(output, now);
+            }
+
+            return UntilPreMap(confirm, expected, timeout, cancellationToken);
+        }
+
+        /// <summary>
+        /// 写输出 + 等待输入反馈（绕过模拟，应用 NO/NC 映射）
+        /// </summary>
+        public IoOp<bool> ConfirmNoSim(
+            Expression<Func<TLayout, OutputSignal>> output,
+            bool value,
+            Expression<Func<TLayout, InputSignal>> confirm,
+            bool expected = true,
+            TimeSpan? timeout = null,
+            bool now = false,
+            CancellationToken cancellationToken = default)
+        {
+            if (value)
+            {
+                On(output, now);
+            }
+            else
+            {
+                Off(output, now);
+            }
+
+            return UntilNoSim(confirm, expected, timeout, cancellationToken);
+        }
+
+        /// <summary>
+        /// 写输出 + 等待输入反馈（绕过模拟 + NO/NC 映射）
+        /// </summary>
+        public IoOp<bool> ConfirmHw(
+            Expression<Func<TLayout, OutputSignal>> output,
+            bool value,
+            Expression<Func<TLayout, InputSignal>> confirm,
+            bool expected = true,
+            TimeSpan? timeout = null,
+            bool now = false,
+            CancellationToken cancellationToken = default)
+        {
+            if (value)
+            {
+                On(output, now);
+            }
+            else
+            {
+                Off(output, now);
+            }
+
+            return UntilHw(confirm, expected, timeout, cancellationToken);
+        }
+
+        private IoOp<bool> UntilByIndexInternal(
+            int index,
+            bool expected,
+            TimeSpan? timeout,
+            CancellationToken cancellationToken,
+            Func<int, bool> readInput)
+        {
             var op = new IoOp<bool>();
 
             // 解析超时时间：参数 > 标签 > 全局默认
@@ -775,7 +1211,7 @@ namespace EwanIO.Core.Context
 
             var waitOp = new WaitOperation(
                 op,
-                () => GetInput(index),
+                () => readInput(index),
                 expected,
                 actualTimeout);
 
@@ -801,30 +1237,6 @@ namespace EwanIO.Core.Context
             CheckWaitOperation(waitOp);
 
             return op;
-        }
-
-        /// <summary>
-        /// 写输出 + 等待输入反馈
-        /// </summary>
-        public IoOp<bool> Confirm(
-            Expression<Func<TLayout, OutputSignal>> output,
-            bool value,
-            Expression<Func<TLayout, InputSignal>> confirm,
-            bool expected = true,
-            TimeSpan? timeout = null,
-            bool now = false,
-            CancellationToken cancellationToken = default)
-        {
-            if (value)
-            {
-                On(output, now);
-            }
-            else
-            {
-                Off(output, now);
-            }
-
-            return Until(confirm, expected, timeout, cancellationToken);
         }
 
         /// <summary>
@@ -1029,86 +1441,91 @@ namespace EwanIO.Core.Context
         public class EdgeAccessor
         {
             private readonly IoContext<TLayout> _ctx;
-            internal EdgeAccessor(IoContext<TLayout> ctx) => _ctx = ctx;
+            private readonly EdgeManager _edge;
+            internal EdgeAccessor(IoContext<TLayout> ctx, EdgeManager edge)
+            {
+                _ctx = ctx;
+                _edge = edge;
+            }
 
             public bool R(Expression<Func<TLayout, InputSignal>> expr)
             {
                 int idx = _ctx._meta.GetInputIndex(expr);
-                return _ctx._edgeManager.ReadAndClearRising(idx);
+                return R(idx);
             }
 
             public bool F(Expression<Func<TLayout, InputSignal>> expr)
             {
                 int idx = _ctx._meta.GetInputIndex(expr);
-                return _ctx._edgeManager.ReadAndClearFalling(idx);
+                return F(idx);
             }
 
             public bool PeekR(Expression<Func<TLayout, InputSignal>> expr)
             {
                 int idx = _ctx._meta.GetInputIndex(expr);
-                return _ctx._edgeManager.PeekRising(idx);
+                return PeekR(idx);
             }
 
             public bool PeekF(Expression<Func<TLayout, InputSignal>> expr)
             {
                 int idx = _ctx._meta.GetInputIndex(expr);
-                return _ctx._edgeManager.PeekFalling(idx);
+                return PeekF(idx);
             }
 
             public void ClearR(Expression<Func<TLayout, InputSignal>> expr)
             {
                 int idx = _ctx._meta.GetInputIndex(expr);
-                _ctx._edgeManager.ClearRising(idx);
+                ClearR(idx);
             }
 
             public void ClearF(Expression<Func<TLayout, InputSignal>> expr)
             {
                 int idx = _ctx._meta.GetInputIndex(expr);
-                _ctx._edgeManager.ClearFalling(idx);
+                ClearF(idx);
             }
 
             public bool R(int index)
             {
                 if (!_ctx.EnsureInputIndex(index, nameof(R)))
                     return false;
-                return _ctx._edgeManager.ReadAndClearRising(index);
+                return _edge.ReadAndClearRising(index);
             }
 
             public bool F(int index)
             {
                 if (!_ctx.EnsureInputIndex(index, nameof(F)))
                     return false;
-                return _ctx._edgeManager.ReadAndClearFalling(index);
+                return _edge.ReadAndClearFalling(index);
             }
 
             public bool PeekR(int index)
             {
                 if (!_ctx.EnsureInputIndex(index, nameof(PeekR)))
                     return false;
-                return _ctx._edgeManager.PeekRising(index);
+                return _edge.PeekRising(index);
             }
 
             public bool PeekF(int index)
             {
                 if (!_ctx.EnsureInputIndex(index, nameof(PeekF)))
                     return false;
-                return _ctx._edgeManager.PeekFalling(index);
+                return _edge.PeekFalling(index);
             }
 
             public void ClearR(int index)
             {
                 if (!_ctx.EnsureInputIndex(index, nameof(ClearR)))
                     return;
-                _ctx._edgeManager.ClearRising(index);
+                _edge.ClearRising(index);
             }
 
             public void ClearF(int index)
             {
                 if (!_ctx.EnsureInputIndex(index, nameof(ClearF)))
                     return;
-                _ctx._edgeManager.ClearFalling(index);
+                _edge.ClearFalling(index);
             }
-            public void ClearAll() => _ctx._edgeManager.ClearAll();
+            public void ClearAll() => _edge.ClearAll();
         }
 
         /// <summary>
@@ -1119,52 +1536,132 @@ namespace EwanIO.Core.Context
             private readonly IoContext<TLayout> _ctx;
             internal SimAccessor(IoContext<TLayout> ctx) => _ctx = ctx;
 
+            /// <summary>
+            /// 强制“物理/映射前(PreMap)”输入为 ON（即模拟后、映射前值为 true）
+            /// </summary>
+            public void ForcePhysicalOn(Expression<Func<TLayout, InputSignal>> expr)
+            {
+                int idx = _ctx._meta.GetInputIndex(expr);
+                _ctx._physicalSimulator.ForceOn(idx);
+            }
+
+            /// <summary>
+            /// 强制“物理/映射前(PreMap)”输入为 OFF（即模拟后、映射前值为 false）
+            /// </summary>
+            public void ForcePhysicalOff(Expression<Func<TLayout, InputSignal>> expr)
+            {
+                int idx = _ctx._meta.GetInputIndex(expr);
+                _ctx._physicalSimulator.ForceOff(idx);
+            }
+
+            /// <summary>
+            /// 强制“物理/映射前(PreMap)”输入为 ON（索引）
+            /// </summary>
+            public void ForcePhysicalOn(int index)
+            {
+                if (!_ctx.EnsureInputIndex(index, nameof(ForcePhysicalOn)))
+                    return;
+                _ctx._physicalSimulator.ForceOn(index);
+            }
+
+            /// <summary>
+            /// 强制“物理/映射前(PreMap)”输入为 OFF（索引）
+            /// </summary>
+            public void ForcePhysicalOff(int index)
+            {
+                if (!_ctx.EnsureInputIndex(index, nameof(ForcePhysicalOff)))
+                    return;
+                _ctx._physicalSimulator.ForceOff(index);
+            }
+
+            /// <summary>
+            /// 清除“物理/映射前(PreMap)”模拟（表达式）
+            /// </summary>
+            public void ClearPhysicalSimulate(Expression<Func<TLayout, InputSignal>> expr)
+            {
+                int idx = _ctx._meta.GetInputIndex(expr);
+                _ctx._physicalSimulator.ClearSimulate(idx);
+            }
+
+            /// <summary>
+            /// 清除“物理/映射前(PreMap)”模拟（索引）
+            /// </summary>
+            public void ClearPhysicalSimulate(int index)
+            {
+                if (!_ctx.EnsureInputIndex(index, nameof(ClearPhysicalSimulate)))
+                    return;
+                _ctx._physicalSimulator.ClearSimulate(index);
+            }
+
+            /// <summary>
+            /// 获取“物理/映射前(PreMap)”模拟模式（索引）
+            /// </summary>
+            public SimMode GetPhysicalMode(int index)
+            {
+                if (!_ctx.EnsureInputIndex(index, nameof(GetPhysicalMode)))
+                    return SimMode.None;
+                return _ctx._physicalSimulator.GetMode(index);
+            }
+
+            /// <summary>
+            /// 强制“逻辑层(R)”输入为 ON（映射后值为 true；下一次 Tick 生效）
+            /// </summary>
             public void ForceOn(Expression<Func<TLayout, InputSignal>> expr)
             {
                 int idx = _ctx._meta.GetInputIndex(expr);
-                _ctx._simulator.ForceOn(idx);
+                _ctx._logicalSimulator.ForceOn(idx);
             }
 
+            /// <summary>
+            /// 强制“逻辑层(R)”输入为 OFF（映射后值为 false；下一次 Tick 生效）
+            /// </summary>
             public void ForceOff(Expression<Func<TLayout, InputSignal>> expr)
             {
                 int idx = _ctx._meta.GetInputIndex(expr);
-                _ctx._simulator.ForceOff(idx);
+                _ctx._logicalSimulator.ForceOff(idx);
             }
 
+            /// <summary>
+            /// 清除“逻辑层(R)”模拟（表达式）
+            /// </summary>
             public void ClearSimulate(Expression<Func<TLayout, InputSignal>> expr)
             {
                 int idx = _ctx._meta.GetInputIndex(expr);
-                _ctx._simulator.ClearSimulate(idx);
+                _ctx._logicalSimulator.ClearSimulate(idx);
             }
 
             public void ForceOn(int index)
             {
                 if (!_ctx.EnsureInputIndex(index, nameof(ForceOn)))
                     return;
-                _ctx._simulator.ForceOn(index);
+                _ctx._logicalSimulator.ForceOn(index);
             }
 
             public void ForceOff(int index)
             {
                 if (!_ctx.EnsureInputIndex(index, nameof(ForceOff)))
                     return;
-                _ctx._simulator.ForceOff(index);
+                _ctx._logicalSimulator.ForceOff(index);
             }
 
             public void ClearSimulate(int index)
             {
                 if (!_ctx.EnsureInputIndex(index, nameof(ClearSimulate)))
                     return;
-                _ctx._simulator.ClearSimulate(index);
+                _ctx._logicalSimulator.ClearSimulate(index);
             }
 
-            public void ClearAll() => _ctx._simulator.ClearAll();
+            public void ClearAll()
+            {
+                _ctx._logicalSimulator.ClearAll();
+                _ctx._physicalSimulator.ClearAll();
+            }
 
             public SimMode GetMode(int index)
             {
                 if (!_ctx.EnsureInputIndex(index, nameof(GetMode)))
                     return SimMode.None;
-                return _ctx._simulator.GetMode(index);
+                return _ctx._logicalSimulator.GetMode(index);
             }
         }
 
