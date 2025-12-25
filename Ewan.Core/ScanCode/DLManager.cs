@@ -1,38 +1,42 @@
 ﻿using Ewan.Core.Attribute;
-using Ewan.Core.Msg;
+using Ewan.CodeReader;
+using Ewan.CodeReader.Interfaces;
+using Ewan.CodeReader.Scanners;
+using Ewan.Model.System;
 using System;
-using System.Net.Sockets;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Ewan.Core.ScanCode
 {
     /// <summary>
-    /// 扫码器管理器 - 通过TCP与扫码器通信
+    /// 扫码器管理器 - 使用 Ewan.CodeReader 统一扫码封装
     /// </summary>
     [Manager(Priority = 1)]
     public class DLManager : BaseManager<DLManager>
     {
         #region 私有字段
 
-        private TcpClient _tcpClient;
-        private NetworkStream _networkStream;
-        private bool _isConnected = false;
+        private IScanner _scanner;
+        private ScannerDeviceInfo _scannerDevice;
         private readonly object _connectionLock = new object();
-        
-        // TCP连接参数
-        private const string SCANNER_IP = "192.168.3.100";
-        private const int SCANNER_PORT = 51236;
-        private const string TRIGGER_COMMAND = "T";
+
+        private const string DefaultScannerIp = "192.168.3.100";
+        private const int DefaultScannerPort = 51236;
+        private const string DefaultTriggerCommand = "T";
+        private const int DefaultConnectionTimeoutMs = 3000;
+        private const int DefaultReceiveTimeoutMs = 5000;
+        private const ScannerType DefaultScannerType = ScannerType.Datalogic;
+
+        private ScannerType _scannerType = DefaultScannerType;
+        private string _scannerIp = DefaultScannerIp;
+        private int _scannerPort = DefaultScannerPort;
+        private string _triggerCommand = DefaultTriggerCommand;
+        private int _connectionTimeoutMs = DefaultConnectionTimeoutMs;
+        private int _receiveTimeoutMs = DefaultReceiveTimeoutMs;
         
         // 重连参数
-        private Timer _reconnectTimer;
-        private const int RECONNECT_INTERVAL = 5000; // 5秒重连间隔
         private bool _autoReconnect = true;
-        
-        // 消息队列
-        private MsgManager _msgManager;
 
         #endregion
 
@@ -86,45 +90,35 @@ namespace Ewan.Core.ScanCode
             {
                 try
                 {
-                    // 如果已连接，先断开
-                    if (_isConnected)
-                    {
-                        DisconnectFromScanner();
-                    }
+                    LoadScannerSettings();
 
                     _uiLogger.InfoRaw("处理已开始: {0}", 
-                        $"连接扫码器 {SCANNER_IP}:{SCANNER_PORT}");
+                        $"连接扫码器({_scannerType}) {_scannerIp}:{_scannerPort}");
 
-                    _tcpClient = new TcpClient();
-                    
-                    // 设置连接超时
-                    var result = _tcpClient.BeginConnect(SCANNER_IP, SCANNER_PORT, null, null);
-                    var success = result.AsyncWaitHandle.WaitOne(3000); // 3秒超时
-                    
-                    if (success && _tcpClient.Connected)
+                    DisconnectFromScanner();
+
+                    _scanner = ScannerFactory.CreateScanner(_scannerType);
+                    ApplyScannerSettings(_scanner);
+
+                    _scanner.OnException += OnScannerException;
+                    _scanner.OnConnectionStatusChanged += OnScannerConnectionStatusChanged;
+
+                    _scannerDevice = CreateScannerDeviceInfo(_scannerType, _scannerIp, _scannerPort);
+                    bool connected = _scanner.Connect(_scannerDevice);
+
+                    if (!connected)
                     {
-                        _tcpClient.EndConnect(result);
-                        _networkStream = _tcpClient.GetStream();
-                        _isConnected = true;
-                        
-                        _uiLogger.InfoRaw("处理已完成: {0}", "扫码器连接成功");
-                        
-                        
-                        return true;
-                    }
-                    else
-                    {
-                        _tcpClient?.Close();
-                        _tcpClient = null;
-                        _uiLogger.ErrorRaw("操作失败: {0}", "扫码器连接超时");
+                        _uiLogger.ErrorRaw("操作失败: {0}", "扫码器连接失败");
+                        DisconnectFromScanner();
                         return false;
                     }
+
+                    _uiLogger.InfoRaw("处理已完成: {0}", "扫码器连接成功");
+                    return true;
                 }
                 catch (Exception ex)
                 {
-                    _tcpClient?.Close();
-                    _tcpClient = null;
-                    _isConnected = false;
+                    DisconnectFromScanner();
                     
                     _uiLogger.ErrorRaw("操作失败: {0}", "扫码器连接失败: " + ex.Message);
                     return false;
@@ -141,19 +135,47 @@ namespace Ewan.Core.ScanCode
             {
                 try
                 {
-                    if (_networkStream != null)
+                    if (_scanner != null)
                     {
-                        _networkStream.Close();
-                        _networkStream = null;
-                    }
+                        try
+                        {
+                            _scanner.OnException -= OnScannerException;
+                            _scanner.OnConnectionStatusChanged -= OnScannerConnectionStatusChanged;
+                        }
+                        catch
+                        {
+                        }
 
-                    if (_tcpClient != null)
-                    {
-                        _tcpClient.Close();
-                        _tcpClient = null;
-                    }
+                        try
+                        {
+                            if (_scanner.IsScanning)
+                            {
+                                _scanner.StopScan();
+                            }
+                        }
+                        catch
+                        {
+                        }
 
-                    _isConnected = false;
+                        try
+                        {
+                            _scanner.Disconnect();
+                        }
+                        catch
+                        {
+                        }
+
+                        try
+                        {
+                            _scanner.Dispose();
+                        }
+                        catch
+                        {
+                        }
+
+                        _scanner = null;
+                        _scannerDevice = null;
+                    }
                     
                     _uiLogger.InfoRaw("处理已完成: {0}", "扫码器连接已断开");
                     
@@ -179,21 +201,23 @@ namespace Ewan.Core.ScanCode
             {
                 try
                 {
-                    if (!_isConnected || _networkStream == null)
+                    if (_scanner == null || !_scanner.IsConnected)
                     {
-                        _uiLogger.ErrorRaw("操作失败: {0}", "扫码器未连接，无法触发扫码");
-                        return "";
+                        if (_autoReconnect)
+                        {
+                            ConnectToScanner();
+                        }
+
+                        if (_scanner == null || !_scanner.IsConnected)
+                        {
+                            _uiLogger.ErrorRaw("操作失败: {0}", "扫码器未连接，无法触发扫码");
+                            return "";
+                        }
                     }
 
-                    // 发送触发命令
-                    byte[] data = Encoding.ASCII.GetBytes(TRIGGER_COMMAND);
-                    _networkStream.Write(data, 0, data.Length);
-                    _networkStream.Flush();
+                    _uiLogger.InfoRaw("处理已开始: {0}", "发送扫码触发命令: " + _triggerCommand);
                     
-                    _uiLogger.InfoRaw("处理已开始: {0}", "发送扫码触发命令: " + TRIGGER_COMMAND);
-                    
-                    // 等待并接收扫码结果
-                    string scanResult = ReceiveScanResult();
+                    string scanResult = TriggerScanInternal();
                     
                     if (!string.IsNullOrEmpty(scanResult))
                     {
@@ -209,73 +233,8 @@ namespace Ewan.Core.ScanCode
                 catch (Exception ex)
                 {
                     _uiLogger.ErrorRaw("操作失败: {0}", "触发扫码失败: " + ex.Message);
-                    
-                    // 连接可能已断开，标记为未连接
-                    _isConnected = false;
                     return "";
                 }
-            }
-        }
-
-        /// <summary>
-        /// 接收扫码结果
-        /// </summary>
-        /// <returns>扫码结果字符串</returns>
-        private string ReceiveScanResult()
-        {
-            try
-            {
-                if (_networkStream == null || !_networkStream.CanRead)
-                {
-                    return "";
-                }
-
-                // 设置接收超时时间（5秒）
-                _networkStream.ReadTimeout = 5000;
-                
-                byte[] buffer = new byte[1024];
-                StringBuilder result = new StringBuilder();
-                
-                // 循环读取数据直到收到完整的扫码结果
-                DateTime startTime = DateTime.Now;
-                while ((DateTime.Now - startTime).TotalMilliseconds < 5000) // 5秒超时
-                {
-                    if (_networkStream.DataAvailable)
-                    {
-                        int bytesRead = _networkStream.Read(buffer, 0, buffer.Length);
-                        if (bytesRead > 0)
-                        {
-                            string receivedData = Encoding.ASCII.GetString(buffer, 0, bytesRead);
-                            result.Append(receivedData);
-                            
-                            // 检查是否收到完整的数据（根据扫码器的协议判断）
-                            // 通常扫码器会在数据末尾添加换行符或特定的结束符
-                            string currentResult = result.ToString();
-                            if (currentResult.Contains("\r") || currentResult.Contains("\n") || 
-                                currentResult.Contains("\r\n"))
-                            {
-                                // 清理结果字符串
-                                string cleanResult = currentResult.Trim('\r', '\n', ' ');
-                                if (!string.IsNullOrEmpty(cleanResult))
-                                {
-                                    return cleanResult;
-                                }
-                            }
-                        }
-                    }
-                    
-                    // 短暂休眠避免占用过多CPU
-                    Thread.Sleep(10);
-                }
-                
-                // 超时或没有收到数据
-                _uiLogger.ErrorRaw("操作失败: {0}", "接收扫码结果超时");
-                return "";
-            }
-            catch (Exception ex)
-            {
-                _uiLogger.ErrorRaw("处理错误: {0} - {1}", "接收扫码结果错误: " + ex.Message);
-                return "";
             }
         }
 
@@ -303,7 +262,7 @@ namespace Ewan.Core.ScanCode
             {
                 lock (_connectionLock)
                 {
-                    return _isConnected;
+                    return _scanner != null && _scanner.IsConnected;
                 }
             }
         }
@@ -311,12 +270,12 @@ namespace Ewan.Core.ScanCode
         /// <summary>
         /// 获取扫码器IP地址
         /// </summary>
-        public string ScannerIP => SCANNER_IP;
+        public string ScannerIP => _scannerIp;
 
         /// <summary>
         /// 获取扫码器端口
         /// </summary>
-        public int ScannerPort => SCANNER_PORT;
+        public int ScannerPort => _scannerPort;
 
         /// <summary>
         /// 启用/禁用自动重连
@@ -345,14 +304,227 @@ namespace Ewan.Core.ScanCode
         {
             lock (_connectionLock)
             {
-                if (_isConnected)
+                if (_scanner != null && _scanner.IsConnected)
                 {
-                    return $"已连接到 {SCANNER_IP}:{SCANNER_PORT}";
+                    return $"已连接到 {_scannerIp}:{_scannerPort}";
                 }
                 else
                 {
                     return "未连接";
                 }
+            }
+        }
+
+        #endregion
+
+        #region 扫码器配置
+
+        private void LoadScannerSettings()
+        {
+            try
+            {
+                var parameters = SystemParametersManager.Instance?.Parameters;
+                if (parameters == null)
+                {
+                    ApplyDefaultScannerSettings();
+                    return;
+                }
+
+                _scannerType = ParseScannerType(parameters.CodeReaderType);
+                _scannerIp = string.IsNullOrWhiteSpace(parameters.CodeReaderIp) ? DefaultScannerIp : parameters.CodeReaderIp.Trim();
+                _scannerPort = parameters.CodeReaderPort > 0 && parameters.CodeReaderPort <= 65535
+                    ? parameters.CodeReaderPort
+                    : DefaultScannerPort;
+                _triggerCommand = string.IsNullOrWhiteSpace(parameters.CodeReaderTriggerCommand)
+                    ? DefaultTriggerCommand
+                    : parameters.CodeReaderTriggerCommand;
+                _connectionTimeoutMs = parameters.CodeReaderConnectionTimeoutMs > 0
+                    ? parameters.CodeReaderConnectionTimeoutMs
+                    : DefaultConnectionTimeoutMs;
+                _receiveTimeoutMs = parameters.CodeReaderReceiveTimeoutMs > 0
+                    ? parameters.CodeReaderReceiveTimeoutMs
+                    : DefaultReceiveTimeoutMs;
+            }
+            catch
+            {
+                ApplyDefaultScannerSettings();
+            }
+        }
+
+        private void ApplyDefaultScannerSettings()
+        {
+            _scannerType = DefaultScannerType;
+            _scannerIp = DefaultScannerIp;
+            _scannerPort = DefaultScannerPort;
+            _triggerCommand = DefaultTriggerCommand;
+            _connectionTimeoutMs = DefaultConnectionTimeoutMs;
+            _receiveTimeoutMs = DefaultReceiveTimeoutMs;
+        }
+
+        private static ScannerType ParseScannerType(string typeText)
+        {
+            if (!string.IsNullOrWhiteSpace(typeText) &&
+                Enum.TryParse(typeText.Trim(), ignoreCase: true, out ScannerType type))
+            {
+                return type;
+            }
+
+            return DefaultScannerType;
+        }
+
+        private void ApplyScannerSettings(IScanner scanner)
+        {
+            if (scanner == null)
+            {
+                return;
+            }
+
+            if (scanner is DatalogicScanner datalogicScanner)
+            {
+                datalogicScanner.TriggerCommand = _triggerCommand;
+                datalogicScanner.ConnectionTimeout = _connectionTimeoutMs;
+                datalogicScanner.ReceiveTimeout = _receiveTimeoutMs;
+            }
+            else if (scanner is HikvisionScanner hikvisionScanner)
+            {
+                hikvisionScanner.ReceiveTimeout = _receiveTimeoutMs;
+            }
+        }
+
+        private static ScannerDeviceInfo CreateScannerDeviceInfo(ScannerType type, string ip, int port)
+        {
+            switch (type)
+            {
+                case ScannerType.Datalogic:
+                    return DatalogicScanner.CreateDeviceInfo(ip, port);
+                case ScannerType.Hikvision:
+                    return HikvisionScanner.CreateDeviceInfo(ip);
+                default:
+                    throw new NotSupportedException($"不支持的扫码器类型: {type}");
+            }
+        }
+
+        private string TriggerScanInternal()
+        {
+            if (_scanner == null)
+            {
+                return "";
+            }
+
+            if (_scanner is DatalogicScanner datalogicScanner)
+            {
+                return datalogicScanner.TriggerScanSync();
+            }
+
+            return TriggerScanByEvent(_receiveTimeoutMs);
+        }
+
+        private string TriggerScanByEvent(int timeoutMs)
+        {
+            try
+            {
+                string scanResult = "";
+                int waitTimeoutMs = timeoutMs > 0 ? timeoutMs : DefaultReceiveTimeoutMs;
+
+                using (var waitHandle = new ManualResetEventSlim(false))
+                {
+                    EventHandler<ScanResultEventArgs> handler = (sender, args) =>
+                    {
+                        try
+                        {
+                            if (args?.Results == null || args.Results.Count == 0)
+                            {
+                                return;
+                            }
+
+                            for (int i = 0; i < args.Results.Count; i++)
+                            {
+                                string code = args.Results[i]?.Code;
+                                if (string.IsNullOrWhiteSpace(code) ||
+                                    string.Equals(code, "NoRead", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    continue;
+                                }
+
+                                scanResult = code.Trim();
+                                waitHandle.Set();
+                                return;
+                            }
+                        }
+                        catch
+                        {
+                        }
+                    };
+
+                    _scanner.OnScanResult += handler;
+
+                    try
+                    {
+                        if (!_scanner.IsScanning)
+                        {
+                            if (!_scanner.StartScan())
+                            {
+                                return "";
+                            }
+                        }
+
+                        _scanner.SetTriggerMode(true);
+
+                        if (!_scanner.TriggerScan())
+                        {
+                            return "";
+                        }
+
+                        if (!waitHandle.Wait(waitTimeoutMs))
+                        {
+                            return "";
+                        }
+
+                        return scanResult;
+                    }
+                    finally
+                    {
+                        try
+                        {
+                            _scanner.OnScanResult -= handler;
+                        }
+                        catch
+                        {
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                return "";
+            }
+        }
+
+        #endregion
+
+        #region 扫码器事件
+
+        private void OnScannerException(object sender, ScannerExceptionEventArgs e)
+        {
+            try
+            {
+                _uiLogger.ErrorRaw("操作失败: {0}", $"扫码器异常: ({e?.ErrorCode}) {e?.ErrorMessage}");
+            }
+            catch
+            {
+            }
+        }
+
+        private void OnScannerConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
+        {
+            try
+            {
+                _uiLogger.InfoRaw("处理已完成: {0}",
+                    $"扫码器连接状态: {(e?.IsConnected == true ? "已连接" : "已断开")} {e?.Message}");
+                SendConnectionStatusMessage(e?.IsConnected == true);
+            }
+            catch
+            {
             }
         }
 
@@ -369,7 +541,7 @@ namespace Ewan.Core.ScanCode
             try
             {
                 // TODO: 创建并发送连接状态消息
-                // var statusMsg = new ScannerConnectionMessage(isConnected, SCANNER_IP, SCANNER_PORT);
+                // var statusMsg = new ScannerConnectionMessage(isConnected, _scannerIp, _scannerPort);
                 // _msgManager.PushMsg(new MessageModel(MsgSubject.ScannerStatus, statusMsg));
                 
                 _uiLogger.InfoRaw("处理已完成: {0}", 

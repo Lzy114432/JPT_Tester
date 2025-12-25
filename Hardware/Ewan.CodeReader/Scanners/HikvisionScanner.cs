@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Ewan.CodeReader.Interfaces;
+#if HIKVISION_SDK
 using MvCodeReaderSDKNet;
+#endif
 
 namespace Ewan.CodeReader.Scanners
 {
+#if HIKVISION_SDK
     /// <summary>
     /// 海康条码类型枚举
     /// </summary>
@@ -581,4 +584,96 @@ namespace Ewan.CodeReader.Scanners
     {
         public string IpAddress { get; set; }
     }
+#else
+    /// <summary>
+    /// 海康扫码器（缺少SDK时的占位实现）
+    /// </summary>
+    public class HikvisionScanner : IScanner
+    {
+        private const string MissingSdkMessage = "未检测到海康扫码器SDK(MvCodeReaderSDK.Net.dll)，请安装SDK或配置 MvCodeReaderSdkDll";
+
+        public event EventHandler<ScanResultEventArgs> OnScanResult;
+        public event EventHandler<ScannerExceptionEventArgs> OnException;
+        public event EventHandler<ConnectionStatusChangedEventArgs> OnConnectionStatusChanged;
+
+        public int ReceiveTimeout { get; set; } = 1000;
+
+        public bool IsConnected => false;
+        public bool IsScanning => false;
+        public ScannerDeviceInfo CurrentDevice => null;
+
+        public List<ScannerDeviceInfo> EnumerateDevices()
+        {
+            return new List<ScannerDeviceInfo>();
+        }
+
+        public static ScannerDeviceInfo CreateDeviceInfo(string ip, string name = null)
+        {
+            return new ScannerDeviceInfo
+            {
+                DeviceId = ip,
+                DeviceName = name ?? $"Hikvision Scanner ({ip})",
+                Manufacturer = "Hikvision",
+                Model = "GigE Scanner",
+                IpAddress = ip,
+                RawDeviceInfo = new HikvisionConnectionInfo { IpAddress = ip }
+            };
+        }
+
+        public bool ConnectByIp(string ip)
+        {
+            return Connect(CreateDeviceInfo(ip));
+        }
+
+        public bool Connect(ScannerDeviceInfo device)
+        {
+            RaiseException(-1, MissingSdkMessage);
+            RaiseConnectionStatusChanged(false, MissingSdkMessage);
+            return false;
+        }
+
+        public bool Disconnect()
+        {
+            RaiseConnectionStatusChanged(false, "已断开连接");
+            return true;
+        }
+
+        public bool StartScan() => false;
+        public bool StopScan() => false;
+        public bool TriggerScan() => false;
+        public bool SetTriggerMode(bool isTriggerMode) => false;
+        public float GetExposureTime() => 0;
+        public bool SetExposureTime(float value) => false;
+        public float GetGain() => 0;
+        public bool SetGain(float value) => false;
+
+        private void RaiseException(int errorCode, string message)
+        {
+            OnException?.Invoke(this, new ScannerExceptionEventArgs
+            {
+                ErrorCode = errorCode,
+                ErrorMessage = message
+            });
+        }
+
+        private void RaiseConnectionStatusChanged(bool isConnected, string message)
+        {
+            OnConnectionStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArgs
+            {
+                IsConnected = isConnected,
+                Message = message,
+                Device = null
+            });
+        }
+
+        public void Dispose()
+        {
+        }
+    }
+
+    public class HikvisionConnectionInfo
+    {
+        public string IpAddress { get; set; }
+    }
+#endif
 }

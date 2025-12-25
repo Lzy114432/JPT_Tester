@@ -137,6 +137,10 @@
       <Project>{e9b968b2-7577-4524-a023-9e18d7314296}</Project>
       <Name>Ewan.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Hardware\Ewan.CodeReader\Ewan.CodeReader.csproj">
+      <Project>{3874D647-243F-356F-3E1A-E33858A8BEC9}</Project>
+      <Name>Ewan.CodeReader</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="HslCommunication.dll">

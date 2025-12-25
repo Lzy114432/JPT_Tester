@@ -111,6 +111,40 @@ namespace Ewan.Model.System
         /// </summary>
         public int CuttingBridgeCarReserveCount { get; set; } = 0;
 
+        #region CodeReader
+
+        /// <summary>
+        /// 扫码器类型（Datalogic/Hikvision）
+        /// </summary>
+        public string CodeReaderType { get; set; } = "Datalogic";
+
+        /// <summary>
+        /// 扫码器IP
+        /// </summary>
+        public string CodeReaderIp { get; set; } = "192.168.3.100";
+
+        /// <summary>
+        /// 扫码器端口（TCP类型扫码器）
+        /// </summary>
+        public int CodeReaderPort { get; set; } = 51236;
+
+        /// <summary>
+        /// 触发命令（TCP类型扫码器）
+        /// </summary>
+        public string CodeReaderTriggerCommand { get; set; } = "T";
+
+        /// <summary>
+        /// 连接超时（毫秒）
+        /// </summary>
+        public int CodeReaderConnectionTimeoutMs { get; set; } = 3000;
+
+        /// <summary>
+        /// 接收超时（毫秒）
+        /// </summary>
+        public int CodeReaderReceiveTimeoutMs { get; set; } = 5000;
+
+        #endregion
+
         #region MES
 
         /// <summary>
@@ -184,6 +218,12 @@ namespace Ewan.Model.System
                 EmptyCartReserveCount = 0,
                 CartCheckMode = CartCheckMode.EmptyCart,
                 CuttingBridgeCarReserveCount = 0,
+                CodeReaderType = "Datalogic",
+                CodeReaderIp = "192.168.3.100",
+                CodeReaderPort = 51236,
+                CodeReaderTriggerCommand = "T",
+                CodeReaderConnectionTimeoutMs = 3000,
+                CodeReaderReceiveTimeoutMs = 5000,
                 MesEnabled = false,
                 MesBrokerHost = "localhost",
                 MesBrokerPort = 1883,
