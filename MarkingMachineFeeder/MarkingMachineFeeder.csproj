@@ -258,10 +258,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Desktop\切栈桥和除胶\Ewan.Mes\Ewan.Mes\Ewan.Mes.csproj">
-      <Project>{EA08185A-1940-492E-BEB4-0CD6AC2240D8}</Project>
-      <Name>Ewan.Mes</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Ewan.Controls\Ewan.Controls.csproj">
       <Project>{19adfa5d-8754-4c88-ac93-80629734bc7b}</Project>
       <Name>Ewan.Controls</Name>
@@ -269,6 +265,10 @@
     <ProjectReference Include="..\Ewan.Core\Ewan.Core.csproj">
       <Project>{74a46493-03c1-44b6-ba22-cff0f8ec9fbe}</Project>
       <Name>Ewan.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ewan.Mes\Ewan.Mes.csproj">
+      <Project>{ea08185a-1940-492e-beb4-0cd6ac2240d8}</Project>
+      <Name>Ewan.Mes</Name>
     </ProjectReference>
     <ProjectReference Include="..\Ewan.Model\Ewan.Model.csproj">
       <Project>{e9b968b2-7577-4524-a023-9e18d7314296}</Project>

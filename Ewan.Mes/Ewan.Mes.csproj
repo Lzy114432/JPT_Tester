@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Ewan.Mes</RootNamespace>
     <AssemblyName>Ewan.Mes</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
@@ -54,7 +54,6 @@
   <ItemGroup>
     <!-- 核心基础设施 -->
     <Compile Include="Devices\IDeviceService.cs" />
-
     <Compile Include="Transport\EndpointTemplate.cs" />
     <Compile Include="Mqtt\IMqttPayloadSerializer.cs" />
     <Compile Include="Mqtt\NewtonsoftPayloadSerializer.cs" />
