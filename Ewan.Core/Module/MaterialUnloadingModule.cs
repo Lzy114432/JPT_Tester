@@ -367,21 +367,49 @@ namespace Ewan.Core.Module
         /// </summary>
         private void ProcessScanning()
         {
-            string scannedCode = DLManager.Instance().TriggerScan();
-            if (!string.IsNullOrEmpty(scannedCode))
+            var parameters = _parametersManager?.Parameters;
+            bool mesEnabled = parameters != null && parameters.MesEnabled;
+            int retryCount = parameters != null ? parameters.CodeReaderScanRetryCount : 3;
+            if (retryCount <= 0) retryCount = 3;
+
+            string scannedCode = string.Empty;
+
+            if (mesEnabled)
             {
-                // 保存扫码结果
-                _lastScannedQrCode = scannedCode;
+                for (int attempt = 1; attempt <= retryCount; attempt++)
+                {
+                    scannedCode = (DLManager.Instance().TriggerScan() ?? string.Empty).Trim();
 
-                // 发送扫码完成信号给机械臂
-                _ioManager.Ctx.On(OUT_SCAN_COMPLETE);
+                    if (!string.IsNullOrWhiteSpace(scannedCode))
+                    {
+                        _uiLogger.InfoRaw("处理已完成: {0}", $"扫码内容: {scannedCode}");
+                        break;
+                    }
 
-                _currentState = MaterialUnloadingState.PuttingToCart;
+                    _uiLogger.WarnRaw("操作失败: {0}", $"第{attempt}次扫码无结果");
+                }
 
-                // 发送放入小车信号
-                _ioManager.Ctx.On(PUT_TO_CART_SIGNAL);
-                _uiLogger.InfoRaw("处理已开始: {0}", $"扫码完成: {scannedCode}，发送扫码完成信号(OUT9)，放入小车");
+                if (string.IsNullOrWhiteSpace(scannedCode))
+                {
+                    scannedCode = string.Empty;
+                    _uiLogger.WarnRaw("操作失败: {0}", $"连续扫码{retryCount}次无结果，继续流程");
+                }
             }
+            else
+            {
+                _uiLogger.InfoRaw("处理已跳过: {0}", "MES未启用，跳过扫码");
+            }
+
+            // 保存扫码结果（允许为空）
+            _lastScannedQrCode = scannedCode;
+
+            // 发送扫码完成信号给机械臂
+            _ioManager.Ctx.On(OUT_SCAN_COMPLETE);
+
+            _currentState = MaterialUnloadingState.PuttingToCart;
+
+            // 发送放入小车信号
+            _ioManager.Ctx.On(PUT_TO_CART_SIGNAL);
         }
 
         /// <summary>

@@ -550,6 +550,23 @@
 
                                         <Border Background="#FAFAFA" CornerRadius="8" Padding="20" Margin="0,0,0,10">
                                             <StackPanel>
+                                                <TextBlock Text="扫码重试次数"
+                                                          FontSize="14"
+                                                          FontWeight="Medium"
+                                                          Foreground="#495057"
+                                                          Margin="0,0,0,10"/>
+                                                <TextBox Text="{Binding CodeReaderScanRetryCount, UpdateSourceTrigger=PropertyChanged}"
+                                                        Style="{StaticResource ModernTextBox}"/>
+                                                <TextBlock Text="超过次数仍未扫码到则继续流程"
+                                                          FontSize="12"
+                                                          Foreground="#9CA3AF"
+                                                          Margin="0,5,0,0"
+                                                          TextWrapping="Wrap"/>
+                                            </StackPanel>
+                                        </Border>
+
+                                        <Border Background="#FAFAFA" CornerRadius="8" Padding="20" Margin="0,0,0,10">
+                                            <StackPanel>
                                                 <TextBlock Text="用户名"
                                                           FontSize="14"
                                                           FontWeight="Medium"

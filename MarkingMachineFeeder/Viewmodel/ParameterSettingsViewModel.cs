@@ -131,6 +131,13 @@ namespace MarkingMachineFeeder.Viewmodel
             set => SetProperty(ref _cuttingBridgeCarReserveCount, value);
         }
 
+        private int _codeReaderScanRetryCount = 3;
+        public int CodeReaderScanRetryCount
+        {
+            get => _codeReaderScanRetryCount;
+            set => SetProperty(ref _codeReaderScanRetryCount, value);
+        }
+
         private bool _mesEnabled;
         public bool MesEnabled
         {
@@ -357,19 +364,20 @@ namespace MarkingMachineFeeder.Viewmodel
                 LoadingBinSelectionLabel = "装料料仓选择";
                 UnloadingBinSelectionLabel = "下料料仓选择";
 
-                MesEnabled = false;
-                MesBrokerHost = "localhost";
-                MesBrokerPort = 1883;
-                MesUserName = string.Empty;
-                MesPassword = string.Empty;
+                 MesEnabled = false;
+                 MesBrokerHost = "localhost";
+                 MesBrokerPort = 1883;
+                 MesUserName = string.Empty;
+                 MesPassword = string.Empty;
                 MesClientId = string.Empty;
                 MesCleanSession = true;
-                MesKeepAliveSeconds = 30;
-                MesRingLineDeviceId = string.Empty;
-                MesRingLineDeviceCode = string.Empty;
-                
-                return;
-            }
+                 MesKeepAliveSeconds = 30;
+                 MesRingLineDeviceId = string.Empty;
+                 MesRingLineDeviceCode = string.Empty;
+                CodeReaderScanRetryCount = 3;
+                 
+                 return;
+             }
 
             _uiLogger = new UILogger();
             _parametersManager = SystemParametersManager.Instance;
@@ -399,6 +407,7 @@ namespace MarkingMachineFeeder.Viewmodel
             EmptyCartReserveCount = parameters.EmptyCartReserveCount;
             CartCheckMode = parameters.CartCheckMode;
             CuttingBridgeCarReserveCount = parameters.CuttingBridgeCarReserveCount;
+            CodeReaderScanRetryCount = parameters.CodeReaderScanRetryCount;
             MesEnabled = parameters.MesEnabled;
             MesBrokerHost = parameters.MesBrokerHost;
             MesBrokerPort = parameters.MesBrokerPort;
@@ -500,6 +509,7 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             try
             {
+                var existing = _parametersManager.Parameters;
                 var parameters = new Ewan.Model.System.SystemParameters
                 {
                     EnableLoadingModule = EnableLoadingModule,
@@ -514,6 +524,13 @@ namespace MarkingMachineFeeder.Viewmodel
                     EmptyCartReserveCount = EmptyCartReserveCount,
                     CartCheckMode = CartCheckMode,
                     CuttingBridgeCarReserveCount = CuttingBridgeCarReserveCount,
+                    CodeReaderType = existing?.CodeReaderType ?? "Datalogic",
+                    CodeReaderIp = existing?.CodeReaderIp ?? "192.168.3.100",
+                    CodeReaderPort = existing?.CodeReaderPort ?? 51236,
+                    CodeReaderTriggerCommand = existing?.CodeReaderTriggerCommand ?? "T",
+                    CodeReaderConnectionTimeoutMs = existing?.CodeReaderConnectionTimeoutMs ?? 3000,
+                    CodeReaderReceiveTimeoutMs = existing?.CodeReaderReceiveTimeoutMs ?? 5000,
+                    CodeReaderScanRetryCount = CodeReaderScanRetryCount <= 0 ? 1 : CodeReaderScanRetryCount,
                     MesEnabled = MesEnabled,
                     MesBrokerHost = MesBrokerHost,
                     MesBrokerPort = MesBrokerPort,

@@ -143,6 +143,11 @@ namespace Ewan.Model.System
         /// </summary>
         public int CodeReaderReceiveTimeoutMs { get; set; } = 5000;
 
+        /// <summary>
+        /// æ‰«ç é‡è¯•æ¬¡æ•°
+        /// </summary>
+        public int CodeReaderScanRetryCount { get; set; } = 3;
+
         #endregion
 
         #region MES
@@ -224,6 +229,7 @@ namespace Ewan.Model.System
                 CodeReaderTriggerCommand = "T",
                 CodeReaderConnectionTimeoutMs = 3000,
                 CodeReaderReceiveTimeoutMs = 5000,
+                CodeReaderScanRetryCount = 3,
                 MesEnabled = false,
                 MesBrokerHost = "localhost",
                 MesBrokerPort = 1883,
@@ -247,6 +253,7 @@ namespace Ewan.Model.System
                             && RingLineTimeoutSeconds > 0
                             && EmptyCartReserveCount >= 0
                             && CuttingBridgeCarReserveCount >= 0
+                            && CodeReaderScanRetryCount > 0
                             && Enum.IsDefined(typeof(BinSelection), LoadingBinSelection)
                             && Enum.IsDefined(typeof(BinSelection), UnloadingBinSelection)
                             && Enum.IsDefined(typeof(CartCheckMode), CartCheckMode);

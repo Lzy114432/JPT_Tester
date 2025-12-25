@@ -278,9 +278,37 @@ namespace Ewan.Core.Module
         {
             _ioManager.Ctx.Off(OUT_ALLOW_PICK);
 
-            DLManager.Instance().TriggerScan(); // 触发扫码,调试模式不需要结果
-                                                //if(DLManager.Instance().TriggerScan() != "")
-                                                //{
+            var parameters = _parametersManager?.Parameters;
+            bool mesEnabled = parameters != null && parameters.MesEnabled;
+            int retryCount = parameters != null ? parameters.CodeReaderScanRetryCount : 3;
+            if (retryCount <= 0) retryCount = 3;
+
+            if (mesEnabled)
+            {
+                string scannedCode = string.Empty;
+
+                for (int attempt = 1; attempt <= retryCount; attempt++)
+                {
+                    scannedCode = (DLManager.Instance().TriggerScan() ?? string.Empty).Trim();
+
+                    if (!string.IsNullOrWhiteSpace(scannedCode))
+                    {
+                        _uiLogger.InfoRaw("处理已完成: {0}", $"扫码内容: {scannedCode}");
+                        break;
+                    }
+
+                    _uiLogger.WarnRaw("操作失败: {0}", $"第{attempt}次扫码无结果");
+                }
+
+                if (string.IsNullOrWhiteSpace(scannedCode))
+                {
+                    _uiLogger.WarnRaw("操作失败: {0}", $"连续扫码{retryCount}次无结果，继续流程");
+                }
+            }
+            else
+            {
+                _uiLogger.InfoRaw("处理已跳过: {0}", "MES未启用，跳过扫码");
+            }
 
             _ioManager.Ctx.On(OUT_SCAN_COMPLETE);  // 扫码完成
 

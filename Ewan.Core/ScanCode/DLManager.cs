@@ -4,6 +4,7 @@ using Ewan.CodeReader.Interfaces;
 using Ewan.CodeReader.Scanners;
 using Ewan.Model.System;
 using System;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -217,7 +218,8 @@ namespace Ewan.Core.ScanCode
 
                     _uiLogger.InfoRaw("处理已开始: {0}", "发送扫码触发命令: " + _triggerCommand);
                     
-                    string scanResult = TriggerScanInternal();
+                    string rawResult = TriggerScanInternal();
+                    string scanResult = NormalizeScanResult(rawResult);
                     
                     if (!string.IsNullOrEmpty(scanResult))
                     {
@@ -225,7 +227,15 @@ namespace Ewan.Core.ScanCode
                     }
                     else
                     {
-                        _uiLogger.ErrorRaw("操作失败: {0}", "扫码失败，未收到有效结果");
+                        string rawText = SanitizeScanText(rawResult);
+                        if (!string.IsNullOrWhiteSpace(rawText))
+                        {
+                            _uiLogger.ErrorRaw("操作失败: {0}", "扫码失败，返回: " + rawText);
+                        }
+                        else
+                        {
+                            _uiLogger.ErrorRaw("操作失败: {0}", "扫码失败，未收到有效结果");
+                        }
                     }
                     
                     return scanResult;
@@ -437,18 +447,35 @@ namespace Ewan.Core.ScanCode
                                 return;
                             }
 
-                            for (int i = 0; i < args.Results.Count; i++)
-                            {
-                                string code = args.Results[i]?.Code;
-                                if (string.IsNullOrWhiteSpace(code) ||
-                                    string.Equals(code, "NoRead", StringComparison.OrdinalIgnoreCase))
+                            string invalidResult = "";
+
+                                for (int i = 0; i < args.Results.Count; i++)
                                 {
-                                    continue;
+                                    string code = SanitizeScanText(args.Results[i]?.Code);
+                                    if (string.IsNullOrWhiteSpace(code))
+                                    {
+                                        continue;
+                                    }
+
+                                    string normalized = NormalizeScanResult(code);
+
+                                    if (!string.IsNullOrEmpty(normalized))
+                                    {
+                                        scanResult = normalized;
+                                        waitHandle.Set();
+                                        return;
+                                    }
+
+                                    if (IsInvalidScanToken(code))
+                                    {
+                                        invalidResult = code;
+                                    }
                                 }
 
-                                scanResult = code.Trim();
+                                if (!string.IsNullOrEmpty(invalidResult))
+                                {
+                                    scanResult = invalidResult;
                                 waitHandle.Set();
-                                return;
                             }
                         }
                         catch
@@ -498,6 +525,54 @@ namespace Ewan.Core.ScanCode
             {
                 return "";
             }
+        }
+
+        private static string NormalizeScanResult(string scanResult)
+        {
+            string normalized = SanitizeScanText(scanResult);
+            if (string.IsNullOrWhiteSpace(normalized))
+            {
+                return "";
+            }
+
+            if (IsInvalidScanToken(normalized))
+            {
+                return "";
+            }
+
+            return normalized;
+        }
+
+        private static bool IsInvalidScanToken(string scanResult)
+        {
+            if (string.IsNullOrWhiteSpace(scanResult))
+            {
+                return false;
+            }
+
+            return string.Equals(scanResult, "NG", StringComparison.OrdinalIgnoreCase) ||
+                   string.Equals(scanResult, "NoRead", StringComparison.OrdinalIgnoreCase) ||
+                   string.Equals(scanResult, "NOREAD", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static string SanitizeScanText(string scanResult)
+        {
+            if (string.IsNullOrEmpty(scanResult))
+            {
+                return "";
+            }
+
+            var builder = new StringBuilder(scanResult.Length);
+            for (int i = 0; i < scanResult.Length; i++)
+            {
+                char c = scanResult[i];
+                if (!char.IsControl(c))
+                {
+                    builder.Append(c);
+                }
+            }
+
+            return builder.ToString().Trim();
         }
 
         #endregion

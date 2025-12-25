@@ -305,11 +305,13 @@ namespace Ewan.CodeReader.Scanners
                             string currentResult = result.ToString();
                             if (currentResult.Contains("\r") || currentResult.Contains("\n"))
                             {
-                                string cleanResult = currentResult.Trim('\r', '\n', ' ');
-                                if (!string.IsNullOrEmpty(cleanResult))
+                                string cleanResult = SanitizeScanText(currentResult);
+                                if (!string.IsNullOrWhiteSpace(cleanResult))
                                 {
                                     return cleanResult;
                                 }
+
+                                return "";
                             }
                         }
                     }
@@ -348,10 +350,10 @@ namespace Ewan.CodeReader.Scanners
                                 string currentData = dataBuffer.ToString();
                                 if (currentData.Contains("\r") || currentData.Contains("\n"))
                                 {
-                                    string cleanResult = currentData.Trim('\r', '\n', ' ');
+                                    string cleanResult = SanitizeScanText(currentData);
                                     dataBuffer.Clear();
 
-                                    if (!string.IsNullOrEmpty(cleanResult))
+                                    if (!string.IsNullOrWhiteSpace(cleanResult))
                                     {
                                         var eventArgs = new ScanResultEventArgs
                                         {
@@ -396,6 +398,26 @@ namespace Ewan.CodeReader.Scanners
         public bool SetExposureTime(float value) => false;
         public float GetGain() => 0;
         public bool SetGain(float value) => false;
+
+        private static string SanitizeScanText(string scanResult)
+        {
+            if (string.IsNullOrEmpty(scanResult))
+            {
+                return string.Empty;
+            }
+
+            var builder = new StringBuilder(scanResult.Length);
+            for (int i = 0; i < scanResult.Length; i++)
+            {
+                char c = scanResult[i];
+                if (!char.IsControl(c))
+                {
+                    builder.Append(c);
+                }
+            }
+
+            return builder.ToString().Trim();
+        }
 
         private void RaiseScanResult(ScanResultEventArgs args)
         {
