@@ -1,6 +1,5 @@
 using Ewan.Core.Msg;
 using Ewan.Core.IO;
-using Ewan.Model.Alarm;
 using Ewan.Model.System;
 using System;
 using System.Threading;
@@ -239,15 +238,6 @@ namespace Ewan.Core.Module
                 // 实际控制IO输出
                 if (_ioManager != null && _ioManager.IsConnected)
                 {
-                    // 控制红灯 (Y2)
-                    //bool redResult = _ioManager.WriteOutput(AlarmIOMapping.RED_LIGHT, red);
-                    //// 控制黄灯 (Y1)
-                    //bool yellowResult = _ioManager.WriteOutput(AlarmIOMapping.YELLOW_LIGHT, yellow);
-                    //// 控制绿灯 (Y0)
-                    //bool greenResult = _ioManager.WriteOutput(AlarmIOMapping.GREEN_LIGHT, green);
-
-
-
                     var ctx = _ioManager.Ctx;
                     if (ctx == null)
                     {
@@ -411,7 +401,7 @@ namespace Ewan.Core.Module
                     if (ctx != null)
                     {
                         ctx.On(x => x.蜂鸣器);
-                        _appLogger.Debug($"蜂鸣器启动, 地址: {AlarmIOMapping.BUZZER}");
+                        _appLogger.Debug("蜂鸣器启动");
                     }
                 }
                 else
@@ -471,7 +461,7 @@ namespace Ewan.Core.Module
                     if (ctx != null)
                     {
                         ctx.Off(x => x.蜂鸣器);
-                        _appLogger.Debug($"蜂鸣器停止, 地址: {AlarmIOMapping.BUZZER}");
+                        _appLogger.Debug("蜂鸣器停止");
                     }
                 }
                 else

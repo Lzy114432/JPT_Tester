@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Linq.Expressions;
 using System.Threading;
 using Ewan.Core;
 using Ewan.Core.IO;
 using Ewan.Core.Msg;
-using Ewan.Model.Alarm;
+using Ewan.Model.IO;
 using Ewan.Model.System;
+using EwanIO.Core.Attributes;
 
 namespace Ewan.BusinessBonding
 {
@@ -14,25 +16,15 @@ namespace Ewan.BusinessBonding
     /// </summary>
     public class SystemControlService : BaseManager<SystemControlService>
     {
-        private const int OUT_START = 5;
-        private const int OUT_STOP = 6;
-        private const int OUT_RECOVERY = 7;
-        private const int OUT_PAUSE = 8;
         private const int DEFAULT_PULSE_WIDTH_MS = 200;
-        private static readonly int[] SAFETY_DOOR_INPUTS =
-        {
-            AlarmIOMapping.SAFETY_DOOR1_ALARM,
-            AlarmIOMapping.SAFETY_DOOR2_ALARM,
-            AlarmIOMapping.SAFETY_DOOR3_ALARM
-        };
         private readonly object _stateLock = new object();
         private bool _isPaused;
 
         public void InitializeSystem()
         {
-            SendPulse(OUT_STOP);
+            SendPulse(x => x.停止输出, now: true);
             Thread.Sleep(DEFAULT_PULSE_WIDTH_MS);
-            SendPulse(OUT_START);
+            SendPulse(x => x.开始);
             Push(SystemControlCommand.Initialize);
             UpdatePauseState(false);
             _uiLogger.InfoRaw("处理已完成: {0}", "系统初始化命令已发送");
@@ -48,7 +40,7 @@ namespace Ewan.BusinessBonding
 
         public void StopSystem()
         {
-            SendPulse(OUT_STOP);
+            SendPulse(x => x.停止输出, now: true);
             Push(SystemControlCommand.Stop);
             UpdatePauseState(false);
             _uiLogger.InfoRaw("处理已完成: {0}", "系统停止命令已发送");
@@ -57,7 +49,7 @@ namespace Ewan.BusinessBonding
 
         public void EmergencyStopSystem()
         {
-            SendPulse(OUT_STOP);
+            SendPulse(x => x.停止输出, now: true);
             Push(SystemControlCommand.EmergencyStop);
             UpdatePauseState(false);
             _uiLogger.WarnRaw("处理已完成: {0}", "系统紧急停止命令已发送");
@@ -65,7 +57,7 @@ namespace Ewan.BusinessBonding
 
         public void PauseSystem()
         {
-            SendPulse(OUT_PAUSE);
+            SendPulse(x => x.暂停);
             Push(SystemControlCommand.Pause);
             UpdatePauseState(true);
             _uiLogger.InfoRaw("处理已完成: {0}", "系统暂停命令已发送");
@@ -80,12 +72,12 @@ namespace Ewan.BusinessBonding
 
         public void SendRecoveryPulse()
         {
-            SendPulse(OUT_RECOVERY);
+            SendPulse(x => x.复位);
         }
 
         public void SendStopPulse()
         {
-            SendPulse(OUT_STOP);
+            SendPulse(x => x.停止输出, now: true);
         }
 
         public bool AreSafetyDoorsClosed()
@@ -114,13 +106,10 @@ namespace Ewan.BusinessBonding
                     }
                 }
 
-                foreach (var input in SAFETY_DOOR_INPUTS)
+                var ctx = ioManager.Ctx;
+                if (ctx.R.前门电磁感应信号 || ctx.R.后门电磁感应信号 || ctx.R.侧门电磁感应信号)
                 {
-                    bool doorOpen = ioManager.Ctx.GetInput(input);
-                    if (doorOpen)
-                    {
-                        return false;
-                    }
+                    return false;
                 }
 
                 return true;
@@ -175,7 +164,7 @@ namespace Ewan.BusinessBonding
 
         }
 
-        private void SendPulse(int outputIndex, int pulseWidthMs = DEFAULT_PULSE_WIDTH_MS)
+        private void SendPulse(Expression<Func<MarkingMachineFeederIOModel, OutputSignal>> outputExpr, int pulseWidthMs = DEFAULT_PULSE_WIDTH_MS, bool now = false)
         {
             try
             {
@@ -199,13 +188,12 @@ namespace Ewan.BusinessBonding
                 }
 
                 int durationTicks = Math.Max(1, pulseWidthMs / 10);
-                bool now = outputIndex == OUT_STOP;
-                ctx.Pulse(outputIndex, durationTicks, now: now);
-                _uiLogger.DebugRaw("已发送脉冲: Y{0}", outputIndex);
+                ctx.Pulse(outputExpr, durationTicks, now: now);
+                _uiLogger.DebugRaw("已发送脉冲: {0}", outputExpr);
             }
             catch (Exception ex)
             {
-                _uiLogger.ErrorRaw("发送脉冲异常: Y{0} - {1}", outputIndex, ex.Message);
+                _uiLogger.ErrorRaw("发送脉冲异常: {0} - {1}", outputExpr, ex.Message);
             }
         }
 

@@ -30,7 +30,6 @@ namespace Ewan.Core.Module
         private bool _isPaused = false; // 暂停状态标志
         private readonly object _stateLock = new object();
         private LayeredIOManager _ioManager;
-        private const int OUT_RECOVERY = 7;
         private const int RECOVERY_PULSE_WIDTH_MS = 200;
         private MsgListener _systemControlListener; // 系统控制消息监听器
 
@@ -511,8 +510,8 @@ namespace Ewan.Core.Module
                 }
 
                 int durationTicks = Math.Max(1, RECOVERY_PULSE_WIDTH_MS / 10);
-                ctx.Pulse(OUT_RECOVERY, durationTicks);
-                _uiLogger.InfoRaw("处理已完成: {0}", "发送复原脉冲(OUT7)");
+                ctx.Pulse(x => x.复位, durationTicks);
+                _uiLogger.InfoRaw("处理已完成: {0}", "发送复原脉冲");
             }
             catch (Exception ex)
             {

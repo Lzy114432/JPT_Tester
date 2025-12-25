@@ -30,28 +30,6 @@ namespace Ewan.Core.Module
         private LayeredIOManager _ioManager;
         private readonly SystemParametersManager _parametersManager = SystemParametersManager.Instance;
 
-        // 输入信号常量
-        private const int MATERIAL_DETECT_SIGNAL = 3;      // 料片检测信号X3
-        private const int SCAN_POSITION_SIGNAL = 7;         // 到达扫码位置信号X7
-        private const int ROBOT_BUSY_SIGNAL = 20;           // IN20 - 机械手忙碌
-
-        // 输出信号常量 - 初始化相关
-        private const int OUT_START = 5;                   // OUT5 - 开始信号
-        private const int OUT_STOP = 6;                    // OUT6 - 停止信号
-        private const int OUT_ALLOW_PICK = 14;             // OUT14 - 触发机械手皮带线允许取料
-        private const int OUT_SEND_PICK_CMD = 15;          // OUT15 - 发送取料指令
-        private const int OUT_HIGH_SPEED = 16;             // OUT16 - 高速运行
-
-        // 输出信号常量 - 流程控制
-        private const int OUT_SCAN_COMPLETE = 9;           // OUT9 - 发送扫码完成信号
-        private const int TRIGGER_LOADING_SIGNAL = 10;     // OUT10 - 触发放入料仓信号
-
-        // 料仓选择信号IO配置
-        private const int BIN1_SELECT_SIGNAL = 11;         // OUT11 - 料仓1选择信号
-        private const int BIN2_SELECT_SIGNAL = 12;         // OUT12 - 料仓2选择信号
-        private const int BIN3_SELECT_SIGNAL = 13;         // OUT13 - 料仓3选择信号
-
-        
         /// <summary>
         /// 带共享状态的构造函数
         /// </summary>
@@ -102,12 +80,12 @@ namespace Ewan.Core.Module
                 SendStatusMessage(SystemStatus.Running, "上料机初始化中");
 
                 // 步骤1: OUT_STOP置位true（停止信号）
-                _ioManager.Ctx.On(OUT_STOP);
+                _ioManager.Ctx.On(x => x.停止输出);
                 _appLogger.Info("OUT_STOP置位true");
                 Thread.Sleep(500);
 
                 // 步骤2: OUT_STOP置位false
-                _ioManager.Ctx.Off(OUT_STOP);
+                _ioManager.Ctx.Off(x => x.停止输出);
                 _appLogger.Info("OUT_STOP置位false");
                 Thread.Sleep(500);
 
@@ -115,16 +93,16 @@ namespace Ewan.Core.Module
                 // 复位时保持低速，自动运行时切换高速
 
                 // 步骤3: OUT_START置位true（开始信号）
-                _ioManager.Ctx.On(OUT_START);
+                _ioManager.Ctx.On(x => x.开始);
                 _appLogger.Info("OUT_START置位true");
                 Thread.Sleep(500);
 
                 // 步骤4: OUT_START置位false
-                _ioManager.Ctx.Off(OUT_START);
+                _ioManager.Ctx.Off(x => x.开始);
                 _appLogger.Info("OUT_START置位false");
 
                 // 步骤5: OUT_ALLOW_PICK置位false
-                _ioManager.Ctx.Off(OUT_ALLOW_PICK);
+                _ioManager.Ctx.Off(x => x.触发机械手皮带线允许取料);
                 _appLogger.Info("OUT_ALLOW_PICK置位true");
 
                 _initialized = true;
@@ -243,11 +221,11 @@ namespace Ewan.Core.Module
             }
             
             // 无下料请求，检查是否有料片检测信号
-            if (_ioManager.Ctx.GetInput(MATERIAL_DETECT_SIGNAL) && 
+            if (_ioManager.Ctx.R.检测到料片信号 && 
                 _sharedState?.TryStartLoading() == true)
             {
                 // 有料片检测信号，允许取料
-                _ioManager.Ctx.On(OUT_ALLOW_PICK);
+                _ioManager.Ctx.On(x => x.触发机械手皮带线允许取料);
                 
                 _sharedState?.MarkLoadingInProgress();
                 
@@ -264,7 +242,7 @@ namespace Ewan.Core.Module
         private void ProcessPickingMaterial()
         {
             // 在取料过程中检测是否到达扫码位置X7
-            if (_ioManager.Ctx.GetInput(SCAN_POSITION_SIGNAL))
+            if (_ioManager.Ctx.R.移至扫码区到位信号)
             {
                 _currentState = MaterialLoadingState.AtScanPosition;
                 _uiLogger.InfoRaw("处理已完成: {0}", "料片已到达扫码位置(X7=true)，开始扫码流程");
@@ -276,7 +254,7 @@ namespace Ewan.Core.Module
         /// </summary>
         private void ProcessAtScanPosition()
         {
-            _ioManager.Ctx.Off(OUT_ALLOW_PICK);
+            _ioManager.Ctx.Off(x => x.触发机械手皮带线允许取料);
 
             var parameters = _parametersManager?.Parameters;
             bool mesEnabled = parameters != null && parameters.MesEnabled;
@@ -310,14 +288,14 @@ namespace Ewan.Core.Module
                 _uiLogger.InfoRaw("处理已跳过: {0}", "MES未启用，跳过扫码");
             }
 
-            _ioManager.Ctx.On(OUT_SCAN_COMPLETE);  // 扫码完成
+            _ioManager.Ctx.On(x => x.发送扫码完成信号);  // 扫码完成
 
 
             var targetBin = GetConfiguredBinNumber();
             SetBinSelectSignal(targetBin);
 
                 // 触发放入料仓信号
-                _ioManager.Ctx.On(TRIGGER_LOADING_SIGNAL);
+                _ioManager.Ctx.On(x => x.触发机械手放置料仓);
                 
                 // 转换到移动到料仓状态
                 _currentState = MaterialLoadingState.MovingToBinByScanInfo;
@@ -338,9 +316,9 @@ namespace Ewan.Core.Module
             {
 
                 // 清除装料信号
-                _ioManager.Ctx.Off(TRIGGER_LOADING_SIGNAL);
+                _ioManager.Ctx.Off(x => x.触发机械手放置料仓);
                 ClearBinSelectSignals();
-                _ioManager.Ctx.Off(OUT_SCAN_COMPLETE);
+                _ioManager.Ctx.Off(x => x.发送扫码完成信号);
 
                 // 等待0.3秒确保机械手已离开
                 Thread.Sleep(300);
@@ -386,13 +364,13 @@ namespace Ewan.Core.Module
             switch (binNumber)
             {
                 case 1:
-                    _ioManager.Ctx.On(BIN1_SELECT_SIGNAL);
+                    _ioManager.Ctx.On(x => x.料仓1选择信号);
                     break;
                 case 2:
-                    _ioManager.Ctx.On(BIN2_SELECT_SIGNAL);
+                    _ioManager.Ctx.On(x => x.料仓2选择信号);
                     break;
                 case 3:
-                    _ioManager.Ctx.On(BIN3_SELECT_SIGNAL);
+                    _ioManager.Ctx.On(x => x.料仓3选择信号);
                     break;
             }
         }
@@ -404,9 +382,9 @@ namespace Ewan.Core.Module
                 return;
             }
 
-            _ioManager.Ctx.Off(BIN1_SELECT_SIGNAL);
-            _ioManager.Ctx.Off(BIN2_SELECT_SIGNAL);
-            _ioManager.Ctx.Off(BIN3_SELECT_SIGNAL);
+            _ioManager.Ctx.Off(x => x.料仓1选择信号);
+            _ioManager.Ctx.Off(x => x.料仓2选择信号);
+            _ioManager.Ctx.Off(x => x.料仓3选择信号);
         }
 
 #endregion
@@ -461,14 +439,14 @@ namespace Ewan.Core.Module
                 {
                     if (_ioManager?.Ctx != null)
                     {
-                        _ioManager.Ctx.Off(OUT_ALLOW_PICK);
-                        _ioManager.Ctx.Off(OUT_SEND_PICK_CMD);
-                        _ioManager.Ctx.Off(TRIGGER_LOADING_SIGNAL);
-                        _ioManager.Ctx.Off(OUT_SCAN_COMPLETE);
+                        _ioManager.Ctx.Off(x => x.触发机械手皮带线允许取料);
+                        _ioManager.Ctx.Off(x => x.发送取料指令);
+                        _ioManager.Ctx.Off(x => x.触发机械手放置料仓);
+                        _ioManager.Ctx.Off(x => x.发送扫码完成信号);
                         ClearBinSelectSignals();
-                        _ioManager.Ctx.Off(OUT_START);
-                        _ioManager.Ctx.Off(OUT_STOP);
-                        _ioManager.Ctx.Off(OUT_HIGH_SPEED);
+                        _ioManager.Ctx.Off(x => x.开始);
+                        _ioManager.Ctx.Off(x => x.停止输出);
+                        _ioManager.Ctx.Off(x => x.高速运行);
                     }
                 }
                 catch (Exception ex)
@@ -519,7 +497,7 @@ namespace Ewan.Core.Module
                     return;
                 }
 
-                bool robotBusy = _ioManager.Ctx.GetInput(ROBOT_BUSY_SIGNAL);
+                bool robotBusy = _ioManager.Ctx.R.机械手忙碌状态信号;
                 bool shouldStop = stateSnapshot == MaterialLoadingState.PickingMaterial && robotBusy;
 
                 if (shouldStop == _beltStopRequested)

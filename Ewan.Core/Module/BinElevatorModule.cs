@@ -55,15 +55,6 @@ namespace Ewan.Core.Module
         private const int BIN2_AXIS_ID = 1; // 料仓2轴ID
         private const int BIN3_AXIS_ID = 2; // 料仓3轴ID
         
-        // 机械手信号IO配置
-        private const int ROBOT_LOADING_COMPLETE_SIGNAL = 8;  // 机械手装载完成信号（放入料仓）
-        private const int ROBOT_UNLOADING_COMPLETE_SIGNAL = 10; // 机械手卸载完成信号（从料仓取出）
-        
-        // 料仓选择信号IO配置
-        private const int BIN1_SELECT_SIGNAL = 11; // Y11 - 料仓1选择信号
-        private const int BIN2_SELECT_SIGNAL = 12; // Y12 - 料仓2选择信号
-        private const int BIN3_SELECT_SIGNAL = 13; // Y13 - 料仓3选择信号
-
         // 下料物料检测相关
         private readonly ManualResetEventSlim _materialCheckEvent = new ManualResetEventSlim(false);
         private BinMaterialCheckResult _materialCheckResult = BinMaterialCheckResult.CreateFailure(0);
@@ -347,7 +338,7 @@ namespace Ewan.Core.Module
             try
             {
                 // 检查机械手装载完成信号
-                if (_ioManager.Ctx.Edge.F(ROBOT_LOADING_COMPLETE_SIGNAL))
+                if (_ioManager.Ctx.Edge.F(x => x.机械臂放置完成信号))
                 {
                     // 设置装载完成状态
                     SetLoadingCompleted(true);
@@ -363,7 +354,7 @@ namespace Ewan.Core.Module
                 }
 
                 // 检查机械手卸载完成信号
-                if (_ioManager.Ctx.Edge.F(ROBOT_UNLOADING_COMPLETE_SIGNAL))
+                if (_ioManager.Ctx.Edge.F(x => x.机械臂取料完成信号))
                 {
                     // 设置卸载完成状态
                     SetUnloadingCompleted(true);
@@ -902,15 +893,15 @@ namespace Ewan.Core.Module
             }
             
             // 根据Y11/Y12/Y13信号选择性重置料仓状态
-            if (_ioManager.Ctx.GetOutput(BIN1_SELECT_SIGNAL))
+            if (_ioManager.Ctx.R.料仓1选择信号)
             {
                 _bin1State = mode == BinElevatorMode.Unloading ? BinElevatorState.Stopped : BinElevatorState.Unknown;
             }
-            if (_ioManager.Ctx.GetOutput(BIN2_SELECT_SIGNAL))
+            if (_ioManager.Ctx.R.料仓2选择信号)
             {
                 _bin2State = mode == BinElevatorMode.Unloading ? BinElevatorState.Stopped : BinElevatorState.Unknown;
             }
-            if (_ioManager.Ctx.GetOutput(BIN3_SELECT_SIGNAL))
+            if (_ioManager.Ctx.R.料仓3选择信号)
             {
                 _bin3State = mode == BinElevatorMode.Unloading ? BinElevatorState.Stopped : BinElevatorState.Unknown;
             }
@@ -929,26 +920,17 @@ namespace Ewan.Core.Module
         {
             try
             {
-               
-                // 根据料仓编号读取对应的IO感应器 (LogicalIndex)
-                int sensorIndex = -1;
                 switch (binNumber)
                 {
                     case 1:
-                        sensorIndex = 27; // 料仓1有料感应 LogicalIndex
-                        break;
+                        return _ioManager.Ctx.R.料仓1有料感应;
                     case 2:
-                        sensorIndex = 28; // 料仓2有料感应 LogicalIndex
-                        break;
+                        return _ioManager.Ctx.R.料仓2有料感应;
                     case 3:
-                        sensorIndex = 29; // 料仓3有料感应 LogicalIndex
-                        break;
+                        return _ioManager.Ctx.R.料仓3有料感应;
                     default:
                         return false;
                 }
-                
-                // 使用IO上下文读取感应器状态
-                return _ioManager.Ctx.GetInput(sensorIndex);
             }
             catch (Exception ex)
             {

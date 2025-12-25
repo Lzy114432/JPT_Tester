@@ -46,22 +46,6 @@ namespace Ewan.Core.Module
         private int _emptyCount = 0;  //空车计数
         private int _cuttingBridgeCarCount = 0;  //切栈桥车计数
 
-        // 输入信号常量
-        private const int MATERIAL_DETECT_SIGNAL = 3;       // X3 - 料片检测信号
-        private const int SCAN_POSITION_SIGNAL = 7;         // X7 - 扫码位置到达信号
-        private const int CART_PULSE_SIGNAL = 11;           // X11 - 小车脉冲完成信号
-
-        // 输出信号常量
-        private const int OUT_SCAN_COMPLETE = 9;            // OUT9 - 发送扫码完成信号
-        private const int OUT_ALLOW_PICK = 14;              // OUT14 - 允许取料信号
-        private const int TRIGGER_PICKUP_SIGNAL = 15;       // Y15 - 触发取料信号
-        private const int PUT_TO_CART_SIGNAL = 17;          // Y17 - 放入小车信号
-
-        // 料仓选择信号IO配置（复用装料时的信号）
-        private const int BIN1_SELECT_SIGNAL = 11; // Y11 - 料仓1选择信号
-        private const int BIN2_SELECT_SIGNAL = 12; // Y12 - 料仓2选择信号
-        private const int BIN3_SELECT_SIGNAL = 13; // Y13 - 料仓3选择信号
-
         // Modbus寄存器地址定义
         private const string CART_COMPLETION_REGISTER = "153"; // 放入小车完成寄存器地址
         private const string MATERIAL_STATUS_REGISTER = "178"; // 放料状态寄存器：1=放料，0=排空
@@ -264,7 +248,7 @@ namespace Ewan.Core.Module
                 
                 _uiLogger.InfoRaw("处理已开始: {0}", "环线请求下料，设置优先级标志");
                 
-                if (_ioManager.Ctx.GetOutput(OUT_ALLOW_PICK))
+                if (_ioManager.Ctx.R.触发机械手皮带线允许取料)
                 {
                     // 正在装填等下完成
                     _requestProcessed = false;
@@ -339,7 +323,7 @@ namespace Ewan.Core.Module
                 _sharedState.SetUnloadingCompleted(false);
 
                 // 清除信号
-                _ioManager.Ctx.Off(TRIGGER_PICKUP_SIGNAL);
+                _ioManager.Ctx.Off(x => x.发送取料指令);
                 ClearBinSelectSignals();
 
                 // 转换到等待扫码位置状态
@@ -355,7 +339,7 @@ namespace Ewan.Core.Module
         private void ProcessWaitingForScanPosition()
         {
             // 使用边缘检测读取扫码位置脉冲信号X7
-            if (_ioManager.Ctx.Edge.R(SCAN_POSITION_SIGNAL))
+            if (_ioManager.Ctx.Edge.R(x => x.移至扫码区到位信号))
             {
                 _currentState = MaterialUnloadingState.Scanning;
                 _uiLogger.InfoRaw("处理已开始: {0}", "已到达扫码位置，开始扫码");
@@ -404,12 +388,12 @@ namespace Ewan.Core.Module
             _lastScannedQrCode = scannedCode;
 
             // 发送扫码完成信号给机械臂
-            _ioManager.Ctx.On(OUT_SCAN_COMPLETE);
+            _ioManager.Ctx.On(x => x.发送扫码完成信号);
 
             _currentState = MaterialUnloadingState.PuttingToCart;
 
             // 发送放入小车信号
-            _ioManager.Ctx.On(PUT_TO_CART_SIGNAL);
+            _ioManager.Ctx.On(x => x.发送放入小车指令);
         }
 
         /// <summary>
@@ -418,13 +402,13 @@ namespace Ewan.Core.Module
         private void ProcessPuttingToCart()
         {
             // 检查小车脉冲信号X11
-            if (_ioManager.Ctx.Edge.R(CART_PULSE_SIGNAL))
+            if (_ioManager.Ctx.Edge.R(x => x.放入小车完成信号))
             {
                 // 清除放入小车信号
-                _ioManager.Ctx.Off(PUT_TO_CART_SIGNAL);
+                _ioManager.Ctx.Off(x => x.发送放入小车指令);
 
                 // 清除扫码完成信号
-                _ioManager.Ctx.Off(OUT_SCAN_COMPLETE);
+                _ioManager.Ctx.Off(x => x.发送扫码完成信号);
 
                 // 发送完成信号到Modbus寄存器153
                 SendCartCompletionToModbus(true);
@@ -442,8 +426,8 @@ namespace Ewan.Core.Module
 
                 UpdateBeltConveyorStopRequest(false, "下料流程完成");
 
-                _uiLogger.InfoRaw("处理已完成: {0}", 
-                    "下料完成，清除优先级请求，恢复允许取料(OUT14=true)，释放流程锁");
+                _uiLogger.InfoRaw("处理已完成: {0}",
+                    "下料完成，清除优先级请求，释放流程锁");
             }
         }
 
@@ -484,9 +468,9 @@ namespace Ewan.Core.Module
                 return;
             }
 
-            _ioManager.Ctx.Off(BIN1_SELECT_SIGNAL);
-            _ioManager.Ctx.Off(BIN2_SELECT_SIGNAL);
-            _ioManager.Ctx.Off(BIN3_SELECT_SIGNAL);
+            _ioManager.Ctx.Off(x => x.料仓1选择信号);
+            _ioManager.Ctx.Off(x => x.料仓2选择信号);
+            _ioManager.Ctx.Off(x => x.料仓3选择信号);
         }
 
         /// <summary>
@@ -520,13 +504,13 @@ namespace Ewan.Core.Module
             switch (binNumber)
             {
                 case 1:
-                    _ioManager.Ctx.On(BIN1_SELECT_SIGNAL);
+                    _ioManager.Ctx.On(x => x.料仓1选择信号);
                     break;
                 case 2:
-                    _ioManager.Ctx.On(BIN2_SELECT_SIGNAL);
+                    _ioManager.Ctx.On(x => x.料仓2选择信号);
                     break;
                 case 3:
-                    _ioManager.Ctx.On(BIN3_SELECT_SIGNAL);
+                    _ioManager.Ctx.On(x => x.料仓3选择信号);
                     break;
                 default:
                     _uiLogger.ErrorRaw("处理错误: {0} - {1}", $"无效的料仓编号: {binNumber}");
@@ -560,8 +544,8 @@ namespace Ewan.Core.Module
                 SetBinSelectSignal(binNumber);
                 
                 // 触发取料信号
-                _ioManager.Ctx.On(TRIGGER_PICKUP_SIGNAL);
-                
+                _ioManager.Ctx.On(x => x.发送取料指令);
+                 
                 // 转换到取料状态
                 _currentState = MaterialUnloadingState.PickingMaterial;
 
@@ -600,10 +584,10 @@ namespace Ewan.Core.Module
                 {
                     if (_ioManager?.Ctx != null)
                     {
-                        _ioManager.Ctx.Off(OUT_ALLOW_PICK);
-                        _ioManager.Ctx.Off(OUT_SCAN_COMPLETE);
-                        _ioManager.Ctx.Off(TRIGGER_PICKUP_SIGNAL);
-                        _ioManager.Ctx.Off(PUT_TO_CART_SIGNAL);
+                        _ioManager.Ctx.Off(x => x.触发机械手皮带线允许取料);
+                        _ioManager.Ctx.Off(x => x.发送扫码完成信号);
+                        _ioManager.Ctx.Off(x => x.发送取料指令);
+                        _ioManager.Ctx.Off(x => x.发送放入小车指令);
                         ClearBinSelectSignals();
                     }
                 }

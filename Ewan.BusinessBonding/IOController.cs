@@ -1,12 +1,43 @@
 using System;
+using System.Linq.Expressions;
 using Ewan.Core;
 using Ewan.Core.IO;
+using Ewan.Model.IO;
+using EwanIO.Core.Attributes;
 using EwanIO.Core.Simulation;
 
 namespace Ewan.BusinessBonding
 {
     public class IOController : BaseManager<IOController>
     {
+        internal void WriteOutput(Expression<Func<MarkingMachineFeederIOModel, OutputSignal>> expr, bool value, bool now = false)
+        {
+            try
+            {
+                var ctx = LayeredIOManager.Instance().Ctx;
+                if (ctx == null)
+                {
+                    _uiLogger.WarnRaw("写入失败: 未获取到IO上下文实例");
+                    return;
+                }
+
+                if (value)
+                {
+                    ctx.On(expr, now);
+                }
+                else
+                {
+                    ctx.Off(expr, now);
+                }
+
+                _uiLogger.InfoRaw("成功写入 {0} = {1}", expr, value ? "ON" : "OFF");
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.ErrorRaw("写入错误: {0} - {1}", expr, ex.Message);
+            }
+        }
+
         public void WriteOutput(int index, bool value, bool useMapping = true)
         {
             try
@@ -93,4 +124,3 @@ namespace Ewan.BusinessBonding
         }
     }
 }
-

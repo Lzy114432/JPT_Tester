@@ -19,10 +19,6 @@ namespace Ewan.BusinessBonding
         private const int BIN1_AXIS_ID = 0;           // 料仓1轴ID
         private const int BIN2_AXIS_ID = 1;           // 料仓2轴ID
         private const int BIN3_AXIS_ID = 2;           // 料仓3轴ID
-        
-        private const int BIN1_SENSOR_INDEX = 27;     // 料仓1有料感应 LogicalIndex
-        private const int BIN2_SENSOR_INDEX = 28;     // 料仓2有料感应 LogicalIndex
-        private const int BIN3_SENSOR_INDEX = 29;     // 料仓3有料感应 LogicalIndex
 
         // 控制参数
         private const int SENSOR_CHECK_INTERVAL = 50; // 感应器检测间隔(ms)
@@ -38,7 +34,7 @@ namespace Ewan.BusinessBonding
         /// <returns>是否成功完成下料</returns>
         public bool FeedBin1()
         {
-            return FeedBin(1, BIN1_AXIS_ID, BIN1_SENSOR_INDEX);
+            return FeedBin(1, BIN1_AXIS_ID, () => _ioManager.Ctx.R.料仓1有料感应);
         }
 
         /// <summary>
@@ -50,7 +46,7 @@ namespace Ewan.BusinessBonding
         /// <returns>是否成功完成下料</returns>
         public bool FeedBin2()
         {
-            return FeedBin(2, BIN2_AXIS_ID, BIN2_SENSOR_INDEX);
+            return FeedBin(2, BIN2_AXIS_ID, () => _ioManager.Ctx.R.料仓2有料感应);
         }
 
         /// <summary>
@@ -62,7 +58,7 @@ namespace Ewan.BusinessBonding
         /// <returns>是否成功完成下料</returns>
         public bool FeedBin3()
         {
-            return FeedBin(3, BIN3_AXIS_ID, BIN3_SENSOR_INDEX);
+            return FeedBin(3, BIN3_AXIS_ID, () => _ioManager.Ctx.R.料仓3有料感应);
         }
 
         #region 私有方法
@@ -72,21 +68,21 @@ namespace Ewan.BusinessBonding
         /// </summary>
         /// <param name="binNumber">料仓编号</param>
         /// <param name="axisId">轴ID</param>
-        /// <param name="sensorIndex">感应器索引</param>
+        /// <param name="readSensor">感应器读取委托</param>
         /// <returns>是否成功完成下料</returns>
-        private bool FeedBin(int binNumber, int axisId, int sensorIndex)
+        private bool FeedBin(int binNumber, int axisId, Func<bool> readSensor)
         {
             try
             {
                 _uiLogger.InfoRaw("处理已开始: {0}", $"料仓{binNumber}下料控制");
 
-                if (!AscendUntilSensorOn(binNumber, axisId, sensorIndex))
+                if (!AscendUntilSensorOn(binNumber, axisId, readSensor))
                 {
                     _uiLogger.ErrorRaw("处理错误: {0}", $"料仓{binNumber}上升失败");
                     return false;
                 }
 
-                if (!DescendUntilSensorOff(binNumber, axisId, sensorIndex))
+                if (!DescendUntilSensorOff(binNumber, axisId, readSensor))
                 {
                     _uiLogger.ErrorRaw("处理错误: {0}", $"料仓{binNumber}下降失败");
                     return false;
@@ -106,11 +102,11 @@ namespace Ewan.BusinessBonding
         /// <summary>
         /// 上升直到感应器为true
         /// </summary>
-        private bool AscendUntilSensorOn(int binNumber, int axisId, int sensorIndex)
+        private bool AscendUntilSensorOn(int binNumber, int axisId, Func<bool> readSensor)
         {
             try
             {
-                if (ReadBinSensor(binNumber, sensorIndex))
+                if (ReadBinSensor(binNumber, readSensor))
                 {
                     _uiLogger.DebugRaw("料仓{0}已处于上升完成状态，跳过上升动作", binNumber);
                     return true;
@@ -138,7 +134,7 @@ namespace Ewan.BusinessBonding
                         return false;
                     }
 
-                    if (ReadBinSensor(binNumber, sensorIndex))
+                    if (ReadBinSensor(binNumber, readSensor))
                     {
                         StopBinAxis(binNumber, axisId);
                         return true;
@@ -158,11 +154,11 @@ namespace Ewan.BusinessBonding
         /// <summary>
         /// 下降直到感应器为false
         /// </summary>
-        private bool DescendUntilSensorOff(int binNumber, int axisId, int sensorIndex)
+        private bool DescendUntilSensorOff(int binNumber, int axisId, Func<bool> readSensor)
         {
             try
             {
-                if (!ReadBinSensor(binNumber, sensorIndex))
+                if (!ReadBinSensor(binNumber, readSensor))
                 {
                     _uiLogger.DebugRaw("料仓{0}已处于下降完成状态，跳过下降动作", binNumber);
                     return true;
@@ -181,7 +177,7 @@ namespace Ewan.BusinessBonding
                         return false;
                     }
 
-                    if (!ReadBinSensor(binNumber, sensorIndex))
+                    if (!ReadBinSensor(binNumber, readSensor))
                     {
                         StopBinAxis(binNumber, axisId);
                         return true;
@@ -201,11 +197,11 @@ namespace Ewan.BusinessBonding
         /// <summary>
         /// 读取料仓感应器状态
         /// </summary>
-        private bool ReadBinSensor(int binNumber, int sensorIndex)
+        private bool ReadBinSensor(int binNumber, Func<bool> readSensor)
         {
             try
             {
-                return _ioManager.Ctx.GetInput(sensorIndex);
+                return readSensor();
             }
             catch (Exception ex)
             {

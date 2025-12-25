@@ -1,7 +1,6 @@
 using Ewan.Core.IO;
 using Ewan.Core.Msg;
 using Ewan.LogManager.Logger;
-using Ewan.Model.Alarm;
 using Ewan.Model.IO;
 using Ewan.Model.System;
 using Ewan.Model.Safety;
@@ -24,20 +23,17 @@ namespace Ewan.Core.Module
         private MsgListener _systemControlListener;
         private SystemParametersManager _parametersManager;
 
-        private const int ROBOT_PAUSE_OUTPUT = 8;
         private readonly object _robotPausePulseLock = new object();
         private bool _robotPausePulseInProgress = false;
         private DateTime _lastRobotPausePulseTime = DateTime.MinValue;
         private readonly TimeSpan _robotPausePulseInterval = TimeSpan.FromMilliseconds(300);
         private const int ROBOT_PAUSE_PULSE_WIDTH_MS = 200;
-        private const int ROBOT_RECOVERY_OUTPUT = 7;
         private readonly object _robotRecoveryPulseLock = new object();
         private bool _robotRecoveryPulseInProgress = false;
         private DateTime _lastRobotRecoveryPulseTime = DateTime.MinValue;
         private readonly TimeSpan _robotRecoveryPulseInterval = TimeSpan.FromMilliseconds(300);
         private const int ROBOT_RECOVERY_PULSE_WIDTH_MS = 200;
         private bool _robotRecoveryPending = false;
-        private const int SYSTEM_STOP_OUTPUT = 6;
         private readonly object _systemStopPulseLock = new object();
         private bool _systemStopPulseInProgress = false;
         private DateTime _lastSystemStopPulseTime = DateTime.MinValue;
@@ -259,7 +255,7 @@ namespace Ewan.Core.Module
         private void CheckPauseAlarms()
         {
             // X12 - 料仓1下限位置信号（使用LayeredIO内置上升沿检测 + 防抖）
-            if (_ioManager.Ctx.Edge.R(AlarmIOMapping.BIN1_LIMIT_ALARM))
+            if (_ioManager.Ctx.Edge.R(x => x.料仓1下限位置信号))
             {
                 // 防抖检查通过才发送命令和日志
                 if (CanTriggerAlarm(ref _lastBin1LimitTime))
@@ -269,7 +265,7 @@ namespace Ewan.Core.Module
             }
 
             // X13 - 料仓2下限位置信号（使用LayeredIO内置上升沿检测 + 防抖）
-            if (_ioManager.Ctx.Edge.R(AlarmIOMapping.BIN2_LIMIT_ALARM))
+            if (_ioManager.Ctx.Edge.R(x => x.料仓2下限位置信号))
             {
                 if (CanTriggerAlarm(ref _lastBin2LimitTime))
                 {
@@ -278,7 +274,7 @@ namespace Ewan.Core.Module
             }
 
             // X14 - 料仓3下限位置信号（使用LayeredIO内置上升沿检测 + 防抖）
-            if (_ioManager.Ctx.Edge.R(AlarmIOMapping.BIN3_LIMIT_ALARM))
+            if (_ioManager.Ctx.Edge.R(x => x.料仓3下限位置信号))
             {
                 if (CanTriggerAlarm(ref _lastBin3LimitTime))
                 {
@@ -288,10 +284,10 @@ namespace Ewan.Core.Module
 
             if (!IsSafetyDoorAlarmBypassed())
             {
-                CheckSafetyDoorAlarm(AlarmIOMapping.SAFETY_DOOR1_ALARM, ref _lastSafetyDoor1Time, "安全门1打开");
-                CheckSafetyDoorAlarm(AlarmIOMapping.SAFETY_DOOR2_ALARM, ref _lastSafetyDoor2Time, "安全门2打开");
-                CheckSafetyDoorAlarm(AlarmIOMapping.SAFETY_DOOR3_ALARM, ref _lastSafetyDoor3Time, "安全门3打开");
-                CheckSafetyDoorAlarm(AlarmIOMapping.ROBOT_DOOR_MAGNET, ref _lastRobotDoorMagnetTime, "机械臂门电磁感应信号断开");
+                CheckSafetyDoorAlarm(() => _ioManager.Ctx.Edge.R(x => x.前门电磁感应信号), ref _lastSafetyDoor1Time, "安全门1打开");
+                CheckSafetyDoorAlarm(() => _ioManager.Ctx.Edge.R(x => x.后门电磁感应信号), ref _lastSafetyDoor2Time, "安全门2打开");
+                CheckSafetyDoorAlarm(() => _ioManager.Ctx.Edge.R(x => x.侧门电磁感应信号), ref _lastSafetyDoor3Time, "安全门3打开");
+                CheckSafetyDoorAlarm(() => _ioManager.Ctx.Edge.R(x => x.机械臂门电磁感应信号), ref _lastRobotDoorMagnetTime, "机械臂门电磁感应信号断开");
             }
         }
 
@@ -301,7 +297,7 @@ namespace Ewan.Core.Module
         private void CheckEmergencyAlarms()
         {
             // X0 - 急停按钮（使用LayeredIO内置上升沿检测 + 防抖）
-            if (_ioManager.Ctx.Edge.R(AlarmIOMapping.EMERGENCY_BUTTON))
+            if (_ioManager.Ctx.Edge.R(x => x.急停按钮))
             {
                 // 防抖检查通过才发送命令和日志
                 if (CanTriggerAlarm(ref _lastEmergencyButtonTime))
@@ -311,7 +307,7 @@ namespace Ewan.Core.Module
             }
 
             // X15 - 机械手报警信号（使用LayeredIO内置上升沿检测 + 防抖）
-            if (_ioManager.Ctx.Edge.R(AlarmIOMapping.ROBOT_ALARM))
+            if (_ioManager.Ctx.Edge.R(x => x.机械手报警信号))
             {
                 if (CanTriggerAlarm(ref _lastRobotAlarmTime))
                 {
@@ -320,7 +316,7 @@ namespace Ewan.Core.Module
             }
 
             // X17 - 下相机报警信号（使用LayeredIO内置上升沿检测 + 防抖）
-            if (_ioManager.Ctx.Edge.R(AlarmIOMapping.LOWER_CAMERA_ALARM))
+            if (_ioManager.Ctx.Edge.R(x => x.下相机报警信号))
             {
                 if (CanTriggerAlarm(ref _lastLowerCameraAlarmTime))
                 {
@@ -329,7 +325,7 @@ namespace Ewan.Core.Module
             }
 
             // X19 - 机械臂气缸报警信号（使用LayeredIO内置上升沿检测 + 防抖）
-            if (_ioManager.Ctx.Edge.R(AlarmIOMapping.CYLINDER_ALARM))
+            if (_ioManager.Ctx.Edge.R(x => x.机械臂气缸报警信号))
             {
                 if (CanTriggerAlarm(ref _lastCylinderAlarmTime))
                 {
@@ -517,7 +513,7 @@ namespace Ewan.Core.Module
             try
             {
                 int durationTicks = Math.Max(1, ROBOT_PAUSE_PULSE_WIDTH_MS / 10);
-                ctx.Pulse(ROBOT_PAUSE_OUTPUT, durationTicks);
+                ctx.Pulse(x => x.暂停, durationTicks);
                 _uiLogger.Info("处理已完成: {0}", $"暂停输出脉冲发送: {context}");
             }
             catch (Exception ex)
@@ -566,7 +562,7 @@ namespace Ewan.Core.Module
             try
             {
                 int durationTicks = Math.Max(1, ROBOT_RECOVERY_PULSE_WIDTH_MS / 10);
-                ctx.Pulse(ROBOT_RECOVERY_OUTPUT, durationTicks);
+                ctx.Pulse(x => x.复位, durationTicks);
                 _uiLogger.Info("处理已完成: {0}", $"暂停复原脉冲发送: {context}");
             }
             catch (Exception ex)
@@ -609,7 +605,7 @@ namespace Ewan.Core.Module
             try
             {
                 int durationTicks = Math.Max(1, SYSTEM_STOP_PULSE_WIDTH_MS / 10);
-                ctx.Pulse(SYSTEM_STOP_OUTPUT, durationTicks, now: true);
+                ctx.Pulse(x => x.停止输出, durationTicks, now: true);
                 _uiLogger.Info("处理已完成: {0}", $"停止脉冲发送: {context}");
             }
             catch (Exception ex)
@@ -637,11 +633,11 @@ namespace Ewan.Core.Module
             {
                 if (activate)
                 {
-                    ctx.On(ROBOT_PAUSE_OUTPUT);
+                    ctx.On(x => x.暂停);
                 }
                 else
                 {
-                    ctx.Off(ROBOT_PAUSE_OUTPUT);
+                    ctx.Off(x => x.暂停);
                 }
 
                 string status = activate ? "置位" : "复位";
@@ -653,9 +649,9 @@ namespace Ewan.Core.Module
             }
         }
 
-        private void CheckSafetyDoorAlarm(int ioIndex, ref DateTime lastTrigger, string description)
+        private void CheckSafetyDoorAlarm(Func<bool> triggered, ref DateTime lastTrigger, string description)
         {
-            if (_ioManager.Ctx.Edge.R(ioIndex))
+            if (triggered())
             {
                 if (CanTriggerAlarm(ref lastTrigger))
                 {
