@@ -885,6 +885,10 @@ namespace EwanIO.Core.Context
                 throw new ArgumentNullException(nameof(config));
 
             bool reportRangeErrors = _options.IndexOutOfRangeBehavior != IndexOutOfRangeBehavior.Ignore;
+            int hardwareInputCount = _hardware.InputCount;
+            int hardwareOutputCount = _hardware.OutputCount;
+            bool hasHardwareInputRange = hardwareInputCount > 0;
+            bool hasHardwareOutputRange = hardwareOutputCount > 0;
 
             var validInputEntries = new List<MappingEntry>();
             foreach (var entry in config.Inputs)
@@ -896,10 +900,17 @@ namespace EwanIO.Core.Context
                     continue;
                 }
 
-                if ((uint)entry.PhysicalIndex >= (uint)_hardware.InputCount)
+                if (entry.PhysicalIndex < 0)
                 {
                     if (reportRangeErrors)
-                        HandleIndexOutOfRange("InputPhysical", entry.PhysicalIndex, _hardware.InputCount, "Mapping.LoadConfig");
+                        HandleIndexOutOfRange("InputPhysical", entry.PhysicalIndex, Math.Max(hardwareInputCount, 0), "Mapping.LoadConfig");
+                    continue;
+                }
+
+                if (hasHardwareInputRange && (uint)entry.PhysicalIndex >= (uint)hardwareInputCount)
+                {
+                    if (reportRangeErrors)
+                        HandleIndexOutOfRange("InputPhysical", entry.PhysicalIndex, hardwareInputCount, "Mapping.LoadConfig");
                     continue;
                 }
 
@@ -916,10 +927,17 @@ namespace EwanIO.Core.Context
                     continue;
                 }
 
-                if ((uint)entry.PhysicalIndex >= (uint)_hardware.OutputCount)
+                if (entry.PhysicalIndex < 0)
                 {
                     if (reportRangeErrors)
-                        HandleIndexOutOfRange("OutputPhysical", entry.PhysicalIndex, _hardware.OutputCount, "Mapping.LoadConfig");
+                        HandleIndexOutOfRange("OutputPhysical", entry.PhysicalIndex, Math.Max(hardwareOutputCount, 0), "Mapping.LoadConfig");
+                    continue;
+                }
+
+                if (hasHardwareOutputRange && (uint)entry.PhysicalIndex >= (uint)hardwareOutputCount)
+                {
+                    if (reportRangeErrors)
+                        HandleIndexOutOfRange("OutputPhysical", entry.PhysicalIndex, hardwareOutputCount, "Mapping.LoadConfig");
                     continue;
                 }
 
@@ -940,7 +958,9 @@ namespace EwanIO.Core.Context
             for (int logicalIndex = 0; logicalIndex < resultInputPhysical.Length; logicalIndex++)
             {
                 int physicalIndex = resultInputPhysical[logicalIndex];
-                if ((uint)physicalIndex >= (uint)_hardware.InputCount)
+                if (physicalIndex < 0)
+                    continue;
+                if (hasHardwareInputRange && (uint)physicalIndex >= (uint)hardwareInputCount)
                     continue;
 
                 if (inputPhysicalToLogical.TryGetValue(physicalIndex, out var existingLogical))
@@ -970,7 +990,9 @@ namespace EwanIO.Core.Context
             for (int logicalIndex = 0; logicalIndex < resultPhysical.Length; logicalIndex++)
             {
                 int physicalIndex = resultPhysical[logicalIndex];
-                if ((uint)physicalIndex >= (uint)_hardware.OutputCount)
+                if (physicalIndex < 0)
+                    continue;
+                if (hasHardwareOutputRange && (uint)physicalIndex >= (uint)hardwareOutputCount)
                     continue;
 
                 if (physicalToLogical.TryGetValue(physicalIndex, out var existingLogical))

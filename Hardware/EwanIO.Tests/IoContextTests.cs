@@ -5,6 +5,7 @@ using EwanIO.Core.Attributes;
 using EwanIO.Core.Context;
 using EwanIO.Core.Data;
 using EwanIO.Core.EdgeDetection;
+using EwanIO.Core.Interfaces;
 using EwanIO.Core.Mapping;
 using EwanIO.Core.Metadata;
 using EwanIO.Core.Simulation;
@@ -239,6 +240,123 @@ namespace EwanIO.Tests
             Assert.False(hardware.ReadOutBit(0));  // 硬件应该是 OFF（反转）
 
             context.Dispose();
+        }
+
+        [Fact]
+        public void Mapping_LoadBeforeConnect_WithZeroHardwareCount_ShouldStillApply()
+        {
+            // Arrange: hardware reports 0 IO points before Connect
+            var hardware = new DeferredCountHardwareIO(10, 10);
+
+            var mappingConfig = new MappingConfigFile();
+            mappingConfig.Inputs.Add(new MappingEntry
+            {
+                LogicalIndex = 0,
+                PhysicalIndex = 0,
+                IsNormallyClosed = true
+            });
+            mappingConfig.Outputs.Add(new MappingEntry
+            {
+                LogicalIndex = 0,
+                PhysicalIndex = 0,
+                IsNormallyClosed = true
+            });
+
+            var context = IoContextBuilder.For<TestLayout>()
+                .WithHardware(hardware)
+                .WithMappingConfig(mappingConfig)
+                .Build();
+
+            // Act: connect after Build, then tick
+            Assert.False(hardware.IsConnected);
+            Assert.Equal(0, hardware.InputCount);
+            Assert.Equal(0, hardware.OutputCount);
+
+            Assert.True(hardware.Connect("test"));
+
+            hardware.SetInputBit(0, false); // raw OFF
+            context.Tick();
+
+            // Assert: mapping inversion should be applied
+            Assert.True(context.GetInput(0));
+
+            context.On(0, now: true);
+            Assert.False(hardware.ReadOutBit(0));
+
+            context.Dispose();
+        }
+
+        private sealed class DeferredCountHardwareIO : IHardwareIO
+        {
+            private readonly int _inputCountOnConnect;
+            private readonly int _outputCountOnConnect;
+            private bool _isConnected;
+            private bool[] _inputs = Array.Empty<bool>();
+            private bool[] _outputs = Array.Empty<bool>();
+
+            public DeferredCountHardwareIO(int inputCountOnConnect, int outputCountOnConnect)
+            {
+                _inputCountOnConnect = inputCountOnConnect;
+                _outputCountOnConnect = outputCountOnConnect;
+            }
+
+            public string HardwareType => "DeferredCount";
+            public string ConnectionInfo => "DeferredCount";
+            public bool IsConnected => _isConnected;
+            public int InputCount => _isConnected ? _inputs.Length : 0;
+            public int OutputCount => _isConnected ? _outputs.Length : 0;
+
+            public bool Connect(string connectionString)
+            {
+                _inputs = new bool[_inputCountOnConnect];
+                _outputs = new bool[_outputCountOnConnect];
+                _isConnected = true;
+                return true;
+            }
+
+            public bool Disconnect()
+            {
+                _isConnected = false;
+                return true;
+            }
+
+            public void DataSync()
+            {
+            }
+
+            public bool ReadInBit(int bit)
+            {
+                if (!_isConnected || (uint)bit >= (uint)_inputs.Length)
+                    return false;
+                return _inputs[bit];
+            }
+
+            public bool ReadOutBit(int bit)
+            {
+                if (!_isConnected || (uint)bit >= (uint)_outputs.Length)
+                    return false;
+                return _outputs[bit];
+            }
+
+            public bool WriteOutBit(int bit, bool value)
+            {
+                if (!_isConnected || (uint)bit >= (uint)_outputs.Length)
+                    return false;
+                _outputs[bit] = value;
+                return true;
+            }
+
+            public void SetInputBit(int bit, bool value)
+            {
+                if (!_isConnected || (uint)bit >= (uint)_inputs.Length)
+                    throw new ArgumentOutOfRangeException(nameof(bit));
+                _inputs[bit] = value;
+            }
+
+            public void Dispose()
+            {
+                Disconnect();
+            }
         }
 
         [Fact]
