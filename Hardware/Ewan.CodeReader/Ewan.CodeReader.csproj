@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net472</TargetFrameworks>
+    <LangVersion>9.0</LangVersion>
+    <RootNamespace>Ewan.CodeReader</RootNamespace>
+    <AssemblyName>Ewan.CodeReader</AssemblyName>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>Ewan.CodeReader</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Ewan</Authors>
+    <Description>扫描器通用库，支持海康威视和得利捷扫描器</Description>
+    <Platforms>x64</Platforms>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="MvCodeReaderSDK.Net">
+      <HintPath>C:\Program Files (x86)\IDMVS\Development\Modules\MvCodeReaderSDK\Demo\C#\MvCodeReaderSDKNet\bin\AnyCpu\MvCodeReaderSDK.Net.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

@@ -1,8 +1,8 @@
 using System;
-using CodeReaderLib.Interfaces;
-using CodeReaderLib.Scanners;
+using Ewan.CodeReader.Interfaces;
+using Ewan.CodeReader.Scanners;
 
-namespace CodeReaderLib
+namespace Ewan.CodeReader
 {
     /// <summary>
     /// 扫描器类型

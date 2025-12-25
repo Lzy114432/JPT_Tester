@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using CodeReaderLib.Interfaces;
+using Ewan.CodeReader.Interfaces;
 
-namespace CodeReaderLib.Scanners
+namespace Ewan.CodeReader.Scanners
 {
     /// <summary>
     /// 得利捷扫描器实现 - 基于TCP通信

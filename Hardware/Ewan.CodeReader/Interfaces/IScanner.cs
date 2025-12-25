@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace CodeReaderLib.Interfaces
+namespace Ewan.CodeReader.Interfaces
 {
     /// <summary>
     /// 扫描结果

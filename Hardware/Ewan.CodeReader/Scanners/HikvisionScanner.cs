@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading;
-using CodeReaderLib.Interfaces;
+using Ewan.CodeReader.Interfaces;
 using MvCodeReaderSDKNet;
 
-namespace CodeReaderLib.Scanners
+namespace Ewan.CodeReader.Scanners
 {
     /// <summary>
     /// 海康条码类型枚举
