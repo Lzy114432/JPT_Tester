@@ -1,6 +1,7 @@
 ﻿using Ewan.Core;
 using Ewan.Core.Attribute;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -15,17 +16,72 @@ namespace Ewan.BusinessBonding
 
         public override void Destroy()
         {
-            var types =
-                from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                from type in assembly.GetTypes()
-                from attributes in type.GetCustomAttributes(false)
-                where ((attributes.GetType() == typeof(ManagerAttribute)) && ((ManagerAttribute)attributes).IsEnable)
-                select type;
-            foreach (var type in types)
+            var managerTypes = new List<ManagerInfo>();
+
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
-                DestroyObj(type);
+                Type[] typesInAssembly;
+
+                try
+                {
+                    typesInAssembly = assembly.GetTypes();
+                }
+                catch (ReflectionTypeLoadException ex)
+                {
+                    typesInAssembly = ex.Types.Where(t => t != null).ToArray();
+                }
+                catch
+                {
+                    continue;
+                }
+
+                for (int i = 0; i < typesInAssembly.Length; i++)
+                {
+                    var type = typesInAssembly[i];
+                    if (type == null)
+                    {
+                        continue;
+                    }
+
+                    try
+                    {
+                        var attr = type.GetCustomAttributes(false).OfType<ManagerAttribute>().FirstOrDefault(a => a.IsEnable);
+                        if (attr != null)
+                        {
+                            managerTypes.Add(new ManagerInfo(type, attr.Priority));
+                        }
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
+
+            // 按初始化的逆序销毁，避免依赖项提前释放
+            foreach (var managerType in managerTypes.OrderByDescending(x => x.Priority))
+            {
+                try
+                {
+                    DestroyObj(managerType.Type);
+                }
+                catch (Exception ex)
+                {
+                    _appLogger.Error("销毁管理器失败: " + managerType.Type.FullName + " - " + ex.Message, ex);
+                }
             }
             base.Destroy();
+        }
+
+        private sealed class ManagerInfo
+        {
+            public ManagerInfo(Type type, int priority)
+            {
+                Type = type;
+                Priority = priority;
+            }
+
+            public Type Type { get; }
+            public int Priority { get; }
         }
         public bool Initialize()
         {

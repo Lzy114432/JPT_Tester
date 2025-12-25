@@ -88,9 +88,27 @@ namespace MarkingMachineFeeder
             }
 
             // 停止所有流程
-            var streamController = StreamController.Instance();
-            streamController.StopRun();
-            _uiLogger.Info("流处理已停止");
+            try
+            {
+                var streamController = StreamController.Instance();
+                streamController.StopRun();
+                _uiLogger.Info("流处理已停止");
+            }
+            catch (System.Exception ex)
+            {
+                _uiLogger.ErrorRaw("关闭前停止流程失败: {0}", ex.Message);
+            }
+
+            // 关闭时必须销毁所有 Manager（包含 MesManager），否则部分后台线程会导致进程静默驻留
+            try
+            {
+                MainController.Instance().Destroy();
+                _uiLogger.Info("资源释放完成");
+            }
+            catch (System.Exception ex)
+            {
+                _uiLogger.ErrorRaw("关闭前释放资源失败: {0}", ex.Message);
+            }
 
             // 调用基类方法
             base.OnExit(e);

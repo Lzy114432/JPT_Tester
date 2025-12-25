@@ -93,7 +93,7 @@ namespace MarkingMachineFeeder
             // 如果用户确认退出
             if (confirmDialog.ShowDialog() == true)
             {
-                this.Close();
+                Application.Current.Shutdown();
             }
         }
     }
