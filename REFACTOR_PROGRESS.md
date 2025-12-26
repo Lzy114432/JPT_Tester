@@ -1,6 +1,6 @@
 # Manager 架构重构进度
 
-> 最后更新: 2025-12-26
+> 最后更新: 2025-12-27
 
 ## 重构目标
 
@@ -44,7 +44,7 @@
 | AxisManager | Axis/AxisManager.cs | 中 | 中 | 轴控制 |
 | ModbusRTUManager | Plc/ModbusRTUManager.cs | 中 | 低 | 通信层 |
 | DLManager | ScanCode/DLManager.cs | 中 | 低 | 扫码设备 |
-| MesMsgBus | Msg/MesMsgBus.cs | 低 | 低 | 考虑与MsgManager合并 |
+| MesMsgBus | Msg/MesMsgBus.cs | 低 | 低 | ⚠️ 阶段三删除，用 MessageHub 替代 |
 
 ### ⏳ 待迁移 - Ewan.BusinessBonding（3个）
 
@@ -195,9 +195,137 @@ public class XxxManager : IManager
 
 ---
 
+## 消息系统整合计划
+
+### 现状分析
+
+当前存在三套消息系统：
+
+| 系统 | 位置 | 功能 | 状态 |
+|------|------|------|------|
+| MsgManager | Ewan.Core/Msg/ | 通用消息分发 | ⚠️ 待删除 |
+| MesMsgBus | Ewan.Core/Msg/ | MES Request/Reply | ⚠️ 待删除 |
+| MessageHub | EwanCommon/EwanCore/Messaging/ | 完整消息总线 | ✅ 保留 |
+
+### 功能对照
+
+| 功能 | MsgManager | MesMsgBus | MessageHub |
+|------|------------|-----------|------------|
+| 发布消息 | `PushMsg()` | - | ✅ `Publish()` / `Post()` |
+| 订阅消息 | `RegisterListener()` | - | ✅ `Subscribe()` |
+| Request/Reply | ❌ | `RequestAsync()` | ✅ `RequestAsync()` / `Respond()` |
+| 弱引用订阅 | ❌ | ❌ | ✅ `SubscribeWeak()` |
+| UI线程调度 | ❌ | ❌ | ✅ `SubscribeOnContext()` |
+| 诊断监控 | ❌ | ❌ | ✅ `IMessageBusDiagnostics` |
+| 溢出策略 | 简单丢弃 | - | ✅ 3种策略可选 |
+| 异步处理 | ❌ | ❌ | ✅ `SubscribeAsync()` |
+
+### 整合决定
+
+**MessageHub 完全覆盖 MsgManager 和 MesMsgBus 的功能，阶段三统一使用 MessageHub。**
+
+### 阶段三清理清单
+
+#### 待删除文件
+
+```
+Ewan.Core/Msg/
+├── MsgManager.cs        # 用 MessageHub.Subscribe/Post 替代
+├── MesMsgBus.cs         # 用 MessageHub.RequestAsync/Respond 替代
+├── MsgListener.cs       # 用 IDisposable subscription 替代
+├── MsgSubject.cs        # 用强类型消息类替代
+├── MessageModel.cs      # 用 IMessage 替代
+└── RequestAwaiter.cs    # MessageHub 内置
+
+Ewan.Model/Messages/
+└── UILogMsg.cs          # 用 UILogMessage 替代
+```
+
+#### UI 层替换
+
+**LogWindowViewModel.cs 改动示例：**
+
+```csharp
+// 旧代码
+private MsgListener _logListener;
+
+private void InitializeLogListener()
+{
+    _logListener = new MsgListener(MsgSubject.UILog, OnLogMessageReceived);
+    MsgManager.Instance().RegisterListener(_logListener);
+}
+
+private void OnLogMessageReceived(MessageModel msg)
+{
+    var logMsg = msg.GetData<UILogMsg>();
+    // ...
+}
+
+public void Dispose()
+{
+    MsgManager.Instance().UnRegisterListener(_logListener);
+}
+```
+
+```csharp
+// 新代码
+using EwanCore.Messaging;
+using EwanCore.Messaging.Messages;
+
+private IDisposable _logSubscription;
+
+private void InitializeLogListener()
+{
+    _logSubscription = MessageHub.SubscribeBus.Subscribe<UILogMessage>(OnUILogMessage);
+}
+
+private void OnUILogMessage(UILogMessage msg)
+{
+    var logEntry = new LogEntry
+    {
+        Timestamp = msg.Timestamp.DateTime,
+        Level = ConvertLevel(msg.Level),
+        Message = msg.Message
+    };
+    // ...
+}
+
+public void Dispose()
+{
+    _logSubscription?.Dispose();
+}
+```
+
+#### MES Request/Reply 替换
+
+**旧代码（使用 MesMsgBus）：**
+
+```csharp
+var feedback = await MesMsgBus.Instance().RequestAsync(
+    new MesRingLineRequest { ... },
+    timeoutMs: 30000);
+```
+
+**新代码（使用 MessageHub）：**
+
+```csharp
+var feedback = await MessageHub.RequestReplyBus.RequestAsync<MesRequest, MesResult>(
+    new MesRequest { ... },
+    timeoutMs: 30000);
+```
+
+### 参考文档
+
+- `EwanCommon/docs/Messaging-API参考.md` - 完整 API 文档
+- `EwanCommon/docs/MessageBus设计方案.md` - 设计说明
+- `EwanCommon/examples/RequestReplyExample.cs` - Request/Reply 示例
+- `EwanCommon/examples/WinFormsAutoDisposeSubscriptionExample.cs` - UI 订阅示例
+
+---
+
 ## 待决策项
 
-- [ ] MesMsgBus 是否与 MsgManager 合并？
+- [x] ~~MesMsgBus 是否与 MsgManager 合并？~~ → **已决定：阶段三统一用 MessageHub 替代，两者都删除**
 - [ ] 是否需要为每个 Manager 添加 DI 构造函数？
 - [ ] 旧的 `Ewan.Core\BaseManager.cs` 何时移除？
 
@@ -206,6 +334,7 @@ public class XxxManager : IManager
 ## 相关提交历史
 
 ```
+d54ec60 重构：Manager架构迁移至IManager接口，集成MessageBus消息总线
 40eb4d3 重构：AxisManager集成SMC606控制卡
 6f705d1 新增：EwanCommon 通用库
 3d06e27 新增：MES环线通信消息总线架构
