@@ -68,7 +68,6 @@
     <Compile Include="Config\AxisConfigManager.cs" />
     <Compile Include="Config\AxisEnum.cs" />
     <Compile Include="IO\MarkingMachineFeederIOModel.cs" />
-    <Compile Include="IO\IOStatus.cs" />
     <Compile Include="Messages\UILogMsg.cs" />
     <Compile Include="Permission\PermissionConfig.cs" />
     <Compile Include="Production\AutoProductionState.cs" />

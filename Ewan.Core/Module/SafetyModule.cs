@@ -1,7 +1,6 @@
 using Ewan.Core.IO;
 using Ewan.Core.Msg;
 using Ewan.LogManager.Logger;
-using Ewan.Model.IO;
 using Ewan.Model.System;
 using Ewan.Model.Safety;
 using System;
@@ -42,8 +41,6 @@ namespace Ewan.Core.Module
         
         // 时间间隔设置
         private int _dataSyncInterval = 10;     // IO数据同步间隔(ms) - 保持快速响应
-        private int _ioUpdateInterval = 100;    // UI更新间隔(ms)
-        private DateTime _lastIoUpdateTime = DateTime.MinValue;
         
         // 性能监控
         private Stopwatch _performanceWatch = new Stopwatch();
@@ -141,8 +138,6 @@ namespace Ewan.Core.Module
                     CheckAlarmInputs();
                     _alarmCheckCounter = 0;
                 }
-
-                PublishIoStatusIfNeeded();
                 
                 _performanceWatch.Stop();
                 
@@ -219,33 +214,6 @@ namespace Ewan.Core.Module
             {
                 _uiLogger.Error("模块运行错误: {0} - {1}", 
                     "SafetyModule-CheckAlarmInputs", ex.Message);
-            }
-        }
-
-        private void PublishIoStatusIfNeeded()
-        {
-            try
-            {
-                DateTime now = DateTime.Now;
-                if ((now - _lastIoUpdateTime).TotalMilliseconds < _ioUpdateInterval)
-                {
-                    return;
-                }
-
-                _lastIoUpdateTime = now;
-
-                if (_ioManager == null || _msgManager == null)
-                {
-                    return;
-                }
-
-                IOStatus status = _ioManager.CreateStatusSnapshot();
-                var message = new MessageModel(MsgSubject.IOUpdate, status);
-                _msgManager.PushMsg(message);
-            }
-            catch (Exception ex)
-            {
-                _uiLogger.Error("模块运行错误: {0} - {1}", "SafetyModule-PublishIoStatus", ex.Message);
             }
         }
 

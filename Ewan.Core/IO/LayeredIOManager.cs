@@ -398,68 +398,6 @@ namespace Ewan.Core.IO
             ctx?.Tick();
         }
 
-        public IOStatus CreateStatusSnapshot()
-        {
-            var status = new IOStatus
-            {
-                HardwareType = _hardwareType.ToString(),
-                IsConnected = IsConnected,
-                LastUpdateTime = DateTime.Now,
-                ErrorMessage = string.Empty
-            };
-
-            IoContext<MarkingMachineFeederIOModel> ctx;
-            IHardwareIO hw;
-            lock (_lockObject)
-            {
-                ctx = _ctx;
-                hw = _hardware;
-            }
-
-            if (ctx == null || hw == null)
-            {
-                status.IsConnected = false;
-                status.ErrorMessage = "IO未初始化";
-                return status;
-            }
-
-            int logicalInputCount = Math.Min(status.XMapped.Length, ctx.Meta.InputCount);
-            int logicalOutputCount = Math.Min(status.YMapped.Length, ctx.Meta.OutputCount);
-
-            for (int i = 0; i < logicalInputCount; i++)
-            {
-                bool logicalValue = ctx.GetInput(i);
-                status.XMapped[i] = logicalValue;
-                status.X[i] = logicalValue;
-                status.XMappedNames[i] = ctx.Meta.GetInputName(i);
-                status.XNames[i] = status.XMappedNames[i];
-                status.XSimulateMode[i] = (int)ctx.Sim.GetMode(i);
-            }
-
-            for (int i = 0; i < logicalOutputCount; i++)
-            {
-                bool logicalValue = ctx.GetOutput(i);
-                status.YMapped[i] = logicalValue;
-                status.Y[i] = logicalValue;
-                status.YMappedNames[i] = ctx.Meta.GetOutputName(i);
-                status.YNames[i] = status.YMappedNames[i];
-            }
-
-            int physicalInputReadCount = Math.Min(status.XReal.Length, hw.InputCount);
-            for (int i = 0; i < physicalInputReadCount; i++)
-            {
-                status.XReal[i] = hw.ReadInBit(i);
-            }
-
-            int physicalOutputReadCount = Math.Min(status.YReal.Length, hw.OutputCount);
-            for (int i = 0; i < physicalOutputReadCount; i++)
-            {
-                status.YReal[i] = hw.ReadOutBit(i);
-            }
-
-            return status;
-        }
-
         public bool SetInputSimulate(int index, SimMode mode)
         {
             IoContext<MarkingMachineFeederIOModel> ctx;
@@ -602,4 +540,3 @@ namespace Ewan.Core.IO
         }
     }
 }
-

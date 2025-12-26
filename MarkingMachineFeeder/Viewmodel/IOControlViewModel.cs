@@ -1,13 +1,9 @@
 using Ewan.Core.IO;
 using Ewan.Core.Logger;
-using Ewan.Core.Msg;
-using Ewan.Model.IO;
-using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -16,11 +12,10 @@ namespace MarkingMachineFeeder.Viewmodel
     public class IOControlViewModel : BindableBase
     {
         private readonly UILogger _uiLogger = new UILogger();
-        private readonly MsgManager _msgManager = MsgManager.Instance();
         private readonly LayeredIOManager _ioManager = LayeredIOManager.Instance();
         private DispatcherTimer _clockTimer;
-        private IOStatus _realIO;
-        private MsgListener _ioUpdateListener;
+        private DispatcherTimer _ioRefreshTimer;
+        private const int IO_REFRESH_INTERVAL_MS = 100;
         
         // 动态IO数量和页数配置
         private int _actualInputCount;
@@ -369,12 +364,9 @@ namespace MarkingMachineFeeder.Viewmodel
             InitializeIOConfiguration();
             InitializeIOPoints();
 
-            // Subscribe to messages
-            _ioUpdateListener = new MsgListener(MsgSubject.IOUpdate, OnIOUpdateMessage);
-            _msgManager.RegisterListener(_ioUpdateListener);
-
             // Initialize timer
             InitializeTimer();
+            InitializeIoRefreshTimer();
 
             UpdateUITexts();
 
@@ -383,9 +375,6 @@ namespace MarkingMachineFeeder.Viewmodel
 
             // Set design-time default values
             SetDesignTimeDefaults();
-
-            // 主动从 LayeredIOManager 获取初始状态，避免依赖消息延迟
-            InitializeFromIOManager();
         }
         
         private void SetDesignTimeDefaults()
@@ -431,6 +420,128 @@ namespace MarkingMachineFeeder.Viewmodel
             _clockTimer.Tick += ClockTimer_Tick;
             _clockTimer.Start();
             UpdateClock();
+        }
+
+        private void InitializeIoRefreshTimer()
+        {
+            if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(new System.Windows.DependencyObject()))
+            {
+                return;
+            }
+
+            _ioRefreshTimer = new DispatcherTimer(DispatcherPriority.Background);
+            _ioRefreshTimer.Interval = TimeSpan.FromMilliseconds(IO_REFRESH_INTERVAL_MS);
+            _ioRefreshTimer.Tick += IoRefreshTimer_Tick;
+            _ioRefreshTimer.Start();
+
+            RefreshIoPoints();
+        }
+
+        private void IoRefreshTimer_Tick(object sender, EventArgs e)
+        {
+            RefreshIoPoints();
+        }
+
+        private void RefreshIoPoints()
+        {
+            try
+            {
+                var ctx = _ioManager.Ctx;
+                if (ctx == null)
+                {
+                    IsConnected = false;
+                    return;
+                }
+
+                EnsureIoPointsMatchContext();
+
+                IsConnected = _ioManager.IsConnected;
+
+                // 输入：映射模式显示逻辑值，真实模式显示硬件值（均按逻辑索引）
+                for (int i = 0; i < _actualInputCount; i++)
+                {
+                    var point = InputPoints[i];
+                    point.IsOn = IsMappingMode ? ctx.GetInput(i) : ctx.GetHardwareInput(i);
+                    point.Name = IsMappingMode ? ctx.Meta.GetInputName(i) : $"X{ctx.Mapping.GetInputPhysicalIndex(i)}";
+                    point.SimulateMode = (int)ctx.Sim.GetMode(i);
+                }
+
+                // 输出：映射模式显示逻辑值，真实模式显示物理值（应用 NO/NC）
+                for (int i = 0; i < _actualOutputCount; i++)
+                {
+                    var point = OutputPoints[i];
+                    point.IsOn = IsMappingMode ? ctx.GetOutput(i) : ctx.GetPhysicalOutput(i);
+                    point.Name = IsMappingMode ? ctx.Meta.GetOutputName(i) : $"Y{ctx.Mapping.GetOutputPhysicalIndex(i)}";
+                }
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Warn("刷新IO状态失败: {0}", ex.Message);
+            }
+        }
+
+        private void EnsureIoPointsMatchContext()
+        {
+            int targetInputCount = _ioManager.InputCount;
+            int targetOutputCount = _ioManager.OutputCount;
+
+            if (targetInputCount <= 0 || targetOutputCount <= 0)
+            {
+                return;
+            }
+
+            if (InputPoints.Count == targetInputCount && OutputPoints.Count == targetOutputCount)
+            {
+                return;
+            }
+
+            _actualInputCount = targetInputCount;
+            _actualOutputCount = targetOutputCount;
+            _inputPageCount = Math.Max(1, (int)Math.Ceiling((double)_actualInputCount / POINTS_PER_PAGE));
+            _outputPageCount = Math.Max(1, (int)Math.Ceiling((double)_actualOutputCount / POINTS_PER_PAGE));
+
+            InputPoints.Clear();
+            OutputPoints.Clear();
+
+            for (int i = 0; i < _actualInputCount; i++)
+            {
+                InputPoints.Add(new IOPointViewModel
+                {
+                    Index = i,
+                    Name = $"X{i}",
+                    IsOn = false,
+                    IsClickable = IsSimulateInputMode,
+                    IsInSimulateMode = IsSimulateInputMode
+                });
+            }
+
+            for (int i = 0; i < _actualOutputCount; i++)
+            {
+                OutputPoints.Add(new IOPointViewModel
+                {
+                    Index = i,
+                    Name = $"Y{i}",
+                    IsOn = false,
+                    IsClickable = IsOutputTestMode
+                });
+            }
+
+            CurrentInputPage = 0;
+            CurrentOutputPage = 0;
+            UpdateInputPageDisplay();
+            UpdateOutputPageDisplay();
+
+            InputPages = new ObservableCollection<string>();
+            for (int i = 1; i <= _inputPageCount; i++)
+            {
+                InputPages.Add(i.ToString());
+            }
+
+            OutputPages = new ObservableCollection<string>();
+            for (int i = 1; i <= _outputPageCount; i++)
+            {
+                OutputPages.Add(i.ToString());
+            }
         }
 
         private void ClockTimer_Tick(object sender, EventArgs e)
@@ -544,7 +655,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 // 关闭模拟模式，清除所有模拟状态
                 try
                 {
-                    var ctx = LayeredIOManager.Instance().Ctx;
+                    var ctx = _ioManager.Ctx;
                     if (ctx == null)
                     {
                         _uiLogger.Warn("清除IO模拟失败: 未获取到IO上下文实例");
@@ -560,14 +671,10 @@ namespace MarkingMachineFeeder.Viewmodel
                 }
 
                 // 更新显示
-                if (_realIO != null)
+                for (int i = 0; i < _actualInputCount; i++)
                 {
-                    for (int i = 0; i < _actualInputCount; i++)
-                    {
-                        _realIO.XSimulateMode[i] = 0;
-                        InputPoints[i].SimulateMode = 0;
-                        InputPoints[i].IsInSimulateMode = false;  // 取消模拟模式标记
-                    }
+                    InputPoints[i].SimulateMode = 0;
+                    InputPoints[i].IsInSimulateMode = false;  // 取消模拟模式标记
                 }
             }
             
@@ -618,7 +725,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 // 循环切换模拟状态: None(0) -> ForceOn(1) -> ForceOff(2) -> None(0)
                 int newMode = (point.SimulateMode + 1) % 3;
                 
-                var ctx = LayeredIOManager.Instance().Ctx;
+                var ctx = _ioManager.Ctx;
                 if (ctx == null)
                 {
                     _uiLogger.Warn("IO模拟设置失败: 未获取到IO上下文实例");
@@ -641,12 +748,6 @@ namespace MarkingMachineFeeder.Viewmodel
                 
                 // 更新视图模型
                 point.SimulateMode = newMode;
-                
-                // 更新IOStatus中的模拟状态
-                if (_realIO != null)
-                {
-                    _realIO.XSimulateMode[point.Index] = newMode;
-                }
                 
                 string modeName;
                 switch (newMode)
@@ -683,10 +784,7 @@ namespace MarkingMachineFeeder.Viewmodel
             _uiLogger.Info("IO映射模式已切换至: {0}", modeText);
             
             // 切换后重新更新显示
-            if (_realIO != null)
-            {
-                UpdateAllIOPoints();
-            }
+            RefreshIoPoints();
         }
 
         private void ExecuteOutputTest()
@@ -745,7 +843,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 // 切换输出点状态
                 bool newValue = !point.IsOn;
 
-                var ctx = LayeredIOManager.Instance().Ctx;
+                var ctx = _ioManager.Ctx;
                 if (ctx == null)
                 {
                     _uiLogger.Warn("输出写入失败: 未获取到IO上下文实例");
@@ -777,6 +875,7 @@ namespace MarkingMachineFeeder.Viewmodel
         private void ExecuteClose()
         {
             _clockTimer?.Stop();
+            _ioRefreshTimer?.Stop();
             Application.Current.Windows[Application.Current.Windows.Count - 1].Close();
         }
         
@@ -834,7 +933,7 @@ namespace MarkingMachineFeeder.Viewmodel
         public void Cleanup()
         {
             _clockTimer?.Stop();
-            _msgManager.UnRegisterListener(_ioUpdateListener);
+            _ioRefreshTimer?.Stop();
         }
 
         #region IO Points Management
@@ -849,6 +948,16 @@ namespace MarkingMachineFeeder.Viewmodel
                 // 获取实际IO数量
                 _actualInputCount = _ioManager.InputCount;
                 _actualOutputCount = _ioManager.OutputCount;
+
+                if (_actualInputCount <= 0)
+                {
+                    _actualInputCount = 64;
+                }
+
+                if (_actualOutputCount <= 0)
+                {
+                    _actualOutputCount = 64;
+                }
                 
                 // 计算页数（每页16个点）
                 _inputPageCount = Math.Max(1, (int)Math.Ceiling((double)_actualInputCount / POINTS_PER_PAGE));
@@ -923,148 +1032,6 @@ namespace MarkingMachineFeeder.Viewmodel
             for (int i = 8; i < 16 && startIndex + i < _actualOutputCount; i++)
             {
                 OutputPointsColumn2.Add(OutputPoints[startIndex + i]);
-            }
-        }
-
-        private void UpdateAllIOPoints()
-        {
-            if (_realIO == null) return;
-
-            // 根据模式选择数据源
-            if (IsMappingMode)
-            {
-                // 映射模式：使用映射数据
-                for (int i = 0; i < _actualInputCount; i++)
-                {
-                    InputPoints[i].IsOn = _realIO.XMapped[i];
-                    InputPoints[i].Name = _realIO.XMappedNames[i];
-                    InputPoints[i].SimulateMode = _realIO.XSimulateMode[i]; // 同步模拟状态
-                    // 保持IsInSimulateMode状态不变，因为这是由按钮控制的
-                }
-
-                for (int i = 0; i < _actualOutputCount; i++)
-                {
-                    OutputPoints[i].IsOn = _realIO.YMapped[i];
-                    OutputPoints[i].Name = _realIO.YMappedNames[i];
-                }
-            }
-            else
-            {
-                // 真实模式：使用真实数据
-                for (int i = 0; i < _actualInputCount; i++)
-                {
-                    InputPoints[i].IsOn = _realIO.XReal[i];
-                    InputPoints[i].Name = _realIO.XRealNames[i];
-                    InputPoints[i].SimulateMode = _realIO.XSimulateMode[i]; // 同步模拟状态
-                    // 保持IsInSimulateMode状态不变，因为这是由按钮控制的
-                }
-
-                for (int i = 0; i < _actualOutputCount; i++)
-                {
-                    OutputPoints[i].IsOn = _realIO.YReal[i];
-                    OutputPoints[i].Name = _realIO.YRealNames[i];
-                }
-            }
-
-            // 更新连接状态
-            IsConnected = _realIO.IsConnected;
-            
-            // 更新当前页显示
-            UpdateInputPageDisplay();
-            UpdateOutputPageDisplay();
-        }
-
-        #endregion
-
-        #region Active Initialization
-
-        /// <summary>
-        /// 从配置文件主动加载映射名称进行初始化
-        /// </summary>
-        private void InitializeFromIOManager()
-        {
-            try
-            {
-                // 创建临时 IOStatus 对象并填充映射名称
-                var initialStatus = new IOStatus();
-
-                // 从配置文件读取映射名称
-                LoadMappingNamesFromConfig(initialStatus);
-
-                // 使用加载的映射名称初始化界面
-                _realIO = initialStatus;
-                UpdateAllIOPoints();
-            }
-            catch (Exception ex)
-            {
-                _uiLogger.Warn("模块初始化失败: {0} - {1}", "IOControlViewModel: 映射名称初始化失败，将等待消息更新", ex.Message);
-                // 失败不影响，仍然可以依赖后续的消息更新
-            }
-        }
-
-        /// <summary>
-        /// 从配置文件加载映射名称
-        /// </summary>
-        private void LoadMappingNamesFromConfig(IOStatus status)
-        {
-            try
-            {
-                string configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
-                    "Config", "io_mapping.json");
-
-                if (File.Exists(configPath))
-                {
-                    string json = File.ReadAllText(configPath);
-                    dynamic config = JsonConvert.DeserializeObject(json);
-
-                    // 加载输入映射名称
-                    if (config?.InputMappings != null)
-                    {
-                        foreach (var mapping in config.InputMappings)
-                        {
-                            int logicalIndex = (int)mapping.LogicalIndex;
-                            string name = (string)mapping.Name;
-                            if (logicalIndex >= 0 && logicalIndex < IOStatus.IO_COUNT)
-                            {
-                                status.XMappedNames[logicalIndex] = name;
-                            }
-                        }
-                    }
-
-                    // 加载输出映射名称
-                    if (config?.OutputMappings != null)
-                    {
-                        foreach (var mapping in config.OutputMappings)
-                        {
-                            int logicalIndex = (int)mapping.LogicalIndex;
-                            string name = (string)mapping.Name;
-                            if (logicalIndex >= 0 && logicalIndex < IOStatus.IO_COUNT)
-                            {
-                                status.YMappedNames[logicalIndex] = name;
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                _uiLogger.Warn("加载映射名称失败: {0}", ex.Message);
-            }
-        }
-
-        #endregion
-
-        #region Message Handling
-
-        private void OnIOUpdateMessage(MessageModel message)
-        {
-            if (message.Subject == MsgSubject.IOUpdate && message.Data is IOStatus realIO)
-            {
-                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    _realIO = realIO;
-                    UpdateAllIOPoints();
-                }));
             }
         }
 

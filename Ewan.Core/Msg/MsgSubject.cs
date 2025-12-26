@@ -5,10 +5,9 @@
     /// </summary>
     public enum MsgSubject
     {
-        None,
-        UILog,
-        IOUpdate,  // IO数据更新消息
-        StatusIndicator,  // 系统状态指示器控制消息（蜂鸣器和信号灯）
+        None = 0,
+        UILog = 1,
+        StatusIndicator = 3,  // 系统状态指示器控制消息（蜂鸣器和信号灯）
         SafetyAlert,  // 安全报警消息
         SystemStatus,  // 系统状态变化消息
         SystemControl,  // 系统控制消息（启动/停止）
