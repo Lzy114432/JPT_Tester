@@ -1,4 +1,5 @@
 using Ewan.Core.Mes;
+using Ewan.Core.Msg;
 using Ewan.Core.ScanCode;
 using Ewan.Model.System;
 using Prism.Commands;
@@ -42,7 +43,7 @@ namespace MarkingMachineFeeder.Viewmodel
     public class MesManualSendViewModel : BindableBase, IDisposable
     {
         private readonly MesManager _mesManager;
-        private IDisposable _feedingQianLiaocangResponseSubscription;
+        private MsgListener _mesFeedbackListener;
 
         private bool _mesEnabled;
         private string _brokerHost;
@@ -350,23 +351,28 @@ namespace MarkingMachineFeeder.Viewmodel
                     return;
                 }
 
-                if (!_mesManager.IsRingLineInitialized)
+                _mesFeedbackListener = new MsgListener(MsgSubject.MesFeedback, msg =>
                 {
-                    if (!_mesManager.InitializeRingLine(RingLineDeviceId, RingLineDeviceCode))
+                    try
                     {
-                        AppendReceiveLog("订阅失败：环线服务未初始化。");
-                        UpdateStatus();
-                        return;
-                    }
-                }
+                        var feedback = msg.GetData<MesRingLineFeedback>();
+                        if (feedback == null)
+                        {
+                            return;
+                        }
 
-                _feedingQianLiaocangResponseSubscription = _mesManager.OnFeedingQianLiaocangResponseText(msg =>
-                {
-                    AppendReceiveLog("[前料仓上料响应] " + msg);
+                        AppendReceiveLog($"[MES反馈] CorrelationId={feedback.CorrelationId}, Action={feedback.Action}, Success={feedback.Success}, Message={feedback.Message}, PublishId={feedback.PublishMessageId}");
+                    }
+                    catch (Exception ex)
+                    {
+                        AppendReceiveLog("MES反馈解析失败: " + ex.Message);
+                    }
                 });
 
+                MsgManager.Instance().RegisterListener(_mesFeedbackListener);
+
                 IsResponseSubscribed = true;
-                AppendReceiveLog("订阅成功：前料仓上料响应。");
+                AppendReceiveLog("订阅成功：MES反馈消息(MesFeedback)。");
             }
             catch (Exception ex)
             {
@@ -382,8 +388,11 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             try
             {
-                _feedingQianLiaocangResponseSubscription?.Dispose();
-                _feedingQianLiaocangResponseSubscription = null;
+                if (_mesFeedbackListener != null)
+                {
+                    MsgManager.Instance().UnRegisterListener(_mesFeedbackListener);
+                    _mesFeedbackListener = null;
+                }
                 IsResponseSubscribed = false;
                 AppendReceiveLog("已取消订阅。");
             }
@@ -423,92 +432,41 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             try
             {
-                if (!_mesManager.IsConnected)
-                {
-                    if (!_mesManager.ConfigureFromSystemParameters(connect: false) || !_mesManager.Connect())
-                    {
-                        AppendReceiveLog("发送失败：MES未连接。");
-                        UpdateStatus();
-                        return;
-                    }
-                }
-
-                if (!_mesManager.IsRingLineInitialized)
-                {
-                    if (!_mesManager.InitializeRingLine(RingLineDeviceId, RingLineDeviceCode))
-                    {
-                        AppendReceiveLog("发送失败：环线服务未初始化。");
-                        UpdateStatus();
-                        return;
-                    }
-                }
-
                 var action = SelectedAction?.Action ?? RingLineAction.FeedingQianLiaocang;
 
                 string plateCode = (PlateCode ?? string.Empty).Trim();
                 string billNoWip = (BillNoWip ?? string.Empty).Trim();
                 string feedingCode = (FeedingLiaokuangCode ?? string.Empty).Trim();
 
-                ushort msgId;
-                switch (action)
+                RequireNotEmpty(plateCode, "PlateCode");
+                if (action == RingLineAction.FeedingQianLiaocangSuccess
+                    || action == RingLineAction.UnloadingQianLiaocang
+                    || action == RingLineAction.FeedingZhongLiaocang
+                    || action == RingLineAction.UnloadingZhongLiaocang
+                    || action == RingLineAction.FeedingHouLiaocang
+                    || action == RingLineAction.UnloadingHouLiaocang)
                 {
-                    case RingLineAction.FeedingQianLiaocang:
-                        RequireNotEmpty(plateCode, "PlateCode");
-                        msgId = await _mesManager.PublishFeedingQianLiaocangAsync(plateCode, billNoWip);
-                        AppendSendLog($"前料仓上料 已发送, MessageId={msgId}, PlateCode={plateCode}, BillNoWip={billNoWip}");
-                        break;
+                    RequireNotEmpty(feedingCode, "FeedingLiaokuangCode");
+                }
 
-                    case RingLineAction.FeedingQianLiaocangSuccess:
-                        RequireNotEmpty(plateCode, "PlateCode");
-                        RequireNotEmpty(feedingCode, "FeedingLiaokuangCode");
-                        msgId = await _mesManager.PublishFeedingQianLiaocangSuccessAsync(plateCode, feedingCode);
-                        AppendSendLog($"前料仓上料成功 已发送, MessageId={msgId}, PlateCode={plateCode}, FeedingLiaokuangCode={feedingCode}");
-                        break;
+                var request = new MesRingLineRequest
+                {
+                    CorrelationId = Guid.NewGuid(),
+                    Action = ConvertToMesAction(action),
+                    PlateCode = plateCode,
+                    BillNoWip = billNoWip,
+                    FeedingLiaokuangCode = feedingCode,
+                    TimeoutMs = 30000
+                };
 
-                    case RingLineAction.UnloadingQianLiaocang:
-                        RequireNotEmpty(plateCode, "PlateCode");
-                        RequireNotEmpty(feedingCode, "FeedingLiaokuangCode");
-                        msgId = await _mesManager.PublishUnloadingQianLiaocangAsync(plateCode, feedingCode);
-                        AppendSendLog($"前料仓卸料 已发送, MessageId={msgId}, PlateCode={plateCode}, FeedingLiaokuangCode={feedingCode}");
-                        break;
+                AppendSendLog($"发送MES请求 CorrelationId={request.CorrelationId}, Action={request.Action}, PlateCode={plateCode}");
 
-                    case RingLineAction.FeedingZhongLiaocang:
-                        RequireNotEmpty(plateCode, "PlateCode");
-                        RequireNotEmpty(feedingCode, "FeedingLiaokuangCode");
-                        msgId = await _mesManager.PublishFeedingZhongLiaocangAsync(plateCode, feedingCode);
-                        AppendSendLog($"中料仓上料 已发送, MessageId={msgId}, PlateCode={plateCode}, FeedingLiaokuangCode={feedingCode}");
-                        break;
+                var feedback = await MesMsgBus.Instance().RequestAsync(request, request.TimeoutMs);
 
-                    case RingLineAction.UnloadingZhongLiaocang:
-                        RequireNotEmpty(plateCode, "PlateCode");
-                        RequireNotEmpty(feedingCode, "FeedingLiaokuangCode");
-                        msgId = await _mesManager.PublishUnloadingZhongLiaocangAsync(plateCode, feedingCode);
-                        AppendSendLog($"中料仓卸料 已发送, MessageId={msgId}, PlateCode={plateCode}, FeedingLiaokuangCode={feedingCode}");
-                        break;
-
-                    case RingLineAction.FeedingQingxihongganji:
-                        RequireNotEmpty(plateCode, "PlateCode");
-                        msgId = await _mesManager.PublishFeedingQingxihongganjiAsync(plateCode);
-                        AppendSendLog($"清洗烘干机上料 已发送, MessageId={msgId}, PlateCode={plateCode}");
-                        break;
-
-                    case RingLineAction.FeedingHouLiaocang:
-                        RequireNotEmpty(plateCode, "PlateCode");
-                        RequireNotEmpty(feedingCode, "FeedingLiaokuangCode");
-                        msgId = await _mesManager.PublishFeedingHouLiaocangAsync(plateCode, feedingCode);
-                        AppendSendLog($"后料仓上料 已发送, MessageId={msgId}, PlateCode={plateCode}, FeedingLiaokuangCode={feedingCode}");
-                        break;
-
-                    case RingLineAction.UnloadingHouLiaocang:
-                        RequireNotEmpty(plateCode, "PlateCode");
-                        RequireNotEmpty(feedingCode, "FeedingLiaokuangCode");
-                        msgId = await _mesManager.PublishUnloadingHouLiaocangAsync(plateCode, feedingCode);
-                        AppendSendLog($"后料仓卸料 已发送, MessageId={msgId}, PlateCode={plateCode}, FeedingLiaokuangCode={feedingCode}");
-                        break;
-
-                    default:
-                        AppendReceiveLog("未知操作类型，发送已取消。");
-                        return;
+                // 仅在未订阅调试监听时显示反馈（避免双重显示）
+                if (!IsResponseSubscribed)
+                {
+                    AppendReceiveLog($"[MES反馈] CorrelationId={feedback.CorrelationId}, Action={feedback.Action}, Success={feedback.Success}, Message={feedback.Message}, PublishId={feedback.PublishMessageId}");
                 }
 
                 UpdateStatus();
@@ -516,6 +474,31 @@ namespace MarkingMachineFeeder.Viewmodel
             catch (Exception ex)
             {
                 AppendReceiveLog("发送异常: " + ex.Message);
+            }
+        }
+
+        private static MesRingLineAction ConvertToMesAction(RingLineAction action)
+        {
+            switch (action)
+            {
+                case RingLineAction.FeedingQianLiaocang:
+                    return MesRingLineAction.FeedingQianLiaocang;
+                case RingLineAction.FeedingQianLiaocangSuccess:
+                    return MesRingLineAction.FeedingQianLiaocangSuccess;
+                case RingLineAction.UnloadingQianLiaocang:
+                    return MesRingLineAction.UnloadingQianLiaocang;
+                case RingLineAction.FeedingZhongLiaocang:
+                    return MesRingLineAction.FeedingZhongLiaocang;
+                case RingLineAction.UnloadingZhongLiaocang:
+                    return MesRingLineAction.UnloadingZhongLiaocang;
+                case RingLineAction.FeedingQingxihongganji:
+                    return MesRingLineAction.FeedingQingxihongganji;
+                case RingLineAction.FeedingHouLiaocang:
+                    return MesRingLineAction.FeedingHouLiaocang;
+                case RingLineAction.UnloadingHouLiaocang:
+                    return MesRingLineAction.UnloadingHouLiaocang;
+                default:
+                    return MesRingLineAction.FeedingQianLiaocang;
             }
         }
 
@@ -591,16 +574,15 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             try
             {
-                _feedingQianLiaocangResponseSubscription?.Dispose();
+                if (_mesFeedbackListener != null)
+                {
+                    MsgManager.Instance().UnRegisterListener(_mesFeedbackListener);
+                    _mesFeedbackListener = null;
+                }
             }
             catch
             {
             }
-            finally
-            {
-                _feedingQianLiaocangResponseSubscription = null;
-            }
         }
     }
 }
-

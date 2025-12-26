@@ -59,6 +59,11 @@ namespace Ewan.BusinessBonding
         private StreamRunner _ringLineRunner;
 
         /// <summary>
+        /// MES消息处理流程runner
+        /// </summary>
+        private StreamRunner _mesRunner;
+
+        /// <summary>
         /// 报警流程runner（暂时注释，调试时启用）
         /// </summary>
         // private StreamRunner _alarmRunner;
@@ -75,6 +80,7 @@ namespace Ewan.BusinessBonding
         private List<IModule> _beltConveyorModules = new List<IModule>();
         private List<IModule> _stationHeartbeatModules = new List<IModule>();
         private List<IModule> _ringLineModules = new List<IModule>();
+        private List<IModule> _mesModules = new List<IModule>();
 
         /// <summary>
         /// 报警模块集合（暂时注释，调试时启用）
@@ -163,6 +169,16 @@ namespace Ewan.BusinessBonding
 
             #endregion
 
+            #region //构造MES消息处理流程的节点并加入到对应runner
+
+            // 添加MES消息处理模块（监听MesRequest并回推MesFeedback）
+            _mesModules.Add(new MesModule());
+
+            // 创建MES消息处理流程runner（独立线程运行，避免阻塞主流程）
+            _mesRunner = new StreamRunner(_mesModules);
+
+            #endregion
+
             #region //构造报警流程的节点并加入到对应runner（暂时注释，调试时启用）
             
             // 极简的报警系统 - 只检测信号和执行停机
@@ -206,6 +222,8 @@ namespace Ewan.BusinessBonding
                 StartStationHeartbeatStream();
                 //7.运行环线通信流程
                 StartRingLineStream();
+                //8.运行MES消息处理流程
+                StartMesStream();
                 //9.运行报警流程（暂时注释，调试时启用）
                 //StartAlarmStream();
 
@@ -244,6 +262,8 @@ namespace Ewan.BusinessBonding
             StopStationHeartbeatStream();
             //6.停止环线通信流程
             StopRingLineStream();
+            //7.停止MES消息处理流程
+            StopMesStream();
             //7.停止报警流程（暂时注释，调试时启用）
             //StopAlarmStream();
 
@@ -413,6 +433,27 @@ namespace Ewan.BusinessBonding
         {
             _ringLineRunner?.Stop();
             _uiLogger.Debug("环线通信流程已停止");
+        }
+
+        /// <summary>
+        /// 启动MES消息处理流程
+        /// </summary>
+        private void StartMesStream()
+        {
+            if (_mesRunner != null)
+            {
+                _mesRunner.Start();
+                _uiLogger.Debug("MES消息处理流程已启动");
+            }
+        }
+
+        /// <summary>
+        /// 停止MES消息处理流程
+        /// </summary>
+        private void StopMesStream()
+        {
+            _mesRunner?.Stop();
+            _uiLogger.Debug("MES消息处理流程已停止");
         }
 
         /// <summary>

@@ -12,6 +12,7 @@ namespace Ewan.Core.Msg
         private BlockingCollection<MessageModel> _queue = new BlockingCollection<MessageModel>(100);
 
         private List<MsgListener> _listeners = new List<MsgListener>();
+        private readonly object _listenersLock = new object();
 
         private bool _isAlive;
 
@@ -46,12 +47,25 @@ namespace Ewan.Core.Msg
 
         public void RegisterListener(MsgListener listener)
         {
-            _listeners.Add(listener);
+            if (listener == null)
+            {
+                return;
+            }
+
+            lock (_listenersLock)
+            {
+                _listeners.Add(listener);
+            }
         }
 
         public void UnRegisterListener(MsgListener listener)
         {
-            if (_listeners.Contains(listener))
+            if (listener == null)
+            {
+                return;
+            }
+
+            lock (_listenersLock)
             {
                 _listeners.Remove(listener);
             }
@@ -69,9 +83,15 @@ namespace Ewan.Core.Msg
         }
         private void NotifyListeners(MessageModel msg)
         {
-            foreach (MsgListener listener in _listeners)
+            MsgListener[] listenersSnapshot;
+            lock (_listenersLock)
             {
-                if (listener.Subject.Equals(msg.Subject))
+                listenersSnapshot = _listeners.ToArray();
+            }
+
+            foreach (MsgListener listener in listenersSnapshot)
+            {
+                if (listener != null && listener.Subject.Equals(msg.Subject))
                 {
                     listener.Update(msg);
                 }

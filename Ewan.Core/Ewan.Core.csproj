@@ -85,6 +85,7 @@
     <Compile Include="Module\Interface\IModule.cs" />
     <Compile Include="Module\MaterialLoadingModule.cs" />
     <Compile Include="Module\MaterialUnloadingModule.cs" />
+    <Compile Include="Module\MesModule.cs" />
     <Compile Include="Module\ProductionLineModule.cs" />
     <Compile Include="Module\ProductionLineSharedState.cs" />
     <Compile Include="Module\RingLineModule.cs" />
@@ -92,9 +93,12 @@
     <Compile Include="Module\StationHeartbeatModule.cs" />
     <Compile Include="Module\SystemStatusIndicatorModule.cs" />
     <Compile Include="Msg\MessageModel.cs" />
+    <Compile Include="Msg\MesMessages.cs" />
+    <Compile Include="Msg\MesMsgBus.cs" />
     <Compile Include="Msg\MsgListener.cs" />
     <Compile Include="Msg\MsgManager.cs" />
     <Compile Include="Msg\MsgSubject.cs" />
+    <Compile Include="Msg\RequestAwaiter.cs" />
     <Compile Include="Plc\ModbusManager.cs" />
     <Compile Include="Plc\ModbusRTUManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
