@@ -145,6 +145,10 @@
       <Project>{3874D647-243F-356F-3E1A-E33858A8BEC9}</Project>
       <Name>Ewan.CodeReader</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Hardware\EwanAxis\EwanAxis.csproj">
+      <Project>{B29B819F-73E1-F923-FBA3-E66B30026530}</Project>
+      <Name>EwanAxis</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="HslCommunication.dll">

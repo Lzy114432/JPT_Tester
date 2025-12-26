@@ -1,51 +1,102 @@
 using Ewan.Core.Attribute;
 using Ewan.Model.Config;
+using EwanAxis.Core.Interfaces;
+using EwanAxis.Hardware.SMC606;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Web.UI.WebControls;
 
 namespace Ewan.Core.Axis
 {
     [Manager(Priority = 1)]
     public class AxisManager : BaseManager<AxisManager>
     {
-        ushort card = 0;
         private AxisConfigManager _configManager;
         private readonly string _configFilePath;
+        private SMC606Card _card;
 
+        /// <summary>
+        /// 控制卡IP地址（可通过配置文件或外部设置）
+        /// </summary>
+        public string CardIpAddress { get; set; } = "192.168.5.11";
+
+        /// <summary>
+        /// 控制卡卡号
+        /// </summary>
+        public ushort CardNo { get; set; } = 0;
+
+        /// <summary>
+        /// 控制卡是否已连接
+        /// </summary>
+        public bool IsConnected => _card?.IsConnected ?? false;
 
         public AxisManager()
         {
             _configFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config", "axis_config.json");
         }
 
-
         public override bool Init()
         {
             // 加载轴配置
             LoadAxisConfiguration();
-            
-            //string ip = "192.168.5.11";
 
-            //short res = LTSMC.smc_board_init(card, 2, ip, 115200);//ec则认为只有一个卡
-            //if (res != 0)
-            //{
-            //    _uiLogger.Error("轴管理器初始化失败: {0}", res);
-            //    return false;
-            //}
+            // 初始化SMC606控制卡
+            if (!InitializeCard())
+            {
+                _uiLogger.Error("轴管理器初始化失败: 控制卡连接失败");
+                return false;
+            }
 
-
+            _uiLogger.Info("轴管理器初始化完成");
             return base.Init();
+        }
+
+        /// <summary>
+        /// 初始化控制卡
+        /// </summary>
+        private bool InitializeCard()
+        {
+            try
+            {
+                _card = new SMC606Card(CardNo, CardIpAddress);
+
+                // 初始化控制卡（加载配置）
+                if (!_card.Initialize(_configFilePath))
+                {
+                    _uiLogger.Error("控制卡初始化失败");
+                    return false;
+                }
+
+                // 连接控制卡
+                if (!_card.Connect())
+                {
+                    _uiLogger.Error("控制卡连接失败: IP={0}", CardIpAddress);
+                    return false;
+                }
+
+                _uiLogger.Info("控制卡连接成功: IP={0}, 轴数={1}", CardIpAddress, _card.AxisCount);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error("控制卡初始化异常: {0}", ex.Message);
+                return false;
+            }
         }
 
         public override void Destroy()
         {
-            //short res = LTSMC.smc_board_close(card);
-            //if (res != 0)
-            //{
-            //    _uiLogger.Error("轴管理器销毁失败: {0}", res);
-            //}
+            try
+            {
+                _card?.Disconnect();
+                _card?.Dispose();
+                _card = null;
+                _uiLogger.Info("轴管理器已销毁");
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error("轴管理器销毁异常: {0}", ex.Message);
+            }
             base.Destroy();
         }
         
@@ -61,28 +112,26 @@ namespace Ewan.Core.Axis
         {
             try
             {
-                // 检查配置文件是否存在
                 bool fileExists = File.Exists(_configFilePath);
-                
+
                 _configManager = AxisConfigManager.LoadFromFile(_configFilePath);
-                
+
                 if (_configManager?.AxisConfigs?.Count > 0)
                 {
-                    // 如果文件不存在但成功加载了默认配置，需要保存到文件
                     if (!fileExists)
                     {
-                        _uiLogger.Info("加载轴配置失败: {0}", "配置文件不存在，创建默认配置");
+                        _uiLogger.Info("轴配置文件不存在，创建默认配置");
                         SaveAxisConfiguration();
                     }
                     else
                     {
-                        _uiLogger.Info("轴配置已从以下位置加载: {0}", $"{_configManager.AxisConfigs.Count}个轴配置");
+                        _uiLogger.Info("轴配置加载完成: {0}个轴配置", _configManager.AxisConfigs.Count);
                     }
                     return true;
                 }
                 else
                 {
-                    _uiLogger.Info("加载轴配置失败: {0}", "配置为空，创建默认配置");
+                    _uiLogger.Info("轴配置为空，创建默认配置");
                     _configManager = AxisConfigManager.CreateDefault();
                     SaveAxisConfiguration();
                     return true;
@@ -92,8 +141,8 @@ namespace Ewan.Core.Axis
             {
                 _uiLogger.Error("加载轴配置失败: {0}", ex.Message);
                 _configManager = AxisConfigManager.CreateDefault();
-                SaveAxisConfiguration(); // 保存默认配置到文件
-                return true; // 虽然加载失败，但创建了默认配置，返回true
+                SaveAxisConfiguration();
+                return true;
             }
         }
 
@@ -107,12 +156,12 @@ namespace Ewan.Core.Axis
             {
                 if (_configManager?.SaveToFile(_configFilePath) == true)
                 {
-                    _uiLogger.Info("轴配置已保存到: {0}", _configFilePath);
+                    _uiLogger.Info("轴配置已保存");
                     return true;
                 }
                 else
                 {
-                    _uiLogger.Error("保存轴配置失败: {0}", "保存失败");
+                    _uiLogger.Error("保存轴配置失败");
                     return false;
                 }
             }
@@ -132,9 +181,7 @@ namespace Ewan.Core.Axis
             bool result = LoadAxisConfiguration();
             if (result)
             {
-                _uiLogger.Info("轴配置已从以下位置加载: {0}", "轴配置已重新加载");
-                
-                // 触发配置更新事件
+                _uiLogger.Info("轴配置已重新加载");
                 ConfigurationUpdated?.Invoke(this, EventArgs.Empty);
             }
             return result;
@@ -170,182 +217,131 @@ namespace Ewan.Core.Axis
 
         #endregion
 
-        #region 轴操作方法 - AxisConfig版本
+        #region 私有辅助方法
+
+        /// <summary>
+        /// 根据AxisConfig获取对应的IAxis
+        /// </summary>
+        private IAxis GetAxis(AxisConfig axisConfig)
+        {
+            if (_card == null || !_card.IsConnected)
+                return null;
+
+            if (axisConfig.AxisID < 0 || axisConfig.AxisID >= _card.AxisCount)
+                return null;
+
+            return _card[axisConfig.AxisID];
+        }
+
+        #endregion
+
+        #region 轴操作方法
 
         public bool Jog(AxisConfig axisConfig, double speed)
         {
-            double vel = Math.Abs(speed);
-            int dir = speed > 0 ? 1 : 0; // 1正，0负
+            var axis = GetAxis(axisConfig);
+            if (axis == null) return false;
 
-
-            LTSMC.smc_set_s_profile(card, (ushort)axisConfig.AxisID, 0, axisConfig.Dec/3);//设置S段时间（0-1s)
-            
-            // 使用速度绝对值计算参数，方向由dir控制
-            double maxSpeed = vel * axisConfig.Step; // 使用速度绝对值
-            double startSpeed = maxSpeed * 0.1; // 起始速度为最大速度的10%
-            double stopSpeed = maxSpeed * 0.05; // 停止速度为最大速度的5%
-            
-            LTSMC.smc_set_profile_unit(card, (ushort)axisConfig.AxisID
-            , startSpeed, maxSpeed, axisConfig.Acc, axisConfig.Dec, stopSpeed);//设置起始速度、运行速度、停止速度、加速时间、减速时间
-            LTSMC.smc_vmove(card, (ushort)axisConfig.AxisID, (ushort)dir);
-            return true;
+            // 根据配置的运动方向调整速度方向
+            double actualSpeed = axisConfig.MotionDir == MotionDir.Positive ? speed : -speed;
+            return axis.Jog(actualSpeed);
         }
 
         public bool JogDown(AxisConfig axisConfig)
         {
-            double vel = Math.Abs(-axisConfig.Speed);
-            int dir = -axisConfig.Speed > 0 ? 1 : 0; // 1正，0负
-
-
-            LTSMC.smc_set_s_profile(card, (ushort)axisConfig.AxisID, 0, axisConfig.Dec / 3);//设置S段时间（0-1s)
-
-            // 使用配置中的速度参数，或者使用传入的速度
-            double maxSpeed = -axisConfig.Speed * axisConfig.Step; // 使用配置中的最大速度
-            double startSpeed = maxSpeed * 0.1; // 起始速度为最大速度的10%
-            double stopSpeed = maxSpeed * 0.05; // 停止速度为最大速度的5%
-
-            LTSMC.smc_set_profile_unit(card, (ushort)axisConfig.AxisID
-            , startSpeed, maxSpeed, axisConfig.Acc, axisConfig.Dec, stopSpeed);//设置起始速度、运行速度、停止速度、加速时间、减速时间
-            LTSMC.smc_vmove(card, (ushort)axisConfig.AxisID, (ushort)dir);
-            return true;
+            return Jog(axisConfig, -axisConfig.Speed);
         }
-
 
         public bool JogUp(AxisConfig axisConfig)
         {
-            double vel = Math.Abs(axisConfig.Speed);
-            int dir = axisConfig.Speed > 0 ? 1 : 0; // 1正，0负
-
-
-            LTSMC.smc_set_s_profile(card, (ushort)axisConfig.AxisID, 0, axisConfig.Dec / 3);//设置S段时间（0-1s)
-
-            // 使用配置中的速度参数，或者使用传入的速度
-            double maxSpeed = axisConfig.Speed * axisConfig.Step; // 使用配置中的最大速度
-            double startSpeed = maxSpeed * 0.1; // 起始速度为最大速度的10%
-            double stopSpeed = maxSpeed * 0.05; // 停止速度为最大速度的5%
-
-            LTSMC.smc_set_profile_unit(card, (ushort)axisConfig.AxisID
-            , startSpeed, maxSpeed, axisConfig.Acc, axisConfig.Dec, stopSpeed);//设置起始速度、运行速度、停止速度、加速时间、减速时间
-            LTSMC.smc_vmove(card, (ushort)axisConfig.AxisID, (ushort)dir);
-            return true;
+            return Jog(axisConfig, axisConfig.Speed);
         }
-
-
-
 
         public bool JogStop(AxisConfig axisConfig)
         {
-            LTSMC.smc_stop(card, (ushort)axisConfig.AxisID, 0);
-            return true;
-        }
+            var axis = GetAxis(axisConfig);
+            if (axis == null) return false;
 
+            return axis.JogStop();
+        }
 
         public bool EnableAxis(AxisConfig axisConfig)
         {
-            short ret = LTSMC.smc_write_sevon_pin(card,(ushort)axisConfig.AxisID, 0);//O为使能？
-            return ret == 0;
-        }
+            var axis = GetAxis(axisConfig);
+            if (axis == null) return false;
 
+            axis.ServoOn = true;
+            return axis.ServoOn;
+        }
 
         public void DisableAxis(AxisConfig axisConfig)
         {
-            short ret = LTSMC.smc_write_sevon_pin(card, (ushort)axisConfig.AxisID, 1);//O为使能
+            var axis = GetAxis(axisConfig);
+            if (axis == null) return;
+
+            axis.ServoOn = false;
         }
-
-
 
         public void DecStop(AxisConfig axisConfig)
         {
-            short val = LTSMC.smc_stop(card, (ushort)axisConfig.AxisID, 0);
+            var axis = GetAxis(axisConfig);
+            axis?.DecStop();
         }
 
         public void EmgStop(AxisConfig axisConfig)
         {
-            short val = LTSMC.smc_stop(card, (ushort)axisConfig.AxisID, 1);
+            var axis = GetAxis(axisConfig);
+            axis?.EmgStop();
         }
-
 
         public void EmgStopAll(AxisConfig axisConfig)
         {
-            LTSMC.smc_emg_stop((ushort)axisConfig.AxisID);
+            _card?.EmgStopAll();
         }
 
         public double Position(AxisConfig axisConfig)
         {
+            var axis = GetAxis(axisConfig);
+            if (axis == null) return 0;
 
-            double pos = 0;
-            LTSMC.smc_get_position_unit(card, (ushort)axisConfig.AxisID, ref pos);
+            double pos = axis.Position;
 
+            // 根据运动方向转换位置
             if (axisConfig.MotionDir != MotionDir.Positive)
             {
-                pos = 1;
-            }
-            else
-            {
-                pos = -1;
+                pos = -pos;
             }
 
-            return pos / axisConfig.Step;
+            return pos;
         }
-
 
         public bool IsAlarm(AxisConfig axisConfig)
         {
-            uint val2 = LTSMC.smc_axis_io_status(card, (ushort)axisConfig.AxisID);
-            return (val2 & 0x01) > 0;
+            var axis = GetAxis(axisConfig);
+            if (axis == null) return false;
+
+            return axis.IsAlarm;
         }
 
         public bool IsBusy(AxisConfig axisConfig)
         {
-            short rcode = LTSMC.smc_check_done(card, (ushort)axisConfig.AxisID);
-            return rcode != 1;
+            var axis = GetAxis(axisConfig);
+            if (axis == null) return false;
+
+            return axis.IsBusy;
         }
 
-
-
-        public bool AbsMove(AxisConfig axisConfig,double pos)
+        public bool AbsMove(AxisConfig axisConfig, double pos)
         {
-            if (axisConfig.MotionDir == MotionDir.Positive)
-            {
-                pos =  pos * 1;
-            }
-            else
-            {
-                pos = pos * -1;
-            }
+            var axis = GetAxis(axisConfig);
+            if (axis == null) return false;
 
-            int pulse = (int)(pos * axisConfig.Step);
+            // 根据运动方向转换位置
+            double actualPos = axisConfig.MotionDir == MotionDir.Positive ? pos : -pos;
 
-            ushort State_Machine = 0;
-            short temp;
-            temp = LTSMC.nmcs_get_axis_state_machine(card, (ushort)axisConfig.AxisID, ref State_Machine);
-            if (State_Machine == 0)
-            {
-                //LTSMC.smc_set_pulse_outmode(card.iCardNo, (ushort)Parameter.AxisNum, 0);//设置脉冲模式
-                //LTSMC.smc_set_equiv(card.iCardNo, (ushort)Parameter.AxisNum, 1);
-                LTSMC.smc_set_s_profile(card, (ushort)axisConfig.AxisID, 0, axisConfig.Dec / 3);//设置S段时间（0-1s)
-                LTSMC.smc_set_profile_unit(card, (ushort)axisConfig.AxisID
-                , 10000, axisConfig.Speed * axisConfig.Step, axisConfig.Acc, axisConfig.Dec, 10000);//设置起始速度、运行速度、停止速度、加速时间、减速时间
-                LTSMC.smc_set_dec_stop_time(card, (ushort)axisConfig.AxisID, axisConfig.Dec);
-
-                LTSMC.smc_pmove_unit(card, (ushort)axisConfig.AxisID, pulse, 1);//定长运动
-
-            }
-
-            //short ret = LTSMC.smc_set_profile_unit(card.iCardNo, (ushort)Parameter.AxisNum
-            //    , 10000, Parameter.Speed * Parameter.Step, Parameter.Acc, Parameter.Dec, 10000);
-            //ret = LTSMC.smc_set_s_profile(card.iCardNo, (ushort)Parameter.AxisNum, 0, Parameter.Dec / 3);
-            //ret = LTSMC.smc_pmove_unit(card.iCardNo, (ushort)Parameter.AxisNum, pulse, 1);//定长运动
-            return true;
+            return axis.AbsMove(actualPos);
         }
-
-
-
-
-
-
 
         #endregion
-
     }
 }
