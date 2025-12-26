@@ -1,4 +1,3 @@
-using Ewan.BusinessBonding;
 using Ewan.Core.IO;
 using Ewan.Core.Logger;
 using Ewan.Core.Msg;
@@ -543,7 +542,23 @@ namespace MarkingMachineFeeder.Viewmodel
             else
             {
                 // 关闭模拟模式，清除所有模拟状态
-                IOController.Instance().ClearAllSimulations();
+                try
+                {
+                    var ctx = LayeredIOManager.Instance().Ctx;
+                    if (ctx == null)
+                    {
+                        _uiLogger.Warn("清除IO模拟失败: 未获取到IO上下文实例");
+                    }
+                    else
+                    {
+                        ctx.Sim.ClearAll();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _uiLogger.Error("清除IO模拟错误: {0}", ex.Message);
+                }
+
                 // 更新显示
                 if (_realIO != null)
                 {
@@ -603,8 +618,26 @@ namespace MarkingMachineFeeder.Viewmodel
                 // 循环切换模拟状态: None(0) -> ForceOn(1) -> ForceOff(2) -> None(0)
                 int newMode = (point.SimulateMode + 1) % 3;
                 
-                // 使用IOController设置模拟状态
-                IOController.Instance().SetInputSimulate(point.Index, newMode, IsMappingMode);
+                var ctx = LayeredIOManager.Instance().Ctx;
+                if (ctx == null)
+                {
+                    _uiLogger.Warn("IO模拟设置失败: 未获取到IO上下文实例");
+                }
+                else
+                {
+                    switch (newMode)
+                    {
+                        case 1:
+                            ctx.Sim.ForceOn(point.Index);
+                            break;
+                        case 2:
+                            ctx.Sim.ForceOff(point.Index);
+                            break;
+                        default:
+                            ctx.Sim.ClearSimulate(point.Index);
+                            break;
+                    }
+                }
                 
                 // 更新视图模型
                 point.SimulateMode = newMode;
@@ -712,8 +745,21 @@ namespace MarkingMachineFeeder.Viewmodel
                 // 切换输出点状态
                 bool newValue = !point.IsOn;
 
-                // 使用IOController写入输出
-                IOController.Instance().WriteOutput(point.Index, newValue, IsMappingMode);
+                var ctx = LayeredIOManager.Instance().Ctx;
+                if (ctx == null)
+                {
+                    _uiLogger.Warn("输出写入失败: 未获取到IO上下文实例");
+                    return;
+                }
+
+                if (newValue)
+                {
+                    ctx.On(point.Index);
+                }
+                else
+                {
+                    ctx.Off(point.Index);
+                }
 
                 _uiLogger.Info("输出 {0} 设置为: {1}", point.Name, newValue ? "ON" : "OFF");
             }
