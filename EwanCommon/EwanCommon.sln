@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EwanCommon", "EwanCommon\EwanCommon.csproj", "{4C459CB9-E516-4068-B558-D89862B7D54F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EwanCommon.Tests", "EwanCommon\EwanCommon.Tests\EwanCommon.Tests.csproj", "{960256BB-44F0-4C9C-B0D4-B8C088DFF22B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EwanCommon.Tests", "EwanCommon.Tests\EwanCommon.Tests.csproj", "{960256BB-44F0-4C9C-B0D4-B8C088DFF22B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
