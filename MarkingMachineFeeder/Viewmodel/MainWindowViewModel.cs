@@ -17,7 +17,6 @@ namespace MarkingMachineFeeder.Viewmodel
         private readonly UILogger _uiLogger = new UILogger();
         private readonly SecurityManager _securityManager;
         private readonly SystemControlService _systemControlService;
-        private readonly RobotController _robotController;
         private MsgListener _statusIndicatorListener; // 系统状态监听器
 
         private string _title = "MarkingMachineFeeder";
@@ -67,11 +66,9 @@ namespace MarkingMachineFeeder.Viewmodel
         private bool _in9_Initialize = false;
         private bool _in10_PickComplete = false;
         private bool _in11_InsertCartComplete = false;
-        private bool _in15_RobotAlarm = false;
         private bool _in16_UpperCameraAlarm = false;
         private bool _in17_LowerCameraAlarm = false;
         private bool _in19_CylinderAlarm = false;
-        private bool _in20_RobotBusy = false;
 
 
         // UPH相关属性 - 上料和下料
@@ -302,22 +299,6 @@ namespace MarkingMachineFeeder.Viewmodel
         public DelegateCommand SystemPauseCommand { get; }
         public DelegateCommand SystemResumeCommand { get; }
         public DelegateCommand SystemStopCommand { get; }
-        
-        // 机械手手动控制命令 - 对应OUT11-OUT13, OUT17
-        public DelegateCommand OUT11_Bin1SelectCommand { get; }
-        public DelegateCommand OUT12_Bin2SelectCommand { get; }
-        public DelegateCommand OUT13_Bin3SelectCommand { get; }
-        public DelegateCommand OUT17_InsertCartCommand { get; }
-        
-        // 机械手操作命令
-        public DelegateCommand GrabToScanCommand { get; }           // 抓上物料皮带到扫码区
-        public DelegateCommand PlaceToBin1Command { get; }          // 放置到料仓1
-        public DelegateCommand PlaceToBin2Command { get; }          // 放置到料仓2
-        public DelegateCommand PlaceToBin3Command { get; }          // 放置到料仓3
-        public DelegateCommand PickFromBin1Command { get; }         // 从料仓1取料到扫码区
-        public DelegateCommand PickFromBin2Command { get; }         // 从料仓2取料到扫码区
-        public DelegateCommand PickFromBin3Command { get; }         // 从料仓3取料到扫码区
-        public DelegateCommand PlaceToCartCommand { get; }          // 放入小车
 
         public MainWindowViewModel()
         {
@@ -326,7 +307,6 @@ namespace MarkingMachineFeeder.Viewmodel
             _securityManager.UserLoggedOut += OnUserLoggedOut;
 
             _systemControlService = SystemControlService.Instance();
-            _robotController = RobotController.Instance();
 
             TestLogCommand = new DelegateCommand(ExecuteTestLog);
             LoginCommand = new DelegateCommand(ExecuteLogin);
@@ -360,22 +340,6 @@ namespace MarkingMachineFeeder.Viewmodel
             SystemPauseCommand = new DelegateCommand(ExecuteSystemPause);
             SystemResumeCommand = new DelegateCommand(ExecuteSystemResume);
             SystemStopCommand = new DelegateCommand(ExecuteSystemStop);
-            
-            // 初始化机械手手动控制命令
-            OUT11_Bin1SelectCommand = new DelegateCommand(ExecuteOUT11_Bin1Select);
-            OUT12_Bin2SelectCommand = new DelegateCommand(ExecuteOUT12_Bin2Select);
-            OUT13_Bin3SelectCommand = new DelegateCommand(ExecuteOUT13_Bin3Select);
-            OUT17_InsertCartCommand = new DelegateCommand(ExecuteOUT17_InsertCart);
-            
-            // 初始化机械手操作命令
-            GrabToScanCommand = new DelegateCommand(ExecuteGrabToScan);
-            PlaceToBin1Command = new DelegateCommand(ExecutePlaceToBin1);
-            PlaceToBin2Command = new DelegateCommand(ExecutePlaceToBin2);
-            PlaceToBin3Command = new DelegateCommand(ExecutePlaceToBin3);
-            PickFromBin1Command = new DelegateCommand(ExecutePickFromBin1);
-            PickFromBin2Command = new DelegateCommand(ExecutePickFromBin2);
-            PickFromBin3Command = new DelegateCommand(ExecutePickFromBin3);
-            PlaceToCartCommand = new DelegateCommand(ExecutePlaceToCart);
 
             UpdateUITexts();
             UpdateUserInfo();
@@ -859,13 +823,6 @@ namespace MarkingMachineFeeder.Viewmodel
             set => SetProperty(ref _in11_InsertCartComplete, value);
         }
 
-        // IN15 - 机械手报警信号
-        public bool IN15_RobotAlarm
-        {
-            get => _in15_RobotAlarm;
-            set => SetProperty(ref _in15_RobotAlarm, value);
-        }
-
         // IN16 - 上相机报警信号
         public bool IN16_UpperCameraAlarm
         {
@@ -885,13 +842,6 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             get => _in19_CylinderAlarm;
             set => SetProperty(ref _in19_CylinderAlarm, value);
-        }
-
-        // IN20 - 机械手忙碌状态信号
-        public bool IN20_RobotBusy
-        {
-            get => _in20_RobotBusy;
-            set => SetProperty(ref _in20_RobotBusy, value);
         }
 
 
@@ -1115,12 +1065,11 @@ namespace MarkingMachineFeeder.Viewmodel
                 
                 _uiLogger.Info("处理已开始: {0}", "用户触发系统复位（硬件初始化）");
 
-                var robotController = Ewan.BusinessBonding.RobotController.Instance();
                 var parameters = Ewan.Model.System.SystemParametersManager.Instance.Parameters;
 
                 // 步骤1: 设置低速运行（OUT16=false）
                 _uiLogger.InfoRaw("步骤1: 设置低速运行模式");
-                robotController.SetHighSpeedMode(false);
+                _systemControlService.SetHighSpeedMode(false);
                 await System.Threading.Tasks.Task.Delay(parameters.LowSpeedSetupDelayMs);
 
                 // 步骤2: 执行系统初始化（初始化过程发送OUT6→OUT5脉冲）
@@ -1133,7 +1082,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 
                 // 等待初始化信号(IN9)脉冲
                 bool initSignalReceived = await WaitForSignalPulse(
-                    () => robotController.ReadInitializeSignal(),
+                    () => _systemControlService.ReadInitializeSignal(),
                     "初始化信号(IN9)",
                     10000  // 10秒超时
                 );
@@ -1277,18 +1226,15 @@ namespace MarkingMachineFeeder.Viewmodel
             try
             {
                 _uiLogger.InfoRaw("用户触发清除报警(OUT25脉冲)");
-                
-                var robotController = Ewan.BusinessBonding.RobotController.Instance();
-                
-                // 调用RobotController清除报警（OUT25）
-                bool result = await robotController.ClearAlarm();
-                
+
+                bool result = await _systemControlService.ClearAlarm();
+
                 if (result)
                 {
                     // 清除报警界面状态
                     AlarmStatus = "Gray";
                     AlarmIsOn = false;
-                    
+
                     _uiLogger.InfoRaw("清除报警完成");
                 }
                 else
@@ -1307,8 +1253,7 @@ namespace MarkingMachineFeeder.Viewmodel
             try
             {
                 _uiLogger.InfoRaw("用户触发系统启动");
-                
-                var robotController = Ewan.BusinessBonding.RobotController.Instance();
+
                 var parameters = Ewan.Model.System.SystemParametersManager.Instance.Parameters;
                 
                 if (!_systemControlService.AreSafetyDoorsClosed())
@@ -1325,12 +1270,12 @@ namespace MarkingMachineFeeder.Viewmodel
                 if (parameters.HighSpeedModeEnabled)
                 {
                     _uiLogger.InfoRaw("启用高速运行模式");
-                    robotController.SetHighSpeedMode(true);
+                    _systemControlService.SetHighSpeedMode(true);
                 }
                 else
                 {
                     _uiLogger.InfoRaw("保持低速运行模式");
-                    robotController.SetHighSpeedMode(false);
+                    _systemControlService.SetHighSpeedMode(false);
                 }
 
                 if (PauseIsOn)
@@ -1442,134 +1387,6 @@ namespace MarkingMachineFeeder.Viewmodel
         
         #endregion
         
-        #region 机械手手动控制命令方法
-
-        private void ExecuteOUT11_Bin1Select()
-        {
-            // OUT11 - 料仓1选择信号
-            _uiLogger.Info("发送料仓1选择信号(OUT11)");
-        }
-
-        private void ExecuteOUT12_Bin2Select()
-        {
-            // OUT12 - 料仓2选择信号
-            _uiLogger.Info("发送料仓2选择信号(OUT12)");
-        }
-
-        private void ExecuteOUT13_Bin3Select()
-        {
-            // OUT13 - 料仓3选择信号
-            _uiLogger.Info("发送料仓3选择信号(OUT13)");
-        }
-
-        private void ExecuteOUT17_InsertCart()
-        {
-            // OUT17 - 发送插入小车指令
-            _uiLogger.Info("发送插入小车指令(OUT17)");
-        }
-
-        #endregion
-
-        #region 机械手操作命令方法
-
-        private async void ExecuteGrabToScan()
-        {
-            try
-            {
-                await _robotController.GrabFromBeltToScanArea();
-            }
-            catch (Exception ex)
-            {
-                _uiLogger.Error("处理错误: {0} - {1}", "抓取操作异常", ex.Message);
-            }
-        }
-
-        private async void ExecutePlaceToBin1()
-        {
-            try
-            {
-                await _robotController.PlaceToBin(1);
-            }
-            catch (Exception ex)
-            {
-                _uiLogger.Error("处理错误: {0} - {1}", "放置到料仓1异常", ex.Message);
-            }
-        }
-
-        private async void ExecutePlaceToBin2()
-        {
-            try
-            {
-                await _robotController.PlaceToBin(2);
-            }
-            catch (Exception ex)
-            {
-                _uiLogger.Error("处理错误: {0} - {1}", "放置到料仓2异常", ex.Message);
-            }
-        }
-
-        private async void ExecutePlaceToBin3()
-        {
-            try
-            {
-                await _robotController.PlaceToBin(3);
-            }
-            catch (Exception ex)
-            {
-                _uiLogger.Error("处理错误: {0} - {1}", "放置到料仓3异常", ex.Message);
-            }
-        }
-
-        private async void ExecutePickFromBin1()
-        {
-            try
-            {
-                await _robotController.PickFromBinToScanArea(1);
-            }
-            catch (Exception ex)
-            {
-                _uiLogger.Error("处理错误: {0} - {1}", "从料仓1取料异常", ex.Message);
-            }
-        }
-
-        private async void ExecutePickFromBin2()
-        {
-            try
-            {
-                await _robotController.PickFromBinToScanArea(2);
-            }
-            catch (Exception ex)
-            {
-                _uiLogger.Error("处理错误: {0} - {1}", "从料仓2取料异常", ex.Message);
-            }
-        }
-
-        private async void ExecutePickFromBin3()
-        {
-            try
-            {
-                await _robotController.PickFromBinToScanArea(3);
-            }
-            catch (Exception ex)
-            {
-                _uiLogger.Error("处理错误: {0} - {1}", "从料仓3取料异常", ex.Message);
-            }
-        }
-
-        private async void ExecutePlaceToCart()
-        {
-            try
-            {
-                await _robotController.PlaceToCart();
-            }
-            catch (Exception ex)
-            {
-                _uiLogger.Error("处理错误: {0} - {1}", "放入小车异常", ex.Message);
-            }
-        }
-
-        #endregion
-
         #region 系统状态监听
 
         /// <summary>

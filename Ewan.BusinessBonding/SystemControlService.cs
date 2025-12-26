@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Threading;
+using System.Threading.Tasks;
 using Ewan.Core;
 using Ewan.Core.IO;
 using Ewan.Core.Msg;
@@ -78,6 +79,103 @@ namespace Ewan.BusinessBonding
         public void SendStopPulse()
         {
             SendPulse(x => x.停止输出, now: true);
+        }
+
+        public void SetHighSpeedMode(bool enabled)
+        {
+            try
+            {
+                var ioManager = LayeredIOManager.Instance();
+                if (ioManager == null)
+                {
+                    _uiLogger.WarnRaw("设置速度模式失败: IO管理器未初始化");
+                    return;
+                }
+
+                if (!ioManager.IsConnected)
+                {
+                    ioManager.Connect();
+                }
+
+                var ctx = ioManager.Ctx;
+                if (ctx == null)
+                {
+                    _uiLogger.WarnRaw("设置速度模式失败: 未获取到IO上下文实例");
+                    return;
+                }
+
+                if (enabled)
+                {
+                    ctx.On(x => x.高速运行);
+                }
+                else
+                {
+                    ctx.Off(x => x.高速运行);
+                }
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.ErrorRaw("设置速度模式失败: {0}", ex.Message);
+            }
+        }
+
+        public bool ReadInitializeSignal()
+        {
+            try
+            {
+                var ctx = LayeredIOManager.Instance()?.Ctx;
+                if (ctx == null)
+                {
+                    return false;
+                }
+
+                return ctx.R.初始化信号;
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.ErrorRaw("读取初始化信号失败: {0}", ex.Message);
+                return false;
+            }
+        }
+
+        public async Task<bool> ClearAlarm(int pulseWidthMs = 100)
+        {
+            try
+            {
+                var ioManager = LayeredIOManager.Instance();
+                if (ioManager == null)
+                {
+                    _uiLogger.WarnRaw("清除报警失败: IO管理器未初始化");
+                    return false;
+                }
+
+                if (!ioManager.IsConnected)
+                {
+                    if (!ioManager.Connect())
+                    {
+                        _uiLogger.WarnRaw("清除报警失败: IO未连接");
+                        return false;
+                    }
+                }
+
+                var ctx = ioManager.Ctx;
+                if (ctx == null)
+                {
+                    _uiLogger.WarnRaw("清除报警失败: 未获取到IO上下文实例");
+                    return false;
+                }
+
+                ctx.On(x => x.清除报警, now: true);
+                await Task.Delay(pulseWidthMs);
+                ctx.Off(x => x.清除报警, now: true);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.ErrorRaw("清除报警异常: {0}", ex.Message);
+                return false;
+            }
         }
 
         public bool AreSafetyDoorsClosed()
