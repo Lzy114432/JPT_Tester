@@ -1,4 +1,9 @@
-﻿using Ewan.Core.Attribute;
+﻿using EwanCore;
+using EwanCore.Attribute;
+using EwanCore.Messaging;
+using EwanCore.Messaging.Messages;
+using EwanCommon.Logging;
+using log4net;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -6,20 +11,45 @@ using System.Threading.Tasks;
 
 namespace Ewan.Core.Msg
 {
+    /// <summary>
+    /// 消息管理器 - 使用 MessageBus 进行消息分发
+    /// 保留旧的 listener 模式以兼容现有代码
+    /// 推荐新代码直接使用 MessageHub
+    /// </summary>
     [Manager(Priority = 2)]
-    public class MsgManager : BaseManager<MsgManager>
+    public class MsgManager : IManager
     {
-        private BlockingCollection<MessageModel> _queue = new BlockingCollection<MessageModel>(100);
+        private static readonly ILog s_logger = Log.GetLogger(typeof(MsgManager));
 
-        private List<MsgListener> _listeners = new List<MsgListener>();
+        // 旧的 listener 支持（兼容现有代码）
+        private readonly BlockingCollection<MessageModel> _queue = new BlockingCollection<MessageModel>(100);
+        private readonly List<MsgListener> _listeners = new List<MsgListener>();
         private readonly object _listenersLock = new object();
-
         private bool _isAlive;
+        private bool _disposed;
 
-        public override bool Init()
+        // MessageBus 订阅
+        private IDisposable _uiLogSubscription;
+
+        #region 单例支持（兼容现有代码）
+        private static readonly Lazy<MsgManager> s_instance = new Lazy<MsgManager>(() => new MsgManager());
+
+        /// <summary>
+        /// 获取单例实例（兼容现有代码）
+        /// </summary>
+        public static MsgManager Instance() => s_instance.Value;
+        #endregion
+
+        /// <summary>
+        /// 实现 IManager.Init - 初始化消息管理器
+        /// </summary>
+        public bool Init()
         {
-            base.Init();
+            s_logger.Info("MsgManager 初始化开始");
+
             _isAlive = true;
+
+            // 启动旧的消息处理循环（兼容现有 listener）
             Task.Factory.StartNew(() =>
             {
                 while (_isAlive)
@@ -29,22 +59,62 @@ namespace Ewan.Core.Msg
                         var msg = _queue.Take();
                         NotifyListeners(msg);
                     }
+                    catch (InvalidOperationException)
+                    {
+                        // 队列已完成，正常退出
+                        break;
+                    }
                     catch (Exception ex)
                     {
-                        _uiLogger.Warn("消息管理器处理错误: {0}", ex.StackTrace);
+                        s_logger.Warn("消息管理器处理错误: " + ex.Message, ex);
                     }
                 }
             }, TaskCreationOptions.LongRunning);
 
+            // 订阅 MessageBus 上的 UILogMessage，转发给旧的 listener
+            _uiLogSubscription = MessageHub.SubscribeBus.Subscribe<UILogMessage>(OnUILogMessage);
+
+            s_logger.Info("MsgManager 初始化完成");
             return true;
         }
 
-        public override void Destroy()
+        /// <summary>
+        /// 实现 IDisposable.Dispose - 释放资源
+        /// </summary>
+        public void Dispose()
         {
+            if (_disposed)
+            {
+                return;
+            }
+
+            _disposed = true;
             _isAlive = false;
-            base.Destroy();
+            s_logger.Info("MsgManager 开始销毁");
+
+            try
+            {
+                _uiLogSubscription?.Dispose();
+                _queue.CompleteAdding();
+            }
+            catch (Exception ex)
+            {
+                s_logger.Warn("MsgManager 销毁时发生错误", ex);
+            }
+
+            s_logger.Info("MsgManager 销毁完成");
         }
 
+        /// <summary>
+        /// 兼容旧代码的 Destroy 方法
+        /// </summary>
+        [Obsolete("请使用 Dispose() 方法")]
+        public void Destroy() => Dispose();
+
+        /// <summary>
+        /// 注册消息监听器（兼容旧代码）
+        /// 推荐新代码使用 MessageHub.SubscribeBus.Subscribe&lt;T&gt;()
+        /// </summary>
         public void RegisterListener(MsgListener listener)
         {
             if (listener == null)
@@ -58,6 +128,9 @@ namespace Ewan.Core.Msg
             }
         }
 
+        /// <summary>
+        /// 取消注册消息监听器（兼容旧代码）
+        /// </summary>
         public void UnRegisterListener(MsgListener listener)
         {
             if (listener == null)
@@ -71,16 +144,33 @@ namespace Ewan.Core.Msg
             }
         }
 
+        /// <summary>
+        /// 推送消息（兼容旧代码）
+        /// 推荐新代码使用 MessageHub.PublishBus.Post&lt;T&gt;()
+        /// </summary>
         public void PushMsg(MessageModel msg)
         {
-            //add 方法会阻塞(如果队列满),所以换成TryAdd方法,满的时候会返回false
+            if (_disposed || _queue.IsAddingCompleted)
+            {
+                return;
+            }
+
             var r = _queue.TryAdd(msg);
             if (!r)
             {
-                //队列已满
-                _uiLogger.Warn("消息队列已满，丢弃消息");
+                s_logger.Warn("消息队列已满，丢弃消息");
             }
         }
+
+        /// <summary>
+        /// 处理 MessageBus 上的 UILogMessage，转发给旧的 listener
+        /// </summary>
+        private void OnUILogMessage(UILogMessage message)
+        {
+            // 不转发到旧的 listener，因为 UILogger 已经直接使用 MessageBus
+            // 这里可以用于其他处理（如果需要）
+        }
+
         private void NotifyListeners(MessageModel msg)
         {
             MsgListener[] listenersSnapshot;
@@ -93,7 +183,14 @@ namespace Ewan.Core.Msg
             {
                 if (listener != null && listener.Subject.Equals(msg.Subject))
                 {
-                    listener.Update(msg);
+                    try
+                    {
+                        listener.Update(msg);
+                    }
+                    catch (Exception ex)
+                    {
+                        s_logger.Error($"Listener 处理消息失败: {listener.Subject}", ex);
+                    }
                 }
             }
         }

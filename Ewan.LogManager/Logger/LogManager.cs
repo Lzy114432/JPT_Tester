@@ -1,13 +1,12 @@
+using EwanCommon.Logging;
 using log4net;
-using log4net.Config;
 using System;
-using System.IO;
-using System.Reflection;
 
 namespace Ewan.LogManager.Logger
 {
     /// <summary>
-    /// 日志管理器 - 负责初始化和配置日志系统
+    /// 日志管理器 - 基于 EwanCommon.Logging 重构
+    /// 使用 Log4NetBootstrapper 进行约定式配置
     /// </summary>
     public static class LogManager
     {
@@ -16,8 +15,9 @@ namespace Ewan.LogManager.Logger
 
         /// <summary>
         /// 初始化日志系统
+        /// 使用 EwanCommon.Logging.Log4NetBootstrapper 进行约定式配置
         /// </summary>
-        /// <param name="configFilePath">log4net配置文件路径（可选）</param>
+        /// <param name="configFilePath">log4net配置文件路径（可选，默认使用约定式配置）</param>
         public static void Initialize(string configFilePath = null)
         {
             if (_isInitialized) return;
@@ -28,42 +28,29 @@ namespace Ewan.LogManager.Logger
 
                 try
                 {
+                    bool configured;
+
                     if (!string.IsNullOrEmpty(configFilePath))
                     {
-                        // 使用指定的配置文件
-                        var configFile = new FileInfo(configFilePath);
-                        if (configFile.Exists)
-                        {
-                            XmlConfigurator.ConfigureAndWatch(configFile);
-                        }
-                        else
-                        {
-                            throw new FileNotFoundException($"Log4net configuration file not found: {configFilePath}");
-                        }
+                        // 方案 A：显式指定配置文件路径
+                        configured = Log4NetBootstrapper.TryConfigureFromFile(configFilePath, watch: true);
                     }
                     else
                     {
-                        // 尝试从程序集目录加载 log4net.config
-                        var assemblyLocation = Assembly.GetExecutingAssembly().Location;
-                        var assemblyDirectory = Path.GetDirectoryName(assemblyLocation);
-                        var defaultConfigPath = Path.Combine(assemblyDirectory, "log4net.config");
-                        
-                        if (File.Exists(defaultConfigPath))
-                        {
-                            XmlConfigurator.ConfigureAndWatch(new FileInfo(defaultConfigPath));
-                        }
-                        else
-                        {
-                            // 如果没有找到配置文件，使用默认配置
-                            BasicConfigurator.Configure();
-                        }
+                        // 方案 B：约定式配置 - 从程序目录加载 log4net.config
+                        configured = Log4NetBootstrapper.TryConfigureByConvention(configFileName: "log4net.config", watch: true);
+                    }
+
+                    if (!configured)
+                    {
+                        // 如果约定式配置失败，使用基础配置
+                        log4net.Config.BasicConfigurator.Configure();
                     }
 
                     _isInitialized = true;
                 }
                 catch (Exception ex)
                 {
-                    // 记录初始化错误到控制台
                     Console.WriteLine($"Failed to initialize log4net: {ex.Message}");
                     throw;
                 }
@@ -85,7 +72,7 @@ namespace Ewan.LogManager.Logger
         }
 
         /// <summary>
-        /// 获取日志记录器
+        /// 获取日志记录器（使用 EwanCommon.Logging.Log）
         /// </summary>
         /// <param name="type">类型</param>
         /// <returns>ILog实例</returns>
@@ -95,7 +82,22 @@ namespace Ewan.LogManager.Logger
             {
                 Initialize();
             }
-            return log4net.LogManager.GetLogger(type);
+            // 使用 EwanCommon.Logging.Log 统一入口
+            return Log.GetLogger(type);
+        }
+
+        /// <summary>
+        /// 获取日志记录器（泛型版本）
+        /// </summary>
+        /// <typeparam name="T">类型</typeparam>
+        /// <returns>ILog实例</returns>
+        public static ILog GetLogger<T>()
+        {
+            if (!_isInitialized)
+            {
+                Initialize();
+            }
+            return Log.GetLogger<T>();
         }
 
         /// <summary>

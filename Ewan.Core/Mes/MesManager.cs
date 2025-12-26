@@ -1,20 +1,32 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Ewan.Core.Attribute;
+using EwanCore;
+using EwanCore.Attribute;
+using EwanCore.Messaging;
+using Ewan.Core.Logger;
 using Ewan.Mes.Devices.ZHJW.RingLine;
 using Ewan.Mes.Models.Domain.ZHJW.RingLine;
 using Ewan.Mes.Mqtt;
 using Ewan.Mes.Services;
 using Ewan.Mes.Transport;
 using Ewan.Model.System;
+using EwanCommon.Logging;
+using log4net;
 using Newtonsoft.Json;
 
 namespace Ewan.Core.Mes
 {
+    /// <summary>
+    /// MES 管理器 - 实现 IManager 接口，支持 DI 和 ManagerLifetimeHost
+    /// </summary>
     [Manager(Priority = 1)]
-    public class MesManager : BaseManager<MesManager>
+    public class MesManager : IManager
     {
+        private static readonly ILog s_logger = Log.GetLogger(typeof(MesManager));
+        private readonly UILogger _uiLogger;
+        private readonly IPublishBus _publishBus;
+
         private readonly object _connectionLock = new object();
         private MqttClientWrapper _client;
         private MqttMessageTransport _transport;
@@ -22,16 +34,44 @@ namespace Ewan.Core.Mes
         private readonly object _ringLineLock = new object();
         private IRingLineService _ringLineService;
         private string _ringLineDeviceId;
-        private string _ringLineDeviceCode; 
+        private string _ringLineDeviceCode;
+        private bool _disposed;
 
+        #region 单例支持（兼容现有代码）
+        private static readonly Lazy<MesManager> s_instance = new Lazy<MesManager>(() => new MesManager());
+
+        /// <summary>
+        /// 获取单例实例（兼容现有代码）
+        /// </summary>
+        public static MesManager Instance() => s_instance.Value;
+        #endregion
+
+        #region 属性
         public MqttClientWrapper Client => _client;
         public bool IsConnected => _transport != null && _transport.IsConnected;
-
         public MqttConnectionOptions ConnectionOptions => _options;
         public string BrokerEndpointText => GetBrokerEndpointText();
         public bool IsRingLineInitialized => _ringLineService != null;
         public string RingLineDeviceId => _ringLineDeviceId;
         public string RingLineDeviceCode => _ringLineDeviceCode;
+        #endregion
+
+        /// <summary>
+        /// 创建 MesManager（使用全局 MessageHub）
+        /// </summary>
+        public MesManager() : this(MessageHub.PublishBus)
+        {
+        }
+
+        /// <summary>
+        /// 创建 MesManager（依赖注入方式）
+        /// </summary>
+        /// <param name="publishBus">消息发布总线</param>
+        public MesManager(IPublishBus publishBus)
+        {
+            _publishBus = publishBus ?? MessageHub.PublishBus;
+            _uiLogger = new UILogger(_publishBus);
+        }
 
         public void Configure(MqttConnectionOptions options, bool connect = false)
         {
@@ -140,9 +180,13 @@ namespace Ewan.Core.Mes
             }
         }
 
-        public override bool Init()
+        /// <summary>
+        /// 实现 IManager.Init - 初始化管理器
+        /// </summary>
+        public bool Init()
         {
-            _uiLogger.InfoRaw("Module initialized: {0}", "MesManager");
+            _uiLogger.InfoRaw("模块初始化: {0}", "MesManager");
+            s_logger.Info("MesManager 初始化开始");
 
             try
             {
@@ -150,36 +194,55 @@ namespace Ewan.Core.Mes
 
                 if (_options == null || _transport == null)
                 {
-                    return base.Init();
+                    s_logger.Info("MesManager 初始化完成（未配置 MQTT）");
+                    return true;
                 }
 
                 Connect();
-                return base.Init();
+                s_logger.Info("MesManager 初始化完成");
+                return true;
             }
             catch (Exception ex)
             {
-                _uiLogger.ErrorRaw("Initialization failed: {0}", "MesManager init failed: " + ex.Message);
+                _uiLogger.ErrorRaw("初始化失败: {0}", "MesManager init failed: " + ex.Message);
+                s_logger.Error("MesManager 初始化失败", ex);
                 return false;
             }
         }
 
-        public override void Destroy()
+        /// <summary>
+        /// 实现 IDisposable.Dispose - 释放资源
+        /// </summary>
+        public void Dispose()
         {
-            _uiLogger.InfoRaw("Module destroyed: {0}", "MesManager");
+            if (_disposed)
+            {
+                return;
+            }
+
+            _disposed = true;
+            _uiLogger.InfoRaw("模块销毁: {0}", "MesManager");
+            s_logger.Info("MesManager 开始销毁");
 
             try
             {
                 DisposeRingLineService();
                 Disconnect();
                 DisposeClient();
+                s_logger.Info("MesManager 销毁完成");
             }
             catch (Exception ex)
             {
-                _uiLogger.ErrorRaw("Dispose error: {0}", "MesManager destroy error: " + ex.Message);
+                _uiLogger.ErrorRaw("销毁错误: {0}", "MesManager destroy error: " + ex.Message);
+                s_logger.Error("MesManager 销毁失败", ex);
             }
-
-            base.Destroy();
         }
+
+        /// <summary>
+        /// 兼容旧代码的 Destroy 方法
+        /// </summary>
+        [Obsolete("请使用 Dispose() 方法")]
+        public void Destroy() => Dispose();
 
         public bool Connect()
         {
@@ -722,18 +785,18 @@ namespace Ewan.Core.Mes
                 {
                     if (ex != null)
                     {
-                        _appLogger.Error("MES MQTT error: " + message, ex);
+                        s_logger.Error("MES MQTT error: " + message, ex);
                     }
                     else
                     {
-                        _appLogger.Error("MES MQTT error: " + message);
+                        s_logger.Error("MES MQTT error: " + message);
                     }
                 };
             }
 
             if (options.OnLog == null)
             {
-                options.OnLog = message => _appLogger.Info("MES MQTT: " + message);
+                options.OnLog = message => s_logger.Info("MES MQTT: " + message);
             }
         }
 

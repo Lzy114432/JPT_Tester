@@ -1,5 +1,5 @@
-﻿using Ewan.Core.Msg;
-using Ewan.Model.Messages;
+﻿using EwanCore.Messaging;
+using EwanCore.Messaging.Messages;
 using System;
 using System.Linq.Expressions;
 using FileLogger = Ewan.LogManager.Logger.FileLogger;
@@ -8,13 +8,29 @@ using LogLevel = Ewan.LogManager.Logger.LogLevel;
 namespace Ewan.Core.Logger
 {
     /// <summary>
-    /// 界面日志记录器（已移除国际化资源依赖）
+    /// 界面日志记录器 - 使用 MessageBus 进行 UI 日志通知
+    /// 支持依赖注入：可通过构造函数注入 IPublishBus
     /// </summary>
     public class UILogger : FileLogger
     {
+        private readonly IPublishBus _publishBus;
 
-        public UILogger(Type resourceType = null) : base("UILogger", resourceType)
+        /// <summary>
+        /// 创建 UILogger（使用全局 MessageHub）
+        /// </summary>
+        /// <param name="resourceType">资源类型（用于国际化，已禁用）</param>
+        public UILogger(Type resourceType = null) : this(MessageHub.PublishBus, resourceType)
         {
+        }
+
+        /// <summary>
+        /// 创建 UILogger（依赖注入方式）
+        /// </summary>
+        /// <param name="publishBus">消息发布总线</param>
+        /// <param name="resourceType">资源类型（用于国际化，已禁用）</param>
+        public UILogger(IPublishBus publishBus, Type resourceType = null) : base("UILogger", resourceType)
+        {
+            _publishBus = publishBus ?? MessageHub.PublishBus;
         }
 
         /// <summary>
@@ -168,11 +184,9 @@ namespace Ewan.Core.Logger
         /// <param name="rawMessage">原始消息</param>
         public new void LogRaw(LogLevel level, string rawMessage)
         {
-            LogToUIRaw(level, rawMessage);
+            PublishToUI(level, rawMessage);
             base.LogWithCallerInfo(level, rawMessage);
         }
-
-
 
         private static string GetMessageFromExpression(Expression<Func<string>> messageExpression)
         {
@@ -191,33 +205,23 @@ namespace Ewan.Core.Logger
             }
         }
 
-        private void LogToUI(LogLevel level, string messageKey, object[] parameters)
+        /// <summary>
+        /// 通过 MessageBus 发布 UI 日志消息
+        /// </summary>
+        private void PublishToUI(LogLevel level, string rawMessage)
         {
             try
             {
                 var uiLogLevel = ConvertToUILogLevel(level);
-                var uiLogData = new UILogMsg(uiLogLevel, messageKey, parameters);
-                var message = new MessageModel(MsgSubject.UILog, uiLogData);
-                MsgManager.Instance().PushMsg(message);
-            }
-            catch (Exception ex)
-            {
-                base.Error($"Failed to push UI log message for key: {messageKey}", ex);
-            }
-        }
+                var callerInfo = GetCallerInfo();
+                var uiLogMessage = new UILogMessage(uiLogLevel, rawMessage, callerInfo);
 
-        private void LogToUIRaw(LogLevel level, string rawMessage)
-        {
-            try
-            {
-                var uiLogLevel = ConvertToUILogLevel(level);
-                var uiLogData = new UILogMsg(uiLogLevel, rawMessage);
-                var message = new MessageModel(MsgSubject.UILog, uiLogData);
-                MsgManager.Instance().PushMsg(message);
+                // 使用 Post 异步发布，避免阻塞调用线程
+                _publishBus.Post(uiLogMessage);
             }
             catch (Exception ex)
             {
-                base.Error($"Failed to push raw UI log message: {rawMessage}", ex);
+                base.Error($"Failed to publish UI log message: {rawMessage}", ex);
             }
         }
 
@@ -227,7 +231,7 @@ namespace Ewan.Core.Logger
         private void LogRawMessage(LogLevel level, string message, object[] parameters)
         {
             var formattedMessage = FormatMessage(message, parameters);
-            LogToUIRaw(level, formattedMessage);
+            PublishToUI(level, formattedMessage);
             base.LogWithCallerInfo(level, formattedMessage);
         }
 
@@ -253,35 +257,32 @@ namespace Ewan.Core.Logger
                 return message + " " + string.Join(", ", parameters);
             }
         }
-        
+
         /// <summary>
-        /// 转换日志级别
+        /// 转换日志级别到 UILogLevel
         /// </summary>
-        /// <param name="level">FileLogger的日志级别</param>
-        /// <returns>UILogMsg的日志级别</returns>
-        private Ewan.Model.Messages.LogLevel ConvertToUILogLevel(LogLevel level)
+        private static UILogLevel ConvertToUILogLevel(LogLevel level)
         {
             switch (level)
             {
                 case LogLevel.Debug:
-                    return Ewan.Model.Messages.LogLevel.Debug;
+                    return UILogLevel.Debug;
                 case LogLevel.Info:
-                    return Ewan.Model.Messages.LogLevel.Info;
+                    return UILogLevel.Info;
                 case LogLevel.Warn:
-                    return Ewan.Model.Messages.LogLevel.Warn;
+                    return UILogLevel.Warn;
                 case LogLevel.Error:
-                    return Ewan.Model.Messages.LogLevel.Error;
+                    return UILogLevel.Error;
                 case LogLevel.Fatal:
-                    return Ewan.Model.Messages.LogLevel.Fatal;
+                    return UILogLevel.Fatal;
                 default:
-                    return Ewan.Model.Messages.LogLevel.Info;
+                    return UILogLevel.Info;
             }
         }
-        
+
         /// <summary>
         /// 重写获取文化设置方法
         /// </summary>
-        /// <returns>当前文化设置</returns>
         protected override System.Globalization.CultureInfo GetCurrentCulture()
         {
             try
@@ -293,6 +294,5 @@ namespace Ewan.Core.Logger
                 return System.Globalization.CultureInfo.CurrentUICulture;
             }
         }
-
     }
 }

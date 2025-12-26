@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Ewan.Core</RootNamespace>
     <AssemblyName>Ewan.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
@@ -124,6 +124,10 @@
     <ProjectReference Include="..\Ewan.Mes\Ewan.Mes.csproj">
       <Project>{ea08185a-1940-492e-beb4-0cd6ac2240d8}</Project>
       <Name>Ewan.Mes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EwanCommon\EwanCommon\EwanCommon.csproj">
+      <Project>{4C459CB9-E516-4068-B558-D89862B7D54F}</Project>
+      <Name>EwanCommon</Name>
     </ProjectReference>
     <ProjectReference Include="..\Hardware\EwanIO\EwanIO.csproj">
       <Project>{c944c2c2-4d53-cc1b-6367-2727d54208d6}</Project>
