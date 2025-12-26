@@ -1,0 +1,38 @@
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# NuGet
+packages/
+*.nupkg
+
+# Build logs
+*.log
+[Bb]uild[Ll]og.*
+
+# Visual Studio cache
+*.[Cc]ache
+
+# ReSharper
+_ReSharper*/
+*.DotSettings.user
+
+# NCrunch
+_NCrunch_*
+
+# Rider
+.idea/
+
+# User-specific
+*.rsuser

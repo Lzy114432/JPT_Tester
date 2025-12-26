@@ -362,9 +362,9 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
-# Claude.ai specific files
-.claude/settings.local.json
-**/.claude/settings.local.json
+# Claude Code specific files
+.claude/
+**/.claude/
 
 # Custom build output directories
 bindDebug/
@@ -375,3 +375,8 @@ bindRelease/
 # Temporary screenshots
 image.png
 Screenshot*.png
+
+# EwanCommon specific
+EwanCommon/.vs/
+EwanCommon/packages/
+EwanCommon/nuget.exe
