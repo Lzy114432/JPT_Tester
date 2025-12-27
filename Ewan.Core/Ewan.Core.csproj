@@ -91,7 +91,6 @@
     <Compile Include="Module\SafetyModule.cs" />
     <Compile Include="Module\StationHeartbeatModule.cs" />
     <Compile Include="Module\SystemStatusIndicatorModule.cs" />
-    <Compile Include="Msg\MesMessages.cs" />
     <Compile Include="Plc\ModbusManager.cs" />
     <Compile Include="Plc\ModbusRTUManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

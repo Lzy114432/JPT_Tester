@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Ewan.Core.Mes;
-using Ewan.Core.Msg;
+using Ewan.Model.Messages;
 using Ewan.Mes.Models.Domain.ZHJW.RingLine;
 using EwanCore.Messaging;
 

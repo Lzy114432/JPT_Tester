@@ -1,5 +1,5 @@
 using Ewan.Core.Mes;
-using Ewan.Core.Msg;
+using Ewan.Model.Messages;
 using Ewan.Core.ScanCode;
 using Ewan.Model.System;
 using EwanCore.Messaging;
