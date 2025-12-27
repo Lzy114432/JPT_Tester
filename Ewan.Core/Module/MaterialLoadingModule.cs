@@ -3,6 +3,7 @@ using Ewan.Core.Msg;
 using Ewan.Core.ScanCode;
 using Ewan.Model.Production;
 using Ewan.Model.System;
+using EwanCore.Messaging;
 using System;
 using System.Threading;
 
@@ -401,9 +402,7 @@ namespace Ewan.Core.Module
             try
             {
                 var command = new StatusIndicatorCommand(status, description, isCritical);
-                var message = new MessageModel(MsgSubject.StatusIndicator, command);
-
-                MsgManager.Instance().PushMsg(message);
+                MessageHub.Current.Post(command);
 
                 _uiLogger.DebugRaw("发送状态消息: {0} - {1}", status, description);
             }

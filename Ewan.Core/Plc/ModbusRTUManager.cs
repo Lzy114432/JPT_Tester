@@ -14,7 +14,7 @@ namespace Ewan.Core.Plc
     /// Modbus RTU管理器 - RS485串口通信实现
     /// 支持RS485网络通信，有效距离50米，支持多从站
     /// </summary>
-    //[Manager(Priority = 1)]
+    [Manager(Priority = 1)]
     public class ModbusRTUManager : IManager
     {
         private static readonly ILog s_logger = Log.GetLogger(typeof(ModbusRTUManager));

@@ -1,6 +1,6 @@
-using Ewan.Core.Msg;
 using Ewan.Core.IO;
 using Ewan.Model.System;
+using EwanCore.Messaging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,7 +15,7 @@ namespace Ewan.Core.Module
     {
         #region 私有字段
 
-        private MsgListener _msgListener;
+        private IDisposable _statusSubscription;
         private readonly LayeredIOManager _ioManager = LayeredIOManager.Instance();
         private SystemStatus _currentStatus = SystemStatus.Initializing;
         
@@ -39,9 +39,8 @@ namespace Ewan.Core.Module
         {
             try
             {
-                // 注册消息监听器
-                _msgListener = new MsgListener(MsgSubject.StatusIndicator, CallBackStatusIndicator);
-                MsgManager.Instance().RegisterListener(_msgListener);
+                // 订阅状态指示器消息
+                _statusSubscription = MessageHub.Current.Subscribe<StatusIndicatorCommand>(OnStatusIndicatorReceived);
 
                 // 初始化状态 - 设置为待机
                 SetStandbyStatus();
@@ -64,11 +63,9 @@ namespace Ewan.Core.Module
 
         protected override void OnDestroy()
         {
-            // 注销消息监听器
-            if (_msgListener != null)
-            {
-                MsgManager.Instance().UnRegisterListener(_msgListener);
-            }
+            // 取消订阅
+            _statusSubscription?.Dispose();
+            _statusSubscription = null;
 
             // 停止所有任务
             StopAllTasks();
@@ -86,11 +83,10 @@ namespace Ewan.Core.Module
         /// <summary>
         /// 处理外部发送的指示灯信号
         /// </summary>
-        private void CallBackStatusIndicator(MessageModel msg)
+        private void OnStatusIndicatorReceived(StatusIndicatorCommand command)
         {
             try
             {
-                var command = msg.GetData<StatusIndicatorCommand>();
                 if (command != null)
                 {
                     ProcessStatusCommand(command);

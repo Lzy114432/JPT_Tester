@@ -32,6 +32,13 @@
   - MesManualSendViewModel 使用 `MessageHub.Current.RequestAsync<MesRingLineRequest, MesRingLineFeedback>()`
   - 删除 `MesMsgBus.cs`、`RequestAwaiter.cs`
   - 删除 `MsgSubject.MesRequest`、`MsgSubject.MesFeedback`
+- ✅ **StatusIndicatorCommand 已迁移至 MessageHub**
+  - LogWindowViewModel 使用 `MessageHub.Current.Subscribe<UILogMessage>()`
+  - MainWindowViewModel 使用 `MessageHub.Current.Subscribe<StatusIndicatorCommand>()`
+  - SystemStatusIndicatorModule 使用 `MessageHub.Current.Subscribe<StatusIndicatorCommand>()`
+  - StreamController, SafetyModule, MaterialLoadingModule, ProductionLineModule 使用 `MessageHub.Current.Post<StatusIndicatorCommand>()`
+  - Ewan.Model 升级到 .NET Framework 4.8 以支持 EwanCommon 引用
+  - StatusIndicatorCommand 实现 `IMessage` 接口
 - ✅ 编译验证通过，无错误
 - ✅ 已完成迁移的 Manager：
   - SecurityManager (Priority 0)
@@ -40,6 +47,14 @@
   - AxisManager (Priority 1)
   - DLManager (Priority 1)
   - StreamController (Priority 3)
+
+### 待迁移消息类型
+
+| 消息类型 | MsgSubject | 发布者 | 订阅者 |
+|----------|------------|--------|--------|
+| SystemControlCommand | SystemControl | SafetyModule, SystemControlService | SafetyModule, ProductionLineModule |
+| SafetyAlert | SafetyAlert | SafetyModule | AutoProductionModule |
+| RingLineModel | RingLineData | RingLineModule | - |
 
 ---
 

@@ -1,10 +1,10 @@
 ﻿using EwanCore;
 using EwanCore.Attribute;
+using EwanCore.Messaging;
 using EwanCommon.Logging;
 using log4net;
 using Ewan.Core.Module;
 using Ewan.Core.Module.Interface;
-using Ewan.Core.Msg;
 using Ewan.Core.Run;
 using Ewan.Model.System;
 using System;
@@ -541,9 +541,7 @@ namespace Ewan.BusinessBonding
             try
             {
                 var command = new StatusIndicatorCommand(status, description, isCritical);
-                var message = new MessageModel(MsgSubject.StatusIndicator, command);
-
-                MsgManager.Instance().PushMsg(message);
+                MessageHub.Current.Post(command);
 
                 s_logger.DebugFormat("发送系统状态消息: {0} - {1}", status, description);
             }

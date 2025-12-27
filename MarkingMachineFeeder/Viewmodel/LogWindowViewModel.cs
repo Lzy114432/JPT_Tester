@@ -1,5 +1,6 @@
 using Ewan.Core.Logger;
-using Ewan.Core.Msg;
+using EwanCore.Messaging;
+using EwanCore.Messaging.Messages;
 using Microsoft.Win32;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -11,8 +12,6 @@ using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Data;
-using UILogMsg = Ewan.Model.Messages.UILogMsg;
-using UILogLevel = Ewan.Model.Messages.LogLevel;
 
 namespace MarkingMachineFeeder.Viewmodel
 {
@@ -66,7 +65,7 @@ namespace MarkingMachineFeeder.Viewmodel
     public class LogWindowViewModel : BindableBase, IDisposable
     {
         private readonly UILogger _uiLogger = new UILogger();
-        private MsgListener _logListener;
+        private IDisposable _logSubscription;
         private ObservableCollection<LogEntry> _logEntries;
         private ICollectionView _logEntriesView;
         private bool _autoScroll = true;
@@ -328,24 +327,18 @@ namespace MarkingMachineFeeder.Viewmodel
 
         private void InitializeLogListener()
         {
-            _logListener = new MsgListener(MsgSubject.UILog, OnLogMessageReceived);
-            MsgManager.Instance().RegisterListener(_logListener);
+            _logSubscription = MessageHub.Current.Subscribe<UILogMessage>(OnUILogMessageReceived);
         }
 
-        private void OnLogMessageReceived(MessageModel msg)
+        private void OnUILogMessageReceived(UILogMessage logMsg)
         {
             try
             {
-                var logMsg = msg.GetData<UILogMsg>();
-                var message = !string.IsNullOrEmpty(logMsg.RawMessage)
-                    ? logMsg.RawMessage
-                    : FormatMessage(logMsg.MessageKey, logMsg.Parameters);
-
                 var logEntry = new LogEntry
                 {
-                    Timestamp = logMsg.Timestamp,
+                    Timestamp = logMsg.Timestamp.LocalDateTime,
                     Level = logMsg.Level,
-                    Message = message
+                    Message = logMsg.Message ?? string.Empty
                 };
 
                 // 在UI线程上添加日志条目
@@ -376,28 +369,6 @@ namespace MarkingMachineFeeder.Viewmodel
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"LogWindowViewModel error: {ex.Message}");
-            }
-        }
-
-        private static string FormatMessage(string template, object[] parameters)
-        {
-            if (string.IsNullOrEmpty(template))
-            {
-                return string.Empty;
-            }
-
-            if (parameters == null || parameters.Length == 0)
-            {
-                return template;
-            }
-
-            try
-            {
-                return string.Format(template, parameters);
-            }
-            catch (FormatException)
-            {
-                return template + " " + string.Join(", ", parameters);
             }
         }
 
@@ -518,11 +489,8 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             try
             {
-                if (_logListener != null)
-                {
-                    MsgManager.Instance().UnRegisterListener(_logListener);
-                }
-                
+                _logSubscription?.Dispose();
+                _logSubscription = null;
             }
             catch (Exception ex)
             {

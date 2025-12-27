@@ -3,6 +3,7 @@ using Ewan.Core.Msg;
 using Ewan.LogManager.Logger;
 using Ewan.Model.System;
 using Ewan.Model.Safety;
+using EwanCore.Messaging;
 using System;
 using System.Diagnostics;
 using System.Threading;
@@ -339,8 +340,7 @@ namespace Ewan.Core.Module
                 
                 // 发送状态指示命令到SystemStatusIndicatorModule
                 var statusIndicatorCommand = new StatusIndicatorCommand(SystemStatus.Warning, reason, false);
-                var statusMsg = new MessageModel(MsgSubject.StatusIndicator, statusIndicatorCommand);
-                _msgManager.PushMsg(statusMsg);
+                MessageHub.Current.Post(statusIndicatorCommand);
                 
                 // 记录日志
                 _uiLogger.Warn("处理已完成: {0}", 
@@ -369,8 +369,7 @@ namespace Ewan.Core.Module
                 
                 // 发送状态指示命令到SystemStatusIndicatorModule
                 var statusIndicatorCommand = new StatusIndicatorCommand(SystemStatus.Critical, reason, true);
-                var statusMsg = new MessageModel(MsgSubject.StatusIndicator, statusIndicatorCommand);
-                _msgManager.PushMsg(statusMsg);
+                MessageHub.Current.Post(statusIndicatorCommand);
                 
                 // 记录日志
                 _uiLogger.Error("处理已完成: {0}", 
@@ -407,11 +406,10 @@ namespace Ewan.Core.Module
                 
                 // 同时发送给状态指示器（保持原有功能）
                 var statusIndicatorCommand = new StatusIndicatorCommand(
-                    alertLevel == SafetyAlertLevel.Critical ? SystemStatus.Critical : 
-                    alertLevel == SafetyAlertLevel.Alarm ? SystemStatus.Alarm : SystemStatus.Warning, 
+                    alertLevel == SafetyAlertLevel.Critical ? SystemStatus.Critical :
+                    alertLevel == SafetyAlertLevel.Alarm ? SystemStatus.Alarm : SystemStatus.Warning,
                     description, requireEmergencyStop);
-                var statusMsg = new MessageModel(MsgSubject.StatusIndicator, statusIndicatorCommand);
-                _msgManager.PushMsg(statusMsg);
+                MessageHub.Current.Post(statusIndicatorCommand);
             }
             catch (Exception ex)
             {

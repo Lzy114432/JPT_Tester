@@ -1,9 +1,9 @@
 using Ewan.BusinessBonding;
 using Ewan.Core.Logger;
-using Ewan.Core.Msg;
 using Ewan.Core.Security;
 using Ewan.Model.Security;
 using Ewan.Model.System;
+using EwanCore.Messaging;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
@@ -17,7 +17,7 @@ namespace MarkingMachineFeeder.Viewmodel
         private readonly UILogger _uiLogger = new UILogger();
         private readonly SecurityManager _securityManager;
         private readonly SystemControlService _systemControlService;
-        private MsgListener _statusIndicatorListener; // 系统状态监听器
+        private IDisposable _statusIndicatorSubscription; // 系统状态订阅
 
         private string _title = "MarkingMachineFeeder";
         private string _testLogButtonText = "测试日志";
@@ -1396,8 +1396,7 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             try
             {
-                _statusIndicatorListener = new MsgListener(MsgSubject.StatusIndicator, OnSystemStatusChanged);
-                MsgManager.Instance().RegisterListener(_statusIndicatorListener);
+                _statusIndicatorSubscription = MessageHub.Current.Subscribe<StatusIndicatorCommand>(OnStatusIndicatorReceived);
                 // _uiLogger.Debug(() => "系统状态监听器注册成功");
             }
             catch (Exception ex)
@@ -1413,12 +1412,9 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             try
             {
-                if (_statusIndicatorListener != null)
-                {
-                    MsgManager.Instance().UnRegisterListener(_statusIndicatorListener);
-                    _statusIndicatorListener = null;
-                    // _uiLogger.Debug(() => "系统状态监听器取消注册");
-                }
+                _statusIndicatorSubscription?.Dispose();
+                _statusIndicatorSubscription = null;
+                // _uiLogger.Debug(() => "系统状态监听器取消注册");
             }
             catch (Exception ex)
             {
@@ -1429,11 +1425,10 @@ namespace MarkingMachineFeeder.Viewmodel
         /// <summary>
         /// 系统状态变化回调
         /// </summary>
-        private void OnSystemStatusChanged(MessageModel msg)
+        private void OnStatusIndicatorReceived(StatusIndicatorCommand command)
         {
             try
             {
-                var command = msg.GetData<StatusIndicatorCommand>();
                 if (command == null) return;
 
                 // 在UI线程上更新状态
