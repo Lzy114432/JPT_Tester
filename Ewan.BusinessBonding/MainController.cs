@@ -33,8 +33,9 @@ namespace Ewan.BusinessBonding
 
         /// <summary>
         /// 创建 MainController（使用默认的 Activator 解析器）
+        /// 显式指定要扫描的程序集，确保所有 Manager 都能被发现
         /// </summary>
-        public MainController() : this(DefaultResolver)
+        public MainController() : this(DefaultResolver, GetManagerAssemblies())
         {
         }
 
@@ -53,6 +54,18 @@ namespace Ewan.BusinessBonding
             _host = assemblies != null && assemblies.Length > 0
                 ? new ManagerLifetimeHost(resolver, assemblies)
                 : new ManagerLifetimeHost(resolver);
+        }
+
+        /// <summary>
+        /// 获取包含 Manager 的程序集列表
+        /// </summary>
+        private static Assembly[] GetManagerAssemblies()
+        {
+            return new[]
+            {
+                typeof(Ewan.Core.Security.SecurityManager).Assembly,  // Ewan.Core
+                typeof(MainController).Assembly,                       // Ewan.BusinessBonding
+            };
         }
 
         /// <summary>
@@ -133,7 +146,7 @@ namespace Ewan.BusinessBonding
             try
             {
                 // 尝试获取单例实例（兼容旧的 BaseManager<T> 模式）
-                var instanceMethod = type.GetMethod("Instance", BindingFlags.Public | BindingFlags.Static);
+                var instanceMethod = type.GetMethod("Instance", BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
                 if (instanceMethod != null && typeof(IManager).IsAssignableFrom(instanceMethod.ReturnType))
                 {
                     var instance = instanceMethod.Invoke(null, null) as IManager;

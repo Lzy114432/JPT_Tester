@@ -72,7 +72,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attribute\ManagerAttribute.cs" />
     <Compile Include="Axis\AxisManager.cs" />
     <Compile Include="BaseManager.cs" />
     <Compile Include="IO\LayeredIOManager.cs" />

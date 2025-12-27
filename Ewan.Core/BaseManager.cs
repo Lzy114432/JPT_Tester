@@ -1,5 +1,6 @@
 ﻿using Ewan.Core.Logger;
 using Ewan.LogManager.Logger;
+using EwanCore;
 
 namespace Ewan.Core
 {
@@ -7,7 +8,7 @@ namespace Ewan.Core
     /// 基础管理类
     /// </summary>
     /// <typeparam name="T">管理类的类型</typeparam>
-    public abstract class BaseManager<T>
+    public abstract class BaseManager<T> : IManager
     {
         protected readonly UILogger _uiLogger = new UILogger();
         protected readonly AppLogger _appLogger = AppLogger.Instance;
@@ -36,6 +37,14 @@ namespace Ewan.Core
         public virtual void Destroy()
         {
             _appLogger.Debug("基础管理器已销毁: " + GetType().Name);
+        }
+
+        /// <summary>
+        /// 释放资源（IDisposable 实现）
+        /// </summary>
+        public virtual void Dispose()
+        {
+            Destroy();
         }
 
         private static class InstanceHolder

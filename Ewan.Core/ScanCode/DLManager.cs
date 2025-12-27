@@ -1,4 +1,4 @@
-﻿using Ewan.Core.Attribute;
+﻿using EwanCore.Attribute;
 using Ewan.CodeReader;
 using Ewan.CodeReader.Interfaces;
 using Ewan.CodeReader.Scanners;

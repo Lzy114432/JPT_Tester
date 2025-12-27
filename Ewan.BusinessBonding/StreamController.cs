@@ -1,5 +1,5 @@
 ﻿using Ewan.Core;
-using Ewan.Core.Attribute;
+using EwanCore.Attribute;
 using Ewan.Core.Module;
 using Ewan.Core.Module.Interface;
 using Ewan.Core.Msg;

@@ -1,4 +1,4 @@
-using Ewan.Core.Attribute;
+using EwanCore.Attribute;
 using Ewan.Model.Config;
 using EwanAxis.Core.Interfaces;
 using EwanAxis.Hardware.SMC606;

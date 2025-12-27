@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Ewan.Core.Attribute;
+using EwanCore.Attribute;
 
 namespace Ewan.Core.Msg
 {

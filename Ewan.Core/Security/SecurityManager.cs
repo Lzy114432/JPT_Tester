@@ -1,4 +1,4 @@
-using Ewan.Core.Attribute;
+using EwanCore.Attribute;
 using Ewan.Model.Security;
 using System;
 using System.Collections.Generic;
@@ -62,7 +62,7 @@ namespace Ewan.Core.Security
                 return false;
             }
 
-            var user = _users.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
+                var user = _users.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
             if (user == null || !user.IsActive)
             {
                 _uiLogger.Warn("登录失败 - 用户未找到: {0}", username);

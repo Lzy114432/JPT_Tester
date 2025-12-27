@@ -1,4 +1,4 @@
-using Ewan.Core.Attribute;
+using EwanCore.Attribute;
 using HslCommunication;
 using HslCommunication.ModBus;
 using System;

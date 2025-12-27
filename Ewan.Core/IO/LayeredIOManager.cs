@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using Ewan.Core.Attribute;
+using EwanCore.Attribute;
 using Ewan.Model.IO;
 using EwanIO.Core.Context;
 using EwanIO.Core.Interfaces;
