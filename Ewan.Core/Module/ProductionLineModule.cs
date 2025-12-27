@@ -1,8 +1,8 @@
 using System;
 using System.Threading;
 using Ewan.Core.IO;
-using Ewan.Core.Msg;
 using Ewan.Model.System;
+using Ewan.Model.Messages;
 using EwanCore.Messaging;
 
 namespace Ewan.Core.Module
@@ -32,7 +32,7 @@ namespace Ewan.Core.Module
         private readonly object _stateLock = new object();
         private LayeredIOManager _ioManager;
         private const int RECOVERY_PULSE_WIDTH_MS = 200;
-        private MsgListener _systemControlListener; // 系统控制消息监听器
+        private IDisposable _systemControlSubscription; // 系统控制消息订阅
 
         #endregion
 
@@ -402,13 +402,12 @@ namespace Ewan.Core.Module
         {
             try
             {
-                _systemControlListener = new MsgListener(MsgSubject.SystemControl, OnSystemControlMessage);
-                MsgManager.Instance().RegisterListener(_systemControlListener);
+                _systemControlSubscription = MessageHub.Current.Subscribe<SystemControlMessage>(OnSystemControlMessage);
                 _uiLogger.InfoRaw("处理已完成: {0}", "系统控制消息监听器注册");
             }
             catch (Exception ex)
             {
-                _uiLogger.ErrorRaw("处理错误: {0} - {1}", 
+                _uiLogger.ErrorRaw("处理错误: {0} - {1}",
                     "系统控制消息监听器注册", ex.Message);
             }
         }
@@ -420,16 +419,13 @@ namespace Ewan.Core.Module
         {
             try
             {
-                if (_systemControlListener != null)
-                {
-                    MsgManager.Instance().UnRegisterListener(_systemControlListener);
-                    _systemControlListener = null;
-                    _uiLogger.InfoRaw("处理已完成: {0}", "系统控制消息监听器取消注册");
-                }
+                _systemControlSubscription?.Dispose();
+                _systemControlSubscription = null;
+                _uiLogger.InfoRaw("处理已完成: {0}", "系统控制消息监听器取消注册");
             }
             catch (Exception ex)
             {
-                _uiLogger.ErrorRaw("处理错误: {0} - {1}", 
+                _uiLogger.ErrorRaw("处理错误: {0} - {1}",
                     "系统控制消息监听器取消注册", ex.Message);
             }
         }
@@ -437,48 +433,41 @@ namespace Ewan.Core.Module
         /// <summary>
         /// 处理系统控制消息
         /// </summary>
-        /// <param name="message">消息模型</param>
-        private void OnSystemControlMessage(MessageModel message)
+        /// <param name="message">系统控制消息</param>
+        private void OnSystemControlMessage(SystemControlMessage message)
         {
             try
             {
-                if (message.Data is SystemControlCommand command)
+                var command = message.Command;
+                switch (command)
                 {
-                    switch (command)
-                    {
-                        case SystemControlCommand.Initialize:
-                            PerformHardwareInitialization();
-                            break;
-                        case SystemControlCommand.Start:
-                            StartProduction();
-                            break;
-                        case SystemControlCommand.Stop:
-                            StopProduction();
-                            break;
-                        case SystemControlCommand.EmergencyStop:
-                            EmergencyStop();
-                            break;
-                        case SystemControlCommand.Pause:
-                            PauseProduction();
-                            break;
-                        case SystemControlCommand.Resume:
-                            ResumeProduction();
-                            break;
-                        default:
-                            _uiLogger.WarnRaw("处理错误: {0} - {1}",
-                                "未知系统控制命令", command.ToString());
-                            break;
-                    }
-                }
-                else
-                {
-                    _uiLogger.WarnRaw("处理错误: {0} - {1}", 
-                        "系统控制消息数据类型错误", message.Data?.GetType().Name ?? "null");
+                    case SystemControlCommand.Initialize:
+                        PerformHardwareInitialization();
+                        break;
+                    case SystemControlCommand.Start:
+                        StartProduction();
+                        break;
+                    case SystemControlCommand.Stop:
+                        StopProduction();
+                        break;
+                    case SystemControlCommand.EmergencyStop:
+                        EmergencyStop();
+                        break;
+                    case SystemControlCommand.Pause:
+                        PauseProduction();
+                        break;
+                    case SystemControlCommand.Resume:
+                        ResumeProduction();
+                        break;
+                    default:
+                        _uiLogger.WarnRaw("处理错误: {0} - {1}",
+                            "未知系统控制命令", command.ToString());
+                        break;
                 }
             }
             catch (Exception ex)
             {
-                _uiLogger.ErrorRaw("处理错误: {0} - {1}", 
+                _uiLogger.ErrorRaw("处理错误: {0} - {1}",
                     "处理系统控制消息", ex.Message);
             }
         }

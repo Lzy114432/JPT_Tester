@@ -1,7 +1,8 @@
 using Ewan.Core.Axis;
 using Ewan.Core.IO;
-using Ewan.Core.Msg;
 using Ewan.Model.Production;
+using Ewan.Model.System;
+using EwanCore.Messaging;
 using System;
 using System.Diagnostics;
 using System.Threading;
@@ -44,11 +45,10 @@ namespace Ewan.Core.Module
         private bool _bin2SensorLast = false;
         private bool _bin3SensorLast = false;
         
-        // 轴控制器、IO管理器和消息队列
+        // 轴控制器、IO管理器
         private AxisManager _axisManager;
         private LayeredIOManager _ioManager;
-        private MsgManager _msgManager;
-        private MsgListener _systemStatusListener;
+        private IDisposable _systemStatusSubscription;
         
         // 料仓轴配置（需要在配置中定义）
         private const int BIN1_AXIS_ID = 0; // 料仓1轴ID
@@ -104,17 +104,14 @@ namespace Ewan.Core.Module
             try
             {
                 _uiLogger.InfoRaw("模块初始化成功: {0}", "BinElevatorModule");
-                
-                // 初始化轴管理器、IO管理器和消息队列
+
+                // 初始化轴管理器、IO管理器
                 _axisManager = AxisManager.Instance();
                 _ioManager = LayeredIOManager.Instance();
-                _msgManager = MsgManager.Instance();
 
-                // 注册系统状态消息监听,外部通过消息控制模式和启动停止
-                _systemStatusListener = new MsgListener(MsgSubject.SystemStatus, OnSystemStatusChanged);
-                _msgManager.RegisterListener(_systemStatusListener);
-                
-                           
+                // 系统状态消息订阅预留（目前不处理任何消息）
+                // _systemStatusSubscription = MessageHub.Current.Subscribe<SystemStatusMessage>(OnSystemStatusChanged);
+
                 _uiLogger.InfoRaw("初始化已完成: {0}", "料仓升降控制系统");
             }
             catch (Exception ex)
@@ -983,53 +980,11 @@ namespace Ewan.Core.Module
         /// 处理系统状态变化消息
         /// </summary>
         /// <param name="msg">系统状态消息</param>
-        private void OnSystemStatusChanged(MessageModel msg)
-        {
-            // 目前不处理任何消息，保留接口以备将来扩展，后续通过msg进行系统启动/停止和模式切换
-
-
-
-            //try
-            //{
-            //    if (msg.Data is SystemStatusMessage statusMsg)
-            //    {
-            //        lock (_stateLock)
-            //        {
-            //            switch (statusMsg.ChangeType)
-            //            {
-            //                case SystemStatusChangeType.SystemStarted:
-            //                    _systemStarted = statusMsg.IsStarted;
-            //                    _uiLogger.Info("处理已开始: {0}", 
-            //                        "料仓升降系统" + (statusMsg.IsStarted ? "启动" : "停止"));
-
-            //                    if (!statusMsg.IsStarted)
-            //                    {
-            //                        // 系统停止时，停止所有升降动作
-            //                        StopAllBinMovements();
-            //                    }
-            //                    break;
-
-            //                case SystemStatusChangeType.SystemModeChanged:
-            //                    _currentMode = statusMsg.SystemMode;
-            //                    _uiLogger.Info("处理已开始: {0}", 
-            //                        "料仓升降模式切换到" + (statusMsg.SystemMode == SystemMode.Auto ? "自动" : "手动"));
-
-            //                    if (statusMsg.SystemMode != SystemMode.Auto)
-            //                    {
-            //                        // 切换到手动模式时，停止自动升降
-            //                        StopAllBinMovements();
-            //                    }
-            //                    break;
-            //            }
-            //        }
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    _uiLogger.Error("处理错误: {0} - {1}", 
-            //        "处理系统状态消息", ex.Message);
-            //}
-        }
+        // 预留系统状态消息处理（目前不处理任何消息，保留接口以备将来扩展）
+        // private void OnSystemStatusChanged(SystemStatusMessage msg)
+        // {
+        //     // 后续通过msg进行系统启动/停止和模式切换
+        // }
 
         #endregion
 

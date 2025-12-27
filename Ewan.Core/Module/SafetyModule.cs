@@ -1,8 +1,8 @@
 using Ewan.Core.IO;
-using Ewan.Core.Msg;
 using Ewan.LogManager.Logger;
 using Ewan.Model.System;
 using Ewan.Model.Safety;
+using Ewan.Model.Messages;
 using EwanCore.Messaging;
 using System;
 using System.Diagnostics;
@@ -19,8 +19,7 @@ namespace Ewan.Core.Module
         #region 私有字段
 
         private LayeredIOManager _ioManager;
-        private MsgManager _msgManager;
-        private MsgListener _systemControlListener;
+        private IDisposable _systemControlSubscription;
         private SystemParametersManager _parametersManager;
 
         private readonly object _robotPausePulseLock = new object();
@@ -86,11 +85,9 @@ namespace Ewan.Core.Module
             {
                 // 获取管理器实例
                 _ioManager = LayeredIOManager.Instance();
-                _msgManager = MsgManager.Instance();
                 _parametersManager = SystemParametersManager.Instance;
 
-                _systemControlListener = new MsgListener(MsgSubject.SystemControl, OnSystemControlMessage);
-                _msgManager.RegisterListener(_systemControlListener);
+                _systemControlSubscription = MessageHub.Current.Subscribe<SystemControlMessage>(OnSystemControlMessage);
 
                 SetRobotPauseOutput(false, "系统启动");
 
@@ -149,7 +146,7 @@ namespace Ewan.Core.Module
                 // 每1000次输出一次性能报告
                 if (_syncCount % 100 == 0)
                 {
-                    IOLogger.Instance.LogRaw(LogLevel.Debug, 
+                    IOLogger.Instance.LogRaw(Ewan.LogManager.Logger.LogLevel.Debug,
                         $"IO同步性能: 平均{_avgSyncTime:F2}ms, 当前{_performanceWatch.ElapsedMilliseconds}ms");
                 }
 
@@ -172,11 +169,8 @@ namespace Ewan.Core.Module
         {
             try
             {
-                if (_systemControlListener != null)
-                {
-                    _msgManager?.UnRegisterListener(_systemControlListener);
-                    _systemControlListener = null;
-                }
+                _systemControlSubscription?.Dispose();
+                _systemControlSubscription = null;
 
                 SetRobotPauseOutput(false, "SafetyModule销毁");
             }
@@ -190,7 +184,7 @@ namespace Ewan.Core.Module
             {
                 _ioManager.Disconnect();
             }
-            
+
             _uiLogger.Info("模块已销毁: {0}", "SafetyModule");
         }
 
@@ -334,10 +328,9 @@ namespace Ewan.Core.Module
             {
                 TriggerRobotPausePulse(reason);
 
-                // 发送系统控制命令到ProductionLineModule
-                var systemControlMsg = new MessageModel(MsgSubject.SystemControl, SystemControlCommand.Pause);
-                _msgManager.PushMsg(systemControlMsg);
-                
+                // 发送系统控制命令到ProductionLineModule (使用强类型消息)
+                MessageHub.Current.Post(SystemControlMessage.Pause("SafetyModule", reason));
+
                 // 发送状态指示命令到SystemStatusIndicatorModule
                 var statusIndicatorCommand = new StatusIndicatorCommand(SystemStatus.Warning, reason, false);
                 MessageHub.Current.Post(statusIndicatorCommand);
@@ -363,10 +356,9 @@ namespace Ewan.Core.Module
             {
                 TriggerSystemStopPulse(reason);
 
-                // 发送系统控制命令到ProductionLineModule
-                var systemControlMsg = new MessageModel(MsgSubject.SystemControl, SystemControlCommand.EmergencyStop);
-                _msgManager.PushMsg(systemControlMsg);
-                
+                // 发送系统控制命令到ProductionLineModule (使用强类型消息)
+                MessageHub.Current.Post(SystemControlMessage.EmergencyStop("SafetyModule", reason));
+
                 // 发送状态指示命令到SystemStatusIndicatorModule
                 var statusIndicatorCommand = new StatusIndicatorCommand(SystemStatus.Critical, reason, true);
                 MessageHub.Current.Post(statusIndicatorCommand);
@@ -393,12 +385,9 @@ namespace Ewan.Core.Module
         {
             try
             {
-                // 创建安全报警消息
-                var safetyAlert = new SafetyAlert(alertType, alertLevel, description, requireEmergencyStop);
-                var msg = new MessageModel(MsgSubject.SafetyAlert, safetyAlert);
-                
-                // 发送到消息队列
-                _msgManager.PushMsg(msg);
+                // 创建并发送安全报警消息 (使用强类型消息)
+                var safetyAlertMessage = new SafetyAlertMessage(alertType, alertLevel, description, requireEmergencyStop);
+                MessageHub.Current.Post(safetyAlertMessage);
                 
                 // 记录日志
                 _uiLogger.Error("发生错误: {0}", 
@@ -418,28 +407,26 @@ namespace Ewan.Core.Module
             }
         }
 
-        private void OnSystemControlMessage(MessageModel message)
+        private void OnSystemControlMessage(SystemControlMessage message)
         {
             try
             {
-                if (message?.Data is SystemControlCommand command)
+                var command = message.Command;
+                switch (command)
                 {
-                    switch (command)
-                    {
-                        case SystemControlCommand.Pause:
-                        case SystemControlCommand.EmergencyStop:
-                            TriggerRobotPausePulse(command.ToString(), false);
-                            break;
-                        case SystemControlCommand.Initialize:
-                            SetRobotPauseOutput(false, command.ToString());
-                            TriggerRobotRecoveryPulse(command.ToString());
-                            break;
-                        case SystemControlCommand.Resume:
-                        case SystemControlCommand.Start:
-                        case SystemControlCommand.Stop:
-                            SetRobotPauseOutput(false, command.ToString());
-                            break;
-                    }
+                    case SystemControlCommand.Pause:
+                    case SystemControlCommand.EmergencyStop:
+                        TriggerRobotPausePulse(command.ToString(), false);
+                        break;
+                    case SystemControlCommand.Initialize:
+                        SetRobotPauseOutput(false, command.ToString());
+                        TriggerRobotRecoveryPulse(command.ToString());
+                        break;
+                    case SystemControlCommand.Resume:
+                    case SystemControlCommand.Start:
+                    case SystemControlCommand.Stop:
+                        SetRobotPauseOutput(false, command.ToString());
+                        break;
                 }
             }
             catch (Exception ex)

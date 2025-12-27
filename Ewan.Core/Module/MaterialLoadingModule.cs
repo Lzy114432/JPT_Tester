@@ -1,8 +1,8 @@
 using Ewan.Core.IO;
-using Ewan.Core.Msg;
 using Ewan.Core.ScanCode;
 using Ewan.Model.Production;
 using Ewan.Model.System;
+using Ewan.Model.Messages;
 using EwanCore.Messaging;
 using System;
 using System.Threading;
@@ -471,20 +471,6 @@ namespace Ewan.Core.Module
 
 
 
-        /// <summary>
-        /// 消息回调处理（向后兼容性，仅在无共享状态时使用）
-        /// </summary>
-        private void CallBackShow(MessageModel msg)
-        {
-            if (_sharedState == null)
-            {
-                // 兼容性模式：通过本地变量处理
-                var data = msg.GetData<MaterialOperationStatus>();
-                // _loadingcomplete = data.LoadingCompleted;
-                // 注意：需要添加本地变量支持兼容性模式
-            }
-        }
-
         #region 皮带控制
 
         private void UpdateBeltConveyorControl(MaterialLoadingState stateSnapshot)
@@ -506,12 +492,13 @@ namespace Ewan.Core.Module
 
                 _beltStopRequested = shouldStop;
 
-                var command = new BeltConveyorControlCommand(
-                    BeltConveyorControlSource.MaterialLoading,
+                // 使用强类型消息发布
+                var message = new BeltConveyorControlMessage(
+                    Ewan.Model.Messages.BeltConveyorControlSource.MaterialLoading,
                     shouldStop,
                     shouldStop ? "机械手正在取料(IN20=1)" : "装料流程完成，释放皮带");
 
-                MsgManager.Instance().PushMsg(new MessageModel(MsgSubject.BeltConveyorControl, command));
+                MessageHub.Current.Post(message);
             }
             catch (Exception ex)
             {
@@ -529,12 +516,13 @@ namespace Ewan.Core.Module
 
             _beltStopRequested = false;
 
-            var command = new BeltConveyorControlCommand(
-                BeltConveyorControlSource.MaterialLoading,
+            // 使用强类型消息发布
+            var message = new BeltConveyorControlMessage(
+                Ewan.Model.Messages.BeltConveyorControlSource.MaterialLoading,
                 false,
                 reason);
 
-            MsgManager.Instance().PushMsg(new MessageModel(MsgSubject.BeltConveyorControl, command));
+            MessageHub.Current.Post(message);
         }
 
         #endregion

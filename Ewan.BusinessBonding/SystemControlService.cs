@@ -4,9 +4,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ewan.Core;
 using Ewan.Core.IO;
-using Ewan.Core.Msg;
 using Ewan.Model.IO;
 using Ewan.Model.System;
+using Ewan.Model.Messages;
+using EwanCore.Messaging;
 using EwanIO.Core.Attributes;
 using EwanIO.Core.Context;
 
@@ -257,15 +258,14 @@ namespace Ewan.BusinessBonding
 
 
         /// <summary>
-        /// 推送系统控制命令到消息队列
+        /// 推送系统控制命令到消息队列 (使用强类型消息)
         /// </summary>
         /// <param name="systemControlCommand">系统控制命令</param>
         private void Push(SystemControlCommand systemControlCommand)
         {
-
-            MessageModel msg = new MessageModel(MsgSubject.SystemControl, systemControlCommand);
-            MsgManager.Instance().PushMsg(msg);
-
+            // 使用强类型消息发布
+            var message = new SystemControlMessage(systemControlCommand, "SystemControlService");
+            MessageHub.Current.Post(message);
         }
 
         private void UpdatePauseState(bool paused)

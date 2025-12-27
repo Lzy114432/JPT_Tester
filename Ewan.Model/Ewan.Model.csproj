@@ -69,6 +69,14 @@
     <Compile Include="Config\AxisEnum.cs" />
     <Compile Include="IO\MarkingMachineFeederIOModel.cs" />
     <Compile Include="Messages\UILogMsg.cs" />
+    <Compile Include="Messages\SystemControlMessage.cs" />
+    <Compile Include="Messages\SafetyAlertMessage.cs" />
+    <Compile Include="Messages\RingLineDataMessage.cs" />
+    <Compile Include="Messages\RingLineHeartbeatMessage.cs" />
+    <Compile Include="Messages\BeltConveyorControlMessage.cs" />
+    <Compile Include="Messages\BinElevatorCommandMessage.cs" />
+    <Compile Include="Messages\BinElevatorStatusMessage.cs" />
+    <Compile Include="Messages\LoadingUnloadingStateMessage.cs" />
     <Compile Include="Permission\PermissionConfig.cs" />
     <Compile Include="Production\AutoProductionState.cs" />
     <Compile Include="Production\MaterialOperationStatus.cs" />

@@ -1,7 +1,8 @@
-﻿using Ewan.Core.Msg;
-using Ewan.Core.Plc;
+﻿using Ewan.Core.Plc;
 using Ewan.Core.ScanCode;
 using Ewan.Model;
+using Ewan.Model.Messages;
+using EwanCore.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -133,9 +134,9 @@ namespace Ewan.Core.Module
 
         private void Push(RingLineModel ringLineModel)
         {
-            MessageModel msg = new MessageModel(MsgSubject.RingLineData, ringLineModel);
-            MsgManager.Instance().PushMsg(msg);
-            //s_logger.Debug("Push plc heart data...");
+            // 使用强类型消息发布
+            var message = RingLineDataMessage.FromModel(ringLineModel);
+            MessageHub.Current.Post(message);
         }
 
 

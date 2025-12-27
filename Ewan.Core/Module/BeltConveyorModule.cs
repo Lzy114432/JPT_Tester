@@ -1,6 +1,7 @@
 using Ewan.Core.Axis;
-using Ewan.Core.Msg;
 using Ewan.Model.System;
+using Ewan.Model.Messages;
+using EwanCore.Messaging;
 using System;
 using System.Threading;
 
@@ -25,9 +26,8 @@ namespace Ewan.Core.Module
 
         // 轴控制器和消息管理器
         private AxisManager _axisManager;
-        private MsgManager _msgManager;
-        private MsgListener _systemControlListener;
-        private MsgListener _beltControlListener;
+        private IDisposable _systemControlSubscription;
+        private IDisposable _beltControlSubscription;
 
         private readonly SystemParametersManager _parametersManager = SystemParametersManager.Instance;
 
@@ -47,16 +47,13 @@ namespace Ewan.Core.Module
             {
                 _uiLogger.InfoRaw("模块初始化成功: {0}", "BeltConveyorModule");
 
-                // 初始化轴管理器和消息管理器
+                // 初始化轴管理器
                 _axisManager = AxisManager.Instance();
-                _msgManager = MsgManager.Instance();
 
                 // 注册系统控制消息监听器（监听急停、暂停等命令）
-                _systemControlListener = new MsgListener(MsgSubject.SystemControl, OnSystemControlMessage);
-                _msgManager.RegisterListener(_systemControlListener);
+                _systemControlSubscription = MessageHub.Current.Subscribe<SystemControlMessage>(OnSystemControlMessage);
 
-                _beltControlListener = new MsgListener(MsgSubject.BeltConveyorControl, OnBeltControlMessage);
-                _msgManager.RegisterListener(_beltControlListener);
+                _beltControlSubscription = MessageHub.Current.Subscribe<BeltConveyorControlMessage>(OnBeltControlMessage);
 
                 _uiLogger.InfoRaw("初始化已完成: {0}", "皮带输送控制系统");
             }
@@ -134,17 +131,11 @@ namespace Ewan.Core.Module
                 StopBelt();
 
                 // 取消注册系统控制消息监听
-                if (_systemControlListener != null)
-                {
-                    _msgManager.UnRegisterListener(_systemControlListener);
-                    _systemControlListener = null;
-                }
+                _systemControlSubscription?.Dispose();
+                _systemControlSubscription = null;
 
-                if (_beltControlListener != null)
-                {
-                    _msgManager.UnRegisterListener(_beltControlListener);
-                    _beltControlListener = null;
-                }
+                _beltControlSubscription?.Dispose();
+                _beltControlSubscription = null;
 
                 _uiLogger.InfoRaw("模块已销毁: {0}", "BeltConveyorModule");
             }
@@ -230,28 +221,25 @@ namespace Ewan.Core.Module
 
         #region 系统控制消息处理
 
-        private void OnBeltControlMessage(MessageModel message)
+        private void OnBeltControlMessage(BeltConveyorControlMessage message)
         {
             try
             {
-                if (message.Data is BeltConveyorControlCommand command)
+                lock (_stateLock)
                 {
-                    lock (_stateLock)
+                    if (message.Source == Ewan.Model.Messages.BeltConveyorControlSource.MaterialLoading)
                     {
-                        if (command.Source == BeltConveyorControlSource.MaterialLoading)
-                        {
-                            _loadingStopRequested = command.StopRequested;
-                        }
-                        else if (command.Source == BeltConveyorControlSource.MaterialUnloading)
-                        {
-                            _unloadingStopRequested = command.StopRequested;
-                        }
+                        _loadingStopRequested = message.StopRequested;
                     }
-
-                    var actionText = command.StopRequested ? "请求停止" : "释放控制";
-                    _uiLogger.InfoRaw("处理已开始: {0}",
-                        $"皮带{actionText} - 来源:{command.Source}, 原因:{command.Reason ?? "无"}");
+                    else if (message.Source == Ewan.Model.Messages.BeltConveyorControlSource.MaterialUnloading)
+                    {
+                        _unloadingStopRequested = message.StopRequested;
+                    }
                 }
+
+                var actionText = message.StopRequested ? "请求停止" : "释放控制";
+                _uiLogger.InfoRaw("处理已开始: {0}",
+                    $"皮带{actionText} - 来源:{message.Source}, 原因:{message.Reason ?? "无"}");
             }
             catch (Exception ex)
             {
@@ -263,66 +251,64 @@ namespace Ewan.Core.Module
         /// <summary>
         /// 处理系统控制消息（急停、暂停等）
         /// </summary>
-        private void OnSystemControlMessage(MessageModel message)
+        private void OnSystemControlMessage(SystemControlMessage message)
         {
             try
             {
-                if (message.Data is SystemControlCommand command)
+                var command = message.Command;
+                lock (_stateLock)
                 {
-                    lock (_stateLock)
+                    switch (command)
                     {
-                        switch (command)
-                        {
-                            case SystemControlCommand.EmergencyStop:
-                                // 紧急停止 - 立即停止皮带
-                                _shouldStop = true;
-                                if (_beltRunning)
-                                {
-                                    StopBelt();
-                                }
-                                _uiLogger.WarnRaw("处理已完成: {0}",
-                                    "皮带紧急停止");
-                                break;
+                        case SystemControlCommand.EmergencyStop:
+                            // 紧急停止 - 立即停止皮带
+                            _shouldStop = true;
+                            if (_beltRunning)
+                            {
+                                StopBelt();
+                            }
+                            _uiLogger.WarnRaw("处理已完成: {0}",
+                                "皮带紧急停止");
+                            break;
 
-                            case SystemControlCommand.Pause:
-                                // 暂停 - 停止皮带
-                                _shouldStop = true;
-                                if (_beltRunning)
-                                {
-                                    StopBelt();
-                                }
-                                _uiLogger.InfoRaw("处理已完成: {0}",
-                                    "皮带已暂停");
-                                break;
+                        case SystemControlCommand.Pause:
+                            // 暂停 - 停止皮带
+                            _shouldStop = true;
+                            if (_beltRunning)
+                            {
+                                StopBelt();
+                            }
+                            _uiLogger.InfoRaw("处理已完成: {0}",
+                                "皮带已暂停");
+                            break;
 
-                            case SystemControlCommand.Resume:
-                                // 恢复运行 - 允许皮带重新启动
-                                _shouldStop = false;
-                                _uiLogger.InfoRaw("处理已开始: {0}",
-                                    "皮带恢复运行");
-                                break;
+                        case SystemControlCommand.Resume:
+                            // 恢复运行 - 允许皮带重新启动
+                            _shouldStop = false;
+                            _uiLogger.InfoRaw("处理已开始: {0}",
+                                "皮带恢复运行");
+                            break;
 
-                            case SystemControlCommand.Stop:
-                                // 停止 - 停止皮带
-                                _shouldStop = true;
-                                if (_beltRunning)
-                                {
-                                    StopBelt();
-                                }
-                                _uiLogger.InfoRaw("处理已完成: {0}",
-                                    "皮带已停止");
-                                break;
+                        case SystemControlCommand.Stop:
+                            // 停止 - 停止皮带
+                            _shouldStop = true;
+                            if (_beltRunning)
+                            {
+                                StopBelt();
+                            }
+                            _uiLogger.InfoRaw("处理已完成: {0}",
+                                "皮带已停止");
+                            break;
 
-                            case SystemControlCommand.Initialize:
-                                // 初始化/复位 - 允许皮带重新启动
-                                _shouldStop = false;
-                                _uiLogger.InfoRaw("处理已开始: {0}",
-                                    "皮带系统已初始化");
-                                break;
+                        case SystemControlCommand.Initialize:
+                            // 初始化/复位 - 允许皮带重新启动
+                            _shouldStop = false;
+                            _uiLogger.InfoRaw("处理已开始: {0}",
+                                "皮带系统已初始化");
+                            break;
 
-                            default:
-                                break;
-                        }
+                        default:
+                            break;
                     }
                 }
             }
@@ -334,27 +320,5 @@ namespace Ewan.Core.Module
         }
 
         #endregion
-    }
-
-    public enum BeltConveyorControlSource
-    {
-        MaterialLoading,
-        MaterialUnloading
-    }
-
-    public class BeltConveyorControlCommand
-    {
-        public BeltConveyorControlCommand(BeltConveyorControlSource source, bool stopRequested, string reason = null)
-        {
-            Source = source;
-            StopRequested = stopRequested;
-            Reason = reason;
-        }
-
-        public BeltConveyorControlSource Source { get; }
-
-        public bool StopRequested { get; }
-
-        public string Reason { get; }
     }
 }

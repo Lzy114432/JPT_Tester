@@ -1,10 +1,11 @@
 using Ewan.Core.IO;
-using Ewan.Core.Msg;
 using Ewan.Core.Plc;
 using Ewan.Core.ScanCode;
 using Ewan.Model;
 using Ewan.Model.Production;
 using Ewan.Model.System;
+using Ewan.Model.Messages;
+using EwanCore.Messaging;
 using System;
 using System.IO;
 using System.Threading;
@@ -30,7 +31,7 @@ namespace Ewan.Core.Module
         private ProductionLineSharedState _sharedState;
 
         // 消息队列相关
-        private MsgListener _msgManager2;
+        private IDisposable _ringLineSubscription;
 
         private LayeredIOManager _ioManager;
         private readonly SystemParametersManager _parametersManager = SystemParametersManager.Instance;
@@ -76,8 +77,7 @@ namespace Ewan.Core.Module
 
             _ioManager = LayeredIOManager.Instance();
 
-            _msgManager2 = new MsgListener(MsgSubject.RingLineData, CallBackShow1);
-            MsgManager.Instance().RegisterListener(_msgManager2);
+            _ringLineSubscription = MessageHub.Current.Subscribe<RingLineDataMessage>(OnRingLineData);
 
             // 初始化状态
             lock (_stateLock)
@@ -172,10 +172,9 @@ namespace Ewan.Core.Module
             ForceReleaseBeltControl("下料模块销毁");
 
             // 注销消息监听器
-            if (_msgManager2 != null)
-            {
-                MsgManager.Instance().UnRegisterListener(_msgManager2);
-            }
+            _ringLineSubscription?.Dispose();
+            _ringLineSubscription = null;
+
             if (_ioManager != null)
             {
                 _ioManager = null;
@@ -613,14 +612,13 @@ namespace Ewan.Core.Module
             ForceReleaseBeltControl("下料强制停止");
         }
 
-        private void CallBackShow1(MessageModel msg)
+        private void OnRingLineData(RingLineDataMessage msg)
         {
-            var data = msg.GetData<RingLineModel>();
             // 使用电平而非边缘检测，避免上升沿丢失
-            _ringLineSignal = data.IsLoading;
+            _ringLineSignal = msg.IsLoading;
 
-            _emptyCount = data.EmptyCarCount;
-            _cuttingBridgeCarCount = data.CuttingBridgeCarCount;
+            _emptyCount = msg.EmptyCarCount;
+            _cuttingBridgeCarCount = msg.CuttingBridgeCarCount;
         }
 
         /// <summary>
@@ -655,12 +653,13 @@ namespace Ewan.Core.Module
 
             _beltStopRequested = shouldStop;
 
-            var command = new BeltConveyorControlCommand(
-                BeltConveyorControlSource.MaterialUnloading,
+            // 使用强类型消息发布
+            var message = new BeltConveyorControlMessage(
+                Ewan.Model.Messages.BeltConveyorControlSource.MaterialUnloading,
                 shouldStop,
                 reason);
 
-            MsgManager.Instance().PushMsg(new MessageModel(MsgSubject.BeltConveyorControl, command));
+            MessageHub.Current.Post(message);
         }
 
         private void ForceReleaseBeltControl(string reason)
@@ -672,12 +671,13 @@ namespace Ewan.Core.Module
 
             _beltStopRequested = false;
 
-            var command = new BeltConveyorControlCommand(
-                BeltConveyorControlSource.MaterialUnloading,
+            // 使用强类型消息发布
+            var message = new BeltConveyorControlMessage(
+                Ewan.Model.Messages.BeltConveyorControlSource.MaterialUnloading,
                 false,
                 reason);
 
-            MsgManager.Instance().PushMsg(new MessageModel(MsgSubject.BeltConveyorControl, command));
+            MessageHub.Current.Post(message);
         }
 
 

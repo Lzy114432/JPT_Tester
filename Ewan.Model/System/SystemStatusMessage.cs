@@ -1,5 +1,6 @@
 using System;
 using Ewan.Model.Production;
+using EwanCore.Messaging;
 
 namespace Ewan.Model.System
 {
@@ -12,12 +13,12 @@ namespace Ewan.Model.System
         /// 系统启动状态变化
         /// </summary>
         SystemStarted,
-        
+
         /// <summary>
         /// 系统模式变化
         /// </summary>
         SystemModeChanged,
-        
+
         /// <summary>
         /// 系统停止
         /// </summary>
@@ -27,7 +28,7 @@ namespace Ewan.Model.System
     /// <summary>
     /// 系统状态变化消息
     /// </summary>
-    public class SystemStatusMessage
+    public class SystemStatusMessage : IMessage
     {
         /// <summary>
         /// 变化类型
@@ -55,9 +56,9 @@ namespace Ewan.Model.System
         public SystemStatus NewStatus { get; set; }
         
         /// <summary>
-        /// 消息时间戳
+        /// 消息时间戳（IMessage 接口）
         /// </summary>
-        public DateTime Timestamp { get; set; }
+        public DateTimeOffset Timestamp { get; set; }
         
         /// <summary>
         /// 消息描述
@@ -66,14 +67,14 @@ namespace Ewan.Model.System
 
         public SystemStatusMessage()
         {
-            Timestamp = DateTime.Now;
+            Timestamp = DateTimeOffset.Now;
         }
 
         public SystemStatusMessage(SystemStatusChangeType changeType, string description = "")
         {
             ChangeType = changeType;
             Description = description;
-            Timestamp = DateTime.Now;
+            Timestamp = DateTimeOffset.Now;
         }
 
         /// <summary>
