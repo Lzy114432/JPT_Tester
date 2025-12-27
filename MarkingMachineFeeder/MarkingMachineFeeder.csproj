@@ -256,6 +256,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="log4net.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ewan.Controls\Ewan.Controls.csproj">
@@ -281,10 +284,6 @@
     <ProjectReference Include="..\Ewan.BusinessBonding\Ewan.BusinessBonding.csproj">
       <Project>{64012C72-F6C4-412B-A9F2-9473C7890FB4}</Project>
       <Name>Ewan.BusinessBonding</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Ewan.LogManager\Ewan.LogManager.csproj">
-      <Project>{88888888-8888-8888-8888-888888888888}</Project>
-      <Name>Ewan.LogManager</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwanCommon\EwanCommon\EwanCommon.csproj">
       <Project>{4C459CB9-E516-4068-B558-D89862B7D54F}</Project>

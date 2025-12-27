@@ -128,10 +128,6 @@
       <Project>{b35afa51-8468-f513-6ce7-d6a081b5b2eb}</Project>
       <Name>PlcCommunication</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ewan.LogManager\Ewan.LogManager.csproj">
-      <Project>{88888888-8888-8888-8888-888888888888}</Project>
-      <Name>Ewan.LogManager</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Ewan.Model\Ewan.Model.csproj">
       <Project>{e9b968b2-7577-4524-a023-9e18d7314296}</Project>
       <Name>Ewan.Model</Name>

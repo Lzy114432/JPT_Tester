@@ -86,10 +86,6 @@
       <Project>{c9d2e3f4-5678-9012-3456-789abcde0123}</Project>
       <Name>Ewan.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ewan.LogManager\Ewan.LogManager.csproj">
-      <Project>{88888888-8888-8888-8888-888888888888}</Project>
-      <Name>Ewan.LogManager</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
