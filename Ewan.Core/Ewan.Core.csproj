@@ -81,6 +81,7 @@
     <Compile Include="Module\BeltConveyorModule.cs" />
     <Compile Include="Module\BeltControlRequestTracker.cs" />
     <Compile Include="Module\BinElevatorModule.cs" />
+    <Compile Include="Module\Interface\IBinElevator.cs" />
     <Compile Include="Module\Interface\IModule.cs" />
     <Compile Include="Module\MaterialLoadingModule.cs" />
     <Compile Include="Module\MaterialUnloadingModule.cs" />
@@ -91,6 +92,11 @@
     <Compile Include="Module\SafetyModule.cs" />
     <Compile Include="Module\StationHeartbeatModule.cs" />
     <Compile Include="Module\SystemStatusIndicatorModule.cs" />
+    <Compile Include="Logic\HomeLogic.cs" />
+    <Compile Include="Logic\MaterialLoadingLogic.cs" />
+    <Compile Include="Logic\MaterialUnloadingLogic.cs" />
+    <Compile Include="Logic\ProductionLineLogic.cs" />
+    <Compile Include="Operator\ProductionLineOperator.cs" />
     <Compile Include="Plc\ModbusManager.cs" />
     <Compile Include="Plc\ModbusRTUManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -13,7 +13,7 @@ namespace Ewan.Core.Module
     /// 料仓升降控制模块
     /// 负责在自动模式下根据感应器状态自动控制三个料仓的升降
     /// </summary>
-    public class BinElevatorModule : BaseModule<BinElevatorModule>
+    public class BinElevatorModule : BaseModule<BinElevatorModule>, IBinElevator
     {
         #region 私有字段
 
