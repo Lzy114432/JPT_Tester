@@ -218,14 +218,14 @@ namespace EwanIO.Tests
             Assert.False(ctx.GetPhysicalOutput(0));
             Assert.False(hardware.ReadOutBit(0));
 
-            // Physical pulse (ON -> OFF), duration=1 tick
-            ctx.PulsePhysical(0, durationTicks: 1, now: true, value: true);
+            // Physical pulse (ON -> OFF), duration=10ms
+            ctx.PulsePhysical(0, durationMs: 10, now: true, value: true);
             Assert.True(hardware.ReadOutBit(0));
 
-            ctx.Tick(); // pulse ends logically, but flush happens next tick
-            Assert.True(hardware.ReadOutBit(0));
+            // 等待脉冲过期
+            System.Threading.Thread.Sleep(50);
 
-            ctx.Tick();
+            ctx.Tick(); // pulse ends and output is set to !value
             Assert.False(hardware.ReadOutBit(0));
 
             ctx.Dispose();

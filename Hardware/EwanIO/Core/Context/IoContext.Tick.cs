@@ -112,17 +112,17 @@ namespace EwanIO.Core.Context
                     _noSimEdgeManager.Update(_snapshot.Current.GetNoSimInputsRef());
                     _hwEdgeManager.Update(_snapshot.Current.GetHardwareInputsRef());
 
-                    // 5. 下发 dirty 输出
-                    FlushOutputsIfDirty();
-
-                    // 6. 更新脉冲状态（使用绝对时间计时）
+                    // 5. 更新脉冲状态（使用绝对时间计时）
                     _pulseManager.Update(SetOutputInternal);
+
+                    // 6. 下发 dirty 输出
+                    FlushOutputsIfDirty();
 
                     // 7. 递增 tick 计数器
                     Interlocked.Increment(ref _tickCounter);
                     _snapshot.Current.IncrementTick();
 
-                    // 7. 通知等待操作
+                    // 8. 通知等待操作
                     NotifyWaitOperations();
                 }
             }

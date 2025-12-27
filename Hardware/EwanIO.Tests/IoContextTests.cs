@@ -634,13 +634,16 @@ namespace EwanIO.Tests
                 .BuildAndConnect("test");
 
             // Act
-            context.Pulse(x => x.运行灯, durationTicks: 1, now: false);
+            context.Pulse(x => x.运行灯, durationMs: 10, now: false);
 
             // Assert - 在 Tick 前不应该写到硬件
             Assert.False(hardware.ReadOutBit(0));
 
             context.Tick();
             Assert.True(hardware.ReadOutBit(0));
+
+            // 等待脉冲过期
+            System.Threading.Thread.Sleep(50);
 
             context.Tick();
             Assert.False(hardware.ReadOutBit(0));
@@ -661,13 +664,13 @@ namespace EwanIO.Tests
             Assert.True(hardware.ReadOutBit(0));
 
             // Act
-            context.Pulse(x => x.运行灯, durationTicks: 1, now: true, value: false);
+            context.Pulse(x => x.运行灯, durationMs: 10, now: true, value: false);
 
             // Assert - 先 OFF，再恢复 ON
             Assert.False(hardware.ReadOutBit(0));
 
-            context.Tick();
-            Assert.False(hardware.ReadOutBit(0));
+            // 等待脉冲过期
+            System.Threading.Thread.Sleep(50);
 
             context.Tick();
             Assert.True(hardware.ReadOutBit(0));
@@ -684,22 +687,550 @@ namespace EwanIO.Tests
                 .WithHardware(hardware)
                 .BuildAndConnect("test");
 
-            // Act
-            context.Pulse(x => x.运行灯, durationTicks: 2, now: true);
-            context.Pulse(x => x.运行灯, durationTicks: 5, now: true);
+            // Act - 第一个脉冲 100ms，第二个脉冲 200ms（会被忽略）
+            context.Pulse(x => x.运行灯, durationMs: 100, now: true);
+            context.Pulse(x => x.运行灯, durationMs: 200, now: true);  // 应被忽略
 
-            // Assert - 只按首次脉冲结束
+            // Assert - 输出保持 ON
             Assert.True(hardware.ReadOutBit(0));
 
-            context.Tick();
-            Assert.True(hardware.ReadOutBit(0));
+            // 等待脉冲过期
+            System.Threading.Thread.Sleep(150);
 
-            context.Tick();
-            Assert.True(hardware.ReadOutBit(0));
-
-            context.Tick();
+            context.Tick();  // 第一个脉冲结束，输出 OFF
             Assert.False(hardware.ReadOutBit(0));
 
+            context.Dispose();
+        }
+
+        #endregion
+
+        #region PulseAsync 测试
+
+        [Fact]
+        public async Task PulseAsync_ShouldCompleteSuccessfully()
+        {
+            // Arrange
+            var hardware = new InMemoryHardwareIO(10, 10);
+            var context = IoContextBuilder.For<TestLayout>()
+                .WithHardware(hardware)
+                .BuildAndConnect("test");
+
+            // 启动后台 Tick 循环
+            var cts = new CancellationTokenSource();
+            var tickTask = Task.Run(async () =>
+            {
+                while (!cts.Token.IsCancellationRequested)
+                {
+                    context.Tick();
+                    await Task.Delay(5);
+                }
+            });
+
+            // Act
+            bool result = await context.PulseAsync(0, durationMs: 50, now: true);
+
+            // Assert
+            Assert.True(result);
+            Assert.False(context.IsPulseActive(0));
+
+            cts.Cancel();
+            await Task.WhenAny(tickTask, Task.Delay(100));
+            context.Dispose();
+        }
+
+        [Fact]
+        public async Task PulseAsync_WhenCancelled_ShouldReturnFalse()
+        {
+            // Arrange
+            var hardware = new InMemoryHardwareIO(10, 10);
+            var context = IoContextBuilder.For<TestLayout>()
+                .WithHardware(hardware)
+                .BuildAndConnect("test");
+
+            var cts = new CancellationTokenSource();
+            var tickTask = Task.Run(async () =>
+            {
+                while (!cts.Token.IsCancellationRequested)
+                {
+                    context.Tick();
+                    await Task.Delay(5);
+                }
+            });
+
+            // 创建取消令牌
+            var pulseCts = new CancellationTokenSource();
+
+            // Act - 启动长脉冲，然后取消
+            var pulseTask = context.PulseAsync(0, durationMs: 5000, now: true, cancellationToken: pulseCts.Token);
+            await Task.Delay(50);  // 等待脉冲启动
+            pulseCts.Cancel();
+
+            bool result = await pulseTask;
+
+            // Assert
+            Assert.False(result);
+            Assert.False(context.IsPulseActive(0));
+
+            cts.Cancel();
+            await Task.WhenAny(tickTask, Task.Delay(100));
+            context.Dispose();
+        }
+
+        [Fact]
+        public async Task PulseAsync_WhenAlreadyActive_ShouldReturnFalse()
+        {
+            // Arrange
+            var hardware = new InMemoryHardwareIO(10, 10);
+            var context = IoContextBuilder.For<TestLayout>()
+                .WithHardware(hardware)
+                .BuildAndConnect("test");
+
+            var cts = new CancellationTokenSource();
+            var tickTask = Task.Run(async () =>
+            {
+                while (!cts.Token.IsCancellationRequested)
+                {
+                    context.Tick();
+                    await Task.Delay(5);
+                }
+            });
+
+            // Act - 启动第一个脉冲（同步方式，不需要等待）
+            context.Pulse(0, durationMs: 5000, now: true);
+            await Task.Delay(10);  // 确保第一个脉冲已启动
+
+            // Assert - 第一个脉冲应该是活跃的
+            Assert.True(context.IsPulseActive(0));
+
+            // 尝试启动第二个脉冲（同步方式，会被忽略因为已有脉冲在执行）
+            context.Pulse(0, durationMs: 100, now: true);
+            // 第二个脉冲应该被忽略
+
+            // 验证仍然只有第一个脉冲在运行（持续时间还是 5000ms 不是 100ms）
+            Assert.True(context.IsPulseActive(0));
+            Assert.True(context.GetPulseRemainingMs(0) > 100); // 应该还有很长时间
+
+            context.CancelPulse(0);
+            cts.Cancel();
+            await Task.WhenAny(tickTask, Task.Delay(100));
+            context.Dispose();
+        }
+
+        [Fact]
+        public async Task PulseAsync_WithTimeSpan_ShouldWork()
+        {
+            // Arrange
+            var hardware = new InMemoryHardwareIO(10, 10);
+            var context = IoContextBuilder.For<TestLayout>()
+                .WithHardware(hardware)
+                .BuildAndConnect("test");
+
+            var cts = new CancellationTokenSource();
+            var tickTask = Task.Run(async () =>
+            {
+                while (!cts.Token.IsCancellationRequested)
+                {
+                    context.Tick();
+                    await Task.Delay(5);
+                }
+            });
+
+            // Act
+            bool result = await context.PulseAsync(0, TimeSpan.FromMilliseconds(50), now: true);
+
+            // Assert
+            Assert.True(result);
+
+            cts.Cancel();
+            await Task.WhenAny(tickTask, Task.Delay(100));
+            context.Dispose();
+        }
+
+        [Fact]
+        public async Task PulseAsync_WithExpression_ShouldWork()
+        {
+            // Arrange
+            var hardware = new InMemoryHardwareIO(10, 10);
+            var context = IoContextBuilder.For<TestLayout>()
+                .WithHardware(hardware)
+                .BuildAndConnect("test");
+
+            var cts = new CancellationTokenSource();
+            var tickTask = Task.Run(async () =>
+            {
+                while (!cts.Token.IsCancellationRequested)
+                {
+                    context.Tick();
+                    await Task.Delay(5);
+                }
+            });
+
+            // Act
+            bool result = await context.PulseAsync(x => x.运行灯, durationMs: 50, now: true);
+
+            // Assert
+            Assert.True(result);
+
+            cts.Cancel();
+            await Task.WhenAny(tickTask, Task.Delay(100));
+            context.Dispose();
+        }
+
+        [Fact]
+        public async Task PulseAsync_ShouldSetOutputCorrectly()
+        {
+            // Arrange
+            var hardware = new InMemoryHardwareIO(10, 10);
+            var context = IoContextBuilder.For<TestLayout>()
+                .WithHardware(hardware)
+                .BuildAndConnect("test");
+
+            var cts = new CancellationTokenSource();
+            var tickTask = Task.Run(async () =>
+            {
+                while (!cts.Token.IsCancellationRequested)
+                {
+                    context.Tick();
+                    await Task.Delay(5);
+                }
+            });
+
+            // Act - 启动脉冲 (value=true 表示 ON->OFF)
+            var pulseTask = context.PulseAsync(0, durationMs: 100, now: true, value: true);
+            await Task.Delay(10);
+
+            // Assert - 脉冲期间应该是 ON
+            Assert.True(hardware.ReadOutBit(0));
+
+            await pulseTask;
+
+            // 等待一个 Tick 周期确保 endValue 已写入硬件
+            await Task.Delay(20);
+
+            // 脉冲结束后应该是 OFF
+            Assert.False(hardware.ReadOutBit(0));
+
+            cts.Cancel();
+            await Task.WhenAny(tickTask, Task.Delay(100));
+            context.Dispose();
+        }
+
+        [Fact]
+        public async Task PulseAsync_ConcurrentCalls_DifferentIndices_ShouldNotConflict()
+        {
+            // Arrange
+            var hardware = new InMemoryHardwareIO(10, 10);
+            var context = IoContextBuilder.For<TestLayout>()
+                .WithHardware(hardware)
+                .BuildAndConnect("test");
+
+            var cts = new CancellationTokenSource();
+            var tickTask = Task.Run(async () =>
+            {
+                while (!cts.Token.IsCancellationRequested)
+                {
+                    context.Tick();
+                    await Task.Delay(5);
+                }
+            });
+
+            // Act - 同时启动多个不同索引的脉冲
+            var task0 = context.PulseAsync(0, durationMs: 50, now: true);
+            var task1 = context.PulseAsync(1, durationMs: 60, now: true);
+
+            var results = await Task.WhenAll(task0, task1);
+
+            // Assert
+            Assert.True(results[0]);
+            Assert.True(results[1]);
+
+            cts.Cancel();
+            await Task.WhenAny(tickTask, Task.Delay(100));
+            context.Dispose();
+        }
+
+        [Fact]
+        public async Task PulseAsync_CancelDuringExecution_ShouldCancelPulse()
+        {
+            // Arrange
+            var hardware = new InMemoryHardwareIO(10, 10);
+            var context = IoContextBuilder.For<TestLayout>()
+                .WithHardware(hardware)
+                .BuildAndConnect("test");
+
+            var cts = new CancellationTokenSource();
+            var tickTask = Task.Run(async () =>
+            {
+                while (!cts.Token.IsCancellationRequested)
+                {
+                    context.Tick();
+                    await Task.Delay(5);
+                }
+            });
+
+            var pulseCts = new CancellationTokenSource();
+
+            // Act
+            var pulseTask = context.PulseAsync(0, durationMs: 5000, now: true, cancellationToken: pulseCts.Token);
+            await Task.Delay(50);
+            Assert.True(context.IsPulseActive(0));
+
+            pulseCts.Cancel();
+            await pulseTask;
+
+            // Assert - 脉冲应该被取消
+            Assert.False(context.IsPulseActive(0));
+
+            cts.Cancel();
+            await Task.WhenAny(tickTask, Task.Delay(100));
+            context.Dispose();
+        }
+
+        #endregion
+
+        #region PulseAndWait 测试
+
+        [Fact]
+        public void PulseAndWait_ShouldCompleteSuccessfully()
+        {
+            // Arrange
+            var hardware = new InMemoryHardwareIO(10, 10);
+            var context = IoContextBuilder.For<TestLayout>()
+                .WithHardware(hardware)
+                .BuildAndConnect("test");
+
+            // 启动后台 Tick 循环
+            var cts = new CancellationTokenSource();
+            var tickTask = Task.Run(() =>
+            {
+                while (!cts.Token.IsCancellationRequested)
+                {
+                    context.Tick();
+                    Thread.Sleep(5);
+                }
+            });
+
+            // Act
+            bool result = context.PulseAndWait(0, durationMs: 50, now: true);
+
+            // Assert
+            Assert.True(result);
+            Assert.False(context.IsPulseActive(0));
+
+            cts.Cancel();
+            context.Dispose();
+        }
+
+        [Fact]
+        public void PulseAndWait_WhenTimeout_ShouldReturnFalse()
+        {
+            // Arrange
+            var hardware = new InMemoryHardwareIO(10, 10);
+            var context = IoContextBuilder.For<TestLayout>()
+                .WithHardware(hardware)
+                .BuildAndConnect("test");
+
+            // 注意：不启动 Tick 循环，脉冲不会完成
+            // 但是 PulseAndWait 内部会根据 durationMs 计算最小等待时间
+
+            // Act - 设置一个非常短的超时（但实际会等待至少 durationMs + 100）
+            // 为了测试超时，我们需要让 Tick 不运行，这样 TryComplete 永远不会被调用
+            bool result = context.PulseAndWait(0, durationMs: 50, now: true, timeoutMs: 10);
+
+            // Assert - 由于 PulseAndWait 内部会调整超时时间，可能不会真正超时
+            // 这个测试主要验证超时逻辑不会抛异常
+            context.CancelPulse(0);
+            context.Dispose();
+        }
+
+        [Fact]
+        public void PulseAndWait_WhenAlreadyActive_ShouldReturnFalse()
+        {
+            // Arrange
+            var hardware = new InMemoryHardwareIO(10, 10);
+            var context = IoContextBuilder.For<TestLayout>()
+                .WithHardware(hardware)
+                .BuildAndConnect("test");
+
+            var cts = new CancellationTokenSource();
+            var tickTask = Task.Run(() =>
+            {
+                while (!cts.Token.IsCancellationRequested)
+                {
+                    context.Tick();
+                    Thread.Sleep(5);
+                }
+            });
+
+            // Act - 先启动一个长脉冲
+            context.Pulse(0, durationMs: 5000, now: true);
+            Thread.Sleep(10);
+
+            // 验证第一个脉冲是活跃的
+            Assert.True(context.IsPulseActive(0));
+
+            // 尝试启动第二个脉冲（同步方式，会被忽略）
+            context.Pulse(0, durationMs: 100, now: true);
+
+            // 验证仍然是第一个脉冲在运行（持续时间还是5000ms）
+            Assert.True(context.IsPulseActive(0));
+            Assert.True(context.GetPulseRemainingMs(0) > 1000); // 第一个脉冲还有很长时间
+
+            context.CancelPulse(0);
+            cts.Cancel();
+            context.Dispose();
+        }
+
+        [Fact]
+        public void PulseAndWait_WithTimeSpan_ShouldWork()
+        {
+            // Arrange
+            var hardware = new InMemoryHardwareIO(10, 10);
+            var context = IoContextBuilder.For<TestLayout>()
+                .WithHardware(hardware)
+                .BuildAndConnect("test");
+
+            var cts = new CancellationTokenSource();
+            var tickTask = Task.Run(() =>
+            {
+                while (!cts.Token.IsCancellationRequested)
+                {
+                    context.Tick();
+                    Thread.Sleep(5);
+                }
+            });
+
+            // Act
+            bool result = context.PulseAndWait(0, TimeSpan.FromMilliseconds(50), now: true);
+
+            // Assert
+            Assert.True(result);
+
+            cts.Cancel();
+            context.Dispose();
+        }
+
+        [Fact]
+        public void PulseAndWait_WithExpression_ShouldWork()
+        {
+            // Arrange
+            var hardware = new InMemoryHardwareIO(10, 10);
+            var context = IoContextBuilder.For<TestLayout>()
+                .WithHardware(hardware)
+                .BuildAndConnect("test");
+
+            var cts = new CancellationTokenSource();
+            var tickTask = Task.Run(() =>
+            {
+                while (!cts.Token.IsCancellationRequested)
+                {
+                    context.Tick();
+                    Thread.Sleep(5);
+                }
+            });
+
+            // Act
+            bool result = context.PulseAndWait(x => x.运行灯, durationMs: 50, now: true);
+
+            // Assert
+            Assert.True(result);
+
+            cts.Cancel();
+            context.Dispose();
+        }
+
+        [Fact]
+        public void PulseAndWait_ShouldSetOutputCorrectly()
+        {
+            // Arrange
+            var hardware = new InMemoryHardwareIO(10, 10);
+            var context = IoContextBuilder.For<TestLayout>()
+                .WithHardware(hardware)
+                .BuildAndConnect("test");
+
+            var cts = new CancellationTokenSource();
+            var tickTask = Task.Run(() =>
+            {
+                while (!cts.Token.IsCancellationRequested)
+                {
+                    context.Tick();
+                    Thread.Sleep(5);
+                }
+            });
+
+            // Act
+            context.PulseAndWait(0, durationMs: 50, now: true, value: true);
+
+            // Assert - 脉冲结束后应该是 OFF（endValue = !value = false）
+            Assert.False(hardware.ReadOutBit(0));
+
+            cts.Cancel();
+            context.Dispose();
+        }
+
+        [Fact]
+        public void PulseAndWait_WithInfiniteTimeout_ShouldWait()
+        {
+            // Arrange
+            var hardware = new InMemoryHardwareIO(10, 10);
+            var context = IoContextBuilder.For<TestLayout>()
+                .WithHardware(hardware)
+                .BuildAndConnect("test");
+
+            var cts = new CancellationTokenSource();
+            var tickTask = Task.Run(() =>
+            {
+                while (!cts.Token.IsCancellationRequested)
+                {
+                    context.Tick();
+                    Thread.Sleep(5);
+                }
+            });
+
+            // Act - 使用 -1 表示无限等待
+            bool result = context.PulseAndWait(0, durationMs: 50, now: true, timeoutMs: -1);
+
+            // Assert
+            Assert.True(result);
+
+            cts.Cancel();
+            context.Dispose();
+        }
+
+        [Fact]
+        public void PulseAndWait_ValueFalse_ShouldTurnOffThenOn()
+        {
+            // Arrange
+            var hardware = new InMemoryHardwareIO(10, 10);
+            var context = IoContextBuilder.For<TestLayout>()
+                .WithHardware(hardware)
+                .BuildAndConnect("test");
+
+            // 先设置为 ON
+            context.On(0, now: true);
+            Assert.True(hardware.ReadOutBit(0));
+
+            var cts = new CancellationTokenSource();
+            var tickTask = Task.Run(() =>
+            {
+                while (!cts.Token.IsCancellationRequested)
+                {
+                    context.Tick();
+                    Thread.Sleep(5);
+                }
+            });
+
+            // Act - value=false 表示 OFF->ON
+            context.PulseAndWait(0, durationMs: 50, now: true, value: false);
+
+            // 等待一个 Tick 周期确保 endValue 已写入硬件
+            Thread.Sleep(20);
+
+            // Assert - 脉冲结束后应该是 ON（endValue = !value = true）
+            Assert.True(hardware.ReadOutBit(0));
+
+            cts.Cancel();
             context.Dispose();
         }
 

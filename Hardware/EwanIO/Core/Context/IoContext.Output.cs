@@ -117,6 +117,32 @@ namespace EwanIO.Core.Context
             Pulse(index, durationMs, now, value, onCompleted);
         }
 
+        private bool TryStartPulseInternal(int index, int durationMs, bool now, bool value, Action<int>? onCompleted, string caller)
+        {
+            if (durationMs <= 0)
+                return false;
+            if (!EnsureOutputIndex(index, caller))
+                return false;
+
+            lock (_ioLock)
+            {
+                if (_disposed) return false;
+
+                bool started = _pulseManager.Start(index, durationMs, !value, onCompleted);
+                if (!started)
+                    return false; // 已有脉冲在执行
+
+                SetOutputInternal(index, value);
+
+                if (now)
+                {
+                    FlushOutputsIfDirty();
+                }
+
+                return true;
+            }
+        }
+
         /// <summary>
         /// 输出脉冲（毫秒，索引）
         /// </summary>
@@ -127,26 +153,7 @@ namespace EwanIO.Core.Context
         /// <param name="onCompleted">脉冲完成回调（可选）</param>
         public void Pulse(int index, int durationMs, bool now = false, bool value = true, Action<int>? onCompleted = null)
         {
-            if (durationMs <= 0)
-                return;
-            if (!EnsureOutputIndex(index, nameof(Pulse)))
-                return;
-
-            lock (_ioLock)
-            {
-                if (_disposed) return;
-
-                bool started = _pulseManager.Start(index, durationMs, !value, onCompleted);
-                if (!started)
-                    return; // 已有脉冲在执行
-
-                SetOutputInternal(index, value);
-
-                if (now)
-                {
-                    FlushOutputsIfDirty();
-                }
-            }
+            TryStartPulseInternal(index, durationMs, now, value, onCompleted, nameof(Pulse));
         }
 
         /// <summary>
@@ -304,6 +311,11 @@ namespace EwanIO.Core.Context
         /// </summary>
         public Task<bool> PulseAsync(int index, int durationMs, bool now = false, bool value = true, CancellationToken cancellationToken = default)
         {
+            if (cancellationToken.IsCancellationRequested)
+            {
+                return Task.FromResult(false);
+            }
+
             var tcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
 
             // 注册取消
@@ -315,19 +327,23 @@ namespace EwanIO.Core.Context
                     CancelPulse(index);
                     tcs.TrySetResult(false);
                 });
+
+                _ = tcs.Task.ContinueWith(
+                    _ => registration.Dispose(),
+                    CancellationToken.None,
+                    TaskContinuationOptions.ExecuteSynchronously,
+                    TaskScheduler.Default);
             }
 
             // 启动脉冲
-            Pulse(index, durationMs, now, value, onCompleted: _ =>
+            bool started = TryStartPulseInternal(index, durationMs, now, value, onCompleted: _ =>
             {
-                registration.Dispose();
                 tcs.TrySetResult(true);
-            });
+            }, nameof(PulseAsync));
 
-            // 检查是否启动成功（如果已有脉冲在执行，Pulse 不会启动新的）
-            if (!IsPulseActive(index))
+            // 检查是否启动成功（如果已有脉冲在执行，会直接返回 false）
+            if (!started)
             {
-                registration.Dispose();
                 tcs.TrySetResult(false);
             }
 
@@ -375,14 +391,14 @@ namespace EwanIO.Core.Context
                 bool completed = false;
 
                 // 启动脉冲
-                Pulse(index, durationMs, now, value, onCompleted: _ =>
+                bool started = TryStartPulseInternal(index, durationMs, now, value, onCompleted: _ =>
                 {
                     completed = true;
                     mre.Set();
-                });
+                }, nameof(PulseAndWait));
 
                 // 检查是否启动成功
-                if (!IsPulseActive(index))
+                if (!started)
                 {
                     return false;
                 }
