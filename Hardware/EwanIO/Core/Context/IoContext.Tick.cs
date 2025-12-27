@@ -115,9 +115,10 @@ namespace EwanIO.Core.Context
                     // 5. 下发 dirty 输出
                     FlushOutputsIfDirty();
 
-                    UpdatePulseCounters();
+                    // 6. 更新脉冲状态（使用绝对时间计时）
+                    _pulseManager.Update(SetOutputInternal);
 
-                    // 6. 递增 tick 计数器
+                    // 7. 递增 tick 计数器
                     Interlocked.Increment(ref _tickCounter);
                     _snapshot.Current.IncrementTick();
 
@@ -153,24 +154,6 @@ namespace EwanIO.Core.Context
             else
             {
                 FlushOutputsWithBitWrite();
-            }
-        }
-
-        private void UpdatePulseCounters()
-        {
-            for (int i = 0; i < _pulseRemainingTicks.Length; i++)
-            {
-                int remaining = _pulseRemainingTicks[i];
-                if (remaining <= 0)
-                    continue;
-
-                remaining--;
-                if (remaining == 0)
-                {
-                    SetOutputInternal(i, _pulseEndValues[i]);
-                }
-
-                _pulseRemainingTicks[i] = remaining;
             }
         }
 

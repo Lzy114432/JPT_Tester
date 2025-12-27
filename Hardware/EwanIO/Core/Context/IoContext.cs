@@ -52,8 +52,7 @@ namespace EwanIO.Core.Context
         private readonly object _ioLock = new object();
         private readonly uint[]? _bulkPhysicalPortValues;
         private readonly bool[]? _bulkDirtyPhysicalPorts;
-        private readonly int[] _pulseRemainingTicks;
-        private readonly bool[] _pulseEndValues;
+        private readonly PulseManager _pulseManager;
 
         #endregion
 
@@ -136,6 +135,7 @@ namespace EwanIO.Core.Context
         public MappingAccessor Mapping => _mappingAccessor;
         public long TickCounter => Interlocked.Read(ref _tickCounter);
         public IoHealth Health => _health;
+        public PulseManager PulseState => _pulseManager;
 
         #endregion
 
@@ -189,8 +189,7 @@ namespace EwanIO.Core.Context
                 _bulkDirtyPhysicalPorts = new bool[physicalPortCount];
             }
 
-            _pulseRemainingTicks = new int[outputCount];
-            _pulseEndValues = new bool[outputCount];
+            _pulseManager = new PulseManager(outputCount);
 
             // Layout 实例
             _readLayoutFront = new TLayout();
