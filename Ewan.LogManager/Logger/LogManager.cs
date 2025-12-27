@@ -1,3 +1,4 @@
+// 向后兼容性转发 - 请使用 EwanCommon.Logging
 using EwanCommon.Logging;
 using log4net;
 using System;
@@ -5,9 +6,10 @@ using System;
 namespace Ewan.LogManager.Logger
 {
     /// <summary>
-    /// 日志管理器 - 基于 EwanCommon.Logging 重构
+    /// 日志管理器 - 已迁移到 EwanCommon.Logging
     /// 使用 Log4NetBootstrapper 进行约定式配置
     /// </summary>
+    [System.Obsolete("请使用 EwanCommon.Logging.Log4NetBootstrapper")]
     public static class LogManager
     {
         private static bool _isInitialized = false;
@@ -115,13 +117,13 @@ namespace Ewan.LogManager.Logger
         /// <param name="loggerName">日志记录器名称</param>
         /// <param name="resourceType">资源类型（用于国际化）</param>
         /// <returns>FileLogger实例</returns>
-        public static FileLogger CreateFileLogger(string loggerName, Type resourceType = null)
+        public static EwanCommon.Logging.FileLogger CreateFileLogger(string loggerName, Type resourceType = null)
         {
             if (!_isInitialized)
             {
                 Initialize();
             }
-            return new FileLogger(loggerName, resourceType);
+            return new EwanCommon.Logging.FileLogger(loggerName, resourceType);
         }
     }
 }

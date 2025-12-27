@@ -1,4 +1,4 @@
-using Ewan.Core.Logger;
+using EwanCommon.Logging;
 using EwanCore.Messaging;
 using EwanCore.Messaging.Messages;
 using Microsoft.Win32;

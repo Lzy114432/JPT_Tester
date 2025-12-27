@@ -1,5 +1,5 @@
 ﻿using Ewan.Core.Module.Interface;
-using Ewan.Core.Logger;
+using EwanCommon.Logging;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;

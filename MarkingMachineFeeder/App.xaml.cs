@@ -1,7 +1,6 @@
 ﻿using Ewan.BusinessBonding;
-using Ewan.Core.Logger;
 using Ewan.Core.Security;
-using Ewan.LogManager.Logger;
+using EwanCommon.Logging;
 using MarkingMachineFeeder.Viewmodel;
 using Prism.Mvvm;
 using System.IO;
@@ -26,7 +25,7 @@ namespace MarkingMachineFeeder
             System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
 
             // 初始化日志系统
-            Ewan.LogManager.Logger.LogManager.Initialize("log4net.config");
+            Log4NetBootstrapper.TryConfigureByConvention("log4net.config");
             _appLogger.Info("Log4net配置已加载");
 
 

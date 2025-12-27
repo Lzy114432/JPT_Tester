@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using EwanCore;
 using EwanCore.Attribute;
 using EwanCore.Messaging;
-using Ewan.Core.Logger;
 using Ewan.Mes.Devices.ZHJW.RingLine;
 using Ewan.Mes.Models.Domain.ZHJW.RingLine;
 using Ewan.Mes.Mqtt;

@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using Prism.Commands;
 using Prism.Mvvm;
-using Ewan.Core.Logger;
+using EwanCommon.Logging;
 using Ewan.Model.System;
 
 namespace MarkingMachineFeeder.Viewmodel

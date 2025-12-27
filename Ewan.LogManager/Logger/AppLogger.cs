@@ -1,26 +1,15 @@
-using System;
-
+// 向后兼容性转发 - 请使用 EwanCommon.Logging.AppLogger
 namespace Ewan.LogManager.Logger
 {
     /// <summary>
-    /// 应用程序日志记录器
-    /// 用于记录系统级别的日志到app.log
+    /// 应用程序日志记录器 - 已迁移到 EwanCommon.Logging.AppLogger
     /// </summary>
-    public class AppLogger : FileLogger
+    [System.Obsolete("请使用 EwanCommon.Logging.AppLogger")]
+    public class AppLogger : EwanCommon.Logging.AppLogger
     {
-        private static readonly Lazy<AppLogger> _instance = new Lazy<AppLogger>(() => new AppLogger());
-        
         /// <summary>
         /// 获取AppLogger实例
         /// </summary>
-        public static AppLogger Instance => _instance.Value;
-
-        /// <summary>
-        /// 私有构造函数，确保单例
-        /// </summary>
-        private AppLogger() : base("root")
-        {
-            // 使用root logger配置，写入app.log
-        }
+        public new static EwanCommon.Logging.AppLogger Instance => EwanCommon.Logging.AppLogger.Instance;
     }
 }

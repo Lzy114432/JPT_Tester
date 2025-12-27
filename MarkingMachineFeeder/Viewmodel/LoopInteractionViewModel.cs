@@ -1,4 +1,4 @@
-using Ewan.Core.Logger;
+using EwanCommon.Logging;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;

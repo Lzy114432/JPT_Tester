@@ -1,4 +1,4 @@
-using Ewan.Core.Logger;
+using EwanCommon.Logging;
 using Ewan.Core.Security;
 using Ewan.Model.Permission;
 using Ewan.Model.Security;

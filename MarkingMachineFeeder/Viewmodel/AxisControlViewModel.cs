@@ -1,5 +1,5 @@
 using Ewan.Core.Axis;
-using Ewan.Core.Logger;
+using EwanCommon.Logging;
 using Ewan.Core.Security;
 using Ewan.Model.Config;
 using Prism.Commands;

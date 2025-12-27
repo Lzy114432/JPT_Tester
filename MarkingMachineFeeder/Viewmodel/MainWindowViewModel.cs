@@ -1,5 +1,5 @@
 using Ewan.BusinessBonding;
-using Ewan.Core.Logger;
+using EwanCommon.Logging;
 using Ewan.Core.Security;
 using Ewan.Model.Security;
 using Ewan.Model.System;

@@ -1,6 +1,5 @@
 ﻿using Ewan.Core.Module.Interface;
-using Ewan.Core.Logger;
-using Ewan.LogManager.Logger;
+using EwanCommon.Logging;
 
 namespace Ewan.Core.Module
 {

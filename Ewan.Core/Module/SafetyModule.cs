@@ -1,5 +1,5 @@
 using Ewan.Core.IO;
-using Ewan.LogManager.Logger;
+using EwanCommon.Logging;
 using Ewan.Model.System;
 using Ewan.Model.Safety;
 using Ewan.Model.Messages;
@@ -146,7 +146,7 @@ namespace Ewan.Core.Module
                 // 每1000次输出一次性能报告
                 if (_syncCount % 100 == 0)
                 {
-                    IOLogger.Instance.LogRaw(Ewan.LogManager.Logger.LogLevel.Debug,
+                    IOLogger.Instance.LogRaw(EwanCommon.Logging.LogLevel.Debug,
                         $"IO同步性能: 平均{_avgSyncTime:F2}ms, 当前{_performanceWatch.ElapsedMilliseconds}ms");
                 }
 

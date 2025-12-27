@@ -9,7 +9,7 @@ using Prism.Mvvm;
 using Ewan.Model.Config;
 using Ewan.Core.Security;
 using Ewan.Core;
-using Ewan.Core.Logger;
+using EwanCommon.Logging;
 using Ewan.Core.Axis;
 using Newtonsoft.Json;
 using System.ComponentModel;

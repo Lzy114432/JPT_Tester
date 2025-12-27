@@ -1,5 +1,4 @@
-﻿using Ewan.Core.Logger;
-using Ewan.LogManager.Logger;
+﻿using EwanCommon.Logging;
 using EwanCore;
 
 namespace Ewan.Core

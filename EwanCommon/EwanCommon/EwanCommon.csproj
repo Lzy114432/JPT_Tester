@@ -134,6 +134,11 @@
     <Compile Include="EwanCore\\Utils\\InstanceChange.cs" />
     <Compile Include="Logging\\Log.cs" />
     <Compile Include="Logging\\Log4NetBootstrapper.cs" />
+    <Compile Include="Logging\\LogLevel.cs" />
+    <Compile Include="Logging\\FileLogger.cs" />
+    <Compile Include="Logging\\AppLogger.cs" />
+    <Compile Include="Logging\\IOLogger.cs" />
+    <Compile Include="Logging\\UILogger.cs" />
     <Compile Include="EwanModel\\Attribute\\PlcAttribute.cs" />
     <Compile Include="EwanModel\\Common\\EAlarmLevel.cs" />
     <Compile Include="EwanModel\\Const\\CommonConst.cs" />
