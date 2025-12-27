@@ -39,6 +39,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EwanCommon", "EwanCommon\Ew
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EwanCommon.Tests", "EwanCommon\EwanCommon.Tests\EwanCommon.Tests.csproj", "{B3AAC0FE-170E-E304-8C2B-B4D90D6286C4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ewan.Core.Tests", "Ewan.Core.Tests\Ewan.Core.Tests.csproj", "{D5E8F7A2-3B4C-5D6E-7F8A-9B0C1D2E3F4A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM64 = Debug|ARM64
@@ -175,6 +177,14 @@ Global
 		{B3AAC0FE-170E-E304-8C2B-B4D90D6286C4}.Release|ARM64.Build.0 = Release|Any CPU
 		{B3AAC0FE-170E-E304-8C2B-B4D90D6286C4}.Release|x64.ActiveCfg = Release|x64
 		{B3AAC0FE-170E-E304-8C2B-B4D90D6286C4}.Release|x64.Build.0 = Release|x64
+		{D5E8F7A2-3B4C-5D6E-7F8A-9B0C1D2E3F4A}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{D5E8F7A2-3B4C-5D6E-7F8A-9B0C1D2E3F4A}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{D5E8F7A2-3B4C-5D6E-7F8A-9B0C1D2E3F4A}.Debug|x64.ActiveCfg = Debug|x64
+		{D5E8F7A2-3B4C-5D6E-7F8A-9B0C1D2E3F4A}.Debug|x64.Build.0 = Debug|x64
+		{D5E8F7A2-3B4C-5D6E-7F8A-9B0C1D2E3F4A}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{D5E8F7A2-3B4C-5D6E-7F8A-9B0C1D2E3F4A}.Release|ARM64.Build.0 = Release|Any CPU
+		{D5E8F7A2-3B4C-5D6E-7F8A-9B0C1D2E3F4A}.Release|x64.ActiveCfg = Release|x64
+		{D5E8F7A2-3B4C-5D6E-7F8A-9B0C1D2E3F4A}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -11,6 +11,11 @@ namespace Ewan.Core.Module
     /// 皮带输送控制模块
     /// 负责控制皮带轴持续反向运行
     /// 响应系统控制命令（急停、暂停）
+    ///
+    /// 控制优先级（从高到低）：
+    /// 1. 模块启用状态 - 模块禁用时，皮带停止
+    /// 2. 系统级控制 - 急停、暂停等命令优先
+    /// 3. 业务控制请求 - MaterialLoading/MaterialUnloading的停止请求
     /// </summary>
     public class BeltConveyorModule : BaseModule<BeltConveyorModule>
     {
@@ -21,8 +26,12 @@ namespace Ewan.Core.Module
 
         // 皮带状态
         private bool _beltRunning = false;
-        private bool _shouldStop = false; // 是否应该停止（急停、暂停、关闭等）
+        private bool _systemStopped = false; // 系统级停止标志（急停、暂停、关闭等）
         private bool _moduleEnabled = true;
+        private bool _previousRunningState = false; // 用于检测状态变化
+
+        // 控制请求追踪器
+        private readonly BeltControlRequestTracker _requestTracker = new BeltControlRequestTracker();
 
         // 轴控制器和消息管理器
         private AxisManager _axisManager;
@@ -34,8 +43,41 @@ namespace Ewan.Core.Module
         // 皮带轴配置
         private const int BELT_AXIS_ID = 3; // 皮带轴ID
 
-        private bool _loadingStopRequested = false;
-        private bool _unloadingStopRequested = false;
+        #endregion
+
+        #region 公共属性
+
+        /// <summary>
+        /// 皮带是否正在运行
+        /// </summary>
+        public bool IsRunning
+        {
+            get { lock (_stateLock) return _beltRunning; }
+        }
+
+        /// <summary>
+        /// 是否处于系统级停止状态
+        /// </summary>
+        public bool IsSystemStopped
+        {
+            get { lock (_stateLock) return _systemStopped; }
+        }
+
+        /// <summary>
+        /// 模块是否启用
+        /// </summary>
+        public bool IsModuleEnabled
+        {
+            get { lock (_stateLock) return _moduleEnabled; }
+        }
+
+        /// <summary>
+        /// 是否有业务停止请求
+        /// </summary>
+        public bool HasBusinessStopRequest
+        {
+            get { return _requestTracker.HasAnyStopRequest; }
+        }
 
         #endregion
 
@@ -69,6 +111,8 @@ namespace Ewan.Core.Module
             try
             {
                 var parameters = _parametersManager.Parameters;
+
+                // ========== 第一层：模块启用检查 ==========
                 if (!parameters.EnableLoadingModule)
                 {
                     lock (_stateLock)
@@ -76,6 +120,11 @@ namespace Ewan.Core.Module
                         if (_beltRunning)
                         {
                             StopBelt();
+                            BroadcastStatus(BeltConveyorStatusMessage.ModuleDisabled());
+                        }
+                        else if (_moduleEnabled) // 仅在状态变化时广播
+                        {
+                            BroadcastStatus(BeltConveyorStatusMessage.ModuleDisabled());
                         }
                         _moduleEnabled = false;
                     }
@@ -86,28 +135,48 @@ namespace Ewan.Core.Module
 
                 lock (_stateLock)
                 {
+                    // 记录之前的运行状态，用于检测变化
+                    _previousRunningState = _beltRunning;
+
                     if (!_moduleEnabled)
                     {
                         _moduleEnabled = true;
+                        _uiLogger.InfoRaw("处理已开始: {0}", "皮带模块已重新启用");
                     }
 
-                    bool hasProcessStopRequest = _loadingStopRequested || _unloadingStopRequested;
-
-                    // 检查是否应该停止
-                    if (_shouldStop || hasProcessStopRequest)
+                    // ========== 第二层：系统级控制（最高优先级）==========
+                    if (_systemStopped)
                     {
-                        // 停止皮带
                         if (_beltRunning)
                         {
                             StopBelt();
+                            BroadcastStatus(BeltConveyorStatusMessage.SystemStopped("系统级停止"));
+                        }
+                        Thread.Sleep(_scanInterval);
+                        return true;
+                    }
+
+                    // ========== 第三层：业务控制请求 ==========
+                    bool hasBusinessStopRequest = _requestTracker.HasAnyStopRequest;
+
+                    if (hasBusinessStopRequest)
+                    {
+                        // 有业务停止请求，停止皮带
+                        if (_beltRunning)
+                        {
+                            StopBelt();
+                            BroadcastStatus(BeltConveyorStatusMessage.Stopped(
+                                _requestTracker.ActiveRequests,
+                                _requestTracker.GetDiagnosticInfo()));
                         }
                     }
                     else
                     {
-                        // 正常运行 - 如果皮带未运行，启动皮带反向运行
+                        // 无停止请求，皮带应该运行
                         if (!_beltRunning)
                         {
                             StartBeltReverse();
+                            BroadcastStatus(BeltConveyorStatusMessage.Started("无停止请求，恢复运行"));
                         }
                     }
                 }
@@ -136,6 +205,9 @@ namespace Ewan.Core.Module
 
                 _beltControlSubscription?.Dispose();
                 _beltControlSubscription = null;
+
+                // 清理请求追踪器
+                _requestTracker.Clear();
 
                 _uiLogger.InfoRaw("模块已销毁: {0}", "BeltConveyorModule");
             }
@@ -217,6 +289,23 @@ namespace Ewan.Core.Module
             }
         }
 
+        /// <summary>
+        /// 广播皮带状态
+        /// </summary>
+        /// <param name="statusMessage">状态消息</param>
+        private void BroadcastStatus(BeltConveyorStatusMessage statusMessage)
+        {
+            try
+            {
+                MessageHub.Current.Post(statusMessage);
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.ErrorRaw("处理错误: {0} - {1}",
+                    "广播皮带状态", ex.Message);
+            }
+        }
+
         #endregion
 
         #region 系统控制消息处理
@@ -225,21 +314,12 @@ namespace Ewan.Core.Module
         {
             try
             {
-                lock (_stateLock)
-                {
-                    if (message.Source == Ewan.Model.Messages.BeltConveyorControlSource.MaterialLoading)
-                    {
-                        _loadingStopRequested = message.StopRequested;
-                    }
-                    else if (message.Source == Ewan.Model.Messages.BeltConveyorControlSource.MaterialUnloading)
-                    {
-                        _unloadingStopRequested = message.StopRequested;
-                    }
-                }
+                // 使用追踪器处理消息
+                bool hasStopRequest = _requestTracker.ProcessMessage(message);
 
                 var actionText = message.StopRequested ? "请求停止" : "释放控制";
                 _uiLogger.InfoRaw("处理已开始: {0}",
-                    $"皮带{actionText} - 来源:{message.Source}, 原因:{message.Reason ?? "无"}");
+                    $"皮带{actionText} - 来源:{message.Source}, 原因:{message.Reason ?? "无"}, 当前有停止请求:{hasStopRequest}");
             }
             catch (Exception ex)
             {
@@ -262,10 +342,11 @@ namespace Ewan.Core.Module
                     {
                         case SystemControlCommand.EmergencyStop:
                             // 紧急停止 - 立即停止皮带
-                            _shouldStop = true;
+                            _systemStopped = true;
                             if (_beltRunning)
                             {
                                 StopBelt();
+                                BroadcastStatus(BeltConveyorStatusMessage.SystemStopped("紧急停止"));
                             }
                             _uiLogger.WarnRaw("处理已完成: {0}",
                                 "皮带紧急停止");
@@ -273,10 +354,11 @@ namespace Ewan.Core.Module
 
                         case SystemControlCommand.Pause:
                             // 暂停 - 停止皮带
-                            _shouldStop = true;
+                            _systemStopped = true;
                             if (_beltRunning)
                             {
                                 StopBelt();
+                                BroadcastStatus(BeltConveyorStatusMessage.SystemStopped("系统暂停"));
                             }
                             _uiLogger.InfoRaw("处理已完成: {0}",
                                 "皮带已暂停");
@@ -284,17 +366,18 @@ namespace Ewan.Core.Module
 
                         case SystemControlCommand.Resume:
                             // 恢复运行 - 允许皮带重新启动
-                            _shouldStop = false;
+                            _systemStopped = false;
                             _uiLogger.InfoRaw("处理已开始: {0}",
                                 "皮带恢复运行");
                             break;
 
                         case SystemControlCommand.Stop:
                             // 停止 - 停止皮带
-                            _shouldStop = true;
+                            _systemStopped = true;
                             if (_beltRunning)
                             {
                                 StopBelt();
+                                BroadcastStatus(BeltConveyorStatusMessage.SystemStopped("系统停止"));
                             }
                             _uiLogger.InfoRaw("处理已完成: {0}",
                                 "皮带已停止");
@@ -302,7 +385,7 @@ namespace Ewan.Core.Module
 
                         case SystemControlCommand.Initialize:
                             // 初始化/复位 - 允许皮带重新启动
-                            _shouldStop = false;
+                            _systemStopped = false;
                             _uiLogger.InfoRaw("处理已开始: {0}",
                                 "皮带系统已初始化");
                             break;
@@ -316,6 +399,26 @@ namespace Ewan.Core.Module
             {
                 _uiLogger.ErrorRaw("处理错误: {0} - {1}",
                     "处理系统控制消息", ex.Message);
+            }
+        }
+
+        #endregion
+
+        #region 诊断方法
+
+        /// <summary>
+        /// 获取当前模块诊断信息
+        /// </summary>
+        /// <returns>诊断信息字符串</returns>
+        public string GetDiagnosticInfo()
+        {
+            lock (_stateLock)
+            {
+                return $"皮带模块状态:\n" +
+                       $"  运行中: {_beltRunning}\n" +
+                       $"  模块启用: {_moduleEnabled}\n" +
+                       $"  系统停止: {_systemStopped}\n" +
+                       $"  {_requestTracker.GetDiagnosticInfo()}";
             }
         }
 
