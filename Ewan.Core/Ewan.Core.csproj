@@ -100,7 +100,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Runner\StreamRunner.cs" />
-    <Compile Include="ScanCode\DLManager.cs" />
+    <Compile Include="ScanCode\ScannerManager.cs" />
     <Compile Include="Security\SecurityManager.cs" />
     <Compile Include="Utils\DateTimeUtil.cs" />
   </ItemGroup>

@@ -268,7 +268,7 @@ namespace Ewan.Core.Module
 
                 for (int attempt = 1; attempt <= retryCount; attempt++)
                 {
-                    scannedCode = (DLManager.Instance().TriggerScan() ?? string.Empty).Trim();
+                    scannedCode = (ScannerManager.Instance().TriggerScan() ?? string.Empty).Trim();
 
                     if (!string.IsNullOrWhiteSpace(scannedCode))
                     {

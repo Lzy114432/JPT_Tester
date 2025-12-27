@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
+using Ewan.CodeReader.Configuration;
 using Ewan.CodeReader.Interfaces;
 
 namespace Ewan.CodeReader.Scanners
@@ -277,6 +279,63 @@ namespace Ewan.CodeReader.Scanners
             }
         }
 
+        /// <summary>
+        /// 同步触发扫码并等待结果（IScanner 接口实现）
+        /// </summary>
+        /// <param name="timeoutMs">超时时间（毫秒）</param>
+        /// <returns>扫码结果，失败返回空字符串</returns>
+        string IScanner.TriggerScanSync(int timeoutMs)
+        {
+            int originalTimeout = ReceiveTimeout;
+            try
+            {
+                if (timeoutMs > 0)
+                {
+                    ReceiveTimeout = timeoutMs;
+                }
+                return TriggerScanSync();
+            }
+            finally
+            {
+                ReceiveTimeout = originalTimeout;
+            }
+        }
+
+        /// <summary>
+        /// 异步触发扫码
+        /// </summary>
+        /// <param name="timeoutMs">超时时间（毫秒）</param>
+        /// <returns>扫码结果任务</returns>
+        public Task<string> TriggerScanAsync(int timeoutMs = 5000)
+        {
+            return Task.Run(() => ((IScanner)this).TriggerScanSync(timeoutMs));
+        }
+
+        /// <summary>
+        /// 应用配置
+        /// </summary>
+        /// <param name="config">扫码器配置</param>
+        public void ApplyConfiguration(IScannerConfiguration config)
+        {
+            if (config == null)
+            {
+                throw new ArgumentNullException(nameof(config));
+            }
+
+            if (config is DatalogicConfiguration datalogicConfig)
+            {
+                TriggerCommand = datalogicConfig.TriggerCommand;
+                ConnectionTimeout = datalogicConfig.ConnectionTimeoutMs;
+                ReceiveTimeout = datalogicConfig.ReceiveTimeoutMs;
+            }
+            else
+            {
+                // 通用配置
+                ConnectionTimeout = config.ConnectionTimeoutMs;
+                ReceiveTimeout = config.ReceiveTimeoutMs;
+            }
+        }
+
         private string ReceiveScanResult()
         {
             try
@@ -400,51 +459,11 @@ namespace Ewan.CodeReader.Scanners
         public bool SetGain(float value) => false;
 
         /// <summary>
-        /// 坑：得利捷 TCP 返回的字符串有时会带上 <c>\0</c> / STX(0x02) / ETX(0x03) 等不可见控制字符，
-        /// 日志看起来像“空字符串”，但上层若仅用 <c>Trim()</c> / <c>string.IsNullOrWhiteSpace()</c> 判断，
-        /// 可能会误判“扫码成功”从而不触发重试；因此在驱动层统一做清洗。
-        /// 同时得利捷在无码/失败时会返回 NG/NoRead/NOREAD，这里也归一化为空字符串。
+        /// 规范化扫码结果（委托给统一的 ScanResultNormalizer）
         /// </summary>
         private static string NormalizeScanResult(string scanResult)
         {
-            if (string.IsNullOrEmpty(scanResult))
-            {
-                return string.Empty;
-            }
-
-            const char GroupSeparator = (char)0x1D; // GS1/FNC1 可能会用到，不要误删
-            var builder = new StringBuilder(scanResult.Length);
-            for (int i = 0; i < scanResult.Length; i++)
-            {
-                char c = scanResult[i];
-
-                if (c == '\0' || c == '\u0002' || c == '\u0003' || c == '\r' || c == '\n')
-                {
-                    continue;
-                }
-
-                if (char.IsControl(c) && c != GroupSeparator)
-                {
-                    continue;
-                }
-
-                builder.Append(c);
-            }
-
-            string normalized = builder.ToString().Trim();
-            if (string.IsNullOrWhiteSpace(normalized))
-            {
-                return string.Empty;
-            }
-
-            if (string.Equals(normalized, "NG", StringComparison.OrdinalIgnoreCase) ||
-                string.Equals(normalized, "NoRead", StringComparison.OrdinalIgnoreCase) ||
-                string.Equals(normalized, "NOREAD", StringComparison.OrdinalIgnoreCase))
-            {
-                return string.Empty;
-            }
-
-            return normalized;
+            return ScanResultNormalizer.Normalize(scanResult);
         }
 
         private void RaiseScanResult(ScanResultEventArgs args)

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Ewan.CodeReader.Interfaces
 {
@@ -201,5 +202,25 @@ namespace Ewan.CodeReader.Interfaces
         /// 设置增益
         /// </summary>
         bool SetGain(float value);
+
+        /// <summary>
+        /// 同步触发扫码并等待结果
+        /// </summary>
+        /// <param name="timeoutMs">超时时间（毫秒），默认5000</param>
+        /// <returns>扫码结果，失败返回空字符串</returns>
+        string TriggerScanSync(int timeoutMs = 5000);
+
+        /// <summary>
+        /// 异步触发扫码
+        /// </summary>
+        /// <param name="timeoutMs">超时时间（毫秒），默认5000</param>
+        /// <returns>扫码结果任务</returns>
+        Task<string> TriggerScanAsync(int timeoutMs = 5000);
+
+        /// <summary>
+        /// 应用配置
+        /// </summary>
+        /// <param name="config">扫码器配置</param>
+        void ApplyConfiguration(IScannerConfiguration config);
     }
 }

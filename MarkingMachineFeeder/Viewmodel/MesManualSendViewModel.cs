@@ -406,7 +406,7 @@ namespace MarkingMachineFeeder.Viewmodel
             try
             {
                 AppendReceiveLog("触发扫码中...");
-                var code = await Task.Run(() => DLManager.Instance().TriggerScan());
+                var code = await Task.Run(() => ScannerManager.Instance().TriggerScan());
 
                 if (string.IsNullOrWhiteSpace(code))
                 {

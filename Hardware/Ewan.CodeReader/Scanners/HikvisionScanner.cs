@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
+using Ewan.CodeReader.Configuration;
 using Ewan.CodeReader.Interfaces;
 #if HIKVISION_SDK
 using MvCodeReaderSDKNet;
@@ -417,6 +419,130 @@ namespace Ewan.CodeReader.Scanners
             return nRet == MvCodeReader.MV_CODEREADER_OK;
         }
 
+        /// <summary>
+        /// 同步触发扫码并等待结果
+        /// </summary>
+        /// <param name="timeoutMs">超时时间（毫秒）</param>
+        /// <returns>扫码结果，失败返回空字符串</returns>
+        public string TriggerScanSync(int timeoutMs = 5000)
+        {
+            if (!_isConnected) return "";
+
+            int originalTimeout = ReceiveTimeout;
+            try
+            {
+                if (timeoutMs > 0)
+                {
+                    ReceiveTimeout = timeoutMs;
+                }
+
+                // 确保在触发模式下
+                SetTriggerMode(true);
+
+                // 开始采集
+                if (!_isScanning)
+                {
+                    int nRet = _device.MV_CODEREADER_StartGrabbing_NET();
+                    if (nRet != MvCodeReader.MV_CODEREADER_OK)
+                    {
+                        RaiseException(nRet, "开始采集失败");
+                        return "";
+                    }
+                }
+
+                // 触发扫码
+                int triggerRet = _device.MV_CODEREADER_SetCommandValue_NET("TriggerSoftware");
+                if (triggerRet != MvCodeReader.MV_CODEREADER_OK)
+                {
+                    RaiseException(triggerRet, "软触发失败");
+                    return "";
+                }
+
+                // 等待结果
+                IntPtr pData = IntPtr.Zero;
+                var stFrameInfoEx2 = new MvCodeReader.MV_CODEREADER_IMAGE_OUT_INFO_EX2();
+                IntPtr pstFrameInfoEx2 = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(MvCodeReader.MV_CODEREADER_IMAGE_OUT_INFO_EX2)));
+
+                try
+                {
+                    Marshal.StructureToPtr(stFrameInfoEx2, pstFrameInfoEx2, false);
+
+                    int nRet = _device.MV_CODEREADER_GetOneFrameTimeoutEx2_NET(ref pData, pstFrameInfoEx2, (uint)ReceiveTimeout);
+                    if (nRet != MvCodeReader.MV_CODEREADER_OK)
+                    {
+                        return "";
+                    }
+
+                    stFrameInfoEx2 = (MvCodeReader.MV_CODEREADER_IMAGE_OUT_INFO_EX2)Marshal.PtrToStructure(
+                        pstFrameInfoEx2, typeof(MvCodeReader.MV_CODEREADER_IMAGE_OUT_INFO_EX2));
+
+                    if (stFrameInfoEx2.nFrameLen <= 0)
+                    {
+                        return "";
+                    }
+
+                    var stBcrResult = (MvCodeReader.MV_CODEREADER_RESULT_BCR_EX2)Marshal.PtrToStructure(
+                        stFrameInfoEx2.UnparsedBcrList.pstCodeListEx2, typeof(MvCodeReader.MV_CODEREADER_RESULT_BCR_EX2));
+
+                    for (int i = 0; i < stBcrResult.nCodeNum; i++)
+                    {
+                        string code = System.Text.Encoding.UTF8.GetString(stBcrResult.stBcrInfoEx2[i].chCode);
+                        code = code.TrimEnd('\0');
+
+                        string normalized = ScanResultNormalizer.Normalize(code);
+                        if (!string.IsNullOrEmpty(normalized))
+                        {
+                            return normalized;
+                        }
+                    }
+
+                    return "";
+                }
+                finally
+                {
+                    if (pstFrameInfoEx2 != IntPtr.Zero)
+                    {
+                        Marshal.FreeHGlobal(pstFrameInfoEx2);
+                    }
+                }
+            }
+            finally
+            {
+                ReceiveTimeout = originalTimeout;
+            }
+        }
+
+        /// <summary>
+        /// 异步触发扫码
+        /// </summary>
+        /// <param name="timeoutMs">超时时间（毫秒）</param>
+        /// <returns>扫码结果任务</returns>
+        public Task<string> TriggerScanAsync(int timeoutMs = 5000)
+        {
+            return Task.Run(() => TriggerScanSync(timeoutMs));
+        }
+
+        /// <summary>
+        /// 应用配置
+        /// </summary>
+        /// <param name="config">扫码器配置</param>
+        public void ApplyConfiguration(IScannerConfiguration config)
+        {
+            if (config == null)
+            {
+                throw new ArgumentNullException(nameof(config));
+            }
+
+            if (config is HikvisionConfiguration hikvisionConfig)
+            {
+                ReceiveTimeout = hikvisionConfig.ReceiveTimeoutMs;
+            }
+            else
+            {
+                ReceiveTimeout = config.ReceiveTimeoutMs;
+            }
+        }
+
         private void ReceiveThreadProcess()
         {
             IntPtr pData = IntPtr.Zero;
@@ -646,6 +772,25 @@ namespace Ewan.CodeReader.Scanners
         public bool SetExposureTime(float value) => false;
         public float GetGain() => 0;
         public bool SetGain(float value) => false;
+
+        public string TriggerScanSync(int timeoutMs = 5000)
+        {
+            RaiseException(-1, MissingSdkMessage);
+            return "";
+        }
+
+        public Task<string> TriggerScanAsync(int timeoutMs = 5000)
+        {
+            return Task.FromResult(TriggerScanSync(timeoutMs));
+        }
+
+        public void ApplyConfiguration(IScannerConfiguration config)
+        {
+            if (config != null)
+            {
+                ReceiveTimeout = config.ReceiveTimeoutMs;
+            }
+        }
 
         private void RaiseException(int errorCode, string message)
         {
