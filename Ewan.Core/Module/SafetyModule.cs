@@ -480,8 +480,7 @@ namespace Ewan.Core.Module
 
             try
             {
-                int durationTicks = Math.Max(1, ROBOT_PAUSE_PULSE_WIDTH_MS / 10);
-                ctx.Pulse(x => x.暂停, durationTicks);
+                ctx.Pulse(x => x.暂停, ROBOT_PAUSE_PULSE_WIDTH_MS);
                 _uiLogger.Info("处理已完成: {0}", $"暂停输出脉冲发送: {context}");
             }
             catch (Exception ex)
@@ -529,8 +528,7 @@ namespace Ewan.Core.Module
 
             try
             {
-                int durationTicks = Math.Max(1, ROBOT_RECOVERY_PULSE_WIDTH_MS / 10);
-                ctx.Pulse(x => x.复位, durationTicks);
+                ctx.Pulse(x => x.复位, ROBOT_RECOVERY_PULSE_WIDTH_MS);
                 _uiLogger.Info("处理已完成: {0}", $"暂停复原脉冲发送: {context}");
             }
             catch (Exception ex)
@@ -572,8 +570,7 @@ namespace Ewan.Core.Module
 
             try
             {
-                int durationTicks = Math.Max(1, SYSTEM_STOP_PULSE_WIDTH_MS / 10);
-                ctx.Pulse(x => x.停止输出, durationTicks, now: true);
+                ctx.Pulse(x => x.停止输出, SYSTEM_STOP_PULSE_WIDTH_MS, now: true);
                 _uiLogger.Info("处理已完成: {0}", $"停止脉冲发送: {context}");
             }
             catch (Exception ex)

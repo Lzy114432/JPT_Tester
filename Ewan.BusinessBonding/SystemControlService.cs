@@ -285,8 +285,7 @@ namespace Ewan.BusinessBonding
                     return;
                 }
 
-                int durationTicks = Math.Max(1, pulseWidthMs / 10);
-                ctx.Pulse(outputExpr, durationTicks, now: now);
+                ctx.Pulse(outputExpr, pulseWidthMs, now: now);
                 _uiLogger.DebugRaw("已发送脉冲: {0}", outputExpr);
             }
             catch (Exception ex)

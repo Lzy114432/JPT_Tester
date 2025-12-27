@@ -509,8 +509,7 @@ namespace Ewan.Core.Module
                     return;
                 }
 
-                int durationTicks = Math.Max(1, RECOVERY_PULSE_WIDTH_MS / 10);
-                ctx.Pulse(x => x.复位, durationTicks);
+                ctx.Pulse(x => x.复位, RECOVERY_PULSE_WIDTH_MS);
                 _uiLogger.InfoRaw("处理已完成: {0}", "发送复原脉冲");
             }
             catch (Exception ex)
