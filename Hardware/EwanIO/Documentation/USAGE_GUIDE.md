@@ -138,11 +138,17 @@ ctx.Dispose();
 | `ctx.On(expr/index, now: true)` | 设置输出为 ON 并立即下发（不做输入同步） |
 | `ctx.Off(expr/index)` | 设置输出为 OFF，默认等下一次 Tick 下发 |
 | `ctx.Off(expr/index, now: true)` | 设置输出为 OFF 并立即下发 |
-| `ctx.Pulse(expr/index, durationTicks)` | 输出脉冲（按 Tick 计数，默认 ON→OFF） |
-| `ctx.Pulse(expr/index, durationTicks, now: true, value: false)` | 反向脉冲（OFF→ON），立即下发 |
+| `ctx.Pulse(expr/index, durationMs, now, value, onCompleted)` | 输出脉冲（毫秒计时，默认 ON→OFF） |
+| `ctx.Pulse(expr/index, TimeSpan, now, value, onCompleted)` | 输出脉冲（TimeSpan 重载） |
+| `ctx.PulseAsync(expr/index, durationMs, ...)` | 异步等待脉冲完成 |
+| `ctx.PulseAndWait(expr/index, durationMs, ...)` | 同步等待脉冲完成（阻塞） |
+| `ctx.IsPulseActive(expr/index)` | 检查是否有脉冲正在执行 |
+| `ctx.GetPulseRemainingMs(index)` | 获取脉冲剩余时间（毫秒） |
+| `ctx.CancelPulse(expr/index)` | 取消脉冲（不改变输出值） |
+| `ctx.PulseState` | 获取脉冲管理器（高级状态查询） |
 | `ctx.OnPhysical(expr/index)` | 设置输出物理值为 ON（绕过 NO/NC 映射影响） |
 | `ctx.OffPhysical(expr/index)` | 设置输出物理值为 OFF（绕过 NO/NC 映射影响） |
-| `ctx.PulsePhysical(expr/index, durationTicks)` | 输出物理值脉冲（绕过 NO/NC 映射影响） |
+| `ctx.PulsePhysical(expr/index, durationMs, ...)` | 输出物理值脉冲（绕过 NO/NC 映射影响） |
 | `ctx.Flush()` | 立刻下发当前 dirty 输出（不做输入同步） |
 | `ctx.Edge.R(expr/index)` | 读取并清除上升沿 |
 | `ctx.Edge.F(expr/index)` | 读取并清除下降沿 |
@@ -200,13 +206,27 @@ Task.Run(() => ctx.Tick());  // 线程 B - 不要这样做！
 | 方法 | 线程安全 | 说明 |
 |------|---------|------|
 | `ctx.On/Off(...)` | 安全 | 内部使用 `_ioLock`；`now: true` 会等待 Tick 锁并立即下发 |
-| `ctx.Pulse(...)` | 安全 | 按 Tick 计数；同一输出在脉冲未结束前再次 Pulse 会被忽略 |
+| `ctx.Pulse(...)` | 安全 | 使用 Stopwatch 绝对时间计时；同一输出在脉冲未结束前再次 Pulse 会被忽略 |
+| `ctx.PulseAsync(...)` | 安全 | 返回 Task，支持 CancellationToken |
+| `ctx.PulseAndWait(...)` | 安全 | 阻塞等待，支持超时 |
+| `ctx.IsPulseActive(...)` | 安全 | 使用 Volatile.Read |
+| `ctx.CancelPulse(...)` | 安全 | 使用 Interlocked 原子操作 |
 
 ```csharp
 // 安全：可以从任意线程调用
 ctx.On(0);                      // 缓存，等待 Tick 下发
 ctx.Off(0, now: true);          // 立即下发
-ctx.Pulse(0, durationTicks: 3); // 持续 3 个 Tick
+ctx.Pulse(0, 100);              // 持续 100 毫秒
+ctx.Pulse(0, TimeSpan.FromMilliseconds(100)); // TimeSpan 重载
+
+// 带回调的脉冲
+ctx.Pulse(0, 500, onCompleted: index => Console.WriteLine($"脉冲 {index} 完成"));
+
+// 异步等待脉冲完成
+bool success = await ctx.PulseAsync(0, 500);
+
+// 同步等待脉冲完成
+bool success = ctx.PulseAndWait(0, 500, timeoutMs: 1000);
 ```
 
 > 注意：不要在 Tick 线程内调用 `now: true`，避免等待同一把锁导致阻塞。
@@ -642,7 +662,13 @@ _lastButtonState = ctx.R.启动按钮;
 |------|------|---------|
 | `ctx.On(expr/index)` | 设置输出为 ON | 等 Tick 下发 |
 | `ctx.Off(expr/index)` | 设置输出为 OFF | 等 Tick 下发 |
-| `ctx.Pulse(expr/index, durationTicks, now=false, value=true)` | 输出脉冲 | 按 Tick 计数 |
+| `ctx.Pulse(expr/index, durationMs, now=false, value=true, onCompleted=null)` | 输出脉冲 | 毫秒计时 |
+| `ctx.Pulse(expr/index, TimeSpan, ...)` | 输出脉冲 | TimeSpan 重载 |
+| `ctx.PulseAsync(...)` | 异步等待脉冲完成 | 返回 Task<bool> |
+| `ctx.PulseAndWait(...)` | 同步等待脉冲完成 | 阻塞当前线程 |
+| `ctx.IsPulseActive(expr/index)` | 检查脉冲是否活跃 | - |
+| `ctx.GetPulseRemainingMs(index)` | 获取剩余时间 | 毫秒 |
+| `ctx.CancelPulse(expr/index)` | 取消脉冲 | 不改变输出值 |
 
 ### 使用示例
 
@@ -650,23 +676,57 @@ _lastButtonState = ctx.R.启动按钮;
 // 默认：等 Tick 下发（now: false）
 ctx.On(x => x.运行灯);
 ctx.Off(x => x.报警灯);
-ctx.Pulse(x => x.蜂鸣器, durationTicks: 3);
+ctx.Pulse(x => x.蜂鸣器, 300);  // 300ms 脉冲
+
+// 使用 TimeSpan
+ctx.Pulse(x => x.蜂鸣器, TimeSpan.FromMilliseconds(300));
 
 // 立即下发（now: true）
 ctx.On(x => x.运行灯, now: true);
 ctx.Off(x => x.报警灯, now: true);
-ctx.Pulse(x => x.蜂鸣器, durationTicks: 1, now: true);
+ctx.Pulse(x => x.蜂鸣器, 100, now: true);
 
 // 反向脉冲：OFF -> ON -> OFF
-ctx.Pulse(x => x.指示灯, durationTicks: 2, value: false);
+ctx.Pulse(x => x.指示灯, 200, value: false);
+
+// 带回调的脉冲
+ctx.Pulse(x => x.气缸, 500, onCompleted: index =>
+{
+    Console.WriteLine($"气缸 {index} 脉冲完成");
+});
+
+// 异步等待脉冲完成
+public async Task ExecuteSequenceAsync()
+{
+    bool ok = await ctx.PulseAsync(x => x.气缸1, 500);
+    if (ok)
+    {
+        await ctx.PulseAsync(x => x.气缸2, 300);
+    }
+}
+
+// 同步等待脉冲完成
+bool success = ctx.PulseAndWait(x => x.气缸, 500, timeoutMs: 1000);
+
+// 检查脉冲状态
+if (ctx.IsPulseActive(x => x.气缸))
+{
+    long remaining = ctx.GetPulseRemainingMs(0);
+    Console.WriteLine($"剩余 {remaining}ms");
+}
+
+// 取消脉冲
+ctx.CancelPulse(x => x.气缸);
 ```
 
 ### Pulse 说明
 
-- `durationTicks` 为 Tick 次数（非毫秒），例如 10ms Tick 下 3 表示约 30ms
-- 同一输出在脉冲未结束时再次 `Pulse` 会被忽略
-- 脉冲结束后的回落由 Tick 驱动，下一个 Tick 才会下发结束值
+- `durationMs` 为毫秒（使用 Stopwatch 精确计时，不受 Tick 周期影响）
+- 同一输出在脉冲未结束时再次 `Pulse` 会被忽略（返回 false）
+- 脉冲完成后自动触发 `onCompleted` 回调
 - 对同一输出调用 `On/Off` 会取消尚未完成的脉冲
+- `PulseAsync` 支持 `CancellationToken` 用于取消
+- `PulseAndWait` 的 `timeoutMs` 默认为 -1（无限等待）
 
 ---
 
@@ -687,9 +747,9 @@ ctx.Pulse(x => x.指示灯, durationTicks: 2, value: false);
 
 ## 版本信息
 
-- **文档版本**: 2.0
-- **EwanIO 版本**: V2.4
-- **更新日期**: 2025-12-25
+- **文档版本**: 2.1
+- **EwanIO 版本**: V2.5
+- **更新日期**: 2025-12-27
 
 ---
 
@@ -708,3 +768,4 @@ ctx.Pulse(x => x.指示灯, durationTicks: 2, value: false);
 | 2025-12-25 | 1.8 | 重命名 Raw → PreMap，消除歧义 |
 | 2025-12-25 | 1.9 | 增加 `Sim.ForcePhysicalOn/Off` 并补充边沿变化说明 |
 | 2025-12-25 | 2.0 | 调整 `Sim.ForceOn/Off` 为逻辑层，`Sim.ForcePhysicalOn/Off` 为物理层，补充模式/清除接口与文档 |
+| 2025-12-27 | 2.1 | **Pulse 系统重构**：改用 Stopwatch 绝对时间计时（不再依赖 Tick 计数）；新增 `PulseAsync`/`PulseAndWait` 异步等待、`IsPulseActive`/`GetPulseRemainingMs`/`CancelPulse` 辅助方法、`onCompleted` 回调支持；新增 `PulseOperation`/`PulseManager` 核心类 |

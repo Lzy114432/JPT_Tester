@@ -51,7 +51,8 @@ EwanIO/
 │   ├── Data/                   # 数据结构
 │   │   ├── Snapshot.cs         # Double-buffered snapshot
 │   │   ├── Command.cs          # Output command buffer
-│   │   └── CommandOptimized.cs # Port-level dirty tracking
+│   │   ├── CommandOptimized.cs # Port-level dirty tracking
+│   │   └── PulseOperation.cs   # Pulse timing (Stopwatch-based)
 │   ├── Mapping/                # 映射系统
 │   │   ├── MappingCache.cs     # Fast lookup cache
 │   │   └── MappingConfig.cs    # Config file I/O
@@ -161,6 +162,28 @@ var result = await ctx.Confirm(
     expected: true,
     timeout: TimeSpan.FromMilliseconds(500),
     now: true);
+
+// Pulse output (milliseconds, Stopwatch-based timing)
+ctx.Pulse(x => x.运行灯, 500);  // 500ms pulse
+ctx.Pulse(x => x.运行灯, TimeSpan.FromMilliseconds(500));  // TimeSpan overload
+
+// Pulse with callback
+ctx.Pulse(x => x.运行灯, 500, onCompleted: index => Console.WriteLine($"Pulse {index} done"));
+
+// Async wait for pulse completion
+bool success = await ctx.PulseAsync(x => x.运行灯, 500);
+
+// Sync wait for pulse completion (blocking)
+bool success = ctx.PulseAndWait(x => x.运行灯, 500, timeoutMs: 1000);
+
+// Check pulse status
+if (ctx.IsPulseActive(x => x.运行灯))
+{
+    long remaining = ctx.GetPulseRemainingMs(0);
+}
+
+// Cancel pulse
+ctx.CancelPulse(x => x.运行灯);
 ```
 
 ### Code Generation
@@ -186,7 +209,9 @@ generator.GenerateAll(outputDirectory: "Generated/");
 ## Thread Safety
 
 - **Snapshot (R)**: Thread-safe, read-only; don't cache references across ticks
-- **On/Off/Pulse**: Thread-safe (internal lock)
+- **On/Off/Pulse**: Thread-safe (internal lock + Interlocked for pulse state)
+- **PulseAsync/PulseAndWait**: Thread-safe, can be called from any thread
+- **IsPulseActive/GetPulseRemainingMs/CancelPulse**: Thread-safe (Volatile/Interlocked)
 - **Tick()**: NOT thread-safe, call from one thread only
 - **Edge**: Thread-safe for read/clear (Interlocked/Volatile)
 
