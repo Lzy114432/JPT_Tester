@@ -18,17 +18,23 @@
 |------|------|------|
 | 第0步：基础设施 | ✅ 完成 | EwanCommon 通用库 |
 | 第1步：消息总线 | ✅ 完成 | MessageBus 架构 |
-| 第2步：核心层迁移 | 🔄 进行中 | 命名空间已迁移，接口改造中 |
-| 第3步：业务层迁移 | 🔄 进行中 | 命名空间已迁移 |
+| 第2步：核心层迁移 | ✅ 完成 | 6个核心 Manager 已迁移至 IManager |
+| 第3步：业务层迁移 | ✅ 完成 | StreamController 已迁移 |
 | 第4步：清理旧代码 | ⏳ 待开始 | 移除旧 BaseManager |
 | 第5步：验证测试 | ⏳ 待开始 | 完整测试 |
 
 ### 最新进展 (2025-12-27)
 
-- ✅ `BaseManager<T>` 实现 `IManager` 接口，支持统一生命周期管理
-- ✅ 删除 `Ewan.Core/Attribute/ManagerAttribute.cs`，统一使用 `EwanCore.Attribute`
-- ✅ `MainController` 显式指定程序集扫描列表，修复跨程序集 Manager 发现
-- ✅ 修复 `Instance()` 反射查找，添加 `FlattenHierarchy` 标志
+- ✅ 6个核心 Manager 全部完成迁移至 `IManager` 接口
+- ✅ 所有 Manager 日志统一迁移至 `log4net ILog`
+- ✅ 编译验证通过，无错误
+- ✅ 已完成迁移的 Manager：
+  - SecurityManager (Priority 0)
+  - ModbusRTUManager (Priority 1)
+  - LayeredIOManager (Priority 1)
+  - AxisManager (Priority 1)
+  - DLManager (Priority 1)
+  - StreamController (Priority 3)
 
 ---
 
@@ -36,31 +42,31 @@
 
 ### ✅ 已完成迁移
 
-| Manager | 位置 | 提交 | 备注 |
-|---------|------|------|------|
-| MsgManager | Ewan.Core/Msg/ | 当前 | 保留旧 listener 兼容 |
-| MesManager | Ewan.Core/Mes/ | 当前 | 支持 DI |
-| MainController | Ewan.BusinessBonding/ | 当前 | 使用 ManagerLifetimeHost |
-| BaseManager\<T\> | Ewan.Core/ | a166ff6 | 实现 IManager 接口 |
+| Manager | 位置 | IManager | ILog日志 | 备注 |
+|---------|------|:--------:|:--------:|------|
+| MsgManager | Ewan.Core/Msg/ | ✅ | ✅ | 保留旧 listener 兼容 |
+| MesManager | Ewan.Core/Mes/ | ✅ | ✅ | 支持 DI |
+| MainController | Ewan.BusinessBonding/ | ✅ | ✅ | 使用 ManagerLifetimeHost |
+| SecurityManager | Ewan.Core/Security/ | ✅ | ✅ | Priority 0 |
+| ModbusRTUManager | Ewan.Core/Plc/ | ✅ | ✅ | Priority 1, [Manager] 已注释 |
+| LayeredIOManager | Ewan.Core/IO/ | ✅ | ✅ | Priority 1 |
+| AxisManager | Ewan.Core/Axis/ | ✅ | ✅ | Priority 1 |
+| DLManager | Ewan.Core/ScanCode/ | ✅ | ✅ | Priority 1 |
+| StreamController | Ewan.BusinessBonding/ | ✅ | ✅ | Priority 3 |
 
-### 🔄 部分完成 - Ewan.Core（命名空间已迁移，待完整改造）
+### 🔄 待检查 - Ewan.BusinessBonding
 
-| Manager | 文件 | 命名空间 | IManager | ILog日志 | 备注 |
-|---------|------|:--------:|:--------:|:--------:|------|
-| SecurityManager | Security/SecurityManager.cs | ✅ | 继承 | ❌ | 通过 BaseManager 间接实现 |
-| LayeredIOManager | IO/LayeredIOManager.cs | ✅ | 继承 | ❌ | 通过 BaseManager 间接实现 |
-| AxisManager | Axis/AxisManager.cs | ✅ | 继承 | ❌ | 通过 BaseManager 间接实现 |
-| ModbusRTUManager | Plc/ModbusRTUManager.cs | ✅ | 继承 | ❌ | 通过 BaseManager 间接实现 |
-| DLManager | ScanCode/DLManager.cs | ✅ | 继承 | ❌ | 通过 BaseManager 间接实现 |
-| MesMsgBus | Msg/MesMsgBus.cs | ✅ | 继承 | ❌ | ⚠️ 阶段三删除 |
+| Manager | 文件 | IManager | ILog日志 | 备注 |
+|---------|------|:--------:|:--------:|------|
+| SystemControlService | SystemControlService.cs | - | - | 待检查 |
+| BinFeedController | BinFeedController.cs | - | - | 待检查 |
 
-### 🔄 部分完成 - Ewan.BusinessBonding（命名空间已迁移）
+### ⚠️ 待删除 - 阶段四
 
-| Manager | 文件 | 命名空间 | IManager | ILog日志 | 备注 |
-|---------|------|:--------:|:--------:|:--------:|------|
-| StreamController | StreamController.cs | ✅ | 继承 | ❌ | 通过 BaseManager 间接实现 |
-| SystemControlService | SystemControlService.cs | - | - | - | 待检查 |
-| BinFeedController | BinFeedController.cs | - | - | - | 待检查 |
+| 类 | 位置 | 备注 |
+|---------|------|------|
+| MesMsgBus | Ewan.Core/Msg/ | 用 MessageHub 替代 |
+| BaseManager\<T\> | Ewan.Core/ | 渐进式移除 |
 
 ---
 
@@ -336,7 +342,7 @@ var feedback = await MessageHub.RequestReplyBus.RequestAsync<MesRequest, MesResu
 - [x] ~~MesMsgBus 是否与 MsgManager 合并？~~ → **已决定：阶段三统一用 MessageHub 替代，两者都删除**
 - [ ] 是否需要为每个 Manager 添加 DI 构造函数？
 - [x] ~~旧的 `Ewan.Core\BaseManager.cs` 何时移除？~~ → **已决定：保留 BaseManager\<T\> 并实现 IManager，渐进式迁移**
-- [ ] 各 Manager 是否需要从 `_uiLogger` 迁移到 `ILog`？（当前 UILogger 已支持 MessageHub）
+- [x] ~~各 Manager 是否需要从 `_uiLogger` 迁移到 `ILog`？~~ → **已完成：6个核心 Manager 已全部迁移至 log4net ILog**
 
 ---
 

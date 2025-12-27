@@ -1,4 +1,7 @@
+using EwanCore;
 using EwanCore.Attribute;
+using EwanCommon.Logging;
+using log4net;
 using HslCommunication;
 using HslCommunication.ModBus;
 using System;
@@ -11,9 +14,17 @@ namespace Ewan.Core.Plc
     /// Modbus RTU管理器 - RS485串口通信实现
     /// 支持RS485网络通信，有效距离50米，支持多从站
     /// </summary>
-    //[Manager(Priority = 1)] 
-    public class ModbusRTUManager : BaseManager<ModbusRTUManager>
+    //[Manager(Priority = 1)]
+    public class ModbusRTUManager : IManager
     {
+        private static readonly ILog s_logger = Log.GetLogger(typeof(ModbusRTUManager));
+        private bool _disposed;
+
+        #region 单例支持
+        private static readonly Lazy<ModbusRTUManager> s_instance = new Lazy<ModbusRTUManager>(() => new ModbusRTUManager());
+        public static ModbusRTUManager Instance() => s_instance.Value;
+        #endregion
+
         private const string DefaultClientKey = "default";
         private readonly ConcurrentDictionary<string, ClientContext> _clientContexts = new ConcurrentDictionary<string, ClientContext>(StringComparer.OrdinalIgnoreCase);
 
@@ -30,8 +41,9 @@ namespace Ewan.Core.Plc
             public bool IsConnected { get; set; }
         }
 
-        public override bool Init()
+        public bool Init()
         {
+            s_logger.Info("ModbusRTUManager 初始化开始");
             try
             {
                 var defaultContext = new ClientContext
@@ -45,12 +57,13 @@ namespace Ewan.Core.Plc
                     Parity = Parity.None
                 };
 
-                _appLogger.Info($"ModbusRTUManager 开始初始化 - 串口:{defaultContext.ComPort}, 波特率:{defaultContext.BaudRate}, 数据位:{defaultContext.DataBits}, 停止位:{defaultContext.StopBits}, 校验位:{defaultContext.Parity}, 从站地址:{defaultContext.StationNo}");
+                s_logger.InfoFormat("ModbusRTUManager 尝试初始化 - 串口:{0}, 波特率:{1}, 数据位:{2}, 停止位:{3}, 校验位:{4}, 从站地址:{5}",
+                    defaultContext.ComPort, defaultContext.BaudRate, defaultContext.DataBits, defaultContext.StopBits, defaultContext.Parity, defaultContext.StationNo);
 
                 if (Open(defaultContext))
                 {
                     _clientContexts[DefaultClientKey] = defaultContext;
-                    _appLogger.Info($"ModbusRTUManager 初始化成功 - ID:{this.GetHashCode()}, RS485连接已建立");
+                    s_logger.InfoFormat("ModbusRTUManager 初始化成功 - ID:{0}, RS485连接已建立", this.GetHashCode());
 
                     // 初始化 main 客户端 - COM10
                     var mainContext = new ClientContext
@@ -67,27 +80,47 @@ namespace Ewan.Core.Plc
                     if (Open(mainContext))
                     {
                         _clientContexts["main"] = mainContext;
-                        _appLogger.Info($"ModbusRTUManager main客户端初始化成功 - 串口:COM10");
+                        s_logger.Info("ModbusRTUManager main客户端初始化成功 - 串口:COM10");
                     }
                     else
                     {
-                        _appLogger.Warn($"ModbusRTUManager main客户端初始化失败 - 串口:COM10");
+                        s_logger.Warn("ModbusRTUManager main客户端初始化失败 - 串口:COM10");
                     }
 
-                    return base.Init();
+                    s_logger.Info("ModbusRTUManager 初始化完成");
+                    return true;
                 }
                 else
                 {
-                    _appLogger.Error($"ModbusRTUManager 初始化失败 - ID:{this.GetHashCode()}, 无法建立RS485连接");
+                    s_logger.ErrorFormat("ModbusRTUManager 初始化失败 - ID:{0}, 无法建立RS485连接", this.GetHashCode());
                     return false;
                 }
             }
             catch (Exception ex)
             {
-                _appLogger.Error($"ModbusRTUManager 初始化异常 - {ex.Message}", ex);
+                s_logger.Error("ModbusRTUManager 初始化异常", ex);
                 return false;
             }
         }
+
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _disposed = true;
+            s_logger.Info("ModbusRTUManager 开始销毁");
+            try
+            {
+                Close();
+            }
+            catch (Exception ex)
+            {
+                s_logger.Error("ModbusRTUManager 销毁异常", ex);
+            }
+            s_logger.Info("ModbusRTUManager 销毁完成");
+        }
+
+        [Obsolete("请使用 Dispose() 方法")]
+        public void Destroy() => Dispose();
 
         /// <summary>
         /// 打开RS485串口连接
@@ -97,7 +130,7 @@ namespace Ewan.Core.Plc
         {
             var isSuccess = true;
 
-            _appLogger.Info($"ModbusRTUManager 尝试打开RS485串口连接 - 客户端:{context.Key}, 串口:{context.ComPort}");
+            s_logger.InfoFormat("ModbusRTUManager 尝试打开RS485串口连接 - 客户端:{0}, 串口:{1}", context.Key, context.ComPort);
 
             try
             {
@@ -111,13 +144,13 @@ namespace Ewan.Core.Plc
                 context.Client.Open();
 
                 context.IsConnected = true;
-                _appLogger.Info($"ModbusRTUManager RS485连接成功 - 客户端:{context.Key}, 串口:{context.ComPort}, 波特率:{context.BaudRate}, 从站地址:{context.StationNo}");
+                s_logger.InfoFormat("ModbusRTUManager RS485连接成功 - 客户端:{0}, 串口:{1}, 波特率:{2}, 从站地址:{3}", context.Key, context.ComPort, context.BaudRate, context.StationNo);
             }
             catch (Exception ex)
             {
                 isSuccess = false;
                 context.IsConnected = false;
-                _appLogger.Error($"ModbusRTUManager RS485连接异常 - {ex.Message}", ex);
+                s_logger.Error("ModbusRTUManager RS485连接异常", ex);
             }
             return isSuccess;
         }
@@ -130,7 +163,7 @@ namespace Ewan.Core.Plc
                 return context;
             }
 
-            _appLogger.Info($"ModbusRTUManager 未找到客户端:{key}");
+            s_logger.InfoFormat("ModbusRTUManager 未找到客户端:{0}", key);
             return null;
         }
 
@@ -142,7 +175,7 @@ namespace Ewan.Core.Plc
             }
             catch (Exception ex)
             {
-                _appLogger.Error($"ModbusRTUManager 关闭客户端 {context.Key} 时异常 - {ex.Message}", ex);
+                s_logger.Error($"ModbusRTUManager 关闭客户端 {context.Key} 时异常", ex);
             }
             finally
             {
@@ -180,11 +213,11 @@ namespace Ewan.Core.Plc
                 }
 
                 _clientContexts[normalizedKey] = context;
-                _appLogger.Info($"ModbusRTUManager 新客户端已注册 - Key:{normalizedKey}, 串口:{comPort}");
+                s_logger.InfoFormat("ModbusRTUManager 新客户端已注册 - Key:{0}, 串口:{1}", normalizedKey, comPort);
                 return true;
             }
 
-            _appLogger.Error($"ModbusRTUManager 新客户端注册失败 - Key:{normalizedKey}");
+            s_logger.ErrorFormat("ModbusRTUManager 新客户端注册失败 - Key:{0}", normalizedKey);
             return false;
         }
 
@@ -211,13 +244,13 @@ namespace Ewan.Core.Plc
                 }
                 else
                 {
-                    _appLogger.Info($"ModbusRTUManager Read failed,{read.ToMessageShowString()}");
+                    s_logger.InfoFormat("ModbusRTUManager Read failed, {0}", read.ToMessageShowString());
                     return new byte[0];
                 }
             }
             catch (Exception ex)
             {
-                _appLogger.Error($"ModbusRTUManager Read occur exception,{ex}");
+                s_logger.ErrorFormat("ModbusRTUManager Read occur exception, {0}", ex);
                 return new byte[0];
             }
         }
@@ -238,7 +271,7 @@ namespace Ewan.Core.Plc
             }
             catch (Exception ex)
             {
-                _appLogger.Error($"ModbusRTUManager Read occur exception,{ex}");
+                s_logger.ErrorFormat("ModbusRTUManager Read occur exception, {0}", ex);
                 return new bool[0];
             }
         }
@@ -261,7 +294,7 @@ namespace Ewan.Core.Plc
             }
             catch (Exception ex)
             {
-                _appLogger.Error($"WriteAny failed: {ex}");
+                s_logger.ErrorFormat("WriteAny failed: {0}", ex);
                 return OperateResult.CreateSuccessResult(ex.Message);
             }
         }
@@ -334,7 +367,7 @@ namespace Ewan.Core.Plc
                 {
                     foreach (var context in _clientContexts.Values)
                     {
-                        _appLogger.Info($"ModbusRTUManager 开始关闭RS485连接 - 客户端:{context.Key}, 串口:{context.ComPort}");
+                        s_logger.InfoFormat("ModbusRTUManager 开始关闭RS485连接 - 客户端:{0}, 串口:{1}", context.Key, context.ComPort);
                         CloseInternal(context);
                     }
                     return true;
@@ -346,14 +379,14 @@ namespace Ewan.Core.Plc
                     return false;
                 }
 
-                _appLogger.Info($"ModbusRTUManager 开始关闭RS485连接 - 客户端:{target.Key}, 串口:{target.ComPort}");
+                s_logger.InfoFormat("ModbusRTUManager 开始关闭RS485连接 - 客户端:{0}, 串口:{1}", target.Key, target.ComPort);
                 CloseInternal(target);
-                _appLogger.Info($"ModbusRTUManager 客户端 {target.Key} 已关闭");
+                s_logger.InfoFormat("ModbusRTUManager 客户端 {0} 已关闭", target.Key);
                 return true;
             }
             catch (Exception ex)
             {
-                _appLogger.Error($"ModbusRTUManager 关闭RS485连接异常 - {ex.Message}", ex);
+                s_logger.Error("ModbusRTUManager 关闭RS485连接异常", ex);
                 return false;
             }
         }
@@ -382,14 +415,14 @@ namespace Ewan.Core.Plc
                     return false;
                 }
 
-                _appLogger.Info($"ModbusRTUManager 开始重新连接RS485 - 客户端:{context.Key}");
+                s_logger.InfoFormat("ModbusRTUManager 开始重新连接RS485 - 客户端:{0}", context.Key);
                 CloseInternal(context);
                 context.Client = null;
                 return Open(context);
             }
             catch (Exception ex)
             {
-                _appLogger.Error($"ModbusRTUManager RS485重连异常 - {ex.Message}", ex);
+                s_logger.Error("ModbusRTUManager RS485重连异常", ex);
                 return false;
             }
         }
@@ -419,7 +452,8 @@ namespace Ewan.Core.Plc
             context.Parity = parity;
             context.StationNo = stationNo;
 
-            _appLogger.Info($"ModbusRTUManager 串口参数已更新 - 客户端:{context.Key}, 串口:{comPort}, 波特率:{baudRate}, 数据位:{dataBits}, 停止位:{stopBits}, 校验位:{parity}, 从站地址:{stationNo}");
+            s_logger.InfoFormat("ModbusRTUManager 串口参数已更新 - 客户端:{0}, 串口:{1}, 波特率:{2}, 数据位:{3}, 停止位:{4}, 校验位:{5}, 从站地址:{6}",
+                context.Key, comPort, baudRate, dataBits, stopBits, parity, stationNo);
 
             if (context.IsConnected)
             {

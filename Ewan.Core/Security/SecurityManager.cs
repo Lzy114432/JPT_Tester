@@ -1,4 +1,7 @@
+using EwanCore;
 using EwanCore.Attribute;
+using EwanCommon.Logging;
+using log4net;
 using Ewan.Model.Security;
 using System;
 using System.Collections.Generic;
@@ -14,8 +17,16 @@ namespace Ewan.Core.Security
     /// 安全管理器 - 处理用户认证和权限控制
     /// </summary>
     [Manager(Priority = 0)]
-    public class SecurityManager : BaseManager<SecurityManager>
+    public class SecurityManager : IManager
     {
+        private static readonly ILog s_logger = Log.GetLogger(typeof(SecurityManager));
+        private bool _disposed;
+
+        #region 单例支持
+        private static readonly Lazy<SecurityManager> s_instance = new Lazy<SecurityManager>(() => new SecurityManager());
+        public static SecurityManager Instance() => s_instance.Value;
+        #endregion
+
         private User _currentUser;
         private List<User> _users;
         private readonly string _usersFilePath = Path.Combine("Config", "users.json");
@@ -40,13 +51,27 @@ namespace Ewan.Core.Security
         /// </summary>
         public event EventHandler UserLoggedOut;
 
-        public override bool Init()
+        public bool Init()
         {
+            s_logger.Info("SecurityManager 初始化开始");
             LoadUsers();
             InitializeDefaultUsers();
-            _appLogger.Info("安全管理器初始化成功");
-            return base.Init();
+            s_logger.Info("SecurityManager 初始化完成");
+            return true;
         }
+
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _disposed = true;
+            s_logger.Info("SecurityManager 开始销毁");
+            _currentUser = null;
+            _users = null;
+            s_logger.Info("SecurityManager 销毁完成");
+        }
+
+        [Obsolete("请使用 Dispose() 方法")]
+        public void Destroy() => Dispose();
 
         /// <summary>
         /// 用户登录认证
@@ -58,25 +83,25 @@ namespace Ewan.Core.Security
         {
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
             {
-                _uiLogger.Warn("登录失败 - 输入无效");
+                s_logger.Warn("登录失败 - 输入无效");
                 return false;
             }
 
                 var user = _users.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
             if (user == null || !user.IsActive)
             {
-                _uiLogger.Warn("登录失败 - 用户未找到: {0}", username);
+                s_logger.WarnFormat("登录失败 - 用户未找到: {0}", username);
                 return false;
             }
 
             if (!VerifyPassword(password, user.PasswordHash))
             {
-                _uiLogger.Warn("登录失败 - 用户密码错误: {0}", username);
+                s_logger.WarnFormat("登录失败 - 用户密码错误: {0}", username);
                 return false;
             }
 
             _currentUser = user;
-            _appLogger.Info("用户登录成功: " + username);
+            s_logger.InfoFormat("用户登录成功: {0}", username);
             UserAuthenticated?.Invoke(this, user);
             return true;
         }
@@ -88,7 +113,7 @@ namespace Ewan.Core.Security
         {
             if (_currentUser != null)
             {
-                _uiLogger.Info("用户已注销: {0}", _currentUser.Username);
+                s_logger.InfoFormat("用户已注销: {0}", _currentUser.Username);
                 _currentUser = null;
                 UserLoggedOut?.Invoke(this, EventArgs.Empty);
             }
@@ -104,7 +129,7 @@ namespace Ewan.Core.Security
         {
             if (!IsAuthenticated)
             {
-                _uiLogger.Debug("权限检查失败：用户未认证，资源 {0}.{1}", resource, action);
+                s_logger.DebugFormat("权限检查失败：用户未认证，资源 {0}.{1}", resource, action);
                 return false;
             }
 
@@ -208,7 +233,7 @@ namespace Ewan.Core.Security
 
             if (_users.Any(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase)))
             {
-                _uiLogger.Warn("用户已存在: {0}", username);
+                s_logger.WarnFormat("用户已存在: {0}", username);
                 return false;
             }
 
@@ -223,7 +248,7 @@ namespace Ewan.Core.Security
 
             _users.Add(user);
             SaveUsers();
-            _uiLogger.Info("用户已创建: {0}", username);
+            s_logger.InfoFormat("用户已创建: {0}", username);
             return true;
         }
 
@@ -248,14 +273,14 @@ namespace Ewan.Core.Security
                 if (admin != null && admin.Roles.Count > 0)
                 {
                     var permissions = admin.Roles.FirstOrDefault()?.Permissions.Count ?? 0;
-                    _uiLogger.Info("管理员用户创建成功", admin.Roles.Count, permissions);
+                    s_logger.InfoFormat("管理员用户创建成功，角色数: {0}，权限数: {1}", admin.Roles.Count, permissions);
                 }
                 else
                 {
-                    _uiLogger.Error("创建管理员用户失败");
+                    s_logger.Error("创建管理员用户失败");
                 }
 
-                _uiLogger.Info("默认用户创建成功");
+                s_logger.Info("默认用户创建成功");
             }
         }
 
@@ -319,14 +344,14 @@ namespace Ewan.Core.Security
                     if (users != null)
                     {
                         _users = users;
-                        _uiLogger.Info("已加载 {0} 个用户", _users.Count);
-                        
+                        s_logger.InfoFormat("已加载 {0} 个用户", _users.Count);
+
                         // 在加载后验证数据
                         var admin = _users.FirstOrDefault(u => u.Username == "admin");
                         if (admin != null)
                         {
-                            _uiLogger.Info("管理员用户检查: {0}", 
-                                admin.Roles.Count, 
+                            s_logger.InfoFormat("管理员用户检查: 角色数={0}，权限数={1}",
+                                admin.Roles.Count,
                                 admin.Roles.FirstOrDefault()?.Permissions.Count ?? 0);
                         }
                     }
@@ -334,7 +359,7 @@ namespace Ewan.Core.Security
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("加载用户失败: {0}", ex.Message);
+                s_logger.ErrorFormat("加载用户失败: {0}", ex.Message);
             }
         }
 
@@ -350,7 +375,7 @@ namespace Ewan.Core.Security
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("保存用户失败: {0}", ex.Message);
+                s_logger.ErrorFormat("保存用户失败: {0}", ex.Message);
             }
         }
 

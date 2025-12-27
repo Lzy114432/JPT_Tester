@@ -1,5 +1,7 @@
-﻿using Ewan.Core;
+﻿using EwanCore;
 using EwanCore.Attribute;
+using EwanCommon.Logging;
+using log4net;
 using Ewan.Core.Module;
 using Ewan.Core.Module.Interface;
 using Ewan.Core.Msg;
@@ -14,8 +16,16 @@ namespace Ewan.BusinessBonding
     /// 流程运行控制器
     /// </summary>
     [Manager(Priority = 3)]
-    public class StreamController : BaseManager<StreamController>
+    public class StreamController : IManager
     {
+        private static readonly ILog s_logger = Log.GetLogger(typeof(StreamController));
+        private bool _disposed;
+
+        #region 单例支持
+        private static readonly Lazy<StreamController> s_instance = new Lazy<StreamController>(() => new StreamController());
+        public static StreamController Instance() => s_instance.Value;
+        #endregion
+
         #region 流程runner
 
         /// <summary>
@@ -89,29 +99,31 @@ namespace Ewan.BusinessBonding
 
         #endregion
 
-        public override bool Init()
+        public bool Init()
         {
+            s_logger.Info("StreamController 初始化开始");
+
             #region  //构造系统状态指示器流程的节点并加入到对应runner
-            
+
             // 添加系统状态指示器模块，统一控制三色灯和蜂鸣器
             _statusIndicatorModules.Add(new SystemStatusIndicatorModule());
-            
+
             // 创建系统状态指示器流程runner
             _statusIndicatorRunner = new StreamRunner(_statusIndicatorModules);
-            
+
             #endregion
-            
+
             #region  //构造主流程的节点并加入到对应runner
-            
+
             // 使用统一的生产线模块（包含物料装载和料仓升降）
             _mainModules.Add(new ProductionLineModule());
-            
+
             //_mainModules.Add(new PlcModule());//测试可以换成数据模拟节点 根据配置决定加载哪个PLC节点
             //_mainModules.Add(new AlarmModule<PlcModel>());
-            
+
             // 创建主流程runner
             _mainRunner = new StreamRunner(_mainModules);
-            
+
             #endregion
 
             #region //构造plc心跳流程的节点并加入到对应runner
@@ -120,23 +132,23 @@ namespace Ewan.BusinessBonding
             //_plcHeartRunner = new StreamRunner(_plcHeartModules);
 
             #endregion
-                
+
             #region //构造安全流程的节点并加入到对应runner
-            
+
             // 添加SafetyModule用于IO数据同步
             _safetyModules.Add(new SafetyModule());
-            
+
             // 创建安全流程runner
             _safetyRunner = new StreamRunner(_safetyModules);
-            
+
             #endregion
 
             #region //构造料仓升降控制流程的节点并加入到对应runner（已合并到主流程）
-            
+
             // BinElevatorModule已合并到主流程，此流程不再使用
             // _binElevatorModules.Add(new BinElevatorModule());
             // _binElevatorRunner = new StreamRunner(_binElevatorModules);
-            
+
             #endregion
 
             #region //构造皮带输送控制流程的节点并加入到对应runner
@@ -180,20 +192,42 @@ namespace Ewan.BusinessBonding
             #endregion
 
             #region //构造报警流程的节点并加入到对应runner（暂时注释，调试时启用）
-            
+
             // 极简的报警系统 - 只检测信号和执行停机
             // _alarmModules.Add(new AlarmDataCollectorModule());    // 检测报警输入信号
             // _alarmModules.Add(new AlarmProcessorModule());        // 执行停机控制
-            
+
             // 创建报警流程runner
             // _alarmRunner = new StreamRunner(_alarmModules);
-            
+
             // 注意：三色灯由SystemStatusIndicatorModule统一控制
-            
+
             #endregion
 
-            return base.Init();
+            s_logger.Info("StreamController 初始化完成");
+            return true;
         }
+
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _disposed = true;
+            s_logger.Info("StreamController 开始销毁");
+
+            try
+            {
+                StopRun();
+            }
+            catch (Exception ex)
+            {
+                s_logger.ErrorFormat("StreamController 销毁时停止流程出错: {0}", ex.Message);
+            }
+
+            s_logger.Info("StreamController 销毁完成");
+        }
+
+        [Obsolete("请使用 Dispose() 方法")]
+        public void Destroy() => Dispose();
         /// <summary>
         /// 开启运行.
         /// </summary>
@@ -359,7 +393,7 @@ namespace Ewan.BusinessBonding
             if (_binElevatorRunner != null)
             {
                 _binElevatorRunner.Start();
-                _uiLogger.Debug(() => "料仓升降控制流程已启动");
+                s_logger.Debug("料仓升降控制流程已启动");
             }
         }
 
@@ -369,7 +403,7 @@ namespace Ewan.BusinessBonding
         private void StopBinElevatorStream()
         {
             _binElevatorRunner?.Stop();
-            _uiLogger.Debug(() => "料仓升降控制流程已停止");
+            s_logger.Debug("料仓升降控制流程已停止");
         }
 
         /// <summary>
@@ -380,7 +414,7 @@ namespace Ewan.BusinessBonding
             if (_beltConveyorRunner != null)
             {
                 _beltConveyorRunner.Start();
-                _uiLogger.Debug(() => "皮带输送控制流程已启动");
+                s_logger.Debug("皮带输送控制流程已启动");
             }
         }
 
@@ -390,7 +424,7 @@ namespace Ewan.BusinessBonding
         private void StopBeltConveyorStream()
         {
             _beltConveyorRunner?.Stop();
-            _uiLogger.Debug("皮带输送控制流程已停止");
+            s_logger.Debug("皮带输送控制流程已停止");
         }
 
         /// <summary>
@@ -401,7 +435,7 @@ namespace Ewan.BusinessBonding
             if (_stationHeartbeatRunner != null)
             {
                 _stationHeartbeatRunner.Start();
-                _uiLogger.Debug("Station心跳流程已启动");
+                s_logger.Debug("Station心跳流程已启动");
             }
         }
 
@@ -411,7 +445,7 @@ namespace Ewan.BusinessBonding
         private void StopStationHeartbeatStream()
         {
             _stationHeartbeatRunner?.Stop();
-            _uiLogger.Debug("Station心跳流程已停止");
+            s_logger.Debug("Station心跳流程已停止");
         }
 
         /// <summary>
@@ -422,7 +456,7 @@ namespace Ewan.BusinessBonding
             if (_ringLineRunner != null)
             {
                 _ringLineRunner.Start();
-                _uiLogger.Debug("环线通信流程已启动");
+                s_logger.Debug("环线通信流程已启动");
             }
         }
 
@@ -432,7 +466,7 @@ namespace Ewan.BusinessBonding
         private void StopRingLineStream()
         {
             _ringLineRunner?.Stop();
-            _uiLogger.Debug("环线通信流程已停止");
+            s_logger.Debug("环线通信流程已停止");
         }
 
         /// <summary>
@@ -443,7 +477,7 @@ namespace Ewan.BusinessBonding
             if (_mesRunner != null)
             {
                 _mesRunner.Start();
-                _uiLogger.Debug("MES消息处理流程已启动");
+                s_logger.Debug("MES消息处理流程已启动");
             }
         }
 
@@ -453,7 +487,7 @@ namespace Ewan.BusinessBonding
         private void StopMesStream()
         {
             _mesRunner?.Stop();
-            _uiLogger.Debug("MES消息处理流程已停止");
+            s_logger.Debug("MES消息处理流程已停止");
         }
 
         /// <summary>
@@ -486,7 +520,7 @@ namespace Ewan.BusinessBonding
             if (_statusIndicatorRunner != null)
             {
                 _statusIndicatorRunner.Start();
-                _uiLogger.Debug("系统状态指示器流程已启动");
+                s_logger.Debug("系统状态指示器流程已启动");
             }
         }
 
@@ -496,7 +530,7 @@ namespace Ewan.BusinessBonding
         private void StopStatusIndicatorStream()
         {
             _statusIndicatorRunner?.Stop();
-            _uiLogger.Debug("系统状态指示器流程已停止");
+            s_logger.Debug("系统状态指示器流程已停止");
         }
 
         /// <summary>
@@ -511,12 +545,11 @@ namespace Ewan.BusinessBonding
 
                 MsgManager.Instance().PushMsg(message);
 
-                _uiLogger.Debug("发送系统状态消息: {0} - {1}", status, description);
+                s_logger.DebugFormat("发送系统状态消息: {0} - {1}", status, description);
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("模块运行错误: {0} - {1}", 
-                    "StreamController-SendSystemStatusMessage", ex.Message);
+                s_logger.ErrorFormat("StreamController-SendSystemStatusMessage 错误: {0}", ex.Message);
             }
         }
 

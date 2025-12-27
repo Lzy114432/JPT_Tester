@@ -1,4 +1,7 @@
+using EwanCore;
 using EwanCore.Attribute;
+using EwanCommon.Logging;
+using log4net;
 using Ewan.Model.Config;
 using EwanAxis.Core.Interfaces;
 using EwanAxis.Hardware.SMC606;
@@ -9,8 +12,16 @@ using System.IO;
 namespace Ewan.Core.Axis
 {
     [Manager(Priority = 1)]
-    public class AxisManager : BaseManager<AxisManager>
+    public class AxisManager : IManager
     {
+        private static readonly ILog s_logger = Log.GetLogger(typeof(AxisManager));
+        private bool _disposed;
+
+        #region 单例支持
+        private static readonly Lazy<AxisManager> s_instance = new Lazy<AxisManager>(() => new AxisManager());
+        public static AxisManager Instance() => s_instance.Value;
+        #endregion
+
         private AxisConfigManager _configManager;
         private readonly string _configFilePath;
         private SMC606Card _card;
@@ -35,21 +46,45 @@ namespace Ewan.Core.Axis
             _configFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config", "axis_config.json");
         }
 
-        public override bool Init()
+        public bool Init()
         {
+            s_logger.Info("AxisManager 初始化开始");
+
             // 加载轴配置
             LoadAxisConfiguration();
 
             // 初始化SMC606控制卡
             if (!InitializeCard())
             {
-                _uiLogger.Error("轴管理器初始化失败: 控制卡连接失败");
+                s_logger.Error("AxisManager 初始化失败: 控制卡连接失败");
                 return false;
             }
 
-            _uiLogger.Info("轴管理器初始化完成");
-            return base.Init();
+            s_logger.Info("AxisManager 初始化完成");
+            return true;
         }
+
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _disposed = true;
+            s_logger.Info("AxisManager 开始销毁");
+
+            try
+            {
+                _card?.Disconnect();
+                _card?.Dispose();
+                _card = null;
+                s_logger.Info("AxisManager 销毁完成");
+            }
+            catch (Exception ex)
+            {
+                s_logger.ErrorFormat("AxisManager 销毁异常: {0}", ex.Message);
+            }
+        }
+
+        [Obsolete("请使用 Dispose() 方法")]
+        public void Destroy() => Dispose();
 
         /// <summary>
         /// 初始化控制卡
@@ -63,41 +98,25 @@ namespace Ewan.Core.Axis
                 // 初始化控制卡（加载配置）
                 if (!_card.Initialize(_configFilePath))
                 {
-                    _uiLogger.Error("控制卡初始化失败");
+                    s_logger.Error("控制卡初始化失败");
                     return false;
                 }
 
                 // 连接控制卡
                 if (!_card.Connect())
                 {
-                    _uiLogger.Error("控制卡连接失败: IP={0}", CardIpAddress);
+                    s_logger.ErrorFormat("控制卡连接失败: IP={0}", CardIpAddress);
                     return false;
                 }
 
-                _uiLogger.Info("控制卡连接成功: IP={0}, 轴数={1}", CardIpAddress, _card.AxisCount);
+                s_logger.InfoFormat("控制卡连接成功: IP={0}, 轴数={1}", CardIpAddress, _card.AxisCount);
                 return true;
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("控制卡初始化异常: {0}", ex.Message);
+                s_logger.ErrorFormat("控制卡初始化异常: {0}", ex.Message);
                 return false;
             }
-        }
-
-        public override void Destroy()
-        {
-            try
-            {
-                _card?.Disconnect();
-                _card?.Dispose();
-                _card = null;
-                _uiLogger.Info("轴管理器已销毁");
-            }
-            catch (Exception ex)
-            {
-                _uiLogger.Error("轴管理器销毁异常: {0}", ex.Message);
-            }
-            base.Destroy();
         }
         
 
@@ -120,18 +139,18 @@ namespace Ewan.Core.Axis
                 {
                     if (!fileExists)
                     {
-                        _uiLogger.Info("轴配置文件不存在，创建默认配置");
+                        s_logger.Info("轴配置文件不存在，创建默认配置");
                         SaveAxisConfiguration();
                     }
                     else
                     {
-                        _uiLogger.Info("轴配置加载完成: {0}个轴配置", _configManager.AxisConfigs.Count);
+                        s_logger.InfoFormat("轴配置加载完成: {0}个轴配置", _configManager.AxisConfigs.Count);
                     }
                     return true;
                 }
                 else
                 {
-                    _uiLogger.Info("轴配置为空，创建默认配置");
+                    s_logger.Info("轴配置为空，创建默认配置");
                     _configManager = AxisConfigManager.CreateDefault();
                     SaveAxisConfiguration();
                     return true;
@@ -139,7 +158,7 @@ namespace Ewan.Core.Axis
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("加载轴配置失败: {0}", ex.Message);
+                s_logger.ErrorFormat("加载轴配置失败: {0}", ex.Message);
                 _configManager = AxisConfigManager.CreateDefault();
                 SaveAxisConfiguration();
                 return true;
@@ -156,18 +175,18 @@ namespace Ewan.Core.Axis
             {
                 if (_configManager?.SaveToFile(_configFilePath) == true)
                 {
-                    _uiLogger.Info("轴配置已保存");
+                    s_logger.Info("轴配置已保存");
                     return true;
                 }
                 else
                 {
-                    _uiLogger.Error("保存轴配置失败");
+                    s_logger.Error("保存轴配置失败");
                     return false;
                 }
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("保存轴配置失败: {0}", ex.Message);
+                s_logger.ErrorFormat("保存轴配置失败: {0}", ex.Message);
                 return false;
             }
         }
@@ -181,7 +200,7 @@ namespace Ewan.Core.Axis
             bool result = LoadAxisConfiguration();
             if (result)
             {
-                _uiLogger.Info("轴配置已重新加载");
+                s_logger.Info("轴配置已重新加载");
                 ConfigurationUpdated?.Invoke(this, EventArgs.Empty);
             }
             return result;

@@ -1,6 +1,9 @@
 using System;
 using System.IO;
+using EwanCore;
 using EwanCore.Attribute;
+using EwanCommon.Logging;
+using log4net;
 using Ewan.Model.IO;
 using EwanIO.Core.Context;
 using EwanIO.Core.Interfaces;
@@ -18,8 +21,16 @@ namespace Ewan.Core.IO
     /// Priority = 1 表示在基础配置（日志、权限等）之后，业务模块（StreamController）之前初始化
     /// </summary>
     [Manager(Priority = 1)]
-    public class LayeredIOManager : BaseManager<LayeredIOManager>
+    public class LayeredIOManager : IManager
     {
+        private static readonly ILog s_logger = Log.GetLogger(typeof(LayeredIOManager));
+        private bool _disposed;
+
+        #region 单例支持
+        private static readonly Lazy<LayeredIOManager> s_instance = new Lazy<LayeredIOManager>(() => new LayeredIOManager());
+        public static LayeredIOManager Instance() => s_instance.Value;
+        #endregion
+
         private enum IoHardwareType
         {
             MitsubishiPLC,
@@ -82,21 +93,51 @@ namespace Ewan.Core.IO
             }
         }
 
-        public override bool Init()
+        public bool Init()
         {
+            s_logger.Info("LayeredIOManager 初始化开始");
             try
             {
                 LoadConfiguration();
                 CreateContext();
-                _uiLogger.Info("管理器初始化成功: {0}", "LayeredIOManager");
-                return base.Init();
+                s_logger.Info("LayeredIOManager 初始化完成");
+                return true;
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("管理器初始化失败: {0} - {1}", "LayeredIOManager", ex.Message);
+                s_logger.ErrorFormat("LayeredIOManager 初始化失败: {0}", ex.Message);
                 return false;
             }
         }
+
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _disposed = true;
+            s_logger.Info("LayeredIOManager 开始销毁");
+
+            lock (_lockObject)
+            {
+                try
+                {
+                    if (_hardware != null && _hardware.IsConnected)
+                    {
+                        _hardware.Disconnect();
+                    }
+                }
+                catch
+                {
+                    // ignored
+                }
+
+                DisposeContext();
+            }
+
+            s_logger.Info("LayeredIOManager 销毁完成");
+        }
+
+        [Obsolete("请使用 Dispose() 方法")]
+        public void Destroy() => Dispose();
 
         private void LoadConfiguration()
         {
@@ -104,7 +145,7 @@ namespace Ewan.Core.IO
 
             if (!File.Exists(_mappingConfigPath))
             {
-                _uiLogger.Warn("IO配置文件不存在: {0}", _mappingConfigPath);
+                s_logger.WarnFormat("IO配置文件不存在: {0}", _mappingConfigPath);
                 _hardwareType = IoHardwareType.SMC606IO;
                 _connectionString = "192.168.5.11";
                 _inputPhysicalCount = 0;
@@ -130,8 +171,8 @@ namespace Ewan.Core.IO
                 _connectionString = "192.168.5.11";
             }
 
-            _uiLogger.Debug("IO配置已加载: {0}",
-                $"HardwareType={_hardwareType}, ConnectionString={_connectionString}, MappingPath={_mappingConfigPath}, In={_inputPhysicalCount}, Out={_outputPhysicalCount}");
+            s_logger.DebugFormat("IO配置已加载: HardwareType={0}, ConnectionString={1}, MappingPath={2}, In={3}, Out={4}",
+                _hardwareType, _connectionString, _mappingConfigPath, _inputPhysicalCount, _outputPhysicalCount);
         }
 
         private static IoHardwareType ParseHardwareType(string hardwareTypeText)
@@ -322,7 +363,7 @@ namespace Ewan.Core.IO
             {
                 if (_hardware == null || _ctx == null)
                 {
-                    _uiLogger.Error("IO未初始化");
+                    s_logger.Error("IO未初始化");
                     return false;
                 }
 
@@ -342,11 +383,11 @@ namespace Ewan.Core.IO
                     bool result = _hardware.Connect(connStr);
                     if (!result)
                     {
-                        _uiLogger.Error("IO连接失败: {0}", connStr);
+                        s_logger.ErrorFormat("IO连接失败: {0}", connStr);
                         return false;
                     }
 
-                    _uiLogger.Info("IO已连接: {0}", connStr);
+                    s_logger.InfoFormat("IO已连接: {0}", connStr);
 
                     try
                     {
@@ -354,14 +395,14 @@ namespace Ewan.Core.IO
                     }
                     catch (Exception ex)
                     {
-                        _uiLogger.Warn("IO初次Tick失败: {0}", ex.Message);
+                        s_logger.WarnFormat("IO初次Tick失败: {0}", ex.Message);
                     }
 
                     return true;
                 }
                 catch (Exception ex)
                 {
-                    _uiLogger.Error("IO连接错误: {0}", ex.Message);
+                    s_logger.ErrorFormat("IO连接错误: {0}", ex.Message);
                     return false;
                 }
             }
@@ -382,7 +423,7 @@ namespace Ewan.Core.IO
                         // ignored
                     }
 
-                    _uiLogger.Info("IO已断开连接");
+                    s_logger.Info("IO已断开连接");
                 }
             }
         }
@@ -408,7 +449,7 @@ namespace Ewan.Core.IO
 
             if (ctx == null)
             {
-                _uiLogger.Error("IO未初始化");
+                s_logger.Error("IO未初始化");
                 return false;
             }
 
@@ -431,7 +472,7 @@ namespace Ewan.Core.IO
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("IO模拟错误: {0} - {1}", $"X{index}", ex.Message);
+                s_logger.ErrorFormat("IO模拟错误: X{0} - {1}", index, ex.Message);
                 return false;
             }
         }
@@ -469,43 +510,21 @@ namespace Ewan.Core.IO
 
             if (ctx == null)
             {
-                _uiLogger.Error("IO未初始化");
+                s_logger.Error("IO未初始化");
                 return false;
             }
 
             try
             {
                 ctx.Sim.ClearAll();
-                _uiLogger.Info("清除所有IO模拟状态");
+                s_logger.Info("清除所有IO模拟状态");
                 return true;
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("IO模拟错误: {0} - {1}", "Clear", ex.Message);
+                s_logger.ErrorFormat("IO模拟错误: Clear - {0}", ex.Message);
                 return false;
             }
-        }
-
-        public override void Destroy()
-        {
-            lock (_lockObject)
-            {
-                try
-                {
-                    if (_hardware != null && _hardware.IsConnected)
-                    {
-                        _hardware.Disconnect();
-                    }
-                }
-                catch
-                {
-                    // ignored
-                }
-
-                DisposeContext();
-            }
-
-            base.Destroy();
         }
 
         private void DisposeContext()

@@ -1,4 +1,7 @@
-﻿using EwanCore.Attribute;
+﻿using EwanCore;
+using EwanCore.Attribute;
+using EwanCommon.Logging;
+using log4net;
 using Ewan.CodeReader;
 using Ewan.CodeReader.Interfaces;
 using Ewan.CodeReader.Scanners;
@@ -13,8 +16,16 @@ namespace Ewan.Core.ScanCode
     /// 扫码器管理器 - 使用 Ewan.CodeReader 统一扫码封装
     /// </summary>
     [Manager(Priority = 1)]
-    public class DLManager : BaseManager<DLManager>
+    public class DLManager : IManager
     {
+        private static readonly ILog s_logger = Log.GetLogger(typeof(DLManager));
+        private bool _disposed;
+
+        #region 单例支持
+        private static readonly Lazy<DLManager> s_instance = new Lazy<DLManager>(() => new DLManager());
+        public static DLManager Instance() => s_instance.Value;
+        #endregion
+
         #region 私有字段
 
         private IScanner _scanner;
@@ -42,40 +53,46 @@ namespace Ewan.Core.ScanCode
 
         #region 初始化和销毁
 
-        public override bool Init()
+        public bool Init()
         {
-            _uiLogger.InfoRaw("模块初始化成功: {0}", "DLManager");
-            
+            s_logger.Info("DLManager 初始化开始");
+
             try
             {
                 // 启动连接
                 ConnectToScanner();
-                          
-                return base.Init();
+
+                s_logger.Info("DLManager 初始化完成");
+                return true;
             }
             catch (Exception ex)
             {
-                _uiLogger.ErrorRaw("初始化失败: {0}", "DLManager初始化失败: " + ex.Message);
+                s_logger.ErrorFormat("DLManager 初始化失败: {0}", ex.Message);
                 return false;
             }
         }
 
-        public override void Destroy()
+        public void Dispose()
         {
-            _uiLogger.InfoRaw("模块已销毁: {0}", "DLManager");
-            
+            if (_disposed) return;
+            _disposed = true;
+            s_logger.Info("DLManager 开始销毁");
+
             try
-            {          
+            {
                 // 断开连接
                 DisconnectFromScanner();
             }
             catch (Exception ex)
             {
-                _uiLogger.ErrorRaw("处理错误: {0} - {1}", "DLManager销毁错误: " + ex.Message);
+                s_logger.ErrorFormat("DLManager 销毁错误: {0}", ex.Message);
             }
-            
-            base.Destroy();
+
+            s_logger.Info("DLManager 销毁完成");
         }
+
+        [Obsolete("请使用 Dispose() 方法")]
+        public void Destroy() => Dispose();
 
         #endregion
 
@@ -92,8 +109,7 @@ namespace Ewan.Core.ScanCode
                 {
                     LoadScannerSettings();
 
-                    _uiLogger.InfoRaw("处理已开始: {0}", 
-                        $"连接扫码器({_scannerType}) {_scannerIp}:{_scannerPort}");
+                    s_logger.InfoFormat("连接扫码器({0}) {1}:{2}", _scannerType, _scannerIp, _scannerPort);
 
                     DisconnectFromScanner();
 
@@ -108,19 +124,19 @@ namespace Ewan.Core.ScanCode
 
                     if (!connected)
                     {
-                        _uiLogger.ErrorRaw("操作失败: {0}", "扫码器连接失败");
+                        s_logger.Error("扫码器连接失败");
                         DisconnectFromScanner();
                         return false;
                     }
 
-                    _uiLogger.InfoRaw("处理已完成: {0}", "扫码器连接成功");
+                    s_logger.Info("扫码器连接成功");
                     return true;
                 }
                 catch (Exception ex)
                 {
                     DisconnectFromScanner();
-                    
-                    _uiLogger.ErrorRaw("操作失败: {0}", "扫码器连接失败: " + ex.Message);
+
+                    s_logger.ErrorFormat("扫码器连接失败: {0}", ex.Message);
                     return false;
                 }
             }
@@ -176,13 +192,12 @@ namespace Ewan.Core.ScanCode
                         _scanner = null;
                         _scannerDevice = null;
                     }
-                    
-                    _uiLogger.InfoRaw("处理已完成: {0}", "扫码器连接已断开");
-                    
+
+                    s_logger.Info("扫码器连接已断开");
                 }
                 catch (Exception ex)
                 {
-                    _uiLogger.ErrorRaw("处理错误: {0} - {1}", "断开扫码器连接错误: " + ex.Message);
+                    s_logger.ErrorFormat("断开扫码器连接错误: {0}", ex.Message);
                 }
             }
         }
@@ -210,38 +225,38 @@ namespace Ewan.Core.ScanCode
 
                         if (_scanner == null || !_scanner.IsConnected)
                         {
-                            _uiLogger.ErrorRaw("操作失败: {0}", "扫码器未连接，无法触发扫码");
+                            s_logger.Error("扫码器未连接，无法触发扫码");
                             return "";
                         }
                     }
 
-                    _uiLogger.InfoRaw("处理已开始: {0}", "发送扫码触发命令: " + _triggerCommand);
-                    
+                    s_logger.InfoFormat("发送扫码触发命令: {0}", _triggerCommand);
+
                     string rawResult = TriggerScanInternal();
                     string scanResult = NormalizeScanResult(rawResult);
-                    
+
                     if (!string.IsNullOrEmpty(scanResult))
                     {
-                        _uiLogger.InfoRaw("处理已完成: {0}", "扫码成功，结果: " + scanResult);
+                        s_logger.InfoFormat("扫码成功，结果: {0}", scanResult);
                     }
                     else
                     {
                         string rawText = rawResult?.Trim();
                         if (!string.IsNullOrWhiteSpace(rawText))
                         {
-                            _uiLogger.ErrorRaw("操作失败: {0}", "扫码失败，返回: " + rawText);
+                            s_logger.ErrorFormat("扫码失败，返回: {0}", rawText);
                         }
                         else
                         {
-                            _uiLogger.ErrorRaw("操作失败: {0}", "扫码失败，未收到有效结果");
+                            s_logger.Error("扫码失败，未收到有效结果");
                         }
                     }
-                    
+
                     return scanResult;
                 }
                 catch (Exception ex)
                 {
-                    _uiLogger.ErrorRaw("操作失败: {0}", "触发扫码失败: " + ex.Message);
+                    s_logger.ErrorFormat("触发扫码失败: {0}", ex.Message);
                     return "";
                 }
             }
@@ -301,7 +316,7 @@ namespace Ewan.Core.ScanCode
         /// <returns>重连是否成功</returns>
         public bool Reconnect()
         {
-            _uiLogger.InfoRaw("处理已开始: {0}", "手动重连扫码器");
+            s_logger.Info("手动重连扫码器");
             return ConnectToScanner();
         }
 
@@ -560,7 +575,7 @@ namespace Ewan.Core.ScanCode
         {
             try
             {
-                _uiLogger.ErrorRaw("操作失败: {0}", $"扫码器异常: ({e?.ErrorCode}) {e?.ErrorMessage}");
+                s_logger.ErrorFormat("扫码器异常: ({0}) {1}", e?.ErrorCode, e?.ErrorMessage);
             }
             catch
             {
@@ -571,8 +586,8 @@ namespace Ewan.Core.ScanCode
         {
             try
             {
-                _uiLogger.InfoRaw("处理已完成: {0}",
-                    $"扫码器连接状态: {(e?.IsConnected == true ? "已连接" : "已断开")} {e?.Message}");
+                s_logger.InfoFormat("扫码器连接状态: {0} {1}",
+                    e?.IsConnected == true ? "已连接" : "已断开", e?.Message);
                 SendConnectionStatusMessage(e?.IsConnected == true);
             }
             catch
@@ -595,14 +610,12 @@ namespace Ewan.Core.ScanCode
                 // TODO: 创建并发送连接状态消息
                 // var statusMsg = new ScannerConnectionMessage(isConnected, _scannerIp, _scannerPort);
                 // _msgManager.PushMsg(new MessageModel(MsgSubject.ScannerStatus, statusMsg));
-                
-                _uiLogger.InfoRaw("处理已完成: {0}", 
-                    $"发送扫码器连接状态消息: {(isConnected ? "已连接" : "已断开")}");
+
+                s_logger.InfoFormat("发送扫码器连接状态消息: {0}", isConnected ? "已连接" : "已断开");
             }
             catch (Exception ex)
             {
-                _uiLogger.ErrorRaw("处理错误: {0} - {1}", 
-                    "发送连接状态消息错误: " + ex.Message);
+                s_logger.ErrorFormat("发送连接状态消息错误: {0}", ex.Message);
             }
         }
 
