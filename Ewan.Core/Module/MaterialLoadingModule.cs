@@ -184,8 +184,6 @@ namespace Ewan.Core.Module
                     stateSnapshot = _currentState;
                 }
 
-                UpdateBeltConveyorControl(stateSnapshot);
-                
                 Thread.Sleep(_scanInterval);
                 return true;
             }
@@ -222,15 +220,16 @@ namespace Ewan.Core.Module
             }
             
             // 无下料请求，检查是否有料片检测信号
-            if (_ioManager.Ctx.R.检测到料片信号 && 
+            if (_ioManager.Ctx.R.检测到料片信号 &&
                 _sharedState?.TryStartLoading() == true)
             {
                 // 有料片检测信号，允许取料
                 _ioManager.Ctx.On(x => x.触发机械手皮带线允许取料);
-                
+
                 _sharedState?.MarkLoadingInProgress();
-                
+
                 _currentState = MaterialLoadingState.PickingMaterial;
+
                 _uiLogger.InfoRaw("处理已开始: {0}", "检测到料片信号(X3=true)，允许取料(OUT14=true)，开始装料流程");
             }
         }
@@ -242,6 +241,17 @@ namespace Ewan.Core.Module
         /// </summary>
         private void ProcessPickingMaterial()
         {
+            // 检测机械手忙碌信号，请求停止皮带
+            if (!_beltStopRequested && _ioManager.Ctx.R.机械手忙碌状态信号)
+            {
+                _beltStopRequested = true;
+                var beltStopMessage = BeltConveyorControlMessage.Stop(
+                    BeltConveyorControlSource.MaterialLoading,
+                    "机械手正在取料，停止皮带");
+                MessageHub.Current.Post(beltStopMessage);
+                _uiLogger.InfoRaw("处理已开始: {0}", "检测到机械手忙碌信号，请求停止皮带");
+            }
+
             // 在取料过程中检测是否到达扫码位置X7
             if (_ioManager.Ctx.R.移至扫码区到位信号)
             {
@@ -326,13 +336,24 @@ namespace Ewan.Core.Module
                 
                 // 装料完成，清除IN20脉冲标志
                 _sharedState?.ClearLoadingInProgress();
-                
+
                 // 释放流程锁
                 _sharedState?.FinishProcess();
+
+                // 释放皮带控制
+                if (_beltStopRequested)
+                {
+                    _beltStopRequested = false;
+                    var beltReleaseMessage = BeltConveyorControlMessage.Release(
+                        BeltConveyorControlSource.MaterialLoading,
+                        "装料完成，释放皮带");
+                    MessageHub.Current.Post(beltReleaseMessage);
+                }
+
                 SetLoadingCompleted(false);
                 _currentState = MaterialLoadingState.Idle;
-                
-                _uiLogger.InfoRaw("处理已完成: {0}", "装料完成，清除IN20脉冲标志，释放流程锁，回到Idle状态");
+
+                _uiLogger.InfoRaw("处理已完成: {0}", "装料完成，清除IN20脉冲标志，释放皮带，回到Idle状态");
            
             }
         }
@@ -472,40 +493,6 @@ namespace Ewan.Core.Module
 
 
         #region 皮带控制
-
-        private void UpdateBeltConveyorControl(MaterialLoadingState stateSnapshot)
-        {
-            try
-            {
-                if (_ioManager?.Ctx == null)
-                {
-                    return;
-                }
-
-                bool robotBusy = _ioManager.Ctx.R.机械手忙碌状态信号;
-                bool shouldStop = stateSnapshot == MaterialLoadingState.PickingMaterial && robotBusy;
-
-                if (shouldStop == _beltStopRequested)
-                {
-                    return;
-                }
-
-                _beltStopRequested = shouldStop;
-
-                // 使用强类型消息发布
-                var message = new BeltConveyorControlMessage(
-                    Ewan.Model.Messages.BeltConveyorControlSource.MaterialLoading,
-                    shouldStop,
-                    shouldStop ? "机械手正在取料(IN20=1)" : "装料流程完成，释放皮带");
-
-                MessageHub.Current.Post(message);
-            }
-            catch (Exception ex)
-            {
-                _uiLogger.ErrorRaw("处理错误: {0} - {1}",
-                    "装料皮带控制", ex.Message);
-            }
-        }
 
         private void ForceReleaseBeltControl(string reason)
         {
