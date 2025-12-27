@@ -20,9 +20,6 @@
 
         RingLineheartData,
 
-        BeltConveyorControl,
-
-        MesRequest,   // MES 请求消息
-        MesFeedback   // MES 反馈/响应消息
+        BeltConveyorControl
     }
 }

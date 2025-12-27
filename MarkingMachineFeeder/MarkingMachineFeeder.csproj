@@ -286,6 +286,10 @@
       <Project>{88888888-8888-8888-8888-888888888888}</Project>
       <Name>Ewan.LogManager</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EwanCommon\EwanCommon\EwanCommon.csproj">
+      <Project>{4C459CB9-E516-4068-B558-D89862B7D54F}</Project>
+      <Name>EwanCommon</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\config\io_mapping.json">

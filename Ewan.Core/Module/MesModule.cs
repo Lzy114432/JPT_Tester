@@ -4,13 +4,13 @@ using System.Threading.Tasks;
 using Ewan.Core.Mes;
 using Ewan.Core.Msg;
 using Ewan.Mes.Models.Domain.ZHJW.RingLine;
+using EwanCore.Messaging;
 
 namespace Ewan.Core.Module
 {
     /// <summary>
     /// MES 后台常驻模块（消息驱动模式）：
-    /// - OnInit：注册 MsgSubject.MesRequest 监听器
-    /// - OnMesRequestMessage：直接在回调中处理请求，并回推 MsgSubject.MesFeedback
+    /// - OnInit：注册 MessageHub.RespondAsync 处理 MesRingLineRequest
     /// - OnRun：仅保持模块存活
     /// </summary>
     public class MesModule : BaseModule<MesModule>
@@ -18,7 +18,7 @@ namespace Ewan.Core.Module
         private const int DefaultTimeoutMs = 30000;
         private const int RunLoopIntervalMs = 100;
 
-        private MsgListener _requestListener;
+        private IDisposable _responderSubscription;
 
         private readonly object _ringLineResponseLock = new object();
         private IDisposable _feedingQianLiaocangResponseSubscription;
@@ -26,10 +26,11 @@ namespace Ewan.Core.Module
 
         protected override void OnInit()
         {
-            _requestListener = new MsgListener(MsgSubject.MesRequest, OnMesRequestMessage);
-            MsgManager.Instance().RegisterListener(_requestListener);
+            _responderSubscription = MessageHub.Current.RespondAsync<MesRingLineRequest, MesRingLineFeedback>(
+                ProcessRequestAsync,
+                postReply: true);
 
-            _uiLogger.InfoRaw("模块初始化成功: {0}", "MesModule");
+            _uiLogger.InfoRaw("模块初始化成功: {0}", "MesModule (MessageHub)");
         }
 
         protected override bool OnRun()
@@ -43,11 +44,8 @@ namespace Ewan.Core.Module
         {
             try
             {
-                if (_requestListener != null)
-                {
-                    MsgManager.Instance().UnRegisterListener(_requestListener);
-                    _requestListener = null;
-                }
+                _responderSubscription?.Dispose();
+                _responderSubscription = null;
             }
             catch
             {
@@ -81,24 +79,18 @@ namespace Ewan.Core.Module
         }
 
         /// <summary>
-        /// 消息回调：直接处理 MES 请求（消息驱动模式）
+        /// 异步处理 MES 请求
         /// </summary>
-        private void OnMesRequestMessage(MessageModel msg)
+        private async Task<MesRingLineFeedback> ProcessRequestAsync(MesRingLineRequest request)
         {
-            MesRingLineRequest request;
-            try
-            {
-                request = msg.GetData<MesRingLineRequest>();
-            }
-            catch (Exception ex)
-            {
-                _uiLogger.WarnRaw("MES 请求消息解析失败: {0}", ex.Message);
-                return;
-            }
-
             if (request == null)
             {
-                return;
+                return new MesRingLineFeedback
+                {
+                    CorrelationId = Guid.Empty,
+                    Success = false,
+                    Message = "请求为空"
+                };
             }
 
             if (request.CorrelationId == Guid.Empty)
@@ -106,95 +98,91 @@ namespace Ewan.Core.Module
                 request.CorrelationId = Guid.NewGuid();
             }
 
-            // 直接在回调中处理请求
             try
             {
-                ProcessRequest(request);
+                return await ProcessRequestInternalAsync(request).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
-                PublishFeedback(new MesRingLineFeedback
+                return new MesRingLineFeedback
                 {
                     CorrelationId = request.CorrelationId,
                     Action = request.Action,
                     Success = false,
                     Message = "处理 MES 请求异常: " + ex.Message
-                });
+                };
             }
         }
 
-        private void ProcessRequest(MesRingLineRequest request)
+        private async Task<MesRingLineFeedback> ProcessRequestInternalAsync(MesRingLineRequest request)
         {
             string error;
             if (!EnsureMesReady(out error))
             {
-                PublishFeedback(new MesRingLineFeedback
+                return new MesRingLineFeedback
                 {
                     CorrelationId = request.CorrelationId,
                     Action = request.Action,
                     Success = false,
                     Message = error
-                });
-                return;
+                };
             }
 
             switch (request.Action)
             {
                 case MesRingLineAction.FeedingQianLiaocang:
-                    HandleFeedingQianLiaocang(request);
-                    return;
+                    return await HandleFeedingQianLiaocangAsync(request).ConfigureAwait(false);
 
                 case MesRingLineAction.FeedingQianLiaocangSuccess:
-                    HandlePublishOnly(
+                    return await HandlePublishOnlyAsync(
                         request,
-                        () => MesManager.Instance().PublishFeedingQianLiaocangSuccessAsync(request.PlateCode, request.FeedingLiaokuangCode));
-                    return;
+                        () => MesManager.Instance().PublishFeedingQianLiaocangSuccessAsync(request.PlateCode, request.FeedingLiaokuangCode))
+                        .ConfigureAwait(false);
 
                 case MesRingLineAction.UnloadingQianLiaocang:
-                    HandlePublishOnly(
+                    return await HandlePublishOnlyAsync(
                         request,
-                        () => MesManager.Instance().PublishUnloadingQianLiaocangAsync(request.PlateCode, request.FeedingLiaokuangCode));
-                    return;
+                        () => MesManager.Instance().PublishUnloadingQianLiaocangAsync(request.PlateCode, request.FeedingLiaokuangCode))
+                        .ConfigureAwait(false);
 
                 case MesRingLineAction.FeedingZhongLiaocang:
-                    HandlePublishOnly(
+                    return await HandlePublishOnlyAsync(
                         request,
-                        () => MesManager.Instance().PublishFeedingZhongLiaocangAsync(request.PlateCode, request.FeedingLiaokuangCode));
-                    return;
+                        () => MesManager.Instance().PublishFeedingZhongLiaocangAsync(request.PlateCode, request.FeedingLiaokuangCode))
+                        .ConfigureAwait(false);
 
                 case MesRingLineAction.UnloadingZhongLiaocang:
-                    HandlePublishOnly(
+                    return await HandlePublishOnlyAsync(
                         request,
-                        () => MesManager.Instance().PublishUnloadingZhongLiaocangAsync(request.PlateCode, request.FeedingLiaokuangCode));
-                    return;
+                        () => MesManager.Instance().PublishUnloadingZhongLiaocangAsync(request.PlateCode, request.FeedingLiaokuangCode))
+                        .ConfigureAwait(false);
 
                 case MesRingLineAction.FeedingQingxihongganji:
-                    HandlePublishOnly(
+                    return await HandlePublishOnlyAsync(
                         request,
-                        () => MesManager.Instance().PublishFeedingQingxihongganjiAsync(request.PlateCode));
-                    return;
+                        () => MesManager.Instance().PublishFeedingQingxihongganjiAsync(request.PlateCode))
+                        .ConfigureAwait(false);
 
                 case MesRingLineAction.FeedingHouLiaocang:
-                    HandlePublishOnly(
+                    return await HandlePublishOnlyAsync(
                         request,
-                        () => MesManager.Instance().PublishFeedingHouLiaocangAsync(request.PlateCode, request.FeedingLiaokuangCode));
-                    return;
+                        () => MesManager.Instance().PublishFeedingHouLiaocangAsync(request.PlateCode, request.FeedingLiaokuangCode))
+                        .ConfigureAwait(false);
 
                 case MesRingLineAction.UnloadingHouLiaocang:
-                    HandlePublishOnly(
+                    return await HandlePublishOnlyAsync(
                         request,
-                        () => MesManager.Instance().PublishUnloadingHouLiaocangAsync(request.PlateCode, request.FeedingLiaokuangCode));
-                    return;
+                        () => MesManager.Instance().PublishUnloadingHouLiaocangAsync(request.PlateCode, request.FeedingLiaokuangCode))
+                        .ConfigureAwait(false);
 
                 default:
-                    PublishFeedback(new MesRingLineFeedback
+                    return new MesRingLineFeedback
                     {
                         CorrelationId = request.CorrelationId,
                         Action = request.Action,
                         Success = false,
                         Message = "未知的 MES RingLine 请求类型"
-                    });
-                    return;
+                    };
             }
         }
 
@@ -224,18 +212,17 @@ namespace Ewan.Core.Module
             return true;
         }
 
-        private void HandleFeedingQianLiaocang(MesRingLineRequest request)
+        private async Task<MesRingLineFeedback> HandleFeedingQianLiaocangAsync(MesRingLineRequest request)
         {
             if (string.IsNullOrWhiteSpace(request.PlateCode))
             {
-                PublishFeedback(new MesRingLineFeedback
+                return new MesRingLineFeedback
                 {
                     CorrelationId = request.CorrelationId,
                     Action = request.Action,
                     Success = false,
                     Message = "PlateCode 不能为空"
-                });
-                return;
+                };
             }
 
             EnsureFeedingQianLiaocangResponseSubscription();
@@ -247,14 +234,13 @@ namespace Ewan.Core.Module
             {
                 if (_pendingFeedingQianLiaocangResponse != null)
                 {
-                    PublishFeedback(new MesRingLineFeedback
+                    return new MesRingLineFeedback
                     {
                         CorrelationId = request.CorrelationId,
                         Action = request.Action,
                         Success = false,
                         Message = "上一个 FeedingQianLiaocang 请求仍在等待响应"
-                    });
-                    return;
+                    };
                 }
 
                 _pendingFeedingQianLiaocangResponse = tcs;
@@ -263,49 +249,42 @@ namespace Ewan.Core.Module
             ushort publishId = 0;
             try
             {
-                publishId = MesManager.Instance()
+                publishId = await MesManager.Instance()
                     .PublishFeedingQianLiaocangAsync(request.PlateCode, request.BillNoWip ?? string.Empty)
-                    .ConfigureAwait(false)
-                    .GetAwaiter()
-                    .GetResult();
+                    .ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 ClearPendingFeedingQianLiaocangResponse(tcs);
-                PublishFeedback(new MesRingLineFeedback
+                return new MesRingLineFeedback
                 {
                     CorrelationId = request.CorrelationId,
                     Action = request.Action,
                     Success = false,
                     Message = "发送失败: " + ex.Message,
                     PublishMessageId = publishId
-                });
-                return;
+                };
             }
 
             try
             {
-                var completed = Task.WhenAny(tcs.Task, Task.Delay(timeoutMs))
-                    .ConfigureAwait(false)
-                    .GetAwaiter()
-                    .GetResult();
+                var completed = await Task.WhenAny(tcs.Task, Task.Delay(timeoutMs)).ConfigureAwait(false);
 
                 if (completed != tcs.Task)
                 {
                     ClearPendingFeedingQianLiaocangResponse(tcs);
-                    PublishFeedback(new MesRingLineFeedback
+                    return new MesRingLineFeedback
                     {
                         CorrelationId = request.CorrelationId,
                         Action = request.Action,
                         Success = false,
                         Message = $"等待 MES 响应超时({timeoutMs}ms)",
                         PublishMessageId = publishId
-                    });
-                    return;
+                    };
                 }
 
-                var response = tcs.Task.ConfigureAwait(false).GetAwaiter().GetResult();
-                PublishFeedback(new MesRingLineFeedback
+                var response = await tcs.Task.ConfigureAwait(false);
+                return new MesRingLineFeedback
                 {
                     CorrelationId = request.CorrelationId,
                     Action = request.Action,
@@ -313,19 +292,19 @@ namespace Ewan.Core.Module
                     Message = response.Message,
                     PublishMessageId = publishId,
                     Data = response
-                });
+                };
             }
             catch (Exception ex)
             {
                 ClearPendingFeedingQianLiaocangResponse(tcs);
-                PublishFeedback(new MesRingLineFeedback
+                return new MesRingLineFeedback
                 {
                     CorrelationId = request.CorrelationId,
                     Action = request.Action,
                     Success = false,
                     Message = "等待 MES 响应失败: " + ex.Message,
                     PublishMessageId = publishId
-                });
+                };
             }
         }
 
@@ -389,59 +368,54 @@ namespace Ewan.Core.Module
             }
         }
 
-        private void HandlePublishOnly(MesRingLineRequest request, Func<Task<ushort>> publishAsync)
+        private async Task<MesRingLineFeedback> HandlePublishOnlyAsync(MesRingLineRequest request, Func<Task<ushort>> publishAsync)
         {
             if (string.IsNullOrWhiteSpace(request.PlateCode))
             {
-                PublishFeedback(new MesRingLineFeedback
+                return new MesRingLineFeedback
                 {
                     CorrelationId = request.CorrelationId,
                     Action = request.Action,
                     Success = false,
                     Message = "PlateCode 不能为空"
-                });
-                return;
+                };
             }
 
             if (NeedsFeedingLiaokuangCode(request.Action) && string.IsNullOrWhiteSpace(request.FeedingLiaokuangCode))
             {
-                PublishFeedback(new MesRingLineFeedback
+                return new MesRingLineFeedback
                 {
                     CorrelationId = request.CorrelationId,
                     Action = request.Action,
                     Success = false,
                     Message = "FeedingLiaokuangCode 不能为空"
-                });
-                return;
+                };
             }
 
             ushort publishId = 0;
             try
             {
-                publishId = publishAsync()
-                    .ConfigureAwait(false)
-                    .GetAwaiter()
-                    .GetResult();
+                publishId = await publishAsync().ConfigureAwait(false);
 
-                PublishFeedback(new MesRingLineFeedback
+                return new MesRingLineFeedback
                 {
                     CorrelationId = request.CorrelationId,
                     Action = request.Action,
                     Success = true,
                     Message = "已发送",
                     PublishMessageId = publishId
-                });
+                };
             }
             catch (Exception ex)
             {
-                PublishFeedback(new MesRingLineFeedback
+                return new MesRingLineFeedback
                 {
                     CorrelationId = request.CorrelationId,
                     Action = request.Action,
                     Success = false,
                     Message = "发送失败: " + ex.Message,
                     PublishMessageId = publishId
-                });
+                };
             }
         }
 
@@ -459,11 +433,6 @@ namespace Ewan.Core.Module
                 default:
                     return false;
             }
-        }
-
-        private void PublishFeedback(MesRingLineFeedback feedback)
-        {
-            MsgManager.Instance().PushMsg(new MessageModel(MsgSubject.MesFeedback, feedback));
         }
     }
 }

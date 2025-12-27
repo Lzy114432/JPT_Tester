@@ -93,11 +93,9 @@
     <Compile Include="Module\SystemStatusIndicatorModule.cs" />
     <Compile Include="Msg\MessageModel.cs" />
     <Compile Include="Msg\MesMessages.cs" />
-    <Compile Include="Msg\MesMsgBus.cs" />
     <Compile Include="Msg\MsgListener.cs" />
     <Compile Include="Msg\MsgManager.cs" />
     <Compile Include="Msg\MsgSubject.cs" />
-    <Compile Include="Msg\RequestAwaiter.cs" />
     <Compile Include="Plc\ModbusManager.cs" />
     <Compile Include="Plc\ModbusRTUManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

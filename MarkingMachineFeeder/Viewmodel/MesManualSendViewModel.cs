@@ -2,6 +2,7 @@ using Ewan.Core.Mes;
 using Ewan.Core.Msg;
 using Ewan.Core.ScanCode;
 using Ewan.Model.System;
+using EwanCore.Messaging;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
@@ -43,7 +44,7 @@ namespace MarkingMachineFeeder.Viewmodel
     public class MesManualSendViewModel : BindableBase, IDisposable
     {
         private readonly MesManager _mesManager;
-        private MsgListener _mesFeedbackListener;
+        private IDisposable _mesFeedbackSubscription;
 
         private bool _mesEnabled;
         private string _brokerHost;
@@ -351,11 +352,10 @@ namespace MarkingMachineFeeder.Viewmodel
                     return;
                 }
 
-                _mesFeedbackListener = new MsgListener(MsgSubject.MesFeedback, msg =>
+                _mesFeedbackSubscription = MessageHub.Current.Subscribe<MesRingLineFeedback>(feedback =>
                 {
                     try
                     {
-                        var feedback = msg.GetData<MesRingLineFeedback>();
                         if (feedback == null)
                         {
                             return;
@@ -369,10 +369,8 @@ namespace MarkingMachineFeeder.Viewmodel
                     }
                 });
 
-                MsgManager.Instance().RegisterListener(_mesFeedbackListener);
-
                 IsResponseSubscribed = true;
-                AppendReceiveLog("订阅成功：MES反馈消息(MesFeedback)。");
+                AppendReceiveLog("订阅成功：MES反馈消息(MesRingLineFeedback)。");
             }
             catch (Exception ex)
             {
@@ -388,11 +386,8 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             try
             {
-                if (_mesFeedbackListener != null)
-                {
-                    MsgManager.Instance().UnRegisterListener(_mesFeedbackListener);
-                    _mesFeedbackListener = null;
-                }
+                _mesFeedbackSubscription?.Dispose();
+                _mesFeedbackSubscription = null;
                 IsResponseSubscribed = false;
                 AppendReceiveLog("已取消订阅。");
             }
@@ -461,7 +456,7 @@ namespace MarkingMachineFeeder.Viewmodel
 
                 AppendSendLog($"发送MES请求 CorrelationId={request.CorrelationId}, Action={request.Action}, PlateCode={plateCode}");
 
-                var feedback = await MesMsgBus.Instance().RequestAsync(request, request.TimeoutMs);
+                var feedback = await MessageHub.Current.RequestAsync<MesRingLineRequest, MesRingLineFeedback>(request, request.TimeoutMs);
 
                 // 仅在未订阅调试监听时显示反馈（避免双重显示）
                 if (!IsResponseSubscribed)
@@ -574,11 +569,8 @@ namespace MarkingMachineFeeder.Viewmodel
         {
             try
             {
-                if (_mesFeedbackListener != null)
-                {
-                    MsgManager.Instance().UnRegisterListener(_mesFeedbackListener);
-                    _mesFeedbackListener = null;
-                }
+                _mesFeedbackSubscription?.Dispose();
+                _mesFeedbackSubscription = null;
             }
             catch
             {

@@ -1,3 +1,4 @@
+using EwanCore.Messaging;
 using System;
 
 namespace Ewan.Core.Msg
@@ -14,7 +15,7 @@ namespace Ewan.Core.Msg
         UnloadingHouLiaocang = 8
     }
 
-    public class MesRingLineRequest
+    public class MesRingLineRequest : IMessage, ICorrelatedMessage<Guid>
     {
         public Guid CorrelationId { get; set; }
 
@@ -31,10 +32,10 @@ namespace Ewan.Core.Msg
         /// </summary>
         public int TimeoutMs { get; set; } = 30000;
 
-        public DateTime Timestamp { get; set; } = DateTime.Now;
+        public DateTimeOffset Timestamp { get; set; } = DateTimeOffset.Now;
     }
 
-    public class MesRingLineFeedback
+    public class MesRingLineFeedback : IMessage, ICorrelatedMessage<Guid>
     {
         public Guid CorrelationId { get; set; }
 
@@ -54,7 +55,7 @@ namespace Ewan.Core.Msg
         /// </summary>
         public object Data { get; set; }
 
-        public DateTime Timestamp { get; set; } = DateTime.Now;
+        public DateTimeOffset Timestamp { get; set; } = DateTimeOffset.Now;
     }
 }
 
