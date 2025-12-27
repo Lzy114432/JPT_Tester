@@ -8,6 +8,7 @@ using Ewan.Core.Msg;
 using Ewan.Model.IO;
 using Ewan.Model.System;
 using EwanIO.Core.Attributes;
+using EwanIO.Core.Context;
 
 namespace Ewan.BusinessBonding
 {
@@ -21,11 +22,16 @@ namespace Ewan.BusinessBonding
         private readonly object _stateLock = new object();
         private bool _isPaused;
 
+        /// <summary>
+        /// 获取 IO 上下文（简化访问）
+        /// </summary>
+        private IoContext<MarkingMachineFeederIOModel> Ctx => LayeredIOManager.Instance()?.Ctx;
+
         public void InitializeSystem()
         {
-            SendPulse(x => x.停止输出, now: true);
+            Ctx?.Pulse(x => x.停止输出, DEFAULT_PULSE_WIDTH_MS, now: true);
             Thread.Sleep(DEFAULT_PULSE_WIDTH_MS);
-            SendPulse(x => x.开始);
+            Ctx?.Pulse(x => x.开始, DEFAULT_PULSE_WIDTH_MS);
             Push(SystemControlCommand.Initialize);
             UpdatePauseState(false);
             _uiLogger.InfoRaw("处理已完成: {0}", "系统初始化命令已发送");
@@ -41,7 +47,7 @@ namespace Ewan.BusinessBonding
 
         public void StopSystem()
         {
-            SendPulse(x => x.停止输出, now: true);
+            Ctx?.Pulse(x => x.停止输出, DEFAULT_PULSE_WIDTH_MS, now: true);
             Push(SystemControlCommand.Stop);
             UpdatePauseState(false);
             _uiLogger.InfoRaw("处理已完成: {0}", "系统停止命令已发送");
@@ -50,7 +56,7 @@ namespace Ewan.BusinessBonding
 
         public void EmergencyStopSystem()
         {
-            SendPulse(x => x.停止输出, now: true);
+            Ctx?.Pulse(x => x.停止输出, DEFAULT_PULSE_WIDTH_MS, now: true);
             Push(SystemControlCommand.EmergencyStop);
             UpdatePauseState(false);
             _uiLogger.WarnRaw("处理已完成: {0}", "系统紧急停止命令已发送");
@@ -58,7 +64,7 @@ namespace Ewan.BusinessBonding
 
         public void PauseSystem()
         {
-            SendPulse(x => x.暂停);
+            Ctx?.Pulse(x => x.暂停, DEFAULT_PULSE_WIDTH_MS);
             Push(SystemControlCommand.Pause);
             UpdatePauseState(true);
             _uiLogger.InfoRaw("处理已完成: {0}", "系统暂停命令已发送");
@@ -73,12 +79,12 @@ namespace Ewan.BusinessBonding
 
         public void SendRecoveryPulse()
         {
-            SendPulse(x => x.复位);
+            Ctx?.Pulse(x => x.复位, DEFAULT_PULSE_WIDTH_MS);
         }
 
         public void SendStopPulse()
         {
-            SendPulse(x => x.停止输出, now: true);
+            Ctx?.Pulse(x => x.停止输出, DEFAULT_PULSE_WIDTH_MS, now: true);
         }
 
         public void SetHighSpeedMode(bool enabled)
@@ -260,38 +266,6 @@ namespace Ewan.BusinessBonding
             MessageModel msg = new MessageModel(MsgSubject.SystemControl, systemControlCommand);
             MsgManager.Instance().PushMsg(msg);
 
-        }
-
-        private void SendPulse(Expression<Func<MarkingMachineFeederIOModel, OutputSignal>> outputExpr, int pulseWidthMs = DEFAULT_PULSE_WIDTH_MS, bool now = false)
-        {
-            try
-            {
-                var ioManager = LayeredIOManager.Instance();
-                if (ioManager == null)
-                {
-                    _uiLogger.WarnRaw("发送脉冲失败: IO管理器未初始化");
-                    return;
-                }
-
-                if (!ioManager.IsConnected)
-                {
-                    ioManager.Connect();
-                }
-
-                var ctx = ioManager.Ctx;
-                if (ctx == null)
-                {
-                    _uiLogger.WarnRaw("发送脉冲失败: 未获取到IO上下文实例");
-                    return;
-                }
-
-                ctx.Pulse(outputExpr, pulseWidthMs, now: now);
-                _uiLogger.DebugRaw("已发送脉冲: {0}", outputExpr);
-            }
-            catch (Exception ex)
-            {
-                _uiLogger.ErrorRaw("发送脉冲异常: {0} - {1}", outputExpr, ex.Message);
-            }
         }
 
         private void UpdatePauseState(bool paused)
