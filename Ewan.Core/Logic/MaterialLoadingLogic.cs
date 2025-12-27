@@ -5,6 +5,7 @@ using Ewan.Model.Messages;
 using Ewan.Model.Production;
 using Ewan.Model.System;
 using EwanCommon.Logging;
+using EwanCore.AlarmSystem;
 using EwanCore.Messaging;
 using EwanCore.StateMachine;
 using System;
@@ -193,9 +194,13 @@ namespace Ewan.Core.Logic
             if (Tw.StartCheckIsTimeout(SwitchIndex, WAIT_MATERIAL_TIMEOUT))
             {
                 _uiLogger.WarnRaw("操作超时: {0}", "等待料片信号超时");
-                // 释放锁并返回初始状态
-                _sharedState.FinishProcess();
-                Rset();
+                MessageHub.Current.Post(new AlarmMessage(
+                    key: "Loading.Timeout",
+                    content: "等待料片信号超时",
+                    level: AlarmLevel.M,
+                    needReset: false,
+                    unit: "Loading"));
+                ForceCleanup("等待料片超时");
             }
         }
 
@@ -227,6 +232,12 @@ namespace Ewan.Core.Logic
             if (Tw.StartCheckIsTimeout(SwitchIndex, WAIT_SCAN_POSITION_TIMEOUT))
             {
                 _uiLogger.WarnRaw("操作超时: {0}", "等待到达扫码位置超时");
+                MessageHub.Current.Post(new AlarmMessage(
+                    key: "Loading.Timeout",
+                    content: "等待到达扫码位置超时",
+                    level: AlarmLevel.M,
+                    needReset: false,
+                    unit: "Loading"));
                 ForceCleanup("取料超时");
             }
         }
@@ -270,6 +281,12 @@ namespace Ewan.Core.Logic
                 else
                 {
                     _uiLogger.WarnRaw("操作失败: {0}", $"连续扫码{maxRetry}次无结果，继续流程");
+                    MessageHub.Current.Post(new AlarmMessage(
+                        key: "Scan.Failed",
+                        content: $"装料扫码失败：连续扫码{maxRetry}次无结果",
+                        level: AlarmLevel.L,
+                        needReset: false,
+                        unit: "Scanner"));
                 }
             }
             else
@@ -317,6 +334,12 @@ namespace Ewan.Core.Logic
             if (Tw.StartCheckIsTimeout(SwitchIndex, WAIT_LOADING_COMPLETE_TIMEOUT))
             {
                 _uiLogger.WarnRaw("操作超时: {0}", "等待装载完成超时");
+                MessageHub.Current.Post(new AlarmMessage(
+                    key: "Loading.Timeout",
+                    content: "等待装载完成超时",
+                    level: AlarmLevel.M,
+                    needReset: false,
+                    unit: "Loading"));
                 ForceCleanup("装载超时");
             }
         }
@@ -358,7 +381,7 @@ namespace Ewan.Core.Logic
         /// <summary>
         /// 强制清理并返回初始状态
         /// </summary>
-        private void ForceCleanup(string reason)
+        public void ForceCleanup(string reason)
         {
             _uiLogger.WarnRaw("强制清理: {0}", reason);
 

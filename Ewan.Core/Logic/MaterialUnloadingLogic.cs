@@ -7,6 +7,7 @@ using Ewan.Model.Messages;
 using Ewan.Model.Production;
 using Ewan.Model.System;
 using EwanCommon.Logging;
+using EwanCore.AlarmSystem;
 using EwanCore.Messaging;
 using EwanCore.StateMachine;
 using System;
@@ -34,7 +35,7 @@ namespace Ewan.Core.Logic
         private readonly SystemParametersManager _parametersManager;
         private readonly ModbusRTUManager _modbusRTUManager;
 
-        private BinElevatorModule _binElevator;
+        private IBinElevator _binElevator;
 
         private bool _beltStopRequested = false;
         private bool _ringLineSignal = false;
@@ -84,7 +85,7 @@ namespace Ewan.Core.Logic
         /// <summary>
         /// 设置料仓升降模块引用
         /// </summary>
-        public void SetBinElevatorModule(BinElevatorModule binElevator)
+        public void SetBinElevatorModule(IBinElevator binElevator)
         {
             _binElevator = binElevator;
         }
@@ -335,6 +336,16 @@ namespace Ewan.Core.Logic
             }
             else
             {
+                if (materialCheckResult.TimedOut)
+                {
+                    MessageHub.Current.Post(new AlarmMessage(
+                        key: "BinElevator.Timeout",
+                        content: $"料仓{_selectedBin}升降超时，未检测到物料",
+                        level: AlarmLevel.H,
+                        needReset: true,
+                        unit: "BinElevator"));
+                }
+
                 _hasMaterial = false;
                 SwitchIndex = "释放空车";
 
@@ -394,6 +405,12 @@ namespace Ewan.Core.Logic
             if (Tw.StartCheckIsTimeout(SwitchIndex, WAIT_PICKING_TIMEOUT))
             {
                 _uiLogger.WarnRaw("操作超时: {0}", "等待取料完成超时");
+                MessageHub.Current.Post(new AlarmMessage(
+                    key: "Unloading.Timeout",
+                    content: "等待取料完成超时",
+                    level: AlarmLevel.M,
+                    needReset: false,
+                    unit: "Unloading"));
                 ForceCleanup("取料超时");
             }
         }
@@ -414,6 +431,12 @@ namespace Ewan.Core.Logic
             if (Tw.StartCheckIsTimeout(SwitchIndex, WAIT_SCAN_POSITION_TIMEOUT))
             {
                 _uiLogger.WarnRaw("操作超时: {0}", "等待扫码位置超时");
+                MessageHub.Current.Post(new AlarmMessage(
+                    key: "Unloading.Timeout",
+                    content: "等待扫码位置超时",
+                    level: AlarmLevel.M,
+                    needReset: false,
+                    unit: "Unloading"));
                 ForceCleanup("扫码位置超时");
             }
         }
@@ -446,6 +469,12 @@ namespace Ewan.Core.Logic
                 {
                     _lastScannedQrCode = string.Empty;
                     _uiLogger.WarnRaw("操作失败: {0}", $"连续扫码{maxRetry}次无结果，继续流程");
+                    MessageHub.Current.Post(new AlarmMessage(
+                        key: "Scan.Failed",
+                        content: $"下料扫码失败：连续扫码{maxRetry}次无结果",
+                        level: AlarmLevel.L,
+                        needReset: false,
+                        unit: "Scanner"));
                 }
             }
             else
@@ -489,6 +518,12 @@ namespace Ewan.Core.Logic
             if (Tw.StartCheckIsTimeout(SwitchIndex, WAIT_PUT_CART_TIMEOUT))
             {
                 _uiLogger.WarnRaw("操作超时: {0}", "等待放入小车完成超时");
+                MessageHub.Current.Post(new AlarmMessage(
+                    key: "Unloading.Timeout",
+                    content: "等待放入小车完成超时",
+                    level: AlarmLevel.M,
+                    needReset: false,
+                    unit: "Unloading"));
                 ForceCleanup("放入小车超时");
             }
         }
@@ -577,7 +612,7 @@ namespace Ewan.Core.Logic
         /// <summary>
         /// 强制清理并返回初始状态
         /// </summary>
-        private void ForceCleanup(string reason)
+        public void ForceCleanup(string reason)
         {
             _uiLogger.WarnRaw("强制清理: {0}", reason);
 

@@ -4,6 +4,7 @@ using EwanCommon.Logging;
 using EwanCore.AlarmSystem;
 using EwanCore.Messaging;
 using EwanCore.StateMachine;
+using Ewan.Model.Messages;
 using log4net;
 using System;
 using System.Threading;
@@ -25,6 +26,7 @@ namespace Ewan.Core.Operator
         private readonly IBinElevator _binElevator;
 
         private IDisposable _stepChangedSubscription;
+        private IDisposable _alarmMessageSubscription;
         private Thread _binElevatorThread;
         private volatile bool _binElevatorRunning;
         private bool _disposed;
@@ -98,6 +100,7 @@ namespace Ewan.Core.Operator
 
             // 订阅步骤变化事件（可选，用于UI显示）
             _stepChangedSubscription = MessageHub.Current.Subscribe<StepChangedEventArgs>(OnStepChanged);
+            _alarmMessageSubscription = MessageHub.Current.Subscribe<AlarmMessage>(OnAlarmMessage);
 
             s_logger.Info("ProductionLineOperator 初始化完成");
         }
@@ -120,6 +123,7 @@ namespace Ewan.Core.Operator
 
             _operator = new MachineOperator(_alarmService, _runner);
             _stepChangedSubscription = MessageHub.Current.Subscribe<StepChangedEventArgs>(OnStepChanged);
+            _alarmMessageSubscription = MessageHub.Current.Subscribe<AlarmMessage>(OnAlarmMessage);
 
             s_logger.Info("ProductionLineOperator 初始化完成 (自定义 BinElevator)");
         }
@@ -292,8 +296,8 @@ namespace Ewan.Core.Operator
 
         private ProductionLineLogic CreateProductionLineLogic()
         {
-            var logic = new ProductionLineLogic();
-            logic.SetBinElevatorModule(_binElevator as BinElevatorModule);
+            var logic = new ProductionLineLogic(_sharedState);
+            logic.SetBinElevatorModule(_binElevator);
             return logic;
         }
 
@@ -329,6 +333,26 @@ namespace Ewan.Core.Operator
             s_logger.Info($"报警变化: kind={e.Kind}, key={key}, content={content}");
         }
 
+        private void OnAlarmMessage(AlarmMessage message)
+        {
+            if (message == null)
+            {
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(message.Content))
+            {
+                return;
+            }
+
+            _alarmService.AddAlarm(
+                content: message.Content,
+                level: message.Level,
+                unit: message.Unit,
+                needReset: message.NeedReset,
+                key: message.Key);
+        }
+
         private void OnStepChanged(StepChangedEventArgs args)
         {
             s_logger.Debug($"步骤变化: {args.LogicName}: {args.FromStep} -> {args.ToStep}");
@@ -345,6 +369,7 @@ namespace Ewan.Core.Operator
 
             StopBinElevatorThread();
             _stepChangedSubscription?.Dispose();
+            _alarmMessageSubscription?.Dispose();
             _runner?.Dispose();
             _binElevator?.Destroy();
 

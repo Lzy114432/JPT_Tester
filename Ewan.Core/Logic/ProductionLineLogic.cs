@@ -29,7 +29,7 @@ namespace Ewan.Core.Logic
 
         private MaterialLoadingLogic _loadingLogic;
         private MaterialUnloadingLogic _unloadingLogic;
-        private BinElevatorModule _binElevator;
+        private IBinElevator _binElevator;
         private LayeredIOManager _ioManager;
 
         private bool _initialized = false;
@@ -50,9 +50,13 @@ namespace Ewan.Core.Logic
         /// <summary>
         /// 构造函数
         /// </summary>
-        public ProductionLineLogic()
+        public ProductionLineLogic() : this(new ProductionLineSharedState())
         {
-            _sharedState = new ProductionLineSharedState();
+        }
+
+        public ProductionLineLogic(ProductionLineSharedState sharedState)
+        {
+            _sharedState = sharedState ?? throw new ArgumentNullException(nameof(sharedState));
             _parametersManager = SystemParametersManager.Instance;
             _ioManager = LayeredIOManager.Instance();
 
@@ -103,7 +107,7 @@ namespace Ewan.Core.Logic
         /// <summary>
         /// 设置料仓升降模块
         /// </summary>
-        public void SetBinElevatorModule(BinElevatorModule binElevator)
+        public void SetBinElevatorModule(IBinElevator binElevator)
         {
             _binElevator = binElevator;
             _unloadingLogic?.SetBinElevatorModule(binElevator);

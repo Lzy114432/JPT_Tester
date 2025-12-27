@@ -1,10 +1,12 @@
 ﻿using EwanCore;
 using EwanCore.Attribute;
 using EwanCore.Messaging;
+using EwanCore.AlarmSystem;
 using EwanCommon.Logging;
 using log4net;
 using Ewan.Core.Module;
 using Ewan.Core.Module.Interface;
+using Ewan.Core.Operator;
 using Ewan.Core.Run;
 using Ewan.Model.System;
 using System;
@@ -29,9 +31,9 @@ namespace Ewan.BusinessBonding
         #region 流程runner
 
         /// <summary>
-        /// 主流程runner
+        /// 生产线操作器（替代原 ProductionLineModule）
         /// </summary>
-        private StreamRunner _mainRunner;
+        private ProductionLineOperator _productionOperator;
 
         /// <summary>
         /// PLC心跳流程runner
@@ -82,7 +84,7 @@ namespace Ewan.BusinessBonding
 
         #region 节点集合
 
-        private List<IModule> _mainModules = new List<IModule>();
+        // 主流程改为使用 ProductionLineOperator，不再需要 _mainModules
         private List<IModule> _plcHeartModules = new List<IModule>();
         private List<IModule> _safetyModules = new List<IModule>();
         private List<IModule> _binElevatorModules = new List<IModule>();
@@ -115,14 +117,14 @@ namespace Ewan.BusinessBonding
 
             #region  //构造主流程的节点并加入到对应runner
 
-            // 使用统一的生产线模块（包含物料装载和料仓升降）
-            _mainModules.Add(new ProductionLineModule());
+            // 使用 ProductionLineOperator 替代原有的 ProductionLineModule
+            // ProductionLineOperator 封装了 MachineOperator 模式，提供统一的控制接口
+            _productionOperator = new ProductionLineOperator();
 
-            //_mainModules.Add(new PlcModule());//测试可以换成数据模拟节点 根据配置决定加载哪个PLC节点
-            //_mainModules.Add(new AlarmModule<PlcModel>());
+            // 订阅报警事件（可用于UI显示）
+            _productionOperator.Alarms.AlarmChanged += OnAlarmChanged;
 
-            // 创建主流程runner
-            _mainRunner = new StreamRunner(_mainModules);
+            s_logger.Info("ProductionLineOperator 创建完成");
 
             #endregion
 
@@ -217,6 +219,10 @@ namespace Ewan.BusinessBonding
             try
             {
                 StopRun();
+
+                // 销毁 ProductionLineOperator
+                _productionOperator?.Dispose();
+                _productionOperator = null;
             }
             catch (Exception ex)
             {
@@ -317,13 +323,21 @@ namespace Ewan.BusinessBonding
         }
 
         /// <summary>
-        /// 启动主流程
+        /// 启动主流程（使用 ProductionLineOperator）
         /// </summary>
         private void StartMainStream()
         {
-            if (_mainRunner != null)
+            if (_productionOperator != null)
             {
-                _mainRunner.Start();
+                bool started = _productionOperator.Start();
+                if (started)
+                {
+                    s_logger.Info("主流程（ProductionLineOperator）已启动");
+                }
+                else
+                {
+                    s_logger.Warn("主流程启动失败，可能存在报警");
+                }
             }
         }
 
@@ -362,11 +376,12 @@ namespace Ewan.BusinessBonding
         //}
 
         /// <summary>
-        /// 停止主流程
+        /// 停止主流程（使用 ProductionLineOperator）
         /// </summary>
         private void StopMainStream()
         {
-            _mainRunner?.Stop();
+            _productionOperator?.Stop();
+            s_logger.Info("主流程（ProductionLineOperator）已停止");
         }
 
         /// <summary>
@@ -575,6 +590,63 @@ namespace Ewan.BusinessBonding
         //    _otherRunner.Stop();
         //}
 
+        #region ProductionLineOperator 公共控制方法
+
+        /// <summary>
+        /// 获取生产线操作器（供外部访问）
+        /// </summary>
+        public ProductionLineOperator ProductionOperator => _productionOperator;
+
+        /// <summary>
+        /// 获取报警服务
+        /// </summary>
+        public IAlarmService Alarms => _productionOperator?.Alarms;
+
+        /// <summary>
+        /// 暂停生产线
+        /// </summary>
+        public void PauseProduction() => _productionOperator?.Pause();
+
+        /// <summary>
+        /// 恢复生产线
+        /// </summary>
+        public void ResumeProduction() => _productionOperator?.Resume();
+
+        /// <summary>
+        /// 紧急停止
+        /// </summary>
+        public void EmergencyStop() => _productionOperator?.EmergencyStop();
+
+        /// <summary>
+        /// 复位/回原
+        /// </summary>
+        /// <param name="clearAlarm">是否清除报警</param>
+        public void Home(bool clearAlarm = true) => _productionOperator?.Home(clearAlarm);
+
+        /// <summary>
+        /// 清除报警
+        /// </summary>
+        public void ClearAlarm() => _productionOperator?.ClearAlarm();
+
+        /// <summary>
+        /// 报警变化事件处理
+        /// </summary>
+        private void OnAlarmChanged(object sender, AlarmChangedEventArgs e)
+        {
+            var key = e.Alarm?.Key ?? "(null)";
+            var content = e.Alarm?.Content ?? "(cleared)";
+            s_logger.InfoFormat("报警变化: kind={0}, key={1}, content={2}", e.Kind, key, content);
+
+            // 如果有报警，发送系统状态消息
+            if (e.Kind == AlarmChangeKind.Added && e.Alarm != null)
+            {
+                bool isCritical = e.Alarm.Level == AlarmLevel.H;
+                var status = isCritical ? SystemStatus.Critical : SystemStatus.Alarm;
+                SendSystemStatusMessage(status, e.Alarm.Content, isCritical);
+            }
+        }
+
+        #endregion
 
     }
 }
