@@ -4,11 +4,13 @@ using Microsoft.Win32;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Text;
 using System.Windows;
+using System.Windows.Data;
 using UILogMsg = Ewan.Model.Messages.UILogMsg;
 using UILogLevel = Ewan.Model.Messages.LogLevel;
 
@@ -66,8 +68,11 @@ namespace MarkingMachineFeeder.Viewmodel
         private readonly UILogger _uiLogger = new UILogger();
         private MsgListener _logListener;
         private ObservableCollection<LogEntry> _logEntries;
+        private ICollectionView _logEntriesView;
         private bool _autoScroll = true;
         private string _maxLines = "1000";
+        private UILogLevel _minimumDisplayLevel = UILogLevel.Info;
+        private string _filterText;
 
         // UI文本属性
         private string _clearButtonText;
@@ -86,7 +91,45 @@ namespace MarkingMachineFeeder.Viewmodel
         public ObservableCollection<LogEntry> LogEntries
         {
             get => _logEntries;
-            set => SetProperty(ref _logEntries, value);
+            set
+            {
+                if (SetProperty(ref _logEntries, value))
+                {
+                    InitializeLogEntriesView();
+                }
+            }
+        }
+
+        public ICollectionView LogEntriesView
+        {
+            get => _logEntriesView;
+            private set => SetProperty(ref _logEntriesView, value);
+        }
+
+        public Array AvailableLogLevels { get; } = Enum.GetValues(typeof(UILogLevel));
+
+        public UILogLevel MinimumDisplayLevel
+        {
+            get => _minimumDisplayLevel;
+            set
+            {
+                if (SetProperty(ref _minimumDisplayLevel, value))
+                {
+                    RefreshLogFilter();
+                }
+            }
+        }
+
+        public string FilterText
+        {
+            get => _filterText;
+            set
+            {
+                if (SetProperty(ref _filterText, value))
+                {
+                    RefreshLogFilter();
+                }
+            }
         }
 
         public bool AutoScroll
@@ -183,7 +226,90 @@ namespace MarkingMachineFeeder.Viewmodel
             UpdateUITexts();
 
             InitializeLogListener();
-            AddSampleLogs();
+        }
+
+        private void InitializeLogEntriesView()
+        {
+            if (LogEntries == null)
+            {
+                LogEntriesView = null;
+                return;
+            }
+
+            var view = CollectionViewSource.GetDefaultView(LogEntries);
+            if (view != null)
+            {
+                view.Filter = FilterLogEntry;
+            }
+
+            LogEntriesView = view;
+        }
+
+        private void RefreshLogFilter()
+        {
+            var view = LogEntriesView;
+            if (view == null)
+            {
+                return;
+            }
+
+            try
+            {
+                view.Refresh();
+            }
+            catch
+            {
+            }
+        }
+
+        private bool FilterLogEntry(object item)
+        {
+            if (!(item is LogEntry entry))
+            {
+                return false;
+            }
+
+            if (entry.Level < MinimumDisplayLevel)
+            {
+                return false;
+            }
+
+            var filter = FilterText;
+            if (string.IsNullOrWhiteSpace(filter))
+            {
+                return true;
+            }
+
+            filter = filter.Trim();
+            var message = entry.Message ?? string.Empty;
+            return message.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        private IEnumerable<LogEntry> EnumerateVisibleEntries()
+        {
+            var view = LogEntriesView;
+            if (view == null)
+            {
+                if (LogEntries == null)
+                {
+                    yield break;
+                }
+
+                foreach (var entry in LogEntries)
+                {
+                    yield return entry;
+                }
+
+                yield break;
+            }
+
+            foreach (var item in view)
+            {
+                if (item is LogEntry entry)
+                {
+                    yield return entry;
+                }
+            }
         }
 
         private void UpdateUITexts()
@@ -310,7 +436,7 @@ namespace MarkingMachineFeeder.Viewmodel
                     var sb = new StringBuilder();
                     sb.AppendLine(string.Format("{0}\t{1}\t{2}", TimestampHeaderText, LevelHeaderText, MessageHeaderText));
 
-                    foreach (var entry in LogEntries)
+                    foreach (var entry in EnumerateVisibleEntries())
                     {
                         sb.AppendLine($"{entry.Timestamp:yyyy-MM-dd HH:mm:ss.fff}\t{entry.Level}\t{entry.Message}");
                     }
@@ -364,14 +490,16 @@ namespace MarkingMachineFeeder.Viewmodel
                 var sb = new StringBuilder();
                 sb.AppendLine(string.Format("{0}\t{1}\t{2}", TimestampHeaderText, LevelHeaderText, MessageHeaderText));
 
-                foreach (var entry in LogEntries)
+                var copiedCount = 0;
+                foreach (var entry in EnumerateVisibleEntries())
                 {
                     sb.AppendLine($"{entry.Timestamp:yyyy-MM-dd HH:mm:ss.fff}\t{entry.Level}\t{entry.Message}");
+                    copiedCount++;
                 }
 
                 Clipboard.SetText(sb.ToString());
                 MessageBox.Show(
-                    string.Format("已复制 {0} 条日志到剪贴板", LogEntries.Count), 
+                    string.Format("已复制 {0} 条日志到剪贴板", copiedCount), 
                     "复制成功", 
                     MessageBoxButton.OK, 
                     MessageBoxImage.Information);

@@ -21,7 +21,7 @@ namespace Ewan.Core.ScanCode
         private ScannerDeviceInfo _scannerDevice;
         private readonly object _connectionLock = new object();
 
-        private const string DefaultScannerIp = "192.168.3.100";
+        private const string DefaultScannerIp = "192.168.3.11";
         private const int DefaultScannerPort = 51236;
         private const string DefaultTriggerCommand = "T";
         private const int DefaultConnectionTimeoutMs = 3000;

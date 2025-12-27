@@ -161,6 +161,20 @@
                 <TextBox Text="{Binding MaxLines}"
                          Width="80"
                          Style="{StaticResource ModernTextBox}"/>
+
+                <Rectangle Width="1" Fill="#DEE2E6" Margin="12,4"/>
+
+                <TextBlock Text="显示级别" Style="{StaticResource ModernLabel}" Margin="8,0,4,0"/>
+                <ComboBox ItemsSource="{Binding AvailableLogLevels}"
+                          SelectedItem="{Binding MinimumDisplayLevel}"
+                          Width="90"
+                          Height="32"
+                          Margin="0,0,8,0"/>
+
+                <TextBlock Text="过滤" Style="{StaticResource ModernLabel}" Margin="8,0,4,0"/>
+                <TextBox Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}"
+                         Width="180"
+                         Style="{StaticResource ModernTextBox}"/>
             </StackPanel>
         </Border>
         
@@ -170,7 +184,7 @@
                 <DropShadowEffect BlurRadius="4" Direction="270" Opacity="0.1" ShadowDepth="2"/>
             </Border.Effect>
             <DataGrid Name="dgLogs" 
-                      ItemsSource="{Binding LogEntries}" 
+                      ItemsSource="{Binding LogEntriesView}" 
                       AutoGenerateColumns="False" 
                       IsReadOnly="True"
                       GridLinesVisibility="Horizontal"

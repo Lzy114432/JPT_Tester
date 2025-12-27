@@ -3,6 +3,7 @@ using EwanCore.Attribute;
 using EwanCore.Messaging;
 using EwanCore.Messaging.Messages;
 using EwanCommon.Logging;
+using Ewan.Model.Messages;
 using log4net;
 using System;
 using System.Collections.Concurrent;
@@ -167,8 +168,39 @@ namespace Ewan.Core.Msg
         /// </summary>
         private void OnUILogMessage(UILogMessage message)
         {
-            // 不转发到旧的 listener，因为 UILogger 已经直接使用 MessageBus
-            // 这里可以用于其他处理（如果需要）
+            if (message == null)
+            {
+                return;
+            }
+
+            var legacyLevel = ConvertToLegacyLevel(message.Level);
+            var legacyMessage = message.Message;
+
+            var legacy = new UILogMsg(legacyLevel, legacyMessage)
+            {
+                Timestamp = message.Timestamp.LocalDateTime,
+            };
+
+            PushMsg(new MessageModel(MsgSubject.UILog, legacy));
+        }
+
+        private static LogLevel ConvertToLegacyLevel(UILogLevel level)
+        {
+            switch (level)
+            {
+                case UILogLevel.Debug:
+                    return LogLevel.Debug;
+                case UILogLevel.Info:
+                    return LogLevel.Info;
+                case UILogLevel.Warn:
+                    return LogLevel.Warn;
+                case UILogLevel.Error:
+                    return LogLevel.Error;
+                case UILogLevel.Fatal:
+                    return LogLevel.Fatal;
+                default:
+                    return LogLevel.Info;
+            }
         }
 
         private void NotifyListeners(MessageModel msg)
