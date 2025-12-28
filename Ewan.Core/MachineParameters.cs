@@ -31,13 +31,6 @@ namespace Ewan.Core
                     return _needHome;
                 }
             }
-            set
-            {
-                lock (_syncRoot)
-                {
-                    _needHome = value;
-                }
-            }
         }
 
         public bool IsHomeing
@@ -49,12 +42,42 @@ namespace Ewan.Core
                     return _isHomeing;
                 }
             }
-            set
+        }
+
+        /// <summary>
+        /// 开始复位：设置 NeedHome=true, IsHomeing=true
+        /// </summary>
+        public void BeginHome()
+        {
+            lock (_syncRoot)
             {
-                lock (_syncRoot)
-                {
-                    _isHomeing = value;
-                }
+                _needHome = true;
+                _isHomeing = true;
+            }
+        }
+
+        /// <summary>
+        /// 结束复位：根据成功与否设置状态
+        /// </summary>
+        /// <param name="success">复位是否成功</param>
+        public void EndHome(bool success)
+        {
+            lock (_syncRoot)
+            {
+                _needHome = !success;
+                _isHomeing = false;
+            }
+        }
+
+        /// <summary>
+        /// 标记需要复位（停止时调用）
+        /// </summary>
+        public void MarkNeedHome()
+        {
+            lock (_syncRoot)
+            {
+                _needHome = true;
+                _isHomeing = false;
             }
         }
     }

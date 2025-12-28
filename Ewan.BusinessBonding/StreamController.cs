@@ -614,7 +614,7 @@ namespace Ewan.BusinessBonding
         public void EmergencyStop() => _productionOperator?.EmergencyStop();
 
         /// <summary>
-        /// 复位/回原
+        /// 复位/回原（统一入口：转发到 LogicManager.Home()）
         /// </summary>
         /// <param name="clearAlarm">是否清除报警</param>
         public void Home(bool clearAlarm = true)
@@ -624,6 +624,7 @@ namespace Ewan.BusinessBonding
                 _productionOperator?.ClearAlarm();
             }
 
+            // 核心复位逻辑由 LogicManager 统一管理
             _productionOperator?.Home();
         }
 

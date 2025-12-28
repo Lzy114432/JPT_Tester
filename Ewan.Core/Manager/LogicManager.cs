@@ -80,8 +80,7 @@ namespace Ewan.Core.Manager
                 _alarmMessageSubscription = MessageHub.Current.Subscribe<AlarmMessage>(OnAlarmMessage);
                 _systemControlSubscription = MessageHub.Current.Subscribe<SystemControlMessage>(OnSystemControlMessage);
 
-                MachineParameters.Instance.NeedHome = true;
-                MachineParameters.Instance.IsHomeing = false;
+                MachineParameters.Instance.MarkNeedHome();
 
                 s_logger.Info("LogicManager 初始化完成");
                 return base.Init();
@@ -168,11 +167,9 @@ namespace Ewan.Core.Manager
                     return;
                 }
 
-                MachineParameters.Instance.NeedHome = true;
-                MachineParameters.Instance.IsHomeing = true;
-
+                // 先停止，再设置复位状态（避免 StopInternal 重置 IsHomeing）
                 StopInternal(publishSystemControl: false);
-                MachineParameters.Instance.IsHomeing = true;
+                MachineParameters.Instance.BeginHome();
                 Thread.Sleep(500);
 
                 DisposeMainLogicIfNeeded();
@@ -257,8 +254,7 @@ namespace Ewan.Core.Manager
                 _sharedState?.ResetAllStates();
                 MessageHub.Current.Post(Ewan.Model.Production.BinElevatorCommandMessage.ForceStopAll(nameof(LogicManager)));
 
-                MachineParameters.Instance.NeedHome = true;
-                MachineParameters.Instance.IsHomeing = false;
+                MachineParameters.Instance.MarkNeedHome();
 
                 MessageHub.Current.Post(new StatusIndicatorCommand(SystemStatus.Stopped, "已停止（需复位）"));
                 if (publishSystemControl)

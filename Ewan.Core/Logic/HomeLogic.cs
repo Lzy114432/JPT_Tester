@@ -139,8 +139,7 @@ namespace Ewan.Core.Logic
                 _uiLogger.ErrorRaw("处理错误: {0} - {1}", "HomeLogic-发送报警", postEx.Message);
             }
 
-            MachineParameters.Instance.NeedHome = true;
-            MachineParameters.Instance.IsHomeing = false;
+            MachineParameters.Instance.EndHome(success: false);
             Complete();
         }
 
@@ -150,7 +149,7 @@ namespace Ewan.Core.Logic
         private void ProcessInitialState()
         {
             _uiLogger.InfoRaw("状态机启动: {0}", "HomeLogic");
-            MachineParameters.Instance.IsHomeing = true;
+            // 注意: IsHomeing 已由 LogicManager.BeginHome() 设置，此处不再重复设置
             _ioManager = LayeredIOManager.Instance();
             SwitchIndex = "停止ON";
         }
@@ -271,8 +270,7 @@ namespace Ewan.Core.Logic
             if (Tw.StartCheckIsTimeout(SwitchIndex, BIN_INIT_TIMEOUT))
             {
                 _uiLogger.InfoRaw("处理已完成: {0}", "HomeLogic 复位完成");
-                MachineParameters.Instance.NeedHome = false;
-                MachineParameters.Instance.IsHomeing = false;
+                MachineParameters.Instance.EndHome(success: true);
                 MessageHub.Current.Post(new StatusIndicatorCommand(SystemStatus.Standby, "复位完成，待机"));
                 Complete();
             }
