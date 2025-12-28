@@ -14,6 +14,7 @@
 | T4.1 ProductionLineSharedState 精简 | ✅ | 删除 ActiveProcess/互斥锁方法 |
 | T5.1 更新 SharedState 测试 | ✅ | 删除旧互斥锁测试 |
 | T5.2 更新 MainLogic 测试 | ✅ | 4个测试覆盖串行轮询逻辑 |
+| T6 Module 层清理 | ✅ | 删除 ProductionLine/MaterialLoading/MaterialUnloading Module |
 
 ---
 

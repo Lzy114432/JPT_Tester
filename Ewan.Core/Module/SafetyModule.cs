@@ -328,7 +328,7 @@ namespace Ewan.Core.Module
             {
                 TriggerRobotPausePulse(reason);
 
-                // 发送系统控制命令到ProductionLineModule (使用强类型消息)
+                // 发送系统控制命令到LogicManager (使用强类型消息)
                 MessageHub.Current.Post(SystemControlMessage.Pause("SafetyModule", reason));
 
                 // 发送状态指示命令到SystemStatusIndicatorModule
@@ -356,7 +356,7 @@ namespace Ewan.Core.Module
             {
                 TriggerSystemStopPulse(reason);
 
-                // 发送系统控制命令到ProductionLineModule (使用强类型消息)
+                // 发送系统控制命令到LogicManager (使用强类型消息)
                 MessageHub.Current.Post(SystemControlMessage.EmergencyStop("SafetyModule", reason));
 
                 // 发送状态指示命令到SystemStatusIndicatorModule
