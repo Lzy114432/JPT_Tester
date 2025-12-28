@@ -26,7 +26,7 @@ namespace Ewan.Core.Logic
         #region 私有字段
 
         private readonly ProductionLineSharedState _sharedState;
-        private readonly LayeredIOManager _ioManager;
+        private readonly LayeredIOManager _ioManager = LayeredIOManager.Instance();
         private readonly SystemParametersManager _parametersManager;
 
         private bool _beltStopRequested = false;
@@ -35,7 +35,6 @@ namespace Ewan.Core.Logic
         private int _targetBin = 1;
 
         // 超时配置（毫秒）
-        private const int WAIT_MATERIAL_TIMEOUT = 300000;
         private const int WAIT_SCAN_POSITION_TIMEOUT = 100000;
         private const int WAIT_LOADING_COMPLETE_TIMEOUT = 150000;
 
@@ -50,7 +49,6 @@ namespace Ewan.Core.Logic
         public MaterialLoadingLogic(ProductionLineSharedState sharedState)
         {
             _sharedState = sharedState ?? throw new ArgumentNullException(nameof(sharedState));
-            _ioManager = LayeredIOManager.Instance();
             _parametersManager = SystemParametersManager.Instance;
         }
 
@@ -69,54 +67,192 @@ namespace Ewan.Core.Logic
                 return;
             }
 
-            // 检查模块是否启用
-            var parameters = _parametersManager?.Parameters;
-            if (parameters != null && !parameters.EnableLoadingModule)
-            {
-                return;
-            }
-
             switch (SwitchIndex)
             {
+                #region 初始状态
                 case "初始状态":
-                    ProcessInitialState();
+                    SwitchIndex = "检查前置条件";
                     break;
+                #endregion
 
+                #region 检查前置条件
                 case "检查前置条件":
-                    ProcessCheckPreconditions();
+                    SwitchIndex = "等待料片信号";
+                    Tw.StartWatch(SwitchIndex);
                     break;
+                #endregion
 
+                #region 等待料片信号
                 case "等待料片信号":
-                    ProcessWaitForMaterial();
-                    break;
+                    // 检测料片信号
+                    if (_ioManager?.Ctx?.R.检测到料片信号 == true)
+                    {
+                        // 有料片检测信号，允许取料
+                        _ioManager.Ctx.On(x => x.触发机械手皮带线允许取料);
+                        _sharedState.MarkLoadingInProgress();
 
+                        SwitchIndex = "取料中";
+                        Tw.StartWatch(SwitchIndex);
+                        return;
+                    }
+                    else
+                    {
+                        // 没有检测到料片信号，直接完成
+                        Complete();
+                    }
+                    break;
+                #endregion
+
+                #region 取料中
                 case "取料中":
-                    ProcessPickingMaterial();
-                    break;
+                    // 检测机械手忙碌信号，请求停止皮带
+                    if (!_beltStopRequested && _ioManager?.Ctx?.R.机械手忙碌状态信号 == true)
+                    {
+                        _beltStopRequested = true;
+                        var beltStopMessage = BeltConveyorControlMessage.Stop(
+                            BeltConveyorControlSource.MaterialLoading,
+                            "机械手正在取料，停止皮带");
+                        MessageHub.Current.Post(beltStopMessage);
+                    }
 
+                    // 检测是否到达扫码位置
+                    if (_ioManager?.Ctx?.R.移至扫码区到位信号 == true)
+                    {
+                        SwitchIndex = "到达扫码位置";
+                        return;
+                    }
+
+                    // 超时检查
+                    if (Tw.StartCheckIsTimeout(SwitchIndex, WAIT_SCAN_POSITION_TIMEOUT))
+                    {
+                        MessageHub.Current.Post(new AlarmMessage(
+                            key: "Loading.Timeout",
+                            content: "等待到达扫码位置超时",
+                            level: AlarmLevel.M,
+                            needReset: false,
+                            unit: "Loading"));
+                        ForceCleanup("取料超时");
+                    }
+                    break;
+                #endregion
+
+                #region 到达扫码位置
                 case "到达扫码位置":
-                    ProcessAtScanPosition();
-                    break;
+                    // 禁止继续取料
+                    _ioManager?.Ctx?.Off(x => x.触发机械手皮带线允许取料);
 
+                    SwitchIndex = "执行扫码";
+                    _scanRetryCount = 0;
+                    break;
+                #endregion
+
+                #region 执行扫码
                 case "执行扫码":
-                    ProcessScanning();
-                    break;
+                    {
+                        var scanParameters = _parametersManager?.Parameters;
+                        bool mesEnabled = scanParameters?.MesEnabled ?? false;
+                        int maxRetry = scanParameters?.CodeReaderScanRetryCount ?? 3;
+                        if (maxRetry <= 0) maxRetry = 3;
 
+                        if (mesEnabled)
+                        {
+                            _scanRetryCount++;
+                            _scannedCode = (ScannerManager.Instance().TriggerScan() ?? string.Empty).Trim();
+
+                            if (!string.IsNullOrWhiteSpace(_scannedCode))
+                            {
+                                _uiLogger.InfoRaw("扫码内容: {0}", _scannedCode);
+                            }
+                            else if (_scanRetryCount < maxRetry)
+                            {
+                                return;
+                            }
+                            else
+                            {
+                                MessageHub.Current.Post(new AlarmMessage(
+                                    key: "Scan.Failed",
+                                    content: $"装料扫码失败：连续扫码{maxRetry}次无结果",
+                                    level: AlarmLevel.L,
+                                    needReset: false,
+                                    unit: "Scanner"));
+                            }
+                        }
+
+                        // 发送扫码完成信号
+                        _ioManager?.Ctx?.On(x => x.发送扫码完成信号);
+
+                        // 获取目标料仓
+                        _targetBin = GetConfiguredBinNumber();
+                        SetBinSelectSignal(_targetBin);
+
+                        SwitchIndex = "移动到料仓";
+                    }
+                    break;
+                #endregion
+
+                #region 移动到料仓
                 case "移动到料仓":
-                    ProcessMovingToBin();
-                    break;
+                    // 触发放入料仓信号
+                    _ioManager?.Ctx?.On(x => x.触发机械手放置料仓);
 
+                    SwitchIndex = "等待装载完成";
+                    Tw.StartWatch(SwitchIndex);
+                    break;
+                #endregion
+
+                #region 等待装载完成
                 case "等待装载完成":
-                    ProcessWaitLoadingComplete();
-                    break;
+                    // 检查装载完成状态
+                    if (_sharedState.GetLoadingCompleted())
+                    {
+                        SwitchIndex = "清理状态";
+                        return;
+                    }
 
+                    // 超时检查
+                    if (Tw.StartCheckIsTimeout(SwitchIndex, WAIT_LOADING_COMPLETE_TIMEOUT))
+                    {
+                        MessageHub.Current.Post(new AlarmMessage(
+                            key: "Loading.Timeout",
+                            content: "等待装载完成超时",
+                            level: AlarmLevel.M,
+                            needReset: false,
+                            unit: "Loading"));
+                        ForceCleanup("装载超时");
+                    }
+                    break;
+                #endregion
+
+                #region 清理状态
                 case "清理状态":
-                    ProcessCleanup();
-                    break;
+                    // 清除装料信号
+                    _ioManager?.Ctx?.Off(x => x.触发机械手放置料仓);
+                    ClearBinSelectSignals();
+                    _ioManager?.Ctx?.Off(x => x.发送扫码完成信号);
 
+                    // 清除SharedState标志
+                    _sharedState.ClearLoadingInProgress();
+                    _sharedState.SetLoadingCompleted(false);
+
+                    // 释放皮带控制
+                    if (_beltStopRequested)
+                    {
+                        _beltStopRequested = false;
+                        var beltReleaseMessage = BeltConveyorControlMessage.Release(
+                            BeltConveyorControlSource.MaterialLoading,
+                            "装料完成，释放皮带");
+                        MessageHub.Current.Post(beltReleaseMessage);
+                    }
+
+                    Complete();
+                    break;
+                #endregion
+
+                #region 结束状态
                 case "结束状态":
                     // 完成，等待下一个周期
                     break;
+                #endregion
             }
         }
 
@@ -134,230 +270,6 @@ namespace Ewan.Core.Logic
 
         #endregion
 
-        #region 状态处理方法
-
-        /// <summary>
-        /// 处理初始状态
-        /// </summary>
-        private void ProcessInitialState()
-        {
-            _uiLogger.DebugRaw("状态机启动: {0}", "MaterialLoadingLogic");
-            SwitchIndex = "检查前置条件";
-        }
-
-        /// <summary>
-        /// 检查前置条件
-        /// </summary>
-        private void ProcessCheckPreconditions()
-        {
-            SwitchIndex = "等待料片信号";
-            Tw.StartWatch(SwitchIndex);
-        }
-
-        /// <summary>
-        /// 等待料片信号
-        /// </summary>
-        private void ProcessWaitForMaterial()
-        {
-            // 检测料片信号
-            if (_ioManager?.Ctx?.R.检测到料片信号 == true)
-            {
-                // 有料片检测信号，允许取料
-                _ioManager.Ctx.On(x => x.触发机械手皮带线允许取料);
-                _sharedState.MarkLoadingInProgress();
-
-                _uiLogger.InfoRaw("处理已开始: {0}", "检测到料片信号(X3=true)，允许取料(OUT14=true)，开始装料流程");
-
-                SwitchIndex = "取料中";
-                Tw.StartWatch(SwitchIndex);
-                return;
-            }
-
-            // 超时检查
-            if (Tw.StartCheckIsTimeout(SwitchIndex, WAIT_MATERIAL_TIMEOUT))
-            {
-                _uiLogger.WarnRaw("操作超时: {0}", "等待料片信号超时");
-                MessageHub.Current.Post(new AlarmMessage(
-                    key: "Loading.Timeout",
-                    content: "等待料片信号超时",
-                    level: AlarmLevel.M,
-                    needReset: false,
-                    unit: "Loading"));
-                ForceCleanup("等待料片超时");
-            }
-        }
-
-        /// <summary>
-        /// 取料中状态
-        /// </summary>
-        private void ProcessPickingMaterial()
-        {
-            // 检测机械手忙碌信号，请求停止皮带
-            if (!_beltStopRequested && _ioManager?.Ctx?.R.机械手忙碌状态信号 == true)
-            {
-                _beltStopRequested = true;
-                var beltStopMessage = BeltConveyorControlMessage.Stop(
-                    BeltConveyorControlSource.MaterialLoading,
-                    "机械手正在取料，停止皮带");
-                MessageHub.Current.Post(beltStopMessage);
-                _uiLogger.InfoRaw("处理已开始: {0}", "检测到机械手忙碌信号，请求停止皮带");
-            }
-
-            // 检测是否到达扫码位置
-            if (_ioManager?.Ctx?.R.移至扫码区到位信号 == true)
-            {
-                SwitchIndex = "到达扫码位置";
-                _uiLogger.InfoRaw("处理已完成: {0}", "料片已到达扫码位置(X7=true)，开始扫码流程");
-                return;
-            }
-
-            // 超时检查
-            if (Tw.StartCheckIsTimeout(SwitchIndex, WAIT_SCAN_POSITION_TIMEOUT))
-            {
-                _uiLogger.WarnRaw("操作超时: {0}", "等待到达扫码位置超时");
-                MessageHub.Current.Post(new AlarmMessage(
-                    key: "Loading.Timeout",
-                    content: "等待到达扫码位置超时",
-                    level: AlarmLevel.M,
-                    needReset: false,
-                    unit: "Loading"));
-                ForceCleanup("取料超时");
-            }
-        }
-
-        /// <summary>
-        /// 到达扫码位置
-        /// </summary>
-        private void ProcessAtScanPosition()
-        {
-            // 禁止继续取料
-            _ioManager?.Ctx?.Off(x => x.触发机械手皮带线允许取料);
-
-            SwitchIndex = "执行扫码";
-            _scanRetryCount = 0;
-        }
-
-        /// <summary>
-        /// 执行扫码
-        /// </summary>
-        private void ProcessScanning()
-        {
-            var parameters = _parametersManager?.Parameters;
-            bool mesEnabled = parameters?.MesEnabled ?? false;
-            int maxRetry = parameters?.CodeReaderScanRetryCount ?? 3;
-            if (maxRetry <= 0) maxRetry = 3;
-
-            if (mesEnabled)
-            {
-                _scanRetryCount++;
-                _scannedCode = (ScannerManager.Instance().TriggerScan() ?? string.Empty).Trim();
-
-                if (!string.IsNullOrWhiteSpace(_scannedCode))
-                {
-                    _uiLogger.InfoRaw("处理已完成: {0}", $"扫码内容: {_scannedCode}");
-                }
-                else if (_scanRetryCount < maxRetry)
-                {
-                    _uiLogger.WarnRaw("操作失败: {0}", $"第{_scanRetryCount}次扫码无结果，重试中");
-                    return;
-                }
-                else
-                {
-                    _uiLogger.WarnRaw("操作失败: {0}", $"连续扫码{maxRetry}次无结果，继续流程");
-                    MessageHub.Current.Post(new AlarmMessage(
-                        key: "Scan.Failed",
-                        content: $"装料扫码失败：连续扫码{maxRetry}次无结果",
-                        level: AlarmLevel.L,
-                        needReset: false,
-                        unit: "Scanner"));
-                }
-            }
-            else
-            {
-                _uiLogger.InfoRaw("处理已跳过: {0}", "MES未启用，跳过扫码");
-            }
-
-            // 发送扫码完成信号
-            _ioManager?.Ctx?.On(x => x.发送扫码完成信号);
-
-            // 获取目标料仓
-            _targetBin = GetConfiguredBinNumber();
-            SetBinSelectSignal(_targetBin);
-
-            SwitchIndex = "移动到料仓";
-        }
-
-        /// <summary>
-        /// 移动到料仓
-        /// </summary>
-        private void ProcessMovingToBin()
-        {
-            // 触发放入料仓信号
-            _ioManager?.Ctx?.On(x => x.触发机械手放置料仓);
-
-            _uiLogger.InfoRaw("处理已开始: {0}", $"开始移动到料仓{_targetBin}位置");
-
-            SwitchIndex = "等待装载完成";
-            Tw.StartWatch(SwitchIndex);
-        }
-
-        /// <summary>
-        /// 等待装载完成
-        /// </summary>
-        private void ProcessWaitLoadingComplete()
-        {
-            // 检查装载完成状态
-            if (_sharedState.GetLoadingCompleted())
-            {
-                SwitchIndex = "清理状态";
-                return;
-            }
-
-            // 超时检查
-            if (Tw.StartCheckIsTimeout(SwitchIndex, WAIT_LOADING_COMPLETE_TIMEOUT))
-            {
-                _uiLogger.WarnRaw("操作超时: {0}", "等待装载完成超时");
-                MessageHub.Current.Post(new AlarmMessage(
-                    key: "Loading.Timeout",
-                    content: "等待装载完成超时",
-                    level: AlarmLevel.M,
-                    needReset: false,
-                    unit: "Loading"));
-                ForceCleanup("装载超时");
-            }
-        }
-
-        /// <summary>
-        /// 清理状态
-        /// </summary>
-        private void ProcessCleanup()
-        {
-            // 清除装料信号
-            _ioManager?.Ctx?.Off(x => x.触发机械手放置料仓);
-            ClearBinSelectSignals();
-            _ioManager?.Ctx?.Off(x => x.发送扫码完成信号);
-
-            // 清除SharedState标志
-            _sharedState.ClearLoadingInProgress();
-            _sharedState.SetLoadingCompleted(false);
-
-            // 释放皮带控制
-            if (_beltStopRequested)
-            {
-                _beltStopRequested = false;
-                var beltReleaseMessage = BeltConveyorControlMessage.Release(
-                    BeltConveyorControlSource.MaterialLoading,
-                    "装料完成，释放皮带");
-                MessageHub.Current.Post(beltReleaseMessage);
-            }
-
-            _uiLogger.InfoRaw("处理已完成: {0}", "装料完成，清理状态，回到初始");
-
-            Complete();
-        }
-
-        #endregion
-
         #region 辅助方法
 
         /// <summary>
@@ -365,8 +277,6 @@ namespace Ewan.Core.Logic
         /// </summary>
         public void ForceCleanup(string reason)
         {
-            _uiLogger.WarnRaw("强制清理: {0}", reason);
-
             try
             {
                 if (_ioManager?.Ctx != null)
@@ -380,7 +290,7 @@ namespace Ewan.Core.Logic
             }
             catch (Exception ex)
             {
-                _uiLogger.ErrorRaw("处理错误: {0} - {1}", "强制清理IO", ex.Message);
+                _uiLogger.ErrorRaw("强制清理IO异常: {0}", ex.Message);
             }
 
             _sharedState.ClearLoadingInProgress();

@@ -30,7 +30,7 @@ namespace Ewan.Core.Logic
         #region 私有字段
 
         private readonly ProductionLineSharedState _sharedState;
-        private readonly LayeredIOManager _ioManager;
+        private readonly LayeredIOManager _ioManager = LayeredIOManager.Instance();
         private readonly SystemParametersManager _parametersManager;
         private readonly ModbusRTUManager _modbusRTUManager;
 
@@ -71,7 +71,6 @@ namespace Ewan.Core.Logic
         public MaterialUnloadingLogic(ProductionLineSharedState sharedState)
         {
             _sharedState = sharedState ?? throw new ArgumentNullException(nameof(sharedState));
-            _ioManager = LayeredIOManager.Instance();
             _parametersManager = SystemParametersManager.Instance;
             _modbusRTUManager = ModbusRTUManager.Instance();
 
@@ -106,70 +105,365 @@ namespace Ewan.Core.Logic
                 return;
             }
 
-            // 检查模块是否启用
-            var parameters = _parametersManager?.Parameters;
-            if (parameters != null && !parameters.EnableUnloadingModule)
-            {
-                return;
-            }
-
             switch (SwitchIndex)
             {
+                #region 初始状态
                 case "初始状态":
-                    ProcessInitialState();
+                    SwitchIndex = "检查环线信号";
                     break;
+                #endregion
 
+                #region 检查环线信号
                 case "检查环线信号":
-                    ProcessCheckRingLineSignal();
-                    break;
+                    // 信号为1且未处理过时，开始处理
+                    if (_ringLineSignal && !_requestProcessed)
+                    {
+                        _requestProcessed = true;
+                        SwitchIndex = "检查料仓有料";
+                        return;
+                    }
 
+                    // 信号变为0时，清除处理标志
+                    if (!_ringLineSignal && _requestProcessed)
+                    {
+                        _requestProcessed = false;
+                    }
+                    break;
+                #endregion
+
+                #region 检查空车数量
                 case "检查空车数量":
-                    ProcessCheckEmptyCartCount();
-                    break;
+                    {
+                        var cartParameters = _parametersManager?.Parameters;
+                        var cartCheckMode = cartParameters?.CartCheckMode ?? CartCheckMode.EmptyCart;
+                        bool needSendEmptyCar = false;
 
+                        if (cartCheckMode == CartCheckMode.EmptyCart)
+                        {
+                            var reserveCount = Math.Max(0, cartParameters?.EmptyCartReserveCount ?? 0);
+                            if (_emptyCount <= reserveCount)
+                            {
+                                needSendEmptyCar = true;
+                            }
+                        }
+                        else
+                        {
+                            var reserveCount = Math.Max(0, cartParameters?.CuttingBridgeCarReserveCount ?? 0);
+                            if (_cuttingBridgeCarCount > reserveCount)
+                            {
+                                needSendEmptyCar = true;
+                            }
+                        }
+
+                        if (needSendEmptyCar)
+                        {
+                            SwitchIndex = "释放空车";
+                            return;
+                        }
+
+                        SwitchIndex = "检查料仓有料";
+                    }
+                    break;
+                #endregion
+
+                #region 检查料仓有料
                 case "检查料仓有料":
-                    ProcessCheckBinMaterial();
-                    break;
+                    _selectedBin = GetConfiguredBinNumber();
+                    if (_binElevator == null)
+                    {
+                        _hasMaterial = true;
+                        SwitchIndex = "发送取料指令";
+                        return;
+                    }
 
+                    if (_materialCheckTcs != null)
+                    {
+                        if (!_materialCheckTcs.Task.IsCompleted)
+                        {
+                            return;
+                        }
+
+                        BinMaterialCheckResult materialCheckResult = null;
+                        try
+                        {
+                            if (_materialCheckTcs.Task.Status == System.Threading.Tasks.TaskStatus.RanToCompletion)
+                            {
+                                materialCheckResult = _materialCheckTcs.Task.Result;
+                            }
+                            else if (_materialCheckTcs.Task.IsCanceled)
+                            {
+                                materialCheckResult = BinMaterialCheckResult.CreateFailure(_selectedBin);
+                            }
+                            else if (_materialCheckTcs.Task.IsFaulted)
+                            {
+                                var error = _materialCheckTcs.Task.Exception?.GetBaseException()?.Message ?? "未知错误";
+                                _uiLogger.ErrorRaw("料仓{0}检测物料失败: {1}", _selectedBin, error);
+                                materialCheckResult = BinMaterialCheckResult.CreateFailure(_selectedBin);
+                            }
+                        }
+                        finally
+                        {
+                            _materialCheckTcs = null;
+                            _currentMaterialCheckRequestId = Guid.Empty;
+                        }
+
+                        if (materialCheckResult == null || materialCheckResult.HasMaterial)
+                        {
+                            _hasMaterial = true;
+                            SwitchIndex = "发送取料指令";
+                        }
+                        else
+                        {
+                            if (materialCheckResult.TimedOut)
+                            {
+                                MessageHub.Current.Post(new AlarmMessage(
+                                    key: "BinElevator.Timeout",
+                                    content: $"料仓{_selectedBin}升降超时，未检测到物料",
+                                    level: AlarmLevel.H,
+                                    needReset: true,
+                                    unit: "BinElevator"));
+                            }
+
+                            _hasMaterial = false;
+                            SwitchIndex = "释放空车";
+                        }
+
+                        return;
+                    }
+
+                    {
+                        int binNumber = _selectedBin;
+                        var requestId = Guid.NewGuid();
+                        _currentMaterialCheckRequestId = requestId;
+                        _materialCheckTcs = new TaskCompletionSource<BinMaterialCheckResult>(TaskCreationOptions.RunContinuationsAsynchronously);
+                        var tcs = _materialCheckTcs;
+
+                        Task.Run(async () =>
+                        {
+                            try
+                            {
+                                var result = await _binElevator.RaiseToSensorAsync(binNumber).ConfigureAwait(false);
+                                if (_currentMaterialCheckRequestId != requestId)
+                                {
+                                    return;
+                                }
+                                tcs?.TrySetResult(result);
+                            }
+                            catch (Exception ex)
+                            {
+                                if (_currentMaterialCheckRequestId != requestId)
+                                {
+                                    return;
+                                }
+                                _uiLogger.ErrorRaw("料仓{0}检测物料异常: {1}", binNumber, ex.Message);
+                                tcs?.TrySetResult(BinMaterialCheckResult.CreateFailure(binNumber));
+                            }
+                        });
+                    }
+                    break;
+                #endregion
+
+                #region 发送取料指令
                 case "发送取料指令":
-                    ProcessSendPickCommand();
-                    break;
+                    // 设置料仓选择信号
+                    SetBinSelectSignal(_selectedBin);
 
+                    // 触发取料信号
+                    _ioManager?.Ctx?.On(x => x.发送取料指令);
+
+                    // 请求停止皮带
+                    _beltStopRequested = true;
+                    {
+                        var message = new BeltConveyorControlMessage(
+                            BeltConveyorControlSource.MaterialUnloading,
+                            true,
+                            "下料流程请求停止皮带");
+                        MessageHub.Current.Post(message);
+                    }
+
+                    SwitchIndex = "等待取料完成";
+                    Tw.StartWatch(SwitchIndex);
+                    break;
+                #endregion
+
+                #region 等待取料完成
                 case "等待取料完成":
-                    ProcessWaitPickingComplete();
-                    break;
+                    if (_sharedState.GetUnloadingCompleted())
+                    {
+                        _sharedState.SetUnloadingCompleted(false);
 
+                        // 清除信号
+                        _ioManager?.Ctx?.Off(x => x.发送取料指令);
+                        ClearBinSelectSignals();
+
+                        SwitchIndex = "等待扫码位置";
+                        Tw.StartWatch(SwitchIndex);
+                        return;
+                    }
+
+                    if (Tw.StartCheckIsTimeout(SwitchIndex, WAIT_PICKING_TIMEOUT))
+                    {
+                        MessageHub.Current.Post(new AlarmMessage(
+                            key: "Unloading.Timeout",
+                            content: "等待取料完成超时",
+                            level: AlarmLevel.M,
+                            needReset: false,
+                            unit: "Unloading"));
+                        ForceCleanup("取料超时");
+                    }
+                    break;
+                #endregion
+
+                #region 等待扫码位置
                 case "等待扫码位置":
-                    ProcessWaitScanPosition();
-                    break;
+                    if (_ioManager?.Ctx?.Edge.R(x => x.移至扫码区到位信号) == true)
+                    {
+                        SwitchIndex = "执行扫码";
+                        _scanRetryCount = 0;
+                        return;
+                    }
 
+                    if (Tw.StartCheckIsTimeout(SwitchIndex, WAIT_SCAN_POSITION_TIMEOUT))
+                    {
+                        MessageHub.Current.Post(new AlarmMessage(
+                            key: "Unloading.Timeout",
+                            content: "等待扫码位置超时",
+                            level: AlarmLevel.M,
+                            needReset: false,
+                            unit: "Unloading"));
+                        ForceCleanup("扫码位置超时");
+                    }
+                    break;
+                #endregion
+
+                #region 执行扫码
                 case "执行扫码":
-                    ProcessScanning();
-                    break;
+                    {
+                        var scanParameters = _parametersManager?.Parameters;
+                        bool mesEnabled = scanParameters?.MesEnabled ?? false;
+                        int maxRetry = scanParameters?.CodeReaderScanRetryCount ?? 3;
+                        if (maxRetry <= 0) maxRetry = 3;
 
+                        if (mesEnabled)
+                        {
+                            _scanRetryCount++;
+                            _lastScannedQrCode = (ScannerManager.Instance().TriggerScan() ?? string.Empty).Trim();
+
+                            if (!string.IsNullOrWhiteSpace(_lastScannedQrCode))
+                            {
+                                _uiLogger.InfoRaw("扫码内容: {0}", _lastScannedQrCode);
+                            }
+                            else if (_scanRetryCount < maxRetry)
+                            {
+                                return;
+                            }
+                            else
+                            {
+                                _lastScannedQrCode = string.Empty;
+                                MessageHub.Current.Post(new AlarmMessage(
+                                    key: "Scan.Failed",
+                                    content: $"下料扫码失败：连续扫码{maxRetry}次无结果",
+                                    level: AlarmLevel.L,
+                                    needReset: false,
+                                    unit: "Scanner"));
+                            }
+                        }
+
+                        SwitchIndex = "发送放入小车指令";
+                    }
+                    break;
+                #endregion
+
+                #region 发送放入小车指令
                 case "发送放入小车指令":
-                    ProcessSendPutCartCommand();
-                    break;
+                    // 发送扫码完成信号给机械臂
+                    _ioManager?.Ctx?.On(x => x.发送扫码完成信号);
 
+                    // 发送放入小车信号
+                    _ioManager?.Ctx?.On(x => x.发送放入小车指令);
+
+                    SwitchIndex = "等待放入完成";
+                    Tw.StartWatch(SwitchIndex);
+                    break;
+                #endregion
+
+                #region 等待放入完成
                 case "等待放入完成":
-                    ProcessWaitPutCartComplete();
-                    break;
+                    if (_ioManager?.Ctx?.Edge.R(x => x.放入小车完成信号) == true)
+                    {
+                        // 清除放入小车信号
+                        _ioManager?.Ctx?.Off(x => x.发送放入小车指令);
+                        _ioManager?.Ctx?.Off(x => x.发送扫码完成信号);
 
+                        SwitchIndex = "发送Modbus完成";
+                        return;
+                    }
+
+                    if (Tw.StartCheckIsTimeout(SwitchIndex, WAIT_PUT_CART_TIMEOUT))
+                    {
+                        MessageHub.Current.Post(new AlarmMessage(
+                            key: "Unloading.Timeout",
+                            content: "等待放入小车完成超时",
+                            level: AlarmLevel.M,
+                            needReset: false,
+                            unit: "Unloading"));
+                        ForceCleanup("放入小车超时");
+                    }
+                    break;
+                #endregion
+
+                #region 发送Modbus完成
                 case "发送Modbus完成":
-                    ProcessSendModbusComplete();
+                    SendCartCompletionToModbus(true);
+                    SwitchIndex = "清理状态";
                     break;
+                #endregion
 
+                #region 清理状态
                 case "清理状态":
-                    ProcessCleanup();
-                    break;
+                    // 重置标志
+                    _lastScannedQrCode = string.Empty;
 
+                    // 释放皮带控制
+                    if (_beltStopRequested)
+                    {
+                        _beltStopRequested = false;
+                        var message = new BeltConveyorControlMessage(
+                            BeltConveyorControlSource.MaterialUnloading,
+                            false,
+                            "下料流程完成");
+                        MessageHub.Current.Post(message);
+                    }
+
+                    Complete();
+                    break;
+                #endregion
+
+                #region 释放空车
                 case "释放空车":
-                    ProcessReleaseEmptyCart();
-                    break;
+                    _lastScannedQrCode = string.Empty;
+                    ClearBinSelectSignals();
+                    SendCartCompletionToModbus(false);
 
+                    if (_beltStopRequested)
+                    {
+                        _beltStopRequested = false;
+                        var message = new BeltConveyorControlMessage(
+                            BeltConveyorControlSource.MaterialUnloading,
+                            false,
+                            $"料仓无料或空车不足，释放皮带");
+                        MessageHub.Current.Post(message);
+                    }
+
+                    Complete();
+                    break;
+                #endregion
+
+                #region 结束状态
                 case "结束状态":
                     // 完成，等待下一个周期
                     break;
+                #endregion
             }
         }
 
@@ -200,414 +494,6 @@ namespace Ewan.Core.Logic
 
         #endregion
 
-        #region 状态处理方法
-
-        /// <summary>
-        /// 处理初始状态
-        /// </summary>
-        private void ProcessInitialState()
-        {
-            _uiLogger.DebugRaw("状态机启动: {0}", "MaterialUnloadingLogic");
-            SwitchIndex = "检查环线信号";
-        }
-
-        /// <summary>
-        /// 检查环线信号
-        /// </summary>
-        private void ProcessCheckRingLineSignal()
-        {
-            // 信号为1且未处理过时，开始处理
-            if (_ringLineSignal && !_requestProcessed)
-            {
-                _requestProcessed = true;
-                SwitchIndex = "检查料仓有料";
-                return;
-            }
-
-            // 信号变为0时，清除处理标志
-            if (!_ringLineSignal && _requestProcessed)
-            {
-                _requestProcessed = false;
-                _uiLogger.InfoRaw("处理已完成: {0}", "环线信号结束，准备接收下次请求");
-            }
-        }
-
-        /// <summary>
-        /// 检查空车数量
-        /// </summary>
-        private void ProcessCheckEmptyCartCount()
-        {
-            var parameters = _parametersManager?.Parameters;
-            var cartCheckMode = parameters?.CartCheckMode ?? CartCheckMode.EmptyCart;
-            bool needSendEmptyCar = false;
-
-            if (cartCheckMode == CartCheckMode.EmptyCart)
-            {
-                var reserveCount = Math.Max(0, parameters?.EmptyCartReserveCount ?? 0);
-                if (_emptyCount <= reserveCount)
-                {
-                    _uiLogger.InfoRaw("处理已开始: {0}",
-                        $"环线要料信号到达，空车数量 {_emptyCount} ≤ 设定值 {reserveCount}，执行下空车");
-                    needSendEmptyCar = true;
-                }
-            }
-            else
-            {
-                var reserveCount = Math.Max(0, parameters?.CuttingBridgeCarReserveCount ?? 0);
-                if (_cuttingBridgeCarCount > reserveCount)
-                {
-                    _uiLogger.InfoRaw("处理已开始: {0}",
-                        $"环线要料信号到达，切栈桥车数量 {_cuttingBridgeCarCount} > 设定值 {reserveCount}，执行下空车");
-                    needSendEmptyCar = true;
-                }
-            }
-
-            if (needSendEmptyCar)
-            {
-                SwitchIndex = "释放空车";
-                return;
-            }
-
-            SwitchIndex = "检查料仓有料";
-        }
-
-        /// <summary>
-        /// 检查料仓有料
-        /// </summary>
-        private void ProcessCheckBinMaterial()
-        {
-            _selectedBin = GetConfiguredBinNumber();
-            if (_binElevator == null)
-            {
-                _uiLogger.WarnRaw("处理错误: {0} - {1}",
-                    "BinElevatorModule未配置", "跳过有料检测并继续流程");
-                _hasMaterial = true;
-                SwitchIndex = "发送取料指令";
-                _uiLogger.InfoRaw("处理已开始: {0}", "装料流程已完成，开始下料流程");
-                return;
-            }
-
-            if (_materialCheckTcs != null)
-            {
-                if (!_materialCheckTcs.Task.IsCompleted)
-                {
-                    return;
-                }
-
-                BinMaterialCheckResult materialCheckResult = null;
-                try
-                {
-                    if (_materialCheckTcs.Task.Status == System.Threading.Tasks.TaskStatus.RanToCompletion)
-                    {
-                        materialCheckResult = _materialCheckTcs.Task.Result;
-                    }
-                    else if (_materialCheckTcs.Task.IsCanceled)
-                    {
-                        materialCheckResult = BinMaterialCheckResult.CreateFailure(_selectedBin);
-                    }
-                    else if (_materialCheckTcs.Task.IsFaulted)
-                    {
-                        var error = _materialCheckTcs.Task.Exception?.GetBaseException()?.Message ?? "未知错误";
-                        _uiLogger.ErrorRaw("处理错误: {0} - {1}", $"料仓{_selectedBin}检测物料失败", error);
-                        materialCheckResult = BinMaterialCheckResult.CreateFailure(_selectedBin);
-                    }
-                }
-                finally
-                {
-                    _materialCheckTcs = null;
-                    _currentMaterialCheckRequestId = Guid.Empty;
-                }
-
-                if (materialCheckResult == null || materialCheckResult.HasMaterial)
-                {
-                    _hasMaterial = true;
-                    SwitchIndex = "发送取料指令";
-                    _uiLogger.InfoRaw("处理已开始: {0}", "装料流程已完成，开始下料流程");
-                }
-                else
-                {
-                    if (materialCheckResult.TimedOut)
-                    {
-                        MessageHub.Current.Post(new AlarmMessage(
-                            key: "BinElevator.Timeout",
-                            content: $"料仓{_selectedBin}升降超时，未检测到物料",
-                            level: AlarmLevel.H,
-                            needReset: true,
-                            unit: "BinElevator"));
-                    }
-
-                    _hasMaterial = false;
-                    SwitchIndex = "释放空车";
-
-                    string reason = materialCheckResult?.TimedOut == true
-                        ? "超时仍未检测到物料"
-                        : "传感器未检测到物料";
-                    _uiLogger.WarnRaw("处理错误: {0} - {1}",
-                        $"料仓{_selectedBin}无料，释放空车", reason);
-                }
-
-                return;
-            }
-
-            int binNumber = _selectedBin;
-            var requestId = Guid.NewGuid();
-            _currentMaterialCheckRequestId = requestId;
-            _materialCheckTcs = new TaskCompletionSource<BinMaterialCheckResult>(TaskCreationOptions.RunContinuationsAsynchronously);
-            var tcs = _materialCheckTcs;
-
-            Task.Run(async () =>
-            {
-                try
-                {
-                    var result = await _binElevator.RaiseToSensorAsync(binNumber).ConfigureAwait(false);
-                    if (_currentMaterialCheckRequestId != requestId)
-                    {
-                        return;
-                    }
-                    tcs?.TrySetResult(result);
-                }
-                catch (Exception ex)
-                {
-                    if (_currentMaterialCheckRequestId != requestId)
-                    {
-                        return;
-                    }
-                    _uiLogger.ErrorRaw("处理错误: {0} - {1}", $"料仓{binNumber}检测物料失败", ex.Message);
-                    tcs?.TrySetResult(BinMaterialCheckResult.CreateFailure(binNumber));
-                }
-            });
-        }
-
-        /// <summary>
-        /// 发送取料指令
-        /// </summary>
-        private void ProcessSendPickCommand()
-        {
-            // 设置料仓选择信号
-            SetBinSelectSignal(_selectedBin);
-
-            // 触发取料信号
-            _ioManager?.Ctx?.On(x => x.发送取料指令);
-
-            // 请求停止皮带
-            _beltStopRequested = true;
-            var message = new BeltConveyorControlMessage(
-                BeltConveyorControlSource.MaterialUnloading,
-                true,
-                "下料流程请求停止皮带");
-            MessageHub.Current.Post(message);
-
-            _uiLogger.InfoRaw("处理已开始: {0}", $"请求从料仓{_selectedBin}开始取料");
-
-            SwitchIndex = "等待取料完成";
-            Tw.StartWatch(SwitchIndex);
-        }
-
-        /// <summary>
-        /// 等待取料完成
-        /// </summary>
-        private void ProcessWaitPickingComplete()
-        {
-            if (_sharedState.GetUnloadingCompleted())
-            {
-                _sharedState.SetUnloadingCompleted(false);
-
-                // 清除信号
-                _ioManager?.Ctx?.Off(x => x.发送取料指令);
-                ClearBinSelectSignals();
-
-                _uiLogger.InfoRaw("处理已完成: {0}", "取料完成，等待到达扫码位置");
-
-                SwitchIndex = "等待扫码位置";
-                Tw.StartWatch(SwitchIndex);
-                return;
-            }
-
-            if (Tw.StartCheckIsTimeout(SwitchIndex, WAIT_PICKING_TIMEOUT))
-            {
-                _uiLogger.WarnRaw("操作超时: {0}", "等待取料完成超时");
-                MessageHub.Current.Post(new AlarmMessage(
-                    key: "Unloading.Timeout",
-                    content: "等待取料完成超时",
-                    level: AlarmLevel.M,
-                    needReset: false,
-                    unit: "Unloading"));
-                ForceCleanup("取料超时");
-            }
-        }
-
-        /// <summary>
-        /// 等待扫码位置
-        /// </summary>
-        private void ProcessWaitScanPosition()
-        {
-            if (_ioManager?.Ctx?.Edge.R(x => x.移至扫码区到位信号) == true)
-            {
-                SwitchIndex = "执行扫码";
-                _scanRetryCount = 0;
-                _uiLogger.InfoRaw("处理已开始: {0}", "已到达扫码位置，开始扫码");
-                return;
-            }
-
-            if (Tw.StartCheckIsTimeout(SwitchIndex, WAIT_SCAN_POSITION_TIMEOUT))
-            {
-                _uiLogger.WarnRaw("操作超时: {0}", "等待扫码位置超时");
-                MessageHub.Current.Post(new AlarmMessage(
-                    key: "Unloading.Timeout",
-                    content: "等待扫码位置超时",
-                    level: AlarmLevel.M,
-                    needReset: false,
-                    unit: "Unloading"));
-                ForceCleanup("扫码位置超时");
-            }
-        }
-
-        /// <summary>
-        /// 执行扫码
-        /// </summary>
-        private void ProcessScanning()
-        {
-            var parameters = _parametersManager?.Parameters;
-            bool mesEnabled = parameters?.MesEnabled ?? false;
-            int maxRetry = parameters?.CodeReaderScanRetryCount ?? 3;
-            if (maxRetry <= 0) maxRetry = 3;
-
-            if (mesEnabled)
-            {
-                _scanRetryCount++;
-                _lastScannedQrCode = (ScannerManager.Instance().TriggerScan() ?? string.Empty).Trim();
-
-                if (!string.IsNullOrWhiteSpace(_lastScannedQrCode))
-                {
-                    _uiLogger.InfoRaw("处理已完成: {0}", $"扫码内容: {_lastScannedQrCode}");
-                }
-                else if (_scanRetryCount < maxRetry)
-                {
-                    _uiLogger.WarnRaw("操作失败: {0}", $"第{_scanRetryCount}次扫码无结果");
-                    return;
-                }
-                else
-                {
-                    _lastScannedQrCode = string.Empty;
-                    _uiLogger.WarnRaw("操作失败: {0}", $"连续扫码{maxRetry}次无结果，继续流程");
-                    MessageHub.Current.Post(new AlarmMessage(
-                        key: "Scan.Failed",
-                        content: $"下料扫码失败：连续扫码{maxRetry}次无结果",
-                        level: AlarmLevel.L,
-                        needReset: false,
-                        unit: "Scanner"));
-                }
-            }
-            else
-            {
-                _uiLogger.InfoRaw("处理已跳过: {0}", "MES未启用，跳过扫码");
-            }
-
-            SwitchIndex = "发送放入小车指令";
-        }
-
-        /// <summary>
-        /// 发送放入小车指令
-        /// </summary>
-        private void ProcessSendPutCartCommand()
-        {
-            // 发送扫码完成信号给机械臂
-            _ioManager?.Ctx?.On(x => x.发送扫码完成信号);
-
-            // 发送放入小车信号
-            _ioManager?.Ctx?.On(x => x.发送放入小车指令);
-
-            SwitchIndex = "等待放入完成";
-            Tw.StartWatch(SwitchIndex);
-        }
-
-        /// <summary>
-        /// 等待放入小车完成
-        /// </summary>
-        private void ProcessWaitPutCartComplete()
-        {
-            if (_ioManager?.Ctx?.Edge.R(x => x.放入小车完成信号) == true)
-            {
-                // 清除放入小车信号
-                _ioManager?.Ctx?.Off(x => x.发送放入小车指令);
-                _ioManager?.Ctx?.Off(x => x.发送扫码完成信号);
-
-                SwitchIndex = "发送Modbus完成";
-                return;
-            }
-
-            if (Tw.StartCheckIsTimeout(SwitchIndex, WAIT_PUT_CART_TIMEOUT))
-            {
-                _uiLogger.WarnRaw("操作超时: {0}", "等待放入小车完成超时");
-                MessageHub.Current.Post(new AlarmMessage(
-                    key: "Unloading.Timeout",
-                    content: "等待放入小车完成超时",
-                    level: AlarmLevel.M,
-                    needReset: false,
-                    unit: "Unloading"));
-                ForceCleanup("放入小车超时");
-            }
-        }
-
-        /// <summary>
-        /// 发送Modbus完成信号
-        /// </summary>
-        private void ProcessSendModbusComplete()
-        {
-            SendCartCompletionToModbus(true);
-            SwitchIndex = "清理状态";
-        }
-
-        /// <summary>
-        /// 释放空车
-        /// </summary>
-        private void ProcessReleaseEmptyCart()
-        {
-            _lastScannedQrCode = string.Empty;
-            ClearBinSelectSignals();
-            SendCartCompletionToModbus(false);
-
-            if (_beltStopRequested)
-            {
-                _beltStopRequested = false;
-                var message = new BeltConveyorControlMessage(
-                    BeltConveyorControlSource.MaterialUnloading,
-                    false,
-                    $"料仓无料或空车不足，释放皮带");
-                MessageHub.Current.Post(message);
-            }
-
-            _uiLogger.InfoRaw("处理已完成: {0}", "释放空车完成");
-
-            Complete();
-        }
-
-        /// <summary>
-        /// 清理状态
-        /// </summary>
-        private void ProcessCleanup()
-        {
-            // 重置标志
-            _lastScannedQrCode = string.Empty;
-
-            // 释放皮带控制
-            if (_beltStopRequested)
-            {
-                _beltStopRequested = false;
-                var message = new BeltConveyorControlMessage(
-                    BeltConveyorControlSource.MaterialUnloading,
-                    false,
-                    "下料流程完成");
-                MessageHub.Current.Post(message);
-            }
-
-            _uiLogger.InfoRaw("处理已完成: {0}", "下料完成");
-
-            Complete();
-        }
-
-        #endregion
-
         #region 辅助方法
 
         /// <summary>
@@ -625,8 +511,6 @@ namespace Ewan.Core.Logic
         /// </summary>
         public void ForceCleanup(string reason)
         {
-            _uiLogger.WarnRaw("强制清理: {0}", reason);
-
             try
             {
                 if (_ioManager?.Ctx != null)
@@ -721,9 +605,6 @@ namespace Ewan.Core.Logic
 
                 ushort statusValue = hasMaterial ? (ushort)1 : (ushort)0;
                 _modbusRTUManager?.WriteAny(MATERIAL_STATUS_REGISTER, statusValue);
-
-                _uiLogger.InfoRaw("处理已完成: {0}",
-                    $"放入小车完成信号已发送到寄存器{CART_COMPLETION_REGISTER}，放料状态={(hasMaterial ? "放料" : "空车")}");
             }
             catch (Exception ex)
             {

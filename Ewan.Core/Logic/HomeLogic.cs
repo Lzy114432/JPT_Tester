@@ -19,12 +19,12 @@ namespace Ewan.Core.Logic
         #region 私有字段
 
         private readonly IBinElevator _binElevator;
-        private LayeredIOManager _ioManager;
+        private readonly LayeredIOManager _ioManager = LayeredIOManager.Instance();
 
         // 延时配置 (毫秒)
-        private const int STOP_ON_DELAY = 500;
+        private const int STOP_PULSE_DURATION = 500;
         private const int STOP_OFF_DELAY = 500;
-        private const int START_DELAY = 500;
+        private const int START_PULSE_DURATION = 500;
         private const int BIN_INIT_TIMEOUT = 10000;
 
         #endregion
@@ -59,53 +59,83 @@ namespace Ewan.Core.Logic
             {
                 switch (SwitchIndex)
                 {
+                    #region 初始状态
                     case "初始状态":
-                        ProcessInitialState();
+                        SwitchIndex = "发送停止脉冲";
                         break;
+                    #endregion
 
-                    case "停止ON":
-                        ProcessStopOn();
+                    #region 发送停止脉冲
+                    case "发送停止脉冲":
+                        _ioManager?.Ctx?.Pulse(x => x.停止输出, STOP_PULSE_DURATION, now: true);
+                        SwitchIndex = "等待停止完成";
+                        Tw.StartWatch(SwitchIndex);
                         break;
+                    #endregion
 
-                    case "停止ON等待":
-                        ProcessStopOnWait();
+                    #region 等待停止完成
+                    case "等待停止完成":
+                        // 等待脉冲完成 + OFF延时
+                        if (Tw.StartCheckIsTimeout(SwitchIndex, STOP_PULSE_DURATION + STOP_OFF_DELAY))
+                        {
+                            SwitchIndex = "发送开始脉冲";
+                        }
                         break;
+                    #endregion
 
-                    case "停止OFF":
-                        ProcessStopOff();
+                    #region 发送开始脉冲
+                    case "发送开始脉冲":
+                        _ioManager?.Ctx?.Pulse(x => x.开始, START_PULSE_DURATION, now: true);
+                        SwitchIndex = "等待开始完成";
+                        Tw.StartWatch(SwitchIndex);
                         break;
+                    #endregion
 
-                    case "停止OFF等待":
-                        ProcessStopOffWait();
+                    #region 等待开始完成
+                    case "等待开始完成":
+                        if (Tw.StartCheckIsTimeout(SwitchIndex, START_PULSE_DURATION))
+                        {
+                            SwitchIndex = "清除允许取料";
+                        }
                         break;
+                    #endregion
 
-                    case "开始ON":
-                        ProcessStartOn();
-                        break;
-
-                    case "开始ON等待":
-                        ProcessStartOnWait();
-                        break;
-
-                    case "开始OFF":
-                        ProcessStartOff();
-                        break;
-
+                    #region 清除允许取料
                     case "清除允许取料":
-                        ProcessClearAllowPickup();
+                        _ioManager?.Ctx?.Off(x => x.触发机械手皮带线允许取料);
+                        SwitchIndex = "料仓初始化";
                         break;
+                    #endregion
 
+                    #region 料仓初始化
                     case "料仓初始化":
-                        ProcessBinInit();
+                        {
+                            var posted = MessageHub.Current.Post(Ewan.Model.Production.BinElevatorCommandMessage.InitializeAll(nameof(HomeLogic)));
+                            if (!posted)
+                            {
+                                _binElevator?.PerformHardwareInitialization();
+                            }
+                            SwitchIndex = "等待料仓完成";
+                        }
                         break;
+                    #endregion
 
+                    #region 等待料仓完成
                     case "等待料仓完成":
-                        ProcessWaitBinComplete();
+                        if (Tw.StartCheckIsTimeout(SwitchIndex, BIN_INIT_TIMEOUT))
+                        {
+                            MachineParameters.Instance.EndHome(success: true);
+                            MessageHub.Current.Post(new StatusIndicatorCommand(SystemStatus.Standby, "复位完成，待机"));
+                            Complete();
+                        }
                         break;
+                    #endregion
 
+                    #region 结束状态
                     case "结束状态":
                         // 完成
                         break;
+                    #endregion
                 }
             }
             catch (Exception ex)
@@ -116,7 +146,7 @@ namespace Ewan.Core.Logic
 
         #endregion
 
-        #region 状态处理方法
+        #region 辅助方法
 
         private void AbortHome(string alarmMessage, Exception ex = null)
         {
@@ -141,139 +171,6 @@ namespace Ewan.Core.Logic
 
             MachineParameters.Instance.EndHome(success: false);
             Complete();
-        }
-
-        /// <summary>
-        /// 初始状态
-        /// </summary>
-        private void ProcessInitialState()
-        {
-            _uiLogger.InfoRaw("状态机启动: {0}", "HomeLogic");
-            // 注意: IsHomeing 已由 LogicManager.BeginHome() 设置，此处不再重复设置
-            _ioManager = LayeredIOManager.Instance();
-            SwitchIndex = "停止ON";
-        }
-
-        /// <summary>
-        /// 发送停止信号 ON
-        /// </summary>
-        private void ProcessStopOn()
-        {
-            if (_ioManager?.Ctx != null)
-            {
-                _ioManager.Ctx.On(x => x.停止输出);
-            }
-            SwitchIndex = "停止ON等待";
-        }
-
-        /// <summary>
-        /// 等待停止信号 ON 延时
-        /// </summary>
-        private void ProcessStopOnWait()
-        {
-            if (Tw.StartCheckIsTimeout(SwitchIndex, STOP_ON_DELAY))
-            {
-                SwitchIndex = "停止OFF";
-            }
-        }
-
-        /// <summary>
-        /// 发送停止信号 OFF
-        /// </summary>
-        private void ProcessStopOff()
-        {
-            if (_ioManager?.Ctx != null)
-            {
-                _ioManager.Ctx.Off(x => x.停止输出);
-            }
-            SwitchIndex = "停止OFF等待";
-        }
-
-        /// <summary>
-        /// 等待停止信号 OFF 延时
-        /// </summary>
-        private void ProcessStopOffWait()
-        {
-            if (Tw.StartCheckIsTimeout(SwitchIndex, STOP_OFF_DELAY))
-            {
-                SwitchIndex = "开始ON";
-            }
-        }
-
-        /// <summary>
-        /// 发送开始信号 ON
-        /// </summary>
-        private void ProcessStartOn()
-        {
-            if (_ioManager?.Ctx != null)
-            {
-                _ioManager.Ctx.On(x => x.开始);
-            }
-            SwitchIndex = "开始ON等待";
-        }
-
-        /// <summary>
-        /// 等待开始信号 ON 延时
-        /// </summary>
-        private void ProcessStartOnWait()
-        {
-            if (Tw.StartCheckIsTimeout(SwitchIndex, START_DELAY))
-            {
-                SwitchIndex = "开始OFF";
-            }
-        }
-
-        /// <summary>
-        /// 发送开始信号 OFF
-        /// </summary>
-        private void ProcessStartOff()
-        {
-            if (_ioManager?.Ctx != null)
-            {
-                _ioManager.Ctx.Off(x => x.开始);
-            }
-            SwitchIndex = "清除允许取料";
-        }
-
-        /// <summary>
-        /// 清除允许取料信号
-        /// </summary>
-        private void ProcessClearAllowPickup()
-        {
-            if (_ioManager?.Ctx != null)
-            {
-                _ioManager.Ctx.Off(x => x.触发机械手皮带线允许取料);
-            }
-            _uiLogger.InfoRaw("处理已完成: {0}", "上料机硬件初始化完成");
-            SwitchIndex = "料仓初始化";
-        }
-
-        /// <summary>
-        /// 启动料仓初始化
-        /// </summary>
-        private void ProcessBinInit()
-        {
-            var posted = MessageHub.Current.Post(Ewan.Model.Production.BinElevatorCommandMessage.InitializeAll(nameof(HomeLogic)));
-            if (!posted)
-            {
-                _binElevator?.PerformHardwareInitialization();
-            }
-            SwitchIndex = "等待料仓完成";
-        }
-
-        /// <summary>
-        /// 等待料仓初始化完成
-        /// </summary>
-        private void ProcessWaitBinComplete()
-        {
-            // 等待料仓初始化完成（简化处理，实际可检测完成信号）
-            if (Tw.StartCheckIsTimeout(SwitchIndex, BIN_INIT_TIMEOUT))
-            {
-                _uiLogger.InfoRaw("处理已完成: {0}", "HomeLogic 复位完成");
-                MachineParameters.Instance.EndHome(success: true);
-                MessageHub.Current.Post(new StatusIndicatorCommand(SystemStatus.Standby, "复位完成，待机"));
-                Complete();
-            }
         }
 
         #endregion
