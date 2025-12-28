@@ -1,3 +1,4 @@
+using EwanCore.Messaging;
 using System;
 
 namespace Ewan.Model.Production
@@ -20,7 +21,22 @@ namespace Ewan.Model.Production
         /// <summary>
         /// 下料位置（直接下降到底部）
         /// </summary>
-        DownPosition
+        DownPosition,
+
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        Initialize,
+
+        /// <summary>
+        /// 强制停止所有
+        /// </summary>
+        ForceStopAll,
+
+        /// <summary>
+        /// 上升到感应位置（请求/响应）
+        /// </summary>
+        RaiseToSensor
     }
     
     /// <summary>
@@ -48,12 +64,48 @@ namespace Ewan.Model.Production
         /// </summary>
         Error
     }
+
+    /// <summary>
+    /// 料仓操作结果
+    /// </summary>
+    public enum BinOperationResult
+    {
+        /// <summary>
+        /// 成功
+        /// </summary>
+        Success,
+
+        /// <summary>
+        /// 有料
+        /// </summary>
+        HasMaterial,
+
+        /// <summary>
+        /// 无料
+        /// </summary>
+        NoMaterial,
+
+        /// <summary>
+        /// 超时
+        /// </summary>
+        Timeout,
+
+        /// <summary>
+        /// 错误
+        /// </summary>
+        Error
+    }
     
     /// <summary>
     /// 料仓升降控制指令消息
     /// </summary>
-    public class BinElevatorCommandMessage
+    public class BinElevatorCommandMessage : IMessage, ICorrelatedMessage<Guid>
     {
+        /// <summary>
+        /// 关联ID，用于匹配请求和响应
+        /// </summary>
+        public Guid CorrelationId { get; set; }
+
         /// <summary>
         /// 料仓编号（1, 2, 3）
         /// </summary>
@@ -72,7 +124,12 @@ namespace Ewan.Model.Production
         /// <summary>
         /// 消息时间戳
         /// </summary>
-        public DateTime Timestamp { get; set; }
+        public DateTimeOffset Timestamp { get; set; }
+
+        /// <summary>
+        /// 指令来源
+        /// </summary>
+        public string Source { get; set; }
         
         /// <summary>
         /// 指令描述
@@ -81,8 +138,9 @@ namespace Ewan.Model.Production
 
         public BinElevatorCommandMessage()
         {
-            Timestamp = DateTime.Now;
+            Timestamp = DateTimeOffset.Now;
             CommandId = Guid.NewGuid().ToString();
+            Source = string.Empty;
         }
 
         public BinElevatorCommandMessage(int binNumber, BinCommand command, string description = "")
@@ -90,16 +148,46 @@ namespace Ewan.Model.Production
             BinNumber = binNumber;
             Command = command;
             Description = description;
-            Timestamp = DateTime.Now;
+            Timestamp = DateTimeOffset.Now;
             CommandId = Guid.NewGuid().ToString();
+            Source = string.Empty;
         }
+
+        public BinElevatorCommandMessage(int binNumber, BinCommand command, string description, string source)
+            : this(binNumber, command, description)
+        {
+            Source = source ?? string.Empty;
+        }
+
+        /// <summary>
+        /// 上升到感应位置（请求/响应）
+        /// </summary>
+        public static BinElevatorCommandMessage RaiseToSensor(int binNumber, string source)
+            => new BinElevatorCommandMessage(binNumber, BinCommand.RaiseToSensor, string.Empty, source);
+
+        /// <summary>
+        /// 初始化全部料仓
+        /// </summary>
+        public static BinElevatorCommandMessage InitializeAll(string source)
+            => new BinElevatorCommandMessage(0, BinCommand.Initialize, string.Empty, source);
+
+        /// <summary>
+        /// 强制停止全部料仓
+        /// </summary>
+        public static BinElevatorCommandMessage ForceStopAll(string source)
+            => new BinElevatorCommandMessage(0, BinCommand.ForceStopAll, string.Empty, source);
     }
-    
+
     /// <summary>
     /// 料仓升降状态反馈消息
     /// </summary>
-    public class BinElevatorStatusMessage
+    public class BinElevatorStatusMessage : IMessage, ICorrelatedMessage<Guid>
     {
+        /// <summary>
+        /// 关联ID，用于匹配请求和响应
+        /// </summary>
+        public Guid CorrelationId { get; set; }
+
         /// <summary>
         /// 料仓编号（1, 2, 3）
         /// </summary>
@@ -124,11 +212,16 @@ namespace Ewan.Model.Production
         /// 感应器状态
         /// </summary>
         public bool HasMaterial { get; set; }
-        
+
         /// <summary>
         /// 消息时间戳
         /// </summary>
-        public DateTime Timestamp { get; set; }
+        public DateTimeOffset Timestamp { get; set; }
+
+        /// <summary>
+        /// 操作结果
+        /// </summary>
+        public BinOperationResult OperationResult { get; set; }
         
         /// <summary>
         /// 状态描述
@@ -142,7 +235,8 @@ namespace Ewan.Model.Production
 
         public BinElevatorStatusMessage()
         {
-            Timestamp = DateTime.Now;
+            Timestamp = DateTimeOffset.Now;
+            OperationResult = BinOperationResult.Success;
         }
 
         public BinElevatorStatusMessage(int binNumber, BinExecuteState state, BinCommand currentCommand, string commandId = "", string description = "")
@@ -152,7 +246,22 @@ namespace Ewan.Model.Production
             CurrentCommand = currentCommand;
             CommandId = commandId;
             Description = description;
-            Timestamp = DateTime.Now;
+            Timestamp = DateTimeOffset.Now;
+            OperationResult = BinOperationResult.Success;
+        }
+
+        /// <summary>
+        /// 物料检测结果
+        /// </summary>
+        public static BinElevatorStatusMessage MaterialCheckResult(int binNumber, BinOperationResult result, string description = "", string errorMessage = "")
+        {
+            var state = result == BinOperationResult.Error ? BinExecuteState.Error : BinExecuteState.Completed;
+            return new BinElevatorStatusMessage(binNumber, state, BinCommand.RaiseToSensor, string.Empty, description)
+            {
+                OperationResult = result,
+                HasMaterial = result == BinOperationResult.HasMaterial,
+                ErrorMessage = errorMessage
+            };
         }
     }
 }

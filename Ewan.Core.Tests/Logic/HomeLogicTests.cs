@@ -1,9 +1,11 @@
 using Ewan.Core.IO;
 using Ewan.Core.Logic;
 using Ewan.Core.Module;
+using Ewan.Model.Production;
 using EwanCore.StateMachine;
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Ewan.Core.Tests.Logic
@@ -168,18 +170,33 @@ namespace Ewan.Core.Tests.Logic
         #region BinElevator 交互测试
 
         [Fact]
-        public void Handler_CallsPerformHardwareInitialization()
+        public void Handler_PostsBinInitializationMessage()
         {
             // Arrange
             var binElevator = new MockBinElevatorForHomeLogic();
             var logic = new HomeLogic(binElevator);
+            var signal = new ManualResetEventSlim(false);
+            BinElevatorCommandMessage receivedMessage = null;
+
+            var subscription = EwanCore.Messaging.MessageHub.Current.Subscribe<BinElevatorCommandMessage>(message =>
+            {
+                if (message?.Command == BinCommand.Initialize)
+                {
+                    receivedMessage = message;
+                    signal.Set();
+                }
+            });
 
             // Act - 运行到料仓初始化步骤
             RunToState(logic, "料仓初始化");
             logic.Handler();
 
             // Assert
-            Assert.True(binElevator.PerformHardwareInitializationCalled);
+            Assert.True(signal.Wait(1000));
+            Assert.NotNull(receivedMessage);
+            Assert.Equal(BinCommand.Initialize, receivedMessage.Command);
+
+            subscription.Dispose();
         }
 
         #endregion
@@ -402,6 +419,11 @@ namespace Ewan.Core.Tests.Logic
         public BinMaterialCheckResult RaiseToSensor(int binNumber)
         {
             return BinMaterialCheckResult.CreateHasMaterial(binNumber);
+        }
+
+        public Task<BinMaterialCheckResult> RaiseToSensorAsync(int binNumber, CancellationToken ct = default)
+        {
+            return Task.FromResult(BinMaterialCheckResult.CreateHasMaterial(binNumber));
         }
     }
 

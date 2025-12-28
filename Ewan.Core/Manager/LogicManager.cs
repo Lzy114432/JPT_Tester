@@ -179,7 +179,8 @@ namespace Ewan.Core.Manager
                 _logicThread.ClearAction();
 
                 _sharedState?.ResetAllStates();
-                _binElevator?.ForceStopAllBins();
+                MessageHub.Current.Post(Ewan.Model.Production.BinElevatorCommandMessage.ForceStopAll(nameof(LogicManager)));
+                MessageHub.Current.Post(Ewan.Model.Production.BinElevatorCommandMessage.InitializeAll(nameof(LogicManager)));
 
                 StartBinElevatorThread();
 
@@ -254,7 +255,7 @@ namespace Ewan.Core.Manager
 
                 _sharedState?.SetSystemPaused(false);
                 _sharedState?.ResetAllStates();
-                _binElevator?.ForceStopAllBins();
+                MessageHub.Current.Post(Ewan.Model.Production.BinElevatorCommandMessage.ForceStopAll(nameof(LogicManager)));
 
                 MachineParameters.Instance.NeedHome = true;
                 MachineParameters.Instance.IsHomeing = false;

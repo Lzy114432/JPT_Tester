@@ -82,6 +82,7 @@
     <Compile Include="Messages\MesMessages.cs" />
     <Compile Include="Permission\PermissionConfig.cs" />
     <Compile Include="Production\AutoProductionState.cs" />
+    <Compile Include="Production\BinElevatorCommand.cs" />
     <Compile Include="Production\MaterialOperationStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RingLineHeartbeatModel.cs" />

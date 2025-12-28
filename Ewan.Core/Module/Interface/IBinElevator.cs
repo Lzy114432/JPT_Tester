@@ -1,3 +1,6 @@
+using System.Threading;
+using System.Threading.Tasks;
+
 namespace Ewan.Core.Module
 {
     /// <summary>
@@ -12,6 +15,14 @@ namespace Ewan.Core.Module
         /// <param name="binNumber">料仓编号 (1-3)</param>
         /// <returns>物料检测结果</returns>
         BinMaterialCheckResult RaiseToSensor(int binNumber);
+
+        /// <summary>
+        /// 将指定料仓上升到有料感应位置，并返回物料检测结果（异步）
+        /// </summary>
+        /// <param name="binNumber">料仓编号 (1-3)</param>
+        /// <param name="ct">取消令牌</param>
+        /// <returns>物料检测结果</returns>
+        Task<BinMaterialCheckResult> RaiseToSensorAsync(int binNumber, CancellationToken ct = default);
 
         /// <summary>
         /// 强制停止所有料仓升降并将状态机置为停止

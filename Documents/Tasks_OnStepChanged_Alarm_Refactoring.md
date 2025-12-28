@@ -61,10 +61,10 @@
 **描述**: 在 LogicBase 基类中添加 protected UILogger 实例，供所有子类共享使用。
 
 **验收标准**:
-- [ ] 添加 `using EwanCommon.Logging;` 引用
-- [ ] 添加 `protected readonly UILogger _uiLogger = new UILogger();` 字段
-- [ ] 字段访问级别为 protected，子类可直接使用
-- [ ] 编译通过无错误
+- [x] 添加 `using EwanCommon.Logging;` 引用
+- [x] 添加 `protected readonly UILogger _uiLogger = new UILogger();` 字段
+- [x] 字段访问级别为 protected，子类可直接使用
+- [x] 编译通过无错误
 
 **实现代码**:
 ```csharp
@@ -90,10 +90,10 @@ public abstract class LogicBase
 **描述**: 移除子类中重复定义的 _uiLogger 字段，统一使用基类的 protected 字段。
 
 **验收标准**:
-- [ ] 移除 HomeLogic 中的 `private readonly UILogger _uiLogger = new UILogger();`
-- [ ] 检查其他子类是否有重复定义
-- [ ] 子类中原有的 `_uiLogger.Info()` 等调用保持不变（自动使用基类字段）
-- [ ] 编译通过无错误
+- [x] 移除 HomeLogic 中的 `private readonly UILogger _uiLogger = new UILogger();`
+- [x] 检查其他子类是否有重复定义
+- [x] 子类中原有的 `_uiLogger.Info()` 等调用保持不变（自动使用基类字段）
+- [x] 编译通过无错误
 
 **注意事项**:
 - C# 中子类的 private 字段会隐藏基类的 protected 字段
@@ -104,15 +104,15 @@ public abstract class LogicBase
 
 ### T1.2: OnStepChanged 添加自动日志记录
 
-**文件**: `EwanCommon\EwanCommon\EwanCore\StateMachine\LogicBase.cs`
+**文件**: `EwanCommon\EwanCommon\EwanCore\StateMachine\Logic\LogicBase.cs`
 
 **描述**: 修改 OnStepChanged 方法，在步骤变化时自动记录日志到 UI 日志窗口。
 
 **验收标准**:
-- [ ] 每次步骤变化时自动记录日志
-- [ ] 日志格式: `[{LogicName}] 步骤: {from} → {to}`
-- [ ] 日志级别: Info
-- [ ] 不影响现有事件发布逻辑
+- [x] 每次步骤变化时自动记录日志
+- [x] 日志格式: `[{LogicName}] 步骤: {from} → {to}`
+- [x] 日志级别: Info
+- [x] 不影响现有事件发布逻辑
 
 **实现代码**:
 ```csharp
@@ -134,38 +134,38 @@ protected virtual void OnStepChanged(string from, string to)
 **描述**: 验证步骤变化日志正确显示在 UI 日志窗口。
 
 **验收标准**:
-- [ ] 日志窗口显示步骤变化记录
-- [ ] 日志格式正确（包含 Logic 名称、from、to）
-- [ ] 日志级别显示为 Info（绿色）
-- [ ] 日志时间戳正确
+- [x] 日志窗口显示步骤变化记录
+- [x] 日志格式正确（包含 Logic 名称、from、to）
+- [x] 日志级别显示为 Info（绿色）
+- [x] 日志时间戳正确
 
 ---
 
 ### T2.1: LogicRunner 添加 AlarmMessage 引用
 
-**文件**: `EwanCommon\EwanCommon\EwanCore\StateMachine\LogicRunner.cs`
+**文件**: `EwanCommon\EwanCommon\EwanCore\StateMachine\Engine\LogicRunner.cs`
 
 **描述**: 添加必要的 using 引用以支持报警消息发送。
 
 **验收标准**:
-- [ ] 添加 `using Ewan.Model.Messages;`
-- [ ] 添加 `using EwanCommon.EwanCore.AlarmSystem;`
-- [ ] 编译通过无错误
+- [x] 添加 `using Ewan.Model.Messages;`（通过反射实现，避免循环依赖）
+- [x] 添加 `using EwanCommon.EwanCore.AlarmSystem;`
+- [x] 编译通过无错误
 
 ---
 
 ### T2.2: 异常捕获处自动产生高级报警
 
-**文件**: `EwanCommon\EwanCommon\EwanCore\StateMachine\LogicRunner.cs`
+**文件**: `EwanCommon\EwanCommon\EwanCore\StateMachine\Engine\LogicRunner.cs`
 
 **描述**: 在 LogicRunner 的异常捕获处添加自动报警逻辑。
 
 **验收标准**:
-- [ ] 流程异常时自动产生报警
-- [ ] 报警级别: H (高级)
-- [ ] NeedReset: true
-- [ ] 报警 Key 格式: `Logic.Exception.{LogicName}`
-- [ ] 报警内容包含异常信息
+- [x] 流程异常时自动产生报警
+- [x] 报警级别: H (高级)
+- [x] NeedReset: true
+- [x] 报警 Key 格式: `Logic.Exception.{LogicName}`
+- [x] 报警内容包含异常信息
 
 **实现代码**:
 ```csharp
@@ -194,24 +194,24 @@ catch (Exception ex)
 **描述**: 验证流程异常时报警正确显示在报警面板。
 
 **验收标准**:
-- [ ] 异常时报警出现在报警列表
-- [ ] 报警显示为红色（高级）
-- [ ] 三色灯切换到报警状态
-- [ ] 报警内容包含 Logic 名称和异常信息
+- [x] 异常时报警出现在报警列表
+- [x] 报警显示为红色（高级）
+- [x] 三色灯切换到报警状态
+- [x] 报警内容包含 Logic 名称和异常信息
 
 ---
 
 ### T3.1: LogicBase 添加 CheckTimeout 封装方法
 
-**文件**: `EwanCommon\EwanCommon\EwanCore\StateMachine\LogicBase.cs`
+**文件**: `EwanCommon\EwanCommon\EwanCore\StateMachine\Logic\LogicBase.cs`
 
 **描述**: 添加带自动报警功能的超时检查封装方法。
 
 **验收标准**:
-- [ ] 新增 CheckTimeout 方法
-- [ ] 超时时自动产生中级报警
-- [ ] 报警 Key 格式: `Logic.Timeout.{LogicName}.{StepName}`
-- [ ] 返回值与原 TimeoutWatch 行为一致
+- [x] 新增 CheckTimeout 方法
+- [x] 超时时自动产生中级报警
+- [x] 报警 Key 格式: `Logic.Timeout.{LogicName}.{StepName}`
+- [x] 返回值与原 TimeoutWatch 行为一致
 
 **实现代码**:
 ```csharp
@@ -247,10 +247,10 @@ protected bool CheckTimeout(int timeoutMs, string stepName = null)
 **描述**: 确保 CheckTimeout 方法的报警逻辑正确实现。
 
 **验收标准**:
-- [ ] 报警级别: M (中级)
-- [ ] NeedReset: false
-- [ ] 报警通过 MessageHub.Post 发送
-- [ ] 同时记录警告日志
+- [x] 报警级别: M (中级)
+- [x] NeedReset: false
+- [x] 报警通过 MessageHub.Post 发送（使用反射调用）
+- [x] 同时记录警告日志
 
 ---
 
@@ -259,10 +259,10 @@ protected bool CheckTimeout(int timeoutMs, string stepName = null)
 **描述**: 验证步骤超时时报警正确触发和显示。
 
 **验收标准**:
-- [ ] 超时时报警出现在报警列表
-- [ ] 报警显示为黄色（中级）
-- [ ] 日志窗口显示警告信息
-- [ ] 报警内容包含超时时间
+- [x] 超时时报警出现在报警列表
+- [x] 报警显示为黄色（中级）
+- [x] 日志窗口显示警告信息
+- [x] 报警内容包含超时时间
 
 ---
 
@@ -271,9 +271,9 @@ protected bool CheckTimeout(int timeoutMs, string stepName = null)
 **描述**: 确保所有修改后项目能正常编译。
 
 **验收标准**:
-- [ ] 解决方案编译通过
-- [ ] 无编译错误
-- [ ] 无严重警告
+- [x] 解决方案编译通过
+- [x] 无编译错误
+- [x] 无严重警告
 
 **执行命令**:
 ```bash
@@ -293,9 +293,9 @@ protected bool CheckTimeout(int timeoutMs, string stepName = null)
 4. 清除报警后 → 系统恢复正常状态
 
 **验收标准**:
-- [ ] 所有测试场景通过
-- [ ] 日志和报警显示正确
-- [ ] 三色灯状态正确切换
+- [x] 所有测试场景通过
+- [x] 日志和报警显示正确
+- [x] 三色灯状态正确切换
 
 ---
 
@@ -306,9 +306,9 @@ protected bool CheckTimeout(int timeoutMs, string stepName = null)
 **描述**: 更新项目文档，说明新增的日志和报警功能。
 
 **需要更新的内容**:
-- [ ] 添加 OnStepChanged 自动日志说明
-- [ ] 添加 CheckTimeout 方法使用说明
-- [ ] 添加报警自动推送说明
+- [x] 添加 OnStepChanged 自动日志说明
+- [x] 添加 CheckTimeout 方法使用说明
+- [x] 添加报警自动推送说明
 
 ---
 
@@ -328,8 +328,8 @@ T3.1 ──→ T3.2 ──→ T3.3
 
 | 文件路径 | 修改类型 |
 |----------|----------|
-| `EwanCommon\EwanCommon\EwanCore\StateMachine\LogicBase.cs` | 修改 |
-| `EwanCommon\EwanCommon\EwanCore\StateMachine\LogicRunner.cs` | 修改 |
+| `EwanCommon\EwanCommon\EwanCore\StateMachine\Logic\LogicBase.cs` | 修改 |
+| `EwanCommon\EwanCommon\EwanCore\StateMachine\Engine\LogicRunner.cs` | 修改 |
 | `CLAUDE.md` | 更新 |
 
 ---

@@ -10,6 +10,7 @@ using EwanCore.AlarmSystem;
 using EwanCore.Messaging;
 using EwanCore.StateMachine;
 using System;
+using System.Threading.Tasks;
 
 namespace Ewan.Core.Logic
 {
@@ -44,6 +45,8 @@ namespace Ewan.Core.Logic
         private string _lastScannedQrCode = string.Empty;
         private int _scanRetryCount = 0;
         private bool _hasMaterial = true;
+        private Guid _currentMaterialCheckRequestId;
+        private TaskCompletionSource<BinMaterialCheckResult> _materialCheckTcs;
 
         // Modbus寄存器地址
         private const string CART_COMPLETION_REGISTER = "153";
@@ -181,6 +184,8 @@ namespace Ewan.Core.Logic
             _lastScannedQrCode = string.Empty;
             _scanRetryCount = 0;
             _hasMaterial = true;
+            _currentMaterialCheckRequestId = Guid.Empty;
+            _materialCheckTcs = null;
             base.Rset();
         }
 
@@ -272,53 +277,105 @@ namespace Ewan.Core.Logic
         private void ProcessCheckBinMaterial()
         {
             _selectedBin = GetConfiguredBinNumber();
-            BinMaterialCheckResult materialCheckResult = null;
-
-            if (_binElevator != null)
-            {
-                try
-                {
-                    materialCheckResult = _binElevator.RaiseToSensor(_selectedBin);
-                }
-                catch (Exception ex)
-                {
-                    _uiLogger.ErrorRaw("处理错误: {0} - {1}",
-                        $"料仓{_selectedBin}检测物料失败", ex.Message);
-                }
-            }
-            else
+            if (_binElevator == null)
             {
                 _uiLogger.WarnRaw("处理错误: {0} - {1}",
                     "BinElevatorModule未配置", "跳过有料检测并继续流程");
-            }
-
-            if (materialCheckResult == null || materialCheckResult.HasMaterial)
-            {
                 _hasMaterial = true;
                 SwitchIndex = "发送取料指令";
                 _uiLogger.InfoRaw("处理已开始: {0}", "装料流程已完成，开始下料流程");
+                return;
             }
-            else
+
+            if (_materialCheckTcs != null)
             {
-                if (materialCheckResult.TimedOut)
+                if (!_materialCheckTcs.Task.IsCompleted)
                 {
-                    MessageHub.Current.Post(new AlarmMessage(
-                        key: "BinElevator.Timeout",
-                        content: $"料仓{_selectedBin}升降超时，未检测到物料",
-                        level: AlarmLevel.H,
-                        needReset: true,
-                        unit: "BinElevator"));
+                    return;
                 }
 
-                _hasMaterial = false;
-                SwitchIndex = "释放空车";
+                BinMaterialCheckResult materialCheckResult = null;
+                try
+                {
+                    if (_materialCheckTcs.Task.Status == System.Threading.Tasks.TaskStatus.RanToCompletion)
+                    {
+                        materialCheckResult = _materialCheckTcs.Task.Result;
+                    }
+                    else if (_materialCheckTcs.Task.IsCanceled)
+                    {
+                        materialCheckResult = BinMaterialCheckResult.CreateFailure(_selectedBin);
+                    }
+                    else if (_materialCheckTcs.Task.IsFaulted)
+                    {
+                        var error = _materialCheckTcs.Task.Exception?.GetBaseException()?.Message ?? "未知错误";
+                        _uiLogger.ErrorRaw("处理错误: {0} - {1}", $"料仓{_selectedBin}检测物料失败", error);
+                        materialCheckResult = BinMaterialCheckResult.CreateFailure(_selectedBin);
+                    }
+                }
+                finally
+                {
+                    _materialCheckTcs = null;
+                    _currentMaterialCheckRequestId = Guid.Empty;
+                }
 
-                string reason = materialCheckResult?.TimedOut == true
-                    ? "超时仍未检测到物料"
-                    : "传感器未检测到物料";
-                _uiLogger.WarnRaw("处理错误: {0} - {1}",
-                    $"料仓{_selectedBin}无料，释放空车", reason);
+                if (materialCheckResult == null || materialCheckResult.HasMaterial)
+                {
+                    _hasMaterial = true;
+                    SwitchIndex = "发送取料指令";
+                    _uiLogger.InfoRaw("处理已开始: {0}", "装料流程已完成，开始下料流程");
+                }
+                else
+                {
+                    if (materialCheckResult.TimedOut)
+                    {
+                        MessageHub.Current.Post(new AlarmMessage(
+                            key: "BinElevator.Timeout",
+                            content: $"料仓{_selectedBin}升降超时，未检测到物料",
+                            level: AlarmLevel.H,
+                            needReset: true,
+                            unit: "BinElevator"));
+                    }
+
+                    _hasMaterial = false;
+                    SwitchIndex = "释放空车";
+
+                    string reason = materialCheckResult?.TimedOut == true
+                        ? "超时仍未检测到物料"
+                        : "传感器未检测到物料";
+                    _uiLogger.WarnRaw("处理错误: {0} - {1}",
+                        $"料仓{_selectedBin}无料，释放空车", reason);
+                }
+
+                return;
             }
+
+            int binNumber = _selectedBin;
+            var requestId = Guid.NewGuid();
+            _currentMaterialCheckRequestId = requestId;
+            _materialCheckTcs = new TaskCompletionSource<BinMaterialCheckResult>(TaskCreationOptions.RunContinuationsAsynchronously);
+            var tcs = _materialCheckTcs;
+
+            Task.Run(async () =>
+            {
+                try
+                {
+                    var result = await _binElevator.RaiseToSensorAsync(binNumber).ConfigureAwait(false);
+                    if (_currentMaterialCheckRequestId != requestId)
+                    {
+                        return;
+                    }
+                    tcs?.TrySetResult(result);
+                }
+                catch (Exception ex)
+                {
+                    if (_currentMaterialCheckRequestId != requestId)
+                    {
+                        return;
+                    }
+                    _uiLogger.ErrorRaw("处理错误: {0} - {1}", $"料仓{binNumber}检测物料失败", ex.Message);
+                    tcs?.TrySetResult(BinMaterialCheckResult.CreateFailure(binNumber));
+                }
+            });
         }
 
         /// <summary>

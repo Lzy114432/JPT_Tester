@@ -254,7 +254,11 @@ namespace Ewan.Core.Logic
         /// </summary>
         private void ProcessBinInit()
         {
-            _binElevator?.PerformHardwareInitialization();
+            var posted = MessageHub.Current.Post(Ewan.Model.Production.BinElevatorCommandMessage.InitializeAll(nameof(HomeLogic)));
+            if (!posted)
+            {
+                _binElevator?.PerformHardwareInitialization();
+            }
             SwitchIndex = "等待料仓完成";
         }
 
