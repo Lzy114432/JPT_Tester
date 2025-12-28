@@ -1,7 +1,6 @@
 using Ewan.Core;
 using Ewan.Core.IO;
 using Ewan.Core.Module;
-using EwanCommon.Logging;
 using Ewan.Model.Messages;
 using Ewan.Model.System;
 using EwanCore.Messaging;
@@ -19,7 +18,6 @@ namespace Ewan.Core.Logic
     {
         #region 私有字段
 
-        private readonly UILogger _uiLogger = new UILogger();
         private readonly IBinElevator _binElevator;
         private LayeredIOManager _ioManager;
 

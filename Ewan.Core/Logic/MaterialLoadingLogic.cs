@@ -4,7 +4,6 @@ using Ewan.Core.ScanCode;
 using Ewan.Model.Messages;
 using Ewan.Model.Production;
 using Ewan.Model.System;
-using EwanCommon.Logging;
 using EwanCore.AlarmSystem;
 using EwanCore.Messaging;
 using EwanCore.StateMachine;
@@ -26,7 +25,6 @@ namespace Ewan.Core.Logic
     {
         #region 私有字段
 
-        private readonly UILogger _uiLogger = new UILogger();
         private readonly ProductionLineSharedState _sharedState;
         private readonly LayeredIOManager _ioManager;
         private readonly SystemParametersManager _parametersManager;

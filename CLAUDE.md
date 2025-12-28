@@ -371,6 +371,19 @@ _uiLogger.Error("数据库连接错误: {0}", ex.Message);
 
 ```
 
+**StateMachine logging & alarms:**
+- LogicBase 自动记录步骤切换日志（Info）：`[{LogicName}] 步骤: {from} → {to}`
+- 在 LogicBase 派生类中优先使用 `CheckTimeout(timeoutMs, stepName)` 触发 M 级报警 + UI Warn 日志
+- LogicRunner 捕获异常时会自动推送 H 级报警（Key: `Logic.Exception.{LogicName}`）
+
+```csharp
+// Timeout check with auto alarm + UI warning
+if (CheckTimeout(10000, "等待扫码"))
+{
+    return;
+}
+```
+
 ### 3. UI Control Development (MANDATORY PROCESS)
 
 **Every UI control addition requires these 3 steps (Chinese-only UI):**

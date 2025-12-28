@@ -1,3 +1,4 @@
+using EwanCore.AlarmSystem;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -183,7 +184,16 @@ namespace EwanCore.StateMachine
                         {
                             // 不让异常打爆线程；停机等待上层处理（也可以由上层订阅 LogicException 后转为报警）。
                             RunTag = RunTimeTag.Stop;
-                            errorArgs = new LogicExceptionEventArgs(logic.GetType().Name, logic.SwitchIndex, ex);
+
+                            var logicName = logic?.GetType().Name ?? "Unknown";
+                            var logicStep = logic?.SwitchIndex ?? string.Empty;
+                            LogicBase.TryPostAlarmMessage(
+                                key: $"Logic.Exception.{logicName}",
+                                content: $"流程异常: [{logicName}] {ex.Message}",
+                                level: AlarmLevel.H,
+                                needReset: true);
+
+                            errorArgs = new LogicExceptionEventArgs(logicName, logicStep, ex);
                         }
                         if (logic.IsFinish)
                         {
