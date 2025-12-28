@@ -2,10 +2,12 @@ using Ewan.Core;
 using Ewan.Core.IO;
 using Ewan.Core.Module;
 using Ewan.Model.Messages;
+using Ewan.Model.Production;
 using Ewan.Model.System;
 using EwanCore.Messaging;
 using EwanCore.StateMachine;
 using System;
+using System.Threading.Tasks;
 
 namespace Ewan.Core.Logic
 {
@@ -18,32 +20,26 @@ namespace Ewan.Core.Logic
     {
         #region 私有字段
 
-        private readonly IBinElevator _binElevator;
         private readonly LayeredIOManager _ioManager = LayeredIOManager.Instance();
+        private Task<BinElevatorStatusMessage> _binInitTask;
 
         // 延时配置 (毫秒)
         private const int STOP_PULSE_DURATION = 500;
         private const int STOP_OFF_DELAY = 500;
         private const int START_PULSE_DURATION = 500;
-        private const int BIN_INIT_TIMEOUT = 10000;
+        private const int BIN_INIT_TIMEOUT = 30000;
 
         #endregion
 
         #region 构造函数
 
-        /// <summary>
-        /// 构造函数（兼容旧签名，sharedState 已不再依赖）
-        /// </summary>
-        /// <param name="sharedState">共享状态对象</param>
-        /// <param name="binElevator">料仓升降模块</param>
-        [Obsolete("sharedState 已不再依赖，请使用 HomeLogic(IBinElevator)")]
-        public HomeLogic(ProductionLineSharedState sharedState, IBinElevator binElevator) : this(binElevator)
+        public HomeLogic()
         {
         }
 
+        [Obsolete("请使用 HomeLogic()")]
         public HomeLogic(IBinElevator binElevator)
         {
-            _binElevator = binElevator;
         }
 
         #endregion
@@ -110,10 +106,12 @@ namespace Ewan.Core.Logic
                     #region 料仓初始化
                     case "料仓初始化":
                         {
-                            var posted = MessageHub.Current.Post(Ewan.Model.Production.BinElevatorCommandMessage.InitializeAll(nameof(HomeLogic)));
-                            if (!posted)
+                            if (_binInitTask == null)
                             {
-                                _binElevator?.PerformHardwareInitialization();
+                                var request = BinElevatorCommandMessage.InitializeAll(nameof(HomeLogic));
+                                _binInitTask = MessageHub.Current.RequestAsync<BinElevatorCommandMessage, BinElevatorStatusMessage>(
+                                    request,
+                                    timeoutMs: BIN_INIT_TIMEOUT);
                             }
                             SwitchIndex = "等待料仓完成";
                         }
@@ -122,11 +120,67 @@ namespace Ewan.Core.Logic
 
                     #region 等待料仓完成
                     case "等待料仓完成":
-                        if (Tw.StartCheckIsTimeout(SwitchIndex, BIN_INIT_TIMEOUT))
+                        if (_binInitTask == null)
+                        {
+                            SwitchIndex = "料仓初始化";
+                            break;
+                        }
+
+                        if (!_binInitTask.IsCompleted)
+                        {
+                            break;
+                        }
+
+                        BinElevatorStatusMessage initResult = null;
+                        try
+                        {
+                            if (_binInitTask.Status == TaskStatus.RanToCompletion)
+                            {
+                                initResult = _binInitTask.Result;
+                            }
+                            else if (_binInitTask.IsCanceled)
+                            {
+                                AbortHome("料仓初始化超时");
+                                break;
+                            }
+                            else if (_binInitTask.IsFaulted)
+                            {
+                                var error = _binInitTask.Exception?.GetBaseException()?.Message ?? "未知错误";
+                                AbortHome("料仓初始化失败: " + error);
+                                break;
+                            }
+                        }
+                        finally
+                        {
+                            _binInitTask = null;
+                        }
+
+                        if (initResult == null)
+                        {
+                            AbortHome("料仓初始化失败");
+                            break;
+                        }
+
+                        if (initResult.OperationResult == BinOperationResult.Success)
                         {
                             MachineParameters.Instance.EndHome(success: true);
                             MessageHub.Current.Post(new StatusIndicatorCommand(SystemStatus.Standby, "复位完成，待机"));
                             Complete();
+                        }
+                        else if (initResult.OperationResult == BinOperationResult.Timeout)
+                        {
+                            AbortHome("料仓初始化超时");
+                        }
+                        else
+                        {
+                            var errorMessage = string.IsNullOrWhiteSpace(initResult.ErrorMessage)
+                                ? initResult.Description
+                                : initResult.ErrorMessage;
+                            if (string.IsNullOrWhiteSpace(errorMessage))
+                            {
+                                errorMessage = "料仓初始化失败";
+                            }
+                            AbortHome(errorMessage);
                         }
                         break;
                     #endregion
@@ -142,6 +196,12 @@ namespace Ewan.Core.Logic
             {
                 AbortHome("复位异常: " + ex.Message, ex);
             }
+        }
+
+        public override void Rset()
+        {
+            _binInitTask = null;
+            base.Rset();
         }
 
         #endregion

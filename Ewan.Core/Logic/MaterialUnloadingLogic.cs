@@ -34,8 +34,6 @@ namespace Ewan.Core.Logic
         private readonly SystemParametersManager _parametersManager;
         private readonly ModbusRTUManager _modbusRTUManager;
 
-        private IBinElevator _binElevator;
-
         private bool _beltStopRequested = false;
         private bool _ringLineSignal = false;
         private bool _requestProcessed = false;
@@ -45,8 +43,7 @@ namespace Ewan.Core.Logic
         private string _lastScannedQrCode = string.Empty;
         private int _scanRetryCount = 0;
         private bool _hasMaterial = true;
-        private Guid _currentMaterialCheckRequestId;
-        private TaskCompletionSource<BinElevatorStatusMessage> _materialCheckTcs;
+        private Task<BinElevatorStatusMessage> _materialCheckTask;
 
         // Modbus寄存器地址
         private const string CART_COMPLETION_REGISTER = "153";
@@ -76,18 +73,6 @@ namespace Ewan.Core.Logic
 
             // 订阅环线数据消息
             _ringLineSubscription = MessageHub.Current.Subscribe<RingLineDataMessage>(OnRingLineData);
-        }
-
-        #endregion
-
-        #region 公共方法
-
-        /// <summary>
-        /// 设置料仓升降模块引用
-        /// </summary>
-        public void SetBinElevatorModule(IBinElevator binElevator)
-        {
-            _binElevator = binElevator;
         }
 
         #endregion
@@ -173,16 +158,9 @@ namespace Ewan.Core.Logic
                 #region 检查料仓有料
                 case "检查料仓有料":
                     _selectedBin = GetConfiguredBinNumber();
-                    if (_binElevator == null)
+                    if (_materialCheckTask != null)
                     {
-                        _hasMaterial = true;
-                        SwitchIndex = "发送取料指令";
-                        return;
-                    }
-
-                    if (_materialCheckTcs != null)
-                    {
-                        if (!_materialCheckTcs.Task.IsCompleted)
+                        if (!_materialCheckTask.IsCompleted)
                         {
                             return;
                         }
@@ -190,25 +168,24 @@ namespace Ewan.Core.Logic
                         BinElevatorStatusMessage statusResult = null;
                         try
                         {
-                            if (_materialCheckTcs.Task.Status == System.Threading.Tasks.TaskStatus.RanToCompletion)
+                            if (_materialCheckTask.Status == TaskStatus.RanToCompletion)
                             {
-                                statusResult = _materialCheckTcs.Task.Result;
+                                statusResult = _materialCheckTask.Result;
                             }
-                            else if (_materialCheckTcs.Task.IsCanceled)
+                            else if (_materialCheckTask.IsCanceled)
                             {
-                                statusResult = BinElevatorStatusMessage.MaterialCheckResult(_selectedBin, BinOperationResult.Error, "操作取消");
+                                statusResult = BinElevatorStatusMessage.MaterialCheckResult(_selectedBin, BinOperationResult.Timeout, "超时");
                             }
-                            else if (_materialCheckTcs.Task.IsFaulted)
+                            else if (_materialCheckTask.IsFaulted)
                             {
-                                var error = _materialCheckTcs.Task.Exception?.GetBaseException()?.Message ?? "未知错误";
+                                var error = _materialCheckTask.Exception?.GetBaseException()?.Message ?? "未知错误";
                                 _uiLogger.ErrorRaw("料仓{0}检测物料失败: {1}", _selectedBin, error);
                                 statusResult = BinElevatorStatusMessage.MaterialCheckResult(_selectedBin, BinOperationResult.Error, "检测失败", error);
                             }
                         }
                         finally
                         {
-                            _materialCheckTcs = null;
-                            _currentMaterialCheckRequestId = Guid.Empty;
+                            _materialCheckTask = null;
                         }
 
                         bool hasMaterial = statusResult?.OperationResult == BinOperationResult.HasMaterial;
@@ -238,34 +215,18 @@ namespace Ewan.Core.Logic
                         return;
                     }
 
+                    try
                     {
-                        int binNumber = _selectedBin;
-                        var requestId = Guid.NewGuid();
-                        _currentMaterialCheckRequestId = requestId;
-                        _materialCheckTcs = new TaskCompletionSource<BinElevatorStatusMessage>(TaskCreationOptions.RunContinuationsAsynchronously);
-                        var tcs = _materialCheckTcs;
-
-                        Task.Run(async () =>
-                        {
-                            try
-                            {
-                                var result = await _binElevator.RaiseToSensorAsync(binNumber).ConfigureAwait(false);
-                                if (_currentMaterialCheckRequestId != requestId)
-                                {
-                                    return;
-                                }
-                                tcs?.TrySetResult(result);
-                            }
-                            catch (Exception ex)
-                            {
-                                if (_currentMaterialCheckRequestId != requestId)
-                                {
-                                    return;
-                                }
-                                _uiLogger.ErrorRaw("料仓{0}检测物料异常: {1}", binNumber, ex.Message);
-                                tcs?.TrySetResult(BinElevatorStatusMessage.MaterialCheckResult(binNumber, BinOperationResult.Error, "检测异常", ex.Message));
-                            }
-                        });
+                        var request = BinElevatorCommandMessage.RaiseToSensor(_selectedBin, nameof(MaterialUnloadingLogic));
+                        _materialCheckTask = MessageHub.Current.RequestAsync<BinElevatorCommandMessage, BinElevatorStatusMessage>(
+                            request,
+                            timeoutMs: 10000);
+                    }
+                    catch (Exception ex)
+                    {
+                        _uiLogger.ErrorRaw("料仓{0}检测物料请求失败: {1}", _selectedBin, ex.Message);
+                        _hasMaterial = false;
+                        SwitchIndex = "释放空车";
                     }
                     break;
                 #endregion
@@ -297,8 +258,6 @@ namespace Ewan.Core.Logic
                 case "等待取料完成":
                     if (_ioManager?.Ctx?.Edge.F(x => x.机械臂取料完成信号) == true)
                     {
-                        MessageHub.Current.Post(Ewan.Model.Production.BinElevatorCommandMessage.UnloadingCompleted(nameof(MaterialUnloadingLogic)));
-
                         _ioManager?.Ctx?.Off(x => x.发送取料指令);
                         ClearBinSelectSignals();
 
@@ -484,8 +443,7 @@ namespace Ewan.Core.Logic
             _lastScannedQrCode = string.Empty;
             _scanRetryCount = 0;
             _hasMaterial = true;
-            _currentMaterialCheckRequestId = Guid.Empty;
-            _materialCheckTcs = null;
+            _materialCheckTask = null;
             base.Rset();
         }
 

@@ -31,13 +31,9 @@ namespace Ewan.Core.Manager
         private ControllerBox _controllerBox;
 
         private ProductionLineSharedState _sharedState;
-        private IBinElevator _binElevator;
 
         private IDisposable _alarmMessageSubscription;
         private IDisposable _systemControlSubscription;
-
-        private Thread _binElevatorThread;
-        private volatile bool _binElevatorRunning;
 
         private MainLogic _mainLogic;
         private bool _disposed;
@@ -53,8 +49,6 @@ namespace Ewan.Core.Manager
         public bool HasNeedResetAlarm => _alarmService.HasNeedResetAlarm;
 
         public ProductionLineSharedState SharedState => _sharedState;
-
-        public IBinElevator BinElevator => _binElevator;
 
         public override bool Init()
         {
@@ -72,10 +66,6 @@ namespace Ewan.Core.Manager
                 _controllerBox.AddLogicManger(_logicThread);
 
                 _sharedState = new ProductionLineSharedState();
-
-                var binElevatorModule = new BinElevatorModule(_sharedState);
-                binElevatorModule.Init();
-                _binElevator = binElevatorModule;
 
                 _alarmMessageSubscription = MessageHub.Current.Subscribe<AlarmMessage>(OnAlarmMessage);
                 _systemControlSubscription = MessageHub.Current.Subscribe<SystemControlMessage>(OnSystemControlMessage);
@@ -179,9 +169,7 @@ namespace Ewan.Core.Manager
                 MessageHub.Current.Post(Ewan.Model.Production.BinElevatorCommandMessage.ForceStopAll(nameof(LogicManager)));
                 MessageHub.Current.Post(Ewan.Model.Production.BinElevatorCommandMessage.InitializeAll(nameof(LogicManager)));
 
-                StartBinElevatorThread();
-
-                _logicThread.AddAction(new HomeLogic(_binElevator));
+                _logicThread.AddAction(new HomeLogic());
                 _controllerBox.Start();
 
                 MessageHub.Current.Post(new StatusIndicatorCommand(SystemStatus.Initializing, "复位中"));
@@ -223,11 +211,9 @@ namespace Ewan.Core.Manager
                     return false;
                 }
 
-                StartBinElevatorThread();
-
                 if (_logicThread.Count == 0)
                 {
-                    _mainLogic = new MainLogic(_sharedState, _binElevator);
+                    _mainLogic = new MainLogic(_sharedState);
                     _logicThread.AddAction(_mainLogic);
                 }
 
@@ -248,7 +234,6 @@ namespace Ewan.Core.Manager
             lock (_controlLock)
             {
                 _controllerBox?.Stop();
-                StopBinElevatorThread();
 
                 _sharedState?.SetSystemPaused(false);
                 _sharedState?.ResetAllStates();
@@ -312,59 +297,6 @@ namespace Ewan.Core.Manager
                 }
 
                 s_logger.Warn("紧急停止");
-            }
-        }
-
-        private void StartBinElevatorThread()
-        {
-            if (_binElevator == null)
-            {
-                return;
-            }
-
-            if (_binElevatorRunning && _binElevatorThread?.IsAlive == true)
-            {
-                return;
-            }
-
-            _binElevatorRunning = true;
-            _binElevatorThread = new Thread(BinElevatorPollingLoop)
-            {
-                IsBackground = true,
-                Name = "BinElevatorPolling"
-            };
-            _binElevatorThread.Start();
-        }
-
-        private void StopBinElevatorThread()
-        {
-            _binElevatorRunning = false;
-            if (_binElevatorThread != null && _binElevatorThread.IsAlive)
-            {
-                _binElevatorThread.Join(1000);
-            }
-            _binElevatorThread = null;
-        }
-
-        private void BinElevatorPollingLoop()
-        {
-            while (_binElevatorRunning)
-            {
-                try
-                {
-                    _binElevator.Run();
-                }
-                catch (Exception ex)
-                {
-                    s_logger.Error("BinElevator 轮询异常", ex);
-                    _alarmService.AddAlarm(
-                        content: $"料仓升降异常：{ex.Message}",
-                        level: AlarmLevel.H,
-                        unit: "BinElevator",
-                        needReset: true,
-                        key: "BinElevator.Exception");
-                    Thread.Sleep(1000);
-                }
             }
         }
 
@@ -482,8 +414,6 @@ namespace Ewan.Core.Manager
                     // ignored
                 }
 
-                StopBinElevatorThread();
-
                 _logicThread?.Dispose();
                 _logicThread = null;
 
@@ -492,9 +422,6 @@ namespace Ewan.Core.Manager
 
                 _systemControlSubscription?.Dispose();
                 _systemControlSubscription = null;
-
-                _binElevator?.Destroy();
-                _binElevator = null;
 
                 DisposeMainLogicIfNeeded();
 

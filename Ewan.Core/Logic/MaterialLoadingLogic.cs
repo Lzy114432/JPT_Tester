@@ -196,7 +196,9 @@ namespace Ewan.Core.Logic
                 case "等待装载完成":
                     if (_ioManager?.Ctx?.Edge.F(x => x.机械臂放置完成信号) == true)
                     {
-                        MessageHub.Current.Post(Ewan.Model.Production.BinElevatorCommandMessage.LoadingCompleted(nameof(MaterialLoadingLogic)));
+                        MessageHub.Current.Post(Ewan.Model.Production.BinElevatorCommandMessage.LoadingCompleted(
+                            _targetBin,
+                            nameof(MaterialLoadingLogic)));
                         SwitchIndex = "清理状态";
                         return;
                     }

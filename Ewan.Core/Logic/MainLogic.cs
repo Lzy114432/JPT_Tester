@@ -19,14 +19,13 @@ namespace Ewan.Core.Logic
         private bool _loadingEnabled = true;
         private bool _unloadingEnabled = true;
 
-        public MainLogic(ProductionLineSharedState sharedState, IBinElevator binElevator)
+        public MainLogic(ProductionLineSharedState sharedState)
         {
             _sharedState = sharedState ?? throw new ArgumentNullException(nameof(sharedState));
             _parametersManager = SystemParametersManager.Instance;
 
             var loadingLogic = new MaterialLoadingLogic(_sharedState);
             var unloadingLogic = new MaterialUnloadingLogic(_sharedState);
-            unloadingLogic.SetBinElevatorModule(binElevator);
 
             _loadingLogic = loadingLogic;
             _unloadingLogic = unloadingLogic;

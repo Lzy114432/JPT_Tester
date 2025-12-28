@@ -77,32 +77,4 @@ namespace Ewan.Model.Production
         Error
     }
 
-    /// <summary>
-    /// 料仓状态机枚举
-    /// </summary>
-    public enum BinElevatorMode
-    {
-        /// <summary>
-        /// 初始化模式先上升
-        /// 到底感应位置，再下降，
-        /// 下降到没有感应
-        /// 保持停止状态
-        /// </summary>
-        Init,
-
-        /// <summary>
-        /// 上料模式 - 等待机械手上料完成
-        /// </summary>
-        Loading,
-
-        /// <summary>
-        /// 下料模式 - 等待机械手下料完成
-        /// </summary>
-        Unloading,
-
-        /// <summary>
-        /// 停止模式 - 料仓停止运动
-        /// </summary>
-        Stopped
-    }
 }

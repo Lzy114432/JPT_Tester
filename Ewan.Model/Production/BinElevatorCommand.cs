@@ -9,44 +9,24 @@ namespace Ewan.Model.Production
     public enum BinCommand
     {
         /// <summary>
-        /// 停止
-        /// </summary>
-        Stop,
-
-        /// <summary>
-        /// 上料位置（上升到感应位置，然后下降到无感应停止）
-        /// </summary>
-        FeedPosition,
-
-        /// <summary>
-        /// 下料位置（直接下降到底部）
-        /// </summary>
-        DownPosition,
-
-        /// <summary>
-        /// 初始化
+        /// 初始化所有料仓（需要回复）
         /// </summary>
         Initialize,
 
         /// <summary>
-        /// 强制停止所有
-        /// </summary>
-        ForceStopAll,
-
-        /// <summary>
-        /// 上升到感应位置（请求/响应）
+        /// 上升到感应位置（需要轴号，需要回复）
         /// </summary>
         RaiseToSensor,
 
         /// <summary>
-        /// 装料完成（触发料仓下降）
+        /// 装料完成，下降一格（需要轴号，不需要回复）
         /// </summary>
         LoadingCompleted,
 
         /// <summary>
-        /// 取料完成（重置料仓状态）
+        /// 强制停止所有料仓（不需要回复）
         /// </summary>
-        UnloadingCompleted
+        ForceStopAll
     }
     
     /// <summary>
@@ -188,16 +168,12 @@ namespace Ewan.Model.Production
             => new BinElevatorCommandMessage(0, BinCommand.ForceStopAll, string.Empty, source);
 
         /// <summary>
-        /// 装料完成通知
+        /// 装料完成，指定料仓下降一格
         /// </summary>
-        public static BinElevatorCommandMessage LoadingCompleted(string source)
-            => new BinElevatorCommandMessage(0, BinCommand.LoadingCompleted, string.Empty, source);
-
-        /// <summary>
-        /// 取料完成通知
-        /// </summary>
-        public static BinElevatorCommandMessage UnloadingCompleted(string source)
-            => new BinElevatorCommandMessage(0, BinCommand.UnloadingCompleted, string.Empty, source);
+        /// <param name="binNumber">料仓编号 (1-3)</param>
+        /// <param name="source">消息来源</param>
+        public static BinElevatorCommandMessage LoadingCompleted(int binNumber, string source)
+            => new BinElevatorCommandMessage(binNumber, BinCommand.LoadingCompleted, string.Empty, source);
     }
 
     /// <summary>
@@ -270,6 +246,25 @@ namespace Ewan.Model.Production
             Description = description;
             Timestamp = DateTimeOffset.Now;
             OperationResult = BinOperationResult.Success;
+        }
+
+        /// <summary>
+        /// 初始化完成结果
+        /// </summary>
+        public static BinElevatorStatusMessage InitializeResult(
+            BinOperationResult result,
+            string description = "",
+            string errorMessage = "")
+        {
+            var state = result == BinOperationResult.Error
+                ? BinExecuteState.Error
+                : BinExecuteState.Completed;
+
+            return new BinElevatorStatusMessage(0, state, BinCommand.Initialize, string.Empty, description)
+            {
+                OperationResult = result,
+                ErrorMessage = errorMessage
+            };
         }
 
         /// <summary>

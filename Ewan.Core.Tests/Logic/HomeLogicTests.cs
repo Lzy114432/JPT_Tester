@@ -1,11 +1,8 @@
-using Ewan.Core.IO;
 using Ewan.Core.Logic;
-using Ewan.Core.Module;
 using Ewan.Model.Production;
-using EwanCore.StateMachine;
+using EwanCore.Messaging;
 using System;
 using System.Threading;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Ewan.Core.Tests.Logic
@@ -22,10 +19,7 @@ namespace Ewan.Core.Tests.Logic
         public void Constructor_InitializesWithDefaultState()
         {
             // Arrange
-            var binElevator = new MockBinElevatorForHomeLogic();
-
-            // Act
-            var logic = new HomeLogic(binElevator);
+            var logic = new HomeLogic();
 
             // Assert
             Assert.Equal("初始状态", logic.SwitchIndex);
@@ -37,84 +31,80 @@ namespace Ewan.Core.Tests.Logic
         #region 状态转换测试
 
         [Fact]
-        public void Handler_FromInitialState_TransitionsToStopOn()
+        public void Handler_FromInitialState_TransitionsToStopPulse()
         {
             // Arrange
-            var binElevator = new MockBinElevatorForHomeLogic();
-            var logic = new HomeLogic(binElevator);
+            var logic = new HomeLogic();
 
             // Act
             logic.Handler();
 
             // Assert
-            Assert.Equal("停止ON", logic.SwitchIndex);
+            Assert.Equal("发送停止脉冲", logic.SwitchIndex);
         }
 
         [Fact]
-        public void Handler_FromStopOn_TransitionsToStopOnWait()
+        public void Handler_FromStopPulse_TransitionsToStopWait()
         {
             // Arrange
-            var binElevator = new MockBinElevatorForHomeLogic();
-            var logic = new HomeLogic(binElevator);
+            var logic = new HomeLogic();
 
-            // Act - 进入 "停止ON" 状态
-            logic.Handler(); // 初始状态 -> 停止ON
-            Assert.Equal("停止ON", logic.SwitchIndex);
+            // Act - 进入 "发送停止脉冲" 状态
+            logic.Handler(); // 初始状态 -> 发送停止脉冲
+            Assert.Equal("发送停止脉冲", logic.SwitchIndex);
 
-            logic.Handler(); // 停止ON -> 停止ON等待
+            logic.Handler(); // 发送停止脉冲 -> 等待停止完成
 
             // Assert
-            Assert.Equal("停止ON等待", logic.SwitchIndex);
+            Assert.Equal("等待停止完成", logic.SwitchIndex);
         }
 
         [Fact]
-        public void Handler_StopOnWait_TransitionsAfterTimeout()
+        public void Handler_StopWait_TransitionsAfterTimeout()
         {
             // Arrange
-            var binElevator = new MockBinElevatorForHomeLogic();
-            var logic = new HomeLogic(binElevator);
+            var logic = new HomeLogic();
 
             // 进入等待状态
-            logic.Handler(); // 初始状态 -> 停止ON
-            logic.Handler(); // 停止ON -> 停止ON等待
-            Assert.Equal("停止ON等待", logic.SwitchIndex);
+            logic.Handler(); // 初始状态 -> 发送停止脉冲
+            logic.Handler(); // 发送停止脉冲 -> 等待停止完成
+            Assert.Equal("等待停止完成", logic.SwitchIndex);
 
             // 第一次调用 StartCheckIsTimeout 会启动计时器
             logic.Handler(); // 应该仍在等待
-            Assert.Equal("停止ON等待", logic.SwitchIndex);
+            Assert.Equal("等待停止完成", logic.SwitchIndex);
 
-            // 等待足够长时间让超时触发（STOP_ON_DELAY = 500ms）
-            Thread.Sleep(1000);
+            // 等待足够长时间让超时触发（STOP_PULSE_DURATION + STOP_OFF_DELAY）
+            Thread.Sleep(1200);
             logic.Handler();
 
             // Assert
-            Assert.Equal("停止OFF", logic.SwitchIndex);
+            Assert.Equal("发送开始脉冲", logic.SwitchIndex);
         }
 
         [Fact]
-        public void Handler_StopOff_TransitionsToStopOffWait()
+        public void Handler_StartPulse_TransitionsToStartWait()
         {
             // Arrange
-            var binElevator = new MockBinElevatorForHomeLogic();
-            var logic = new HomeLogic(binElevator);
+            var logic = new HomeLogic();
 
-            // 使用辅助方法推进到 "停止OFF" 状态
-            RunToState(logic, "停止OFF");
-            Assert.Equal("停止OFF", logic.SwitchIndex);
+            // 使用辅助方法推进到 "发送开始脉冲" 状态
+            RunToState(logic, "发送开始脉冲");
+            Assert.Equal("发送开始脉冲", logic.SwitchIndex);
 
             // Act
-            logic.Handler(); // 停止OFF -> 停止OFF等待
+            logic.Handler(); // 发送开始脉冲 -> 等待开始完成
 
             // Assert
-            Assert.Equal("停止OFF等待", logic.SwitchIndex);
+            Assert.Equal("等待开始完成", logic.SwitchIndex);
         }
 
         [Fact]
         public void Handler_CompleteFullCycle_ReachesFinish()
         {
             // Arrange
-            var binElevator = new MockBinElevatorForHomeLogic();
-            var logic = new HomeLogic(binElevator);
+            var logic = new HomeLogic();
+            using var responder = RegisterInitializeResponder();
 
             // Act - 运行完整周期
             RunHomeLogicToCompletion(logic);
@@ -132,8 +122,7 @@ namespace Ewan.Core.Tests.Logic
         public void Handler_IsNonBlocking()
         {
             // Arrange
-            var binElevator = new MockBinElevatorForHomeLogic();
-            var logic = new HomeLogic(binElevator);
+            var logic = new HomeLogic();
 
             // Act - 测量单次 Handler 调用时间
             var startTime = DateTime.Now;
@@ -148,12 +137,11 @@ namespace Ewan.Core.Tests.Logic
         public void Handler_WaitStates_ReturnImmediatelyWhenNotTimedOut()
         {
             // Arrange
-            var binElevator = new MockBinElevatorForHomeLogic();
-            var logic = new HomeLogic(binElevator);
+            var logic = new HomeLogic();
 
             // 进入等待状态
-            logic.Handler(); // 初始状态 -> 停止ON
-            logic.Handler(); // 停止ON -> 停止ON等待
+            logic.Handler(); // 初始状态 -> 发送停止脉冲
+            logic.Handler(); // 发送停止脉冲 -> 等待停止完成
 
             // Act - 立即再次调用（未超时）
             var startTime = DateTime.Now;
@@ -162,7 +150,7 @@ namespace Ewan.Core.Tests.Logic
 
             // Assert - 应该快速返回，状态不变
             Assert.True(elapsed < 50, $"Handler took {elapsed}ms during wait state");
-            Assert.Equal("停止ON等待", logic.SwitchIndex);
+            Assert.Equal("等待停止完成", logic.SwitchIndex);
         }
 
         #endregion
@@ -173,12 +161,12 @@ namespace Ewan.Core.Tests.Logic
         public void Handler_PostsBinInitializationMessage()
         {
             // Arrange
-            var binElevator = new MockBinElevatorForHomeLogic();
-            var logic = new HomeLogic(binElevator);
-            var signal = new ManualResetEventSlim(false);
-            BinElevatorCommandMessage receivedMessage = null;
+            var logic = new HomeLogic();
+            using var signal = new ManualResetEventSlim(false);
+            BinElevatorCommandMessage? receivedMessage = null;
 
-            var subscription = EwanCore.Messaging.MessageHub.Current.Subscribe<BinElevatorCommandMessage>(message =>
+            using var responder = RegisterInitializeResponder();
+            using var subscription = MessageHub.Current.Subscribe<BinElevatorCommandMessage>(message =>
             {
                 if (message?.Command == BinCommand.Initialize)
                 {
@@ -194,9 +182,8 @@ namespace Ewan.Core.Tests.Logic
             // Assert
             Assert.True(signal.Wait(1000));
             Assert.NotNull(receivedMessage);
-            Assert.Equal(BinCommand.Initialize, receivedMessage.Command);
-
-            subscription.Dispose();
+            Assert.Equal(BinCommand.Initialize, receivedMessage!.Command);
+            Assert.Equal(0, receivedMessage.BinNumber);
         }
 
         #endregion
@@ -207,8 +194,7 @@ namespace Ewan.Core.Tests.Logic
         public void Rset_ResetsToInitialState()
         {
             // Arrange
-            var binElevator = new MockBinElevatorForHomeLogic();
-            var logic = new HomeLogic(binElevator);
+            var logic = new HomeLogic();
 
             // 推进到某个中间状态
             logic.Handler();
@@ -231,11 +217,10 @@ namespace Ewan.Core.Tests.Logic
         public void Handler_RaisesStepChangedEvent()
         {
             // Arrange
-            var binElevator = new MockBinElevatorForHomeLogic();
-            var logic = new HomeLogic(binElevator);
+            var logic = new HomeLogic();
 
-            string fromStep = null;
-            string toStep = null;
+            string fromStep = string.Empty;
+            string toStep = string.Empty;
             logic.StepChanged += (sender, args) =>
             {
                 fromStep = args.FromStep;
@@ -247,7 +232,7 @@ namespace Ewan.Core.Tests.Logic
 
             // Assert
             Assert.Equal("初始状态", fromStep);
-            Assert.Equal("停止ON", toStep);
+            Assert.Equal("发送停止脉冲", toStep);
         }
 
         #endregion
@@ -258,8 +243,7 @@ namespace Ewan.Core.Tests.Logic
         public void GetLogicState_ReturnsCurrentState()
         {
             // Arrange
-            var binElevator = new MockBinElevatorForHomeLogic();
-            var logic = new HomeLogic(binElevator);
+            var logic = new HomeLogic();
 
             // Act
             logic.Handler();
@@ -267,7 +251,7 @@ namespace Ewan.Core.Tests.Logic
 
             // Assert
             Assert.Contains("HomeLogic", state);
-            Assert.Contains("停止ON", state);
+            Assert.Contains("发送停止脉冲", state);
         }
 
         #endregion
@@ -275,13 +259,17 @@ namespace Ewan.Core.Tests.Logic
         #region 边界条件测试
 
         [Fact]
-        public void Handler_WithNullBinElevator_DoesNotThrow()
+        public void Handler_WithDefaultConstructor_DoesNotThrow()
         {
             // Arrange
-            var logic = new HomeLogic(null);
+            var logic = new HomeLogic();
 
-            // Act - 运行完整周期，不应抛出异常
-            var exception = Record.Exception(() => RunHomeLogicToCompletion(logic));
+            // Act - 运行数步，不应抛出异常
+            var exception = Record.Exception(() =>
+            {
+                logic.Handler();
+                logic.Handler();
+            });
 
             // Assert
             Assert.Null(exception);
@@ -291,13 +279,12 @@ namespace Ewan.Core.Tests.Logic
         public void Handler_MultipleCallsInWaitState_StaysInSameState()
         {
             // Arrange
-            var binElevator = new MockBinElevatorForHomeLogic();
-            var logic = new HomeLogic(binElevator);
+            var logic = new HomeLogic();
 
             // 进入等待状态
             logic.Handler();
             logic.Handler();
-            Assert.Equal("停止ON等待", logic.SwitchIndex);
+            Assert.Equal("等待停止完成", logic.SwitchIndex);
 
             // Act - 多次调用（未超时）
             for (int i = 0; i < 10; i++)
@@ -306,7 +293,7 @@ namespace Ewan.Core.Tests.Logic
             }
 
             // Assert - 状态不变
-            Assert.Equal("停止ON等待", logic.SwitchIndex);
+            Assert.Equal("等待停止完成", logic.SwitchIndex);
         }
 
         #endregion
@@ -317,8 +304,7 @@ namespace Ewan.Core.Tests.Logic
         public void Handler_HighFrequencyCallsAreEfficient()
         {
             // Arrange
-            var binElevator = new MockBinElevatorForHomeLogic();
-            var logic = new HomeLogic(binElevator);
+            var logic = new HomeLogic();
 
             // Act - 高频率调用 1000 次
             var startTime = DateTime.Now;
@@ -336,6 +322,17 @@ namespace Ewan.Core.Tests.Logic
 
         #region 辅助方法
 
+        private IDisposable RegisterInitializeResponder(
+            BinOperationResult result = BinOperationResult.Success,
+            string description = "测试",
+            string errorMessage = "")
+        {
+            return MessageHub.Current.Respond<BinElevatorCommandMessage, BinElevatorStatusMessage>(request =>
+                request.Command == BinCommand.Initialize
+                    ? BinElevatorStatusMessage.InitializeResult(result, description, errorMessage)
+                    : BinElevatorStatusMessage.InitializeResult(BinOperationResult.Error, "非初始化指令"));
+        }
+
         /// <summary>
         /// 运行 HomeLogic 直到指定状态
         /// </summary>
@@ -346,10 +343,10 @@ namespace Ewan.Core.Tests.Logic
             while (logic.SwitchIndex != targetState && iterations < maxIterations)
             {
                 logic.Handler();
-                if (logic.SwitchIndex.Contains("等待"))
+                if (logic.SwitchIndex.Contains("等待") && logic.SwitchIndex != targetState)
                 {
-                    Thread.Sleep(1000); // 足够超时时间
-                    logic.Handler(); // 触发超时转换
+                    Thread.Sleep(logic.SwitchIndex == "等待料仓完成" ? 100 : 1200);
+                    logic.Handler();
                 }
                 iterations++;
             }
@@ -367,8 +364,8 @@ namespace Ewan.Core.Tests.Logic
                 logic.Handler();
                 if (logic.SwitchIndex.Contains("等待"))
                 {
-                    Thread.Sleep(1000); // 足够超时时间
-                    logic.Handler(); // 触发超时转换
+                    Thread.Sleep(logic.SwitchIndex == "等待料仓完成" ? 100 : 1200);
+                    logic.Handler();
                 }
                 iterations++;
             }
@@ -376,51 +373,4 @@ namespace Ewan.Core.Tests.Logic
 
         #endregion
     }
-
-    #region Mock 类
-
-    /// <summary>
-    /// 用于 HomeLogic 测试的模拟 BinElevator
-    /// </summary>
-    public class MockBinElevatorForHomeLogic : IBinElevator
-    {
-        public bool InitCalled { get; private set; }
-        public bool DestroyCalled { get; private set; }
-        public bool ForceStopAllBinsCalled { get; private set; }
-        public bool PerformHardwareInitializationCalled { get; private set; }
-        public int RunCallCount { get; private set; }
-
-        public void Init()
-        {
-            InitCalled = true;
-        }
-
-        public void Destroy()
-        {
-            DestroyCalled = true;
-        }
-
-        public void ForceStopAllBins()
-        {
-            ForceStopAllBinsCalled = true;
-        }
-
-        public void PerformHardwareInitialization()
-        {
-            PerformHardwareInitializationCalled = true;
-        }
-
-        public bool Run()
-        {
-            RunCallCount++;
-            return true;
-        }
-
-        public Task<BinElevatorStatusMessage> RaiseToSensorAsync(int binNumber, CancellationToken ct = default)
-        {
-            return Task.FromResult(BinElevatorStatusMessage.MaterialCheckResult(binNumber, BinOperationResult.HasMaterial, "测试"));
-        }
-    }
-
-    #endregion
 }

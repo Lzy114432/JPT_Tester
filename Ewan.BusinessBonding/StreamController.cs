@@ -143,11 +143,10 @@ namespace Ewan.BusinessBonding
 
             #endregion
 
-            #region //构造料仓升降控制流程的节点并加入到对应runner（已合并到主流程）
+            #region //构造料仓升降控制流程的节点并加入到对应runner
 
-            // BinElevatorModule已合并到主流程，此流程不再使用
-            // _binElevatorModules.Add(new BinElevatorModule());
-            // _binElevatorRunner = new StreamRunner(_binElevatorModules);
+            _binElevatorModules.Add(new BinElevatorModule());
+            _binElevatorRunner = new StreamRunner(_binElevatorModules);
 
             #endregion
 
