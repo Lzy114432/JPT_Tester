@@ -416,14 +416,9 @@ namespace Ewan.Core.Tests.Logic
             return true;
         }
 
-        public BinMaterialCheckResult RaiseToSensor(int binNumber)
+        public Task<BinElevatorStatusMessage> RaiseToSensorAsync(int binNumber, CancellationToken ct = default)
         {
-            return BinMaterialCheckResult.CreateHasMaterial(binNumber);
-        }
-
-        public Task<BinMaterialCheckResult> RaiseToSensorAsync(int binNumber, CancellationToken ct = default)
-        {
-            return Task.FromResult(BinMaterialCheckResult.CreateHasMaterial(binNumber));
+            return Task.FromResult(BinElevatorStatusMessage.MaterialCheckResult(binNumber, BinOperationResult.HasMaterial, "测试"));
         }
     }
 

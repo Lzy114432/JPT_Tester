@@ -76,8 +76,6 @@
     <Compile Include="Messages\BeltConveyorControlMessage.cs" />
     <Compile Include="Messages\BeltConveyorStatusMessage.cs" />
     <Compile Include="Messages\AlarmMessage.cs" />
-    <Compile Include="Messages\BinElevatorCommandMessage.cs" />
-    <Compile Include="Messages\BinElevatorStatusMessage.cs" />
     <Compile Include="Messages\LoadingUnloadingStateMessage.cs" />
     <Compile Include="Messages\MesMessages.cs" />
     <Compile Include="Permission\PermissionConfig.cs" />

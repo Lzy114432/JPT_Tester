@@ -83,6 +83,7 @@
     <Compile Include="Module\BeltConveyorModule.cs" />
     <Compile Include="Module\BeltControlRequestTracker.cs" />
     <Compile Include="Module\BinElevatorModule.cs" />
+    <Compile Include="Module\BinState.cs" />
     <Compile Include="Module\Interface\IBinElevator.cs" />
     <Compile Include="Module\Interface\IModule.cs" />
     <Compile Include="Module\MesModule.cs" />

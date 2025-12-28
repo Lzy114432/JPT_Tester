@@ -46,7 +46,7 @@ namespace Ewan.Core.Logic
         private int _scanRetryCount = 0;
         private bool _hasMaterial = true;
         private Guid _currentMaterialCheckRequestId;
-        private TaskCompletionSource<BinMaterialCheckResult> _materialCheckTcs;
+        private TaskCompletionSource<BinElevatorStatusMessage> _materialCheckTcs;
 
         // Modbus寄存器地址
         private const string CART_COMPLETION_REGISTER = "153";
@@ -187,22 +187,22 @@ namespace Ewan.Core.Logic
                             return;
                         }
 
-                        BinMaterialCheckResult materialCheckResult = null;
+                        BinElevatorStatusMessage statusResult = null;
                         try
                         {
                             if (_materialCheckTcs.Task.Status == System.Threading.Tasks.TaskStatus.RanToCompletion)
                             {
-                                materialCheckResult = _materialCheckTcs.Task.Result;
+                                statusResult = _materialCheckTcs.Task.Result;
                             }
                             else if (_materialCheckTcs.Task.IsCanceled)
                             {
-                                materialCheckResult = BinMaterialCheckResult.CreateFailure(_selectedBin);
+                                statusResult = BinElevatorStatusMessage.MaterialCheckResult(_selectedBin, BinOperationResult.Error, "操作取消");
                             }
                             else if (_materialCheckTcs.Task.IsFaulted)
                             {
                                 var error = _materialCheckTcs.Task.Exception?.GetBaseException()?.Message ?? "未知错误";
                                 _uiLogger.ErrorRaw("料仓{0}检测物料失败: {1}", _selectedBin, error);
-                                materialCheckResult = BinMaterialCheckResult.CreateFailure(_selectedBin);
+                                statusResult = BinElevatorStatusMessage.MaterialCheckResult(_selectedBin, BinOperationResult.Error, "检测失败", error);
                             }
                         }
                         finally
@@ -211,14 +211,17 @@ namespace Ewan.Core.Logic
                             _currentMaterialCheckRequestId = Guid.Empty;
                         }
 
-                        if (materialCheckResult == null || materialCheckResult.HasMaterial)
+                        bool hasMaterial = statusResult?.OperationResult == BinOperationResult.HasMaterial;
+                        bool timedOut = statusResult?.OperationResult == BinOperationResult.Timeout;
+
+                        if (hasMaterial)
                         {
                             _hasMaterial = true;
                             SwitchIndex = "发送取料指令";
                         }
                         else
                         {
-                            if (materialCheckResult.TimedOut)
+                            if (timedOut)
                             {
                                 MessageHub.Current.Post(new AlarmMessage(
                                     key: "BinElevator.Timeout",
@@ -239,7 +242,7 @@ namespace Ewan.Core.Logic
                         int binNumber = _selectedBin;
                         var requestId = Guid.NewGuid();
                         _currentMaterialCheckRequestId = requestId;
-                        _materialCheckTcs = new TaskCompletionSource<BinMaterialCheckResult>(TaskCreationOptions.RunContinuationsAsynchronously);
+                        _materialCheckTcs = new TaskCompletionSource<BinElevatorStatusMessage>(TaskCreationOptions.RunContinuationsAsynchronously);
                         var tcs = _materialCheckTcs;
 
                         Task.Run(async () =>
@@ -260,7 +263,7 @@ namespace Ewan.Core.Logic
                                     return;
                                 }
                                 _uiLogger.ErrorRaw("料仓{0}检测物料异常: {1}", binNumber, ex.Message);
-                                tcs?.TrySetResult(BinMaterialCheckResult.CreateFailure(binNumber));
+                                tcs?.TrySetResult(BinElevatorStatusMessage.MaterialCheckResult(binNumber, BinOperationResult.Error, "检测异常", ex.Message));
                             }
                         });
                     }

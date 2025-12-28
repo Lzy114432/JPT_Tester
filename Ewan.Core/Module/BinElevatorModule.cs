@@ -1,11 +1,9 @@
 using Ewan.Core.Axis;
 using Ewan.Core.IO;
 using Ewan.Model.Production;
-using Ewan.Model.System;
 using EwanCore.Messaging;
 using System;
 using System.Collections.Concurrent;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,46 +19,34 @@ namespace Ewan.Core.Module
 
         private int _scanInterval = 1; // 扫描间隔，毫秒
         private readonly object _stateLock = new object();
-        
+
         // 共享状态（用于与其他模块通信）
         private ProductionLineSharedState _sharedState;
-        
-        // 系统状态
-        private bool _systemStarted = false;
-        private SystemMode _currentMode = SystemMode.Manual;
 
         private BinElevatorMode _binElevatorMode = BinElevatorMode.Init;
         private int _activeUnloadingBin = 0;
 
-        // 料仓升降状态
-        private BinElevatorState _bin1State = BinElevatorState.Unknown;
-        private BinElevatorState _bin2State = BinElevatorState.Unknown;
-        private BinElevatorState _bin3State = BinElevatorState.Unknown;
-        
-        // 料仓到达感应位置标志
-        private bool _bin1ReachedSensor = false;
-        private bool _bin2ReachedSensor = false;
-        private bool _bin3ReachedSensor = false;
-        
-        // 感应器状态缓存
-        private bool _bin1SensorLast = false;
-        private bool _bin2SensorLast = false;
-        private bool _bin3SensorLast = false;
-        
+        // 料仓轴配置
+        private const int BIN1_AXIS_ID = 0;
+        private const int BIN2_AXIS_ID = 1;
+        private const int BIN3_AXIS_ID = 2;
+
+        // 料仓状态数组（替代原有的分散变量）
+        private readonly BinState[] _bins = new BinState[]
+        {
+            new BinState(1, BIN1_AXIS_ID),
+            new BinState(2, BIN2_AXIS_ID),
+            new BinState(3, BIN3_AXIS_ID)
+        };
+
         // 轴控制器、IO管理器
         private AxisManager _axisManager;
         private LayeredIOManager _ioManager;
         private IDisposable _systemStatusSubscription;
         private IDisposable _commandSubscription;
         private IDisposable _raiseToSensorResponder;
-        
-        // 料仓轴配置（需要在配置中定义）
-        private const int BIN1_AXIS_ID = 0; // 料仓1轴ID
-        private const int BIN2_AXIS_ID = 1; // 料仓2轴ID
-        private const int BIN3_AXIS_ID = 2; // 料仓3轴ID
-        
+
         // 下料物料检测相关
-        private BinMaterialCheckResult _materialCheckResult = BinMaterialCheckResult.CreateFailure(0);
         private bool _materialDetectionInProgress = false;
         private int _materialDetectionBin = 0;
         private DateTime _materialDetectionStartTime = DateTime.MinValue;
@@ -69,22 +55,38 @@ namespace Ewan.Core.Module
         private readonly ConcurrentDictionary<Guid, TaskCompletionSource<BinElevatorStatusMessage>> _pendingMaterialChecks =
             new ConcurrentDictionary<Guid, TaskCompletionSource<BinElevatorStatusMessage>>();
 
-
         #endregion
 
-
-        #region 枚举定义
+        #region 辅助方法 - 料仓访问
 
         /// <summary>
-        /// 料仓升降状态
+        /// 获取指定编号的料仓状态对象
         /// </summary>
-        private enum BinElevatorState
+        /// <param name="binNumber">料仓编号 (1-3)</param>
+        /// <returns>料仓状态对象，无效编号返回 null</returns>
+        private BinState GetBin(int binNumber)
         {
-            Unknown,      // 未知状态
-            Lowered,      // 已降低
-            Elevated,     // 已升高
-            Moving,        // 正在移动
-            Stopped       // 已停止
+            if (binNumber < 1 || binNumber > 3) return null;
+            return _bins[binNumber - 1];
+        }
+
+        /// <summary>
+        /// 检查所有料仓是否都已到达感应位置
+        /// </summary>
+        private bool AllBinsReachedSensor()
+        {
+            return _bins[0].ReachedSensor && _bins[1].ReachedSensor && _bins[2].ReachedSensor;
+        }
+
+        /// <summary>
+        /// 重置所有料仓的 ReachedSensor 标志
+        /// </summary>
+        private void ResetAllBinsReachedSensor()
+        {
+            foreach (var bin in _bins)
+            {
+                bin.ReachedSensor = false;
+            }
         }
 
         #endregion
@@ -157,25 +159,22 @@ namespace Ewan.Core.Module
                     if (_sharedState?.RequireReinit() == true)
                     {
                         _sharedState.SetRequireReinit(false);
-                        
+
                         // 重置到初始化状态
                         _binElevatorMode = BinElevatorMode.Init;
-                        _bin1State = BinElevatorState.Unknown;
-                        _bin2State = BinElevatorState.Unknown; 
-                        _bin3State = BinElevatorState.Unknown;
-                        
-                        // 重置初始化标志
-                        _bin1ReachedSensor = false;
-                        _bin2ReachedSensor = false;
-                        _bin3ReachedSensor = false;
-                        
+                        foreach (var bin in _bins)
+                        {
+                            bin.Reset();
+                        }
+
                         _uiLogger.InfoRaw("处理已开始: {0}", "料仓重新初始化开始");
                     }
 
                     // 检查并处理三个料仓的感应器状态
-                    ProcessBinElevator(1, BIN1_AXIS_ID, ref _bin1State, ref _bin1SensorLast);
-                    ProcessBinElevator(2, BIN2_AXIS_ID, ref _bin2State, ref _bin2SensorLast);
-                    ProcessBinElevator(3, BIN3_AXIS_ID, ref _bin3State, ref _bin3SensorLast);
+                    foreach (var bin in _bins)
+                    {
+                        ProcessBinElevator(bin);
+                    }
 
                     CheckMaterialDetectionCompletion();
                 }
@@ -234,13 +233,10 @@ namespace Ewan.Core.Module
             lock (_stateLock)
             {
                 _binElevatorMode = BinElevatorMode.Init;
-                _bin1State = BinElevatorState.Unknown;
-                _bin2State = BinElevatorState.Unknown;
-                _bin3State = BinElevatorState.Unknown;
-
-                _bin1ReachedSensor = false;
-                _bin2ReachedSensor = false;
-                _bin3ReachedSensor = false;
+                foreach (var bin in _bins)
+                {
+                    bin.Reset();
+                }
 
                 _uiLogger.InfoRaw("处理已开始: {0}", "料仓升降硬件初始化开始");
             }
@@ -255,60 +251,12 @@ namespace Ewan.Core.Module
             {
                 StopAllBinMovements();
                 _binElevatorMode = BinElevatorMode.Stopped;
-                _bin1State = BinElevatorState.Stopped;
-                _bin2State = BinElevatorState.Stopped;
-                _bin3State = BinElevatorState.Stopped;
-
-                _bin1ReachedSensor = false;
-                _bin2ReachedSensor = false;
-                _bin3ReachedSensor = false;
+                foreach (var bin in _bins)
+                {
+                    bin.Stop();
+                }
                 _activeUnloadingBin = 0;
             }
-        }
-
-        /// <summary>
-        /// 将指定料仓上升到有料感应位置，并返回物料检测结果
-        /// </summary>
-        /// <param name="binNumber">料仓编号 (1-3)</param>
-        public BinMaterialCheckResult RaiseToSensor(int binNumber)
-        {
-            if (binNumber < 1 || binNumber > 3)
-            {
-                _uiLogger.WarnRaw("处理错误: {0} - {1}", "RaiseToSensor", $"无效的料仓编号 {binNumber}");
-                return BinMaterialCheckResult.CreateFailure(binNumber);
-            }
-
-            if (ReadBinSensor(binNumber))
-            {
-                _uiLogger.InfoRaw("处理已完成: {0}", $"料仓{binNumber}已检测到物料，无需上升");
-                return BinMaterialCheckResult.CreateHasMaterial(binNumber);
-            }
-
-            int axisId = GetAxisIdByBin(binNumber);
-            if (axisId < 0)
-            {
-                _uiLogger.ErrorRaw("处理错误: {0} - {1}",
-                    $"料仓{binNumber}检测失败", "未找到对应轴配置");
-                return BinMaterialCheckResult.CreateFailure(binNumber);
-            }
-
-            _uiLogger.InfoRaw("处理已开始: {0}", $"料仓{binNumber}上升至有料感应请求");
-
-            lock (_stateLock)
-            {
-                _activeUnloadingBin = binNumber;
-                _binElevatorMode = BinElevatorMode.Unloading;
-            }
-
-            var result = ExecuteSynchronousMaterialCheck(binNumber, axisId);
-
-            lock (_stateLock)
-            {
-                _activeUnloadingBin = 0;
-                _binElevatorMode = BinElevatorMode.Stopped;
-            }
-
-            return result;
         }
 
         /// <summary>
@@ -316,17 +264,17 @@ namespace Ewan.Core.Module
         /// </summary>
         /// <param name="binNumber">料仓编号 (1-3)</param>
         /// <param name="ct">取消令牌</param>
-        public async Task<BinMaterialCheckResult> RaiseToSensorAsync(int binNumber, CancellationToken ct = default)
+        public async Task<BinElevatorStatusMessage> RaiseToSensorAsync(int binNumber, CancellationToken ct = default)
         {
             if (binNumber < 1 || binNumber > 3)
             {
                 _uiLogger.WarnRaw("处理错误: {0} - {1}", "RaiseToSensorAsync", $"无效的料仓编号 {binNumber}");
-                return BinMaterialCheckResult.CreateFailure(binNumber);
+                return BinElevatorStatusMessage.MaterialCheckResult(binNumber, BinOperationResult.Error, "无效料仓编号");
             }
 
             if (ReadBinSensor(binNumber))
             {
-                return BinMaterialCheckResult.CreateHasMaterial(binNumber);
+                return BinElevatorStatusMessage.MaterialCheckResult(binNumber, BinOperationResult.HasMaterial, "已有感应信号");
             }
 
             var request = BinElevatorCommandMessage.RaiseToSensor(binNumber, nameof(BinElevatorModule));
@@ -339,59 +287,22 @@ namespace Ewan.Core.Module
                         ct)
                     .ConfigureAwait(false);
 
-                return ConvertMaterialCheckResult(binNumber, reply);
+                return reply ?? BinElevatorStatusMessage.MaterialCheckResult(binNumber, BinOperationResult.Error, "响应为空");
             }
             catch (TimeoutException)
             {
                 _uiLogger.WarnRaw("处理错误: {0} - {1}", $"料仓{binNumber}检测超时", "等待响应超时");
-                return BinMaterialCheckResult.CreateEmpty(binNumber, true);
+                return BinElevatorStatusMessage.MaterialCheckResult(binNumber, BinOperationResult.Timeout, "超时", "等待响应超时");
             }
             catch (OperationCanceledException)
             {
                 _uiLogger.WarnRaw("处理错误: {0} - {1}", $"料仓{binNumber}检测取消", "等待响应取消");
-                return BinMaterialCheckResult.CreateFailure(binNumber);
+                return BinElevatorStatusMessage.MaterialCheckResult(binNumber, BinOperationResult.Error, "操作取消");
             }
             catch (Exception ex)
             {
                 _uiLogger.ErrorRaw("处理错误: {0} - {1}", $"料仓{binNumber}检测失败", ex.Message);
-                return BinMaterialCheckResult.CreateFailure(binNumber);
-            }
-        }
-
-        private BinMaterialCheckResult ExecuteSynchronousMaterialCheck(int binNumber, int axisId)
-        {
-            const int pollIntervalMs = 20;
-            var stopwatch = Stopwatch.StartNew();
-
-            try
-            {
-                StartBinJogUp(binNumber, axisId);
-
-                while (stopwatch.ElapsedMilliseconds < _materialDetectionTimeoutMs)
-                {
-                    if (ReadBinSensor(binNumber))
-                    {
-                        _uiLogger.InfoRaw("处理已完成: {0}",
-                            $"料仓{binNumber}检测到物料，停止上升");
-                        return BinMaterialCheckResult.CreateHasMaterial(binNumber);
-                    }
-
-                    Thread.Sleep(pollIntervalMs);
-                }
-
-                _uiLogger.WarnRaw("处理错误: {0} - {1}",
-                    $"料仓{binNumber}无料", "超时判空");
-                return BinMaterialCheckResult.CreateEmpty(binNumber, true);
-            }
-            catch (Exception ex)
-            {
-                _uiLogger.ErrorRaw("处理错误: {0} - {1}",
-                    $"料仓{binNumber}检测失败", ex.Message);
-                return BinMaterialCheckResult.CreateFailure(binNumber);
-            }
-            finally
-            {
-                StopBinAxis(binNumber, axisId);
+                return BinElevatorStatusMessage.MaterialCheckResult(binNumber, BinOperationResult.Error, "检测失败", ex.Message);
             }
         }
 
@@ -400,29 +311,10 @@ namespace Ewan.Core.Module
         #region 核心升降控制逻辑
 
         /// <summary>
-        /// 检查是否应该运行升降控制
-        /// </summary>
-        /// <returns>是否应该运行</returns>
-        private bool ShouldRunElevatorControl()
-        {
-            // Init模式：只要系统启动就可以运行初始化，不受系统模式限制
-            if (_binElevatorMode == BinElevatorMode.Init)
-            {
-                return _systemStarted;
-            }
-            
-            // 其他模式：需要系统启动且为自动模式，且状态机不是停止状态
-            return _systemStarted && _currentMode == SystemMode.Auto && _binElevatorMode != BinElevatorMode.Stopped;
-        }
-
-        /// <summary>
         /// 处理单个料仓的升降控制 - 料仓状态机
         /// </summary>
-        /// <param name="binNumber">料仓编号</param>
-        /// <param name="axisId">轴ID</param>
-        /// <param name="currentState">当前状态引用</param>
-        /// <param name="lastSensorState">上次感应器状态引用</param>
-        private void ProcessBinElevator(int binNumber, int axisId, ref BinElevatorState currentState, ref bool lastSensorState)
+        /// <param name="bin">料仓状态对象</param>
+        private void ProcessBinElevator(BinState bin)
         {
             try
             {
@@ -431,34 +323,34 @@ namespace Ewan.Core.Module
                 {
                     case BinElevatorMode.Init:
                         // 状态机0: 初始化模式 - 先上升到感应位置，再下降到无感应，保持停止
-                        ProcessInitMode(binNumber, axisId, ref currentState);
+                        ProcessInitMode(bin);
                         break;
 
                     case BinElevatorMode.Loading:
                         // 状态机1: 上料模式 - 下降到感应器有信号就停止
-                        ProcessLoadingMode(binNumber, axisId, ref currentState);
+                        ProcessLoadingMode(bin);
                         break;
 
                     case BinElevatorMode.Unloading:
                         // 状态机2: 下料模式 - 上升到感应位置后，下降到无感应就停止
-                        ProcessUnloadingMode(binNumber, axisId, ref currentState);
+                        ProcessUnloadingMode(bin);
                         break;
 
                     case BinElevatorMode.Stopped:
                         // 停止模式 - 不执行任何升降控制
                         break;
-                        
+
                     default:
                         // 未知模式 - 记录警告
-                        _uiLogger.WarnRaw("处理错误: {0} - {1}", 
-                            "料仓" + binNumber + "未知的料仓状态机模式", _binElevatorMode.ToString());
+                        _uiLogger.WarnRaw("处理错误: {0} - {1}",
+                            "料仓" + bin.BinNumber + "未知的料仓状态机模式", _binElevatorMode.ToString());
                         break;
                 }
             }
             catch (Exception ex)
             {
-                _uiLogger.ErrorRaw("处理错误: {0} - {1}", 
-                    "料仓" + binNumber + "升降处理", ex.Message);
+                _uiLogger.ErrorRaw("处理错误: {0} - {1}",
+                    "料仓" + bin.BinNumber + "升降处理", ex.Message);
             }
         }
 
@@ -469,83 +361,61 @@ namespace Ewan.Core.Module
         /// <summary>
         /// 状态机0: 初始化模式 - 先上升到感应位置，再下降到无感应，最后保持停止
         /// </summary>
-        private void ProcessInitMode(int binNumber, int axisId, ref BinElevatorState currentState)
+        private void ProcessInitMode(BinState bin)
         {
             // 根据当前状态执行不同的初始化步骤
-            switch (currentState)
+            switch (bin.CurrentState)
             {
                 case BinElevatorState.Stopped:
                     // 已经初始化完成，保持静止
                     break;
                 case BinElevatorState.Unknown:
                     // 第一步：开始上升到感应位置
-                    if (!ReadBinSensor(binNumber)) // 料仓感应为false 就是上升
+                    if (!ReadBinSensor(bin.BinNumber)) // 料仓感应为false 就是上升
                     {
-                        StartBinJogUp(binNumber, axisId);
-                        currentState = BinElevatorState.Moving;
+                        StartBinJogUp(bin);
+                        bin.CurrentState = BinElevatorState.Moving;
                     }
                     else
                     {
                         // 如果已经有感应，直接进入下降阶段
-                        currentState = BinElevatorState.Elevated;
-                        //_uiLogger.Info("处理已开始: {0}", 
-                        //    "料仓" + binNumber + "初始化：已在感应位置，准备下降");
+                        bin.CurrentState = BinElevatorState.Elevated;
                     }
                     break;
-                    
+
                 case BinElevatorState.Moving:
-                    if (ReadBinSensor(binNumber))
+                    if (ReadBinSensor(bin.BinNumber))
                     {
-                        StopBinAxis(binNumber, axisId);
-                        //currentState = BinElevatorState.Elevated;
-                        //_uiLogger.Info("处理已完成: {0}",
-                        //    "料仓" + binNumber + "初始化：已到达感应位置，准备下降");
+                        StopBinAxis(bin);
                     }
                     break;
-                    
+
                 case BinElevatorState.Elevated:
                     // 第二步：从感应位置下降
-                    StartBinJogDown(binNumber, axisId);
-                    currentState = BinElevatorState.Lowered; // 标记为正在下降
-                    //_uiLogger.Info("处理已开始: {0}", 
-                    //    "料仓" + binNumber + "初始化：开始从感应位置下降");
+                    StartBinJogDown(bin);
+                    bin.CurrentState = BinElevatorState.Lowered; // 标记为正在下降
                     break;
 
-
-                    
                 case BinElevatorState.Lowered:
                     // 正在下降中，检查是否脱离感应位置
-                    if (!ReadBinSensor(binNumber))
+                    if (!ReadBinSensor(bin.BinNumber))
                     {
-                        StopBinAxis(binNumber, axisId);
+                        StopBinAxis(bin);
 
                         // 标记该料仓初始化完成
-                        switch (binNumber)
-                        {
-                            case 1:
-                                _bin1ReachedSensor = true;
-                                break;
-                            case 2:
-                                _bin2ReachedSensor = true;
-                                break;
-                            case 3:
-                                _bin3ReachedSensor = true;
-                                break;
-                        }
-                                          
+                        bin.ReachedSensor = true;
+
                         // 检查是否所有料仓都初始化完成
-                        if (_bin1ReachedSensor && _bin2ReachedSensor && _bin3ReachedSensor)
+                        if (AllBinsReachedSensor())
                         {
-                            _uiLogger.InfoRaw("处理已完成: {0}", 
+                            _uiLogger.InfoRaw("处理已完成: {0}",
                                 "所有料仓初始化完成，切换到停止模式");
 
                             // 重置标志
-                            _bin1ReachedSensor = false;
-                            _bin2ReachedSensor = false;
-                            _bin3ReachedSensor = false;
+                            ResetAllBinsReachedSensor();
                         }
 
-                        currentState = BinElevatorState.Stopped;
+                        bin.CurrentState = BinElevatorState.Stopped;
                     }
                     break;
             }
@@ -555,31 +425,31 @@ namespace Ewan.Core.Module
         /// <summary>
         /// 状态机1: 上料模式 - 下降到感应器有信号就停止
         /// </summary>
-        private void ProcessLoadingMode(int binNumber, int axisId, ref BinElevatorState currentState)
+        private void ProcessLoadingMode(BinState bin)
         {
-            switch (currentState)
+            switch (bin.CurrentState)
             {
                 case BinElevatorState.Unknown:
                     // 检查当前感应器状态
-                    if (ReadBinSensor(binNumber)) 
+                    if (ReadBinSensor(bin.BinNumber))
                     {
                         // 开始下降动作
-                        StartBinJogDown(binNumber, axisId);
-                        currentState = BinElevatorState.Moving;
+                        StartBinJogDown(bin);
+                        bin.CurrentState = BinElevatorState.Moving;
                     }
                     else
                     {
                         // 感应器已经为false，直接完成
-                        currentState = BinElevatorState.Stopped;
+                        bin.CurrentState = BinElevatorState.Stopped;
                     }
                     break;
 
                 case BinElevatorState.Moving:
                     // 正在下降中，检查是否到达感应位置
-                    if (!ReadBinSensor(binNumber))
+                    if (!ReadBinSensor(bin.BinNumber))
                     {
-                        StopBinAxis(binNumber, axisId);
-                        currentState = BinElevatorState.Stopped;
+                        StopBinAxis(bin);
+                        bin.CurrentState = BinElevatorState.Stopped;
                     }
                     break;
                 case BinElevatorState.Stopped:
@@ -590,70 +460,70 @@ namespace Ewan.Core.Module
         /// <summary>
         /// 状态机4: 下料模式 - 指定料仓上升至有料感应后停止
         /// </summary>
-        private void ProcessUnloadingMode(int binNumber, int axisId, ref BinElevatorState currentState)
+        private void ProcessUnloadingMode(BinState bin)
         {
-            bool isActiveBin = _activeUnloadingBin != 0 && _activeUnloadingBin == binNumber;
+            bool isActiveBin = _activeUnloadingBin != 0 && _activeUnloadingBin == bin.BinNumber;
             if (!isActiveBin)
             {
-                if (currentState == BinElevatorState.Moving)
+                if (bin.CurrentState == BinElevatorState.Moving)
                 {
-                    StopBinAxis(binNumber, axisId);
-                    currentState = BinElevatorState.Stopped;
+                    StopBinAxis(bin);
+                    bin.CurrentState = BinElevatorState.Stopped;
                 }
                 return;
             }
 
-            bool detectionActive = _materialDetectionInProgress && _materialDetectionBin == binNumber;
+            bool detectionActive = _materialDetectionInProgress && _materialDetectionBin == bin.BinNumber;
             double elapsedMs = detectionActive
                 ? (DateTime.UtcNow - _materialDetectionStartTime).TotalMilliseconds
                 : 0;
 
-            switch (currentState)
+            switch (bin.CurrentState)
             {
                 case BinElevatorState.Unknown:
-                    if (ReadBinSensor(binNumber))
+                    if (ReadBinSensor(bin.BinNumber))
                     {
-                        HandleUnloadingReached(binNumber, detectionActive, false);
-                        currentState = BinElevatorState.Stopped;
+                        HandleUnloadingReached(bin.BinNumber, detectionActive, false);
+                        bin.CurrentState = BinElevatorState.Stopped;
                     }
                     else
                     {
-                        StartBinJogUp(binNumber, axisId);
-                        currentState = BinElevatorState.Moving;
+                        StartBinJogUp(bin);
+                        bin.CurrentState = BinElevatorState.Moving;
                     }
                     break;
 
                 case BinElevatorState.Moving:
-                    if (ReadBinSensor(binNumber))
+                    if (ReadBinSensor(bin.BinNumber))
                     {
-                        StopBinAxis(binNumber, axisId);
-                        HandleUnloadingReached(binNumber, detectionActive, false);
-                        currentState = BinElevatorState.Stopped;
+                        StopBinAxis(bin);
+                        HandleUnloadingReached(bin.BinNumber, detectionActive, false);
+                        bin.CurrentState = BinElevatorState.Stopped;
                     }
                     else if (detectionActive && elapsedMs >= _materialDetectionTimeoutMs)
                     {
-                        StopBinAxis(binNumber, axisId);
-                        HandleUnloadingReached(binNumber, true, true);
-                        currentState = BinElevatorState.Stopped;
+                        StopBinAxis(bin);
+                        HandleUnloadingReached(bin.BinNumber, true, true);
+                        bin.CurrentState = BinElevatorState.Stopped;
                     }
                     break;
 
                 case BinElevatorState.Stopped:
                     if (detectionActive)
                     {
-                        if (ReadBinSensor(binNumber))
+                        if (ReadBinSensor(bin.BinNumber))
                         {
-                            HandleUnloadingReached(binNumber, true, false);
+                            HandleUnloadingReached(bin.BinNumber, true, false);
                         }
                         else if (elapsedMs >= _materialDetectionTimeoutMs)
                         {
-                            HandleUnloadingReached(binNumber, true, true);
+                            HandleUnloadingReached(bin.BinNumber, true, true);
                         }
                     }
                     break;
 
                 default:
-                    currentState = BinElevatorState.Unknown;
+                    bin.CurrentState = BinElevatorState.Unknown;
                     break;
             }
         }
@@ -672,17 +542,10 @@ namespace Ewan.Core.Module
 
         private void CompleteUnloadingRaise(int binNumber)
         {
-            switch (binNumber)
+            var bin = GetBin(binNumber);
+            if (bin != null)
             {
-                case 1:
-                    _bin1State = BinElevatorState.Stopped;
-                    break;
-                case 2:
-                    _bin2State = BinElevatorState.Stopped;
-                    break;
-                case 3:
-                    _bin3State = BinElevatorState.Stopped;
-                    break;
+                bin.CurrentState = BinElevatorState.Stopped;
             }
 
             _activeUnloadingBin = 0;
@@ -701,10 +564,6 @@ namespace Ewan.Core.Module
             var operationResult = hasMaterial
                 ? BinOperationResult.HasMaterial
                 : (timedOut ? BinOperationResult.Timeout : BinOperationResult.NoMaterial);
-
-            _materialCheckResult = hasMaterial
-                ? BinMaterialCheckResult.CreateHasMaterial(binNumber)
-                : BinMaterialCheckResult.CreateEmpty(binNumber, timedOut);
 
             var statusMessage = BinElevatorStatusMessage.MaterialCheckResult(
                 binNumber,
@@ -740,8 +599,6 @@ namespace Ewan.Core.Module
                 return;
             }
 
-            _materialCheckResult = BinMaterialCheckResult.CreateFailure(binNumber);
-
             var statusMessage = BinElevatorStatusMessage.MaterialCheckResult(
                 binNumber,
                 BinOperationResult.Error,
@@ -759,16 +616,15 @@ namespace Ewan.Core.Module
             ResetMaterialDetectionState(binNumber);
         }
 
-        private BinMaterialCheckResult CompleteMaterialCheckTimeout(int binNumber)
+        private void CompleteMaterialCheckTimeout(int binNumber)
         {
-            int axisId = GetAxisIdByBin(binNumber);
-            if (axisId >= 0)
+            var bin = GetBin(binNumber);
+            if (bin != null)
             {
-                StopBinAxis(binNumber, axisId);
+                StopBinAxis(bin);
             }
 
             CompleteMaterialCheck(binNumber, false, true);
-            return _materialCheckResult ?? BinMaterialCheckResult.CreateEmpty(binNumber, true);
         }
 
         private void CancelMaterialDetection(string reason)
@@ -779,10 +635,10 @@ namespace Ewan.Core.Module
             }
 
             int binNumber = _materialDetectionBin;
-            int axisId = GetAxisIdByBin(binNumber);
-            if (axisId >= 0)
+            var bin = GetBin(binNumber);
+            if (bin != null)
             {
-                StopBinAxis(binNumber, axisId);
+                StopBinAxis(bin);
             }
 
             CompleteMaterialCheckWithError(binNumber, reason);
@@ -804,10 +660,10 @@ namespace Ewan.Core.Module
                 return;
             }
 
-            int axisId = GetAxisIdByBin(_materialDetectionBin);
-            if (axisId >= 0)
+            var bin = GetBin(_materialDetectionBin);
+            if (bin != null)
             {
-                StopBinAxis(_materialDetectionBin, axisId);
+                StopBinAxis(bin);
             }
 
             CompleteMaterialCheck(_materialDetectionBin, hasMaterial, timedOut);
@@ -827,40 +683,26 @@ namespace Ewan.Core.Module
 
         private void SetBinStateStopped(int binNumber)
         {
-            switch (binNumber)
+            var bin = GetBin(binNumber);
+            if (bin != null)
             {
-                case 1:
-                    _bin1State = BinElevatorState.Stopped;
-                    break;
-                case 2:
-                    _bin2State = BinElevatorState.Stopped;
-                    break;
-                case 3:
-                    _bin3State = BinElevatorState.Stopped;
-                    break;
+                bin.CurrentState = BinElevatorState.Stopped;
             }
         }
 
         private void SetBinStateUnknown(int binNumber)
         {
-            switch (binNumber)
+            var bin = GetBin(binNumber);
+            if (bin != null)
             {
-                case 1:
-                    _bin1State = BinElevatorState.Unknown;
-                    break;
-                case 2:
-                    _bin2State = BinElevatorState.Unknown;
-                    break;
-                case 3:
-                    _bin3State = BinElevatorState.Unknown;
-                    break;
+                bin.CurrentState = BinElevatorState.Unknown;
             }
         }
 
         private void HandleStopCommand(int binNumber)
         {
-            int axisId = GetAxisIdByBin(binNumber);
-            if (axisId < 0)
+            var bin = GetBin(binNumber);
+            if (bin == null)
             {
                 _uiLogger.WarnRaw("处理错误: {0} - {1}", "StopBinAxis", $"无效的料仓编号 {binNumber}");
                 return;
@@ -868,33 +710,8 @@ namespace Ewan.Core.Module
 
             lock (_stateLock)
             {
-                StopBinAxis(binNumber, axisId);
-                SetBinStateStopped(binNumber);
-            }
-        }
-
-        private static BinMaterialCheckResult ConvertMaterialCheckResult(int binNumber, BinElevatorStatusMessage reply)
-        {
-            if (reply == null)
-            {
-                return BinMaterialCheckResult.CreateFailure(binNumber);
-            }
-
-            switch (reply.OperationResult)
-            {
-                case BinOperationResult.HasMaterial:
-                    return BinMaterialCheckResult.CreateHasMaterial(binNumber);
-                case BinOperationResult.NoMaterial:
-                    return BinMaterialCheckResult.CreateEmpty(binNumber, false);
-                case BinOperationResult.Timeout:
-                    return BinMaterialCheckResult.CreateEmpty(binNumber, true);
-                case BinOperationResult.Success:
-                    return reply.HasMaterial
-                        ? BinMaterialCheckResult.CreateHasMaterial(binNumber)
-                        : BinMaterialCheckResult.CreateEmpty(binNumber, false);
-                case BinOperationResult.Error:
-                default:
-                    return BinMaterialCheckResult.CreateFailure(binNumber);
+                StopBinAxis(bin);
+                bin.CurrentState = BinElevatorState.Stopped;
             }
         }
 
@@ -924,27 +741,24 @@ namespace Ewan.Core.Module
         /// <summary>
         /// 开始料仓Jog下降运动
         /// </summary>
-        /// <param name="binNumber">料仓编号</param>
-        /// <param name="axisId">轴ID</param>
-        private void StartBinJogDown(int binNumber, int axisId)
+        /// <param name="bin">料仓状态对象</param>
+        private void StartBinJogDown(BinState bin)
         {
             try
             {
                 if (_axisManager != null)
                 {
-                    // 获取轴配置
-                    var axisConfig = _axisManager.GetAxisConfig(axisId);
+                    var axisConfig = _axisManager.GetAxisConfig(bin.AxisId);
                     if (axisConfig != null)
                     {
-                        // 使用JogDown进行下降，速度使用配置中的速度
                         _axisManager.JogDown(axisConfig);
                         _uiLogger.InfoRaw("处理已开始: {0}",
-                            "料仓" + binNumber + "开始Jog下降，速度:" + axisConfig.Speed);
+                            "料仓" + bin.BinNumber + "开始Jog下降，速度:" + axisConfig.Speed);
                     }
                     else
                     {
                         _uiLogger.ErrorRaw("处理错误: {0} - {1}",
-                            "料仓" + binNumber + "轴配置未找到", "轴ID:" + axisId);
+                            "料仓" + bin.BinNumber + "轴配置未找到", "轴ID:" + bin.AxisId);
                     }
                 }
                 else
@@ -956,34 +770,31 @@ namespace Ewan.Core.Module
             catch (Exception ex)
             {
                 _uiLogger.ErrorRaw("处理错误: {0} - {1}",
-                    "料仓" + binNumber + "Jog下降", ex.Message);
+                    "料仓" + bin.BinNumber + "Jog下降", ex.Message);
             }
         }
 
         /// <summary>
         /// 开始料仓Jog上升运动
         /// </summary>
-        /// <param name="binNumber">料仓编号</param>
-        /// <param name="axisId">轴ID</param>
-        private void StartBinJogUp(int binNumber, int axisId)
+        /// <param name="bin">料仓状态对象</param>
+        private void StartBinJogUp(BinState bin)
         {
             try
             {
                 if (_axisManager != null)
                 {
-                    // 获取轴配置
-                    var axisConfig = _axisManager.GetAxisConfig(axisId);
+                    var axisConfig = _axisManager.GetAxisConfig(bin.AxisId);
                     if (axisConfig != null)
                     {
-                        // 使用JogUp进行上升，速度使用配置中的速度
                         _axisManager.JogUp(axisConfig);
                         _uiLogger.InfoRaw("处理已开始: {0}",
-                            "料仓" + binNumber + "开始Jog上升，速度:" + axisConfig.Speed);
+                            "料仓" + bin.BinNumber + "开始Jog上升，速度:" + axisConfig.Speed);
                     }
                     else
                     {
                         _uiLogger.ErrorRaw("处理错误: {0} - {1}",
-                            "料仓" + binNumber + "轴配置未找到", "轴ID:" + axisId);
+                            "料仓" + bin.BinNumber + "轴配置未找到", "轴ID:" + bin.AxisId);
                     }
                 }
                 else
@@ -995,34 +806,29 @@ namespace Ewan.Core.Module
             catch (Exception ex)
             {
                 _uiLogger.ErrorRaw("处理错误: {0} - {1}",
-                    "料仓" + binNumber + "Jog上升", ex.Message);
+                    "料仓" + bin.BinNumber + "Jog上升", ex.Message);
             }
         }
 
         /// <summary>
         /// 停止料仓轴运动
         /// </summary>
-        /// <param name="binNumber">料仓编号</param>
-        /// <param name="axisId">轴ID</param>
-        private void StopBinAxis(int binNumber, int axisId)
+        /// <param name="bin">料仓状态对象</param>
+        private void StopBinAxis(BinState bin)
         {
             try
             {
                 if (_axisManager != null)
                 {
-                    // 获取轴配置
-                    var axisConfig = _axisManager.GetAxisConfig(axisId);
+                    var axisConfig = _axisManager.GetAxisConfig(bin.AxisId);
                     if (axisConfig != null)
                     {
-                        // 使用JogStop停止Jog运动
                         _axisManager.JogStop(axisConfig);
-                        //_uiLogger.Info("处理已开始: {0}", 
-                        //    "料仓" + binNumber + "Jog停止");
                     }
                     else
                     {
                         _uiLogger.ErrorRaw("处理错误: {0} - {1}",
-                            "料仓" + binNumber + "轴配置未找到", "轴ID:" + axisId);
+                            "料仓" + bin.BinNumber + "轴配置未找到", "轴ID:" + bin.AxisId);
                     }
                 }
                 else
@@ -1034,7 +840,7 @@ namespace Ewan.Core.Module
             catch (Exception ex)
             {
                 _uiLogger.ErrorRaw("处理错误: {0} - {1}",
-                    "料仓" + binNumber + "停止", ex.Message);
+                    "料仓" + bin.BinNumber + "停止", ex.Message);
             }
         }
 
@@ -1059,19 +865,21 @@ namespace Ewan.Core.Module
             {
                 _binElevatorMode = mode;
             }
-            
+
             // 根据Y11/Y12/Y13信号选择性重置料仓状态
+            var targetState = mode == BinElevatorMode.Unloading ? BinElevatorState.Stopped : BinElevatorState.Unknown;
+
             if (_ioManager.Ctx.R.料仓1选择信号)
             {
-                _bin1State = mode == BinElevatorMode.Unloading ? BinElevatorState.Stopped : BinElevatorState.Unknown;
+                _bins[0].CurrentState = targetState;
             }
             if (_ioManager.Ctx.R.料仓2选择信号)
             {
-                _bin2State = mode == BinElevatorMode.Unloading ? BinElevatorState.Stopped : BinElevatorState.Unknown;
+                _bins[1].CurrentState = targetState;
             }
             if (_ioManager.Ctx.R.料仓3选择信号)
             {
-                _bin3State = mode == BinElevatorMode.Unloading ? BinElevatorState.Stopped : BinElevatorState.Unknown;
+                _bins[2].CurrentState = targetState;
             }
         }
 
@@ -1112,7 +920,7 @@ namespace Ewan.Core.Module
 
         #region 初始化和配置
 
-  
+
         /// <summary>
         /// 停止所有料仓移动
         /// </summary>
@@ -1121,19 +929,17 @@ namespace Ewan.Core.Module
             try
             {
                 _uiLogger.InfoRaw("处理已开始: {0}", "停止所有料仓Jog运动");
-                
-                // 停止所有轴的Jog移动
-                StopBinAxis(1, BIN1_AXIS_ID);
-                StopBinAxis(2, BIN2_AXIS_ID);
-                StopBinAxis(3, BIN3_AXIS_ID);
-                
-                // 重置状态
-                _bin1State = BinElevatorState.Unknown;
-                _bin2State = BinElevatorState.Unknown;
-                _bin3State = BinElevatorState.Unknown;
+
+                // 停止所有轴的Jog移动并重置状态
+                foreach (var bin in _bins)
+                {
+                    StopBinAxis(bin);
+                    bin.Reset();
+                }
+
                 _activeUnloadingBin = 0;
                 CancelMaterialDetection("停止所有料仓运动");
-                
+
                 _uiLogger.InfoRaw("处理已完成: {0}", "所有料仓Jog运动已停止");
             }
             catch (Exception ex)
@@ -1270,7 +1076,6 @@ namespace Ewan.Core.Module
                 _materialDetectionInProgress = true;
                 _materialDetectionBin = binNumber;
                 _materialDetectionStartTime = DateTime.UtcNow;
-                _materialCheckResult = BinMaterialCheckResult.CreatePending(binNumber);
 
                 _activeUnloadingBin = binNumber;
                 _binElevatorMode = BinElevatorMode.Unloading;
@@ -1323,36 +1128,5 @@ namespace Ewan.Core.Module
 
         #endregion
 
-    }
-
-    /// <summary>
-    /// 料仓物料检测结果
-    /// </summary>
-    public class BinMaterialCheckResult
-    {
-        public int BinNumber { get; }
-        public bool HasMaterial { get; }
-        public bool IsBinEmpty { get; }
-        public bool TimedOut { get; }
-
-        private BinMaterialCheckResult(int binNumber, bool hasMaterial, bool isBinEmpty, bool timedOut)
-        {
-            BinNumber = binNumber;
-            HasMaterial = hasMaterial;
-            IsBinEmpty = isBinEmpty;
-            TimedOut = timedOut;
-        }
-
-        public static BinMaterialCheckResult CreateHasMaterial(int binNumber)
-            => new BinMaterialCheckResult(binNumber, true, false, false);
-
-        public static BinMaterialCheckResult CreateEmpty(int binNumber, bool timedOut)
-            => new BinMaterialCheckResult(binNumber, false, true, timedOut);
-
-        public static BinMaterialCheckResult CreateFailure(int binNumber)
-            => new BinMaterialCheckResult(binNumber, false, true, false);
-
-        public static BinMaterialCheckResult CreatePending(int binNumber)
-            => new BinMaterialCheckResult(binNumber, false, false, false);
     }
 }
