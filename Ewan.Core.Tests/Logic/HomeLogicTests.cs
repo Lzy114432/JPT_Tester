@@ -20,11 +20,10 @@ namespace Ewan.Core.Tests.Logic
         public void Constructor_InitializesWithDefaultState()
         {
             // Arrange
-            var sharedState = new ProductionLineSharedState();
             var binElevator = new MockBinElevatorForHomeLogic();
 
             // Act
-            var logic = new HomeLogic(sharedState, binElevator);
+            var logic = new HomeLogic(binElevator);
 
             // Assert
             Assert.Equal("初始状态", logic.SwitchIndex);
@@ -39,9 +38,8 @@ namespace Ewan.Core.Tests.Logic
         public void Handler_FromInitialState_TransitionsToStopOn()
         {
             // Arrange
-            var sharedState = new ProductionLineSharedState();
             var binElevator = new MockBinElevatorForHomeLogic();
-            var logic = new HomeLogic(sharedState, binElevator);
+            var logic = new HomeLogic(binElevator);
 
             // Act
             logic.Handler();
@@ -54,9 +52,8 @@ namespace Ewan.Core.Tests.Logic
         public void Handler_FromStopOn_TransitionsToStopOnWait()
         {
             // Arrange
-            var sharedState = new ProductionLineSharedState();
             var binElevator = new MockBinElevatorForHomeLogic();
-            var logic = new HomeLogic(sharedState, binElevator);
+            var logic = new HomeLogic(binElevator);
 
             // Act - 进入 "停止ON" 状态
             logic.Handler(); // 初始状态 -> 停止ON
@@ -72,9 +69,8 @@ namespace Ewan.Core.Tests.Logic
         public void Handler_StopOnWait_TransitionsAfterTimeout()
         {
             // Arrange
-            var sharedState = new ProductionLineSharedState();
             var binElevator = new MockBinElevatorForHomeLogic();
-            var logic = new HomeLogic(sharedState, binElevator);
+            var logic = new HomeLogic(binElevator);
 
             // 进入等待状态
             logic.Handler(); // 初始状态 -> 停止ON
@@ -97,9 +93,8 @@ namespace Ewan.Core.Tests.Logic
         public void Handler_StopOff_TransitionsToStopOffWait()
         {
             // Arrange
-            var sharedState = new ProductionLineSharedState();
             var binElevator = new MockBinElevatorForHomeLogic();
-            var logic = new HomeLogic(sharedState, binElevator);
+            var logic = new HomeLogic(binElevator);
 
             // 使用辅助方法推进到 "停止OFF" 状态
             RunToState(logic, "停止OFF");
@@ -116,9 +111,8 @@ namespace Ewan.Core.Tests.Logic
         public void Handler_CompleteFullCycle_ReachesFinish()
         {
             // Arrange
-            var sharedState = new ProductionLineSharedState();
             var binElevator = new MockBinElevatorForHomeLogic();
-            var logic = new HomeLogic(sharedState, binElevator);
+            var logic = new HomeLogic(binElevator);
 
             // Act - 运行完整周期
             RunHomeLogicToCompletion(logic);
@@ -136,9 +130,8 @@ namespace Ewan.Core.Tests.Logic
         public void Handler_IsNonBlocking()
         {
             // Arrange
-            var sharedState = new ProductionLineSharedState();
             var binElevator = new MockBinElevatorForHomeLogic();
-            var logic = new HomeLogic(sharedState, binElevator);
+            var logic = new HomeLogic(binElevator);
 
             // Act - 测量单次 Handler 调用时间
             var startTime = DateTime.Now;
@@ -153,9 +146,8 @@ namespace Ewan.Core.Tests.Logic
         public void Handler_WaitStates_ReturnImmediatelyWhenNotTimedOut()
         {
             // Arrange
-            var sharedState = new ProductionLineSharedState();
             var binElevator = new MockBinElevatorForHomeLogic();
-            var logic = new HomeLogic(sharedState, binElevator);
+            var logic = new HomeLogic(binElevator);
 
             // 进入等待状态
             logic.Handler(); // 初始状态 -> 停止ON
@@ -179,9 +171,8 @@ namespace Ewan.Core.Tests.Logic
         public void Handler_CallsPerformHardwareInitialization()
         {
             // Arrange
-            var sharedState = new ProductionLineSharedState();
             var binElevator = new MockBinElevatorForHomeLogic();
-            var logic = new HomeLogic(sharedState, binElevator);
+            var logic = new HomeLogic(binElevator);
 
             // Act - 运行到料仓初始化步骤
             RunToState(logic, "料仓初始化");
@@ -199,9 +190,8 @@ namespace Ewan.Core.Tests.Logic
         public void Rset_ResetsToInitialState()
         {
             // Arrange
-            var sharedState = new ProductionLineSharedState();
             var binElevator = new MockBinElevatorForHomeLogic();
-            var logic = new HomeLogic(sharedState, binElevator);
+            var logic = new HomeLogic(binElevator);
 
             // 推进到某个中间状态
             logic.Handler();
@@ -224,9 +214,8 @@ namespace Ewan.Core.Tests.Logic
         public void Handler_RaisesStepChangedEvent()
         {
             // Arrange
-            var sharedState = new ProductionLineSharedState();
             var binElevator = new MockBinElevatorForHomeLogic();
-            var logic = new HomeLogic(sharedState, binElevator);
+            var logic = new HomeLogic(binElevator);
 
             string fromStep = null;
             string toStep = null;
@@ -252,9 +241,8 @@ namespace Ewan.Core.Tests.Logic
         public void GetLogicState_ReturnsCurrentState()
         {
             // Arrange
-            var sharedState = new ProductionLineSharedState();
             var binElevator = new MockBinElevatorForHomeLogic();
-            var logic = new HomeLogic(sharedState, binElevator);
+            var logic = new HomeLogic(binElevator);
 
             // Act
             logic.Handler();
@@ -273,8 +261,7 @@ namespace Ewan.Core.Tests.Logic
         public void Handler_WithNullBinElevator_DoesNotThrow()
         {
             // Arrange
-            var sharedState = new ProductionLineSharedState();
-            var logic = new HomeLogic(sharedState, null);
+            var logic = new HomeLogic(null);
 
             // Act - 运行完整周期，不应抛出异常
             var exception = Record.Exception(() => RunHomeLogicToCompletion(logic));
@@ -287,9 +274,8 @@ namespace Ewan.Core.Tests.Logic
         public void Handler_MultipleCallsInWaitState_StaysInSameState()
         {
             // Arrange
-            var sharedState = new ProductionLineSharedState();
             var binElevator = new MockBinElevatorForHomeLogic();
-            var logic = new HomeLogic(sharedState, binElevator);
+            var logic = new HomeLogic(binElevator);
 
             // 进入等待状态
             logic.Handler();
@@ -314,9 +300,8 @@ namespace Ewan.Core.Tests.Logic
         public void Handler_HighFrequencyCallsAreEfficient()
         {
             // Arrange
-            var sharedState = new ProductionLineSharedState();
             var binElevator = new MockBinElevatorForHomeLogic();
-            var logic = new HomeLogic(sharedState, binElevator);
+            var logic = new HomeLogic(binElevator);
 
             // Act - 高频率调用 1000 次
             var startTime = DateTime.Now;

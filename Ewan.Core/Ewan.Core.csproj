@@ -98,8 +98,6 @@
     <Compile Include="Logic\MainLogic.cs" />
     <Compile Include="Logic\MaterialLoadingLogic.cs" />
     <Compile Include="Logic\MaterialUnloadingLogic.cs" />
-    <Compile Include="Logic\ProductionLineLogic.cs" />
-    <Compile Include="Operator\ProductionLineOperator.cs" />
     <Compile Include="Plc\ModbusManager.cs" />
     <Compile Include="Plc\ModbusRTUManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
