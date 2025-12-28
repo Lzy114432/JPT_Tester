@@ -156,7 +156,7 @@ namespace EwanCore.StateMachine
                     continue;
                 }
 
-                Thread.Sleep(1);
+                Thread.Sleep(50);
 
                 if (tag != RunTimeTag.Run && tag != RunTimeTag.Step)
                 {

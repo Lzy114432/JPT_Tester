@@ -109,25 +109,29 @@ namespace Ewan.Core.Logic
             {
                 #region 初始状态
                 case "初始状态":
-                    SwitchIndex = "检查环线信号";
+                    // 检测环线信号，有信号才切换步骤
+                    if (_ringLineSignal && !_requestProcessed)
+                    {
+                        SwitchIndex = "检查环线信号";
+                    }
+                    else
+                    {
+                        // 无信号时直接标记完成，不切换步骤，避免日志刷屏
+                        // 同时清除处理标志（信号变为0时）
+                        if (!_ringLineSignal && _requestProcessed)
+                        {
+                            _requestProcessed = false;
+                        }
+                        IsFinish = true;
+                    }
                     break;
                 #endregion
 
                 #region 检查环线信号
                 case "检查环线信号":
-                    // 信号为1且未处理过时，开始处理
-                    if (_ringLineSignal && !_requestProcessed)
-                    {
-                        _requestProcessed = true;
-                        SwitchIndex = "检查料仓有料";
-                        return;
-                    }
-
-                    // 信号变为0时，清除处理标志
-                    if (!_ringLineSignal && _requestProcessed)
-                    {
-                        _requestProcessed = false;
-                    }
+                    // 有环线信号，开始处理
+                    _requestProcessed = true;
+                    SwitchIndex = "检查料仓有料";
                     break;
                 #endregion
 

@@ -71,28 +71,27 @@ namespace Ewan.Core.Logic
             {
                 #region 初始状态
                 case "初始状态":
-                    SwitchIndex = "等待料片信号";
+                    // 检测料片信号，有料才切换步骤
+                    if (_ioManager?.Ctx?.R.检测到料片信号 == true)
+                    {
+                        SwitchIndex = "等待料片信号";
+                    }
+                    else
+                    {
+                        // 无料时直接标记完成，不切换步骤，避免日志刷屏
+                        IsFinish = true;
+                    }
                     break;
                 #endregion
 
                 #region 等待料片信号
                 case "等待料片信号":
-                    // 检测料片信号
-                    if (_ioManager?.Ctx?.R.检测到料片信号 == true)
-                    {
-                        // 有料片检测信号，允许取料
-                        _ioManager.Ctx.On(x => x.触发机械手皮带线允许取料);
-                        _sharedState.MarkLoadingInProgress();
+                    // 有料片检测信号，允许取料
+                    _ioManager.Ctx.On(x => x.触发机械手皮带线允许取料);
+                    _sharedState.MarkLoadingInProgress();
 
-                        SwitchIndex = "取料中";
-                        Tw.StartWatch(SwitchIndex);
-                        return;
-                    }
-                    else
-                    {
-                        // 没有检测到料片信号，直接完成
-                        Complete();
-                    }
+                    SwitchIndex = "取料中";
+                    Tw.StartWatch(SwitchIndex);
                     break;
                 #endregion
 

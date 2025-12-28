@@ -108,6 +108,17 @@ namespace Ewan.Core.Logic
             _unloadingEnabled = parameters.EnableUnloadingModule;
         }
 
+        /// <summary>
+        /// 重写步骤切换回调，禁用日志输出以避免空闲时刷屏
+        /// </summary>
+        protected override void OnStepChanged(string from, string to)
+        {
+            // 只保留 TimeoutWatch 功能，不输出日志
+            Tw.StopWatch(from);
+            Tw.StopWatch(to);
+            Tw.StartWatch(to);
+        }
+
         public void Dispose()
         {
             if (_unloadingLogic is MaterialUnloadingLogic unloadingLogic)
