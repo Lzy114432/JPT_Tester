@@ -1,6 +1,7 @@
 using Ewan.Core;
+using Ewan.Core.IO;
 using Ewan.Core.Logic;
-using Ewan.Core.Module;
+using Ewan.Model.IO;
 using Ewan.Model.Messages;
 using Ewan.Model.System;
 using EwanCommon.Logging;
@@ -8,9 +9,11 @@ using EwanCore.AlarmSystem;
 using EwanCore.Attribute;
 using EwanCore.Messaging;
 using EwanCore.StateMachine;
+using EwanIO.Core.Context;
 using log4net;
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Ewan.Core.Manager
 {
@@ -24,13 +27,15 @@ namespace Ewan.Core.Manager
     {
         private static readonly ILog s_logger = Log.GetLogger(typeof(LogicManager));
 
+        private const int DEFAULT_PULSE_WIDTH_MS = 200;
+
         private readonly object _controlLock = new object();
         private readonly AlarmService _alarmService = new AlarmService();
 
         private LogicThread _logicThread;
         private ControllerBox _controllerBox;
 
-        private ProductionLineSharedState _sharedState;
+        private IoContext<MarkingMachineFeederIOModel> Ctx => LayeredIOManager.Instance()?.Ctx;
 
         private IDisposable _alarmMessageSubscription;
         private IDisposable _systemControlSubscription;
@@ -48,8 +53,6 @@ namespace Ewan.Core.Manager
 
         public bool HasNeedResetAlarm => _alarmService.HasNeedResetAlarm;
 
-        public ProductionLineSharedState SharedState => _sharedState;
-
         public override bool Init()
         {
             lock (_controlLock)
@@ -64,8 +67,6 @@ namespace Ewan.Core.Manager
 
                 _controllerBox = new ControllerBox();
                 _controllerBox.AddLogicManger(_logicThread);
-
-                _sharedState = new ProductionLineSharedState();
 
                 _alarmMessageSubscription = MessageHub.Current.Subscribe<AlarmMessage>(OnAlarmMessage);
                 _systemControlSubscription = MessageHub.Current.Subscribe<SystemControlMessage>(OnSystemControlMessage);
@@ -141,6 +142,204 @@ namespace Ewan.Core.Manager
             }
         }
 
+        #region IO 脉冲操作
+
+        /// <summary>
+        /// 发送停止脉冲
+        /// </summary>
+        public void SendStopPulse()
+        {
+            Ctx?.Pulse(x => x.停止输出, DEFAULT_PULSE_WIDTH_MS, now: true);
+        }
+
+        /// <summary>
+        /// 发送复位脉冲
+        /// </summary>
+        public void SendRecoveryPulse()
+        {
+            Ctx?.Pulse(x => x.复位, DEFAULT_PULSE_WIDTH_MS);
+        }
+
+        /// <summary>
+        /// 发送暂停脉冲
+        /// </summary>
+        private void SendPausePulse()
+        {
+            Ctx?.Pulse(x => x.暂停, DEFAULT_PULSE_WIDTH_MS);
+        }
+
+        #endregion
+
+        #region 硬件控制
+
+        /// <summary>
+        /// 设置高速/低速运行模式
+        /// </summary>
+        public void SetHighSpeedMode(bool enabled)
+        {
+            try
+            {
+                var ioManager = LayeredIOManager.Instance();
+                if (ioManager == null)
+                {
+                    _uiLogger.WarnRaw("设置速度模式失败: IO管理器未初始化");
+                    return;
+                }
+
+                if (!ioManager.IsConnected)
+                {
+                    ioManager.Connect();
+                }
+
+                var ctx = ioManager.Ctx;
+                if (ctx == null)
+                {
+                    _uiLogger.WarnRaw("设置速度模式失败: 未获取到IO上下文实例");
+                    return;
+                }
+
+                if (enabled)
+                {
+                    ctx.On(x => x.高速运行);
+                }
+                else
+                {
+                    ctx.Off(x => x.高速运行);
+                }
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.ErrorRaw("设置速度模式失败: {0}", ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 清除硬件报警（IO 脉冲）
+        /// </summary>
+        public async Task<bool> ClearHardwareAlarm(int pulseWidthMs = 100)
+        {
+            try
+            {
+                var ioManager = LayeredIOManager.Instance();
+                if (ioManager == null)
+                {
+                    _uiLogger.WarnRaw("清除报警失败: IO管理器未初始化");
+                    return false;
+                }
+
+                if (!ioManager.IsConnected)
+                {
+                    if (!ioManager.Connect())
+                    {
+                        _uiLogger.WarnRaw("清除报警失败: IO未连接");
+                        return false;
+                    }
+                }
+
+                var ctx = ioManager.Ctx;
+                if (ctx == null)
+                {
+                    _uiLogger.WarnRaw("清除报警失败: 未获取到IO上下文实例");
+                    return false;
+                }
+
+                ctx.On(x => x.清除报警, now: true);
+                await Task.Delay(pulseWidthMs);
+                ctx.Off(x => x.清除报警, now: true);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.ErrorRaw("清除报警异常: {0}", ex.Message);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 检查安全门是否关闭
+        /// </summary>
+        public bool AreSafetyDoorsClosed()
+        {
+            var parameters = SystemParametersManager.Instance.Parameters;
+            if (parameters.SafetyDoorAlarmBypass)
+            {
+                return true;
+            }
+
+            try
+            {
+                var ioManager = LayeredIOManager.Instance();
+                if (ioManager == null || ioManager.Ctx == null)
+                {
+                    _uiLogger.WarnRaw("无法检测安全门状态: IO未初始化");
+                    return false;
+                }
+
+                if (!ioManager.IsConnected)
+                {
+                    if (!ioManager.Connect())
+                    {
+                        _uiLogger.WarnRaw("无法检测安全门状态: IO未连接");
+                        return false;
+                    }
+                }
+
+                var ctx = ioManager.Ctx;
+                if (ctx.R.前门电磁感应信号 || ctx.R.后门电磁感应信号 || ctx.R.侧门电磁感应信号)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.ErrorRaw("检测安全门状态失败: {0}", ex.Message);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 读取初始化信号
+        /// </summary>
+        public bool ReadInitializeSignal()
+        {
+            try
+            {
+                var ctx = LayeredIOManager.Instance()?.Ctx;
+                if (ctx == null)
+                {
+                    return false;
+                }
+
+                return ctx.R.初始化信号;
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.ErrorRaw("读取初始化信号失败: {0}", ex.Message);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 确保关闭前暂停恢复
+        /// </summary>
+        public void EnsurePauseRecoveryBeforeShutdown()
+        {
+            if (RunState != RunTimeTag.Pause)
+            {
+                return;
+            }
+
+            _uiLogger.InfoRaw("检测到系统处于暂停状态，关闭前执行停止与复原脉冲");
+            SendStopPulse();
+            Thread.Sleep(DEFAULT_PULSE_WIDTH_MS);
+            SendRecoveryPulse();
+        }
+
+        #endregion
+
         private void HomeInternal(bool publishSystemControl)
         {
             lock (_controlLock)
@@ -165,7 +364,6 @@ namespace Ewan.Core.Manager
                 DisposeMainLogicIfNeeded();
                 _logicThread.ClearAction();
 
-                _sharedState?.ResetAllStates();
                 MessageHub.Current.Post(Ewan.Model.Production.BinElevatorCommandMessage.ForceStopAll(nameof(LogicManager)));
                 MessageHub.Current.Post(Ewan.Model.Production.BinElevatorCommandMessage.InitializeAll(nameof(LogicManager)));
 
@@ -213,7 +411,7 @@ namespace Ewan.Core.Manager
 
                 if (_logicThread.Count == 0)
                 {
-                    _mainLogic = new MainLogic(_sharedState);
+                    _mainLogic = new MainLogic();
                     _logicThread.AddAction(_mainLogic);
                 }
 
@@ -235,8 +433,6 @@ namespace Ewan.Core.Manager
             {
                 _controllerBox?.Stop();
 
-                _sharedState?.SetSystemPaused(false);
-                _sharedState?.ResetAllStates();
                 MessageHub.Current.Post(Ewan.Model.Production.BinElevatorCommandMessage.ForceStopAll(nameof(LogicManager)));
 
                 MachineParameters.Instance.MarkNeedHome();
@@ -255,7 +451,7 @@ namespace Ewan.Core.Manager
         {
             lock (_controlLock)
             {
-                _sharedState?.SetSystemPaused(true);
+                SendPausePulse();
                 _controllerBox?.Pause();
 
                 MessageHub.Current.Post(new StatusIndicatorCommand(SystemStatus.Paused, "暂停中"));
@@ -270,7 +466,6 @@ namespace Ewan.Core.Manager
         {
             lock (_controlLock)
             {
-                _sharedState?.SetSystemPaused(false);
                 _controllerBox?.Start();
 
                 MessageHub.Current.Post(new StatusIndicatorCommand(SystemStatus.Running, "运行中"));

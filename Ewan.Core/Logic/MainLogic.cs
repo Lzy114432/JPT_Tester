@@ -1,4 +1,3 @@
-using Ewan.Core.Module;
 using Ewan.Model.System;
 using EwanCore.StateMachine;
 using System;
@@ -11,21 +10,18 @@ namespace Ewan.Core.Logic
     public class MainLogic : LogicBase, IDisposable
     {
         private readonly SystemParametersManager _parametersManager;
-        private readonly ProductionLineSharedState _sharedState;
-
         private readonly LogicBase _loadingLogic;
         private readonly LogicBase _unloadingLogic;
 
         private bool _loadingEnabled = true;
         private bool _unloadingEnabled = true;
 
-        public MainLogic(ProductionLineSharedState sharedState)
+        public MainLogic()
         {
-            _sharedState = sharedState ?? throw new ArgumentNullException(nameof(sharedState));
             _parametersManager = SystemParametersManager.Instance;
 
-            var loadingLogic = new MaterialLoadingLogic(_sharedState);
-            var unloadingLogic = new MaterialUnloadingLogic(_sharedState);
+            var loadingLogic = new MaterialLoadingLogic();
+            var unloadingLogic = new MaterialUnloadingLogic();
 
             _loadingLogic = loadingLogic;
             _unloadingLogic = unloadingLogic;
@@ -37,7 +33,6 @@ namespace Ewan.Core.Logic
         internal MainLogic(LogicBase loadingLogic, LogicBase unloadingLogic)
         {
             _parametersManager = SystemParametersManager.Instance;
-            _sharedState = new ProductionLineSharedState();
             _loadingLogic = loadingLogic ?? throw new ArgumentNullException(nameof(loadingLogic));
             _unloadingLogic = unloadingLogic ?? throw new ArgumentNullException(nameof(unloadingLogic));
         }

@@ -1,4 +1,5 @@
 ﻿using Ewan.BusinessBonding;
+using Ewan.Core.Manager;
 using Ewan.Core.Security;
 using EwanCommon.Logging;
 using MarkingMachineFeeder.Viewmodel;
@@ -78,8 +79,7 @@ namespace MarkingMachineFeeder
         {
             try
             {
-                var controlService = SystemControlService.Instance();
-                controlService.EnsurePauseRecoveryBeforeShutdown();
+                LogicManager.Instance().EnsurePauseRecoveryBeforeShutdown();
             }
             catch (System.Exception ex)
             {

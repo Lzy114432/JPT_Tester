@@ -87,7 +87,6 @@
     <Compile Include="Module\Interface\IBinElevator.cs" />
     <Compile Include="Module\Interface\IModule.cs" />
     <Compile Include="Module\MesModule.cs" />
-    <Compile Include="Module\ProductionLineSharedState.cs" />
     <Compile Include="Module\RingLineModule.cs" />
     <Compile Include="Module\SafetyModule.cs" />
     <Compile Include="Module\StationHeartbeatModule.cs" />

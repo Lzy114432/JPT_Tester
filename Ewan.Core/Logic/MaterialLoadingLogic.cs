@@ -1,5 +1,4 @@
 using Ewan.Core.IO;
-using Ewan.Core.Module;
 using Ewan.Core.ScanCode;
 using Ewan.Model.Messages;
 using Ewan.Model.Production;
@@ -25,7 +24,6 @@ namespace Ewan.Core.Logic
     {
         #region 私有字段
 
-        private readonly ProductionLineSharedState _sharedState;
         private readonly LayeredIOManager _ioManager = LayeredIOManager.Instance();
         private readonly SystemParametersManager _parametersManager;
 
@@ -45,10 +43,8 @@ namespace Ewan.Core.Logic
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="sharedState">共享状态对象</param>
-        public MaterialLoadingLogic(ProductionLineSharedState sharedState)
+        public MaterialLoadingLogic()
         {
-            _sharedState = sharedState ?? throw new ArgumentNullException(nameof(sharedState));
             _parametersManager = SystemParametersManager.Instance;
         }
 
@@ -61,12 +57,6 @@ namespace Ewan.Core.Logic
         /// </summary>
         public override void Handler()
         {
-            // 系统暂停时不处理
-            if (_sharedState.IsSystemPaused())
-            {
-                return;
-            }
-
             switch (SwitchIndex)
             {
                 #region 初始状态
@@ -88,8 +78,6 @@ namespace Ewan.Core.Logic
                 case "等待料片信号":
                     // 有料片检测信号，允许取料
                     _ioManager.Ctx.On(x => x.触发机械手皮带线允许取料);
-                    _sharedState.MarkLoadingInProgress();
-
                     SwitchIndex = "取料中";
                     Tw.StartWatch(SwitchIndex);
                     break;
@@ -222,7 +210,6 @@ namespace Ewan.Core.Logic
                     ClearBinSelectSignals();
                     _ioManager?.Ctx?.Off(x => x.发送扫码完成信号);
 
-                    _sharedState.ClearLoadingInProgress();
 
                     if (_beltStopRequested)
                     {
@@ -282,7 +269,6 @@ namespace Ewan.Core.Logic
                 _uiLogger.ErrorRaw("强制清理IO异常: {0}", ex.Message);
             }
 
-            _sharedState.ClearLoadingInProgress();
 
             if (_beltStopRequested)
             {

@@ -1,5 +1,4 @@
 using Ewan.Core.IO;
-using Ewan.Core.Module;
 using Ewan.Core.Plc;
 using Ewan.Core.ScanCode;
 using Ewan.Model;
@@ -29,7 +28,6 @@ namespace Ewan.Core.Logic
     {
         #region 私有字段
 
-        private readonly ProductionLineSharedState _sharedState;
         private readonly LayeredIOManager _ioManager = LayeredIOManager.Instance();
         private readonly SystemParametersManager _parametersManager;
         private readonly ModbusRTUManager _modbusRTUManager;
@@ -64,10 +62,8 @@ namespace Ewan.Core.Logic
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="sharedState">共享状态对象</param>
-        public MaterialUnloadingLogic(ProductionLineSharedState sharedState)
+        public MaterialUnloadingLogic()
         {
-            _sharedState = sharedState ?? throw new ArgumentNullException(nameof(sharedState));
             _parametersManager = SystemParametersManager.Instance;
             _modbusRTUManager = ModbusRTUManager.Instance();
 
@@ -84,12 +80,6 @@ namespace Ewan.Core.Logic
         /// </summary>
         public override void Handler()
         {
-            // 系统暂停时不处理
-            if (_sharedState.IsSystemPaused())
-            {
-                return;
-            }
-
             switch (SwitchIndex)
             {
                 #region 初始状态

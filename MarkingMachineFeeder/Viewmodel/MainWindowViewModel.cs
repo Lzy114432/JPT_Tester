@@ -1,10 +1,10 @@
-using Ewan.BusinessBonding;
 using EwanCommon.Logging;
 using Ewan.Core.Manager;
 using Ewan.Core.Security;
 using Ewan.Model.Security;
 using Ewan.Model.System;
 using EwanCore.Messaging;
+using EwanCore.StateMachine;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
@@ -17,7 +17,6 @@ namespace MarkingMachineFeeder.Viewmodel
     {
         private readonly UILogger _uiLogger = new UILogger();
         private readonly SecurityManager _securityManager;
-        private readonly SystemControlService _systemControlService;
         private IDisposable _statusIndicatorSubscription; // 系统状态订阅
 
         private string _title = "MarkingMachineFeeder";
@@ -306,8 +305,6 @@ namespace MarkingMachineFeeder.Viewmodel
             _securityManager = SecurityManager.Instance();
             _securityManager.UserAuthenticated += OnUserAuthenticated;
             _securityManager.UserLoggedOut += OnUserLoggedOut;
-
-            _systemControlService = SystemControlService.Instance();
 
             TestLogCommand = new DelegateCommand(ExecuteTestLog);
             LoginCommand = new DelegateCommand(ExecuteLogin);
@@ -1070,11 +1067,11 @@ namespace MarkingMachineFeeder.Viewmodel
 
                 // 设置低速运行（OUT16=false）
                 _uiLogger.InfoRaw("设置低速运行模式");
-                _systemControlService.SetHighSpeedMode(false);
+                LogicManager.Instance().SetHighSpeedMode(false);
                 await Task.Delay(parameters.LowSpeedSetupDelayMs);
 
                 // 新架构：直接调用 LogicManager.Home() 执行复位流程
-                _systemControlService.SendStopPulse();
+                LogicManager.Instance().SendStopPulse();
                 LogicManager.Instance().Home();
 
                 // 复位系统状态
@@ -1152,7 +1149,8 @@ namespace MarkingMachineFeeder.Viewmodel
                 _uiLogger.Warn("处理已完成: {0}", "用户触发紧急停止");
                 
                 // 调用系统控制服务紧急停止
-                _systemControlService.EmergencyStopSystem();
+                LogicManager.Instance().SendStopPulse();
+                LogicManager.Instance().EmergencyStop();
                 
                 // 更新界面状态
                 SystemRunningStatus = "Red";
@@ -1178,7 +1176,7 @@ namespace MarkingMachineFeeder.Viewmodel
             {
                 _uiLogger.InfoRaw("用户触发清除报警(OUT25脉冲)");
 
-                bool result = await _systemControlService.ClearAlarm();
+                bool result = await LogicManager.Instance().ClearHardwareAlarm();
 
                 if (result)
                 {
@@ -1209,7 +1207,7 @@ namespace MarkingMachineFeeder.Viewmodel
 
                 var parameters = Ewan.Model.System.SystemParametersManager.Instance.Parameters;
                 
-                if (!_systemControlService.AreSafetyDoorsClosed())
+                if (!LogicManager.Instance().AreSafetyDoorsClosed())
                 {
                     System.Windows.MessageBox.Show(
                         "请关闭安全门后再启动",
@@ -1223,19 +1221,19 @@ namespace MarkingMachineFeeder.Viewmodel
                 if (parameters.HighSpeedModeEnabled)
                 {
                     _uiLogger.InfoRaw("启用高速运行模式");
-                    _systemControlService.SetHighSpeedMode(true);
+                    LogicManager.Instance().SetHighSpeedMode(true);
                 }
                 else
                 {
                     _uiLogger.InfoRaw("保持低速运行模式");
-                    _systemControlService.SetHighSpeedMode(false);
+                    LogicManager.Instance().SetHighSpeedMode(false);
                 }
 
-                if (PauseIsOn)
+                if (LogicManager.Instance().RunState == RunTimeTag.Pause)
                 {
                     _uiLogger.InfoRaw("检测到系统处于暂停状态，发送复原脉冲");
-                    _systemControlService.SendRecoveryPulse();
-                    _systemControlService.ResumeSystem();
+                    LogicManager.Instance().SendRecoveryPulse();
+                    LogicManager.Instance().Resume();
                 }
                 else
                 {
@@ -1275,7 +1273,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 _uiLogger.Info("处理已完成: {0}", "用户请求暂停系统");
                 
                 // 调用系统控制服务暂停系统
-                _systemControlService.PauseSystem();
+                LogicManager.Instance().Pause();
                 
                 // 更新界面状态
                 SystemRunningStatus = "Yellow";
@@ -1300,7 +1298,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 _uiLogger.Info("处理已完成: {0}", "用户请求恢复系统");
                 
                 // 调用系统控制服务恢复系统
-                _systemControlService.ResumeSystem();
+                LogicManager.Instance().Resume();
                 
                 // 更新界面状态
                 SystemRunningStatus = "Green";
@@ -1327,7 +1325,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 _uiLogger.Info("处理已完成: {0}", "用户请求停止系统");
 
                 // 停止脉冲（硬件）+ 新架构停止逻辑（LogicManager）
-                _systemControlService.SendStopPulse();
+                LogicManager.Instance().SendStopPulse();
                 LogicManager.Instance().Stop();
                 
                 // 更新界面状态
