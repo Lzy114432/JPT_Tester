@@ -23,9 +23,7 @@ namespace Ewan.Core.Tests.Module
             Assert.False(sharedState.GetUnloadingCompleted());
             Assert.False(sharedState.IsSystemPaused());
             Assert.False(sharedState.RequireReinit());
-            Assert.Equal(ProductionLineSharedState.ActiveProcess.None, sharedState.GetCurrentProcess());
             Assert.False(sharedState.IsLoadingInProgress());
-            Assert.False(sharedState.HasUnloadingPriorityRequest());
         }
 
         #endregion
@@ -180,147 +178,6 @@ namespace Ewan.Core.Tests.Module
 
         #endregion
 
-        #region 流程互斥锁测试
-
-        [Fact]
-        public void TryStartLoading_WhenIdle_ReturnsTrue()
-        {
-            // Arrange
-            var sharedState = new ProductionLineSharedState();
-
-            // Act
-            bool result = sharedState.TryStartLoading();
-
-            // Assert
-            Assert.True(result);
-            Assert.Equal(ProductionLineSharedState.ActiveProcess.Loading, sharedState.GetCurrentProcess());
-        }
-
-        [Fact]
-        public void TryStartLoading_WhenAlreadyLoading_ReturnsFalse()
-        {
-            // Arrange
-            var sharedState = new ProductionLineSharedState();
-            sharedState.TryStartLoading();
-
-            // Act
-            bool result = sharedState.TryStartLoading();
-
-            // Assert
-            Assert.False(result);
-        }
-
-        [Fact]
-        public void TryStartLoading_WhenUnloading_ReturnsFalse()
-        {
-            // Arrange
-            var sharedState = new ProductionLineSharedState();
-            sharedState.TryStartUnloading();
-
-            // Act
-            bool result = sharedState.TryStartLoading();
-
-            // Assert
-            Assert.False(result);
-        }
-
-        [Fact]
-        public void TryStartUnloading_WhenIdle_ReturnsTrue()
-        {
-            // Arrange
-            var sharedState = new ProductionLineSharedState();
-
-            // Act
-            bool result = sharedState.TryStartUnloading();
-
-            // Assert
-            Assert.True(result);
-            Assert.Equal(ProductionLineSharedState.ActiveProcess.Unloading, sharedState.GetCurrentProcess());
-        }
-
-        [Fact]
-        public void TryStartUnloading_WhenAlreadyUnloading_ReturnsFalse()
-        {
-            // Arrange
-            var sharedState = new ProductionLineSharedState();
-            sharedState.TryStartUnloading();
-
-            // Act
-            bool result = sharedState.TryStartUnloading();
-
-            // Assert
-            Assert.False(result);
-        }
-
-        [Fact]
-        public void TryStartUnloading_WhenLoading_ReturnsFalse()
-        {
-            // Arrange
-            var sharedState = new ProductionLineSharedState();
-            sharedState.TryStartLoading();
-
-            // Act
-            bool result = sharedState.TryStartUnloading();
-
-            // Assert
-            Assert.False(result);
-        }
-
-        [Fact]
-        public void FinishProcess_ReleasesLock()
-        {
-            // Arrange
-            var sharedState = new ProductionLineSharedState();
-            sharedState.TryStartLoading();
-
-            // Act
-            sharedState.FinishProcess();
-
-            // Assert
-            Assert.Equal(ProductionLineSharedState.ActiveProcess.None, sharedState.GetCurrentProcess());
-        }
-
-        [Fact]
-        public void FinishProcess_AllowsNewProcessToStart()
-        {
-            // Arrange
-            var sharedState = new ProductionLineSharedState();
-            sharedState.TryStartLoading();
-            sharedState.FinishProcess();
-
-            // Act
-            bool result = sharedState.TryStartUnloading();
-
-            // Assert
-            Assert.True(result);
-        }
-
-        [Fact]
-        public void IsLoading_WhenLoading_ReturnsTrue()
-        {
-            // Arrange
-            var sharedState = new ProductionLineSharedState();
-            sharedState.TryStartLoading();
-
-            // Act & Assert
-            Assert.True(sharedState.IsLoading());
-            Assert.False(sharedState.IsUnloading());
-        }
-
-        [Fact]
-        public void IsUnloading_WhenUnloading_ReturnsTrue()
-        {
-            // Arrange
-            var sharedState = new ProductionLineSharedState();
-            sharedState.TryStartUnloading();
-
-            // Act & Assert
-            Assert.True(sharedState.IsUnloading());
-            Assert.False(sharedState.IsLoading());
-        }
-
-        #endregion
-
         #region 装料流程标志测试
 
         [Fact]
@@ -352,37 +209,6 @@ namespace Ewan.Core.Tests.Module
 
         #endregion
 
-        #region 下料优先级测试
-
-        [Fact]
-        public void RequestUnloadingPriority_SetsFlag()
-        {
-            // Arrange
-            var sharedState = new ProductionLineSharedState();
-
-            // Act
-            sharedState.RequestUnloadingPriority();
-
-            // Assert
-            Assert.True(sharedState.HasUnloadingPriorityRequest());
-        }
-
-        [Fact]
-        public void ClearUnloadingPriority_ClearsFlag()
-        {
-            // Arrange
-            var sharedState = new ProductionLineSharedState();
-            sharedState.RequestUnloadingPriority();
-
-            // Act
-            sharedState.ClearUnloadingPriority();
-
-            // Assert
-            Assert.False(sharedState.HasUnloadingPriorityRequest());
-        }
-
-        #endregion
-
         #region ResetAllStates 测试
 
         [Fact]
@@ -394,7 +220,6 @@ namespace Ewan.Core.Tests.Module
             sharedState.SetUnloadingCompleted(true);
             sharedState.SetSystemPaused(true);
             sharedState.SetRequireReinit(true);
-            sharedState.TryStartLoading();
 
             // Act
             sharedState.ResetAllStates();
@@ -404,50 +229,11 @@ namespace Ewan.Core.Tests.Module
             Assert.False(sharedState.GetUnloadingCompleted());
             Assert.False(sharedState.IsSystemPaused());
             Assert.False(sharedState.RequireReinit());
-            Assert.Equal(ProductionLineSharedState.ActiveProcess.None, sharedState.GetCurrentProcess());
         }
 
         #endregion
 
         #region 线程安全测试
-
-        [Fact]
-        public void ConcurrentLoadingAndUnloading_OnlyOneSucceeds()
-        {
-            // Arrange
-            var sharedState = new ProductionLineSharedState();
-            int loadingSuccessCount = 0;
-            int unloadingSuccessCount = 0;
-            var tasks = new Task[100];
-
-            // Act - 并发尝试获取锁
-            for (int i = 0; i < 50; i++)
-            {
-                tasks[i] = Task.Run(() =>
-                {
-                    if (sharedState.TryStartLoading())
-                    {
-                        System.Threading.Interlocked.Increment(ref loadingSuccessCount);
-                    }
-                });
-            }
-
-            for (int i = 50; i < 100; i++)
-            {
-                tasks[i] = Task.Run(() =>
-                {
-                    if (sharedState.TryStartUnloading())
-                    {
-                        System.Threading.Interlocked.Increment(ref unloadingSuccessCount);
-                    }
-                });
-            }
-
-            Task.WaitAll(tasks);
-
-            // Assert - 最多只有一个成功
-            Assert.Equal(1, loadingSuccessCount + unloadingSuccessCount);
-        }
 
         [Fact]
         public void ConcurrentStateUpdates_ThreadSafe()
@@ -480,49 +266,6 @@ namespace Ewan.Core.Tests.Module
             // Assert - 无异常即通过
             _ = sharedState.GetLoadingCompleted();
             _ = sharedState.GetUnloadingCompleted();
-        }
-
-        [Fact]
-        public void ConcurrentPriorityRequests_ThreadSafe()
-        {
-            // Arrange
-            var sharedState = new ProductionLineSharedState();
-            var tasks = new Task[100];
-
-            // Act
-            for (int i = 0; i < 50; i++)
-            {
-                tasks[i] = Task.Run(() =>
-                {
-                    sharedState.RequestUnloadingPriority();
-                });
-            }
-
-            for (int i = 50; i < 100; i++)
-            {
-                tasks[i] = Task.Run(() =>
-                {
-                    sharedState.ClearUnloadingPriority();
-                });
-            }
-
-            Task.WaitAll(tasks);
-
-            // Assert - 无异常即通过，最终状态取决于执行顺序
-            _ = sharedState.HasUnloadingPriorityRequest();
-        }
-
-        #endregion
-
-        #region ActiveProcess 枚举测试
-
-        [Fact]
-        public void ActiveProcess_HasExpectedValues()
-        {
-            // Assert
-            Assert.Equal(0, (int)ProductionLineSharedState.ActiveProcess.None);
-            Assert.Equal(1, (int)ProductionLineSharedState.ActiveProcess.Loading);
-            Assert.Equal(2, (int)ProductionLineSharedState.ActiveProcess.Unloading);
         }
 
         #endregion

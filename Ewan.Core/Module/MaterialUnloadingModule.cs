@@ -242,11 +242,6 @@ namespace Ewan.Core.Module
                 }
                 
                 // 空车数量充足，继续正常下料流程
-                // 立即记录下料优先级请求
-                _sharedState?.RequestUnloadingPriority();
-                
-                _uiLogger.InfoRaw("处理已开始: {0}", "环线请求下料，设置优先级标志");
-                
                 if (_ioManager.Ctx.R.触发机械手皮带线允许取料)
                 {
                     // 正在装填等下完成
@@ -254,50 +249,35 @@ namespace Ewan.Core.Module
                     return;
                 }
                 
-                // 装料流程已完成，尝试获取流程锁并开始下料
-                if (_sharedState?.TryStartUnloading() == true)
+                int binNumber = GetConfiguredBinNumber();
+                BinMaterialCheckResult materialCheckResult = null;
+
+                if (_binElevator != null)
                 {
-                    // 成功获取锁，清除优先级请求
-                    _sharedState?.ClearUnloadingPriority();
-
-                    int binNumber = GetConfiguredBinNumber();
-                    BinMaterialCheckResult materialCheckResult = null;
-
-                    if (_binElevator != null)
+                    try
                     {
-                        try
-                        {
-                            materialCheckResult = _binElevator.RaiseToSensor(binNumber);
-                        }
-                        catch (Exception ex)
-                        {
-                            _uiLogger.ErrorRaw("处理错误: {0} - {1}",
-                                $"料仓{binNumber}检测物料失败", ex.Message);
-                        }
+                        materialCheckResult = _binElevator.RaiseToSensor(binNumber);
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        _uiLogger.WarnRaw("处理错误: {0} - {1}",
-                            "BinElevatorModule未配置", "跳过有料检测并继续流程");
-                    }
-
-                    if (materialCheckResult == null || materialCheckResult.HasMaterial)
-                    {
-                        RequestUnloading();
-                        _uiLogger.InfoRaw("处理已开始: {0}", "装料流程已完成，开始下料流程");
-                    }
-                    else
-                    {
-                        HandleEmptyUnloadingResult(materialCheckResult);
+                        _uiLogger.ErrorRaw("处理错误: {0} - {1}",
+                            $"料仓{binNumber}检测物料失败", ex.Message);
                     }
                 }
                 else
                 {
-                    // 获取锁失败，可能是其他流程占用（不太可能发生）
-                    _uiLogger.WarnRaw("处理错误: {0} - {1}", 
-                        "下料流程", "装料已完成但无法获取流程锁");
-                    // 重置标志，稍后重试
-                    _requestProcessed = false;
+                    _uiLogger.WarnRaw("处理错误: {0} - {1}",
+                        "BinElevatorModule未配置", "跳过有料检测并继续流程");
+                }
+
+                if (materialCheckResult == null || materialCheckResult.HasMaterial)
+                {
+                    RequestUnloading();
+                    _uiLogger.InfoRaw("处理已开始: {0}", "开始下料流程");
+                }
+                else
+                {
+                    HandleEmptyUnloadingResult(materialCheckResult);
                 }
             }
             // 信号变为0时，清除处理标志，准备接收下次请求
@@ -412,12 +392,6 @@ namespace Ewan.Core.Module
                 // 发送完成信号到Modbus寄存器153
                 SendCartCompletionToModbus(true);
 
-                // 清除下料优先级请求
-                _sharedState?.ClearUnloadingPriority();
-
-                // 释放流程锁
-                _sharedState?.FinishProcess();
-
                 // 重置标志并返回空闲状态
                 _unloadingRequested = false;
                 _lastScannedQrCode = string.Empty; // 清空扫码结果
@@ -425,8 +399,7 @@ namespace Ewan.Core.Module
 
                 UpdateBeltConveyorStopRequest(false, "下料流程完成");
 
-                _uiLogger.InfoRaw("处理已完成: {0}",
-                    "下料完成，清除优先级请求，释放流程锁");
+                _uiLogger.InfoRaw("处理已完成: {0}", "下料完成");
             }
         }
 
@@ -447,9 +420,6 @@ namespace Ewan.Core.Module
             _lastScannedQrCode = string.Empty;
             ClearBinSelectSignals();
             SendCartCompletionToModbus(false);
-
-            _sharedState?.ClearUnloadingPriority();
-            _sharedState?.FinishProcess();
 
             _unloadingRequested = false;
             _currentState = MaterialUnloadingState.Idle;
@@ -603,8 +573,6 @@ namespace Ewan.Core.Module
                 _requestProcessed = false;   // 清除处理标志
 
                 _sharedState?.SetUnloadingCompleted(false);
-                _sharedState?.ClearUnloadingPriority();
-                _sharedState?.FinishProcess();
 
                 _uiLogger.InfoRaw("处理已完成: {0}", "强制停止卸料，所有信号已清除");
             }

@@ -21,7 +21,7 @@ namespace Ewan.Core.Logic
     /// </summary>
     /// <remarks>
     /// 状态流程：
-    /// 初始状态 → 检查环线信号 → 检查空车数量 → 获取流程锁 → 检查料仓有料
+    /// 初始状态 → 检查环线信号 → 检查料仓有料
     /// → 发送取料指令 → 等待取料完成 → 等待扫码位置 → 执行扫码
     /// → 发送放入小车指令 → 等待放入完成 → 发送Modbus完成 → 清理状态 → 结束状态
     /// </remarks>
@@ -126,10 +126,6 @@ namespace Ewan.Core.Logic
                     ProcessCheckEmptyCartCount();
                     break;
 
-                case "获取流程锁":
-                    ProcessAcquireLock();
-                    break;
-
                 case "检查料仓有料":
                     ProcessCheckBinMaterial();
                     break;
@@ -221,7 +217,7 @@ namespace Ewan.Core.Logic
             if (_ringLineSignal && !_requestProcessed)
             {
                 _requestProcessed = true;
-                SwitchIndex = "检查空车数量";
+                SwitchIndex = "检查料仓有料";
                 return;
             }
 
@@ -269,37 +265,7 @@ namespace Ewan.Core.Logic
                 return;
             }
 
-            // 设置下料优先级请求
-            _sharedState.RequestUnloadingPriority();
-            _uiLogger.InfoRaw("处理已开始: {0}", "环线请求下料，设置优先级标志");
-
-            // 检查是否正在装料
-            if (_ioManager?.Ctx?.R.触发机械手皮带线允许取料 == true)
-            {
-                _requestProcessed = false;
-                return;
-            }
-
-            SwitchIndex = "获取流程锁";
-        }
-
-        /// <summary>
-        /// 获取流程锁
-        /// </summary>
-        private void ProcessAcquireLock()
-        {
-            if (_sharedState.TryStartUnloading())
-            {
-                _sharedState.ClearUnloadingPriority();
-                SwitchIndex = "检查料仓有料";
-            }
-            else
-            {
-                _uiLogger.WarnRaw("处理错误: {0} - {1}",
-                    "下料流程", "装料已完成但无法获取流程锁");
-                _requestProcessed = false;
-                SwitchIndex = "检查环线信号";
-            }
+            SwitchIndex = "检查料仓有料";
         }
 
         /// <summary>
@@ -546,9 +512,6 @@ namespace Ewan.Core.Logic
             ClearBinSelectSignals();
             SendCartCompletionToModbus(false);
 
-            _sharedState.ClearUnloadingPriority();
-            _sharedState.FinishProcess();
-
             if (_beltStopRequested)
             {
                 _beltStopRequested = false;
@@ -569,12 +532,6 @@ namespace Ewan.Core.Logic
         /// </summary>
         private void ProcessCleanup()
         {
-            // 清除下料优先级请求
-            _sharedState.ClearUnloadingPriority();
-
-            // 释放流程锁
-            _sharedState.FinishProcess();
-
             // 重置标志
             _lastScannedQrCode = string.Empty;
 
@@ -589,8 +546,7 @@ namespace Ewan.Core.Logic
                 MessageHub.Current.Post(message);
             }
 
-            _uiLogger.InfoRaw("处理已完成: {0}",
-                "下料完成，清除优先级请求，释放流程锁");
+            _uiLogger.InfoRaw("处理已完成: {0}", "下料完成");
 
             Complete();
         }
@@ -633,8 +589,6 @@ namespace Ewan.Core.Logic
             }
 
             _sharedState.SetUnloadingCompleted(false);
-            _sharedState.ClearUnloadingPriority();
-            _sharedState.FinishProcess();
 
             _ringLineSignal = false;
             _requestProcessed = false;

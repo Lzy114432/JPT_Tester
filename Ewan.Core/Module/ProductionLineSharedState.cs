@@ -8,31 +8,6 @@ namespace Ewan.Core.Module
     /// </summary>
     public class ProductionLineSharedState
     {
-        #region 流程类型枚举
-
-        /// <summary>
-        /// 当前正在执行的流程类型
-        /// </summary>
-        public enum ActiveProcess
-        {
-            /// <summary>
-            /// 空闲状态，无流程运行
-            /// </summary>
-            None,
-
-            /// <summary>
-            /// 正在执行装料流程 (MaterialLoadingModule)
-            /// </summary>
-            Loading,
-
-            /// <summary>
-            /// 正在执行下料流程 (MaterialUnloadingModule)
-            /// </summary>
-            Unloading
-        }
-
-        #endregion
-
         #region 私有字段
 
         private readonly object _stateLock = new object();
@@ -42,19 +17,9 @@ namespace Ewan.Core.Module
         private bool _requireReinit = false;
 
         /// <summary>
-        /// 当前正在执行的流程
-        /// </summary>
-        private ActiveProcess _currentProcess = ActiveProcess.None;
-
-        /// <summary>
         /// 装料流程进行中标志（基于IN20脉冲）
         /// </summary>
         private bool _loadingInProgress = false;
-
-        /// <summary>
-        /// 下料优先级请求标志
-        /// </summary>
-        private bool _unloadingPriorityRequested = false;
 
         #endregion
 
@@ -213,92 +178,6 @@ namespace Ewan.Core.Module
                 _unloadingCompleted = false;
                 _systemPaused = false;
                 _requireReinit = false;
-                _currentProcess = ActiveProcess.None;
-            }
-        }
-
-        #endregion
-
-        #region 流程互斥锁方法
-
-        /// <summary>
-        /// 尝试开始装料流程
-        /// </summary>
-        /// <returns>true表示成功获取锁并可以开始装料流程；false表示有其他流程正在运行</returns>
-        public bool TryStartLoading()
-        {
-            lock (_stateLock)
-            {
-                if (_currentProcess == ActiveProcess.None)
-                {
-                    _currentProcess = ActiveProcess.Loading;
-                    return true;
-                }
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// 尝试开始下料流程
-        /// </summary>
-        /// <returns>true表示成功获取锁并可以开始下料流程；false表示有其他流程正在运行</returns>
-        public bool TryStartUnloading()
-        {
-            lock (_stateLock)
-            {
-                if (_currentProcess == ActiveProcess.None)
-                {
-                    _currentProcess = ActiveProcess.Unloading;
-                    return true;
-                }
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// 完成当前流程，释放流程锁
-        /// </summary>
-        public void FinishProcess()
-        {
-            lock (_stateLock)
-            {
-                _currentProcess = ActiveProcess.None;
-            }
-        }
-
-        /// <summary>
-        /// 获取当前正在执行的流程
-        /// </summary>
-        /// <returns>当前流程类型</returns>
-        public ActiveProcess GetCurrentProcess()
-        {
-            lock (_stateLock)
-            {
-                return _currentProcess;
-            }
-        }
-
-        /// <summary>
-        /// 检查是否正在执行装料流程
-        /// </summary>
-        /// <returns>true表示正在装料</returns>
-        public bool IsLoading()
-        {
-            lock (_stateLock)
-            {
-                return _currentProcess == ActiveProcess.Loading;
-            }
-        }
-
-        /// <summary>
-        /// 检查是否正在执行下料流程
-        /// </summary>
-        /// <returns>true表示正在下料</returns>
-        public bool IsUnloading()
-        {
-            lock (_stateLock)
-            {
-                return _currentProcess == ActiveProcess.Unloading;
             }
         }
 
@@ -336,43 +215,6 @@ namespace Ewan.Core.Module
             lock (_stateLock)
             {
                 return _loadingInProgress;
-            }
-        }
-
-        #endregion
-
-        #region 下料优先级管理
-
-        /// <summary>
-        /// 请求下料优先级（环线要料时调用）
-        /// </summary>
-        public void RequestUnloadingPriority()
-        {
-            lock (_stateLock)
-            {
-                _unloadingPriorityRequested = true;
-            }
-        }
-
-        /// <summary>
-        /// 清除下料优先级请求
-        /// </summary>
-        public void ClearUnloadingPriority()
-        {
-            lock (_stateLock)
-            {
-                _unloadingPriorityRequested = false;
-            }
-        }
-
-        /// <summary>
-        /// 检查是否有下料优先级请求
-        /// </summary>
-        public bool HasUnloadingPriorityRequest()
-        {
-            lock (_stateLock)
-            {
-                return _unloadingPriorityRequested;
             }
         }
 

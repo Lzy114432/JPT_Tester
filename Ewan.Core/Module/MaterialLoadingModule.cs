@@ -209,19 +209,8 @@ namespace Ewan.Core.Module
         /// </summary>
         private void ProcessIdleState()
         {
-            // 检查是否有下料优先级请求
-            if (_sharedState?.HasUnloadingPriorityRequest() == true)
-            {                
-                _uiLogger.InfoRaw("处理已开始: {0}", 
-                    "检测到下料优先级请求，禁止自动取料(OUT14=false)，等待下料完成");
-                
-                // 保持Idle状态，不启动新装料
-                return;
-            }
-            
-            // 无下料请求，检查是否有料片检测信号
-            if (_ioManager.Ctx.R.检测到料片信号 &&
-                _sharedState?.TryStartLoading() == true)
+            // 检查是否有料片检测信号
+            if (_ioManager.Ctx.R.检测到料片信号)
             {
                 // 有料片检测信号，允许取料
                 _ioManager.Ctx.On(x => x.触发机械手皮带线允许取料);
@@ -336,9 +325,6 @@ namespace Ewan.Core.Module
                 
                 // 装料完成，清除IN20脉冲标志
                 _sharedState?.ClearLoadingInProgress();
-
-                // 释放流程锁
-                _sharedState?.FinishProcess();
 
                 // 释放皮带控制
                 if (_beltStopRequested)
@@ -479,7 +465,6 @@ namespace Ewan.Core.Module
                 _loadingRequested = false;
                 
                 _sharedState?.ClearLoadingInProgress();
-                _sharedState?.FinishProcess();
                 SetLoadingCompleted(false);
 
                 ForceReleaseBeltControl("装料强制停止");

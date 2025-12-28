@@ -83,24 +83,6 @@ namespace Ewan.Core.Tests.Module
         #region Idle 状态转换测试
 
         [Fact]
-        public void Idle_WhenUnloadingPriorityRequested_RemainsInIdle()
-        {
-            // Arrange
-            var sharedState = new ProductionLineSharedState();
-            sharedState.RequestUnloadingPriority();
-            var module = CreateTestModule(sharedState);
-            SetCurrentState(module, MaterialLoadingState.Idle);
-
-            // Act - 模拟 ProcessIdleState 的逻辑
-            // 当有下料优先级请求时，应保持 Idle 状态
-            bool hasUnloadingPriority = sharedState.HasUnloadingPriorityRequest();
-
-            // Assert
-            Assert.True(hasUnloadingPriority);
-            Assert.Equal(MaterialLoadingState.Idle, GetCurrentState(module));
-        }
-
-        [Fact]
         public void Idle_WhenNoMaterialDetected_RemainsInIdle()
         {
             // Arrange
@@ -178,7 +160,7 @@ namespace Ewan.Core.Tests.Module
             // Arrange
             var sharedState = new ProductionLineSharedState();
             sharedState.MarkLoadingInProgress();
-            sharedState.TryStartLoading();
+            sharedState.SetLoadingCompleted(true);
             var module = CreateTestModule(sharedState);
             SetCurrentState(module, MaterialLoadingState.AtScanPosition);
 
@@ -187,7 +169,7 @@ namespace Ewan.Core.Tests.Module
 
             // Assert
             Assert.False(sharedState.IsLoadingInProgress());
-            Assert.Equal(ProductionLineSharedState.ActiveProcess.None, sharedState.GetCurrentProcess());
+            Assert.False(sharedState.GetLoadingCompleted());
         }
 
         [Fact]
@@ -263,56 +245,6 @@ namespace Ewan.Core.Tests.Module
             // Assert
             var stateCount = Enum.GetValues(typeof(MaterialLoadingState)).Length;
             Assert.Equal(5, stateCount);
-        }
-
-        #endregion
-
-        #region SharedState 集成测试
-
-        [Fact]
-        public void Module_WithSharedState_CanCheckUnloadingPriority()
-        {
-            // Arrange
-            var sharedState = new ProductionLineSharedState();
-            var module = CreateTestModule(sharedState);
-
-            // Act
-            sharedState.RequestUnloadingPriority();
-            var hasPriority = sharedState.HasUnloadingPriorityRequest();
-
-            // Assert
-            Assert.True(hasPriority);
-        }
-
-        [Fact]
-        public void Module_WithSharedState_CanAcquireLoadingLock()
-        {
-            // Arrange
-            var sharedState = new ProductionLineSharedState();
-            var module = CreateTestModule(sharedState);
-
-            // Act
-            bool acquired = sharedState.TryStartLoading();
-
-            // Assert
-            Assert.True(acquired);
-            Assert.True(sharedState.IsLoading());
-        }
-
-        [Fact]
-        public void Module_WithSharedState_CannotAcquireLockWhenUnloadingActive()
-        {
-            // Arrange
-            var sharedState = new ProductionLineSharedState();
-            sharedState.TryStartUnloading(); // 先获取下料锁
-            var module = CreateTestModule(sharedState);
-
-            // Act
-            bool acquired = sharedState.TryStartLoading();
-
-            // Assert
-            Assert.False(acquired);
-            Assert.True(sharedState.IsUnloading());
         }
 
         #endregion

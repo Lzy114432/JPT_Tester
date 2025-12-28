@@ -203,8 +203,7 @@ namespace Ewan.Core.Tests.Module
         {
             // Arrange
             var sharedState = new ProductionLineSharedState();
-            sharedState.TryStartUnloading();
-            sharedState.RequestUnloadingPriority();
+            sharedState.SetUnloadingCompleted(true);
             var module = CreateTestModule(sharedState);
             SetCurrentState(module, MaterialUnloadingState.PuttingToCart);
 
@@ -212,8 +211,7 @@ namespace Ewan.Core.Tests.Module
             module.ForceStopUnloading();
 
             // Assert
-            Assert.False(sharedState.HasUnloadingPriorityRequest());
-            Assert.Equal(ProductionLineSharedState.ActiveProcess.None, sharedState.GetCurrentProcess());
+            Assert.False(sharedState.GetUnloadingCompleted());
         }
 
         [Fact]
@@ -290,70 +288,6 @@ namespace Ewan.Core.Tests.Module
             // Assert
             var stateCount = Enum.GetValues(typeof(MaterialUnloadingState)).Length;
             Assert.Equal(6, stateCount);
-        }
-
-        #endregion
-
-        #region SharedState 集成测试
-
-        [Fact]
-        public void Module_WithSharedState_CanAcquireUnloadingLock()
-        {
-            // Arrange
-            var sharedState = new ProductionLineSharedState();
-            var module = CreateTestModule(sharedState);
-
-            // Act
-            bool acquired = sharedState.TryStartUnloading();
-
-            // Assert
-            Assert.True(acquired);
-            Assert.True(sharedState.IsUnloading());
-        }
-
-        [Fact]
-        public void Module_WithSharedState_CannotAcquireLockWhenLoadingActive()
-        {
-            // Arrange
-            var sharedState = new ProductionLineSharedState();
-            sharedState.TryStartLoading(); // 先获取装料锁
-            var module = CreateTestModule(sharedState);
-
-            // Act
-            bool acquired = sharedState.TryStartUnloading();
-
-            // Assert
-            Assert.False(acquired);
-            Assert.True(sharedState.IsLoading());
-        }
-
-        [Fact]
-        public void Module_WithSharedState_CanRequestPriority()
-        {
-            // Arrange
-            var sharedState = new ProductionLineSharedState();
-            var module = CreateTestModule(sharedState);
-
-            // Act
-            sharedState.RequestUnloadingPriority();
-
-            // Assert
-            Assert.True(sharedState.HasUnloadingPriorityRequest());
-        }
-
-        [Fact]
-        public void Module_WithSharedState_CanClearPriority()
-        {
-            // Arrange
-            var sharedState = new ProductionLineSharedState();
-            sharedState.RequestUnloadingPriority();
-            var module = CreateTestModule(sharedState);
-
-            // Act
-            sharedState.ClearUnloadingPriority();
-
-            // Assert
-            Assert.False(sharedState.HasUnloadingPriorityRequest());
         }
 
         #endregion

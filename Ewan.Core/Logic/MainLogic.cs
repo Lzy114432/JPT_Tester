@@ -51,10 +51,10 @@ namespace Ewan.Core.Logic
                     RefreshModuleConfiguration();
                     _loadingLogic.Rset();
                     _unloadingLogic.Rset();
-                    SwitchIndex = "主动作";
+                    SwitchIndex = "装料流程";
                     break;
 
-                case "主动作":
+                case "装料流程":
                     RefreshModuleConfiguration();
 
                     if (_loadingEnabled)
@@ -63,8 +63,17 @@ namespace Ewan.Core.Logic
                         if (_loadingLogic.IsFinish)
                         {
                             _loadingLogic.Rset();
+                            SwitchIndex = "下料流程";
                         }
                     }
+                    else
+                    {
+                        SwitchIndex = "下料流程";
+                    }
+                    break;
+
+                case "下料流程":
+                    RefreshModuleConfiguration();
 
                     if (_unloadingEnabled)
                     {
@@ -72,7 +81,12 @@ namespace Ewan.Core.Logic
                         if (_unloadingLogic.IsFinish)
                         {
                             _unloadingLogic.Rset();
+                            SwitchIndex = "装料流程";
                         }
+                    }
+                    else
+                    {
+                        SwitchIndex = "装料流程";
                     }
                     break;
 
@@ -103,4 +117,3 @@ namespace Ewan.Core.Logic
         }
     }
 }
-

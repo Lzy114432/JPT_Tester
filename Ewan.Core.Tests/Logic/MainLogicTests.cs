@@ -1,5 +1,7 @@
 using Ewan.Core.Logic;
+using Ewan.Model.System;
 using EwanCore.StateMachine;
+using System;
 using Xunit;
 
 namespace Ewan.Core.Tests.Logic
@@ -9,54 +11,104 @@ namespace Ewan.Core.Tests.Logic
     /// </summary>
     public class MainLogicTests
     {
-        [Fact]
-        public void Handler_FromInitialState_TransitionsToMainAction()
+        private static readonly object s_parametersLock = new object();
+
+        private static void WithSystemParameters(bool loadingEnabled, bool unloadingEnabled, Action action)
         {
-            var loading = new TestLogic();
-            var unloading = new TestLogic();
-            var logic = new MainLogic(loading, unloading);
+            lock (s_parametersLock)
+            {
+                var manager = SystemParametersManager.Instance;
+                var original = manager.Parameters;
 
-            Assert.Equal("初始状态", logic.SwitchIndex);
+                var parameters = SystemParameters.CreateDefault();
+                parameters.EnableLoadingModule = loadingEnabled;
+                parameters.EnableUnloadingModule = unloadingEnabled;
 
-            logic.Handler();
+                Assert.True(manager.SaveParameters(parameters));
 
-            Assert.Equal("主动作", logic.SwitchIndex);
-            Assert.False(loading.IsFinish);
-            Assert.False(unloading.IsFinish);
-            Assert.Equal("初始状态", loading.SwitchIndex);
-            Assert.Equal("初始状态", unloading.SwitchIndex);
+                try
+                {
+                    action();
+                }
+                finally
+                {
+                    _ = manager.SaveParameters(original);
+                }
+            }
         }
 
         [Fact]
-        public void Handler_InMainAction_CallsChildHandlers()
+        public void Handler_LoadingCompletes_SwitchesToUnloadingFlow()
         {
-            var loading = new TestLogic();
-            var unloading = new TestLogic();
-            var logic = new MainLogic(loading, unloading);
+            WithSystemParameters(loadingEnabled: true, unloadingEnabled: true, () =>
+            {
+                var loading = new OneShotLogic();
+                var unloading = new TestLogic();
+                var logic = new MainLogic(loading, unloading);
 
-            logic.Handler(); // 初始状态 -> 主动作
-            logic.Handler(); // 主动作：调用子逻辑
+                logic.Handler(); // 初始状态 -> 装料流程
+                logic.Handler(); // 装料流程：loading complete -> 切换到下料流程
 
-            Assert.Equal(1, loading.HandlerCallCount);
-            Assert.Equal(1, unloading.HandlerCallCount);
+                Assert.Equal(1, loading.HandlerCallCount);
+                Assert.Equal(0, unloading.HandlerCallCount);
+                Assert.Equal("下料流程", logic.SwitchIndex);
+            });
         }
 
         [Fact]
-        public void Handler_ResetsChildLogic_WhenChildCompletes()
+        public void Handler_UnloadingCompletes_SwitchesBackToLoadingFlow()
         {
-            var loading = new OneShotLogic();
-            var unloading = new OneShotLogic();
-            var logic = new MainLogic(loading, unloading);
+            WithSystemParameters(loadingEnabled: true, unloadingEnabled: true, () =>
+            {
+                var loading = new OneShotLogic();
+                var unloading = new OneShotLogic();
+                var logic = new MainLogic(loading, unloading);
 
-            logic.Handler(); // 初始状态 -> 主动作
-            logic.Handler(); // 主动作：子逻辑 complete -> 应被 reset
+                logic.Handler(); // 初始状态 -> 装料流程
+                logic.Handler(); // 装料流程：loading complete -> 下料流程
+                logic.Handler(); // 下料流程：unloading complete -> 装料流程
 
-            Assert.Equal(1, loading.HandlerCallCount);
-            Assert.Equal(1, unloading.HandlerCallCount);
-            Assert.False(loading.IsFinish);
-            Assert.False(unloading.IsFinish);
-            Assert.Equal("初始状态", loading.SwitchIndex);
-            Assert.Equal("初始状态", unloading.SwitchIndex);
+                Assert.Equal(1, loading.HandlerCallCount);
+                Assert.Equal(1, unloading.HandlerCallCount);
+                Assert.Equal("装料流程", logic.SwitchIndex);
+            });
+        }
+
+        [Fact]
+        public void Handler_LoadingDisabled_SwitchesToUnloadingFlow()
+        {
+            WithSystemParameters(loadingEnabled: false, unloadingEnabled: true, () =>
+            {
+                var loading = new TestLogic();
+                var unloading = new TestLogic();
+                var logic = new MainLogic(loading, unloading);
+
+                logic.Handler(); // 初始状态 -> 装料流程
+                logic.Handler(); // 装料流程：loading禁用 -> 直接切换到下料流程
+
+                Assert.Equal(0, loading.HandlerCallCount);
+                Assert.Equal(0, unloading.HandlerCallCount);
+                Assert.Equal("下料流程", logic.SwitchIndex);
+            });
+        }
+
+        [Fact]
+        public void Handler_UnloadingDisabled_SwitchesBackToLoadingFlow()
+        {
+            WithSystemParameters(loadingEnabled: true, unloadingEnabled: false, () =>
+            {
+                var loading = new OneShotLogic();
+                var unloading = new TestLogic();
+                var logic = new MainLogic(loading, unloading);
+
+                logic.Handler(); // 初始状态 -> 装料流程
+                logic.Handler(); // 装料流程：loading complete -> 下料流程
+                logic.Handler(); // 下料流程：unloading禁用 -> 直接切换到装料流程
+
+                Assert.Equal(1, loading.HandlerCallCount);
+                Assert.Equal(0, unloading.HandlerCallCount);
+                Assert.Equal("装料流程", logic.SwitchIndex);
+            });
         }
 
         private sealed class TestLogic : LogicBase
@@ -81,4 +133,3 @@ namespace Ewan.Core.Tests.Logic
         }
     }
 }
-

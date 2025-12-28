@@ -152,21 +152,6 @@ namespace Ewan.Core.Logic
         /// </summary>
         private void ProcessCheckPreconditions()
         {
-            // 检查是否有下料优先级请求
-            if (_sharedState.HasUnloadingPriorityRequest())
-            {
-                _uiLogger.DebugRaw("检测到下料优先级请求，等待下料完成: {0}", "MaterialLoadingLogic");
-                // 保持当前状态，等待下料完成
-                return;
-            }
-
-            // 尝试获取流程锁
-            if (!_sharedState.TryStartLoading())
-            {
-                _uiLogger.DebugRaw("无法获取流程锁，等待中: {0}", "MaterialLoadingLogic");
-                return;
-            }
-
             SwitchIndex = "等待料片信号";
             Tw.StartWatch(SwitchIndex);
         }
@@ -357,7 +342,6 @@ namespace Ewan.Core.Logic
             // 清除SharedState标志
             _sharedState.ClearLoadingInProgress();
             _sharedState.SetLoadingCompleted(false);
-            _sharedState.FinishProcess();
 
             // 释放皮带控制
             if (_beltStopRequested)
@@ -403,7 +387,6 @@ namespace Ewan.Core.Logic
 
             _sharedState.ClearLoadingInProgress();
             _sharedState.SetLoadingCompleted(false);
-            _sharedState.FinishProcess();
 
             if (_beltStopRequested)
             {
