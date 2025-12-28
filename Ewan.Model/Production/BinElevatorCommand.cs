@@ -12,12 +12,12 @@ namespace Ewan.Model.Production
         /// 停止
         /// </summary>
         Stop,
-        
+
         /// <summary>
         /// 上料位置（上升到感应位置，然后下降到无感应停止）
         /// </summary>
         FeedPosition,
-        
+
         /// <summary>
         /// 下料位置（直接下降到底部）
         /// </summary>
@@ -36,7 +36,17 @@ namespace Ewan.Model.Production
         /// <summary>
         /// 上升到感应位置（请求/响应）
         /// </summary>
-        RaiseToSensor
+        RaiseToSensor,
+
+        /// <summary>
+        /// 装料完成（触发料仓下降）
+        /// </summary>
+        LoadingCompleted,
+
+        /// <summary>
+        /// 取料完成（重置料仓状态）
+        /// </summary>
+        UnloadingCompleted
     }
     
     /// <summary>
@@ -176,6 +186,18 @@ namespace Ewan.Model.Production
         /// </summary>
         public static BinElevatorCommandMessage ForceStopAll(string source)
             => new BinElevatorCommandMessage(0, BinCommand.ForceStopAll, string.Empty, source);
+
+        /// <summary>
+        /// 装料完成通知
+        /// </summary>
+        public static BinElevatorCommandMessage LoadingCompleted(string source)
+            => new BinElevatorCommandMessage(0, BinCommand.LoadingCompleted, string.Empty, source);
+
+        /// <summary>
+        /// 取料完成通知
+        /// </summary>
+        public static BinElevatorCommandMessage UnloadingCompleted(string source)
+            => new BinElevatorCommandMessage(0, BinCommand.UnloadingCompleted, string.Empty, source);
     }
 
     /// <summary>

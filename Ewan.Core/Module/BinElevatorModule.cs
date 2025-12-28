@@ -171,10 +171,7 @@ namespace Ewan.Core.Module
                         
                         _uiLogger.InfoRaw("处理已开始: {0}", "料仓重新初始化开始");
                     }
-                    
-                    // 先统一检查机械手信号，避免在每个料仓处理中重复检查
-                    CheckRobotSignals();
-                    
+
                     // 检查并处理三个料仓的感应器状态
                     ProcessBinElevator(1, BIN1_AXIS_ID, ref _bin1State, ref _bin1SensorLast);
                     ProcessBinElevator(2, BIN2_AXIS_ID, ref _bin2State, ref _bin2SensorLast);
@@ -401,36 +398,6 @@ namespace Ewan.Core.Module
         #endregion
 
         #region 核心升降控制逻辑
-
-        /// <summary>
-        /// 检查机械手信号并处理相应的状态切换
-        /// </summary>
-        private void CheckRobotSignals()
-        {
-            try
-            {
-                // 检查机械手装载完成信号
-                if (_ioManager.Ctx.Edge.F(x => x.机械臂放置完成信号))
-                {
-                    // 设置装载完成状态
-                    SetLoadingCompleted(true);
-                    ResetSelectedBinStates(BinElevatorMode.Loading);
-                }
-
-                // 检查机械手卸载完成信号
-                if (_ioManager.Ctx.Edge.F(x => x.机械臂取料完成信号))
-                {
-                    // 设置卸载完成状态
-                    SetUnloadingCompleted(true);
-
-                    ResetSelectedBinStates(BinElevatorMode.Unloading);
-                }
-            }
-            catch (Exception ex)
-            {
-                _uiLogger.ErrorRaw("处理错误: {0} - {1}", "机械手信号检查", ex.Message);
-            }
-        }
 
         /// <summary>
         /// 检查是否应该运行升降控制
@@ -1205,6 +1172,18 @@ namespace Ewan.Core.Module
                     case BinCommand.Stop:
                         HandleStopCommand(message.BinNumber);
                         break;
+                    case BinCommand.LoadingCompleted:
+                        lock (_stateLock)
+                        {
+                            ResetSelectedBinStates(BinElevatorMode.Loading);
+                        }
+                        break;
+                    case BinCommand.UnloadingCompleted:
+                        lock (_stateLock)
+                        {
+                            ResetSelectedBinStates(BinElevatorMode.Unloading);
+                        }
+                        break;
                 }
             }
             catch (Exception ex)
@@ -1341,57 +1320,6 @@ namespace Ewan.Core.Module
         // {
         //     // 后续通过msg进行系统启动/停止和模式切换
         // }
-
-        #endregion
-
-
-        #region 共享状态访问方法
-
-        /// <summary>
-        /// 设置装载完成状态
-        /// </summary>
-        private void SetLoadingCompleted(bool completed)
-        {
-            if (_sharedState != null)
-            {
-                _sharedState.SetLoadingCompleted(completed);
-            }
-        }
-
-        /// <summary>
-        /// 设置卸载完成状态
-        /// </summary>
-        private void SetUnloadingCompleted(bool completed)
-        {
-            if (_sharedState != null)
-            {
-                _sharedState.SetUnloadingCompleted(completed);
-            }
-        }
-
-        /// <summary>
-        /// 获取装载完成状态
-        /// </summary>
-        private bool GetLoadingCompleted()
-        {
-            if (_sharedState != null)
-            {
-                return _sharedState.GetLoadingCompleted();
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// 获取卸载完成状态
-        /// </summary>
-        private bool GetUnloadingCompleted()
-        {
-            if (_sharedState != null)
-            {
-                return _sharedState.GetUnloadingCompleted();
-            }
-            return false;
-        }
 
         #endregion
 

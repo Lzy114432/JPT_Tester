@@ -71,14 +71,7 @@ namespace Ewan.Core.Logic
             {
                 #region 初始状态
                 case "初始状态":
-                    SwitchIndex = "检查前置条件";
-                    break;
-                #endregion
-
-                #region 检查前置条件
-                case "检查前置条件":
                     SwitchIndex = "等待料片信号";
-                    Tw.StartWatch(SwitchIndex);
                     break;
                 #endregion
 
@@ -169,12 +162,12 @@ namespace Ewan.Core.Logic
                             }
                             else
                             {
-                                MessageHub.Current.Post(new AlarmMessage(
-                                    key: "Scan.Failed",
-                                    content: $"装料扫码失败：连续扫码{maxRetry}次无结果",
-                                    level: AlarmLevel.L,
-                                    needReset: false,
-                                    unit: "Scanner"));
+                                //MessageHub.Current.Post(new AlarmMessage(
+                                //    key: "Scan.Failed",
+                                //    content: $"装料扫码失败：连续扫码{maxRetry}次无结果",
+                                //    level: AlarmLevel.L,
+                                //    needReset: false,
+                                //    unit: "Scanner"));
                             }
                         }
 
@@ -202,14 +195,13 @@ namespace Ewan.Core.Logic
 
                 #region 等待装载完成
                 case "等待装载完成":
-                    // 检查装载完成状态
-                    if (_sharedState.GetLoadingCompleted())
+                    if (_ioManager?.Ctx?.Edge.F(x => x.机械臂放置完成信号) == true)
                     {
+                        MessageHub.Current.Post(Ewan.Model.Production.BinElevatorCommandMessage.LoadingCompleted(nameof(MaterialLoadingLogic)));
                         SwitchIndex = "清理状态";
                         return;
                     }
 
-                    // 超时检查
                     if (Tw.StartCheckIsTimeout(SwitchIndex, WAIT_LOADING_COMPLETE_TIMEOUT))
                     {
                         MessageHub.Current.Post(new AlarmMessage(
@@ -225,16 +217,12 @@ namespace Ewan.Core.Logic
 
                 #region 清理状态
                 case "清理状态":
-                    // 清除装料信号
                     _ioManager?.Ctx?.Off(x => x.触发机械手放置料仓);
                     ClearBinSelectSignals();
                     _ioManager?.Ctx?.Off(x => x.发送扫码完成信号);
 
-                    // 清除SharedState标志
                     _sharedState.ClearLoadingInProgress();
-                    _sharedState.SetLoadingCompleted(false);
 
-                    // 释放皮带控制
                     if (_beltStopRequested)
                     {
                         _beltStopRequested = false;
@@ -294,7 +282,6 @@ namespace Ewan.Core.Logic
             }
 
             _sharedState.ClearLoadingInProgress();
-            _sharedState.SetLoadingCompleted(false);
 
             if (_beltStopRequested)
             {

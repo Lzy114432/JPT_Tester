@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
@@ -25,6 +25,10 @@
     <ProjectReference Include="..\Ewan.Core\Ewan.Core.csproj" />
     <ProjectReference Include="..\Ewan.Model\Ewan.Model.csproj" />
     <ProjectReference Include="..\EwanCommon\EwanCommon\EwanCommon.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Module\" />
   </ItemGroup>
 
 </Project>

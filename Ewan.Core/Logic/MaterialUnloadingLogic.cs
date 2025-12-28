@@ -288,11 +288,10 @@ namespace Ewan.Core.Logic
 
                 #region 等待取料完成
                 case "等待取料完成":
-                    if (_sharedState.GetUnloadingCompleted())
+                    if (_ioManager?.Ctx?.Edge.F(x => x.机械臂取料完成信号) == true)
                     {
-                        _sharedState.SetUnloadingCompleted(false);
+                        MessageHub.Current.Post(Ewan.Model.Production.BinElevatorCommandMessage.UnloadingCompleted(nameof(MaterialUnloadingLogic)));
 
-                        // 清除信号
                         _ioManager?.Ctx?.Off(x => x.发送取料指令);
                         ClearBinSelectSignals();
 
@@ -526,8 +525,6 @@ namespace Ewan.Core.Logic
             {
                 _uiLogger.ErrorRaw("处理错误: {0} - {1}", "强制清理IO", ex.Message);
             }
-
-            _sharedState.SetUnloadingCompleted(false);
 
             _ringLineSignal = false;
             _requestProcessed = false;
