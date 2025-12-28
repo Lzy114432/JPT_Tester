@@ -139,6 +139,9 @@ namespace EwanCore.StateMachine
 
         protected virtual void OnStepChanged(string from, string to)
         {
+            Tw.StopWatch(from);
+            Tw.StopWatch(to);
+            Tw.StartWatch(to);
             _uiLogger.InfoRaw($"[{GetType().Name}] 步骤: {from} → {to}");
             var args = new StepChangedEventArgs(GetType().Name, from, to, DateTimeOffset.Now);
             StepChanged?.Invoke(this, args);

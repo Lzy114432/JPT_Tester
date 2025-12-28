@@ -642,11 +642,26 @@ namespace Ewan.BusinessBonding
             var content = e.Alarm?.Content ?? "(cleared)";
             s_logger.InfoFormat("报警变化: kind={0}, key={1}, content={2}", e.Kind, key, content);
 
-            // 如果有报警，发送系统状态消息
+            // 如果有报警，发送系统状态消息（按报警等级区分三色灯/蜂鸣器行为）
             if (e.Kind == AlarmChangeKind.Added && e.Alarm != null)
             {
-                bool isCritical = e.Alarm.Level == AlarmLevel.H;
-                var status = isCritical ? SystemStatus.Critical : SystemStatus.Alarm;
+                var status = SystemStatus.Warning;
+                var isCritical = false;
+
+                switch (e.Alarm.Level)
+                {
+                    case AlarmLevel.H:
+                        status = SystemStatus.Critical;
+                        isCritical = true;
+                        break;
+                    case AlarmLevel.M:
+                        status = SystemStatus.Alarm;
+                        break;
+                    case AlarmLevel.L:
+                        status = SystemStatus.Warning;
+                        break;
+                }
+
                 SendSystemStatusMessage(status, e.Alarm.Content, isCritical);
             }
         }

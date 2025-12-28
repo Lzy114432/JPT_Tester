@@ -35,9 +35,9 @@ namespace Ewan.Core.Logic
         private int _targetBin = 1;
 
         // 超时配置（毫秒）
-        private const int WAIT_MATERIAL_TIMEOUT = 30000;
-        private const int WAIT_SCAN_POSITION_TIMEOUT = 10000;
-        private const int WAIT_LOADING_COMPLETE_TIMEOUT = 15000;
+        private const int WAIT_MATERIAL_TIMEOUT = 300000;
+        private const int WAIT_SCAN_POSITION_TIMEOUT = 100000;
+        private const int WAIT_LOADING_COMPLETE_TIMEOUT = 150000;
 
         #endregion
 
