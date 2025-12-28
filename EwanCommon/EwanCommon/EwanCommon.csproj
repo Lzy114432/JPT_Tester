@@ -126,6 +126,8 @@
     <Compile Include="EwanCore\\StateMachine\\Engine\\LogicController.cs" />
     <Compile Include="EwanCore\\StateMachine\\Events\\LogicExceptionEventArgs.cs" />
     <Compile Include="EwanCore\\StateMachine\\Engine\\LogicRunner.cs" />
+    <Compile Include="EwanCore\\StateMachine\\Engine\\LogicThread.cs" />
+    <Compile Include="EwanCore\\StateMachine\\Engine\\ControllerBox.cs" />
     <Compile Include="EwanCore\\StateMachine\\Engine\\MachineOperator.cs" />
     <Compile Include="EwanCore\\StateMachine\\Runtime\\RunTimeTag.cs" />
     <Compile Include="EwanCore\\StateMachine\\Events\\StepChangedEventArgs.cs" />

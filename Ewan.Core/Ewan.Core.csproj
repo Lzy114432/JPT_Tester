@@ -74,8 +74,10 @@
   <ItemGroup>
     <Compile Include="Axis\AxisManager.cs" />
     <Compile Include="BaseManager.cs" />
+    <Compile Include="MachineParameters.cs" />
     <Compile Include="IO\LayeredIOManager.cs" />
     <Compile Include="Axis\LTSMC.cs" />
+    <Compile Include="Manager\LogicManager.cs" />
     <Compile Include="Mes\MesManager.cs" />
     <Compile Include="Module\BaseModule.cs" />
     <Compile Include="Module\BeltConveyorModule.cs" />
@@ -93,6 +95,7 @@
     <Compile Include="Module\StationHeartbeatModule.cs" />
     <Compile Include="Module\SystemStatusIndicatorModule.cs" />
     <Compile Include="Logic\HomeLogic.cs" />
+    <Compile Include="Logic\MainLogic.cs" />
     <Compile Include="Logic\MaterialLoadingLogic.cs" />
     <Compile Include="Logic\MaterialUnloadingLogic.cs" />
     <Compile Include="Logic\ProductionLineLogic.cs" />

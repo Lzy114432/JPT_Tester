@@ -1,5 +1,6 @@
 using Ewan.BusinessBonding;
 using EwanCommon.Logging;
+using Ewan.Core.Manager;
 using Ewan.Core.Security;
 using Ewan.Model.Security;
 using Ewan.Model.System;
@@ -1063,71 +1064,21 @@ namespace MarkingMachineFeeder.Viewmodel
             {
                 _isResetting = true;
                 
-                _uiLogger.Info("处理已开始: {0}", "用户触发系统复位（硬件初始化）");
+                _uiLogger.Info("处理已开始: {0}", "用户触发系统复位");
 
                 var parameters = Ewan.Model.System.SystemParametersManager.Instance.Parameters;
 
-                // 步骤1: 设置低速运行（OUT16=false）
-                _uiLogger.InfoRaw("步骤1: 设置低速运行模式");
+                // 设置低速运行（OUT16=false）
+                _uiLogger.InfoRaw("设置低速运行模式");
                 _systemControlService.SetHighSpeedMode(false);
-                await System.Threading.Tasks.Task.Delay(parameters.LowSpeedSetupDelayMs);
+                await Task.Delay(parameters.LowSpeedSetupDelayMs);
 
-                // 步骤2: 执行系统初始化（初始化过程发送OUT6→OUT5脉冲）
-                _uiLogger.InfoRaw("步骤2: 执行系统复位初始化（OUT6→OUT5）");
-                _systemControlService.InitializeSystem();
-                await System.Threading.Tasks.Task.Delay(parameters.ResetDelayMs);
-
-                // 步骤3: 等待初始化信号和料仓感应信号
-                _uiLogger.InfoRaw("步骤3: 等待硬件初始化完成信号");
-                
-                // 等待初始化信号(IN9)脉冲
-                bool initSignalReceived = await WaitForSignalPulse(
-                    () => _systemControlService.ReadInitializeSignal(),
-                    "初始化信号(IN9)",
-                    10000  // 10秒超时
-                );
-
-                if (initSignalReceived)
-                {
-                    _uiLogger.InfoRaw("步骤4: 初始化信号接收完成");
-                }
-                else
-                {
-                    _uiLogger.WarnRaw("步骤4: 初始化信号未在超时时间内到达，继续执行复位流程");
-                }
-
-                _uiLogger.InfoRaw("步骤4: 执行料仓自动升降检测");
-                var binFeedController = BinFeedController.Instance();
-
-                bool[] feedResults;
-                try
-                {
-                    feedResults = await Task.WhenAll(
-                        Task.Run(() => binFeedController.FeedBin1()),
-                        Task.Run(() => binFeedController.FeedBin2()),
-                        Task.Run(() => binFeedController.FeedBin3())
-                    );
-                }
-                catch (Exception feedException)
-                {
-                    _uiLogger.Error("处理错误: {0} - {1}", "料仓自动升降", feedException.Message);
-                    return;
-                }
-
-                if (!feedResults.All(result => result))
-                {
-                    _uiLogger.ErrorRaw("步骤4: 料仓自动升降检测失败，系统复位中止");
-                    SystemRunningStatus = "Red";
-                    SystemRunningIsOn = false;
-                    AlarmStatus = "Red";
-                    AlarmIsOn = true;
-                    return;
-                }
-
-                _uiLogger.InfoRaw("步骤4: 所有料仓升降循环完成");
+                // 新架构：直接调用 LogicManager.Home() 执行复位流程
+                _systemControlService.SendStopPulse();
+                LogicManager.Instance().Home();
 
                 // 复位系统状态
-                SystemRunningStatus = "Yellow"; // 黄色表示待机状态
+                SystemRunningStatus = "Yellow"; // 初始化中
                 SystemRunningIsOn = false;      // 待机状态，未运行
                 EmergencyStopStatus = "Gray";
                 EmergencyStopIsOn = false;
@@ -1135,10 +1086,10 @@ namespace MarkingMachineFeeder.Viewmodel
                 AlarmIsOn = false;
                 PauseStatus = "Gray";
                 PauseIsOn = false;
-                ProductionModeText = "待机模式（低速）";
-                ProductionModeColor = "Orange";
+                ProductionModeText = "复位中";
+                ProductionModeColor = "Gray";
 
-                _uiLogger.Info("处理已完成: {0}", "系统复位完成，低速待机中");
+                _uiLogger.Info("处理已完成: {0}", "复位命令已发送");
             }
             catch (Exception ex)
             {
@@ -1231,6 +1182,8 @@ namespace MarkingMachineFeeder.Viewmodel
 
                 if (result)
                 {
+                    LogicManager.Instance().ClearAlarm();
+
                     // 清除报警界面状态
                     AlarmStatus = "Gray";
                     AlarmIsOn = false;
@@ -1286,7 +1239,16 @@ namespace MarkingMachineFeeder.Viewmodel
                 }
                 else
                 {
-                    _systemControlService.StartSystem();
+                    if (!LogicManager.Instance().Start())
+                    {
+                        System.Windows.MessageBox.Show(
+                            "系统启动失败：请先复位并确认无报警",
+                            "启动失败",
+                            System.Windows.MessageBoxButton.OK,
+                            System.Windows.MessageBoxImage.Warning);
+                        _uiLogger.WarnRaw("系统启动失败: 需要复位或存在报警");
+                        return;
+                    }
                 }
 
                 SystemRunningStatus = "Green";
@@ -1363,9 +1325,10 @@ namespace MarkingMachineFeeder.Viewmodel
             try
             {
                 _uiLogger.Info("处理已完成: {0}", "用户请求停止系统");
-                
-                // 调用系统控制服务停止系统
-                _systemControlService.StopSystem();
+
+                // 停止脉冲（硬件）+ 新架构停止逻辑（LogicManager）
+                _systemControlService.SendStopPulse();
+                LogicManager.Instance().Stop();
                 
                 // 更新界面状态
                 SystemRunningStatus = "Gray";

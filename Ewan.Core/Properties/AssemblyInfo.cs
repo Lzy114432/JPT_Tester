@@ -31,3 +31,6 @@ using System.Runtime.InteropServices;
 //
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+
+// 允许测试项目访问 internal API（用于注入测试等）。
+[assembly: InternalsVisibleTo("Ewan.Core.Tests")]

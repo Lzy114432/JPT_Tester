@@ -1,7 +1,12 @@
+using Ewan.Core;
 using Ewan.Core.IO;
 using Ewan.Core.Module;
 using EwanCommon.Logging;
+using Ewan.Model.Messages;
+using Ewan.Model.System;
+using EwanCore.Messaging;
 using EwanCore.StateMachine;
+using System;
 
 namespace Ewan.Core.Logic
 {
@@ -15,7 +20,6 @@ namespace Ewan.Core.Logic
         #region 私有字段
 
         private readonly UILogger _uiLogger = new UILogger();
-        private readonly ProductionLineSharedState _sharedState;
         private readonly IBinElevator _binElevator;
         private LayeredIOManager _ioManager;
 
@@ -30,13 +34,17 @@ namespace Ewan.Core.Logic
         #region 构造函数
 
         /// <summary>
-        /// 构造函数
+        /// 构造函数（兼容旧签名，sharedState 已不再依赖）
         /// </summary>
         /// <param name="sharedState">共享状态对象</param>
         /// <param name="binElevator">料仓升降模块</param>
-        public HomeLogic(ProductionLineSharedState sharedState, IBinElevator binElevator)
+        [Obsolete("sharedState 已不再依赖，请使用 HomeLogic(IBinElevator)")]
+        public HomeLogic(ProductionLineSharedState sharedState, IBinElevator binElevator) : this(binElevator)
         {
-            _sharedState = sharedState;
+        }
+
+        public HomeLogic(IBinElevator binElevator)
+        {
             _binElevator = binElevator;
         }
 
@@ -49,55 +57,62 @@ namespace Ewan.Core.Logic
         /// </summary>
         public override void Handler()
         {
-            switch (SwitchIndex)
+            try
             {
-                case "初始状态":
-                    ProcessInitialState();
-                    break;
+                switch (SwitchIndex)
+                {
+                    case "初始状态":
+                        ProcessInitialState();
+                        break;
 
-                case "停止ON":
-                    ProcessStopOn();
-                    break;
+                    case "停止ON":
+                        ProcessStopOn();
+                        break;
 
-                case "停止ON等待":
-                    ProcessStopOnWait();
-                    break;
+                    case "停止ON等待":
+                        ProcessStopOnWait();
+                        break;
 
-                case "停止OFF":
-                    ProcessStopOff();
-                    break;
+                    case "停止OFF":
+                        ProcessStopOff();
+                        break;
 
-                case "停止OFF等待":
-                    ProcessStopOffWait();
-                    break;
+                    case "停止OFF等待":
+                        ProcessStopOffWait();
+                        break;
 
-                case "开始ON":
-                    ProcessStartOn();
-                    break;
+                    case "开始ON":
+                        ProcessStartOn();
+                        break;
 
-                case "开始ON等待":
-                    ProcessStartOnWait();
-                    break;
+                    case "开始ON等待":
+                        ProcessStartOnWait();
+                        break;
 
-                case "开始OFF":
-                    ProcessStartOff();
-                    break;
+                    case "开始OFF":
+                        ProcessStartOff();
+                        break;
 
-                case "清除允许取料":
-                    ProcessClearAllowPickup();
-                    break;
+                    case "清除允许取料":
+                        ProcessClearAllowPickup();
+                        break;
 
-                case "料仓初始化":
-                    ProcessBinInit();
-                    break;
+                    case "料仓初始化":
+                        ProcessBinInit();
+                        break;
 
-                case "等待料仓完成":
-                    ProcessWaitBinComplete();
-                    break;
+                    case "等待料仓完成":
+                        ProcessWaitBinComplete();
+                        break;
 
-                case "结束状态":
-                    // 完成
-                    break;
+                    case "结束状态":
+                        // 完成
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                AbortHome("复位异常: " + ex.Message, ex);
             }
         }
 
@@ -105,12 +120,39 @@ namespace Ewan.Core.Logic
 
         #region 状态处理方法
 
+        private void AbortHome(string alarmMessage, Exception ex = null)
+        {
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(alarmMessage))
+                {
+                    _uiLogger.ErrorRaw("处理错误: {0} - {1}", "HomeLogic", alarmMessage);
+
+                    MessageHub.Current.Post(new AlarmMessage(
+                        key: "Home.Exception",
+                        content: alarmMessage,
+                        level: EwanCore.AlarmSystem.AlarmLevel.H,
+                        needReset: true,
+                        unit: "Home"));
+                }
+            }
+            catch (Exception postEx)
+            {
+                _uiLogger.ErrorRaw("处理错误: {0} - {1}", "HomeLogic-发送报警", postEx.Message);
+            }
+
+            MachineParameters.Instance.NeedHome = true;
+            MachineParameters.Instance.IsHomeing = false;
+            Complete();
+        }
+
         /// <summary>
         /// 初始状态
         /// </summary>
         private void ProcessInitialState()
         {
             _uiLogger.InfoRaw("状态机启动: {0}", "HomeLogic");
+            MachineParameters.Instance.IsHomeing = true;
             _ioManager = LayeredIOManager.Instance();
             SwitchIndex = "停止ON";
         }
@@ -227,6 +269,9 @@ namespace Ewan.Core.Logic
             if (Tw.StartCheckIsTimeout(SwitchIndex, BIN_INIT_TIMEOUT))
             {
                 _uiLogger.InfoRaw("处理已完成: {0}", "HomeLogic 复位完成");
+                MachineParameters.Instance.NeedHome = false;
+                MachineParameters.Instance.IsHomeing = false;
+                MessageHub.Current.Post(new StatusIndicatorCommand(SystemStatus.Standby, "复位完成，待机"));
                 Complete();
             }
         }

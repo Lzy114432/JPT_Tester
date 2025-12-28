@@ -6,7 +6,7 @@ using EwanCommon.Logging;
 using log4net;
 using Ewan.Core.Module;
 using Ewan.Core.Module.Interface;
-using Ewan.Core.Operator;
+using Ewan.Core.Manager;
 using Ewan.Core.Run;
 using Ewan.Model.System;
 using System;
@@ -31,9 +31,9 @@ namespace Ewan.BusinessBonding
         #region 流程runner
 
         /// <summary>
-        /// 生产线操作器（替代原 ProductionLineModule）
+        /// 主逻辑管理器（替代原 ProductionLineOperator）
         /// </summary>
-        private ProductionLineOperator _productionOperator;
+        private LogicManager _productionOperator;
 
         /// <summary>
         /// PLC心跳流程runner
@@ -117,14 +117,12 @@ namespace Ewan.BusinessBonding
 
             #region  //构造主流程的节点并加入到对应runner
 
-            // 使用 ProductionLineOperator 替代原有的 ProductionLineModule
-            // ProductionLineOperator 封装了 MachineOperator 模式，提供统一的控制接口
-            _productionOperator = new ProductionLineOperator();
+            _productionOperator = LogicManager.Instance();
 
             // 订阅报警事件（可用于UI显示）
             _productionOperator.Alarms.AlarmChanged += OnAlarmChanged;
 
-            s_logger.Info("ProductionLineOperator 创建完成");
+            s_logger.Info("LogicManager 绑定完成");
 
             #endregion
 
@@ -220,8 +218,6 @@ namespace Ewan.BusinessBonding
             {
                 StopRun();
 
-                // 销毁 ProductionLineOperator
-                _productionOperator?.Dispose();
                 _productionOperator = null;
             }
             catch (Exception ex)
@@ -323,7 +319,7 @@ namespace Ewan.BusinessBonding
         }
 
         /// <summary>
-        /// 启动主流程（使用 ProductionLineOperator）
+        /// 启动主流程（使用 LogicManager）
         /// </summary>
         private void StartMainStream()
         {
@@ -332,11 +328,11 @@ namespace Ewan.BusinessBonding
                 bool started = _productionOperator.Start();
                 if (started)
                 {
-                    s_logger.Info("主流程（ProductionLineOperator）已启动");
+                    s_logger.Info("主流程（LogicManager）已启动");
                 }
                 else
                 {
-                    s_logger.Warn("主流程启动失败，可能存在报警");
+                    s_logger.Warn("主流程启动失败，可能存在报警/需要复位");
                 }
             }
         }
@@ -376,12 +372,12 @@ namespace Ewan.BusinessBonding
         //}
 
         /// <summary>
-        /// 停止主流程（使用 ProductionLineOperator）
+        /// 停止主流程（使用 LogicManager）
         /// </summary>
         private void StopMainStream()
         {
             _productionOperator?.Stop();
-            s_logger.Info("主流程（ProductionLineOperator）已停止");
+            s_logger.Info("主流程（LogicManager）已停止");
         }
 
         /// <summary>
@@ -595,7 +591,7 @@ namespace Ewan.BusinessBonding
         /// <summary>
         /// 获取生产线操作器（供外部访问）
         /// </summary>
-        public ProductionLineOperator ProductionOperator => _productionOperator;
+        public LogicManager ProductionOperator => _productionOperator;
 
         /// <summary>
         /// 获取报警服务
@@ -621,7 +617,15 @@ namespace Ewan.BusinessBonding
         /// 复位/回原
         /// </summary>
         /// <param name="clearAlarm">是否清除报警</param>
-        public void Home(bool clearAlarm = true) => _productionOperator?.Home(clearAlarm);
+        public void Home(bool clearAlarm = true)
+        {
+            if (clearAlarm)
+            {
+                _productionOperator?.ClearAlarm();
+            }
+
+            _productionOperator?.Home();
+        }
 
         /// <summary>
         /// 清除报警

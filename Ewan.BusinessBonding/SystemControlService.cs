@@ -86,6 +86,7 @@ namespace Ewan.BusinessBonding
         public void SendStopPulse()
         {
             Ctx?.Pulse(x => x.停止输出, DEFAULT_PULSE_WIDTH_MS, now: true);
+            UpdatePauseState(false);
         }
 
         public void SetHighSpeedMode(bool enabled)
