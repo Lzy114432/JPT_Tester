@@ -230,6 +230,7 @@ namespace Ewan.Core.Module
                     else
                     {
                         bin.ReachedSensor = true;
+                        bin.HasMaterial = true;
                         bin.CurrentState = BinElevatorState.Stopped;
                     }
                 }
@@ -383,19 +384,60 @@ namespace Ewan.Core.Module
                     {
                         StopBinAxis(bin);
                         bin.ReachedSensor = true;
+                        bin.HasMaterial = true;
                         bin.CurrentState = BinElevatorState.Stopped;
+                        _uiLogger.InfoRaw("料仓{0}检测到物料", bin.BinNumber);
+                    }
+                    else if (CheckAxisELP(bin))
+                    {
+                        StopBinAxis(bin);
+                        bin.ReachedSensor = true;
+                        bin.HasMaterial = false;
+                        bin.CurrentState = BinElevatorState.Stopped;
+                        _uiLogger.InfoRaw("料仓{0}已到顶部（ELP触发），无物料", bin.BinNumber);
                     }
                 }
             }
 
             if (_bins.All(b => b.ReachedSensor))
             {
-                _initializeTask.Phase = InitPhase.LoweringToNoSensor;
-                foreach (var bin in _bins)
+                var binsWithMaterial = _bins.Where(b => b.HasMaterial).ToArray();
+
+                if (binsWithMaterial.Length > 0)
                 {
-                    bin.ReachedSensor = false;
-                    StartBinJogDown(bin);
-                    bin.CurrentState = BinElevatorState.Moving;
+                    _initializeTask.Phase = InitPhase.LoweringToNoSensor;
+                    foreach (var bin in _bins)
+                    {
+                        bin.ReachedSensor = false;
+
+                        if (bin.HasMaterial)
+                        {
+                            StartBinJogDown(bin);
+                            bin.CurrentState = BinElevatorState.Moving;
+                        }
+                        else
+                        {
+                            bin.ReachedSensor = true;
+                            bin.CurrentState = BinElevatorState.Stopped;
+                        }
+                    }
+
+                    _uiLogger.InfoRaw("初始化进入下降阶段 {0}个料仓有物料", binsWithMaterial.Length);
+                }
+                else
+                {
+                    var tcs = _initializeTask.Completion;
+                    _initializeTask = null;
+
+                    foreach (var bin in _bins)
+                    {
+                        bin.Reset();
+                    }
+
+                    tcs?.TrySetResult(BinElevatorStatusMessage.InitializeResult(
+                        BinOperationResult.Success, "初始化完成（所有料仓无物料）"));
+
+                    _uiLogger.InfoRaw("所有料仓初始化完成（均无物料）");
                 }
             }
         }
@@ -416,6 +458,7 @@ namespace Ewan.Core.Module
                         StopBinAxis(bin);
                         bin.ReachedSensor = true;
                         bin.CurrentState = BinElevatorState.Stopped;
+                        _uiLogger.InfoRaw("料仓{0}下降到无感应位置", bin.BinNumber);
                     }
                 }
             }
@@ -501,6 +544,14 @@ namespace Ewan.Core.Module
                         CompleteTask(bin.BinNumber, result);
                         _uiLogger.InfoRaw("料仓{0}上升完成，检测到物料", bin.BinNumber);
                     }
+                    else if (CheckAxisELP(bin))
+                    {
+                        StopBinAxis(bin);
+                        var result = BinElevatorStatusMessage.MaterialCheckResult(
+                            bin.BinNumber, BinOperationResult.NoMaterial, "无物料");
+                        CompleteTask(bin.BinNumber, result);
+                        _uiLogger.InfoRaw("料仓{0}已到顶部（ELP触发），无物料", bin.BinNumber);
+                    }
                     break;
             }
         }
@@ -555,6 +606,31 @@ namespace Ewan.Core.Module
             }
             catch
             {
+                return false;
+            }
+        }
+
+        private bool CheckAxisELP(BinState bin)
+        {
+            try
+            {
+                var axisConfig = _axisManager?.GetAxisConfig(bin.AxisId);
+                if (axisConfig == null)
+                {
+                    return false;
+                }
+
+                var ioState = _axisManager.GetAxisIO(axisConfig);
+                if (ioState == null)
+                {
+                    return false;
+                }
+
+                return ioState.ELP;
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.ErrorRaw("检测料仓{0}硬限位失败: {1}", bin.BinNumber, ex.Message);
                 return false;
             }
         }

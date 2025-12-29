@@ -58,6 +58,11 @@ namespace Ewan.Core.Module
         public bool ReachedSensor { get; set; } = false;
 
         /// <summary>
+        /// 初始化时检测到的物料状态
+        /// </summary>
+        public bool HasMaterial { get; set; } = false;
+
+        /// <summary>
         /// 创建料仓状态实例
         /// </summary>
         /// <param name="binNumber">料仓编号</param>
@@ -75,6 +80,7 @@ namespace Ewan.Core.Module
         {
             CurrentState = BinElevatorState.Unknown;
             ReachedSensor = false;
+            HasMaterial = false;
         }
 
         /// <summary>
@@ -84,6 +90,7 @@ namespace Ewan.Core.Module
         {
             CurrentState = BinElevatorState.Stopped;
             ReachedSensor = false;
+            HasMaterial = false;
         }
     }
 }

@@ -350,6 +350,31 @@ namespace Ewan.Core.Axis
             return axis.IsBusy;
         }
 
+        /// <summary>
+        /// 获取轴IO状态（包含硬限位、报警等信号）
+        /// </summary>
+        /// <param name="axisConfig">轴配置</param>
+        /// <returns>轴IO状态，获取失败返回null</returns>
+        public AxisIOState GetAxisIO(AxisConfig axisConfig)
+        {
+            var axis = GetAxis(axisConfig);
+            if (axis == null)
+            {
+                s_logger.WarnFormat("获取轴IO失败: 轴{0}不存在", axisConfig?.AxisID);
+                return null;
+            }
+
+            try
+            {
+                return axis.GetAxisIO();
+            }
+            catch (Exception ex)
+            {
+                s_logger.ErrorFormat("获取轴IO异常: 轴{0}, 错误: {1}", axisConfig.AxisID, ex.Message);
+                return null;
+            }
+        }
+
         public bool AbsMove(AxisConfig axisConfig, double pos)
         {
             var axis = GetAxis(axisConfig);
