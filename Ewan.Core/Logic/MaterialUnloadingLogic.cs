@@ -33,8 +33,7 @@ namespace Ewan.Core.Logic
         private readonly ModbusRTUManager _modbusRTUManager;
 
         private bool _beltStopRequested = false;
-        private bool _ringLineSignal = false;
-        private bool _requestProcessed = false;
+        private bool _ringLineRisingEdge = false;
         private int _emptyCount = 0;
         private int _cuttingBridgeCarCount = 0;
         private int _selectedBin = 1;
@@ -84,19 +83,15 @@ namespace Ewan.Core.Logic
             {
                 #region 初始状态
                 case "初始状态":
-                    // 检测环线信号，有信号才切换步骤
-                    if (_ringLineSignal && !_requestProcessed)
+                    // 检测环线上升沿，有边沿才切换步骤
+                    if (_ringLineRisingEdge)
                     {
+                       
                         SwitchIndex = "检查环线信号";
                     }
                     else
                     {
-                        // 无信号时直接标记完成，不切换步骤，避免日志刷屏
-                        // 同时清除处理标志（信号变为0时）
-                        if (!_ringLineSignal && _requestProcessed)
-                        {
-                            _requestProcessed = false;
-                        }
+                        // 无上升沿时直接标记完成，不切换步骤，避免日志刷屏
                         IsFinish = true;
                     }
                     break;
@@ -105,7 +100,6 @@ namespace Ewan.Core.Logic
                 #region 检查环线信号
                 case "检查环线信号":
                     // 有环线信号，开始处理
-                    _requestProcessed = true;
                     SwitchIndex = "检查料仓有料";
                     break;
                 #endregion
@@ -314,13 +308,13 @@ namespace Ewan.Core.Logic
                             }
                             else
                             {
-                                _lastScannedQrCode = string.Empty;
-                                MessageHub.Current.Post(new AlarmMessage(
-                                    key: "Scan.Failed",
-                                    content: $"下料扫码失败：连续扫码{maxRetry}次无结果",
-                                    level: AlarmLevel.L,
-                                    needReset: false,
-                                    unit: "Scanner"));
+                                //_lastScannedQrCode = string.Empty;
+                                //MessageHub.Current.Post(new AlarmMessage(
+                                //    key: "Scan.Failed",
+                                //    content: $"下料扫码失败：连续扫码{maxRetry}次无结果",
+                                //    level: AlarmLevel.L,
+                                //    needReset: false,
+                                //    unit: "Scanner"));
                             }
                         }
 
@@ -428,7 +422,6 @@ namespace Ewan.Core.Logic
         public override void Rset()
         {
             _beltStopRequested = false;
-            _requestProcessed = false;
             _selectedBin = 1;
             _lastScannedQrCode = string.Empty;
             _scanRetryCount = 0;
@@ -453,9 +446,16 @@ namespace Ewan.Core.Logic
         /// <summary>
         /// 处理环线数据消息
         /// </summary>
+        /// <remarks>
+        /// 边沿信号使用"或"逻辑锁存，防止被后续消息覆盖。
+        /// 边沿信号在 Handler() 的初始状态中消费后清除。
+        /// </remarks>
         private void OnRingLineData(RingLineDataMessage msg)
         {
-            _ringLineSignal = msg.IsLoading;
+            if (msg.RisingEdge)
+            {
+                _ringLineRisingEdge = true;
+            }
             _emptyCount = msg.EmptyCarCount;
             _cuttingBridgeCarCount = msg.CuttingBridgeCarCount;
         }
@@ -480,9 +480,6 @@ namespace Ewan.Core.Logic
             {
                 _uiLogger.ErrorRaw("处理错误: {0} - {1}", "强制清理IO", ex.Message);
             }
-
-            _ringLineSignal = false;
-            _requestProcessed = false;
 
             if (_beltStopRequested)
             {
@@ -557,6 +554,7 @@ namespace Ewan.Core.Logic
 
                 ushort statusValue = hasMaterial ? (ushort)1 : (ushort)0;
                 _modbusRTUManager?.WriteAny(MATERIAL_STATUS_REGISTER, statusValue);
+                _ringLineRisingEdge = false;
             }
             catch (Exception ex)
             {
