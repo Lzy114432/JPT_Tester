@@ -20,9 +20,10 @@ namespace Ewan.Core.Logic
     /// </summary>
     /// <remarks>
     /// 状态流程：
-    /// 初始状态 → 检查环线信号 → 检查料仓有料
+    /// 初始状态 → 检查环线信号 → 检查空车数量 → 检查料仓有料
     /// → 发送取料指令 → 等待取料完成 → 等待扫码位置 → 执行扫码
     /// → 发送放入小车指令 → 等待放入完成 → 发送Modbus完成 → 清理状态 → 结束状态
+    /// （检查空车数量不足或检查料仓无料时 → 释放空车 → 结束）
     /// </remarks>
     public class MaterialUnloadingLogic : LogicBase
     {
@@ -101,8 +102,8 @@ namespace Ewan.Core.Logic
 
                 #region 检查环线信号
                 case "检查环线信号":
-                    // 有环线信号，开始处理
-                    SwitchIndex = "检查料仓有料";
+                    // 有环线信号，开始检查空车数量
+                    SwitchIndex = "检查空车数量";
                     break;
                 #endregion
 
