@@ -34,6 +34,8 @@ namespace Ewan.Core.Logic
 
         private bool _beltStopRequested = false;
         private bool _ringLineRisingEdge = false;
+        private bool _ringLineIsLoading = false;
+        private bool _ringLineArmed = true;
         private int _emptyCount = 0;
         private int _cuttingBridgeCarCount = 0;
         private int _selectedBin = 1;
@@ -84,16 +86,16 @@ namespace Ewan.Core.Logic
                 #region 初始状态
                 case "初始状态":
                     // 检测环线上升沿，有边沿才切换步骤
-                    if (_ringLineRisingEdge)
-                    {
-                       
-                        SwitchIndex = "检查环线信号";
-                    }
-                    else
+                    if (!(_ringLineRisingEdge || (_ringLineIsLoading && _ringLineArmed)))
                     {
                         // 无上升沿时直接标记完成，不切换步骤，避免日志刷屏
                         IsFinish = true;
+                        break;
                     }
+
+                    _ringLineRisingEdge |= _ringLineIsLoading && _ringLineArmed;
+                    _ringLineArmed = false;
+                    SwitchIndex = "检查环线信号";
                     break;
                 #endregion
 
@@ -452,9 +454,14 @@ namespace Ewan.Core.Logic
         /// </remarks>
         private void OnRingLineData(RingLineDataMessage msg)
         {
+            _ringLineIsLoading = msg.IsLoading;
             if (msg.RisingEdge)
             {
                 _ringLineRisingEdge = true;
+            }
+            if (!msg.IsLoading)
+            {
+                _ringLineArmed = true;
             }
             _emptyCount = msg.EmptyCarCount;
             _cuttingBridgeCarCount = msg.CuttingBridgeCarCount;
