@@ -302,20 +302,19 @@
                                           Style="{StaticResource ModernComboBox}"
                                           Margin="0,0,0,10" />
 
+                                <TextBlock Foreground="#6C757D" Margin="0,0,0,4">
+                                    <Run Text="托盘编码" /><Run Text=" (PlateCode)" Foreground="#ADB5BD" />
+                                </TextBlock>
                                 <Grid Margin="0,0,0,10">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="110" />
                                     </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
 
                                     <TextBox Grid.Column="0"
                                              Text="{Binding PlateCode}"
                                              Style="{StaticResource ModernTextBox}"
-                                             VerticalAlignment="Center"
-                                             ToolTip="PlateCode" />
+                                             VerticalAlignment="Center" />
                                     <Button Grid.Column="1"
                                             Content="触发扫码"
                                             Command="{Binding TriggerScanCommand}"
@@ -324,15 +323,19 @@
                                             Background="#28A745" />
                                 </Grid>
 
+                                <TextBlock Foreground="#6C757D" Margin="0,0,0,4">
+                                    <Run Text="工单编号" /><Run Text=" (BillNoWip)" Foreground="#ADB5BD" /><Run Text=" - 前料仓上料使用" Foreground="#ADB5BD" FontSize="11" />
+                                </TextBlock>
                                 <TextBox Text="{Binding BillNoWip}"
                                          Style="{StaticResource ModernTextBox}"
-                                         Margin="0,0,0,10"
-                                         ToolTip="BillNoWip（前料仓上料使用）" />
+                                         Margin="0,0,0,10" />
 
+                                <TextBlock Foreground="#6C757D" Margin="0,0,0,4">
+                                    <Run Text="料框编码" /><Run Text=" (FeedingLiaokuangCode)" Foreground="#ADB5BD" /><Run Text=" - 卸料/中后料仓使用" Foreground="#ADB5BD" FontSize="11" />
+                                </TextBlock>
                                 <TextBox Text="{Binding FeedingLiaokuangCode}"
                                          Style="{StaticResource ModernTextBox}"
-                                         Margin="0,0,0,10"
-                                         ToolTip="FeedingLiaokuangCode（卸料/中料仓/后料仓等使用）" />
+                                         Margin="0,0,0,10" />
 
                                 <Button Content="发送"
                                         Command="{Binding SendCommand}"

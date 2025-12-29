@@ -70,6 +70,9 @@ namespace MarkingMachineFeeder.Viewmodel
         private string _sendLogText;
         private string _receiveLogText;
 
+        private const int DefaultMesResponseTimeoutMs = 30000;
+        private const int RequestTimeoutBufferMs = 2000;
+
         public MesManualSendViewModel()
         {
             _mesManager = MesManager.Instance();
@@ -425,6 +428,7 @@ namespace MarkingMachineFeeder.Viewmodel
 
         private async void ExecuteSend()
         {
+            var responseTimeoutMs = DefaultMesResponseTimeoutMs;
             try
             {
                 var action = SelectedAction?.Action ?? RingLineAction.FeedingQianLiaocang;
@@ -451,24 +455,36 @@ namespace MarkingMachineFeeder.Viewmodel
                     PlateCode = plateCode,
                     BillNoWip = billNoWip,
                     FeedingLiaokuangCode = feedingCode,
-                    TimeoutMs = 30000
+                    TimeoutMs = responseTimeoutMs
                 };
+
+                if (!EnsureMesRequestResponder())
+                {
+                    return;
+                }
 
                 AppendSendLog($"发送MES请求 CorrelationId={request.CorrelationId}, Action={request.Action}, PlateCode={plateCode}");
 
-                var feedback = await MessageHub.Current.RequestAsync<MesRingLineRequest, MesRingLineFeedback>(request, request.TimeoutMs);
+                var requestTimeoutMs = GetRequestTimeoutMs(responseTimeoutMs);
+                var feedback = await MessageHub.Current.RequestAsync<MesRingLineRequest, MesRingLineFeedback>(request, requestTimeoutMs);
 
                 // 仅在未订阅调试监听时显示反馈（避免双重显示）
                 if (!IsResponseSubscribed)
                 {
                     AppendReceiveLog($"[MES反馈] CorrelationId={feedback.CorrelationId}, Action={feedback.Action}, Success={feedback.Success}, Message={feedback.Message}, PublishId={feedback.PublishMessageId}");
                 }
-
-                UpdateStatus();
+            }
+            catch (OperationCanceledException)
+            {
+                AppendReceiveLog($"等待MES反馈超时({responseTimeoutMs}ms)。");
             }
             catch (Exception ex)
             {
                 AppendReceiveLog("发送异常: " + ex.Message);
+            }
+            finally
+            {
+                UpdateStatus();
             }
         }
 
@@ -502,6 +518,34 @@ namespace MarkingMachineFeeder.Viewmodel
             SendLogText = string.Empty;
             ReceiveLogText = string.Empty;
             AppendReceiveLog("日志已清空。");
+        }
+
+        private static int GetRequestTimeoutMs(int responseTimeoutMs)
+        {
+            if (responseTimeoutMs <= 0)
+            {
+                responseTimeoutMs = DefaultMesResponseTimeoutMs;
+            }
+
+            return responseTimeoutMs + RequestTimeoutBufferMs;
+        }
+
+        private bool EnsureMesRequestResponder()
+        {
+            try
+            {
+                if (MessageHub.Diagnostics.GetSubscriberCount<MesRingLineRequest>() > 0)
+                {
+                    return true;
+                }
+            }
+            catch
+            {
+                return true;
+            }
+
+            AppendReceiveLog("MES消息处理模块未启动或未订阅请求。");
+            return false;
         }
 
         private void UpdateStatus()
