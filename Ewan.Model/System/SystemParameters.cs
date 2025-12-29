@@ -92,6 +92,11 @@ namespace Ewan.Model.System
         public int RingLineTimeoutSeconds { get; set; } = 30;
 
         /// <summary>
+        /// 料框编号模板
+        /// </summary>
+        public string LiaokuangCodeTemplate { get; set; } = "BIN{0:D2}";
+
+        /// <summary>
         /// 是否屏蔽安全门报警
         /// </summary>
         public bool SafetyDoorAlarmBypass { get; set; } = false;
@@ -219,6 +224,7 @@ namespace Ewan.Model.System
                 ResetDelayMs = 4000,
                 LowSpeedSetupDelayMs = 500,
                 RingLineTimeoutSeconds = 30,
+                LiaokuangCodeTemplate = "BIN{0:D2}",
                 SafetyDoorAlarmBypass = false,
                 EmptyCartReserveCount = 0,
                 CartCheckMode = CartCheckMode.EmptyCart,

@@ -207,6 +207,13 @@ namespace MarkingMachineFeeder.Viewmodel
             get => _mesRingLineDeviceCode;
             set => SetProperty(ref _mesRingLineDeviceCode, value);
         }
+
+        private string _liaokuangCodeTemplate = "BIN{0:D2}";
+        public string LiaokuangCodeTemplate
+        {
+            get => _liaokuangCodeTemplate;
+            set => SetProperty(ref _liaokuangCodeTemplate, value);
+        }
         #endregion
 
         public ObservableCollection<BinSelectionOption> BinOptions => _binOptions;
@@ -374,6 +381,7 @@ namespace MarkingMachineFeeder.Viewmodel
                  MesKeepAliveSeconds = 30;
                  MesRingLineDeviceId = string.Empty;
                  MesRingLineDeviceCode = string.Empty;
+                 LiaokuangCodeTemplate = "BIN{0:D2}";
                 CodeReaderScanRetryCount = 3;
                  
                  return;
@@ -418,6 +426,9 @@ namespace MarkingMachineFeeder.Viewmodel
             MesKeepAliveSeconds = parameters.MesKeepAliveSeconds;
             MesRingLineDeviceId = parameters.MesRingLineDeviceId;
             MesRingLineDeviceCode = parameters.MesRingLineDeviceCode;
+            LiaokuangCodeTemplate = string.IsNullOrWhiteSpace(parameters.LiaokuangCodeTemplate)
+                ? "BIN{0:D2}"
+                : parameters.LiaokuangCodeTemplate;
 
             UpdateBinOptionDisplays();
         }
@@ -540,7 +551,10 @@ namespace MarkingMachineFeeder.Viewmodel
                     MesCleanSession = MesCleanSession,
                     MesKeepAliveSeconds = MesKeepAliveSeconds,
                     MesRingLineDeviceId = MesRingLineDeviceId,
-                    MesRingLineDeviceCode = MesRingLineDeviceCode
+                    MesRingLineDeviceCode = MesRingLineDeviceCode,
+                    LiaokuangCodeTemplate = string.IsNullOrWhiteSpace(LiaokuangCodeTemplate)
+                        ? "BIN{0:D2}"
+                        : LiaokuangCodeTemplate.Trim()
                 };
 
                 if (!parameters.Validate())

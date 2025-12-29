@@ -1,5 +1,7 @@
 using Ewan.Core.IO;
+using Ewan.Core.Mes;
 using Ewan.Core.ScanCode;
+using Ewan.Mes.Models.Domain.ZHJW.RingLine;
 using Ewan.Model.Messages;
 using Ewan.Model.Production;
 using Ewan.Model.System;
@@ -7,6 +9,8 @@ using EwanCore.AlarmSystem;
 using EwanCore.Messaging;
 using EwanCore.StateMachine;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Ewan.Core.Logic
 {
@@ -31,10 +35,17 @@ namespace Ewan.Core.Logic
         private int _scanRetryCount = 0;
         private string _scannedCode = string.Empty;
         private int _targetBin = 1;
+        private Task<MesRingLineFeedback> _mesFeedingTask;
+        private CancellationTokenSource _mesFeedingCts;
+        private string _billNoA = string.Empty;
+        private string _billNoB = string.Empty;
+        private int _mesRetryCount = 0;
 
         // 超时配置（毫秒）
         private const int WAIT_SCAN_POSITION_TIMEOUT = 100000;
         private const int WAIT_LOADING_COMPLETE_TIMEOUT = 150000;
+        private const int MES_REQUEST_TIMEOUT_BUFFER_MS = 5000;
+        private const int MAX_MES_RETRY_COUNT = 3;
 
         #endregion
 
@@ -165,7 +176,125 @@ namespace Ewan.Core.Logic
                         _targetBin = GetConfiguredBinNumber();
                         SetBinSelectSignal(_targetBin);
 
+                        if (mesEnabled)
+                        {
+                            SwitchIndex = "发送MES上料请求";
+                        }
+                        else
+                        {
+                            SwitchIndex = "移动到料仓";
+                        }
+                    }
+                    break;
+                #endregion
+
+                #region 发送MES上料请求
+                case "发送MES上料请求":
+                    if (_parametersManager?.Parameters?.MesEnabled != true)
+                    {
+                        _mesRetryCount = 0;
+                        ClearMesFeedingRequest();
                         SwitchIndex = "移动到料仓";
+                        return;
+                    }
+
+                    if (_mesFeedingTask == null)
+                    {
+                        var mesManager = MesManager.Instance();
+                        if (!mesManager.IsConnected || !mesManager.IsRingLineInitialized)
+                        {
+                            _uiLogger.WarnRaw("MES未连接或未初始化，跳过上料请求");
+                            _mesRetryCount = 0;
+                            SwitchIndex = "移动到料仓";
+                            return;
+                        }
+
+                        var scanParameters = _parametersManager?.Parameters;
+                        var timeoutSeconds = scanParameters?.RingLineTimeoutSeconds ?? 30;
+                        if (timeoutSeconds <= 0)
+                        {
+                            timeoutSeconds = 30;
+                        }
+
+                        var requestTimeoutMs = timeoutSeconds * 1000;
+                        var request = new MesRingLineRequest
+                        {
+                            Action = MesRingLineAction.FeedingQianLiaocang,
+                            PlateCode = _scannedCode,
+                            BillNoWip = string.Empty,
+                            TimeoutMs = requestTimeoutMs
+                        };
+
+                        _mesRetryCount++;
+                        ClearMesFeedingRequest();
+                        _mesFeedingCts = new CancellationTokenSource();
+                        _mesFeedingTask = MessageHub.Current.RequestAsync<MesRingLineRequest, MesRingLineFeedback>(
+                            request,
+                            timeoutMs: requestTimeoutMs + MES_REQUEST_TIMEOUT_BUFFER_MS,
+                            cancellationToken: _mesFeedingCts.Token);
+                    }
+
+                    if (!_mesFeedingTask.IsCompleted)
+                    {
+                        return;
+                    }
+
+                    try
+                    {
+                        if (_mesFeedingTask.IsCanceled)
+                        {
+                            _uiLogger.WarnRaw("MES上料请求已取消");
+                            _mesRetryCount = 0;
+                            SwitchIndex = "移动到料仓";
+                        }
+                        else if (_mesFeedingTask.IsFaulted)
+                        {
+                            var error = _mesFeedingTask.Exception?.GetBaseException()?.Message ?? "未知错误";
+                            if (TryRetryMesFeedingRequest($"MES上料请求异常: {error}"))
+                            {
+                                return;
+                            }
+
+                            SwitchIndex = "移动到料仓";
+                        }
+                        else
+                        {
+                            var feedback = _mesFeedingTask.Result;
+                            if (feedback.Success)
+                            {
+                                var responseData = feedback.Data as FeedingQianLiaocangResponseData;
+                                _billNoA = responseData?.BillNoA ?? string.Empty;
+                                _billNoB = responseData?.BillNoB ?? string.Empty;
+                                _uiLogger.InfoRaw("MES上料响应: A单={0}, B单={1}", _billNoA, _billNoB);
+                                _mesRetryCount = 0;
+                                SwitchIndex = "移动到料仓";
+                            }
+                            else
+                            {
+                                if (TryRetryMesFeedingRequest($"MES上料请求失败: {feedback.Message}"))
+                                {
+                                    return;
+                                }
+
+                                SwitchIndex = "移动到料仓";
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        if (TryRetryMesFeedingRequest($"MES上料请求异常: {ex.Message}"))
+                        {
+                            return;
+                        }
+
+                        SwitchIndex = "移动到料仓";
+                    }
+                    finally
+                    {
+                        if (SwitchIndex != "发送MES上料请求")
+                        {
+                            ClearMesFeedingRequest();
+                        }
                     }
                     break;
                 #endregion
@@ -210,6 +339,16 @@ namespace Ewan.Core.Logic
                     ClearBinSelectSignals();
                     _ioManager?.Ctx?.Off(x => x.发送扫码完成信号);
 
+                    if (_parametersManager?.Parameters?.MesEnabled == true && !string.IsNullOrWhiteSpace(_scannedCode))
+                    {
+                        var successRequest = new MesRingLineRequest
+                        {
+                            Action = MesRingLineAction.FeedingQianLiaocangSuccess,
+                            PlateCode = _scannedCode,
+                            FeedingLiaokuangCode = GetLiaokuangCode(_targetBin)
+                        };
+                        MessageHub.Current.Post(successRequest);
+                    }
 
                     if (_beltStopRequested)
                     {
@@ -241,6 +380,10 @@ namespace Ewan.Core.Logic
             _scanRetryCount = 0;
             _scannedCode = string.Empty;
             _targetBin = 1;
+            _billNoA = string.Empty;
+            _billNoB = string.Empty;
+            _mesRetryCount = 0;
+            ClearMesFeedingRequest();
             base.Rset();
         }
 
@@ -293,6 +436,56 @@ namespace Ewan.Core.Logic
                 case BinSelection.Bin2: return 2;
                 case BinSelection.Bin3: return 3;
                 default: return 1;
+            }
+        }
+
+        private void ClearMesFeedingRequest()
+        {
+            if (_mesFeedingCts != null)
+            {
+                try
+                {
+                    _mesFeedingCts.Cancel();
+                }
+                catch
+                {
+                }
+                _mesFeedingCts.Dispose();
+                _mesFeedingCts = null;
+            }
+            _mesFeedingTask = null;
+        }
+
+        private bool TryRetryMesFeedingRequest(string message)
+        {
+            if (_mesRetryCount < MAX_MES_RETRY_COUNT)
+            {
+                _uiLogger.WarnRaw("{0}，重试次数: {1}/{2}", message, _mesRetryCount, MAX_MES_RETRY_COUNT);
+                ClearMesFeedingRequest();
+                return true;
+            }
+
+            _uiLogger.ErrorRaw("{0}，已达到最大重试次数", message);
+            _mesRetryCount = 0;
+            ClearMesFeedingRequest();
+            return false;
+        }
+
+        /// <summary>
+        /// 获取料框编号
+        /// </summary>
+        private string GetLiaokuangCode(int binNumber)
+        {
+            var parameters = _parametersManager?.Parameters;
+            var template = parameters?.LiaokuangCodeTemplate ?? "BIN{0:D2}";
+
+            try
+            {
+                return string.Format(template, binNumber);
+            }
+            catch
+            {
+                return $"BIN{binNumber:D2}";
             }
         }
 

@@ -346,7 +346,7 @@ namespace Ewan.Core.Logic
                         _ioManager?.Ctx?.Off(x => x.发送放入小车指令);
                         _ioManager?.Ctx?.Off(x => x.发送扫码完成信号);
 
-                        SwitchIndex = "发送Modbus完成";
+                        SwitchIndex = "发送MES下料信号";
                         return;
                     }
 
@@ -360,6 +360,25 @@ namespace Ewan.Core.Logic
                             unit: "Unloading"));
                         ForceCleanup("放入小车超时");
                     }
+                    break;
+                #endregion
+
+                #region 发送MES下料信号
+                case "发送MES下料信号":
+                    if (_parametersManager?.Parameters?.MesEnabled == true && !string.IsNullOrWhiteSpace(_lastScannedQrCode))
+                    {
+                        var request = new MesRingLineRequest
+                        {
+                            Action = MesRingLineAction.UnloadingQianLiaocang,
+                            PlateCode = _lastScannedQrCode,
+                            FeedingLiaokuangCode = GetLiaokuangCode(_selectedBin)
+                        };
+
+                        MessageHub.Current.Post(request);
+                        _uiLogger.InfoRaw("已发送MES下料信号: {0}", _lastScannedQrCode);
+                    }
+
+                    SwitchIndex = "发送Modbus完成";
                     break;
                 #endregion
 
@@ -512,6 +531,24 @@ namespace Ewan.Core.Logic
                 case BinSelection.Bin2: return 2;
                 case BinSelection.Bin3: return 3;
                 default: return 1;
+            }
+        }
+
+        /// <summary>
+        /// 获取料框编号
+        /// </summary>
+        private string GetLiaokuangCode(int binNumber)
+        {
+            var parameters = _parametersManager?.Parameters;
+            var template = parameters?.LiaokuangCodeTemplate ?? "BIN{0:D2}";
+
+            try
+            {
+                return string.Format(template, binNumber);
+            }
+            catch
+            {
+                return $"BIN{binNumber:D2}";
             }
         }
 

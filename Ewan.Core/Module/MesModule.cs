@@ -19,6 +19,7 @@ namespace Ewan.Core.Module
         private const int RunLoopIntervalMs = 100;
 
         private IDisposable _responderSubscription;
+        private IDisposable _postSubscription;
 
         private readonly object _ringLineResponseLock = new object();
         private IDisposable _feedingQianLiaocangResponseSubscription;
@@ -29,6 +30,7 @@ namespace Ewan.Core.Module
             _responderSubscription = MessageHub.Current.RespondAsync<MesRingLineRequest, MesRingLineFeedback>(
                 ProcessRequestAsync,
                 postReply: true);
+            _postSubscription = MessageHub.Current.Subscribe<MesRingLineRequest>(ProcessPostRequest);
 
             _uiLogger.InfoRaw("模块初始化成功: {0}", "MesModule (MessageHub)");
         }
@@ -46,6 +48,15 @@ namespace Ewan.Core.Module
             {
                 _responderSubscription?.Dispose();
                 _responderSubscription = null;
+            }
+            catch
+            {
+            }
+
+            try
+            {
+                _postSubscription?.Dispose();
+                _postSubscription = null;
             }
             catch
             {
@@ -95,7 +106,7 @@ namespace Ewan.Core.Module
 
             if (request.CorrelationId == Guid.Empty)
             {
-                request.CorrelationId = Guid.NewGuid();
+                return null;
             }
 
             try
@@ -183,6 +194,132 @@ namespace Ewan.Core.Module
                         Success = false,
                         Message = "未知的 MES RingLine 请求类型"
                     };
+            }
+        }
+
+        private void ProcessPostRequest(MesRingLineRequest request)
+        {
+            if (request == null)
+            {
+                return;
+            }
+
+            if (request.CorrelationId != Guid.Empty)
+            {
+                return;
+            }
+
+            _ = Task.Run(() => ProcessPostRequestAsync(request));
+        }
+
+        private async Task ProcessPostRequestAsync(MesRingLineRequest request)
+        {
+            try
+            {
+                string error;
+                if (!EnsureMesReady(out error))
+                {
+                    _uiLogger.WarnRaw("MES Post请求跳过: {0}", error);
+                    return;
+                }
+
+                switch (request.Action)
+                {
+                    case MesRingLineAction.FeedingQianLiaocangSuccess:
+                        await MesManager.Instance().PublishFeedingQianLiaocangSuccessAsync(
+                                new FeedingQianLiaocangSuccessData
+                                {
+                                    DeviceCode = MesManager.Instance().RingLineDeviceCode,
+                                    PlateCode = request.PlateCode,
+                                    FeedingLiaokuangCode = request.FeedingLiaokuangCode,
+                                    Timestamp = DateTime.Now
+                                })
+                            .ConfigureAwait(false);
+                        break;
+
+                    case MesRingLineAction.UnloadingQianLiaocang:
+                        await MesManager.Instance().PublishUnloadingQianLiaocangAsync(
+                                new UnloadingQianLiaocangData
+                                {
+                                    DeviceCode = MesManager.Instance().RingLineDeviceCode,
+                                    PlateCode = request.PlateCode,
+                                    FeedingLiaokuangCode = request.FeedingLiaokuangCode,
+                                    Timestamp = DateTime.Now
+                                })
+                            .ConfigureAwait(false);
+                        break;
+
+                    case MesRingLineAction.FeedingZhongLiaocang:
+                        await MesManager.Instance().PublishFeedingZhongLiaocangAsync(
+                                new FeedingZhongLiaocangData
+                                {
+                                    DeviceCode = MesManager.Instance().RingLineDeviceCode,
+                                    PlateCode = request.PlateCode,
+                                    FeedingLiaokuangCode = request.FeedingLiaokuangCode,
+                                    Timestamp = DateTime.Now
+                                })
+                            .ConfigureAwait(false);
+                        break;
+
+                    case MesRingLineAction.UnloadingZhongLiaocang:
+                        await MesManager.Instance().PublishUnloadingZhongLiaocangAsync(
+                                new UnloadingZhongLiaocangData
+                                {
+                                    DeviceCode = MesManager.Instance().RingLineDeviceCode,
+                                    PlateCode = request.PlateCode,
+                                    FeedingLiaokuangCode = request.FeedingLiaokuangCode,
+                                    Timestamp = DateTime.Now
+                                })
+                            .ConfigureAwait(false);
+                        break;
+
+                    case MesRingLineAction.FeedingQingxihongganji:
+                        await MesManager.Instance().PublishFeedingQingxihongganjiAsync(
+                                new FeedingQingxihongganjiData
+                                {
+                                    DeviceCode = MesManager.Instance().RingLineDeviceCode,
+                                    PlateCode = request.PlateCode,
+                                    Timestamp = DateTime.Now
+                                })
+                            .ConfigureAwait(false);
+                        break;
+
+                    case MesRingLineAction.FeedingHouLiaocang:
+                        await MesManager.Instance().PublishFeedingHouLiaocangAsync(
+                                new FeedingHouLiaocangData
+                                {
+                                    DeviceCode = MesManager.Instance().RingLineDeviceCode,
+                                    PlateCode = request.PlateCode,
+                                    FeedingLiaokuangCode = request.FeedingLiaokuangCode,
+                                    Timestamp = DateTime.Now
+                                })
+                            .ConfigureAwait(false);
+                        break;
+
+                    case MesRingLineAction.UnloadingHouLiaocang:
+                        await MesManager.Instance().PublishUnloadingHouLiaocangAsync(
+                                new UnloadingHouLiaocangData
+                                {
+                                    DeviceCode = MesManager.Instance().RingLineDeviceCode,
+                                    PlateCode = request.PlateCode,
+                                    FeedingLiaokuangCode = request.FeedingLiaokuangCode,
+                                    Timestamp = DateTime.Now
+                                })
+                            .ConfigureAwait(false);
+                        break;
+
+                    case MesRingLineAction.FeedingQianLiaocang:
+                        _uiLogger.WarnRaw("MES Post请求不支持等待响应的动作: {0}", request.Action);
+                        break;
+
+                    default:
+                        _uiLogger.WarnRaw("MES Post请求未知动作: {0}", request.Action);
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.ErrorRaw("MES Post请求异常: {0}", ex.Message);
             }
         }
 
