@@ -1,10 +1,11 @@
-using System;
-using System.Collections.ObjectModel;
-using System.Windows;
+using Ewan.Model.System;
+using EwanCommon.Logging;
 using Prism.Commands;
 using Prism.Mvvm;
-using EwanCommon.Logging;
-using Ewan.Model.System;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace MarkingMachineFeeder.Viewmodel
 {
@@ -71,7 +72,12 @@ namespace MarkingMachineFeeder.Viewmodel
             get => _ringLineTimeoutSeconds;
             set => SetProperty(ref _ringLineTimeoutSeconds, value);
         }
-
+        private int i_小车间隔数量;
+        public int I_小车间隔数量
+        {
+            get => i_小车间隔数量;
+            set => SetProperty(ref i_小车间隔数量, value);
+        }
         private bool _safetyDoorAlarmBypass;
         public bool SafetyDoorAlarmBypass
         {
@@ -344,6 +350,9 @@ namespace MarkingMachineFeeder.Viewmodel
             get => _ringLineTimeoutDesc;
             set => SetProperty(ref _ringLineTimeoutDesc, value);
         }
+
+  
+
         #endregion
 
         #region Commands
@@ -426,6 +435,8 @@ namespace MarkingMachineFeeder.Viewmodel
             MesKeepAliveSeconds = parameters.MesKeepAliveSeconds;
             MesRingLineDeviceId = parameters.MesRingLineDeviceId;
             MesRingLineDeviceCode = parameters.MesRingLineDeviceCode;
+            //I_小车间隔数量 = parameters.I_小车间隔数量;
+            I_小车间隔数量 = 0;
             LiaokuangCodeTemplate = string.IsNullOrWhiteSpace(parameters.LiaokuangCodeTemplate)
                 ? "BIN{0:D2}"
                 : parameters.LiaokuangCodeTemplate;
@@ -516,7 +527,7 @@ namespace MarkingMachineFeeder.Viewmodel
             window?.Close();
         }
 
-        private bool SaveParameters()
+        public bool SaveParameters()
         {
             try
             {
@@ -552,6 +563,7 @@ namespace MarkingMachineFeeder.Viewmodel
                     MesKeepAliveSeconds = MesKeepAliveSeconds,
                     MesRingLineDeviceId = MesRingLineDeviceId,
                     MesRingLineDeviceCode = MesRingLineDeviceCode,
+                    I_小车间隔数量 = I_小车间隔数量,
                     LiaokuangCodeTemplate = string.IsNullOrWhiteSpace(LiaokuangCodeTemplate)
                         ? "BIN{0:D2}"
                         : LiaokuangCodeTemplate.Trim()
@@ -594,6 +606,19 @@ namespace MarkingMachineFeeder.Viewmodel
                     "错误",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
+                return false;
+            }
+        }
+
+        public bool SaveParametersOnExit()
+        {
+            try
+            {
+                // 复用现有私有方法（会展示提示框），若需要在退出时不弹框，可改为在此实现静默保存逻辑
+                return SaveParameters();
+            }
+            catch
+            {
                 return false;
             }
         }

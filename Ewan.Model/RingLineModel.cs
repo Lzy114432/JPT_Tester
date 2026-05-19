@@ -29,5 +29,14 @@ namespace Ewan.Model
         /// 切栈桥车数量
         /// </summary>
         public int CuttingBridgeCarCount { get; set; } = 0;
+        ///// <summary>
+        ///// 上料二位码
+        ///// </summary>
+        //public string LoadingQrCode { get; set; } = "";
+        ///// <summary>
+        ///// 下料二位码
+        ///// </summary>
+        //public string UnloadingQrCode { get; set; } = "";
+
     }
 }

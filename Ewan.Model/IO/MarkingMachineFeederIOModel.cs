@@ -22,17 +22,17 @@ namespace Ewan.Model.IO
         [IO(3, DisplayName = "检测到料片信号")]
         public InputSignal 检测到料片信号 { get; set; }
 
-        [IO(4, DisplayName = "机械臂抓取完成信号")]
-        public InputSignal 机械臂抓取完成信号 { get; set; }
+        [IO(4, DisplayName = "DI4")]
+        public InputSignal DI4 { get; set; }
 
-        [IO(5, DisplayName = "下相机精定位完成信号")]
-        public InputSignal 下相机精定位完成信号 { get; set; }
+        [IO(5, DisplayName = "DI5")]
+        public InputSignal DI5 { get; set; }
 
         [IO(6, DisplayName = "机械臂定位完成信号")]
         public InputSignal 机械臂定位完成信号 { get; set; }
 
-        [IO(7, DisplayName = "移至扫码区到位信号")]
-        public InputSignal 移至扫码区到位信号 { get; set; }
+        [IO(7, DisplayName = "X18")]
+        public InputSignal X18 { get; set; }
 
         [IO(8, DisplayName = "机械臂放置完成信号")]
         public InputSignal 机械臂放置完成信号 { get; set; }
@@ -64,8 +64,8 @@ namespace Ewan.Model.IO
         [IO(17, DisplayName = "下相机报警信号")]
         public InputSignal 下相机报警信号 { get; set; }
 
-        [IO(18, DisplayName = "X18")]
-        public InputSignal X18 { get; set; }
+        [IO(18, DisplayName = "移至扫码区到位信号")]
+        public InputSignal 移至扫码区到位信号 { get; set; }
 
         [IO(19, DisplayName = "机械臂气缸报警信号")]
         public InputSignal 机械臂气缸报警信号 { get; set; }
@@ -106,11 +106,11 @@ namespace Ewan.Model.IO
         [IO(31, DisplayName = "机械臂门电磁感应信号")]
         public InputSignal 机械臂门电磁感应信号 { get; set; }
 
-        [IO(32, DisplayName = "X32")]
-        public InputSignal X32 { get; set; }
+        [IO(32, DisplayName = "夹持松开")]
+        public InputSignal 夹持松开 { get; set; }
 
-        [IO(33, DisplayName = "X33")]
-        public InputSignal X33 { get; set; }
+        [IO(33, DisplayName = "夹持夹紧")]
+        public InputSignal 夹持夹紧 { get; set; }
 
         [IO(34, DisplayName = "X34")]
         public InputSignal X34 { get; set; }
@@ -182,8 +182,8 @@ namespace Ewan.Model.IO
         [IO(15, DisplayName = "发送取料指令")]
         public OutputSignal 发送取料指令 { get; set; }
 
-        [IO(16, DisplayName = "高速运行")]
-        public OutputSignal 高速运行 { get; set; }
+        [IO(16, DisplayName = "DO16")]
+        public OutputSignal DO16 { get; set; }
 
         [IO(17, DisplayName = "发送放入小车指令")]
         public OutputSignal 发送放入小车指令 { get; set; }
@@ -206,8 +206,8 @@ namespace Ewan.Model.IO
         [IO(23, DisplayName = "料仓吹3气电磁阀")]
         public OutputSignal 料仓3吹气电磁阀 { get; set; }
 
-        [IO(24, DisplayName = "慢速运行")]
-        public OutputSignal 慢速运行 { get; set; }
+        [IO(24, DisplayName = "DO24")]
+        public OutputSignal DO24 { get; set; }
 
         [IO(25, DisplayName = "清除报警")]
         public OutputSignal 清除报警 { get; set; }
@@ -215,8 +215,8 @@ namespace Ewan.Model.IO
         [IO(26, DisplayName = "Y26")]
         public OutputSignal Y26 { get; set; }
 
-        [IO(27, DisplayName = "Y27")]
-        public OutputSignal Y27 { get; set; }
+        [IO(27, DisplayName = "定位夹持")]
+        public OutputSignal 定位夹持 { get; set; }
 
         [IO(28, DisplayName = "Y28")]
         public OutputSignal Y28 { get; set; }

@@ -1,8 +1,10 @@
-using EwanCommon.Logging;
+using Ewan.Core.IO;
 using Ewan.Core.Manager;
 using Ewan.Core.Security;
+using Ewan.Model.Messages;
 using Ewan.Model.Security;
 using Ewan.Model.System;
+using EwanCommon.Logging;
 using EwanCore.Messaging;
 using EwanCore.StateMachine;
 using Prism.Commands;
@@ -18,6 +20,7 @@ namespace MarkingMachineFeeder.Viewmodel
         private readonly UILogger _uiLogger = new UILogger();
         private readonly SecurityManager _securityManager;
         private IDisposable _statusIndicatorSubscription; // 系统状态订阅
+        private IDisposable _loadingUnloadingSubscription; // 上下料实际数量订阅
 
         private string _title = "MarkingMachineFeeder";
         private string _testLogButtonText = "测试日志";
@@ -194,25 +197,25 @@ namespace MarkingMachineFeeder.Viewmodel
             get { return _canViewSettings; }
             set { SetProperty(ref _canViewSettings, value); }
         }
-        
+
         public bool CanExit
         {
             get { return _canExit; }
             set { SetProperty(ref _canExit, value); }
         }
-        
+
         public string ExitMenuHeader
         {
             get { return _exitMenuHeader; }
             set { SetProperty(ref _exitMenuHeader, value); }
         }
-        
+
         public bool CanAccessHardwareControl
         {
             get { return _canAccessHardwareControl; }
             set { SetProperty(ref _canAccessHardwareControl, value); }
         }
-        
+
         public string IOControlMenuHeader
         {
             get { return _ioControlMenuHeader; }
@@ -230,7 +233,7 @@ namespace MarkingMachineFeeder.Viewmodel
             get { return _hardwareControlMenuHeader; }
             set { SetProperty(ref _hardwareControlMenuHeader, value); }
         }
-        
+
         public string AxisConfigMenuHeader
         {
             get { return _axisConfigMenuHeader; }
@@ -266,7 +269,7 @@ namespace MarkingMachineFeeder.Viewmodel
             get { return _systemResumeButtonText; }
             set { SetProperty(ref _systemResumeButtonText, value); }
         }
-        
+
         public DelegateCommand TestLogCommand { get; }
         public DelegateCommand LoginCommand { get; }
         public DelegateCommand SwitchUserCommand { get; }
@@ -279,18 +282,19 @@ namespace MarkingMachineFeeder.Viewmodel
         public DelegateCommand OpenAxisControlCommand { get; }
         public DelegateCommand OpenLoopInteractionCommand { get; }
         public DelegateCommand OpenMesManualSendCommand { get; }
+        public DelegateCommand ResetAllCountCommand { get; }
         public DelegateCommand ExitCommand { get; }
-        
+
         // 物料优先级调整命令
         public DelegateCommand MaterialA_IncreasePriorityCommand { get; }
         public DelegateCommand MaterialB_IncreasePriorityCommand { get; }
         public DelegateCommand MaterialNG_IncreasePriorityCommand { get; }
-        
+
         // 物料清除命令
         public DelegateCommand MaterialA_ClearCommand { get; }
         public DelegateCommand MaterialB_ClearCommand { get; }
         public DelegateCommand MaterialNG_ClearCommand { get; }
-        
+
         // 系统控制命令
         public DelegateCommand SystemResetCommand { get; }
         public DelegateCommand EmergencyStopCommand { get; }
@@ -319,17 +323,17 @@ namespace MarkingMachineFeeder.Viewmodel
             OpenLoopInteractionCommand = new DelegateCommand(ExecuteOpenLoopInteraction, CanOpenLoopInteraction);
             OpenMesManualSendCommand = new DelegateCommand(ExecuteOpenMesManualSend, CanOpenMesManualSend);
             ExitCommand = new DelegateCommand(ExecuteExit, CanExecuteExit);
-            
+            ResetAllCountCommand = new DelegateCommand(ExecuteResetAllCount);
             // 初始化物料优先级调整命令
             MaterialA_IncreasePriorityCommand = new DelegateCommand(ExecuteMaterialA_IncreasePriority);
             MaterialB_IncreasePriorityCommand = new DelegateCommand(ExecuteMaterialB_IncreasePriority);
             MaterialNG_IncreasePriorityCommand = new DelegateCommand(ExecuteMaterialNG_IncreasePriority);
-            
+
             // 初始化物料清除命令
             MaterialA_ClearCommand = new DelegateCommand(ExecuteMaterialA_Clear);
             MaterialB_ClearCommand = new DelegateCommand(ExecuteMaterialB_Clear);
             MaterialNG_ClearCommand = new DelegateCommand(ExecuteMaterialNG_Clear);
-            
+
             // 初始化系统控制命令
             SystemResetCommand = new DelegateCommand(ExecuteSystemReset);
             EmergencyStopCommand = new DelegateCommand(ExecuteEmergencyStop);
@@ -338,7 +342,7 @@ namespace MarkingMachineFeeder.Viewmodel
             SystemPauseCommand = new DelegateCommand(ExecuteSystemPause);
             SystemResumeCommand = new DelegateCommand(ExecuteSystemResume);
             SystemStopCommand = new DelegateCommand(ExecuteSystemStop);
-
+            _loadingUnloadingSubscription = MessageHub.Current.Subscribe<LoadingUnloadingStateMessage>(OnLoadingUnloadingStateReceived);
             UpdateUITexts();
             UpdateUserInfo();
             UpdatePermissions();
@@ -358,7 +362,28 @@ namespace MarkingMachineFeeder.Viewmodel
             _uiLogger.Info("处理完成: {0}", "2.35");
             _uiLogger.Debug("基础管理器初始化成功: {0}", "TestManager");
         }
+        private void ExecuteResetAllCount()
+        {
+            try
+            {
+                // 重置上料和下料总数
+                LoadingUPH = "0";
+                UnloadingUPH = "0";
 
+                // 重置料仓1（A料）和料仓2（B料）的数量
+                MaterialA_Count = "0";
+                MaterialB_Count = "0";
+
+                // 注意：这里没有重置 NG 料数量，如果需要可以取消注释以下行
+                // MaterialNG_Count = "0";
+
+                _uiLogger.Info("用户已重置上下料数量及料仓数量");
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error("重置数量时发生错误: {0}", ex.Message);
+            }
+        }
         private void ExecuteSwitchUser()
         {
             var loginWindow = new MarkingMachineFeeder.Windows.LoginWindow();
@@ -486,7 +511,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 // 记录当前用户退出应用程序
                 var currentUser = _securityManager.CurrentUser?.Username ?? "游客";
                 _uiLogger.Info("用户 {0} 正在退出应用程序", currentUser);
-                
+
                 System.Windows.Application.Current.Shutdown();
             }
         }
@@ -508,11 +533,11 @@ namespace MarkingMachineFeeder.Viewmodel
             if (_securityManager.IsAuthenticated)
             {
                 var user = _securityManager.CurrentUser;
-                
+
                 // 根据当前语言获取本地化的显示名称
                 var localizedDisplayName = GetLocalizedUserDisplayName(user.Username);
                 var localizedRoleNames = string.Join(", ", user.Roles.Select(r => GetLocalizedRoleDisplayName(r.Name)));
-                
+
                 CurrentUser = localizedDisplayName;
                 CurrentUserText = string.Format("当前用户: {0}", $"{localizedDisplayName} [{localizedRoleNames}]");
             }
@@ -522,7 +547,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 CurrentUser = "游客";
                 CurrentUserText = "无用户登录";
             }
-            
+
             // 强制触发PropertyChanged事件
             RaisePropertyChanged(nameof(CurrentUser));
             RaisePropertyChanged(nameof(CurrentUserText));
@@ -579,7 +604,7 @@ namespace MarkingMachineFeeder.Viewmodel
             HardwareControlMenuHeader = "硬件控制";
             SystemPauseButtonText = "暂停";
             SystemResumeButtonText = "复原";
-            
+
             // 强制触发所有相关属性的PropertyChanged事件
             RaisePropertyChanged(nameof(Title));
             RaisePropertyChanged(nameof(TestLogButtonText));
@@ -599,6 +624,7 @@ namespace MarkingMachineFeeder.Viewmodel
             RaisePropertyChanged(nameof(HardwareControlMenuHeader));
             RaisePropertyChanged(nameof(SystemPauseButtonText));
             RaisePropertyChanged(nameof(SystemResumeButtonText));
+            LoadCountsFromParameters();
         }
         private void UpdatePermissions()
         {
@@ -606,20 +632,20 @@ namespace MarkingMachineFeeder.Viewmodel
             CanControlCamera = false;  // 禁用相机控制
             CanControlUPS = false;     // 禁用UPS控制
             CanViewSettings = _securityManager.HasPermission(PermissionResources.PermissionConfig, PermissionActions.View);
-            
+
             // 使用SystemControl权限控制退出功能
             CanExit = _securityManager.HasPermission(PermissionResources.SystemControl, PermissionActions.Control);
-            
+
             // 使用HardwareControl权限控制硬件功能访问
             CanAccessHardwareControl = _securityManager.HasPermission(PermissionResources.HardwareControl, PermissionActions.Control);
-            
+
             // 触发属性变更通知，确保UI更新
             RaisePropertyChanged(nameof(CanViewSettings));
             RaisePropertyChanged(nameof(CanControlCamera));
             RaisePropertyChanged(nameof(CanControlUPS));
             RaisePropertyChanged(nameof(CanExit));
             RaisePropertyChanged(nameof(CanAccessHardwareControl));
-            
+
             // 刷新依赖权限的命令状态
             OpenPermissionConfigCommand.RaiseCanExecuteChanged();
             OpenParameterSettingsCommand.RaiseCanExecuteChanged();
@@ -844,176 +870,176 @@ namespace MarkingMachineFeeder.Viewmodel
 
 
         #endregion
-        
+
         #region UPH相关属性
-        
+
         public string LoadingUPH
         {
             get => _loadingUPH;
             set => SetProperty(ref _loadingUPH, value);
         }
-        
+
         public string UnloadingUPH
         {
             get => _unloadingUPH;
             set => SetProperty(ref _unloadingUPH, value);
         }
-        
+
         #endregion
-        
+
         #region 物料相关属性
-        
+
         // A料属性
         public string MaterialA_Barcode
         {
             get => _materialA_Barcode;
             set => SetProperty(ref _materialA_Barcode, value);
         }
-        
+
         public string MaterialA_Count
         {
             get => _materialA_Count;
             set => SetProperty(ref _materialA_Count, value);
         }
-        
+
         public string MaterialA_Priority
         {
             get => _materialA_Priority;
             set => SetProperty(ref _materialA_Priority, value);
         }
-        
+
         // B料属性
         public string MaterialB_Barcode
         {
             get => _materialB_Barcode;
             set => SetProperty(ref _materialB_Barcode, value);
         }
-        
+
         public string MaterialB_Count
         {
             get => _materialB_Count;
             set => SetProperty(ref _materialB_Count, value);
         }
-        
+
         public string MaterialB_Priority
         {
             get => _materialB_Priority;
             set => SetProperty(ref _materialB_Priority, value);
         }
-        
+
         // NG料属性
         public string MaterialNG_Barcode
         {
             get => _materialNG_Barcode;
             set => SetProperty(ref _materialNG_Barcode, value);
         }
-        
+
         public string MaterialNG_Count
         {
             get => _materialNG_Count;
             set => SetProperty(ref _materialNG_Count, value);
         }
-        
+
         public string MaterialNG_Priority
         {
             get => _materialNG_Priority;
             set => SetProperty(ref _materialNG_Priority, value);
         }
-        
+
         #endregion
-        
+
         #region 系统状态属性
-        
+
         public string SystemRunningStatus
         {
             get => _systemRunningStatus;
             set => SetProperty(ref _systemRunningStatus, value);
         }
-        
+
         public string EmergencyStopStatus
         {
             get => _emergencyStopStatus;
             set => SetProperty(ref _emergencyStopStatus, value);
         }
-        
+
         public string AlarmStatus
         {
             get => _alarmStatus;
             set => SetProperty(ref _alarmStatus, value);
         }
-        
+
         public string PauseStatus
         {
             get => _pauseStatus;
             set => SetProperty(ref _pauseStatus, value);
         }
-        
+
         public string ProductionModeColor
         {
             get => _productionModeColor;
             set => SetProperty(ref _productionModeColor, value);
         }
-        
+
         public string ProductionModeText
         {
             get => _productionModeText;
             set => SetProperty(ref _productionModeText, value);
         }
-        
+
         // 系统状态布尔属性
         public bool SystemRunningIsOn
         {
             get => _systemRunningIsOn;
             set => SetProperty(ref _systemRunningIsOn, value);
         }
-        
+
         public bool EmergencyStopIsOn
         {
             get => _emergencyStopIsOn;
             set => SetProperty(ref _emergencyStopIsOn, value);
         }
-        
+
         public bool AlarmIsOn
         {
             get => _alarmIsOn;
             set => SetProperty(ref _alarmIsOn, value);
         }
-        
+
         public bool PauseIsOn
         {
             get => _pauseIsOn;
             set => SetProperty(ref _pauseIsOn, value);
         }
-        
+
         #endregion
-        
+
         #region 物料清除命令方法
-        
+
         private void ExecuteMaterialA_Clear()
         {
             MaterialA_Barcode = "";
             MaterialA_Count = "0";
             _uiLogger.Info("已清除物料A信息");
         }
-        
+
         private void ExecuteMaterialB_Clear()
         {
             MaterialB_Barcode = "";
             MaterialB_Count = "0";
             _uiLogger.Info("已清除物料B信息");
         }
-        
+
         private void ExecuteMaterialNG_Clear()
         {
             MaterialNG_Barcode = "";
             MaterialNG_Count = "0";
             _uiLogger.Info("已清除NG物料信息");
         }
-        
+
         #endregion
-        
+
         #region 物料优先级调整命令方法
-        
+
         private void ExecuteMaterialA_IncreasePriority()
         {
             if (int.TryParse(MaterialA_Priority, out int currentPriority) && currentPriority > 1)
@@ -1022,7 +1048,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 _uiLogger.Info("已提升物料A优先级");
             }
         }
-        
+
         private void ExecuteMaterialB_IncreasePriority()
         {
             if (int.TryParse(MaterialB_Priority, out int currentPriority) && currentPriority > 1)
@@ -1031,7 +1057,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 _uiLogger.Info("已提升物料B优先级");
             }
         }
-        
+
         private void ExecuteMaterialNG_IncreasePriority()
         {
             if (int.TryParse(MaterialNG_Priority, out int currentPriority) && currentPriority > 1)
@@ -1040,14 +1066,14 @@ namespace MarkingMachineFeeder.Viewmodel
                 _uiLogger.Info("已提升NG物料优先级");
             }
         }
-        
+
         #endregion
-        
+
         #region 系统控制命令方法
-        
+
         // 复位状态标志，防止重复执行
         private bool _isResetting = false;
-        
+
         private async void ExecuteSystemReset()
         {
             // 防止重复执行
@@ -1056,11 +1082,11 @@ namespace MarkingMachineFeeder.Viewmodel
                 _uiLogger.WarnRaw("系统复位正在进行中，请等待完成");
                 return;
             }
-            
+
             try
             {
                 _isResetting = true;
-                
+                ClearBinSelectSignals();
                 _uiLogger.Info("处理已开始: {0}", "用户触发系统复位");
 
                 var parameters = Ewan.Model.System.SystemParametersManager.Instance.Parameters;
@@ -1085,6 +1111,15 @@ namespace MarkingMachineFeeder.Viewmodel
                 PauseIsOn = false;
                 ProductionModeText = "复位中";
                 ProductionModeColor = "Gray";
+                var beltModule = Ewan.Core.Module.BeltConveyorModule.Instance();
+                if (beltModule != null)
+                {
+                    // 1. 清空所有业务和系统级的皮带冻结标志
+                    beltModule.ClearAllLocks();
+
+                    // 2. 强行调用公共方法，让皮带直接跑起来
+                    beltModule.StartBeltReverse();
+                }
 
                 _uiLogger.Info("处理已完成: {0}", "复位命令已发送");
             }
@@ -1097,7 +1132,35 @@ namespace MarkingMachineFeeder.Viewmodel
                 _isResetting = false;
             }
         }
-        
+
+        private void ClearBinSelectSignals()
+        {
+            if (LayeredIOManager.Instance()?.Ctx == null) return;
+
+            LayeredIOManager.Instance().Ctx.Off(x => x.料仓1选择信号);
+            LayeredIOManager.Instance().Ctx.Off(x => x.料仓2选择信号);
+            LayeredIOManager.Instance().Ctx.Off(x => x.料仓3选择信号);
+            LayeredIOManager.Instance().Ctx.Off(x => x.料仓1吹气电磁阀);
+            LayeredIOManager.Instance().Ctx.Off(x => x.料仓2吹气电磁阀);
+            LayeredIOManager.Instance().Ctx.Off(x => x.料仓3吹气电磁阀);
+            LayeredIOManager.Instance().Ctx.Off(x => x.料仓1定位电磁阀);
+            LayeredIOManager.Instance().Ctx.Off(x => x.料仓2定位电磁阀);
+            LayeredIOManager.Instance().Ctx.Off(x => x.料仓3定位电磁阀);
+            LayeredIOManager.Instance().Ctx.Off(x => x.触发机械手皮带线允许取料);
+            LayeredIOManager.Instance().Ctx.Off(x => x.发送扫码完成信号);
+            LayeredIOManager.Instance().Ctx.Off(x => x.触发机械手放置料仓);
+            LayeredIOManager.Instance().Ctx.Off(x => x.发送取料指令);
+            LayeredIOManager.Instance().Ctx.Off(x => x.发送放入小车指令);
+            LayeredIOManager.Instance().Ctx.Off(x => x.定位夹持);
+            LayeredIOManager.Instance().Ctx.Off(x => x.DO16);
+            LayeredIOManager.Instance().Ctx.Off(x => x.DO24);
+            SystemParametersManager.Instance?.Parameters?.dic_有无料.Clear();
+
+            SystemParametersManager.Instance.Parameters._ringLineRisingEdge = false;
+
+            SystemParametersManager.Instance.Parameters._ringLineArmed = false;
+
+        }
         /// <summary>
         /// 等待信号脉冲（上升沿） - 通过轮询检测从false到true的跳变
         /// </summary>
@@ -1107,51 +1170,51 @@ namespace MarkingMachineFeeder.Viewmodel
         /// <returns>是否成功接收到脉冲</returns>
         private async System.Threading.Tasks.Task<bool> WaitForSignalPulse(
             Func<bool> readFunc,
-            string signalName, 
+            string signalName,
             int timeoutMs)
         {
             var startTime = DateTime.Now;
             bool lastState = false;
-            
+
             _uiLogger.InfoRaw($"等待{signalName}脉冲...");
-            
+
             while ((DateTime.Now - startTime).TotalMilliseconds < timeoutMs)
             {
                 try
                 {
                     bool currentState = readFunc();
-                    
+
                     // 检测上升沿（从false到true）
                     if (!lastState && currentState)
                     {
                         _uiLogger.InfoRaw($"{signalName}脉冲已接收");
                         return true;
                     }
-                    
+
                     lastState = currentState;
                 }
                 catch (Exception ex)
                 {
                     _uiLogger.Error("处理错误: {0} - {1}", $"读取{signalName}", ex.Message);
                 }
-                
+
                 await System.Threading.Tasks.Task.Delay(50);  // 50ms检查间隔
             }
-            
+
             _uiLogger.WarnRaw($"{signalName}脉冲等待超时");
             return false;
         }
-        
+
         private void ExecuteEmergencyStop()
         {
             try
             {
                 _uiLogger.Warn("处理已完成: {0}", "用户触发紧急停止");
-                
+
                 // 调用系统控制服务紧急停止
                 LogicManager.Instance().SendStopPulse();
                 LogicManager.Instance().EmergencyStop();
-                
+
                 // 更新界面状态
                 SystemRunningStatus = "Red";
                 SystemRunningIsOn = false;
@@ -1161,7 +1224,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 PauseIsOn = false;
                 ProductionModeText = "急停状态";
                 ProductionModeColor = "Red";
-                
+
                 _uiLogger.Warn("处理已完成: {0}", "紧急停止操作完成");
             }
             catch (Exception ex)
@@ -1169,7 +1232,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 _uiLogger.Error("处理错误: {0} - {1}", "紧急停止操作", ex.Message);
             }
         }
-        
+
         private async void ExecuteClearAlarm()
         {
             try
@@ -1198,7 +1261,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 _uiLogger.Error("处理错误: {0} - {1}", "清除报警", ex.Message);
             }
         }
-        
+
         private void ExecuteSystemStart()
         {
             try
@@ -1206,7 +1269,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 _uiLogger.InfoRaw("用户触发系统启动");
 
                 var parameters = Ewan.Model.System.SystemParametersManager.Instance.Parameters;
-                
+
                 if (!LogicManager.Instance().AreSafetyDoorsClosed())
                 {
                     System.Windows.MessageBox.Show(
@@ -1257,7 +1320,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 PauseIsOn = false;
                 ProductionModeText = parameters.HighSpeedModeEnabled ? "运行中（高速）" : "运行中（低速-调试）";
                 ProductionModeColor = "Green";
-                
+
                 _uiLogger.InfoRaw("系统启动完成");
             }
             catch (Exception ex)
@@ -1265,16 +1328,16 @@ namespace MarkingMachineFeeder.Viewmodel
                 _uiLogger.Error("处理错误: {0} - {1}", "系统启动操作", ex.Message);
             }
         }
-        
+
         private void ExecuteSystemPause()
         {
             try
             {
                 _uiLogger.Info("处理已完成: {0}", "用户请求暂停系统");
-                
+
                 // 调用系统控制服务暂停系统
                 LogicManager.Instance().Pause();
-                
+
                 // 更新界面状态
                 SystemRunningStatus = "Yellow";
                 SystemRunningIsOn = true;
@@ -1282,7 +1345,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 PauseIsOn = true;
                 ProductionModeText = "暂停中";
                 ProductionModeColor = "Orange";
-                
+
                 _uiLogger.Info("处理已完成: {0}", "系统暂停操作完成");
             }
             catch (Exception ex)
@@ -1296,10 +1359,10 @@ namespace MarkingMachineFeeder.Viewmodel
             try
             {
                 _uiLogger.Info("处理已完成: {0}", "用户请求恢复系统");
-                
+
                 // 调用系统控制服务恢复系统
                 LogicManager.Instance().Resume();
-                
+
                 // 更新界面状态
                 SystemRunningStatus = "Green";
                 SystemRunningIsOn = true;
@@ -1309,7 +1372,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 PauseIsOn = false;
                 ProductionModeText = "运行中";
                 ProductionModeColor = "Green";
-                
+
                 _uiLogger.Info("处理已完成: {0}", "系统恢复操作完成");
             }
             catch (Exception ex)
@@ -1317,7 +1380,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 _uiLogger.Error("处理错误: {0} - {1}", "系统恢复操作", ex.Message);
             }
         }
-        
+
         private void ExecuteSystemStop()
         {
             try
@@ -1327,7 +1390,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 // 停止脉冲（硬件）+ 新架构停止逻辑（LogicManager）
                 LogicManager.Instance().SendStopPulse();
                 LogicManager.Instance().Stop();
-                
+
                 // 更新界面状态
                 SystemRunningStatus = "Gray";
                 SystemRunningIsOn = false;
@@ -1337,7 +1400,7 @@ namespace MarkingMachineFeeder.Viewmodel
                 PauseIsOn = false;
                 ProductionModeText = "已停止（需复位）";
                 ProductionModeColor = "Gray";
-                
+
                 _uiLogger.Info("处理已完成: {0}", "系统停止操作完成");
             }
             catch (Exception ex)
@@ -1345,9 +1408,146 @@ namespace MarkingMachineFeeder.Viewmodel
                 _uiLogger.Error("处理错误: {0} - {1}", "系统停止操作", ex.Message);
             }
         }
-        
+
         #endregion
-        
+
+        #region 上下料数量监听与汇总
+
+        /// <summary>
+        /// 注册上下料完成消息监听。主界面数量不再使用写死值，而是绑定到实际流程完成消息。
+        /// </summary>
+        private void RegisterLoadingUnloadingCounterListener()
+        {
+            try
+            {
+                _loadingUnloadingSubscription = MessageHub.Current.Subscribe<LoadingUnloadingStateMessage>(OnLoadingUnloadingStateReceived);
+            }
+            catch (Exception ex)
+            {
+                //_uiLogger.Error("处理错误: {0} - {1}", "上下料数量监听器注册", ex.Message);
+            }
+        }
+
+        private void UnregisterLoadingUnloadingCounterListener()
+        {
+            try
+            {
+                _loadingUnloadingSubscription?.Dispose();
+                _loadingUnloadingSubscription = null;
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error("处理错误: {0} - {1}", "上下料数量监听器取消注册", ex.Message);
+            }
+        }
+
+        int I_NowTHouse = 0;
+        int I_OldTHouse = 0;
+        private void OnLoadingUnloadingStateReceived(LoadingUnloadingStateMessage message)
+        {
+            try
+            {
+                I_NowTHouse = DateTime.Now.Hour;
+                if (I_NowTHouse != I_OldTHouse)
+                {
+                    LoadingUPH = "0";
+                    UnloadingUPH = "0";
+                    SystemParametersManager.Instance.Parameters.i_上料速率 = 0;
+                    SystemParametersManager.Instance.Parameters.i_下料速率 = 0;
+                }
+                I_OldTHouse = I_NowTHouse;
+                if (message == null || message.State != LoadingUnloadingState.Completed)
+                {
+                    return;
+                }
+
+                System.Windows.Application.Current?.Dispatcher.Invoke(() =>
+                {
+                    if (message.Operation == LoadingUnloadingOperation.Loading)
+                    {
+
+                        if (message.BinNumber == 1)
+                        {
+                            MaterialA_Count = (int.Parse(MaterialA_Count) + 1).ToString();
+                            SystemParametersManager.Instance.Parameters.i_上料速率++;
+                        }
+                        else if (message.BinNumber == 2)
+                        {
+                            MaterialB_Count = (int.Parse(MaterialB_Count) + 1).ToString();
+                            SystemParametersManager.Instance.Parameters.i_下料速率++;
+                        }
+                        LoadingUPH = (int.Parse(LoadingUPH) + 1).ToString();
+                        SystemParametersManager.Instance.Parameters.i_上料速率++;
+                    }
+                    else if (message.Operation == LoadingUnloadingOperation.Unloading)
+                    {
+                        UnloadingUPH = (int.Parse(LoadingUPH) + 1).ToString();
+
+                        SystemParametersManager.Instance.Parameters.i_下料速率++;
+                    }
+                    foreach (var temp in SystemParametersManager.Instance.Parameters.dic_料仓单号)
+                    {
+                        if (temp.Value == 2 && MaterialB_Barcode != temp.Key)
+                        {
+                            MaterialB_Barcode = temp.Key;
+                        }
+                        if (temp.Value == 1 && MaterialA_Barcode != temp.Key)
+                        {
+                            MaterialA_Barcode = temp.Key;
+                        }
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error("处理错误: {0} - {1}", "处理上下料数量变化", ex.Message);
+            }
+        }
+
+
+        /// <summary>
+        /// 从 SystemParametersManager 加载数量到 UI 绑定属性
+        /// 用于程序启动时或参数保存后同步显示
+        /// </summary>
+        private void LoadCountsFromParameters()
+        {
+            try
+            {
+                var parameters = SystemParametersManager.Instance.Parameters;
+
+                // 加载速率（UPH）
+                LoadingUPH = parameters.i_上料速率.ToString();
+                UnloadingUPH = parameters.i_下料速率.ToString();
+
+                // 加载料仓数量（如果需要持久化，目前 MaterialA_Count/MaterialB_Count 没有保存在 Parameters 中）
+                // 如果已经在 Parameters 中存储了料仓数量，可以类似加载：
+                MaterialA_Count = parameters.i_料仓1数量.ToString();
+                MaterialB_Count = parameters.i_料仓2数量.ToString();
+                foreach (var temp in SystemParametersManager.Instance.Parameters.dic_料仓单号)
+                {
+                    if (temp.Value == 2 && MaterialB_Barcode != temp.Key)
+                    {
+                        MaterialB_Barcode = temp.Key;
+                    }
+                    if (temp.Value == 1 && MaterialA_Barcode != temp.Key)
+                    {
+                        MaterialA_Barcode = temp.Key;
+                    }
+                }
+                // 如果料仓数量没有保存，则可以保持原有默认值或不做处理
+
+                _uiLogger.Info("已从参数加载数量统计：上料速率={0}, 下料速率={1}", parameters.i_上料速率, parameters.i_下料速率);
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.Error("加载数量参数失败: {0}", ex.Message);
+            }
+        }
+
+
+
+        #endregion
+
         #region 系统状态监听
 
         /// <summary>

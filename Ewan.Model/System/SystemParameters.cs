@@ -1,4 +1,7 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace Ewan.Model.System
 {
@@ -115,7 +118,26 @@ namespace Ewan.Model.System
         /// 需要保持的切栈桥车数量
         /// </summary>
         public int CuttingBridgeCarReserveCount { get; set; } = 0;
+        public int i_料仓1数量 = 0;
+        public int i_料仓2数量 = 0;
+        public int i_上料速率 = 0;
+        public int i_下料速率 = 0;
 
+        public Dictionary<string, int> dic_料仓单号 = new Dictionary<string, int>();
+        [XmlIgnore]
+        public Dictionary<int, bool> dic_有无料 = new Dictionary<int, bool>();
+        [XmlIgnore]
+        public bool _ringLineRisingEdge = false;
+        [XmlIgnore]
+        public bool _ringLineArmed = true;
+        [XmlIgnore]
+        public bool _ringLineIsLoading = true;
+        [XmlIgnore]
+        public int _emptyCount = 0;
+        [XmlIgnore]
+        public int _cuttingBridgeCarCount = 0; 
+
+        public string str_当前工单号 = string.Empty;
         #region CodeReader
 
         /// <summary>
@@ -206,7 +228,10 @@ namespace Ewan.Model.System
         /// 环线设备编码
         /// </summary>
         public string MesRingLineDeviceCode { get; set; } = string.Empty;
-
+        /// <summary>
+        /// 小车间隔数量
+        /// </summary>
+        public int I_小车间隔数量 { get; set; } = 0;
         #endregion
 
         /// <summary>
@@ -291,5 +316,6 @@ namespace Ewan.Model.System
 
             return true;
         }
+
     }
 }

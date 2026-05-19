@@ -44,7 +44,19 @@ namespace Ewan.Core.Module
         private const int BELT_AXIS_ID = 3; // 皮带轴ID
 
         #endregion
+        #region 单例模式
 
+        private static readonly Lazy<BeltConveyorModule> _instance = new Lazy<BeltConveyorModule>(() => new BeltConveyorModule());
+
+        /// <summary>
+        /// 获取皮带输送控制模块的单例实例
+        /// </summary>
+        public static BeltConveyorModule Instance()
+        {
+            return _instance.Value;
+        }
+
+        #endregion
         #region 公共属性
 
         /// <summary>
@@ -78,7 +90,15 @@ namespace Ewan.Core.Module
         {
             get { return _requestTracker.HasAnyStopRequest; }
         }
-
+        public void ClearAllLocks()
+        {
+            lock (_stateLock)
+            {
+                _systemStopped = false; // 清除系统级停止标志
+                _requestTracker.Clear(); // 清空业务级(上下料)的遗留停止请求
+                _uiLogger.InfoRaw("处理已完成: 皮带输送控制的所有锁定已强制清除");
+            }
+        }
         #endregion
 
         #region BaseModule 实现
@@ -157,8 +177,9 @@ namespace Ewan.Core.Module
                     }
 
                     // ========== 第三层：业务控制请求 ==========
-                    bool hasBusinessStopRequest = _requestTracker.HasAnyStopRequest;
-
+                    //bool hasBusinessStopRequest = _requestTracker.HasAnyStopRequest;
+                    bool hasBusinessStopRequest = _requestTracker.HasRequestFrom(BeltConveyorControlSource.MaterialLoading);
+                    //bool hasBusinessStopRequest = _requestTracker.HasRequestFrom(BeltConveyorControlSource.MaterialUnloading);
                     if (hasBusinessStopRequest)
                     {
                         // 有业务停止请求，停止皮带
@@ -224,7 +245,7 @@ namespace Ewan.Core.Module
         /// <summary>
         /// 启动皮带反向运行
         /// </summary>
-        private void StartBeltReverse()
+        public void StartBeltReverse()
         {
             try
             {
@@ -342,10 +363,10 @@ namespace Ewan.Core.Module
                     {
                         case SystemControlCommand.EmergencyStop:
                             // 紧急停止 - 立即停止皮带
-                            _systemStopped = true;
+                            //_systemStopped = true;
                             if (_beltRunning)
                             {
-                                StopBelt();
+                                //StopBelt();
                                 BroadcastStatus(BeltConveyorStatusMessage.SystemStopped("紧急停止"));
                             }
                             _uiLogger.WarnRaw("处理已完成: {0}",
@@ -354,14 +375,14 @@ namespace Ewan.Core.Module
 
                         case SystemControlCommand.Pause:
                             // 暂停 - 停止皮带
-                            _systemStopped = true;
+                            //_systemStopped = true;
                             if (_beltRunning)
                             {
-                                StopBelt();
+                                //StopBelt();
                                 BroadcastStatus(BeltConveyorStatusMessage.SystemStopped("系统暂停"));
                             }
-                            _uiLogger.InfoRaw("处理已完成: {0}",
-                                "皮带已暂停");
+                            //_uiLogger.InfoRaw("处理已完成: {0}",
+                                //"皮带已暂停");
                             break;
 
                         case SystemControlCommand.Resume:
@@ -373,10 +394,11 @@ namespace Ewan.Core.Module
 
                         case SystemControlCommand.Stop:
                             // 停止 - 停止皮带
-                            _systemStopped = true;
+                            //_systemStopped = true;
                             if (_beltRunning)
                             {
-                                StopBelt();
+                                //INK
+                                //StopBelt();
                                 BroadcastStatus(BeltConveyorStatusMessage.SystemStopped("系统停止"));
                             }
                             _uiLogger.InfoRaw("处理已完成: {0}",

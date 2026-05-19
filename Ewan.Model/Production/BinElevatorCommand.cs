@@ -26,9 +26,13 @@ namespace Ewan.Model.Production
         /// <summary>
         /// 强制停止所有料仓（不需要回复）
         /// </summary>
-        ForceStopAll
+        ForceStopAll,
+            /// <summary>
+        /// 移动（不需要回复）
+        /// </summary>
+        MoveRelative
     }
-    
+
     /// <summary>
     /// 料仓升降执行状态
     /// </summary>
@@ -38,17 +42,17 @@ namespace Ewan.Model.Production
         /// 空闲状态
         /// </summary>
         Idle,
-        
+
         /// <summary>
         /// 执行中
         /// </summary>
         Executing,
-        
+
         /// <summary>
         /// 执行完成
         /// </summary>
         Completed,
-        
+
         /// <summary>
         /// 执行出错
         /// </summary>
@@ -85,7 +89,7 @@ namespace Ewan.Model.Production
         /// </summary>
         Error
     }
-    
+
     /// <summary>
     /// 料仓升降控制指令消息
     /// </summary>
@@ -100,17 +104,17 @@ namespace Ewan.Model.Production
         /// 料仓编号（1, 2, 3）
         /// </summary>
         public int BinNumber { get; set; }
-        
+
         /// <summary>
         /// 控制指令
         /// </summary>
         public BinCommand Command { get; set; }
-        
+        public double Distance { get; set; }
         /// <summary>
         /// 指令ID（用于跟踪指令执行）
         /// </summary>
         public string CommandId { get; set; }
-        
+
         /// <summary>
         /// 消息时间戳
         /// </summary>
@@ -120,7 +124,7 @@ namespace Ewan.Model.Production
         /// 指令来源
         /// </summary>
         public string Source { get; set; }
-        
+
         /// <summary>
         /// 指令描述
         /// </summary>
@@ -174,6 +178,17 @@ namespace Ewan.Model.Production
         /// <param name="source">消息来源</param>
         public static BinElevatorCommandMessage LoadingCompleted(int binNumber, string source)
             => new BinElevatorCommandMessage(binNumber, BinCommand.LoadingCompleted, string.Empty, source);
+
+        public static BinElevatorCommandMessage MoveRelative(int binNumber, double distance, string source = "")
+        {
+            return new BinElevatorCommandMessage
+            {
+                Command = BinCommand.MoveRelative,
+                BinNumber = binNumber,
+                Distance = distance,
+                Source = source
+            };
+        }
     }
 
     /// <summary>
@@ -190,22 +205,22 @@ namespace Ewan.Model.Production
         /// 料仓编号（1, 2, 3）
         /// </summary>
         public int BinNumber { get; set; }
-        
+
         /// <summary>
         /// 执行状态
         /// </summary>
         public BinExecuteState State { get; set; }
-        
+
         /// <summary>
         /// 当前执行的指令
         /// </summary>
         public BinCommand CurrentCommand { get; set; }
-        
+
         /// <summary>
         /// 指令ID
         /// </summary>
         public string CommandId { get; set; }
-        
+
         /// <summary>
         /// 感应器状态
         /// </summary>
@@ -220,12 +235,12 @@ namespace Ewan.Model.Production
         /// 操作结果
         /// </summary>
         public BinOperationResult OperationResult { get; set; }
-        
+
         /// <summary>
         /// 状态描述
         /// </summary>
         public string Description { get; set; }
-        
+
         /// <summary>
         /// 错误信息（当State为Error时）
         /// </summary>

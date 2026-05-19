@@ -50,7 +50,25 @@ namespace Ewan.Mes.Models.Dto.ZHJW.RingLine
         [JsonProperty("t")]
         public string Timestamp { get; set; }
     }
+    public class FeedingUnloadingStateResponseModel
+    {
+        [JsonProperty("device_code")]
+        public string DeviceCode { get; set; }
 
+        [JsonProperty("is_feeding")]
+        public bool IsFeeding { get; set; }
+        [JsonProperty("is_unloading")]
+        public bool IsUnloading { get; set; }
+        [JsonProperty("is_running")]
+        public bool IsRunning { get; set; }
+        [JsonProperty("success")]
+        public bool Success { get; set; }
+        [JsonProperty("message")]
+        public bool Message { get; set; }
+
+        [JsonProperty("t")]
+        public string Timestamp { get; set; }
+    }
     /// <summary>
     /// 前料仓上料成功请求
     /// </summary>

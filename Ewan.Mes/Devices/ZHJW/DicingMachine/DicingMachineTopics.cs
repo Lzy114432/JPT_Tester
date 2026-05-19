@@ -82,6 +82,8 @@ namespace Ewan.Mes.Devices.ZHJW.DicingMachine
             /// 规格型号响应
             /// </summary>
             public static readonly EndpointTemplate ResponseModel = new EndpointTemplate("/device/{设备ID}/down/response_model/{设备编码}", qosLevel: 2);
+            //public static readonly EndpointTemplate FeedingUnloadingStateResponse = new EndpointTemplate("/device/{设备ID}/down/feeding_unloading_state_response/{设备编码}", qosLevel: 2);
+
         }
     }
 }

@@ -38,15 +38,15 @@ namespace Ewan.Core.Module
         private DateTime _lastSystemStopPulseTime = DateTime.MinValue;
         private readonly TimeSpan _systemStopPulseInterval = TimeSpan.FromMilliseconds(300);
         private const int SYSTEM_STOP_PULSE_WIDTH_MS = 200;
-        
+
         // 时间间隔设置
         private int _dataSyncInterval = 10;     // IO数据同步间隔(ms) - 保持快速响应
-        
+
         // 性能监控
         private Stopwatch _performanceWatch = new Stopwatch();
         private long _syncCount = 0;
         private double _avgSyncTime = 0;
-        
+
         // 报警监控状态记录 - 使用LayeredIO内置边缘检测，不再需要手动状态跟踪
         // private bool _lastEmergencyButtonState = false;
         // private bool _lastRobotAlarmState = false;
@@ -128,7 +128,7 @@ namespace Ewan.Core.Module
 
                 // Tick (10ms)：输入同步 + Snapshot 更新 + 边沿检测 + dirty 输出下发
                 _ioManager.Tick();
-                
+
                 // 检查报警状态（减少频率避免过频检查）
                 _alarmCheckCounter++;
                 if (_alarmCheckCounter >= _alarmCheckInterval)
@@ -136,13 +136,13 @@ namespace Ewan.Core.Module
                     CheckAlarmInputs();
                     _alarmCheckCounter = 0;
                 }
-                
+
                 _performanceWatch.Stop();
-                
+
                 // 更新性能统计
                 _syncCount++;
                 _avgSyncTime = (_avgSyncTime * (_syncCount - 1) + _performanceWatch.ElapsedMilliseconds) / _syncCount;
-                
+
                 // 每1000次输出一次性能报告
                 if (_syncCount % 100 == 0)
                 {
@@ -201,13 +201,13 @@ namespace Ewan.Core.Module
             {
                 // 检查暂停级报警 - X12, X13, X14
                 CheckPauseAlarms();
-                
+
                 // 检查紧急停机报警 - X0, X15, X17, X19
                 CheckEmergencyAlarms();
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("模块运行错误: {0} - {1}", 
+                _uiLogger.Error("模块运行错误: {0} - {1}",
                     "SafetyModule-CheckAlarmInputs", ex.Message);
             }
         }
@@ -257,6 +257,7 @@ namespace Ewan.Core.Module
         /// <summary>
         /// 检查紧急停机报警 - X0, X15, X17, X19
         /// </summary>
+        bool b_door = false;
         private void CheckEmergencyAlarms()
         {
             // X0 - 急停按钮（使用LayeredIO内置上升沿检测 + 防抖）
@@ -277,15 +278,35 @@ namespace Ewan.Core.Module
                     SendEmergencyStopCommand("机械手报警信号");
                 }
             }
-
-            // X17 - 下相机报警信号（使用LayeredIO内置上升沿检测 + 防抖）
-            if (_ioManager.Ctx.Edge.R(x => x.下相机报警信号))
+            if ((!b_door && (_ioManager.Ctx.R.前门电磁感应信号 || _ioManager.Ctx.R.侧门电磁感应信号 || _ioManager.Ctx.R.机械臂门电磁感应信号)) && !SystemParametersManager.Instance.Parameters.SafetyDoorAlarmBypass)
             {
-                if (CanTriggerAlarm(ref _lastLowerCameraAlarmTime))
+                if (CanTriggerAlarm(ref _lastRobotAlarmTime))
                 {
-                    SendEmergencyStopCommand("下相机报警信号");
+
+                    SendEmergencyStopCommand($"前门电磁感应信号:{_ioManager.Ctx.R.前门电磁感应信号},侧门电磁感应信号:{_ioManager.Ctx.R.侧门电磁感应信号},机械臂门电磁感应信号:{_ioManager.Ctx.R.机械臂门电磁感应信号}");
+                    b_door = true;
+                    //_ioManager.Ctx.On(x => x.红灯);
+                    //_ioManager.Ctx.On(x => x.蜂鸣器);
                 }
             }
+            else if(b_door&& (!_ioManager.Ctx.R.前门电磁感应信号 && !_ioManager.Ctx.R.侧门电磁感应信号 && !_ioManager.Ctx.R.机械臂门电磁感应信号))
+            {
+                b_door = false;
+            }
+            //// X17 - 下相机报警信号（使用LayeredIO内置上升沿检测 + 防抖）
+            //if (_ioManager.Ctx.Edge.R(x => x.下相机报警信号))
+            //{
+            //    if (CanTriggerAlarm(ref _lastLowerCameraAlarmTime))
+            //    {
+
+            //        var beltReleaseMessage = BeltConveyorControlMessage.Release(
+            //            BeltConveyorControlSource.MaterialLoading,
+            //            "装料完成，释放皮带");
+            //        MessageHub.Current.Post(beltReleaseMessage);
+
+            //        SendEmergencyStopCommand("下相机报警信号");
+            //    }
+            //}
 
             // X19 - 机械臂气缸报警信号（使用LayeredIO内置上升沿检测 + 防抖）
             if (_ioManager.Ctx.Edge.R(x => x.机械臂气缸报警信号))
@@ -334,14 +355,14 @@ namespace Ewan.Core.Module
                 // 发送状态指示命令到SystemStatusIndicatorModule
                 var statusIndicatorCommand = new StatusIndicatorCommand(SystemStatus.Warning, reason, false);
                 MessageHub.Current.Post(statusIndicatorCommand);
-                
+
                 // 记录日志
-                _uiLogger.Warn("处理已完成: {0}", 
+                _uiLogger.Warn("处理已完成: {0}",
                     $"系统暂停命令已发送: {reason}");
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("模块运行错误: {0} - {1}", 
+                _uiLogger.Error("模块运行错误: {0} - {1}",
                     "SafetyModule-SendPauseCommand", ex.Message);
             }
         }
@@ -362,14 +383,14 @@ namespace Ewan.Core.Module
                 // 发送状态指示命令到SystemStatusIndicatorModule
                 var statusIndicatorCommand = new StatusIndicatorCommand(SystemStatus.Critical, reason, true);
                 MessageHub.Current.Post(statusIndicatorCommand);
-                
+
                 // 记录日志
-                _uiLogger.Error("处理已完成: {0}", 
+                _uiLogger.Error("处理已完成: {0}",
                     $"紧急停机命令已发送: {reason}");
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("模块运行错误: {0} - {1}", 
+                _uiLogger.Error("模块运行错误: {0} - {1}",
                     "SafetyModule-SendEmergencyStopCommand", ex.Message);
             }
         }
@@ -388,11 +409,11 @@ namespace Ewan.Core.Module
                 // 创建并发送安全报警消息 (使用强类型消息)
                 var safetyAlertMessage = new SafetyAlertMessage(alertType, alertLevel, description, requireEmergencyStop);
                 MessageHub.Current.Post(safetyAlertMessage);
-                
+
                 // 记录日志
-                _uiLogger.Error("发生错误: {0}", 
+                _uiLogger.Error("发生错误: {0}",
                     "安全报警触发: " + description);
-                
+
                 // 同时发送给状态指示器（保持原有功能）
                 var statusIndicatorCommand = new StatusIndicatorCommand(
                     alertLevel == SafetyAlertLevel.Critical ? SystemStatus.Critical :
@@ -402,7 +423,7 @@ namespace Ewan.Core.Module
             }
             catch (Exception ex)
             {
-                _uiLogger.Error("模块运行错误: {0} - {1}", 
+                _uiLogger.Error("模块运行错误: {0} - {1}",
                     "SafetyModule-SendSafetyAlert", ex.Message);
             }
         }
@@ -466,7 +487,7 @@ namespace Ewan.Core.Module
             try
             {
                 ctx.Pulse(x => x.暂停, ROBOT_PAUSE_PULSE_WIDTH_MS);
-                _uiLogger.Info("处理已完成: {0}", $"暂停输出脉冲发送: {context}");
+                //_uiLogger.Info("处理已完成: {0}", $"暂停输出脉冲发送: {context}");
             }
             catch (Exception ex)
             {
@@ -636,7 +657,7 @@ namespace Ewan.Core.Module
         /// 获取当前同步状态
         /// </summary>
         public bool IsConnected => _ioManager?.IsConnected ?? false;
-        
+
         /// <summary>
         /// 手动发送安全报警（供其他模块调用）
         /// </summary>

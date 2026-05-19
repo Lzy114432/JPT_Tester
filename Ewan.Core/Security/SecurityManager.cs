@@ -398,5 +398,10 @@ namespace Ewan.Core.Security
         {
             return HashPassword(password) == hash;
         }
+
+        public void fun_进料仓计数()
+        { 
+        
+        }
     }
 }

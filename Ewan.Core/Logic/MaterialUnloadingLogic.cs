@@ -1,6 +1,12 @@
 using Ewan.Core.IO;
+using Ewan.Core.Mes;
 using Ewan.Core.Plc;
 using Ewan.Core.ScanCode;
+using Ewan.Mes.Devices.ZHJW.DicingMachine;
+using Ewan.Mes.Models.Domain.ZHJW.DicingMachine;
+using Ewan.Mes.Models.Domain.ZHJW.RingLine;
+using Ewan.Mes.Mqtt;
+using Ewan.Mes.Services.ZHJW;
 using Ewan.Model;
 using Ewan.Model.Messages;
 using Ewan.Model.Production;
@@ -9,6 +15,10 @@ using EwanCore.AlarmSystem;
 using EwanCore.Messaging;
 using EwanCore.StateMachine;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Ewan.Core.Logic
@@ -32,27 +42,46 @@ namespace Ewan.Core.Logic
         private readonly LayeredIOManager _ioManager = LayeredIOManager.Instance();
         private readonly SystemParametersManager _parametersManager;
         private readonly ModbusRTUManager _modbusRTUManager;
-
+        private Task<MesRingLineFeedback> _mesFeedingTask;
+        private CancellationTokenSource _mesFeedingCts;
+        private int _mesRetryCount = 0;
+        private Stopwatch sw_状态刷新 = new Stopwatch();
+        private bool b_状态刷新 = false;//第一次不看时间间隔，看标志位
+        // 超时配置（毫秒）
+        private const int MES_REQUEST_TIMEOUT_BUFFER_MS = 5000;
+        private const int MAX_MES_RETRY_COUNT = 3;
+        public Dictionary<string, FeedingUnloadingStateResponseData> dic_上次状态 = new Dictionary<string, FeedingUnloadingStateResponseData>();
+        public Dictionary<string, FeedingUnloadingStateResponseData> dic_当前状态 = new Dictionary<string, FeedingUnloadingStateResponseData>();
+        private int I_间隔上料 = 0;
         private bool _beltStopRequested = false;
-        private bool _ringLineRisingEdge = false;
-        private bool _ringLineIsLoading = false;
-        private bool _ringLineArmed = true;
-        private int _emptyCount = 0;
-        private int _cuttingBridgeCarCount = 0;
+        //private bool _ringLineRisingEdge = false;
+        //private bool _ringLineIsLoading = false;
+        //private bool _ringLineArmed = true;
+        //private int _emptyCount = 0;
+        //private int _cuttingBridgeCarCount = 0;
         private int _selectedBin = 1;
         private string _lastScannedQrCode = string.Empty;
         private int _scanRetryCount = 0;
         private bool _hasMaterial = true;
         private Task<BinElevatorStatusMessage> _materialCheckTask;
 
+        private bool b_下空车008 = false;
+        private bool b_下空车006 = false;
+        private bool b_下空车007 = false;
+
+        //private List<string> ls_上料 = new List<string>();
+        //private List<string> ls_下料 = new List<string>();
+        //private List<string> ls_状态 = new List<string>();
+
         // Modbus寄存器地址
         private const string CART_COMPLETION_REGISTER = "153";
         private const string MATERIAL_STATUS_REGISTER = "178";
 
         // 超时配置（毫秒）
-        private const int WAIT_PICKING_TIMEOUT = 15000;
+        private const int WAIT_PICKING_TIMEOUT = 60000;
+        private const int WAIT_LOADING_COMPLETE_TIMEOUT = 150000;
         private const int WAIT_SCAN_POSITION_TIMEOUT = 10000;
-        private const int WAIT_PUT_CART_TIMEOUT = 15000;
+        private const int WAIT_PUT_CART_TIMEOUT = 60000;
 
         // 消息订阅
         private IDisposable _ringLineSubscription;
@@ -82,20 +111,21 @@ namespace Ewan.Core.Logic
         /// </summary>
         public override void Handler()
         {
+
             switch (SwitchIndex)
             {
                 #region 初始状态
                 case "初始状态":
                     // 检测环线上升沿，有边沿才切换步骤
-                    if (!(_ringLineRisingEdge || (_ringLineIsLoading && _ringLineArmed)))
+                    if (!(_parametersManager.Parameters._ringLineRisingEdge || (_parametersManager.Parameters._ringLineIsLoading && _parametersManager.Parameters._ringLineArmed)))
                     {
                         // 无上升沿时直接标记完成，不切换步骤，避免日志刷屏
                         IsFinish = true;
                         break;
                     }
 
-                    _ringLineRisingEdge |= _ringLineIsLoading && _ringLineArmed;
-                    _ringLineArmed = false;
+                    _parametersManager.Parameters._ringLineRisingEdge |= _parametersManager.Parameters._ringLineIsLoading && _parametersManager.Parameters._ringLineArmed;
+                    _parametersManager.Parameters._ringLineArmed = false;
                     SwitchIndex = "检查环线信号";
                     break;
                 #endregion
@@ -117,7 +147,7 @@ namespace Ewan.Core.Logic
                         if (cartCheckMode == CartCheckMode.EmptyCart)
                         {
                             var reserveCount = Math.Max(0, cartParameters?.EmptyCartReserveCount ?? 0);
-                            if (_emptyCount <= reserveCount)
+                            if (_parametersManager.Parameters._emptyCount <= reserveCount)
                             {
                                 needSendEmptyCar = true;
                             }
@@ -125,7 +155,7 @@ namespace Ewan.Core.Logic
                         else
                         {
                             var reserveCount = Math.Max(0, cartParameters?.CuttingBridgeCarReserveCount ?? 0);
-                            if (_cuttingBridgeCarCount > reserveCount)
+                            if (_parametersManager.Parameters._cuttingBridgeCarCount > reserveCount)
                             {
                                 needSendEmptyCar = true;
                             }
@@ -136,7 +166,36 @@ namespace Ewan.Core.Logic
                             SwitchIndex = "释放空车";
                             return;
                         }
+                        //
+                        cartParameters.I_小车间隔数量 = func_设置空车数量();
+                        if (cartParameters.I_小车间隔数量 != 0 && (sw_状态刷新.Elapsed.TotalSeconds > 30 || !b_状态刷新))
+                        {
+                            b_状态刷新 = true;
+                            sw_状态刷新.Restart();
+                            I_间隔上料 = 0;
+                        }
+                        if (cartParameters.I_小车间隔数量 > I_间隔上料)
+                        {
+                            SwitchIndex = "释放空车";
+                            I_间隔上料++;
+                            return;
+                        }
+                        //if (b_间隔上料)
+                        //{
+                        //    SwitchIndex = "释放空车";
+                        //    b_间隔上料 = false;
+                        //    return;
+                        //}
 
+                        //b_间隔上料 = true;
+
+                        //if (I_间隔上料 >= cartParameters.I_小车间隔数量)
+                        //{
+                        //    SwitchIndex = "释放空车";
+                        //    I_间隔上料 = 0;
+                        //    return;
+                        //}
+                        //I_间隔上料++;
                         SwitchIndex = "检查料仓有料";
                     }
                     break;
@@ -145,6 +204,19 @@ namespace Ewan.Core.Logic
                 #region 检查料仓有料
                 case "检查料仓有料":
                     _selectedBin = GetConfiguredBinNumber();
+                    bool hasMaterial = true;
+                    if (_parametersManager?.Parameters?.MesEnabled == true && _parametersManager.Parameters.dic_料仓单号.Count > 0)
+                    {
+                        _selectedBin = _parametersManager.Parameters.dic_料仓单号[_parametersManager.Parameters.str_当前工单号];
+                    }
+                    if (_parametersManager.Parameters.dic_有无料.ContainsKey(_selectedBin))
+                    {
+                        if (!_parametersManager.Parameters.dic_有无料[_selectedBin])
+                        {
+                            //hasMaterial = false;
+                            SwitchIndex = "释放空车"; return;
+                        }
+                    }
                     if (_materialCheckTask != null)
                     {
                         if (!_materialCheckTask.IsCompleted)
@@ -175,25 +247,26 @@ namespace Ewan.Core.Logic
                             _materialCheckTask = null;
                         }
 
-                        bool hasMaterial = statusResult?.OperationResult == BinOperationResult.HasMaterial;
+                        //bool hasMaterial = statusResult?.OperationResult == BinOperationResult.HasMaterial;
                         bool timedOut = statusResult?.OperationResult == BinOperationResult.Timeout;
 
                         if (hasMaterial)
                         {
                             _hasMaterial = true;
+                            func_定位电磁阀(_selectedBin, true);
                             SwitchIndex = "发送取料指令";
                         }
                         else
                         {
-                            if (timedOut)
-                            {
-                                MessageHub.Current.Post(new AlarmMessage(
-                                    key: "BinElevator.Timeout",
-                                    content: $"料仓{_selectedBin}升降超时，未检测到物料",
-                                    level: AlarmLevel.H,
-                                    needReset: true,
-                                    unit: "BinElevator"));
-                            }
+                            //if (timedOut)
+                            //{
+                            //    MessageHub.Current.Post(new AlarmMessage(
+                            //        key: "BinElevator.Timeout",
+                            //        content: $"料仓{_selectedBin}升降超时，未检测到物料",
+                            //        level: AlarmLevel.H,
+                            //        needReset: true,
+                            //        unit: "BinElevator"));
+                            //}
 
                             _hasMaterial = false;
                             SwitchIndex = "释放空车";
@@ -236,23 +309,75 @@ namespace Ewan.Core.Logic
                         MessageHub.Current.Post(message);
                     }
 
-                    SwitchIndex = "等待取料完成";
+                    SwitchIndex = "等待机械手取料到位";
                     Tw.StartWatch(SwitchIndex);
                     break;
                 #endregion
 
                 #region 等待取料完成
-                case "等待取料完成":
-                    if (_ioManager?.Ctx?.Edge.F(x => x.机械臂取料完成信号) == true)
+                case "等待机械手取料到位":
+                    if (_ioManager?.Ctx?.R.DI4 == true)
                     {
-                        _ioManager?.Ctx?.Off(x => x.发送取料指令);
-                        ClearBinSelectSignals();
-
-                        SwitchIndex = "等待扫码位置";
+                        func_定位电磁阀(_selectedBin, false);
+                        // 2. 发送消息！让Z轴下降5mm
+                        // 这里的 -5.0 就是下降距离，底层监听到后就会自动执行 OnMoveRelative
+                        var moveDownMsg = BinElevatorCommandMessage.MoveRelative(_selectedBin, -40.0, "取料时下降");
+                        MessageHub.Current.Post(moveDownMsg);
+                        //// 3. 开启对应料仓吹气
+                        //Thread.Sleep(2000);
+                        func_吹气(_selectedBin, true);
+                        Thread.Sleep(200);
+                        _ioManager?.Ctx?.On(x => x.DO16);
+                        SwitchIndex = "等待取料完成";
                         Tw.StartWatch(SwitchIndex);
                         return;
                     }
+                    if (Tw.StartCheckIsTimeout(SwitchIndex, WAIT_PICKING_TIMEOUT))
+                    {
+                        MessageHub.Current.Post(new AlarmMessage(
+                            key: "Unloading.Timeout",
+                            content: "等待机械手到位超时",
+                            level: AlarmLevel.M,
+                            needReset: false,
+                            unit: "Unloading"));
+                        ForceCleanup("取等待机械手到位超时");
+                    }
 
+
+                    break;
+
+                case "等待取料完成":
+                    if (_ioManager?.Ctx?.R.机械臂取料完成信号 == true)
+                    {
+                        _ioManager?.Ctx?.Off(x => x.发送取料指令);
+                        _ioManager?.Ctx?.Off(x => x.DO16);
+                        // 2. 发送消息！让Z轴下降5mm
+                        // 这里的 -5.0 就是下降距离，底层监听到后就会自动执行 OnMoveRelative
+
+                        //Thread.Sleep(2000);
+                        //// 3. 开启对应料仓吹气
+
+                        //ClearBinSelectSignals();
+                        Thread.Sleep(200);
+                        SwitchIndex = "等待扫码位置";
+
+                        Tw.StartWatch(SwitchIndex);
+                        return;
+                    }
+                    if (_ioManager.Ctx.R.X16 == true)
+                    {
+                        func_吹气(_selectedBin, false);
+                        _ioManager?.Ctx?.Off(x => x.DO16);
+                        _parametersManager.Parameters.dic_有无料[_selectedBin] = false;
+                        SwitchIndex = "释放空车";
+                        return;
+                    }
+                    //if (_ioManager.Ctx.Edge.R(x => x.下相机报警信号))
+                    //{
+                    //    Thread.Sleep(5000);
+                    //    SwitchIndex = "移动到料仓";
+                    //    return;
+                    //}
                     if (Tw.StartCheckIsTimeout(SwitchIndex, WAIT_PICKING_TIMEOUT))
                     {
                         MessageHub.Current.Post(new AlarmMessage(
@@ -268,13 +393,26 @@ namespace Ewan.Core.Logic
 
                 #region 等待扫码位置
                 case "等待扫码位置":
-                    if (_ioManager?.Ctx?.Edge.R(x => x.移至扫码区到位信号) == true)
+
+                    if (_ioManager?.Ctx?.R.移至扫码区到位信号 == true)
                     {
+                        //var moveDownMsg = BinElevatorCommandMessage.MoveRelative(_selectedBin, 25.0, "取料完成上升");
+                        //MessageHub.Current.Post(moveDownMsg);
+                        //Thread.Sleep(100);
+                        //if (_ioManager?.Ctx?.Edge.R(x => x.移至扫码区到位信号) == true)
+                        //{
                         SwitchIndex = "执行扫码";
                         _scanRetryCount = 0;
                         return;
-                    }
+                        //}
 
+                    }
+                    //if (_ioManager.Ctx.Edge.R(x => x.下相机报警信号))
+                    //{
+                    //    //Thread.Sleep(5000);
+                    //    SwitchIndex = "移动到料仓";
+                    //    return;
+                    //}
                     if (Tw.StartCheckIsTimeout(SwitchIndex, WAIT_SCAN_POSITION_TIMEOUT))
                     {
                         MessageHub.Current.Post(new AlarmMessage(
@@ -289,39 +427,309 @@ namespace Ewan.Core.Logic
                 #endregion
 
                 #region 执行扫码
+                case "到达扫码位置":
+                    // 禁止继续取料
+                    _ioManager?.Ctx?.On(x => x.定位夹持);//定位气缸夹料
+
+                    var beltReleaseMessage1 = BeltConveyorControlMessage.Release(
+                        BeltConveyorControlSource.MaterialLoading,
+                        "装料完成，释放皮带");
+                    MessageHub.Current.Post(beltReleaseMessage1);
+
+                    SwitchIndex = "等待夹料完成";
+                    _scanRetryCount = 0;
+                    Tw.StartWatch(SwitchIndex);
+                    break;
+                case "等待夹料完成":
+                    if (_ioManager?.Ctx?.R.夹持夹紧 == true) // 等待夹料完成信号
+                    {
+                        // 1. 通知机械手取料，同时立刻开始执行扫码
+                        _ioManager?.Ctx?.On(x => x.发送扫码完成信号);
+                        //Thread.Sleep(500);
+                        //_ioManager?.Ctx?.Off(x => x.发送扫码完成信号);
+
+                        _scanRetryCount = 0;
+                        SwitchIndex = "信号交互";
+                        Tw.StartWatch(SwitchIndex);
+                        return;
+                    }
+
+                    // 超时检查
+                    if (Tw.StartCheckIsTimeout(SwitchIndex, WAIT_SCAN_POSITION_TIMEOUT))
+                    {
+                        ForceCleanup("夹料超时");
+                        SwitchIndex = "清理状态";
+                        return;
+                    }
+                    break;
+
+                case "信号交互":
+                    if (_ioManager?.Ctx?.R.移至扫码区到位信号 == true)
+                    {
+                        // 超时检查
+                        if (Tw.StartCheckIsTimeout(SwitchIndex, WAIT_SCAN_POSITION_TIMEOUT))
+                        {
+                            ForceCleanup("夹料超时");
+                            SwitchIndex = "清理状态";
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        _ioManager?.Ctx?.Off(x => x.发送扫码完成信号);
+                        SwitchIndex = "执行扫码";
+                    }
+                    break;
+
                 case "执行扫码":
                     {
+
+
                         var scanParameters = _parametersManager?.Parameters;
                         bool mesEnabled = scanParameters?.MesEnabled ?? false;
                         int maxRetry = scanParameters?.CodeReaderScanRetryCount ?? 3;
                         if (maxRetry <= 0) maxRetry = 3;
 
+                        bool isScanDone = false;
+                        bool isScanSuccess = false;
+
                         if (mesEnabled)
                         {
                             _scanRetryCount++;
-                            _lastScannedQrCode = (ScannerManager.Instance().TriggerScan() ?? string.Empty).Trim();
+                            if (_scanRetryCount < maxRetry)
+                                _lastScannedQrCode = (ScannerManager.Instance().TriggerScan() ?? string.Empty).Trim();
 
-                            if (!string.IsNullOrWhiteSpace(_lastScannedQrCode))
+                            if (!string.IsNullOrWhiteSpace(_lastScannedQrCode) && _lastScannedQrCode != "")
                             {
                                 _uiLogger.InfoRaw("扫码内容: {0}", _lastScannedQrCode);
+                                isScanDone = true;
+                                isScanSuccess = true;
                             }
                             else if (_scanRetryCount < maxRetry)
                             {
-                                return;
+                                return; // 重试条件未竭，继续等待下一周期扫码
                             }
                             else
                             {
-                                //_lastScannedQrCode = string.Empty;
-                                //MessageHub.Current.Post(new AlarmMessage(
-                                //    key: "Scan.Failed",
-                                //    content: $"下料扫码失败：连续扫码{maxRetry}次无结果",
-                                //    level: AlarmLevel.L,
-                                //    needReset: false,
-                                //    unit: "Scanner"));
+                                _uiLogger.WarnRaw("扫码失败：连续扫码{0}次无结果", maxRetry);
+                                isScanDone = true;
+                                isScanSuccess = false;
                             }
                         }
+                        else
+                        {
+                            isScanDone = true;
+                            isScanSuccess = true;
+                        }
 
+                        if (isScanDone)
+                        {
+                            // 扫码动作结束（无论成功或失败），开始结算外围动作
+                            if (_ioManager?.Ctx?.R.移至扫码区到位信号 == true)//等待机械手二次到位
+                            {
+                                //_ioManager?.Ctx?.On(x => x.发送扫码完成信号);
+                                //Thread.Sleep(100);
+                                _ioManager?.Ctx?.Off(x => x.定位夹持);
+                            }
+                            else
+                            {
+                                break;
+                            }
+
+                            // 4. 等待机械手完全把料取走
+                            SwitchIndex = "等待松开夹料";
+                            Tw.StartWatch(SwitchIndex);
+                        }
+                    }
+                    break;
+
+
+                case "等待松开夹料":
+                    // 假设 X16 为 false 即代表松开到位。如果有专属的松开到位传感器，请替换这里。
+                    if (_ioManager?.Ctx?.R.夹持松开 == true)
+                    {
+                        var moveDownMsg = BinElevatorCommandMessage.MoveRelative(_selectedBin, 40.0, "取料完成上升");
+                        MessageHub.Current.Post(moveDownMsg);
+                        // 确认气缸松开到位后，才通知扫码完成
+                        _ioManager?.Ctx?.On(x => x.发送扫码完成信号);
+
+                        SwitchIndex = "发送MES下料信号";
+                        Tw.StartWatch(SwitchIndex);
+                        return;
+                    }
+
+                    // 超时检查
+                    if (Tw.StartCheckIsTimeout(SwitchIndex, WAIT_SCAN_POSITION_TIMEOUT))
+                    {
+                        ForceCleanup("松开定位气缸超时");
+                        SwitchIndex = "清理状态";
+                        return;
+                    }
+                    break;
+
+
+                #endregion
+                #region 发送MES下料信号
+                case "发送MES下料信号":
+                    if (_parametersManager?.Parameters?.MesEnabled != true)
+                    {
+                        _mesRetryCount = 0;
+                        ClearMesFeedingRequest();
                         SwitchIndex = "发送放入小车指令";
+                        return;
+                    }
+                    if (_lastScannedQrCode == "")
+                    {
+                        _uiLogger.Info("扫码失败");
+                        //_ioManager?.Ctx?.On(x => x.料仓3选择信号);
+                        ClearBinSelectSignals();
+                        _ioManager?.Ctx?.On(x => x.触发机械手放置料仓);
+                        SwitchIndex = "释放空车";
+                        return;
+                    }
+
+                    if (_mesFeedingTask == null && _parametersManager?.Parameters?.MesEnabled == true)
+                    {
+                        var mesManager = MesManager.Instance();
+                        if (!mesManager.IsConnected || !mesManager.IsRingLineInitialized)
+                        {
+                            _uiLogger.WarnRaw("MES未连接或未初始化，跳过上料请求");
+                            _mesRetryCount = 0;
+                            _ioManager?.Ctx?.On(x => x.料仓3选择信号);
+                            SwitchIndex = "移动到料仓";
+                            return;
+                        }
+
+                        var scanParameters = _parametersManager?.Parameters;
+                        var timeoutSeconds = scanParameters?.RingLineTimeoutSeconds ?? 30;
+                        if (timeoutSeconds <= 0)
+                        {
+                            timeoutSeconds = 30;
+                        }
+
+                        var requestTimeoutMs = timeoutSeconds * 1000;
+                        var request = new MesRingLineRequest
+                        {
+                            Action = MesRingLineAction.UnloadingQianLiaocang,
+                            PlateCode = _lastScannedQrCode,
+                            FeedingLiaokuangCode = GetLiaokuangCode(_selectedBin)
+                        };
+
+                        _mesRetryCount++;
+                        ClearMesFeedingRequest();
+                        _mesFeedingCts = new CancellationTokenSource();
+                        _mesFeedingTask = MessageHub.Current.RequestAsync<MesRingLineRequest, MesRingLineFeedback>(
+                            request,
+                            timeoutMs: requestTimeoutMs + MES_REQUEST_TIMEOUT_BUFFER_MS,
+                            cancellationToken: _mesFeedingCts.Token);
+
+                    }
+                    if (!_mesFeedingTask.IsCompleted)
+                    {
+                        return;
+                    }
+
+                    try
+                    {
+                        if (_mesFeedingTask.IsCanceled)
+                        {
+                            _uiLogger.WarnRaw("MES下料请求已取消");
+                            _mesRetryCount = 0;
+                            _ioManager?.Ctx?.On(x => x.料仓3选择信号);
+                            SwitchIndex = "移动到料仓";
+                        }
+                        else if (_mesFeedingTask.IsFaulted)
+                        {
+                            var error = _mesFeedingTask.Exception?.GetBaseException()?.Message ?? "未知错误";
+                            if (TryRetryMesFeedingRequest($"MES下料请求异常: {error}"))
+                            {
+                                return;
+                            }
+                            _ioManager?.Ctx?.On(x => x.料仓3选择信号);
+                            SwitchIndex = "移动到料仓";
+                        }
+                        else
+                        {
+                            var feedback = _mesFeedingTask.Result;
+                            if (feedback.Success)
+                            {
+                                //var responseData = feedback.Data as UnloadingQianLiaocangResponse;
+                                //if (responseData.Success)
+                                //{
+                                _mesRetryCount = 0;
+                                SwitchIndex = "发送放入小车指令";
+                                //}
+                                //else
+                                //{
+
+                                //    SwitchIndex = "移动到料仓";
+                                //}
+                            }
+                            else
+                            {
+                                if (TryRetryMesFeedingRequest($"MES下料请求失败: {feedback.Message}"))
+                                {
+                                    return;
+                                }
+                                _ioManager?.Ctx?.On(x => x.料仓3选择信号);
+                                SwitchIndex = "移动到料仓";
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        if (TryRetryMesFeedingRequest($"MES下料请求异常: {ex.Message}"))
+                        {
+                            return;
+                        }
+                        _ioManager?.Ctx?.On(x => x.料仓3选择信号);
+                        SwitchIndex = "移动到料仓";
+                    }
+                    finally
+                    {
+                        if (SwitchIndex != "发送MES下料请求")
+                        {
+                            ClearMesFeedingRequest();
+                        }
+                    }
+                    break;
+                #endregion
+
+                #region 移动到料仓
+                case "移动到料仓":
+                    // 触发放入料仓信号
+                    //_ioManager?.Ctx?.On(x => x.发送扫码完成信号);
+
+                    _ioManager.Ctx.Off(x => x.发送取料指令);
+                    _ioManager?.Ctx?.On(x => x.触发机械手放置料仓);
+                    if (_lastScannedQrCode != "")
+                        ModbusRTUManager.Instance()?.WriteWorkOrderToFirstAvailable(_lastScannedQrCode);
+                    SwitchIndex = "等待装载完成";
+                    Tw.StartWatch(SwitchIndex);
+                    break;
+                #endregion
+
+                #region 等待装载完成
+                case "等待装载完成":
+                    if (_ioManager?.Ctx?.Edge.F(x => x.机械臂放置完成信号) == true)
+                    {
+                        MessageHub.Current.Post(Ewan.Model.Production.BinElevatorCommandMessage.LoadingCompleted(
+                            _selectedBin,
+                            nameof(MaterialLoadingLogic)));
+                        MessageHub.Current.Post(LoadingUnloadingStateMessage.LoadingCompleted(_selectedBin, nameof(MaterialLoadingLogic)));
+                        SwitchIndex = "清理状态";
+                        return;
+                    }
+
+                    if (Tw.StartCheckIsTimeout(SwitchIndex, WAIT_LOADING_COMPLETE_TIMEOUT))
+                    {
+                        MessageHub.Current.Post(new AlarmMessage(
+                            key: "Loading.Timeout",
+                            content: "等待装载完成超时",
+                            level: AlarmLevel.M,
+                            needReset: false,
+                            unit: "Loading"));
+                        ForceCleanup("装载超时");
                     }
                     break;
                 #endregion
@@ -330,24 +738,46 @@ namespace Ewan.Core.Logic
                 case "发送放入小车指令":
                     // 发送扫码完成信号给机械臂
                     _ioManager?.Ctx?.On(x => x.发送扫码完成信号);
-
                     // 发送放入小车信号
                     _ioManager?.Ctx?.On(x => x.发送放入小车指令);
 
-                    SwitchIndex = "等待放入完成";
+                    SwitchIndex = "等待机械手到位";
                     Tw.StartWatch(SwitchIndex);
                     break;
                 #endregion
 
                 #region 等待放入完成
+                case "等待机械手到位"://判断小车是否到位
+                    if (_ioManager?.Ctx?.R.DI5 == true)
+                    {
+                        // 清除放入小车信号
+                        _ioManager?.Ctx?.On(x => x.DO24);
+                        SwitchIndex = "等待放入完成";
+                        return;
+                    }
+
+                    if (Tw.StartCheckIsTimeout(SwitchIndex, WAIT_PUT_CART_TIMEOUT))
+                    {
+                        MessageHub.Current.Post(new AlarmMessage(
+                            key: "Unloading.Timeout",
+                            content: "等待机械手到位超时",
+                            level: AlarmLevel.M,
+                            needReset: false,
+                            unit: "Unloading"));
+                        ForceCleanup("等待机械手到位超时");
+                    }
+                    break;
                 case "等待放入完成":
+                    //bool b = _ioManager.Ctx.Edge.R(x => x.放入小车完成信号);
+                    //bool b1 = _ioManager.Ctx.Edge.R(x => x.移至扫码区到位信号);
                     if (_ioManager?.Ctx?.Edge.R(x => x.放入小车完成信号) == true)
                     {
+                        func_吹气(_selectedBin, false);
                         // 清除放入小车信号
                         _ioManager?.Ctx?.Off(x => x.发送放入小车指令);
                         _ioManager?.Ctx?.Off(x => x.发送扫码完成信号);
-
-                        SwitchIndex = "发送MES下料信号";
+                        _ioManager?.Ctx?.Off(x => x.DO24);
+                        SwitchIndex = "发送Modbus完成";
                         return;
                     }
 
@@ -362,30 +792,17 @@ namespace Ewan.Core.Logic
                         ForceCleanup("放入小车超时");
                     }
                     break;
+
+
                 #endregion
 
-                #region 发送MES下料信号
-                case "发送MES下料信号":
-                    if (_parametersManager?.Parameters?.MesEnabled == true && !string.IsNullOrWhiteSpace(_lastScannedQrCode))
-                    {
-                        var request = new MesRingLineRequest
-                        {
-                            Action = MesRingLineAction.UnloadingQianLiaocang,
-                            PlateCode = _lastScannedQrCode,
-                            FeedingLiaokuangCode = GetLiaokuangCode(_selectedBin)
-                        };
 
-                        MessageHub.Current.Post(request);
-                        _uiLogger.InfoRaw("已发送MES下料信号: {0}", _lastScannedQrCode);
-                    }
-
-                    SwitchIndex = "发送Modbus完成";
-                    break;
-                #endregion
 
                 #region 发送Modbus完成
                 case "发送Modbus完成":
+                    Thread.Sleep(500);
                     SendCartCompletionToModbus(true);
+                    MessageHub.Current.Post(LoadingUnloadingStateMessage.UnloadingCompleted(_selectedBin, nameof(MaterialLoadingLogic)));
                     SwitchIndex = "清理状态";
                     break;
                 #endregion
@@ -393,8 +810,15 @@ namespace Ewan.Core.Logic
                 #region 清理状态
                 case "清理状态":
                     // 重置标志
+                    if (_ioManager?.Ctx?.Edge.R(x => x.放入小车完成信号) == true)
+                    {
+                        break;
+                    }
                     _lastScannedQrCode = string.Empty;
-
+                    _ioManager?.Ctx?.Off(x => x.触发机械手放置料仓);
+                    ClearBinSelectSignals();
+                    func_吹气(_selectedBin, false);
+                    _ioManager?.Ctx?.Off(x => x.发送扫码完成信号);
                     // 释放皮带控制
                     if (_beltStopRequested)
                     {
@@ -413,9 +837,10 @@ namespace Ewan.Core.Logic
                 #region 释放空车
                 case "释放空车":
                     _lastScannedQrCode = string.Empty;
+                    _ioManager?.Ctx?.Off(x => x.发送取料指令);
                     ClearBinSelectSignals();
                     SendCartCompletionToModbus(false);
-
+                    _ioManager?.Ctx?.Off(x => x.触发机械手放置料仓);
                     if (_beltStopRequested)
                     {
                         _beltStopRequested = false;
@@ -434,7 +859,7 @@ namespace Ewan.Core.Logic
                 case "结束状态":
                     // 完成，等待下一个周期
                     break;
-                #endregion
+                    #endregion
             }
         }
 
@@ -451,7 +876,38 @@ namespace Ewan.Core.Logic
             _materialCheckTask = null;
             base.Rset();
         }
+        private bool TryRetryMesFeedingRequest(string message)
+        {
+            if (_mesRetryCount < MAX_MES_RETRY_COUNT)
+            {
+                _uiLogger.WarnRaw("{0}，重试次数: {1}/{2}", message, _mesRetryCount, MAX_MES_RETRY_COUNT);
+                ClearMesFeedingRequest();
+                return true;
+            }
 
+            _uiLogger.ErrorRaw("{0}，已达到最大重试次数", message);
+            _mesRetryCount = 0;
+            ClearMesFeedingRequest();
+            return false;
+        }
+
+
+        private void ClearMesFeedingRequest()
+        {
+            if (_mesFeedingCts != null)
+            {
+                try
+                {
+                    _mesFeedingCts.Cancel();
+                }
+                catch
+                {
+                }
+                _mesFeedingCts.Dispose();
+                _mesFeedingCts = null;
+            }
+            _mesFeedingTask = null;
+        }
         /// <summary>
         /// 销毁时清理资源
         /// </summary>
@@ -474,17 +930,17 @@ namespace Ewan.Core.Logic
         /// </remarks>
         private void OnRingLineData(RingLineDataMessage msg)
         {
-            _ringLineIsLoading = msg.IsLoading;
+            _parametersManager.Parameters._ringLineIsLoading = msg.IsLoading;
             if (msg.RisingEdge)
             {
-                _ringLineRisingEdge = true;
+                _parametersManager.Parameters._ringLineRisingEdge = true;
             }
             if (!msg.IsLoading)
             {
-                _ringLineArmed = true;
+                _parametersManager.Parameters._ringLineArmed = true;
             }
-            _emptyCount = msg.EmptyCarCount;
-            _cuttingBridgeCarCount = msg.CuttingBridgeCarCount;
+            _parametersManager.Parameters._emptyCount = msg.EmptyCarCount;
+            _parametersManager.Parameters._cuttingBridgeCarCount = msg.CuttingBridgeCarCount;
         }
 
         /// <summary>
@@ -566,12 +1022,71 @@ namespace Ewan.Core.Logic
             {
                 case 1:
                     _ioManager.Ctx.On(x => x.料仓1选择信号);
+                    _ioManager.Ctx.On(x => x.料仓1吹气电磁阀);
                     break;
                 case 2:
                     _ioManager.Ctx.On(x => x.料仓2选择信号);
+                    _ioManager.Ctx.On(x => x.料仓2吹气电磁阀);
                     break;
                 case 3:
                     _ioManager.Ctx.On(x => x.料仓3选择信号);
+                    _ioManager.Ctx.On(x => x.料仓3吹气电磁阀);
+                    break;
+            }
+        }
+        private void func_吹气(int binNumber, bool b_status)
+        {
+            if (_ioManager?.Ctx == null) return;
+
+            //ClearBinSelectSignals();
+
+            switch (binNumber)
+            {
+                case 1:
+                    if (b_status)
+                        _ioManager.Ctx.On(x => x.料仓1吹气电磁阀);
+                    else
+                        _ioManager.Ctx.Off(x => x.料仓1吹气电磁阀);
+                    break;
+                case 2:
+                    if (b_status)
+                        _ioManager.Ctx.On(x => x.料仓2吹气电磁阀);
+                    else
+                        _ioManager.Ctx.Off(x => x.料仓2吹气电磁阀);
+                    break;
+                case 3:
+                    if (b_status)
+                        _ioManager.Ctx.On(x => x.料仓3吹气电磁阀);
+                    else
+                        _ioManager.Ctx.Off(x => x.料仓3吹气电磁阀);
+                    break;
+            }
+        }
+        private void func_定位电磁阀(int binNumber, bool b_status)
+        {
+            if (_ioManager?.Ctx == null) return;
+
+            //ClearBinSelectSignals();
+
+            switch (binNumber)
+            {
+                case 1:
+                    if (b_status)
+                        _ioManager.Ctx.On(x => x.料仓1定位电磁阀);
+                    else
+                        _ioManager.Ctx.Off(x => x.料仓1定位电磁阀);
+                    break;
+                case 2:
+                    if (b_status)
+                        _ioManager.Ctx.On(x => x.料仓2定位电磁阀);
+                    else
+                        _ioManager.Ctx.Off(x => x.料仓2定位电磁阀);
+                    break;
+                case 3:
+                    if (b_status)
+                        _ioManager.Ctx.On(x => x.料仓3定位电磁阀);
+                    else
+                        _ioManager.Ctx.Off(x => x.料仓3定位电磁阀);
                     break;
             }
         }
@@ -582,10 +1097,13 @@ namespace Ewan.Core.Logic
         private void ClearBinSelectSignals()
         {
             if (_ioManager?.Ctx == null) return;
-
             _ioManager.Ctx.Off(x => x.料仓1选择信号);
             _ioManager.Ctx.Off(x => x.料仓2选择信号);
             _ioManager.Ctx.Off(x => x.料仓3选择信号);
+            _ioManager?.Ctx?.Off(x => x.发送扫码完成信号);
+            //_ioManager.Ctx.Off(x => x.料仓1吹气电磁阀);
+            //_ioManager.Ctx.Off(x => x.料仓2吹气电磁阀);
+            //_ioManager.Ctx.Off(x => x.料仓3吹气电磁阀);
         }
 
         /// <summary>
@@ -599,14 +1117,90 @@ namespace Ewan.Core.Logic
 
                 ushort statusValue = hasMaterial ? (ushort)1 : (ushort)0;
                 _modbusRTUManager?.WriteAny(MATERIAL_STATUS_REGISTER, statusValue);
-                _ringLineRisingEdge = false;
+                _parametersManager.Parameters._ringLineRisingEdge = false;
             }
             catch (Exception ex)
             {
                 _uiLogger.ErrorRaw("处理错误: {0} - {1}", "发送完成信号到Modbus失败", ex.Message);
             }
         }
+        /// <summary>
+        /// 只管前面三台
+        /// </summary>
 
+        public void func_获取状态()
+        {
+            var dict = mqttNet.Instance.DeviceDictionary;
+
+            foreach (var temp in dict)
+            {
+                var jsonObj = Newtonsoft.Json.Linq.JObject.Parse(temp.Value);
+            }
+        }
+
+        public int func_设置空车数量()
+        {
+            var dict = mqttNet.Instance.DeviceDictionary;
+            int i_空车数量 = 0;
+            DateTime msgTime;
+            bool b_008is_unloading = false;
+            bool b_007is_unloading = false;
+            foreach (var temp in dict)
+            {
+                var jsonObj = Newtonsoft.Json.Linq.JObject.Parse(temp.Value);
+                if (temp.Key.Contains("Z-JQ-S-82-008"))
+                {
+                    if (jsonObj["is_unloading"].ToString() == "True" && jsonObj["is_feeding"].ToString() == "False"
+                        && jsonObj["is_running"].ToString() == "True")
+                    {
+
+                        // 解析时间格式
+                        DateTime.TryParseExact(jsonObj["t"].ToString(), "yyyy-MM-dd HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture,
+                                                   System.Globalization.DateTimeStyles.None, out msgTime);
+                        if ((DateTime.Now - msgTime).TotalSeconds > 10)
+                        {
+                            i_空车数量++;
+                        }
+                    }
+                    b_008is_unloading = jsonObj["is_unloading"].ToString() == "True";
+
+                }
+                else if (temp.Key.Contains("Z-JQ-S-82-006"))
+                {
+                    bool b = jsonObj["is_unloading"].ToString() == "True";
+                    if (jsonObj["is_unloading"].ToString() == "True" && jsonObj["is_feeding"].ToString() == "False"
+                         && jsonObj["is_running"].ToString() == "True" && !b_008is_unloading)//前面工站不需要下料，则后面工站不需要额外下空车
+                    {
+                        // 解析时间格式
+                        DateTime.TryParseExact(jsonObj["t"].ToString(), "yyyy-MM-dd HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture,
+                                                   System.Globalization.DateTimeStyles.None, out msgTime);
+                        if ((DateTime.Now - msgTime).TotalSeconds > 10)
+                        {
+                            i_空车数量++;
+                        }
+                    }
+
+                    b_007is_unloading = jsonObj["is_unloading"].ToString() == "True";
+
+                }
+                else if (temp.Key.Contains("Z-JQ-S-82-007"))
+                {
+                    if (jsonObj["is_unloading"].ToString() == "True" && jsonObj["is_feeding"].ToString() == "False"
+                          && jsonObj["is_running"].ToString() == "True" && !b_007is_unloading)//前面工站不需要下料，则后面工站不需要额外下空车
+                    {
+                        // 解析时间格式
+                        DateTime.TryParseExact(jsonObj["t"].ToString(), "yyyy-MM-dd HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture,
+                                                   System.Globalization.DateTimeStyles.None, out msgTime);
+                        if ((DateTime.Now - msgTime).TotalSeconds > 10)
+                        {
+                            i_空车数量++;
+                        }
+                    }
+                }
+            }
+            return i_空车数量;
+        }
         #endregion
     }
+
 }

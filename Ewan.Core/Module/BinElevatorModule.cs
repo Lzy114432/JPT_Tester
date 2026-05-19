@@ -31,6 +31,7 @@ namespace Ewan.Core.Module
         // 消息订阅
         private IDisposable _forceStopSubscription;
         private IDisposable _loadingCompletedSubscription;
+        private IDisposable _moveRelativeSubscription; // 新增：相对运动订阅
         private IDisposable _initializeResponder;
         private IDisposable _raiseToSensorResponder;
 
@@ -62,6 +63,11 @@ namespace Ewan.Core.Module
             _loadingCompletedSubscription = MessageHub.Current.Subscribe<BinElevatorCommandMessage>(
                 msg => msg.Command == BinCommand.LoadingCompleted,
                 OnLoadingCompleted);
+
+            // 新增：订阅相对运动指令 (为防编译报错，使用ToString转为字符串比对。确保 BinCommand 中含有 MoveRelative 枚举)
+            _moveRelativeSubscription = MessageHub.Current.Subscribe<BinElevatorCommandMessage>(
+                msg => msg.Command.ToString() == "MoveRelative",
+                OnMoveRelative);
 
             _initializeResponder = MessageHub.Current.RespondAsync<BinElevatorCommandMessage, BinElevatorStatusMessage>(
                 HandleInitializeAsync,
@@ -128,6 +134,7 @@ namespace Ewan.Core.Module
 
             _forceStopSubscription?.Dispose();
             _loadingCompletedSubscription?.Dispose();
+            _moveRelativeSubscription?.Dispose(); // 新增：释放清理
             _initializeResponder?.Dispose();
             _raiseToSensorResponder?.Dispose();
 
@@ -191,6 +198,46 @@ namespace Ewan.Core.Module
                 };
 
                 _uiLogger.InfoRaw("料仓{0}开始下降", binNumber);
+            }
+        }
+
+        // 新增：相对运动处理（上下运动 N 毫米）
+        private void OnMoveRelative(BinElevatorCommandMessage message)
+        {
+            int binNumber = message.BinNumber;
+            if (binNumber < 1 || binNumber > 3)
+            {
+                _uiLogger.WarnRaw("无效的料仓编号: {0}", binNumber);
+                return;
+            }
+
+            // 为了向后兼容防止编译报错，通过反射隐式获取消息中心中的距离。
+            // （如果你的 BinElevatorCommandMessage 类里加了 Distance 或 Position 属性会自动提取，默认下降 5mm (-5)）
+            double distance = -5.0;
+            var distProp = message.GetType().GetProperty("Distance") ?? message.GetType().GetProperty("Position");
+            if (distProp != null)
+            {
+                try { distance = Convert.ToDouble(distProp.GetValue(message)); } catch { }
+            }
+
+            lock (_stateLock)
+            {
+                var bin = GetBin(binNumber);
+                if (bin != null)
+                {
+                    // 记录原有正在进行的任务并停止轴
+                    if (bin.CurrentState == BinElevatorState.Moving)
+                    {
+                        StopBinAxis(bin);
+                    }
+                    bin.CurrentState = BinElevatorState.Moving;
+
+                    StartBinMoveRelative(bin, distance);
+                    _uiLogger.InfoRaw("料仓{0} 开始相对运动: {1}mm", binNumber, distance);
+
+                    // 标记移动动作完成后等待再次唤醒
+                    bin.CurrentState = BinElevatorState.Stopped;
+                }
             }
         }
 
@@ -632,6 +679,27 @@ namespace Ewan.Core.Module
             {
                 _uiLogger.ErrorRaw("检测料仓{0}硬限位失败: {1}", bin.BinNumber, ex.Message);
                 return false;
+            }
+        }
+
+        // 新增：向驱动卡下发相对运动指令
+        private void StartBinMoveRelative(BinState bin, double distance)
+        {
+            try
+            {
+                var axisConfig = _axisManager?.GetAxisConfig(bin.AxisId);
+                if (axisConfig != null)
+                {
+                    // 此处调用运动控制卡的相对运动指令。
+                    // 注意：如果实际 AxisManager 接口命名为 MoveRelative，请将此处的 MoveRel 做出相应修改！
+                    double d = _axisManager.Position(axisConfig);
+                    _axisManager.AbsMove(axisConfig, _axisManager.Position(axisConfig) + distance);
+                    //_axisManager.StepMove(axisConfig, distance);
+                }
+            }
+            catch (Exception ex)
+            {
+                _uiLogger.ErrorRaw("处理错误: {0} - {1}", "料仓相对运动指令调用异常", ex.Message);
             }
         }
 

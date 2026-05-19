@@ -1,18 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using EwanCore;
-using EwanCore.Attribute;
-using EwanCore.Messaging;
 using Ewan.Mes.Devices.ZHJW.RingLine;
+using Ewan.Mes.Models.Domain.ZHJW.DicingMachine;
 using Ewan.Mes.Models.Domain.ZHJW.RingLine;
 using Ewan.Mes.Mqtt;
 using Ewan.Mes.Services;
 using Ewan.Mes.Transport;
 using Ewan.Model.System;
 using EwanCommon.Logging;
+using EwanCore;
+using EwanCore.Attribute;
+using EwanCore.Messaging;
 using log4net;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Ewan.Core.Mes
 {
@@ -609,6 +610,11 @@ namespace Ewan.Core.Mes
             return _ringLineService.OnFeedingQianLiaocangResponse(handler);
         }
 
+
+        public Dictionary<string, FeedingUnloadingStateResponseData> func_获取状态()
+        {
+            return _ringLineService?.GetFeedingUnloadingStateSnapshot() ?? new Dictionary<string, FeedingUnloadingStateResponseData>();
+        }
         public IDisposable OnFeedingQianLiaocangResponseText(Action<string> handler)
         {
             if (handler == null)
@@ -656,6 +662,7 @@ namespace Ewan.Core.Mes
 
             return Task.Run(() => _ringLineService.PublishMessage(endpoint, payload));
         }
+
 
         public IDisposable RegisterRingLineHandler<T>(EndpointTemplate endpoint, Action<MessageContext<T>> handler)
         {

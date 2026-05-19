@@ -8,10 +8,12 @@
 ** 修改记录：
 日期        版本      修改人    修改内容   
 *****************************************************/
-using System;
 using Ewan.Mes.Mappers;
+using Ewan.Mes.Models.Domain.ZHJW.DicingMachine;
 using Ewan.Mes.Models.Domain.ZHJW.RingLine;
+using Ewan.Mes.Models.Dto.ZHJW.DicingMachine;
 using Ewan.Mes.Models.Dto.ZHJW.RingLine;
+using System;
 
 namespace Ewan.Mes.Mappers.ZHJW.RingLine
 {
@@ -180,6 +182,23 @@ namespace Ewan.Mes.Mappers.ZHJW.RingLine
     #endregion
 
     #region 后料仓卸料
+    public class FeedingUnloadingStateResponseModelMapper : IToDomainMapper<FeedingUnloadingStateResponseData, FeedingUnloadingStateResponseModel>
+    {
+        public static readonly FeedingUnloadingStateResponseModelMapper Instance = new FeedingUnloadingStateResponseModelMapper();
+
+        public FeedingUnloadingStateResponseData ToDomain(FeedingUnloadingStateResponseModel dto)
+        {
+            if (dto == null) return null;
+            return new FeedingUnloadingStateResponseData
+            {
+                Device_Code = dto.DeviceCode,
+                IsFeeding = dto.IsFeeding,
+                IsRunning = dto.IsRunning,
+                IsUnloading = dto.IsUnloading,
+                Timestamp = DateTime.TryParse(dto.Timestamp, out var dt) ? dt : DateTime.Now
+            };
+        }
+    }
 
     public class UnloadingHouLiaocangMapper : IToDtoMapper<UnloadingHouLiaocangData, UnloadingHouLiaocangRequest>
     {

@@ -28,13 +28,13 @@
     },
     {
       "LogicalIndex": 4,
-      "Name": "机械臂抓取完成信号",
+      "Name": "DI4",
       "PhysicalIndex": 4,
       "IsNormallyOpen": true
     },
     {
       "LogicalIndex": 5,
-      "Name": "下相机精定位完成信号",
+      "Name": "DI5",
       "PhysicalIndex": 5,
       "IsNormallyOpen": true
     },
@@ -342,7 +342,7 @@
     },
     {
       "LogicalIndex": 16,
-      "Name": "高速运行",
+      "Name": "DO16",
       "PhysicalIndex": 16,
       "IsNormallyOpen": true
     },
@@ -390,7 +390,7 @@
     },
     {
       "LogicalIndex": 24,
-      "Name": "慢速运行",
+      "Name": "DO24",
       "PhysicalIndex": 24,
       "IsNormallyOpen": true
     },

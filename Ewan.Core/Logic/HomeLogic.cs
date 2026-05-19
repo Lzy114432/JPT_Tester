@@ -1,6 +1,7 @@
 using Ewan.Core;
 using Ewan.Core.IO;
 using Ewan.Core.Module;
+using Ewan.Mes.Mqtt;
 using Ewan.Model.Messages;
 using Ewan.Model.Production;
 using Ewan.Model.System;
@@ -58,6 +59,8 @@ namespace Ewan.Core.Logic
                     #region 初始状态
                     case "初始状态":
                         SwitchIndex = "发送停止脉冲";
+                        //if (SystemParametersManager.Instance?.Parameters?.MesEnabled == true)
+                        //    _ = mqttNet.Instance.StartAsync();
                         break;
                     #endregion
 

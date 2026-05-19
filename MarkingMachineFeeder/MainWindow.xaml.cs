@@ -1,7 +1,8 @@
-﻿using System.Windows;
-using System.Windows.Input;
-using Prism.Mvvm;
+﻿using Ewan.Model.System;
 using MarkingMachineFeeder.Viewmodel;
+using Prism.Mvvm;
+using System.Windows;
+using System.Windows.Input;
 
 namespace MarkingMachineFeeder
 {
@@ -13,7 +14,7 @@ namespace MarkingMachineFeeder
         public MainWindow()
         {
             InitializeComponent();
-            
+
             // 手动设置ViewModel
             DataContext = new MainWindowViewModel();
         }
@@ -36,7 +37,7 @@ namespace MarkingMachineFeeder
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             base.OnMouseDown(e);
-            
+
             // 激活当前窗体并置顶
             if (!this.IsActive)
             {
@@ -51,7 +52,7 @@ namespace MarkingMachineFeeder
         protected override void OnActivated(System.EventArgs e)
         {
             base.OnActivated(e);
-            
+
             // 确保主窗体真正获得焦点
             this.Focus();
         }
@@ -93,8 +94,19 @@ namespace MarkingMachineFeeder
             // 如果用户确认退出
             if (confirmDialog.ShowDialog() == true)
             {
+                var manager = SystemParametersManager.Instance;
+                var original = manager.Parameters;
+
+                var parameters = Ewan.Model.System.SystemParameters.CreateDefault();
+                manager.SaveParameters(parameters);
                 Application.Current.Shutdown();
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            SystemParametersManager.Instance.Parameters.dic_料仓单号.Clear();
+            SystemParametersManager.Instance.Parameters.str_当前工单号 = string.Empty;
         }
     }
 }

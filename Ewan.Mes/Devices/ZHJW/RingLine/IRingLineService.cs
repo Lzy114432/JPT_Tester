@@ -8,10 +8,12 @@
 ** 修改记录：
 日期        版本      修改人    修改内容   
 *****************************************************/
-using System;
-using System.Threading.Tasks;
+using Ewan.Mes.Models.Domain.ZHJW.DicingMachine;
 using Ewan.Mes.Models.Domain.ZHJW.RingLine;
 using Ewan.Mes.Transport;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Ewan.Mes.Devices.ZHJW.RingLine
 {
@@ -78,7 +80,7 @@ namespace Ewan.Mes.Devices.ZHJW.RingLine
         /// 前料仓上料响应
         /// </summary>
         IDisposable OnFeedingQianLiaocangResponse(Action<MessageContext<FeedingQianLiaocangResponseData>> handler);
-
+        Dictionary<string, FeedingUnloadingStateResponseData> GetFeedingUnloadingStateSnapshot();
         #endregion
     }
 }

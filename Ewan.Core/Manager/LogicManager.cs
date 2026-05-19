@@ -198,14 +198,14 @@ namespace Ewan.Core.Manager
                     return;
                 }
 
-                if (enabled)
-                {
-                    ctx.On(x => x.高速运行);
-                }
-                else
-                {
-                    ctx.Off(x => x.高速运行);
-                }
+                //if (enabled)
+                //{
+                //    ctx.On(x => x.高速运行);
+                //}
+                //else
+                //{
+                //    ctx.Off(x => x.高速运行);
+                //}
             }
             catch (Exception ex)
             {

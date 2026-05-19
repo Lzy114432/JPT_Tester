@@ -10,6 +10,8 @@
 *****************************************************/
 using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
+using System.Threading;
 using System.Threading.Tasks;
 using Ewan.Mes.Devices;
 using Ewan.Mes.Devices.ZHJW.DicingMachine;
@@ -28,7 +30,7 @@ namespace Ewan.Mes.Services.ZHJW
     {
         private const string DeviceType_DicingMachine = "DicingMachine";
         private const string LogSource = "DicingMachineService";
-        
+
         private readonly IMessageTransport _transport;
         private readonly string _deviceId;
         private readonly string _deviceCode;
@@ -40,6 +42,7 @@ namespace Ewan.Mes.Services.ZHJW
         private readonly object _respHandlersLock = new object();
         private List<Action<MessageContext<ResponseModelData>>> _respModelHandlers = new List<Action<MessageContext<ResponseModelData>>>();
         private IDisposable _respModelTransportSubscription = null;
+        private readonly CancellationTokenSource _feedingUnloadingStateCts = new CancellationTokenSource();
 
         public DicingMachineService(
             IMessageTransport transport,
@@ -61,6 +64,7 @@ namespace Ewan.Mes.Services.ZHJW
                 { "设备ID", _deviceId },
                 { "设备编码", _deviceCode }
             };
+
         }
 
         public string DeviceType => DeviceType_DicingMachine;
@@ -74,7 +78,7 @@ namespace Ewan.Mes.Services.ZHJW
         {
             if (endpoint == null)
                 throw new ArgumentNullException(nameof(endpoint));
-            
+
             try
             {
                 return _transport.Publish(endpoint, payload, _tokens, false);
@@ -563,7 +567,8 @@ namespace Ewan.Mes.Services.ZHJW
                 }
             });
         }
-
+        // 修改：只在服务内部创建一次 transport 订阅并分发给所有注册的 handler
+      
         #endregion
 
         #region 资源释放
@@ -581,6 +586,19 @@ namespace Ewan.Mes.Services.ZHJW
 
             if (disposing)
             {
+                // 停止并释放后台刷取线程资源
+                try
+                {
+                    _feedingUnloadingStateCts.Cancel();
+                }
+                catch { /* ignore */ }
+
+                try
+                {
+                    _feedingUnloadingStateCts.Dispose();
+                }
+                catch { /* ignore */ }
+
                 foreach (var subscription in _subscriptions)
                 {
                     subscription?.Dispose();
@@ -616,5 +634,6 @@ namespace Ewan.Mes.Services.ZHJW
                 _disposed = true;
             }
         }
+
     }
 }

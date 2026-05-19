@@ -518,16 +518,17 @@ namespace Ewan.Core.Module
                 };
             }
 
-            if (NeedsFeedingLiaokuangCode(request.Action) && string.IsNullOrWhiteSpace(request.FeedingLiaokuangCode))
-            {
-                return new MesRingLineFeedback
-                {
-                    CorrelationId = request.CorrelationId,
-                    Action = request.Action,
-                    Success = false,
-                    Message = "FeedingLiaokuangCode 不能为空"
-                };
-            }
+            //if (NeedsFeedingLiaokuangCode(request.Action) && string.IsNullOrWhiteSpace(request.FeedingLiaokuangCode))
+            //{
+            //    return new MesRingLineFeedback
+            //    {
+            //        CorrelationId = request.CorrelationId,
+            //        Action = request.Action,
+            //        Success = false,
+            //        Message = "FeedingLiaokuangCode 不能为空"
+            //        //Message = "1"
+            //    };
+            //}
 
             ushort publishId = 0;
             try

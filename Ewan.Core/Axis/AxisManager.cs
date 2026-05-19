@@ -1,10 +1,11 @@
-using EwanCore;
-using EwanCore.Attribute;
-using EwanCommon.Logging;
-using log4net;
 using Ewan.Model.Config;
+using Ewan.Model.Production;
 using EwanAxis.Core.Interfaces;
 using EwanAxis.Hardware.SMC606;
+using EwanCommon.Logging;
+using EwanCore;
+using EwanCore.Attribute;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -118,7 +119,7 @@ namespace Ewan.Core.Axis
                 return false;
             }
         }
-        
+
 
 
         #region 轴配置文件操作
@@ -233,7 +234,6 @@ namespace Ewan.Core.Axis
         {
             return _configManager?.GetAxisConfig(axisId);
         }
-
         #endregion
 
         #region 私有辅助方法
@@ -382,6 +382,17 @@ namespace Ewan.Core.Axis
 
             // 根据运动方向转换位置
             double actualPos = axisConfig.MotionDir == MotionDir.Positive ? pos : -pos;
+
+            return axis.AbsMove(actualPos);
+        }
+        public bool StepMove(AxisConfig axisConfig, double pos)
+        {
+            var axis = GetAxis(axisConfig);
+            if (axis == null) return false;
+
+            // 根据运动方向转换位置
+            //_axisManager.Position(axisConfig)
+            double actualPos = axis.FeedbackPosition + pos;
 
             return axis.AbsMove(actualPos);
         }

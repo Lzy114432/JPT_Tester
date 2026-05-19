@@ -74,7 +74,7 @@ namespace Ewan.Mes.Models.Dto.ZHJW.DicingMachine
         [JsonProperty("t")]
         public string Timestamp { get; set; }
     }
-
+  
     /// <summary>
     /// 扫描NG请求
     /// </summary>

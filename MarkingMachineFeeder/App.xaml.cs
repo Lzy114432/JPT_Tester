@@ -1,9 +1,12 @@
 ﻿using Ewan.BusinessBonding;
 using Ewan.Core.Manager;
 using Ewan.Core.Security;
+using Ewan.Mes.Mqtt;
+using Ewan.Model.System;
 using EwanCommon.Logging;
 using MarkingMachineFeeder.Viewmodel;
 using Prism.Mvvm;
+using System;
 using System.IO;
 using System.Windows;
 
@@ -52,7 +55,8 @@ namespace MarkingMachineFeeder
                 Shutdown();
                 return;
             }
-
+            if (SystemParametersManager.Instance?.Parameters?.MesEnabled == true)
+                _ = mqttNet.Instance.StartAsync();
             _uiLogger.Info("系统初始化成功");
 
             // 启动流程
@@ -71,7 +75,7 @@ namespace MarkingMachineFeeder
             // 配置ViewModel到View的映射
             ViewModelLocationProvider.Register<MainWindow, MainWindowViewModel>();
             ViewModelLocationProvider.Register<Windows.LogWindow, LogWindowViewModel>();
-            
+
             _uiLogger.Info("ViewModelLocator已配置");
         }
 
@@ -109,6 +113,30 @@ namespace MarkingMachineFeeder
                 _uiLogger.ErrorRaw("关闭前释放资源失败: {0}", ex.Message);
             }
 
+            try
+            {
+                // 如果设置窗口正在打开，优先让其 ViewModel 执行保存（可保存未应用的更改）
+                //foreach (Window w in Current.Windows)
+                //{
+                //    if (w?.DataContext is ParameterSettingsViewModel vm)
+                //    {
+                //        try { vm.SaveParametersOnExit(); } catch { /* 忽略 */ }
+                //        break;
+                //    }
+                //}
+
+                // 最后确保参数管理器当前参数被持久化
+                var mgr = SystemParametersManager.Instance;
+                var current = mgr.Parameters;
+                if (current != null)
+                {
+                    try { mgr.SaveParameters(current); } catch { /* 忽略保存异常 */ }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"退出时保存系统参数失败: {ex}");
+            }
             // 调用基类方法
             base.OnExit(e);
         }

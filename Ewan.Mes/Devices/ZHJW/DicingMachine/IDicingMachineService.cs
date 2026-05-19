@@ -90,7 +90,7 @@ namespace Ewan.Mes.Devices.ZHJW.DicingMachine
         /// 规格型号响应
         /// </summary>
         IDisposable OnResponseModel(Action<MessageContext<ResponseModelData>> handler);
-
+       
         #endregion
     }
 }

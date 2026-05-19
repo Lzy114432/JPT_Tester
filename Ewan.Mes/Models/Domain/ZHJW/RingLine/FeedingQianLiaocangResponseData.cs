@@ -23,4 +23,19 @@ namespace Ewan.Mes.Models.Domain.ZHJW.RingLine
         public string Message { get; set; }
         public DateTime Timestamp { get; set; }
     }
+    public class UnloadingQianLiaocangResponse
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; }
+        public FeedingQianLiaocangResponseData Data { get; set; }
+    }
+    public class FeedingUnloadingStateResponseData
+    {
+        public string Device_Code { get; set; }
+        public bool IsFeeding { get; set; }
+        public bool IsUnloading { get; set; }
+        public bool IsRunning { get; set; }
+        public string Message { get; set; }
+        public DateTime Timestamp { get; set; }
+    }
 }

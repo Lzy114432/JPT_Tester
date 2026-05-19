@@ -73,8 +73,7 @@ namespace Ewan.Mes.Mappers.ZHJW.DicingMachine
             };
         }
     }
-
-    public class ResponseModelMapper : IToDomainMapper<ResponseModelData, ResponseModel>
+  public class ResponseModelMapper : IToDomainMapper<ResponseModelData, ResponseModel>
     {
         public static readonly ResponseModelMapper Instance = new ResponseModelMapper();
 

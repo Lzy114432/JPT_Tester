@@ -1,12 +1,14 @@
+using EwanCommon.Logging;
 using EwanCore;
 using EwanCore.Attribute;
-using EwanCommon.Logging;
-using log4net;
 using HslCommunication;
 using HslCommunication.ModBus;
+using log4net;
+using log4net.Core;
 using System;
 using System.Collections.Concurrent;
 using System.IO.Ports;
+using System.Text;
 
 namespace Ewan.Core.Plc
 {
@@ -276,6 +278,115 @@ namespace Ewan.Core.Plc
             }
         }
 
+
+        private string func_Read(string startAddress)
+        {
+            try
+            {
+                var qrData = ModbusRTUManager.Instance().Read(startAddress, 10, "main");
+                if (qrData == null || qrData.Length == 0)
+                {
+                    return string.Empty;
+                }
+
+                // 1. 全局字节交换 (修复 Modbus 高低字节)
+                // 原始数据: 06 00 01 00 ... (小端显示) -> 实际上是 00 06 ...
+                // 经过交换后: 00 06 00 01 ... (符合大端阅读习惯，且字符串部分正常)
+                for (int i = 0; i < qrData.Length - 1; i += 2)
+                {
+                    byte temp = qrData[i];
+                    qrData[i] = qrData[i + 1];
+                    qrData[i + 1] = temp;
+                }
+
+
+                string rawString = Encoding.ASCII.GetString(qrData, 0, qrData.Length - 0);
+                string cleanString = rawString.Trim('\0');
+
+                // 截断换行符
+                int index = cleanString.IndexOfAny(new char[] { '\r', '\n' });
+                if (index >= 0)
+                {
+                    cleanString = cleanString.Substring(0, index);
+                }
+
+                // 4. 最终拼接格式
+                // 格式：站号(2位) + 料仓号(1位) + 进出(1位) + 空位(1位) + 字符串(F开头...)
+                // "06" + "1" + "1" + "0" + "FZH26010001173"
+                return $"{cleanString}";
+            }
+            catch (Exception ex)
+            {
+                //_uiLogger.Error($"读取板件信息失败({startAddress}): {ex.Message}");
+                return string.Empty;
+            }
+        }
+
+        public bool WriteWorkOrderToFirstAvailable(string workOrder, string clientKey = null)
+        {
+            const ushort length = 10;
+            const string primaryAddress = "330";  // 
+            const string primaryAddress1 = "340";  // 
+            const string secondaryAddress = "350"; //
+            const string secondaryAddress1 = "360"; //
+
+            try
+            {
+                // 尝试读取主区
+                var primaryBytes = func_Read(primaryAddress);
+                var primaryBytes1 = func_Read(primaryAddress1);
+                if (!(primaryAddress.Contains(workOrder) || primaryAddress1.Contains(workOrder)))
+                {
+                    if (primaryBytes == "")
+                        return WriteStringToRegisters(primaryAddress, workOrder, length, clientKey);
+                    else if (primaryBytes1 == "")
+                        return WriteStringToRegisters(primaryAddress1, workOrder, length, clientKey);
+                }
+
+                var primaryBytes2 = func_Read(secondaryAddress);
+                var primaryBytes3 = func_Read(secondaryAddress1);
+                if (!(secondaryAddress.Contains(workOrder) || secondaryAddress1.Contains(workOrder)))
+                {
+                    if (primaryBytes2 == "")
+                        return WriteStringToRegisters(secondaryAddress, workOrder, length, clientKey);
+                    else if (primaryBytes3 == "")
+                        return WriteStringToRegisters(secondaryAddress1, workOrder, length, clientKey);
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+
+        // 将字符串转换为 length 个 uint16 并写入指定寄存器地址（大端）
+        private bool WriteStringToRegisters(string address, string text, ushort length, string clientKey = null)
+        {
+            if (text == null) text = string.Empty;
+            // 每寄存器 2 字节，总字节长度 = length * 2
+            var payload = new byte[length * 2];
+            for (int i = 0; i < length; i++)
+            {
+                ushort val = i < text.Length ? (ushort)text[i] : (ushort)0;
+                // 大端序：高字节在前
+                payload[i * 2] = (byte)(val >> 8);
+                payload[i * 2 + 1] = (byte)(val & 0xFF);
+            }
+
+            var result = ModbusRTUManager.Instance().WriteAny(address, payload, "main");
+            if (result != null && result.IsSuccess)
+            {
+                //_uiLogger.Error("WriteStringToRegisters 成功写入地址 {0}", address);
+                return true;
+            }
+            else
+            {
+                // _uiLogger.Error("WriteStringToRegisters 写入失败: {0}", result?.Message ?? "unknown");
+                return false;
+            }
+        }
         /// <summary>
         /// 万能写入 - 支持任意数据类型转字节后写入
         /// </summary>

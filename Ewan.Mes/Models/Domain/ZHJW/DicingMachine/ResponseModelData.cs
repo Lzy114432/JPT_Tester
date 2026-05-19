@@ -21,4 +21,5 @@ namespace Ewan.Mes.Models.Domain.ZHJW.DicingMachine
         public string Model { get; set; }
         public DateTime Timestamp { get; set; }
     }
+  
 }

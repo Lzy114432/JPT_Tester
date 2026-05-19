@@ -6,6 +6,7 @@
         xmlns:vm="clr-namespace:MarkingMachineFeeder.Viewmodel"
         mc:Ignorable="d"
         Title="{Binding WindowTitle}" Height="600" Width="800"
+         d:Height ="9000"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         WindowStyle="None"
@@ -499,6 +500,25 @@
                                                   TextWrapping="Wrap"/>
                                     </StackPanel>
                                 </Border>
+                                <Border Grid.Row="2" Grid.Column="2" Background="#FAFAFA" CornerRadius="8" Padding="20">
+                                    <StackPanel>
+                                        <TextBlock Text="小车间隔数量"
+                                            FontSize="14" 
+                                            FontWeight="Medium" 
+                                            Foreground="#495057"
+                                            Margin="0,0,0,10"/>
+
+                                        <TextBox Text="{Binding I_小车间隔数量, UpdateSourceTrigger=PropertyChanged}"
+                                            Style="{StaticResource ModernTextBox}"/>
+
+                                        <TextBlock Text="小车间隔数量"
+                                             FontSize="12" 
+                                             Foreground="#9CA3AF"
+                                             Margin="0,5,0,0"
+                                             TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </Border>
+
                             </Grid>
                         </StackPanel>
                     </Border>

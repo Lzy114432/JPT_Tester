@@ -153,7 +153,7 @@ namespace Ewan.BusinessBonding
             #region //构造皮带输送控制流程的节点并加入到对应runner
 
             // 添加皮带输送控制模块，在自动模式下控制皮带持续运行
-            _beltConveyorModules.Add(new BeltConveyorModule());
+            _beltConveyorModules.Add(Ewan.Core.Module.BeltConveyorModule.Instance());
 
             // 创建皮带输送控制流程runner
             _beltConveyorRunner = new StreamRunner(_beltConveyorModules);

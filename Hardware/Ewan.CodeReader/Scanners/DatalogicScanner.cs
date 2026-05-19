@@ -265,6 +265,8 @@ namespace Ewan.CodeReader.Scanners
                 try
                 {
                     byte[] data = Encoding.ASCII.GetBytes(TriggerCommand);
+                    //INK
+                    Thread.Sleep(1000);
                     _networkStream.Write(data, 0, data.Length);
                     _networkStream.Flush();
 
