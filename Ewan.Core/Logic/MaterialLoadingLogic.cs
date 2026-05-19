@@ -335,7 +335,7 @@ namespace Ewan.Core.Logic
                             }
                             else
                             {
-                                if ((_parametersManager.Parameters._ringLineRisingEdge || (_parametersManager.Parameters._ringLineIsLoading && _parametersManager.Parameters._ringLineArmed)))
+                                if ((_parametersManager.Parameters._ringLineRisingEdge || _parametersManager.Parameters._ringLineFallingEdge))
                                 {
                                     if (_parametersManager?.Parameters?.MesEnabled != true)
                                     {
@@ -353,9 +353,9 @@ namespace Ewan.Core.Logic
                                     {
                                         SwitchIndex = "检查空车数量";
                                     }
-
-                                    _parametersManager.Parameters._ringLineRisingEdge |= _parametersManager.Parameters._ringLineIsLoading && _parametersManager.Parameters._ringLineArmed;
-                                    _parametersManager.Parameters._ringLineArmed = false;    
+                                    _parametersManager.Parameters._ringLineRisingEdge = false;
+                                    //_parametersManager.Parameters._ringLineRisingEdge |= _parametersManager.Parameters._ringLineIsLoading && _parametersManager.Parameters._ringLineArmed;
+                                    //_parametersManager.Parameters._ringLineArmed = false;    
                                 }
                                 else
                                 {
@@ -385,7 +385,7 @@ namespace Ewan.Core.Logic
                         SwitchIndex = "移动到料仓";
                         return;
                     }
-                   
+
                     if (_mesFeedingTask == null)
                     {
                         var mesManager = MesManager.Instance();
@@ -773,13 +773,35 @@ namespace Ewan.Core.Logic
                     }
                     break;
                 case "发送放入小车指令":
-                    // 发送扫码完成信号给机械臂
-                    _ioManager?.Ctx?.On(x => x.发送扫码完成信号);
-                    // 发送放入小车信号
-                    _ioManager?.Ctx?.On(x => x.发送放入小车指令);
+                    if (_parametersManager.Parameters._ringLineFallingEdge)
+                    {
+                        _ioManager?.Ctx?.On(x => x.发送扫码完成信号);
+                        // 发送放入小车信号
+                        _ioManager?.Ctx?.On(x => x.发送放入小车指令);
 
-                    SwitchIndex = "等待机械手到位";
-                    Tw.StartWatch(SwitchIndex);
+                        _parametersManager.Parameters._ringLineFallingEdge = false;
+                        SwitchIndex = "等待机械手到位";
+                        Tw.StartWatch(SwitchIndex);
+                    }
+                    if (Tw.StartCheckIsTimeout(SwitchIndex, WAIT_LOADING_COMPLETE_TIMEOUT))
+                    {
+                        MessageHub.Current.Post(new AlarmMessage(
+                            key: "UnLoading.Timeout",
+                            content: "等待环形线上料到位",
+                            level: AlarmLevel.M,
+                            needReset: false,
+                            unit: "UnLoading"));
+                        ForceCleanup("等待环形线上料到位");
+                    }
+
+
+                    //// 发送扫码完成信号给机械臂
+                    //_ioManager?.Ctx?.On(x => x.发送扫码完成信号);
+                    //// 发送放入小车信号
+                    //_ioManager?.Ctx?.On(x => x.发送放入小车指令);
+
+                    //SwitchIndex = "等待机械手到位";
+                    //Tw.StartWatch(SwitchIndex);
                     break;
                 case "等待机械手到位"://判断小车是否到位
                     if (_ioManager?.Ctx?.Edge.R(x => x.DI5) == true)

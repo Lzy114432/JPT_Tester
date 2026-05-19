@@ -117,15 +117,15 @@ namespace Ewan.Core.Logic
                 #region 初始状态
                 case "初始状态":
                     // 检测环线上升沿，有边沿才切换步骤
-                    if (!(_parametersManager.Parameters._ringLineRisingEdge || (_parametersManager.Parameters._ringLineIsLoading && _parametersManager.Parameters._ringLineArmed)))
+                    if (!(_parametersManager.Parameters._ringLineRisingEdge || _parametersManager.Parameters._ringLineFallingEdge /*(_parametersManager.Parameters._ringLineIsLoading && _parametersManager.Parameters._ringLineArmed)*/))
                     {
                         // 无上升沿时直接标记完成，不切换步骤，避免日志刷屏
                         IsFinish = true;
                         break;
                     }
 
-                    _parametersManager.Parameters._ringLineRisingEdge |= _parametersManager.Parameters._ringLineIsLoading && _parametersManager.Parameters._ringLineArmed;
-                    _parametersManager.Parameters._ringLineArmed = false;
+                    _parametersManager.Parameters._ringLineRisingEdge = false;
+                    //_parametersManager.Parameters._ringLineArmed = false;
                     SwitchIndex = "检查环线信号";
                     break;
                 #endregion
@@ -736,13 +736,28 @@ namespace Ewan.Core.Logic
 
                 #region 发送放入小车指令
                 case "发送放入小车指令":
-                    // 发送扫码完成信号给机械臂
-                    _ioManager?.Ctx?.On(x => x.发送扫码完成信号);
-                    // 发送放入小车信号
-                    _ioManager?.Ctx?.On(x => x.发送放入小车指令);
+                    if (_parametersManager.Parameters._ringLineFallingEdge)
+                    {
+                        _ioManager?.Ctx?.On(x => x.发送扫码完成信号);
+                        // 发送放入小车信号
+                        _ioManager?.Ctx?.On(x => x.发送放入小车指令);
 
-                    SwitchIndex = "等待机械手到位";
-                    Tw.StartWatch(SwitchIndex);
+                        _parametersManager.Parameters._ringLineFallingEdge =false;
+                        SwitchIndex = "等待机械手到位";
+                        Tw.StartWatch(SwitchIndex);
+                    }
+                    if (Tw.StartCheckIsTimeout(SwitchIndex, WAIT_LOADING_COMPLETE_TIMEOUT))
+                    {
+                        MessageHub.Current.Post(new AlarmMessage(
+                            key: "UnLoading.Timeout",
+                            content: "等待环形线上料到位",
+                            level: AlarmLevel.M,
+                            needReset: false,
+                            unit: "UnLoading"));
+                        ForceCleanup("等待环形线上料到位");
+                    }
+                    // 发送扫码完成信号给机械臂
+                  
                     break;
                 #endregion
 
@@ -935,9 +950,13 @@ namespace Ewan.Core.Logic
             {
                 _parametersManager.Parameters._ringLineRisingEdge = true;
             }
+            if (msg.FallingEdge)
+            {
+                _parametersManager.Parameters._ringLineFallingEdge = true;
+            }
             if (!msg.IsLoading)
             {
-                _parametersManager.Parameters._ringLineArmed = true;
+                //_parametersManager.Parameters._ringLineArmed = true;
             }
             _parametersManager.Parameters._emptyCount = msg.EmptyCarCount;
             _parametersManager.Parameters._cuttingBridgeCarCount = msg.CuttingBridgeCarCount;

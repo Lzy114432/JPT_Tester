@@ -133,6 +133,8 @@ namespace Ewan.Model.System
         [XmlIgnore]
         public bool _ringLineIsLoading = true;
         [XmlIgnore]
+        public bool _ringLineFallingEdge = true;
+        [XmlIgnore]
         public int _emptyCount = 0;
         [XmlIgnore]
         public int _cuttingBridgeCarCount = 0; 

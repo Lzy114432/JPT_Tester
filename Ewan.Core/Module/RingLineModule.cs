@@ -36,7 +36,7 @@ namespace Ewan.Core.Module
         private const string EmptyCarStartAddress = "x=4;2040";
         private const ushort EmptyCarByteLength = 20;
 
-        private bool _lastIsLoading = false;
+        private byte _lastState = 0;
 
         // 缓存
         private string str_中料仓lastLoadingQrCode = string.Empty;
@@ -47,7 +47,7 @@ namespace Ewan.Core.Module
         protected override void OnInit()
         {
             _uiLogger.Info("环线模块已初始化");
-            _lastIsLoading = false;
+            _lastState = 0;
         }
 
         protected override bool OnRun()
@@ -60,7 +60,7 @@ namespace Ewan.Core.Module
                 if (data != null && data.Length >= 2)
                 {
                     ushort value = (ushort)((data[0] << 8) | data[1]);
-                    bool currentIsLoading = value == 1;
+                    byte currentState = (byte)value;
                     int emptyCarCount = ReadEmptyCarCount();
                     int cuttingBridgeCarCount = ReadCuttingBridgeCarCount();
 
@@ -68,18 +68,19 @@ namespace Ewan.Core.Module
 
 
                     // 边缘检测变量
-                    bool risingEdge = currentIsLoading && !_lastIsLoading;
-                    bool fallingEdge = !currentIsLoading && _lastIsLoading;
+                    bool risingEdge = currentState == 1 && _lastState != 1;
+                    bool fallingEdge = currentState == 2 && _lastState != 2;
+                    bool isLoading = currentState == 1 || currentState == 2;
 
                     Push(new RingLineModel
                     {
-                        IsLoading = currentIsLoading,
+                        IsLoading = isLoading,
                         RisingEdge = risingEdge,
                         FallingEdge = fallingEdge,
                         EmptyCarCount = emptyCarCount,
                         CuttingBridgeCarCount = cuttingBridgeCarCount,
                     });
-                    _lastIsLoading = currentIsLoading;
+                    _lastState = currentState;
                 }
 
                 if (SystemParametersManager.Instance.Parameters.MesEnabled)
