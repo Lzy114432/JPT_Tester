@@ -7,7 +7,9 @@ using log4net;
 using log4net.Core;
 using System;
 using System.Collections.Concurrent;
+using System.Data.SqlClient;
 using System.IO.Ports;
+using System.Linq;
 using System.Text;
 
 namespace Ewan.Core.Plc
@@ -299,9 +301,10 @@ namespace Ewan.Core.Plc
                     qrData[i + 1] = temp;
                 }
 
+                string result = string.Concat(qrData.Where(b => b != 0).Select(b => (char)(b + '0')));
 
                 string rawString = Encoding.ASCII.GetString(qrData, 0, qrData.Length - 0);
-                string cleanString = rawString.Trim('\0');
+                string cleanString = rawString.Replace("\0", "");
 
                 // 截断换行符
                 int index = cleanString.IndexOfAny(new char[] { '\r', '\n' });
@@ -353,6 +356,19 @@ namespace Ewan.Core.Plc
                         return WriteStringToRegisters(secondaryAddress1, workOrder, length, clientKey);
                 }
                 return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public bool func_清空单号(string str_工单地址, string clientKey = null)
+        {
+
+            const ushort length = 10;
+            try
+            {
+                return WriteStringToRegisters(str_工单地址, "", length, clientKey);
             }
             catch (Exception ex)
             {

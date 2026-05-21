@@ -1,7 +1,9 @@
-﻿using Ewan.Model.System;
+﻿using Ewan.Core.Plc;
+using Ewan.Model.System;
 using MarkingMachineFeeder.Viewmodel;
 using Prism.Mvvm;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace MarkingMachineFeeder
@@ -107,6 +109,69 @@ namespace MarkingMachineFeeder
         {
             SystemParametersManager.Instance.Parameters.dic_料仓单号.Clear();
             SystemParametersManager.Instance.Parameters.str_当前工单号 = string.Empty;
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            // 获取 ComboBox 中选中的值（Tag）
+            if (cmbStation.SelectedItem is ComboBoxItem selectedItem)
+            {
+                string stationTag = selectedItem.Tag.ToString(); // "A", "B", "C", "D"
+                switch (stationTag)
+                {
+                    case "A":
+                        ModbusRTUManager.Instance()?.WriteWorkOrderToFirstAvailable("330");
+                        break;
+                    case "B":
+                        ModbusRTUManager.Instance()?.WriteWorkOrderToFirstAvailable("340");
+                        // 清除 B 料仓工单号
+                        break;
+                    case "C":
+                        ModbusRTUManager.Instance()?.WriteWorkOrderToFirstAvailable("350");
+                        // 清除 C 料仓工单号
+                        break;
+                    case "D":
+                        ModbusRTUManager.Instance()?.WriteWorkOrderToFirstAvailable("360");
+                        // 清除 D 料仓工单号
+                        break;
+                }
+            }
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            if (cmbNgBin.SelectedItem is ComboBoxItem selectedItem)
+            {
+                string ngTag = selectedItem.Tag.ToString(); // "1", "2", "3"
+                switch (ngTag)
+                {
+                    case "1":
+                        SystemParametersManager.Instance.Parameters.i_料仓1数量 = 0;
+                        break;
+                    case "2":
+                        SystemParametersManager.Instance.Parameters.i_料仓2数量 = 0;
+                        // 清除 2 号 NG 料仓的数量
+                        break;
+                    case "3":
+                        SystemParametersManager.Instance.Parameters.i_料仓3数量 = 0;
+                        // 清除 3 号 NG 料仓的数量
+                        break;
+                    case "NG":
+                        SystemParametersManager.Instance.Parameters.i_料仓NG数量 = 0;
+                        // 清除 3 号 NG 料仓的数量
+                        break;
+                }
+            }
+        }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            SystemParametersManager.Instance.Parameters.b_启用释放空车 = true;
+        }
+
+        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            SystemParametersManager.Instance.Parameters.b_启用释放空车 = false;
         }
     }
 }

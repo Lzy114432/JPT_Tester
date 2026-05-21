@@ -116,17 +116,22 @@ namespace Ewan.Core.Logic
             {
                 #region 初始状态
                 case "初始状态":
-                    // 检测环线上升沿，有边沿才切换步骤
-                    if (!(_parametersManager.Parameters._ringLineRisingEdge || _parametersManager.Parameters._ringLineFallingEdge /*(_parametersManager.Parameters._ringLineIsLoading && _parametersManager.Parameters._ringLineArmed)*/))
+                    if (Tw.StartCheckIsTimeout(SwitchIndex, 30))
                     {
-                        // 无上升沿时直接标记完成，不切换步骤，避免日志刷屏
-                        IsFinish = true;
-                        break;
-                    }
+                        // 检测环线上升沿，有边沿才切换步骤
+                        if (!(_parametersManager.Parameters._ringLineRisingEdge || _parametersManager.Parameters._ringLineFallingEdge ) 
+                            && (_parametersManager.Parameters._ringLineIsLoading))
+                        {
+                            // 无上升沿时直接标记完成，不切换步骤，避免日志刷屏
+                            IsFinish = true;
+                            break;
+                        }
 
-                    _parametersManager.Parameters._ringLineRisingEdge = false;
-                    //_parametersManager.Parameters._ringLineArmed = false;
-                    SwitchIndex = "检查环线信号";
+                        _parametersManager.Parameters._ringLineRisingEdge = false;
+                        //_parametersManager.Parameters._ringLineArmed = false;
+                        SwitchIndex = "检查环线信号";
+                    }
+                 
                     break;
                 #endregion
 
@@ -161,7 +166,7 @@ namespace Ewan.Core.Logic
                             }
                         }
 
-                        if (needSendEmptyCar)
+                        if (needSendEmptyCar || _parametersManager.Parameters.b_启用释放空车)
                         {
                             SwitchIndex = "释放空车";
                             return;
@@ -568,7 +573,7 @@ namespace Ewan.Core.Logic
                     break;
 
 
-                #endregion
+                #endregion 
                 #region 发送MES下料信号
                 case "发送MES下料信号":
                     if (_parametersManager?.Parameters?.MesEnabled != true)
@@ -582,6 +587,8 @@ namespace Ewan.Core.Logic
                     {
                         _uiLogger.Info("扫码失败");
                         //_ioManager?.Ctx?.On(x => x.料仓3选择信号);
+
+                        SystemParametersManager.Instance.Parameters.i_料仓NG数量++;
                         ClearBinSelectSignals();
                         _ioManager?.Ctx?.On(x => x.触发机械手放置料仓);
                         SwitchIndex = "释放空车";
@@ -703,7 +710,7 @@ namespace Ewan.Core.Logic
                     _ioManager.Ctx.Off(x => x.发送取料指令);
                     _ioManager?.Ctx?.On(x => x.触发机械手放置料仓);
                     if (_lastScannedQrCode != "")
-                        ModbusRTUManager.Instance()?.WriteWorkOrderToFirstAvailable(_lastScannedQrCode);
+                        ModbusRTUManager.Instance()?.WriteWorkOrderToFirstAvailable(_lastScannedQrCode + "G");
                     SwitchIndex = "等待装载完成";
                     Tw.StartWatch(SwitchIndex);
                     break;
@@ -716,6 +723,8 @@ namespace Ewan.Core.Logic
                         MessageHub.Current.Post(Ewan.Model.Production.BinElevatorCommandMessage.LoadingCompleted(
                             _selectedBin,
                             nameof(MaterialLoadingLogic)));
+
+                        SystemParametersManager.Instance.Parameters.i_上料速率++;
                         MessageHub.Current.Post(LoadingUnloadingStateMessage.LoadingCompleted(_selectedBin, nameof(MaterialLoadingLogic)));
                         SwitchIndex = "清理状态";
                         return;
@@ -742,7 +751,7 @@ namespace Ewan.Core.Logic
                         // 发送放入小车信号
                         _ioManager?.Ctx?.On(x => x.发送放入小车指令);
 
-                        _parametersManager.Parameters._ringLineFallingEdge =false;
+                        _parametersManager.Parameters._ringLineFallingEdge = false;
                         SwitchIndex = "等待机械手到位";
                         Tw.StartWatch(SwitchIndex);
                     }
@@ -757,7 +766,7 @@ namespace Ewan.Core.Logic
                         ForceCleanup("等待环形线上料到位");
                     }
                     // 发送扫码完成信号给机械臂
-                  
+
                     break;
                 #endregion
 
@@ -817,6 +826,8 @@ namespace Ewan.Core.Logic
                 case "发送Modbus完成":
                     Thread.Sleep(500);
                     SendCartCompletionToModbus(true);
+
+                    SystemParametersManager.Instance.Parameters.i_下料速率++;
                     MessageHub.Current.Post(LoadingUnloadingStateMessage.UnloadingCompleted(_selectedBin, nameof(MaterialLoadingLogic)));
                     SwitchIndex = "清理状态";
                     break;

@@ -1117,31 +1117,32 @@
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
                                         <!-- A Material Inventory -->
                                         <Border Grid.Column="0"
-                                                Background="#E6F3FF"
+                                                Background="#F0FFF0"
                                                 Margin="1"
                                                 Padding="5,6"
                                                 CornerRadius="4"
-                                                BorderBrush="#87CEEB"
+                                                BorderBrush="#90EE90"
                                                 BorderThickness="1">
                                             <StackPanel>
                                                 <TextBlock Text="料仓1"
                                                            FontWeight="Bold"
                                                            FontSize="10"
                                                            HorizontalAlignment="Center"
-                                                           Foreground="#4682B4" />
+                                                           Foreground="#228B22" />
                                                 <TextBlock Text="{Binding MaterialA_Count, FallbackValue='150'}"
                                                            FontWeight="Bold"
                                                            FontSize="16"
-                                                           Foreground="#4682B4"
+                                                           Foreground="#228B22"
                                                            HorizontalAlignment="Center"
                                                            Margin="0,2,0,0" />
                                                 <TextBlock Text="件"
                                                            FontSize="9"
                                                            HorizontalAlignment="Center"
-                                                           Foreground="#4682B4" />
+                                                           Foreground="#228B22" />
                                             </StackPanel>
                                         </Border>
                                         <!-- B Material Inventory -->
@@ -1170,8 +1171,34 @@
                                                            Foreground="#228B22" />
                                             </StackPanel>
                                         </Border>
+                                        <!-- B Material Inventory -->
+                                        <Border Grid.Column="2"
+                                                Background="#F0FFF0"
+                                                Margin="1"
+                                                Padding="5,6"
+                                                CornerRadius="4"
+                                                BorderBrush="#90EE90"
+                                                BorderThickness="1">
+                                            <StackPanel>
+                                                <TextBlock Text="料仓3"
+                                                           FontWeight="Bold"
+                                                           FontSize="10"
+                                                           HorizontalAlignment="Center"
+                                                           Foreground="#228B22" />
+                                                <TextBlock Text="{Binding MaterialC_Count, FallbackValue='89'}"
+                                                           FontWeight="Bold"
+                                                           FontSize="16"
+                                                           Foreground="#228B22"
+                                                           HorizontalAlignment="Center"
+                                                           Margin="0,2,0,0" />
+                                                <TextBlock Text="件"
+                                                           FontSize="9"
+                                                           HorizontalAlignment="Center"
+                                                           Foreground="#228B22" />
+                                            </StackPanel>
+                                        </Border>
                                         <!-- NG Material Inventory -->
-                                        <!--<Border Grid.Column="2"
+                                        <Border Grid.Column="3"
                                                 Background="#FFF0F0"
                                                 Margin="1"
                                                 Padding="5,6"
@@ -1195,62 +1222,14 @@
                                                            HorizontalAlignment="Center"
                                                            Foreground="#DC143C" />
                                             </StackPanel>
-                                        </Border>-->
+                                        </Border>
                                     </Grid>
                                     <!-- Total and Capacity (Compact) -->
                                     <Border Grid.Row="1"
                                             Background="#F8F9FA"
                                             Margin="2,4,2,2"
                                             Padding="6,4"
-                                            CornerRadius="3">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <StackPanel Grid.Column="0"
-                                                        Orientation="Horizontal"
-                                                        HorizontalAlignment="Left">
-                                                <TextBlock Text="总量:"
-                                                           FontWeight="Bold"
-                                                           FontSize="10"
-                                                           VerticalAlignment="Center" />
-                                                <TextBlock Text="{Binding TotalMaterialCount, FallbackValue='251'}"
-                                                           FontWeight="Bold"
-                                                           FontSize="11"
-                                                           Foreground="#0066CC"
-                                                           Margin="3,0,0,0"
-                                                           VerticalAlignment="Center" />
-                                                <TextBlock Text="件"
-                                                           FontSize="9"
-                                                           Margin="2,0,0,0"
-                                                           VerticalAlignment="Center" />
-                                            </StackPanel>
-                                            <Rectangle Grid.Column="1"
-                                                       Width="1"
-                                                       Fill="#CCCCCC"
-                                                       Margin="6,2" />
-                                            <StackPanel Grid.Column="2"
-                                                        Orientation="Horizontal"
-                                                        HorizontalAlignment="Right">
-                                                <TextBlock Text="满载:"
-                                                           FontWeight="Bold"
-                                                           FontSize="10"
-                                                           VerticalAlignment="Center" />
-                                                <TextBlock Text="{Binding MaxCapacity, FallbackValue='1500'}"
-                                                           FontWeight="Bold"
-                                                           FontSize="11"
-                                                           Foreground="#666666"
-                                                           Margin="3,0,0,0"
-                                                           VerticalAlignment="Center" />
-                                                <TextBlock Text="件"
-                                                           FontSize="9"
-                                                           Margin="2,0,0,0"
-                                                           VerticalAlignment="Center" />
-                                            </StackPanel>
-                                        </Grid>
-                                    </Border>
+                                            CornerRadius="3"/>
                                     <!-- Status (Compact) -->
                                     <Border Grid.Row="2"
                                             Background="#E8F5E8"
@@ -1284,48 +1263,83 @@
                                 </Grid>
                             </GroupBox>
                             <!-- Material Operation Quick Actions (Ultra-Compact) -->
-                            <Grid Grid.Row="3"
-                                  Margin="3,3,3,3">
+                            <Grid Grid.Row="3" Margin="3">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0"
-                                        Content="全部清料"
-                                        Style="{StaticResource ModernButton}"
-                                        Height="45"
+
+                                <!-- 第一行：原有功能 -->
+                                <CheckBox Grid.Row="0" Grid.Column="0"
+                                        Content="释放空车"
+                                        Height="35"
                                         FontSize="16"
                                         FontWeight="Bold"
-                                        Command="{Binding ClearAllMaterialsCommand}"
-                                        Background="#FFE6E6"
-                                        BorderBrush="#FFB6C1"
-                                        ToolTip="清空所有物料"
+                                        Background="#E6F3FF"
+                                        BorderBrush="#87CEEB"
                                         Margin="2,0"
-                                        Padding="8,5" />
-                                <Button Grid.Column="1"
+                                        Padding="8,5"
+                                        Checked="CheckBox_Checked"
+                                        Unchecked="CheckBox_Unchecked"/>
+                                <Button Grid.Row="0" Grid.Column="1"
                                         Content="重置计数"
                                         Style="{StaticResource ModernButton}"
-                                        Height="45"
-                                        FontSize="16"
-                                        FontWeight="Bold"
+                                        Height="35" FontSize="16" FontWeight="Bold"
                                         Command="{Binding ResetAllCountCommand}"
-                                        Background="#E6F3FF"
-                                        BorderBrush="#87CEEB"
-                                        ToolTip="重置所有计数器"
-                                        Margin="2,0"
-                                        Padding="8,5" />
-                                <Button Grid.Column="2"
+                                        Background="#E6F3FF" BorderBrush="#87CEEB"
+                                        ToolTip="重置所有计数器" Margin="2,0" Padding="8,5" />
+
+                                <Button Grid.Row="0" Grid.Column="2"
                                         Content="清除料仓绑定"
                                         Style="{StaticResource ModernButton}"
-                                        Height="45"
-                                        FontSize="16"
-                                        FontWeight="Bold"
-                                        Background="#E6F3FF"
-                                        BorderBrush="#87CEEB"
-                                        ToolTip="清除料仓绑定"
-                                        Margin="2,0"
-                                        Padding="8,5" Click="Button_Click" />
+                                        Height="35" FontSize="16" FontWeight="Bold"
+                                        Command="{Binding ClearBindingCommand}"
+                                        Background="#FFF0E6" BorderBrush="#FFB6C1"
+                                        ToolTip="清除当前选中料仓的物料绑定" Margin="2,0" Padding="8,5" />
+
+                                <!-- 第二行：清除 ABCD 料仓工单号（可选择料仓） -->
+                                <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+                                        Orientation="Horizontal" Margin="2,5,2,5" Height="35">
+                                    <TextBlock Text="清除环形线工单号：" 
+                                        VerticalAlignment="Center" Margin="5,0" FontSize="14"/>
+                                    <ComboBox x:Name="cmbStation" Width="100" Margin="5,0" VerticalAlignment="Center"
+                                        SelectedIndex="0">
+                                        <ComboBoxItem Content="A" Tag="A"/>
+                                        <ComboBoxItem Content="B" Tag="B"/>
+                                        <ComboBoxItem Content="C" Tag="C"/>
+                                        <ComboBoxItem Content="D" Tag="D"/>
+                                    </ComboBox>
+                                    <Button Content="清除工单号"
+                                        Style="{StaticResource ModernButton}"
+                                        Background="#E6F3FF" BorderBrush="#87CEEB"
+                                        Width="100" Height="35" Margin="5,0"
+                                        ToolTip="清除所选料仓的工单号" Click="Button_Click_1"/>
+                                </StackPanel>
+
+                                <!-- 第三行：清除选择的 NG 料仓数量（可选择 1/2/3） -->
+                                <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"
+                                        Orientation="Horizontal" Margin="2,5,2,5" Height="35">
+                                    <TextBlock Text="清除料仓数量：" 
+                                        VerticalAlignment="Center" Margin="5,0" FontSize="14"/>
+                                    <ComboBox x:Name="cmbNgBin" Width="80" Margin="5,0" VerticalAlignment="Center"
+                                        SelectedIndex="0">
+                                        <ComboBoxItem Content="1" Tag="1"/>
+                                        <ComboBoxItem Content="2" Tag="2"/>
+                                        <ComboBoxItem Content="3" Tag="3"/>
+                                        <ComboBoxItem Content="NG" Tag="4"/>
+                                    </ComboBox>
+                                    <Button Content="清除数量"
+                                        Style="{StaticResource ModernButton}"
+                                        Background="#FFE6E6" BorderBrush="#FFB6C1"
+                                        Width="100" Height="35" Margin="5,0"
+                                        ToolTip="清除所选料仓的数量" Click="Button_Click_2"/>
+                                </StackPanel>
                             </Grid>
                         </Grid>
                     </Grid>

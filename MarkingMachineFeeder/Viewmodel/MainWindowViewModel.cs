@@ -1,5 +1,6 @@
 using Ewan.Core.IO;
 using Ewan.Core.Manager;
+using Ewan.Core.Plc;
 using Ewan.Core.Security;
 using Ewan.Model.Messages;
 using Ewan.Model.Security;
@@ -86,6 +87,7 @@ namespace MarkingMachineFeeder.Viewmodel
         // B料属性
         private string _materialB_Barcode = "B240912002";
         private string _materialB_Count = "89";
+        private string _materialC_Count = "89";
         private string _materialB_Priority = "2";
 
         // NG料属性
@@ -920,6 +922,11 @@ namespace MarkingMachineFeeder.Viewmodel
             get => _materialB_Count;
             set => SetProperty(ref _materialB_Count, value);
         }
+        public string MaterialC_Count
+        {
+            get => _materialC_Count;
+            set => SetProperty(ref _materialC_Count, value);
+        }
 
         public string MaterialB_Priority
         {
@@ -1073,7 +1080,8 @@ namespace MarkingMachineFeeder.Viewmodel
 
         // 复位状态标志，防止重复执行
         private bool _isResetting = false;
-
+        private const string CART_COMPLETION_REGISTER = "153";
+        private const string MATERIAL_STATUS_REGISTER = "178";
         private async void ExecuteSystemReset()
         {
             // 防止重复执行
@@ -1088,6 +1096,12 @@ namespace MarkingMachineFeeder.Viewmodel
                 _isResetting = true;
                 ClearBinSelectSignals();
                 _uiLogger.Info("处理已开始: {0}", "用户触发系统复位");
+                SystemParametersManager.Instance.Parameters._ringLineRisingEdge = false;
+                SystemParametersManager.Instance.Parameters._ringLineFallingEdge = false;
+                ModbusRTUManager.Instance()?.WriteAny(CART_COMPLETION_REGISTER, (ushort)1);
+
+                ushort statusValue = (ushort)0;
+                ModbusRTUManager.Instance()?.WriteAny(MATERIAL_STATUS_REGISTER, statusValue);
 
                 var parameters = Ewan.Model.System.SystemParametersManager.Instance.Parameters;
 
@@ -1456,35 +1470,14 @@ namespace MarkingMachineFeeder.Viewmodel
                     SystemParametersManager.Instance.Parameters.i_下料速率 = 0;
                 }
                 I_OldTHouse = I_NowTHouse;
-                if (message == null || message.State != LoadingUnloadingState.Completed)
-                {
-                    return;
-                }
-
                 System.Windows.Application.Current?.Dispatcher.Invoke(() =>
                 {
-                    if (message.Operation == LoadingUnloadingOperation.Loading)
-                    {
-
-                        if (message.BinNumber == 1)
-                        {
-                            MaterialA_Count = (int.Parse(MaterialA_Count) + 1).ToString();
-                            SystemParametersManager.Instance.Parameters.i_上料速率++;
-                        }
-                        else if (message.BinNumber == 2)
-                        {
-                            MaterialB_Count = (int.Parse(MaterialB_Count) + 1).ToString();
-                            SystemParametersManager.Instance.Parameters.i_下料速率++;
-                        }
-                        LoadingUPH = (int.Parse(LoadingUPH) + 1).ToString();
-                        SystemParametersManager.Instance.Parameters.i_上料速率++;
-                    }
-                    else if (message.Operation == LoadingUnloadingOperation.Unloading)
-                    {
-                        UnloadingUPH = (int.Parse(LoadingUPH) + 1).ToString();
-
-                        SystemParametersManager.Instance.Parameters.i_下料速率++;
-                    }
+                    MaterialA_Count = SystemParametersManager.Instance.Parameters.i_料仓1数量.ToString();
+                    MaterialB_Count = SystemParametersManager.Instance.Parameters.i_料仓2数量.ToString();
+                    MaterialC_Count = SystemParametersManager.Instance.Parameters.i_料仓3数量.ToString();
+                    MaterialNG_Count = SystemParametersManager.Instance.Parameters.i_料仓NG数量.ToString();
+                    LoadingUPH = SystemParametersManager.Instance.Parameters.i_上料速率.ToString();
+                    UnloadingUPH = SystemParametersManager.Instance.Parameters.i_下料速率.ToString();
                     foreach (var temp in SystemParametersManager.Instance.Parameters.dic_料仓单号)
                     {
                         if (temp.Value == 2 && MaterialB_Barcode != temp.Key)
@@ -1497,6 +1490,35 @@ namespace MarkingMachineFeeder.Viewmodel
                         }
                     }
                 });
+                //if (message == null || message.State != LoadingUnloadingState.Completed)
+                //{
+                //    return;
+                //}
+
+
+                //    if (message.Operation == LoadingUnloadingOperation.Loading)
+                //    {
+
+                //        if (message.BinNumber == 1)
+                //        {
+                //            MaterialA_Count = (int.Parse(MaterialA_Count) + 1).ToString();
+                //            SystemParametersManager.Instance.Parameters.i_上料速率++;
+                //        }
+                //        else if (message.BinNumber == 2)
+                //        {
+                //            //MaterialB_Count = (int.Parse(MaterialB_Count) + 1).ToString();
+                //            MaterialB_Count = SystemParametersManager.Instance.Parameters.i_下料速率++.ToString();
+                //        }
+                //        LoadingUPH = (int.Parse(LoadingUPH) + 1).ToString();
+                //        SystemParametersManager.Instance.Parameters.i_上料速率++;
+                //    }
+                //    else if (message.Operation == LoadingUnloadingOperation.Unloading)
+                //    {
+                //        UnloadingUPH = (int.Parse(LoadingUPH) + 1).ToString();
+
+                //        SystemParametersManager.Instance.Parameters.i_下料速率++;
+                //    }
+
             }
             catch (Exception ex)
             {

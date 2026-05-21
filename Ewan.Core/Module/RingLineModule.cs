@@ -16,7 +16,7 @@ namespace Ewan.Core.Module
     public class RingLineModule : BaseModule<RingLineModule>
     {
         // ... (保持原有字段不变)
-        private int _interval = 200;
+        private int _interval = 20;
         private CancellationTokenSource _mesFeedingCts;
         private Task<MesRingLineFeedback> _mesFeedingTask;
         private const int MES_REQUEST_TIMEOUT_BUFFER_MS = 5000;
@@ -49,7 +49,8 @@ namespace Ewan.Core.Module
             _uiLogger.Info("环线模块已初始化");
             _lastState = 0;
         }
-
+        bool risingEdge = false;
+        bool fallingEdge = false;
         protected override bool OnRun()
         {
             Task.Delay(_interval).Wait();
@@ -66,11 +67,13 @@ namespace Ewan.Core.Module
 
 
 
-
                     // 边缘检测变量
+
                     bool risingEdge = currentState == 1 && _lastState != 1;
                     bool fallingEdge = currentState == 2 && _lastState != 2;
-                    bool isLoading = currentState == 1 || currentState == 2;
+                    /*&& _lastState != 1*/
+                    //bool fallingEdge = currentState == 2 /*&& _lastState != 2*/;
+                    bool isLoading = _lastState == 0 && currentState == 2;
 
                     Push(new RingLineModel
                     {

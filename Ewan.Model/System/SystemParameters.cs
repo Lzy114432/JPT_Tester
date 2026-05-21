@@ -120,8 +120,13 @@ namespace Ewan.Model.System
         public int CuttingBridgeCarReserveCount { get; set; } = 0;
         public int i_料仓1数量 = 0;
         public int i_料仓2数量 = 0;
+        public int i_料仓3数量 = 0;
+        public int i_料仓NG数量 = 0;
         public int i_上料速率 = 0;
         public int i_下料速率 = 0;
+
+        [XmlIgnore]
+        public bool b_启用释放空车 = false;
 
         public Dictionary<string, int> dic_料仓单号 = new Dictionary<string, int>();
         [XmlIgnore]

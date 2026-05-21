@@ -323,6 +323,7 @@ namespace Ewan.Core.Logic
                         {
                             _uiLogger.Info("扫码失败");
                             ClearBinSelectSignals();
+                            SystemParametersManager.Instance.Parameters.i_料仓3数量++;
                             _ioManager?.Ctx?.On(x => x.料仓3选择信号);
                             SwitchIndex = "移动到料仓";
                             return;
@@ -522,6 +523,7 @@ namespace Ewan.Core.Logic
                                 {
                                     return;
                                 }
+                                SystemParametersManager.Instance.Parameters.i_料仓3数量++;
                                 _ioManager?.Ctx?.On(x => x.料仓3选择信号);
                                 SwitchIndex = "移动到料仓";
                             }
@@ -533,6 +535,7 @@ namespace Ewan.Core.Logic
                         {
                             return;
                         }
+                        SystemParametersManager.Instance.Parameters.i_料仓3数量++;
                         _ioManager?.Ctx?.On(x => x.料仓3选择信号);
                         SwitchIndex = "移动到料仓";
                     }
@@ -564,6 +567,8 @@ namespace Ewan.Core.Logic
                         MessageHub.Current.Post(Ewan.Model.Production.BinElevatorCommandMessage.LoadingCompleted(
                             _targetBin,
                             nameof(MaterialLoadingLogic)));
+
+                        SystemParametersManager.Instance.Parameters.i_上料速率++;
                         MessageHub.Current.Post(LoadingUnloadingStateMessage.LoadingCompleted(_targetBin, nameof(MaterialLoadingLogic)));
                         SwitchIndex = "清理状态";
                         return;
@@ -637,7 +642,7 @@ namespace Ewan.Core.Logic
                             }
                         }
 
-                        if (needSendEmptyCar)
+                        if (needSendEmptyCar || _parametersManager.Parameters.b_启用释放空车)
                         {
                             SwitchIndex = "释放空车";
                             return;
@@ -674,6 +679,7 @@ namespace Ewan.Core.Logic
                         {
                             _uiLogger.WarnRaw("MES未连接或未初始化，跳过上料请求");
                             _mesRetryCount = 0;
+                            SystemParametersManager.Instance.Parameters.i_料仓3数量++;
                             _ioManager?.Ctx?.On(x => x.料仓3选择信号);
                             SwitchIndex = "移动到料仓";
                             return;
@@ -714,6 +720,7 @@ namespace Ewan.Core.Logic
                         {
                             _uiLogger.WarnRaw("MES下料请求已取消");
                             _mesRetryCount = 0;
+                            SystemParametersManager.Instance.Parameters.i_料仓3数量++;
                             _ioManager?.Ctx?.On(x => x.料仓3选择信号);
                             SwitchIndex = "移动到料仓";
                         }
@@ -724,6 +731,7 @@ namespace Ewan.Core.Logic
                             {
                                 return;
                             }
+                            SystemParametersManager.Instance.Parameters.i_料仓3数量++;
                             _ioManager?.Ctx?.On(x => x.料仓3选择信号);
                             SwitchIndex = "移动到料仓";
                         }
@@ -750,6 +758,7 @@ namespace Ewan.Core.Logic
                                 {
                                     return;
                                 }
+                                SystemParametersManager.Instance.Parameters.i_料仓3数量++;
                                 _ioManager?.Ctx?.On(x => x.料仓3选择信号);
                                 SwitchIndex = "移动到料仓";
                             }
@@ -761,6 +770,7 @@ namespace Ewan.Core.Logic
                         {
                             return;
                         }
+                        SystemParametersManager.Instance.Parameters.i_料仓3数量++;
                         _ioManager?.Ctx?.On(x => x.料仓3选择信号);
                         SwitchIndex = "移动到料仓";
                     }
@@ -851,6 +861,7 @@ namespace Ewan.Core.Logic
                 case "发送Modbus完成":
                     Thread.Sleep(500);
                     SendCartCompletionToModbus(true);
+                    SystemParametersManager.Instance.Parameters.i_下料速率++;
                     MessageHub.Current.Post(LoadingUnloadingStateMessage.UnloadingCompleted(_targetBin, nameof(MaterialLoadingLogic)));
                     SwitchIndex = "下料清理状态";
                     break;
@@ -1037,12 +1048,15 @@ namespace Ewan.Core.Logic
             {
                 case 1:
                     _ioManager.Ctx.On(x => x.料仓1选择信号);
+                    SystemParametersManager.Instance.Parameters.i_料仓1数量++;
                     break;
                 case 2:
                     _ioManager.Ctx.On(x => x.料仓2选择信号);
+                    SystemParametersManager.Instance.Parameters.i_料仓2数量++;
                     break;
                 case 3:
                     _ioManager.Ctx.On(x => x.料仓3选择信号);
+                    SystemParametersManager.Instance.Parameters.i_料仓3数量++;
                     break;
             }
         }
