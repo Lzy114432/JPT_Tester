@@ -2,6 +2,7 @@
 using Ewan.Model.System;
 using MarkingMachineFeeder.Viewmodel;
 using Prism.Mvvm;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -97,9 +98,9 @@ namespace MarkingMachineFeeder
             if (confirmDialog.ShowDialog() == true)
             {
                 var manager = SystemParametersManager.Instance;
-                var original = manager.Parameters;
+                var parameters = manager.Parameters;
 
-                var parameters = Ewan.Model.System.SystemParameters.CreateDefault();
+                //var parameters = Ewan.Model.System.SystemParameters.CreateDefault();
                 manager.SaveParameters(parameters);
                 Application.Current.Shutdown();
             }
@@ -120,18 +121,18 @@ namespace MarkingMachineFeeder
                 switch (stationTag)
                 {
                     case "A":
-                        ModbusRTUManager.Instance()?.WriteWorkOrderToFirstAvailable("330");
+                        ModbusRTUManager.Instance()?.WriteStringToRegisters("701", "", 10, "mian");
                         break;
                     case "B":
-                        ModbusRTUManager.Instance()?.WriteWorkOrderToFirstAvailable("340");
+                        ModbusRTUManager.Instance()?.WriteStringToRegisters("711", "", 10, "mian");
                         // 清除 B 料仓工单号
                         break;
                     case "C":
-                        ModbusRTUManager.Instance()?.WriteWorkOrderToFirstAvailable("350");
+                        ModbusRTUManager.Instance()?.WriteStringToRegisters("731", "", 10, "mian");
                         // 清除 C 料仓工单号
                         break;
                     case "D":
-                        ModbusRTUManager.Instance()?.WriteWorkOrderToFirstAvailable("360");
+                        ModbusRTUManager.Instance()?.WriteStringToRegisters("741", "", 10, "mian");
                         // 清除 D 料仓工单号
                         break;
                 }
@@ -172,6 +173,38 @@ namespace MarkingMachineFeeder
         private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             SystemParametersManager.Instance.Parameters.b_启用释放空车 = false;
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            if (!SystemParametersManager.Instance.Parameters.dic_料仓单号.Keys.Contains(tb_输入工单号.Text))
+            {
+                MessageBox.Show("当前AB工单不包含所写入的工单，无法写入");
+                return;
+            }
+            // 获取 ComboBox 中选中的值（Tag）
+            if (cmbStation.SelectedItem is ComboBoxItem selectedItem)
+            {
+                string stationTag = selectedItem.Tag.ToString(); // "A", "B", "C", "D"
+                switch (stationTag)
+                {
+                    case "A":
+                        ModbusRTUManager.Instance()?.WriteStringToRegisters("701", tb_输入工单号.Text, 10, "mian");
+                        break;
+                    case "B":
+                        ModbusRTUManager.Instance()?.WriteStringToRegisters("711", tb_输入工单号.Text, 10, "mian");
+                        // 清除 B 料仓工单号
+                        break;
+                    case "C":
+                        ModbusRTUManager.Instance()?.WriteStringToRegisters("731", tb_输入工单号.Text, 10, "mian");
+                        // 清除 C 料仓工单号
+                        break;
+                    case "D":
+                        ModbusRTUManager.Instance()?.WriteStringToRegisters("741", tb_输入工单号.Text, 10, "mian");
+                        // 清除 D 料仓工单号
+                        break;
+                }
+            }
         }
     }
 }

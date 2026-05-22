@@ -836,7 +836,7 @@ namespace Ewan.Core.Logic
                 case "等待放入完成":
                     //bool b = _ioManager.Ctx.Edge.R(x => x.放入小车完成信号);
                     //bool b1 = _ioManager.Ctx.Edge.R(x => x.移至扫码区到位信号);
-                    if (_ioManager?.Ctx?.Edge.R(x => x.放入小车完成信号) == true)
+                    if (_ioManager?.Ctx?.R.放入小车完成信号 == true)
                     {
                         // 清除放入小车信号
                         _ioManager?.Ctx?.Off(x => x.发送放入小车指令);
@@ -867,7 +867,7 @@ namespace Ewan.Core.Logic
                     break;
                 case "下料清理状态":
                     // 重置标志
-                    if (_ioManager?.Ctx?.Edge.R(x => x.放入小车完成信号) == true)
+                    if (_ioManager?.Ctx?.R.放入小车完成信号 == true)
                     {
                         break;
                     }

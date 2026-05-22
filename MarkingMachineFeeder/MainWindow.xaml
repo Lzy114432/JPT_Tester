@@ -1306,8 +1306,13 @@
                                 <!-- 第二行：清除 ABCD 料仓工单号（可选择料仓） -->
                                 <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
                                         Orientation="Horizontal" Margin="2,5,2,5" Height="35">
-                                    <TextBlock Text="清除环形线工单号：" 
-                                        VerticalAlignment="Center" Margin="5,0" FontSize="14"/>
+                                    <TextBox x:Name="tb_输入工单号" Grid.Column="2"
+                                        Text="输入工单号"
+                                        VerticalAlignment="Center"
+                                        FontSize="15"
+                                        Padding="6,4"
+                                        Height="34"
+                                        HorizontalAlignment="Stretch"/>
                                     <ComboBox x:Name="cmbStation" Width="100" Margin="5,0" VerticalAlignment="Center"
                                         SelectedIndex="0">
                                         <ComboBoxItem Content="A" Tag="A"/>
@@ -1315,11 +1320,16 @@
                                         <ComboBoxItem Content="C" Tag="C"/>
                                         <ComboBoxItem Content="D" Tag="D"/>
                                     </ComboBox>
-                                    <Button Content="清除工单号"
+                                    <Button Content="清除"
                                         Style="{StaticResource ModernButton}"
                                         Background="#E6F3FF" BorderBrush="#87CEEB"
-                                        Width="100" Height="35" Margin="5,0"
+                                        Width="90" Height="35" Margin="2,0"
                                         ToolTip="清除所选料仓的工单号" Click="Button_Click_1"/>
+                                    <Button Content="写入"
+                                        Style="{StaticResource ModernButton}"
+                                        Background="#E6F3FF" BorderBrush="#87CEEB"
+                                        Width="90" Height="35" Margin="2,0"
+                                        ToolTip="写入所选料仓的工单号" Click="Button_Click_3"/>
                                 </StackPanel>
 
                                 <!-- 第三行：清除选择的 NG 料仓数量（可选择 1/2/3） -->

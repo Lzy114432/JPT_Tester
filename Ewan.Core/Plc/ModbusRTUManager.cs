@@ -1,3 +1,4 @@
+using Ewan.Model.System;
 using EwanCommon.Logging;
 using EwanCore;
 using EwanCore.Attribute;
@@ -5,6 +6,7 @@ using HslCommunication;
 using HslCommunication.ModBus;
 using log4net;
 using log4net.Core;
+using Microsoft.Win32;
 using System;
 using System.Collections.Concurrent;
 using System.Data.SqlClient;
@@ -281,11 +283,11 @@ namespace Ewan.Core.Plc
         }
 
 
-        private string func_Read(string startAddress)
+        private string func_Read(string startAddress, ushort U_Length)
         {
             try
             {
-                var qrData = ModbusRTUManager.Instance().Read(startAddress, 10, "main");
+                var qrData = ModbusRTUManager.Instance().Read(startAddress, U_Length, "main");
                 if (qrData == null || qrData.Length == 0)
                 {
                     return string.Empty;
@@ -300,23 +302,24 @@ namespace Ewan.Core.Plc
                     qrData[i] = qrData[i + 1];
                     qrData[i + 1] = temp;
                 }
+                string result = string.Concat(qrData.Select(b => (char)(b)));
+                //var result = string.Concat(qrData.Where((b, i) => i % 2 == 0)  // 偶数索引
+                //                  .Select(b => (char)(b + '0')));
 
-                string result = string.Concat(qrData.Where(b => b != 0).Select(b => (char)(b + '0')));
+                //string rawString = Encoding.ASCII.GetString(qrData, 0, qrData.Length - 0);
+                //string cleanString = rawString.Replace("\0", "");
 
-                string rawString = Encoding.ASCII.GetString(qrData, 0, qrData.Length - 0);
-                string cleanString = rawString.Replace("\0", "");
-
-                // 截断换行符
-                int index = cleanString.IndexOfAny(new char[] { '\r', '\n' });
-                if (index >= 0)
-                {
-                    cleanString = cleanString.Substring(0, index);
-                }
+                //// 截断换行符
+                //int index = cleanString.IndexOfAny(new char[] { '\r', '\n' });
+                //if (index >= 0)
+                //{
+                //    cleanString = cleanString.Substring(0, index);
+                //}
 
                 // 4. 最终拼接格式
                 // 格式：站号(2位) + 料仓号(1位) + 进出(1位) + 空位(1位) + 字符串(F开头...)
                 // "06" + "1" + "1" + "0" + "FZH26010001173"
-                return $"{cleanString}";
+                return $"{result}";
             }
             catch (Exception ex)
             {
@@ -328,34 +331,69 @@ namespace Ewan.Core.Plc
         public bool WriteWorkOrderToFirstAvailable(string workOrder, string clientKey = null)
         {
             const ushort length = 10;
-            const string primaryAddress = "330";  // 
-            const string primaryAddress1 = "340";  // 
-            const string secondaryAddress = "350"; //
-            const string secondaryAddress1 = "360"; //
+            const string primaryAddress = "701";  // 
+            const string primaryAddress1 = "711";  // 
+            const string secondaryAddress = "731"; //
+            const string secondaryAddress1 = "741"; //
 
-            try
+            ushort us_Cur1 = 1;
+            ushort us_Cur2 = 1;
+            var v_A = func_Read(primaryAddress, length);
+            var v_B = func_Read(primaryAddress1, length);
+            var v_C = func_Read(secondaryAddress, length);
+            var v_D = func_Read(secondaryAddress1, length);
+            //var v_D1 = func_Read("700", 1);
+            //var v_D2 = func_Read("730", 1);
+
+            if (SystemParametersManager.Instance.Parameters.str_当前工单号 == v_A && v_A != "")
             {
+
+                us_Cur1 = 1;
+            }
+            else if (SystemParametersManager.Instance.Parameters.str_当前工单号 == v_B && v_B != "")
+            {
+                us_Cur1 = 2;
+            }
+            if (SystemParametersManager.Instance.Parameters.str_当前工单号 == v_C && v_C != "")
+            {
+                us_Cur2 = 1;
+            }
+            else if (SystemParametersManager.Instance.Parameters.str_当前工单号 == v_D && v_D != "")
+            {
+                us_Cur2 = 2;
+            }
+            WriteAny("700", us_Cur1, "main");
+            WriteAny("730", us_Cur2, "main");
+            //SystemParametersManager.Instance.Parameters.str_当前工单号；
+            try
+            {    //0 = UNKNOWN // 未知
+                 //1 = EMPTY // 空
+                 //2 = HAS_ITEM // 有料
+                 //3 = FULL // 满
+                 //4 = ERROR // 异常
+
                 // 尝试读取主区
-                var primaryBytes = func_Read(primaryAddress);
-                var primaryBytes1 = func_Read(primaryAddress1);
-                if (!(primaryAddress.Contains(workOrder) || primaryAddress1.Contains(workOrder)))
+                var primaryBytes = func_Read("190", 1);
+                var primaryBytes1 = func_Read("191", 1);
+
+                if (!(v_A.Contains(workOrder) || v_B.Contains(workOrder)))
                 {
-                    if (primaryBytes == "")
-                        return WriteStringToRegisters(primaryAddress, workOrder, length, clientKey);
-                    else if (primaryBytes1 == "")
-                        return WriteStringToRegisters(primaryAddress1, workOrder, length, clientKey);
+                    if (primaryBytes == "\u0001\0")
+                        WriteStringToRegisters(primaryAddress, workOrder, length, clientKey);
+                    else if (primaryBytes1 == "\u0001\0")
+                        WriteStringToRegisters(primaryAddress1, workOrder, length, clientKey);
                 }
 
-                var primaryBytes2 = func_Read(secondaryAddress);
-                var primaryBytes3 = func_Read(secondaryAddress1);
-                if (!(secondaryAddress.Contains(workOrder) || secondaryAddress1.Contains(workOrder)))
+                var primaryBytes2 = func_Read("192", 1);
+                var primaryBytes3 = func_Read("193", 1);
+                if (!(v_C.Contains(workOrder) || v_D.Contains(workOrder)))
                 {
-                    if (primaryBytes2 == "")
-                        return WriteStringToRegisters(secondaryAddress, workOrder, length, clientKey);
-                    else if (primaryBytes3 == "")
-                        return WriteStringToRegisters(secondaryAddress1, workOrder, length, clientKey);
+                    if (primaryBytes2 == "\u0001\0")
+                        WriteStringToRegisters(secondaryAddress, workOrder, length, clientKey);
+                    else if (primaryBytes3 == "\u0001\0")
+                        WriteStringToRegisters(secondaryAddress1, workOrder, length, clientKey);
                 }
-                return false;
+                return true;
             }
             catch (Exception ex)
             {
@@ -378,30 +416,61 @@ namespace Ewan.Core.Plc
 
 
         // 将字符串转换为 length 个 uint16 并写入指定寄存器地址（大端）
-        private bool WriteStringToRegisters(string address, string text, ushort length, string clientKey = null)
+        public bool WriteStringToRegisters(string address, string text, ushort length, string clientKey = null)
         {
             if (text == null) text = string.Empty;
-            // 每寄存器 2 字节，总字节长度 = length * 2
-            var payload = new byte[length * 2];
-            for (int i = 0; i < length; i++)
+            // 最大可存储字符数 = 寄存器数量 * 2
+            int maxChars = length * 2;
+            if (text.Length > maxChars) text = text.Substring(0, maxChars);
+
+            byte[] payload = new byte[length * 2];  // 每个寄存器 2 字节
+
+            // 遍历每个寄存器（不是每个字符）
+            for (int regIdx = 0; regIdx < length; regIdx++)
             {
-                ushort val = i < text.Length ? (ushort)text[i] : (ushort)0;
-                // 大端序：高字节在前
-                payload[i * 2] = (byte)(val >> 8);
-                payload[i * 2 + 1] = (byte)(val & 0xFF);
+                // 当前寄存器对应的两个字符在字符串中的索引
+                int charIdx1 = regIdx * 2;
+                int charIdx2 = regIdx * 2 + 1;
+
+                // 获取字符值（如果索引超出则填 0）
+                ushort val1 = (charIdx1 < text.Length) ? (ushort)(text[charIdx1]) : (ushort)0;
+                ushort val2 = (charIdx2 < text.Length) ? (ushort)(text[charIdx2]) : (ushort)0;
+
+                // 存储：高字节 = val1，低字节 = val2
+                payload[regIdx * 2 + 1] = (byte)val1;   // 高字节
+                payload[regIdx * 2] = (byte)val2;   // 低字节
             }
 
-            var result = ModbusRTUManager.Instance().WriteAny(address, payload, "main");
-            if (result != null && result.IsSuccess)
+            var result = ModbusRTUManager.Instance().WriteAny(address, payload, clientKey ?? "main");
+            return result != null && result.IsSuccess;
+        }
+        private bool WriteStringToRegisters1(string address, string text, ushort length, string clientKey = null)
+        {
+            if (text == null) text = string.Empty;
+            // 最大可存储字符数 = 寄存器数量 * 2
+            int maxChars = length * 2;
+            if (text.Length > maxChars) text = text.Substring(0, maxChars);
+
+            byte[] payload = new byte[length * 2];  // 每个寄存器 2 字节
+
+            // 遍历每个寄存器（不是每个字符）
+            for (int regIdx = 0; regIdx < length; regIdx++)
             {
-                //_uiLogger.Error("WriteStringToRegisters 成功写入地址 {0}", address);
-                return true;
+                // 当前寄存器对应的两个字符在字符串中的索引
+                int charIdx1 = regIdx * 2;
+                int charIdx2 = regIdx * 2 + 1;
+
+                // 获取字符值（如果索引超出则填 0）
+                ushort val1 = (charIdx1 < text.Length) ? (ushort)(text[charIdx1]) : (ushort)0;
+                ushort val2 = (charIdx2 < text.Length) ? (ushort)(text[charIdx2]) : (ushort)0;
+
+                // 存储：高字节 = val1，低字节 = val2
+                payload[regIdx * 2] = (byte)val1;   // 高字节
+                payload[regIdx * 2 + 1] = (byte)val2;   // 低字节
             }
-            else
-            {
-                // _uiLogger.Error("WriteStringToRegisters 写入失败: {0}", result?.Message ?? "unknown");
-                return false;
-            }
+
+            var result = ModbusRTUManager.Instance().WriteAny(address, payload, clientKey ?? "main");
+            return result != null && result.IsSuccess;
         }
         /// <summary>
         /// 万能写入 - 支持任意数据类型转字节后写入

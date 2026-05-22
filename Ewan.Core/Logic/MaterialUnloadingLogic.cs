@@ -84,7 +84,7 @@ namespace Ewan.Core.Logic
         private const int WAIT_PUT_CART_TIMEOUT = 60000;
 
         // 消息订阅
-        private IDisposable _ringLineSubscription;
+       // private IDisposable _ringLineSubscription;
 
         #endregion
 
@@ -99,7 +99,7 @@ namespace Ewan.Core.Logic
             _modbusRTUManager = ModbusRTUManager.Instance();
 
             // 订阅环线数据消息
-            _ringLineSubscription = MessageHub.Current.Subscribe<RingLineDataMessage>(OnRingLineData);
+            //_ringLineSubscription = MessageHub.Current.Subscribe<RingLineDataMessage>(OnRingLineData);
         }
 
         #endregion
@@ -709,8 +709,9 @@ namespace Ewan.Core.Logic
 
                     _ioManager.Ctx.Off(x => x.发送取料指令);
                     _ioManager?.Ctx?.On(x => x.触发机械手放置料仓);
-                    if (_lastScannedQrCode != "")
-                        ModbusRTUManager.Instance()?.WriteWorkOrderToFirstAvailable(_lastScannedQrCode + "G");
+                    if (_lastScannedQrCode != "" && _parametersManager.Parameters.MesEnabled)
+                        ModbusRTUManager.Instance()?.WriteWorkOrderToFirstAvailable(_lastScannedQrCode.Remove(_lastScannedQrCode.Length - 3));
+
                     SwitchIndex = "等待装载完成";
                     Tw.StartWatch(SwitchIndex);
                     break;
@@ -794,7 +795,7 @@ namespace Ewan.Core.Logic
                 case "等待放入完成":
                     //bool b = _ioManager.Ctx.Edge.R(x => x.放入小车完成信号);
                     //bool b1 = _ioManager.Ctx.Edge.R(x => x.移至扫码区到位信号);
-                    if (_ioManager?.Ctx?.Edge.R(x => x.放入小车完成信号) == true)
+                    if (_ioManager?.Ctx?.R.放入小车完成信号 == true)
                     {
                         func_吹气(_selectedBin, false);
                         // 清除放入小车信号
@@ -836,7 +837,7 @@ namespace Ewan.Core.Logic
                 #region 清理状态
                 case "清理状态":
                     // 重置标志
-                    if (_ioManager?.Ctx?.Edge.R(x => x.放入小车完成信号) == true)
+                    if (_ioManager?.Ctx?.R.放入小车完成信号 == true)
                     {
                         break;
                     }
@@ -937,11 +938,11 @@ namespace Ewan.Core.Logic
         /// <summary>
         /// 销毁时清理资源
         /// </summary>
-        public void Dispose()
-        {
-            _ringLineSubscription?.Dispose();
-            _ringLineSubscription = null;
-        }
+        //public void Dispose()
+        //{
+        //    _ringLineSubscription?.Dispose();
+        //    _ringLineSubscription = null;
+        //}
 
         #endregion
 
@@ -1192,7 +1193,8 @@ namespace Ewan.Core.Logic
                             i_空车数量++;
                         }
                     }
-                    b_008is_unloading = jsonObj["is_unloading"].ToString() == "True";
+                    //SystemParametersManager.Instance.Parameters._ringLineRisingEdge
+                   b_008is_unloading = jsonObj["is_unloading"].ToString() == "True";
 
                 }
                 else if (temp.Key.Contains("Z-JQ-S-82-006"))
@@ -1217,6 +1219,34 @@ namespace Ewan.Core.Logic
                 {
                     if (jsonObj["is_unloading"].ToString() == "True" && jsonObj["is_feeding"].ToString() == "False"
                           && jsonObj["is_running"].ToString() == "True" && !b_007is_unloading)//前面工站不需要下料，则后面工站不需要额外下空车
+                    {
+                        // 解析时间格式
+                        DateTime.TryParseExact(jsonObj["t"].ToString(), "yyyy-MM-dd HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture,
+                                                   System.Globalization.DateTimeStyles.None, out msgTime);
+                        if ((DateTime.Now - msgTime).TotalSeconds > 10)
+                        {
+                            i_空车数量++;
+                        }
+                    }
+                }
+                else if (temp.Key.Contains("Z-JQ-S-82-009"))
+                {
+                    if (jsonObj["is_unloading"].ToString() == "True" && jsonObj["is_feeding"].ToString() == "False"
+                          && jsonObj["is_running"].ToString() == "True" )//前面工站不需要下料，则后面工站不需要额外下空车
+                    {
+                        // 解析时间格式
+                        DateTime.TryParseExact(jsonObj["t"].ToString(), "yyyy-MM-dd HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture,
+                                                   System.Globalization.DateTimeStyles.None, out msgTime);
+                        if ((DateTime.Now - msgTime).TotalSeconds > 10)
+                        {
+                            i_空车数量++;
+                        }
+                    }
+                }
+                else if (temp.Key.Contains("Z-JQ-S-82-010"))
+                {
+                    if (jsonObj["is_unloading"].ToString() == "True" && jsonObj["is_feeding"].ToString() == "False"
+                          && jsonObj["is_running"].ToString() == "True")//前面工站不需要下料，则后面工站不需要额外下空车
                     {
                         // 解析时间格式
                         DateTime.TryParseExact(jsonObj["t"].ToString(), "yyyy-MM-dd HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture,

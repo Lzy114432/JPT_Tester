@@ -34,7 +34,7 @@ namespace Ewan.Core.Manager
 
         private LogicThread _logicThread;
         private ControllerBox _controllerBox;
-
+        private IDisposable _ringLineSubscription;
         private IoContext<MarkingMachineFeederIOModel> Ctx => LayeredIOManager.Instance()?.Ctx;
 
         private IDisposable _alarmMessageSubscription;
@@ -375,9 +375,33 @@ namespace Ewan.Core.Manager
                 {
                     MessageHub.Current.Post(SystemControlMessage.Initialize(nameof(LogicManager), "LogicManager.Home"));
                 }
-
+                SubscribeRingLineData();
                 s_logger.Info("复位开始");
             }
+        }
+        private void SubscribeRingLineData()
+        {
+            // 避免重复订阅
+            _ringLineSubscription?.Dispose();
+            _ringLineSubscription = MessageHub.Current.Subscribe<RingLineDataMessage>(OnRingLineData);
+        }
+        private void OnRingLineData(RingLineDataMessage msg)
+        {
+            SystemParametersManager.Instance.Parameters._ringLineIsLoading = msg.IsLoading;
+            if (msg.RisingEdge)
+            {
+                SystemParametersManager.Instance.Parameters._ringLineRisingEdge = true;
+            }
+            if (msg.FallingEdge)
+            {
+                SystemParametersManager.Instance.Parameters._ringLineFallingEdge = true;
+            }
+            if (!msg.IsLoading)
+            {
+                //_parametersManager.Parameters._ringLineArmed = true;
+            }
+            SystemParametersManager.Instance.Parameters._emptyCount = msg.EmptyCarCount;
+            SystemParametersManager.Instance.Parameters._cuttingBridgeCarCount = msg.CuttingBridgeCarCount;
         }
 
         private bool StartInternal(bool publishSystemControl)

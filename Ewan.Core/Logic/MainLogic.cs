@@ -117,7 +117,7 @@ namespace Ewan.Core.Logic
         {
             if (_unloadingLogic is MaterialUnloadingLogic unloadingLogic)
             {
-                unloadingLogic.Dispose();
+                //unloadingLogic.Dispose();
             }
         }
     }
