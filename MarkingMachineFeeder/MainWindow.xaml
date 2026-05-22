@@ -986,21 +986,20 @@
                                         BorderThickness="2">
                                     <Grid Margin="10,8">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="75" />
+                                            <ColumnDefinition Width="150" />
                                             <ColumnDefinition Width="45" />
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
                                         <Button Grid.Column="0"
-                                                Content="清料"
+                                                Content="设置1为当前料仓"
                                                 Style="{StaticResource ModernButton}"
-                                                Width="70"
+                                                Width="130"
                                                 Height="36"
                                                 FontSize="15"
                                                 FontWeight="Bold"
-                                                Command="{Binding MaterialA_ClearCommand}"
-                                                ToolTip="清空A料"
+                                                ToolTip="设置1为当前料仓"
                                                 Margin="0,0,5,0"
-                                                Padding="4,3" />
+                                                Padding="4,3" Click="Button_Click_5" />
                                         <TextBlock Grid.Column="1"
                                                    Text="A:"
                                                    VerticalAlignment="Center"
@@ -1025,21 +1024,20 @@
                                         BorderThickness="2">
                                     <Grid Margin="10,8">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="75" />
+                                            <ColumnDefinition Width="150" />
                                             <ColumnDefinition Width="45" />
-                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="257.2" />
                                         </Grid.ColumnDefinitions>
                                         <Button Grid.Column="0"
-                                                Content="清料"
+                                                Content="设置2为当前料仓"
                                                 Style="{StaticResource ModernButton}"
-                                                Width="70"
+                                                Width="130"
                                                 Height="36"
                                                 FontSize="15"
                                                 FontWeight="Bold"
-                                                Command="{Binding MaterialB_ClearCommand}"
-                                                ToolTip="清空B料"
+                                                ToolTip="设置2为当前料仓"
                                                 Margin="0,0,5,0"
-                                                Padding="4,3" />
+                                                Padding="4,3" Click="Button_Click_6" />
                                         <TextBlock Grid.Column="1"
                                                    Text="B:"
                                                    VerticalAlignment="Center"
@@ -1299,9 +1297,8 @@
                                         Content="清除料仓绑定"
                                         Style="{StaticResource ModernButton}"
                                         Height="35" FontSize="16" FontWeight="Bold"
-                                        Command="{Binding ClearBindingCommand}"
                                         Background="#FFF0E6" BorderBrush="#FFB6C1"
-                                        ToolTip="清除当前选中料仓的物料绑定" Margin="2,0" Padding="8,5" />
+                                        ToolTip="清除当前选中料仓的物料绑定" Margin="2,0" Padding="8,5" Click="Button_Click_4" />
 
                                 <!-- 第二行：清除 ABCD 料仓工单号（可选择料仓） -->
                                 <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"

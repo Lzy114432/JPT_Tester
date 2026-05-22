@@ -379,6 +379,11 @@ namespace Ewan.Core.Manager
                 s_logger.Info("复位开始");
             }
         }
+        //public void Dispose()
+        //{
+        //    _ringLineSubscription?.Dispose();
+        //    _ringLineSubscription = null;
+        //}
         private void SubscribeRingLineData()
         {
             // 避免重复订阅

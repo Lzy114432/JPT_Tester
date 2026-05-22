@@ -124,6 +124,7 @@ namespace Ewan.Model.System
         public int i_料仓NG数量 = 0;
         public int i_上料速率 = 0;
         public int i_下料速率 = 0;
+        //public string  str_当前工单号 = "";
 
         [XmlIgnore]
         public bool b_启用释放空车 = false;
@@ -138,7 +139,16 @@ namespace Ewan.Model.System
         [XmlIgnore]
         public bool _ringLineIsLoading = true;
         [XmlIgnore]
-        public bool _ringLineFallingEdge = true;
+        public bool _ringLineFallingEdge = false;
+        [XmlIgnore]
+        public bool _ringLineRisingEdgeLast = false;
+        [XmlIgnore]
+        public bool _ringLineFallingEdgeLast = false;
+
+        [XmlIgnore]
+        public bool b_RisingEdge已使用 = true;
+        [XmlIgnore]
+        public bool b_FallingEdge已使用 = true;
         [XmlIgnore]
         public int _emptyCount = 0;
         [XmlIgnore]

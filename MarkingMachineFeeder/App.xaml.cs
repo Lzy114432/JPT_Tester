@@ -1,9 +1,12 @@
 ﻿using Ewan.BusinessBonding;
+using Ewan.Core.Logic;
 using Ewan.Core.Manager;
 using Ewan.Core.Security;
 using Ewan.Mes.Mqtt;
+using Ewan.Model.Messages;
 using Ewan.Model.System;
 using EwanCommon.Logging;
+using EwanCore.Messaging;
 using MarkingMachineFeeder.Viewmodel;
 using Prism.Mvvm;
 using System;
@@ -55,6 +58,7 @@ namespace MarkingMachineFeeder
                 Shutdown();
                 return;
             }
+            //INK
             if (SystemParametersManager.Instance?.Parameters?.MesEnabled == true)
                 _ = mqttNet.Instance.StartAsync();
             _uiLogger.Info("系统初始化成功");
@@ -66,7 +70,7 @@ namespace MarkingMachineFeeder
 
             // 手动配置Prism ViewModelLocator
             ConfigureViewModelLocator();
-
+           
             base.OnStartup(e);
         }
 

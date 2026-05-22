@@ -505,10 +505,9 @@ namespace Ewan.Core.Logic
                                 _parametersManager.Parameters.str_当前工单号 = responseData?.BillNoA;
                                 _uiLogger.InfoRaw("MES上料响应: A单={0}, B单={1}", _billNoA, _billNoB);
                                 _mesRetryCount = 0;
-                                if (_scannedCode.Contains(_billNoA) && (_parametersManager.Parameters._ringLineRisingEdge || (_parametersManager.Parameters._ringLineIsLoading && _parametersManager.Parameters._ringLineArmed)))
+                                if (_scannedCode.Contains(_billNoA) && (_parametersManager.Parameters._ringLineRisingEdge ))
                                 {
-                                    _parametersManager.Parameters._ringLineRisingEdge |= _parametersManager.Parameters._ringLineIsLoading && _parametersManager.Parameters._ringLineArmed;
-                                    _parametersManager.Parameters._ringLineArmed = false;
+                                    _parametersManager.Parameters._ringLineRisingEdge = false;
                                     ClearBinSelectSignals();
                                     SwitchIndex = "检查空车数量";
                                 }

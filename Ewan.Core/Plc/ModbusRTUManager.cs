@@ -283,7 +283,7 @@ namespace Ewan.Core.Plc
         }
 
 
-        private string func_Read(string startAddress, ushort U_Length)
+        public string func_Read(string startAddress, ushort U_Length)
         {
             try
             {
@@ -366,12 +366,12 @@ namespace Ewan.Core.Plc
             WriteAny("730", us_Cur2, "main");
             //SystemParametersManager.Instance.Parameters.str_当前工单号；
             try
-            {    //0 = UNKNOWN // 未知
-                 //1 = EMPTY // 空
-                 //2 = HAS_ITEM // 有料
-                 //3 = FULL // 满
-                 //4 = ERROR // 异常
-
+            {
+                //0 = UNKNOWN // 未知
+                //1 = EMPTY // 空
+                //2 = HAS_ITEM // 有料
+                //3 = FULL // 满
+                //4 = ERROR // 异常
                 // 尝试读取主区
                 var primaryBytes = func_Read("190", 1);
                 var primaryBytes1 = func_Read("191", 1);

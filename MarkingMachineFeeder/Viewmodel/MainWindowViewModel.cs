@@ -1,4 +1,5 @@
 using Ewan.Core.IO;
+using Ewan.Core.Logic;
 using Ewan.Core.Manager;
 using Ewan.Core.Plc;
 using Ewan.Core.Security;
@@ -351,6 +352,7 @@ namespace MarkingMachineFeeder.Viewmodel
 
             // 注册系统状态指示器监听器
             RegisterStatusIndicatorListener();
+            MessageHub.Current.Post(LoadingUnloadingStateMessage.UnloadingCompleted(0, nameof(MaterialLoadingLogic)));
 
             _uiLogger.Info("主窗口已启动");
         }
@@ -1077,11 +1079,11 @@ namespace MarkingMachineFeeder.Viewmodel
         #endregion
 
         #region 系统控制命令方法
-
-        // 复位状态标志，防止重复执行
-        private bool _isResetting = false;
         private const string CART_COMPLETION_REGISTER = "153";
         private const string MATERIAL_STATUS_REGISTER = "178";
+        // 复位状态标志，防止重复执行
+        private bool _isResetting = false;
+
         private async void ExecuteSystemReset()
         {
             // 防止重复执行
@@ -1093,15 +1095,16 @@ namespace MarkingMachineFeeder.Viewmodel
 
             try
             {
-                _isResetting = true;
-                ClearBinSelectSignals();
-                _uiLogger.Info("处理已开始: {0}", "用户触发系统复位");
-                SystemParametersManager.Instance.Parameters._ringLineRisingEdge = false;
-                SystemParametersManager.Instance.Parameters._ringLineFallingEdge = false;
+                SystemParametersManager.Instance.Parameters._ringLineRisingEdgeLast = false;
+                SystemParametersManager.Instance.Parameters._ringLineFallingEdgeLast = false;
                 ModbusRTUManager.Instance()?.WriteAny(CART_COMPLETION_REGISTER, (ushort)1);
 
                 ushort statusValue = (ushort)0;
                 ModbusRTUManager.Instance()?.WriteAny(MATERIAL_STATUS_REGISTER, statusValue);
+
+                _isResetting = true;
+                ClearBinSelectSignals();
+                _uiLogger.Info("处理已开始: {0}", "用户触发系统复位");
 
                 var parameters = Ewan.Model.System.SystemParametersManager.Instance.Parameters;
 

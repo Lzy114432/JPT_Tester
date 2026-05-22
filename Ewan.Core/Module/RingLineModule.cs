@@ -49,14 +49,24 @@ namespace Ewan.Core.Module
             _uiLogger.Info("环线模块已初始化");
             _lastState = 0;
         }
-        bool risingEdge = false;
-        bool fallingEdge = false;
+        //bool risingEdge = false;
+        //bool fallingEdge = false;
+        private const string CART_COMPLETION_REGISTER = "153";
+        private const string MATERIAL_STATUS_REGISTER = "178";
         protected override bool OnRun()
         {
             Task.Delay(_interval).Wait();
 
             try
             {
+                if (SystemParametersManager.Instance.Parameters.b_启用释放空车)
+                {
+                    ModbusRTUManager.Instance()?.WriteAny(CART_COMPLETION_REGISTER, (ushort)1);
+                    ushort statusValue = (ushort)0;
+                    ModbusRTUManager.Instance()?.WriteAny(MATERIAL_STATUS_REGISTER, statusValue);
+                    SystemParametersManager.Instance.Parameters._ringLineRisingEdge = false;
+                }
+
                 var data = ModbusRTUManager.Instance().Read(isLoadingAddr, 2);
                 if (data != null && data.Length >= 2)
                 {
@@ -65,15 +75,19 @@ namespace Ewan.Core.Module
                     int emptyCarCount = ReadEmptyCarCount();
                     int cuttingBridgeCarCount = ReadCuttingBridgeCarCount();
 
-
-
                     // 边缘检测变量
-
-                    bool risingEdge = currentState == 1 && _lastState != 1;
-                    bool fallingEdge = currentState == 2 && _lastState != 2;
-                    /*&& _lastState != 1*/
-                    //bool fallingEdge = currentState == 2 /*&& _lastState != 2*/;
-                    bool isLoading = _lastState == 0 && currentState == 2;
+                    // 边缘检测变量
+                    //if (_lastState != 1)
+                    //{
+                    //    risingEdge = currentState == 1;
+                    //}
+                    //if (_lastState != 2)
+                    //{
+                    //    fallingEdge = currentState == 2;
+                    //}
+                    bool fallingEdge = currentState == 1 && _lastState != 1;//上面给1
+                    bool risingEdge = currentState == 2 && _lastState != 2;//下面给2
+                    bool isLoading = currentState == 1 || currentState == 2;
 
                     Push(new RingLineModel
                     {
