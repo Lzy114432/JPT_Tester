@@ -13,6 +13,7 @@ using System.Data.SqlClient;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Ewan.Core.Plc
 {
@@ -328,77 +329,80 @@ namespace Ewan.Core.Plc
             }
         }
 
-        public bool WriteWorkOrderToFirstAvailable(string workOrder, string clientKey = null)
+        public void WriteWorkOrderToFirstAvailable(string workOrder, string clientKey = null)
         {
-            const ushort length = 10;
-            const string primaryAddress = "701";  // 
-            const string primaryAddress1 = "711";  // 
-            const string secondaryAddress = "731"; //
-            const string secondaryAddress1 = "741"; //
+            Task.Run(() => {
+                const ushort length = 10;
+                const string primaryAddress = "701";  // 
+                const string primaryAddress1 = "711";  // 
+                const string secondaryAddress = "731"; //
+                const string secondaryAddress1 = "741"; //
 
-            ushort us_Cur1 = 1;
-            ushort us_Cur2 = 1;
-            var v_A = func_Read(primaryAddress, length);
-            var v_B = func_Read(primaryAddress1, length);
-            var v_C = func_Read(secondaryAddress, length);
-            var v_D = func_Read(secondaryAddress1, length);
-            //var v_D1 = func_Read("700", 1);
-            //var v_D2 = func_Read("730", 1);
+                ushort us_Cur1 = 1;
+                ushort us_Cur2 = 1;
+                var v_A = func_Read(primaryAddress, length);
+                var v_B = func_Read(primaryAddress1, length);
+                var v_C = func_Read(secondaryAddress, length);
+                var v_D = func_Read(secondaryAddress1, length);
+                //var v_D1 = func_Read("700", 1);
+                //var v_D2 = func_Read("730", 1);
 
-            if (SystemParametersManager.Instance.Parameters.str_当前工单号 == v_A && v_A != "")
-            {
-
-                us_Cur1 = 1;
-            }
-            else if (SystemParametersManager.Instance.Parameters.str_当前工单号 == v_B && v_B != "")
-            {
-                us_Cur1 = 2;
-            }
-            if (SystemParametersManager.Instance.Parameters.str_当前工单号 == v_C && v_C != "")
-            {
-                us_Cur2 = 1;
-            }
-            else if (SystemParametersManager.Instance.Parameters.str_当前工单号 == v_D && v_D != "")
-            {
-                us_Cur2 = 2;
-            }
-            WriteAny("700", us_Cur1, "main");
-            WriteAny("730", us_Cur2, "main");
-            //SystemParametersManager.Instance.Parameters.str_当前工单号；
-            try
-            {
-                //0 = UNKNOWN // 未知
-                //1 = EMPTY // 空
-                //2 = HAS_ITEM // 有料
-                //3 = FULL // 满
-                //4 = ERROR // 异常
-                // 尝试读取主区
-                var primaryBytes = func_Read("190", 1);
-                var primaryBytes1 = func_Read("191", 1);
-
-                if (!(v_A.Contains(workOrder) || v_B.Contains(workOrder)))
+                if (SystemParametersManager.Instance.Parameters.str_当前工单号 == v_A && v_A != "")
                 {
-                    if (primaryBytes == "\u0001\0")
-                        WriteStringToRegisters(primaryAddress, workOrder, length, clientKey);
-                    else if (primaryBytes1 == "\u0001\0")
-                        WriteStringToRegisters(primaryAddress1, workOrder, length, clientKey);
-                }
 
-                var primaryBytes2 = func_Read("192", 1);
-                var primaryBytes3 = func_Read("193", 1);
-                if (!(v_C.Contains(workOrder) || v_D.Contains(workOrder)))
-                {
-                    if (primaryBytes2 == "\u0001\0")
-                        WriteStringToRegisters(secondaryAddress, workOrder, length, clientKey);
-                    else if (primaryBytes3 == "\u0001\0")
-                        WriteStringToRegisters(secondaryAddress1, workOrder, length, clientKey);
+                    us_Cur1 = 1;
                 }
-                return true;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
+                else if (SystemParametersManager.Instance.Parameters.str_当前工单号 == v_B && v_B != "")
+                {
+                    us_Cur1 = 2;
+                }
+                if (SystemParametersManager.Instance.Parameters.str_当前工单号 == v_C && v_C != "")
+                {
+                    us_Cur2 = 1;
+                }
+                else if (SystemParametersManager.Instance.Parameters.str_当前工单号 == v_D && v_D != "")
+                {
+                    us_Cur2 = 2;
+                }
+                WriteAny("700", us_Cur1, "main");
+                WriteAny("730", us_Cur2, "main");
+                //SystemParametersManager.Instance.Parameters.str_当前工单号；
+                try
+                {
+                    //0 = UNKNOWN // 未知
+                    //1 = EMPTY // 空
+                    //2 = HAS_ITEM // 有料
+                    //3 = FULL // 满
+                    //4 = ERROR // 异常
+                    // 尝试读取主区
+                    var primaryBytes = func_Read("190", 1);
+                    var primaryBytes1 = func_Read("191", 1);
+
+                    if (!(v_A.Contains(workOrder) || v_B.Contains(workOrder)))
+                    {
+                        if (primaryBytes == "\u0001\0")
+                            WriteStringToRegisters(primaryAddress, workOrder, length, clientKey);
+                        else if (primaryBytes1 == "\u0001\0")
+                            WriteStringToRegisters(primaryAddress1, workOrder, length, clientKey);
+                    }
+
+                    var primaryBytes2 = func_Read("192", 1);
+                    var primaryBytes3 = func_Read("193", 1);
+                    if (!(v_C.Contains(workOrder) || v_D.Contains(workOrder)))
+                    {
+                        if (primaryBytes2 == "\u0001\0")
+                            WriteStringToRegisters(secondaryAddress, workOrder, length, clientKey);
+                        else if (primaryBytes3 == "\u0001\0")
+                            WriteStringToRegisters(secondaryAddress1, workOrder, length, clientKey);
+                    }
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            });
+
         }
         public bool func_清空单号(string str_工单地址, string clientKey = null)
         {

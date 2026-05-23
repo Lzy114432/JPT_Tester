@@ -330,7 +330,7 @@ namespace Ewan.Core.Logic
                         //// 3. 开启对应料仓吹气
                         //Thread.Sleep(2000);
                         func_吹气(_selectedBin, true);
-                        Thread.Sleep(2000);
+                        Thread.Sleep(1000);
                         _ioManager?.Ctx?.On(x => x.DO16);
                         SwitchIndex = "等待取料完成";
                         Tw.StartWatch(SwitchIndex);
@@ -601,7 +601,9 @@ namespace Ewan.Core.Logic
                         {
                             _uiLogger.WarnRaw("MES未连接或未初始化，跳过上料请求");
                             _mesRetryCount = 0;
+                            _selectedBin = 3;
                             _ioManager?.Ctx?.On(x => x.料仓3选择信号);
+
                             SwitchIndex = "移动到料仓";
                             return;
                         }
@@ -641,6 +643,7 @@ namespace Ewan.Core.Logic
                         {
                             _uiLogger.WarnRaw("MES下料请求已取消");
                             _mesRetryCount = 0;
+                            _selectedBin = 3;
                             _ioManager?.Ctx?.On(x => x.料仓3选择信号);
                             SwitchIndex = "移动到料仓";
                         }
@@ -651,6 +654,7 @@ namespace Ewan.Core.Logic
                             {
                                 return;
                             }
+                            _selectedBin = 3;
                             _ioManager?.Ctx?.On(x => x.料仓3选择信号);
                             SwitchIndex = "移动到料仓";
                         }
@@ -677,6 +681,7 @@ namespace Ewan.Core.Logic
                                 {
                                     return;
                                 }
+                                _selectedBin = 3;
                                 _ioManager?.Ctx?.On(x => x.料仓3选择信号);
                                 SwitchIndex = "移动到料仓";
                             }
@@ -688,6 +693,7 @@ namespace Ewan.Core.Logic
                         {
                             return;
                         }
+                        _selectedBin = 3;
                         _ioManager?.Ctx?.On(x => x.料仓3选择信号);
                         SwitchIndex = "移动到料仓";
                     }
@@ -708,8 +714,6 @@ namespace Ewan.Core.Logic
 
                     _ioManager.Ctx.Off(x => x.发送取料指令);
                     _ioManager?.Ctx?.On(x => x.触发机械手放置料仓);
-                    if (_lastScannedQrCode != "" && _parametersManager.Parameters.MesEnabled)
-                        ModbusRTUManager.Instance()?.WriteWorkOrderToFirstAvailable(_lastScannedQrCode.Remove(_lastScannedQrCode.Length - 3));
                     SwitchIndex = "等待装载完成";
                     Tw.StartWatch(SwitchIndex);
                     break;
@@ -1225,6 +1229,36 @@ namespace Ewan.Core.Logic
                             i_空车数量++;
                         }
                     }
+                }
+                else if (temp.Key.Contains("Z-JQ-S-82-009"))
+                {
+                    _parametersManager.Parameters.str_当前工单号 = jsonObj["cut_gelatin_billno_A"].ToString();
+                    //if (jsonObj["is_unloading"].ToString() == "True" && jsonObj["is_feeding"].ToString() == "False"
+                    //      && jsonObj["is_running"].ToString() == "True")//前面工站不需要下料，则后面工站不需要额外下空车
+                    //{
+                    //    // 解析时间格式
+                    //    DateTime.TryParseExact(jsonObj["t"].ToString(), "yyyy-MM-dd HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture,
+                    //                               System.Globalization.DateTimeStyles.None, out msgTime);
+                    //    if ((DateTime.Now - msgTime).TotalSeconds > 10)
+                    //    {
+                    //        i_空车数量++;
+                    //    }
+                    //}
+                }
+                else if (temp.Key.Contains("Z-JQ-S-82-010"))
+                {
+                    _parametersManager.Parameters.str_当前工单号 = jsonObj["cut_gelatin_billno_A"].ToString();
+                    //if (jsonObj["is_unloading"].ToString() == "True" && jsonObj["is_feeding"].ToString() == "False"
+                    //      && jsonObj["is_running"].ToString() == "True")//前面工站不需要下料，则后面工站不需要额外下空车
+                    //{
+                    //    // 解析时间格式
+                    //    DateTime.TryParseExact(jsonObj["t"].ToString(), "yyyy-MM-dd HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture,
+                    //                               System.Globalization.DateTimeStyles.None, out msgTime);
+                    //    if ((DateTime.Now - msgTime).TotalSeconds > 10)
+                    //    {
+                    //        i_空车数量++;
+                    //    }
+                    //}
                 }
             }
             return i_空车数量;
