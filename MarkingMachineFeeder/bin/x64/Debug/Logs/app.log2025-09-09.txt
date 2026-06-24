@@ -1,0 +1,408 @@
+﻿2025-09-09 10:08:34,128 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 10:08:34,494 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 10:08:34,495 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 10:08:34,580 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 10:08:34,612 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: CultureManager 
+2025-09-09 10:08:34,624 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: AxisManager 
+2025-09-09 10:08:34,624 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: MsgManager 
+2025-09-09 10:08:34,660 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: StreamController 
+2025-09-09 10:08:34,661 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-09-09 10:08:34,663 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: operator 
+2025-09-09 10:08:44,703 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: admin 
+2025-09-09 10:09:55,270 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 10:09:55,397 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 10:09:55,398 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 10:09:55,420 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 10:09:55,437 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: CultureManager 
+2025-09-09 10:09:55,445 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: AxisManager 
+2025-09-09 10:09:55,445 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: MsgManager 
+2025-09-09 10:09:55,448 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: StreamController 
+2025-09-09 10:09:55,448 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-09-09 10:09:55,451 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: operator 
+2025-09-09 10:12:01,594 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 10:12:01,716 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 10:12:01,717 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 10:12:01,736 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 10:12:01,754 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: CultureManager 
+2025-09-09 10:12:01,759 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: AxisManager 
+2025-09-09 10:12:01,759 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: MsgManager 
+2025-09-09 10:12:01,762 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: StreamController 
+2025-09-09 10:12:01,763 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-09-09 10:12:01,765 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: operator 
+2025-09-09 10:12:13,843 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: admin 
+2025-09-09 10:18:05,597 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 10:18:05,847 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 10:18:05,848 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 10:18:05,869 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 10:18:05,890 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: CultureManager 
+2025-09-09 10:18:05,895 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: AxisManager 
+2025-09-09 10:18:05,896 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: MsgManager 
+2025-09-09 10:18:05,899 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: StreamController 
+2025-09-09 10:18:05,899 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-09-09 10:18:05,902 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: operator 
+2025-09-09 10:18:14,552 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: admin 
+2025-09-09 11:06:21,815 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 11:06:22,025 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 11:06:22,026 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 11:06:22,048 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 11:06:22,064 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: CultureManager 
+2025-09-09 11:06:22,074 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: AxisManager 
+2025-09-09 11:06:22,074 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: MsgManager 
+2025-09-09 11:06:22,078 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: StreamController 
+2025-09-09 11:06:22,079 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-09-09 11:06:22,081 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: operator 
+2025-09-09 11:06:33,810 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: admin 
+2025-09-09 11:28:13,835 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: operator 
+2025-09-09 11:28:28,814 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: admin 
+2025-09-09 14:11:28,564 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 14:11:28,888 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 14:11:28,889 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 14:11:28,991 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 14:11:29,034 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: CultureManager 
+2025-09-09 14:11:29,044 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: AxisManager 
+2025-09-09 14:11:29,045 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: MsgManager 
+2025-09-09 14:11:29,048 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: StreamController 
+2025-09-09 14:11:29,048 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController initialized successfully 
+2025-09-09 14:11:29,050 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] Login successful for user: {0}: operator 
+2025-09-09 14:11:42,540 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 14:11:42,662 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 14:11:42,663 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 14:11:42,684 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 14:11:42,706 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: CultureManager 
+2025-09-09 14:11:42,712 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: AxisManager 
+2025-09-09 14:11:42,712 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: MsgManager 
+2025-09-09 14:11:42,716 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: StreamController 
+2025-09-09 14:11:42,716 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController initialized successfully 
+2025-09-09 14:11:42,718 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] Login successful for user: {0}: operator 
+2025-09-09 14:17:18,077 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 14:17:18,195 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 14:17:18,196 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 14:17:18,215 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 14:17:18,234 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: CultureManager 
+2025-09-09 14:17:18,240 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: AxisManager 
+2025-09-09 14:17:18,241 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: MsgManager 
+2025-09-09 14:17:18,243 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: StreamController 
+2025-09-09 14:17:18,243 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController initialized successfully 
+2025-09-09 14:17:18,245 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] Login successful for user: {0}: operator 
+2025-09-09 14:24:58,050 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 14:24:58,171 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 14:24:58,172 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 14:24:58,191 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 14:24:58,212 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: CultureManager 
+2025-09-09 14:24:58,217 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: AxisManager 
+2025-09-09 14:24:58,218 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: MsgManager 
+2025-09-09 14:24:58,220 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: StreamController 
+2025-09-09 14:24:58,221 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController initialized successfully 
+2025-09-09 14:24:58,223 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] Login successful for user: {0}: operator 
+2025-09-09 14:29:07,755 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 14:29:07,877 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 14:29:07,877 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 14:29:07,898 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 14:29:07,918 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: CultureManager 
+2025-09-09 14:29:07,923 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: AxisManager 
+2025-09-09 14:29:07,925 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: MsgManager 
+2025-09-09 14:29:07,928 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: StreamController 
+2025-09-09 14:29:07,929 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController initialized successfully 
+2025-09-09 14:29:07,931 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] Login successful for user: {0}: operator 
+2025-09-09 14:30:50,594 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 14:30:50,712 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 14:30:50,714 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 14:30:50,734 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 14:30:50,752 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: CultureManager 
+2025-09-09 14:30:50,757 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: AxisManager 
+2025-09-09 14:30:50,758 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: MsgManager 
+2025-09-09 14:30:50,761 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: StreamController 
+2025-09-09 14:30:50,762 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController initialized successfully 
+2025-09-09 14:30:50,763 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] Login successful for user: {0}: operator 
+2025-09-09 14:35:07,338 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 14:35:07,463 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 14:35:07,464 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 14:35:07,482 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 14:35:07,503 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: CultureManager 
+2025-09-09 14:35:07,511 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: AxisManager 
+2025-09-09 14:35:07,512 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: MsgManager 
+2025-09-09 14:35:07,515 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: StreamController 
+2025-09-09 14:35:07,517 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController initialized successfully 
+2025-09-09 14:35:07,518 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] Login successful for user: {0}: operator 
+2025-09-09 14:40:14,619 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 14:40:14,738 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 14:40:14,739 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 14:40:14,759 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 14:40:14,778 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: CultureManager 
+2025-09-09 14:40:14,783 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: AxisManager 
+2025-09-09 14:40:14,783 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: MsgManager 
+2025-09-09 14:40:14,787 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: StreamController 
+2025-09-09 14:40:14,788 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController initialized successfully 
+2025-09-09 14:40:14,790 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] Login successful for user: {0}: operator 
+2025-09-09 14:57:44,450 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 14:57:44,653 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 14:57:44,654 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 14:57:44,754 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 14:57:44,786 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: CultureManager 
+2025-09-09 14:57:44,793 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: AxisManager 
+2025-09-09 14:57:44,794 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: MsgManager 
+2025-09-09 14:57:44,799 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: StreamController 
+2025-09-09 14:57:44,800 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController initialized successfully 
+2025-09-09 14:57:44,802 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] Login successful for user: {0}: operator 
+2025-09-09 15:12:38,298 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 15:12:38,433 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 15:12:38,434 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 15:12:38,455 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 15:12:38,475 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: CultureManager 
+2025-09-09 15:12:38,481 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: AxisManager 
+2025-09-09 15:12:38,481 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: MsgManager 
+2025-09-09 15:12:38,485 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: StreamController 
+2025-09-09 15:12:38,485 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController initialized successfully 
+2025-09-09 15:12:38,488 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] Login successful for user: {0}: operator 
+2025-09-09 15:12:49,123 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 15:12:49,243 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 15:12:49,244 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 15:12:49,263 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 15:12:49,284 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: CultureManager 
+2025-09-09 15:12:49,289 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: AxisManager 
+2025-09-09 15:12:49,290 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: MsgManager 
+2025-09-09 15:12:49,293 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: StreamController 
+2025-09-09 15:12:49,294 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController initialized successfully 
+2025-09-09 15:12:49,295 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] Login successful for user: {0}: operator 
+2025-09-09 15:14:10,734 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 15:14:10,872 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 15:14:10,873 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 15:14:10,893 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 15:14:10,911 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: CultureManager 
+2025-09-09 15:14:10,916 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: AxisManager 
+2025-09-09 15:14:10,916 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: MsgManager 
+2025-09-09 15:14:10,919 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: StreamController 
+2025-09-09 15:14:10,919 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController initialized successfully 
+2025-09-09 15:14:10,921 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] Login successful for user: {0}: operator 
+2025-09-09 15:26:54,179 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 15:26:54,307 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 15:26:54,307 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 15:26:54,328 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 15:26:54,348 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: CultureManager 
+2025-09-09 15:26:54,353 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: AxisManager 
+2025-09-09 15:26:54,353 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: MsgManager 
+2025-09-09 15:26:54,356 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] Base Manager initialized: {0}: StreamController 
+2025-09-09 15:26:54,357 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController initialized successfully 
+2025-09-09 15:26:54,359 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] Login successful for user: {0}: operator 
+2025-09-09 15:27:59,911 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 15:28:00,070 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 15:28:00,071 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 15:28:00,092 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 15:28:00,107 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: CultureManager 
+2025-09-09 15:28:00,112 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: AxisManager 
+2025-09-09 15:28:00,112 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: MsgManager 
+2025-09-09 15:28:00,117 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: StreamController 
+2025-09-09 15:28:00,118 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-09-09 15:28:00,120 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: operator 
+2025-09-09 15:41:40,107 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 15:41:40,307 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 15:41:40,307 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 15:41:40,385 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 15:41:40,404 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: CultureManager 
+2025-09-09 15:41:40,416 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: AxisManager 
+2025-09-09 15:41:40,418 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: MsgManager 
+2025-09-09 15:41:40,425 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: StreamController 
+2025-09-09 15:41:40,426 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-09-09 15:41:40,430 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: operator 
+2025-09-09 15:44:37,060 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 15:44:37,197 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 15:44:37,198 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 15:44:37,218 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 15:44:37,234 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: CultureManager 
+2025-09-09 15:44:37,242 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: AxisManager 
+2025-09-09 15:44:37,243 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: MsgManager 
+2025-09-09 15:44:37,246 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: StreamController 
+2025-09-09 15:44:37,247 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-09-09 15:44:37,249 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: operator 
+2025-09-09 15:48:10,433 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 15:48:10,546 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 15:48:10,546 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 15:48:10,565 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 15:48:10,582 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: CultureManager 
+2025-09-09 15:48:10,587 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: AxisManager 
+2025-09-09 15:48:10,588 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: MsgManager 
+2025-09-09 15:48:10,616 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: StreamController 
+2025-09-09 15:48:10,617 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-09-09 15:48:10,619 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: operator 
+2025-09-09 15:58:38,548 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 15:58:38,674 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 15:58:38,674 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 15:58:38,696 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 15:58:38,710 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: CultureManager 
+2025-09-09 15:58:38,717 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: AxisManager 
+2025-09-09 15:58:38,717 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: MsgManager 
+2025-09-09 15:58:38,721 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: StreamController 
+2025-09-09 15:58:38,722 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-09-09 15:58:38,724 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: operator 
+2025-09-09 16:03:26,356 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 16:03:26,479 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 16:03:26,480 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 16:03:26,501 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 16:03:26,517 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: CultureManager 
+2025-09-09 16:03:26,522 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: AxisManager 
+2025-09-09 16:03:26,522 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: MsgManager 
+2025-09-09 16:03:26,526 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: StreamController 
+2025-09-09 16:03:26,527 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-09-09 16:03:26,528 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: operator 
+2025-09-09 16:13:14,961 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 16:13:15,083 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 16:13:15,083 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 16:13:15,105 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 16:13:15,123 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: CultureManager 
+2025-09-09 16:13:15,127 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: AxisManager 
+2025-09-09 16:13:15,129 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: MsgManager 
+2025-09-09 16:13:15,132 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: StreamController 
+2025-09-09 16:13:15,133 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-09-09 16:13:15,135 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: operator 
+2025-09-09 16:23:19,181 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 16:23:19,376 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 16:23:19,377 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 16:23:19,470 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 16:23:19,490 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: CultureManager 
+2025-09-09 16:23:19,495 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: AxisManager 
+2025-09-09 16:23:19,496 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: MsgManager 
+2025-09-09 16:23:19,500 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: StreamController 
+2025-09-09 16:23:19,501 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-09-09 16:23:19,503 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: operator 
+2025-09-09 16:27:05,428 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 16:27:05,623 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 16:27:05,624 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 16:27:05,644 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 16:27:05,661 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: CultureManager 
+2025-09-09 16:27:05,666 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: AxisManager 
+2025-09-09 16:27:05,668 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: MsgManager 
+2025-09-09 16:27:05,704 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: StreamController 
+2025-09-09 16:27:05,705 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-09-09 16:27:05,707 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: operator 
+2025-09-09 16:33:38,889 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 16:33:39,012 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 16:33:39,012 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 16:33:39,032 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 16:33:39,048 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: CultureManager 
+2025-09-09 16:33:39,053 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: AxisManager 
+2025-09-09 16:33:39,054 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: MsgManager 
+2025-09-09 16:33:39,058 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: StreamController 
+2025-09-09 16:33:39,058 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-09-09 16:33:39,059 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: operator 
+2025-09-09 16:35:49,610 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 16:35:49,742 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 16:35:49,744 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 16:35:49,767 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 16:35:49,786 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: CultureManager 
+2025-09-09 16:35:49,792 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: AxisManager 
+2025-09-09 16:35:49,792 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: MsgManager 
+2025-09-09 16:35:49,796 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: StreamController 
+2025-09-09 16:35:49,797 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-09-09 16:35:49,799 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: operator 
+2025-09-09 16:41:14,870 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 16:41:14,988 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 16:41:14,989 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 16:41:15,007 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 16:41:15,024 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: CultureManager 
+2025-09-09 16:41:15,030 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: AxisManager 
+2025-09-09 16:41:15,030 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: MsgManager 
+2025-09-09 16:41:15,033 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: StreamController 
+2025-09-09 16:41:15,034 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-09-09 16:41:15,036 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: operator 
+2025-09-09 16:41:25,153 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: admin 
+2025-09-09 16:44:21,757 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 16:44:21,880 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 16:44:21,881 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 16:44:21,902 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 16:44:21,917 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: CultureManager 
+2025-09-09 16:44:21,922 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: AxisManager 
+2025-09-09 16:44:21,923 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: MsgManager 
+2025-09-09 16:44:21,926 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: StreamController 
+2025-09-09 16:44:21,927 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-09-09 16:44:21,929 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: operator 
+2025-09-09 16:45:43,873 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 16:45:43,993 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 16:45:43,994 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 16:45:44,015 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 16:45:44,030 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: CultureManager 
+2025-09-09 16:45:44,036 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: AxisManager 
+2025-09-09 16:45:44,036 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: MsgManager 
+2025-09-09 16:45:44,039 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: StreamController 
+2025-09-09 16:45:44,040 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-09-09 16:45:44,042 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: operator 
+2025-09-09 16:51:50,873 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 16:51:50,991 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 16:51:50,992 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 16:51:51,012 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 16:51:51,028 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: CultureManager 
+2025-09-09 16:51:51,034 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: AxisManager 
+2025-09-09 16:51:51,035 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: MsgManager 
+2025-09-09 16:51:51,038 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: StreamController 
+2025-09-09 16:51:51,038 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-09-09 16:51:51,040 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: operator 
+2025-09-09 16:59:12,496 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 16:59:12,626 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 16:59:12,627 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 16:59:12,646 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 16:59:12,662 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: CultureManager 
+2025-09-09 16:59:12,666 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: AxisManager 
+2025-09-09 16:59:12,666 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: MsgManager 
+2025-09-09 16:59:12,671 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: StreamController 
+2025-09-09 16:59:12,671 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-09-09 16:59:12,674 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: operator 
+2025-09-09 17:04:31,509 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 17:04:31,632 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 17:04:31,633 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 17:04:31,655 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 17:04:31,671 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: CultureManager 
+2025-09-09 17:04:31,676 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: AxisManager 
+2025-09-09 17:04:31,676 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: MsgManager 
+2025-09-09 17:04:31,680 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: StreamController 
+2025-09-09 17:04:31,680 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-09-09 17:04:31,682 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: operator 
+2025-09-09 17:06:51,481 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 17:06:51,602 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 17:06:51,603 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 17:06:51,623 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 17:06:51,640 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: CultureManager 
+2025-09-09 17:06:51,646 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: AxisManager 
+2025-09-09 17:06:51,647 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: MsgManager 
+2025-09-09 17:06:51,676 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: StreamController 
+2025-09-09 17:06:51,677 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-09-09 17:06:51,678 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: operator 
+2025-09-09 17:13:08,555 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 17:13:08,679 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 17:13:08,679 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 17:13:08,753 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 17:13:08,768 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: CultureManager 
+2025-09-09 17:13:08,773 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: AxisManager 
+2025-09-09 17:13:08,773 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: MsgManager 
+2025-09-09 17:13:08,777 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: StreamController 
+2025-09-09 17:13:08,778 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-09-09 17:13:08,780 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: operator 
+2025-09-09 17:17:41,208 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 17:17:41,331 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 17:17:41,331 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 17:17:41,350 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 17:17:41,365 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: CultureManager 
+2025-09-09 17:17:41,370 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: AxisManager 
+2025-09-09 17:17:41,370 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: MsgManager 
+2025-09-09 17:17:41,373 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: StreamController 
+2025-09-09 17:17:41,374 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-09-09 17:17:41,375 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: operator 
+2025-09-09 17:20:27,043 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 17:20:27,167 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 17:20:27,167 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 17:20:27,187 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 17:20:27,201 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: CultureManager 
+2025-09-09 17:20:27,205 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: AxisManager 
+2025-09-09 17:20:27,206 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: MsgManager 
+2025-09-09 17:20:27,211 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: StreamController 
+2025-09-09 17:20:27,211 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-09-09 17:20:27,212 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: operator 
+2025-09-09 17:21:47,598 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-09 17:21:47,717 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-09 17:21:47,718 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-09 17:21:47,739 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-09 17:21:47,755 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: CultureManager 
+2025-09-09 17:21:47,761 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: AxisManager 
+2025-09-09 17:21:47,762 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: MsgManager 
+2025-09-09 17:21:47,765 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: StreamController 
+2025-09-09 17:21:47,766 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-09-09 17:21:47,768 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: operator 
+2025-09-09 17:22:36,503 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: admin 

@@ -1,0 +1,222 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PlcCommunication</name>
+    </assembly>
+    <members>
+        <member name="T:PlcCommunication.OperateResult">
+            <summary>
+            OperateResult is a class that represents the result of an operation. It is not generic.
+            </summary>
+        </member>
+        <member name="T:PlcCommunication.OperateResult`1">
+            <summary>
+            The generic version inherits from the base class
+            </summary>
+            <typeparam name="T">The type of the data to return</typeparam>
+        </member>
+        <member name="T:PlcCommunication.Helpers.PinnedArray`1">
+            <summary>
+            Represents an array that is pinned in memory, 
+            preventing the garbage collector from moving its memory location.
+            </summary>
+            <typeparam name="T">The type of the elements in the array must be an unmanaged type.</typeparam>
+        </member>
+        <member name="M:PlcCommunication.Helpers.PinnedArray`1.#ctor(`0[])">
+            <summary>
+            Initializes a new instance of the PinnedArray class.
+            </summary>
+            <param name="array">The array to pin in memory.</param>
+        </member>
+        <member name="M:PlcCommunication.Helpers.PinnedArray`1.AddrOfPinnedObject">
+            <summary>
+            Gets the memory address of the pinned array.
+            </summary>
+            <returns>The memory address of the pinned array.</returns>
+        </member>
+        <member name="M:PlcCommunication.Helpers.PinnedArray`1.Dispose">
+            <summary>
+            Disposes of the PinnedArray object.
+            </summary>
+        </member>
+        <member name="M:PlcCommunication.Helpers.PinnedArray`1.Dispose(System.Boolean)">
+            <summary>
+            Frees the memory used by the pinned array.
+            </summary>
+            <param name="disposing"></param>
+        </member>
+        <member name="M:PlcCommunication.Helpers.PinnedArray`1.Finalize">
+            <summary>
+            Destructor, called during garbage collection, releases unmanaged resources.
+            </summary>
+        </member>
+        <member name="T:PlcCommunication.Helpers.UnmanagedPointer">
+            <summary>
+            Represents a wrapper for an unmanaged memory pointer, 
+            responsible for releasing the unmanaged memory and preventing memory leaks.
+            </summary>
+        </member>
+        <member name="P:PlcCommunication.Helpers.UnmanagedPointer.Pointer">
+            <summary>
+            Gets the unmanaged memory pointer.
+            </summary>
+        </member>
+        <member name="F:PlcCommunication.Helpers.UnmanagedPointer.disposed">
+            <summary>
+            Used to determine if the object has been disposed.
+            </summary>
+        </member>
+        <member name="M:PlcCommunication.Helpers.UnmanagedPointer.#ctor(System.IntPtr)">
+            <summary>
+            Init UnmanagedPointer Class.
+            </summary>
+            <param name="pointer">The unmanaged memory pointer.</param>
+        </member>
+        <member name="M:PlcCommunication.Helpers.UnmanagedPointer.Dispose">
+            <summary>
+            Frees by UnmanagedPointer all resources occupied.
+            </summary>
+        </member>
+        <member name="M:PlcCommunication.Helpers.UnmanagedPointer.Dispose(System.Boolean)">
+            <summary>
+            Releases unmanaged resources. Optionally, releases managed resources.
+            </summary>
+            <param name="disposing">True to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
+        </member>
+        <member name="M:PlcCommunication.Helpers.UnmanagedPointer.Finalize">
+            <summary>
+            Destructor for the UnmanagedPointer class.
+            </summary>
+        </member>
+        <member name="T:PlcCommunication.Implementations.MCProtocol.MCProtocolPlc">
+            <summary>
+            Mitsubishi MC Protocol PLC implementation
+            </summary>
+        </member>
+        <member name="T:PlcCommunication.Implementations.Simulated.SimulatedPlc">
+            <summary>
+            Simulated PLC for testing purposes
+            </summary>
+        </member>
+        <member name="M:PlcCommunication.Implementations.Simulated.SimulatedPlc.GetMemoryContents">
+            <summary>
+            Get all memory contents (for debugging)
+            </summary>
+        </member>
+        <member name="M:PlcCommunication.Implementations.Simulated.SimulatedPlc.ClearMemory">
+            <summary>
+            Clear all memory
+            </summary>
+        </member>
+        <member name="T:PlcCommunication.Interfaces.IPlcBase">
+            <summary>
+            Base interface for all PLC communication implementations
+            </summary>
+        </member>
+        <member name="P:PlcCommunication.Interfaces.IPlcBase.Name">
+            <summary>
+            Gets the name of the PLC instance
+            </summary>
+        </member>
+        <member name="P:PlcCommunication.Interfaces.IPlcBase.IsConnected">
+            <summary>
+            Gets whether the PLC connection is open
+            </summary>
+        </member>
+        <member name="M:PlcCommunication.Interfaces.IPlcBase.Initialize(System.String)">
+            <summary>
+            Initialize the PLC with connection parameters
+            </summary>
+            <param name="connectionString">Connection string containing IP, port, and other parameters</param>
+            <returns>Operation result</returns>
+        </member>
+        <member name="M:PlcCommunication.Interfaces.IPlcBase.Connect">
+            <summary>
+            Open connection to the PLC
+            </summary>
+            <returns>Operation result</returns>
+        </member>
+        <member name="M:PlcCommunication.Interfaces.IPlcBase.Disconnect">
+            <summary>
+            Close connection to the PLC
+            </summary>
+            <returns>Operation result</returns>
+        </member>
+        <member name="M:PlcCommunication.Interfaces.IPlcBase.Read``1(System.String,System.UInt32)">
+            <summary>
+            Read data from PLC
+            </summary>
+            <typeparam name="T">Data type to read</typeparam>
+            <param name="address">PLC address</param>
+            <param name="length">Number of elements to read</param>
+            <returns>Operation result with data</returns>
+        </member>
+        <member name="M:PlcCommunication.Interfaces.IPlcBase.Read``1(System.String)">
+            <summary>
+            Read single value from PLC
+            </summary>
+            <typeparam name="T">Data type to read</typeparam>
+            <param name="address">PLC address</param>
+            <returns>Operation result with data</returns>
+        </member>
+        <member name="M:PlcCommunication.Interfaces.IPlcBase.Write``1(System.String,``0[])">
+            <summary>
+            Write data to PLC
+            </summary>
+            <typeparam name="T">Data type to write</typeparam>
+            <param name="address">PLC address</param>
+            <param name="values">Values to write</param>
+            <returns>Operation result</returns>
+        </member>
+        <member name="M:PlcCommunication.Interfaces.IPlcBase.Write``1(System.String,``0)">
+            <summary>
+            Write single value to PLC
+            </summary>
+            <typeparam name="T">Data type to write</typeparam>
+            <param name="address">PLC address</param>
+            <param name="value">Value to write</param>
+            <returns>Operation result</returns>
+        </member>
+        <member name="M:PlcCommunication.Interfaces.IPlcBase.ReadString(System.String,System.UInt32)">
+            <summary>
+            Read string from PLC
+            </summary>
+            <param name="address">PLC address</param>
+            <param name="length">String length</param>
+            <returns>Operation result with string</returns>
+        </member>
+        <member name="M:PlcCommunication.Interfaces.IPlcBase.WriteString(System.String,System.String)">
+            <summary>
+            Write string to PLC
+            </summary>
+            <param name="address">PLC address</param>
+            <param name="value">String value</param>
+            <returns>Operation result</returns>
+        </member>
+        <member name="T:PlcCommunication.PlcBase">
+            <summary>
+            Abstract base class for PLC communication implementations
+            </summary>
+        </member>
+        <member name="P:PlcCommunication.PlcBase.ConnectionString">
+            <summary>
+            Connection string for the PLC
+            </summary>
+        </member>
+        <member name="M:PlcCommunication.PlcBase.ValidateAddress(System.String)">
+            <summary>
+            Validate address format (can be overridden by derived classes)
+            </summary>
+        </member>
+        <member name="M:PlcCommunication.PlcBase.Log(System.String)">
+            <summary>
+            Log message (can be overridden for custom logging)
+            </summary>
+        </member>
+        <member name="M:PlcCommunication.PlcBase.LogError(System.String)">
+            <summary>
+            Log error message
+            </summary>
+        </member>
+    </members>
+</doc>

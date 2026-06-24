@@ -1,0 +1,16 @@
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\EwanIO\bin\x64\Release\net472\communication.dll
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\EwanIO\bin\x64\Release\net472\EwanIO.dll
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\EwanIO\bin\x64\Release\net472\EwanIO.pdb
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\EwanIO\bin\x64\Release\net472\Newtonsoft.Json.dll
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\EwanIO\bin\x64\Release\net472\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\EwanIO\bin\x64\Release\net472\PlcCommunication.dll
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\EwanIO\bin\x64\Release\net472\PlcCommunication.pdb
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\EwanIO\bin\x64\Release\net472\PlcCommunication.xml
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\EwanIO\obj\x64\Release\net472\EwanIO.csproj.AssemblyReference.cache
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\EwanIO\obj\x64\Release\net472\EwanIO.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\EwanIO\obj\x64\Release\net472\EwanIO.AssemblyInfoInputs.cache
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\EwanIO\obj\x64\Release\net472\EwanIO.AssemblyInfo.cs
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\EwanIO\obj\x64\Release\net472\EwanIO.csproj.CoreCompileInputs.cache
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\EwanIO\obj\x64\Release\net472\EwanIO.csproj.Up2Date
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\EwanIO\obj\x64\Release\net472\EwanIO.dll
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\EwanIO\obj\x64\Release\net472\EwanIO.pdb

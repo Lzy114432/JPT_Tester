@@ -1,0 +1,16 @@
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\IO\bin\Release\net472\communication.dll
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\IO\bin\Release\net472\IOLibrary.dll
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\IO\bin\Release\net472\IOLibrary.pdb
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\IO\bin\Release\net472\Newtonsoft.Json.dll
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\IO\bin\Release\net472\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\IO\bin\Release\net472\PlcCommunication.dll
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\IO\bin\Release\net472\PlcCommunication.pdb
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\IO\bin\Release\net472\PlcCommunication.xml
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\IO\obj\Release\net472\IOLibrary.csproj.AssemblyReference.cache
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\IO\obj\Release\net472\IOLibrary.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\IO\obj\Release\net472\IOLibrary.AssemblyInfoInputs.cache
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\IO\obj\Release\net472\IOLibrary.AssemblyInfo.cs
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\IO\obj\Release\net472\IOLibrary.csproj.CoreCompileInputs.cache
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\IO\obj\Release\net472\IOLibrary.csproj.Up2Date
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\IO\obj\Release\net472\IOLibrary.dll
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\IO\obj\Release\net472\IOLibrary.pdb

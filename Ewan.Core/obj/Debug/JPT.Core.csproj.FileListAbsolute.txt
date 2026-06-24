@@ -1,0 +1,15 @@
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\JPT.Core\obj\Debug\JPT.Core.csproj.AssemblyReference.cache
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\JPT.Core\obj\Debug\JPT.Core.csproj.CoreCompileInputs.cache
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\JPT.Core\bin\Debug\JPT.Core.dll
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\JPT.Core\bin\Debug\JPT.Core.pdb
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\JPT.Core\bin\Debug\log4net.dll
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\JPT.Core\bin\Debug\log4net.pdb
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\JPT.Core\bin\Debug\log4net.xml
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\JPT.Core\obj\Debug\JPT.Core.csproj.Up2Date
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\JPT.Core\obj\Debug\JPT.Core.dll
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\JPT.Core\obj\Debug\JPT.Core.pdb
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\JPT.Core\bin\Debug\JPT.Model.dll
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\JPT.Core\bin\Debug\JPT.Model.pdb
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\JPT.Core\bin\Debug\JPT.Resources.dll
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\JPT.Core\bin\Debug\JPT.Resources.pdb
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\JPT.Core\bin\Debug\zh-CN\JPT.Resources.resources.dll

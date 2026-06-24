@@ -1,0 +1,101 @@
+﻿[
+  {
+    "Username": "admin",
+    "PasswordHash": "NqYKasIV8AXjhMGu8uFq77OKzVnpwWPuazjSqGOn9PQ=",
+    "DisplayName": "系统管理员",
+    "Roles": [
+      {
+        "Name": "Administrator",
+        "DisplayName": "系统管理员",
+        "Description": "",
+        "Permissions": [
+          {
+            "Resource": "language",
+            "Action": "Control",
+            "Description": "",
+            "Key": "language.Control"
+          },
+          {
+            "Resource": "PermissionConfig",
+            "Action": "View",
+            "Description": "",
+            "Key": "PermissionConfig.View"
+          },
+          {
+            "Resource": "PermissionConfig",
+            "Action": "Control",
+            "Description": "",
+            "Key": "PermissionConfig.Control"
+          },
+          {
+            "Resource": "systemcontrol",
+            "Action": "Control",
+            "Description": "",
+            "Key": "systemcontrol.Control"
+          }
+        ]
+      }
+    ],
+    "IsActive": true
+  },
+  {
+    "Username": "engineer",
+    "PasswordHash": "NqYKasIV8AXjhMGu8uFq77OKzVnpwWPuazjSqGOn9PQ=",
+    "DisplayName": "工程师",
+    "Roles": [
+      {
+        "Name": "Engineer",
+        "DisplayName": "工程师",
+        "Description": "",
+        "Permissions": [
+          {
+            "Resource": "language",
+            "Action": "Control",
+            "Description": "",
+            "Key": "language.Control"
+          },
+          {
+            "Resource": "PermissionConfig",
+            "Action": "View",
+            "Description": "",
+            "Key": "PermissionConfig.View"
+          },
+          {
+            "Resource": "systemcontrol",
+            "Action": "Control",
+            "Description": "",
+            "Key": "systemcontrol.Control"
+          }
+        ]
+      }
+    ],
+    "IsActive": true
+  },
+  {
+    "Username": "operator",
+    "PasswordHash": "NqYKasIV8AXjhMGu8uFq77OKzVnpwWPuazjSqGOn9PQ=",
+    "DisplayName": "操作员",
+    "Roles": [
+      {
+        "Name": "Operator",
+        "DisplayName": "操作员",
+        "Description": "",
+        "Permissions": [
+          {
+            "Resource": "language",
+            "Action": "Control",
+            "Description": "",
+            "Key": "language.Control"
+          },
+          {
+            "Resource": "systemcontrol",
+            "Action": "Control",
+            "Description": "",
+            "Key": "systemcontrol.Control"
+          }
+        ]
+      }
+    ],
+    "IsActive": true
+  }
+]

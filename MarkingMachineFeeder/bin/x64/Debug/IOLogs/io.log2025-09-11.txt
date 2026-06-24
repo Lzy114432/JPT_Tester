@@ -1,0 +1,9 @@
+﻿2025-09-11 09:59:22,550 [INFO ] [thread-1] Loaded mapping configuration from Config\io_mapping.json 
+2025-09-11 09:59:22,551 [INFO ] [thread-1] Input mappings: 64, Output mappings: 64 
+2025-09-11 09:59:24,757 [WARN ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:116] [PLC] Address: 127.0.0.1:6000, Operation: Connect, Data: PLC error: IO error: 由于目标计算机积极拒绝，无法连接。 (os error 10061), Status: FAILED 
+2025-09-11 17:26:36,500 [INFO ] [thread-1] Loaded mapping configuration from Config\io_mapping.json 
+2025-09-11 17:26:36,500 [INFO ] [thread-1] Input mappings: 64, Output mappings: 64 
+2025-09-11 17:26:38,716 [WARN ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:116] [PLC] Address: 127.0.0.1:6000, Operation: Connect, Data: PLC error: IO error: 由于目标计算机积极拒绝，无法连接。 (os error 10061), Status: FAILED 
+2025-09-11 17:29:36,131 [INFO ] [thread-1] Loaded mapping configuration from Config\io_mapping.json 
+2025-09-11 17:29:36,133 [INFO ] [thread-1] Input mappings: 64, Output mappings: 64 
+2025-09-11 17:29:38,443 [WARN ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:116] [PLC] Address: 127.0.0.1:6000, Operation: Connect, Data: PLC error: IO error: 由于目标计算机积极拒绝，无法连接。 (os error 10061), Status: FAILED 

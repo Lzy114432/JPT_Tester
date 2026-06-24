@@ -1,0 +1,13 @@
+C:\Users\Administrator\Desktop\切栈桥和除胶\Ewan.Mes\Ewan.Mes\bin\Release\Ewan.Mes.dll
+C:\Users\Administrator\Desktop\切栈桥和除胶\Ewan.Mes\Ewan.Mes\bin\Release\Ewan.Mes.pdb
+C:\Users\Administrator\Desktop\切栈桥和除胶\Ewan.Mes\Ewan.Mes\bin\Release\M2Mqtt.Net.dll
+C:\Users\Administrator\Desktop\切栈桥和除胶\Ewan.Mes\Ewan.Mes\bin\Release\Newtonsoft.Json.dll
+C:\Users\Administrator\Desktop\切栈桥和除胶\Ewan.Mes\Ewan.Mes\bin\Release\M2Mqtt.Net.pdb
+C:\Users\Administrator\Desktop\切栈桥和除胶\Ewan.Mes\Ewan.Mes\bin\Release\Newtonsoft.Json.xml
+C:\Users\Administrator\Desktop\切栈桥和除胶\Ewan.Mes\Ewan.Mes\obj\Release\Ewan.Mes.csproj.AssemblyReference.cache
+C:\Users\Administrator\Desktop\切栈桥和除胶\Ewan.Mes\Ewan.Mes\obj\Release\Ewan.Mes.csproj.CoreCompileInputs.cache
+C:\Users\Administrator\Desktop\切栈桥和除胶\Ewan.Mes\Ewan.Mes\obj\Release\Ewan.Mes.csproj.Up2Date
+C:\Users\Administrator\Desktop\切栈桥和除胶\Ewan.Mes\Ewan.Mes\obj\Release\Ewan.Mes.dll
+C:\Users\Administrator\Desktop\切栈桥和除胶\Ewan.Mes\Ewan.Mes\obj\Release\Ewan.Mes.pdb
+C:\Users\Administrator\Desktop\切栈桥和除胶\Ewan.Mes\Ewan.Mes\bin\Release\System.Collections.Immutable.dll
+C:\Users\Administrator\Desktop\切栈桥和除胶\Ewan.Mes\Ewan.Mes\bin\Release\System.Collections.Immutable.xml

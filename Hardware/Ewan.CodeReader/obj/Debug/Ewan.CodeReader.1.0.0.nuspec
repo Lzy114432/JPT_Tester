@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Ewan.CodeReader</id>
+    <version>1.0.0</version>
+    <authors>Ewan</authors>
+    <description>扫描器通用库，支持海康威视和得利捷扫描器</description>
+    <repository type="git" commit="c9e0c1dd18fd21f0d71720081d8a580990abf8d6" />
+    <dependencies>
+      <group targetFramework=".NETFramework4.7.2" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="D:\01Demo\珠海均威\上料机\MarkingMachineFeeder0617\Hardware\Ewan.CodeReader\bin\x64\Debug\net472\Ewan.CodeReader.dll" target="lib\net472\Ewan.CodeReader.dll" />
+  </files>
+</package>

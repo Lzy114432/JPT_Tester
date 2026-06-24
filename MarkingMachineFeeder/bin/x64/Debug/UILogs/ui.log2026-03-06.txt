@@ -1,0 +1,708 @@
+﻿2026-03-06 12:33:24,816 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteClearAlarm>d__369:1197] 用户触发清除报警(OUT25脉冲) 
+2026-03-06 12:33:24,929 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteClearAlarm>d__369:1209] 清除报警完成 
+2026-03-06 12:33:24,935 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1548] 系统状态更新: Standby - 报警已清除，待机 
+2026-03-06 12:33:25,880 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1345] 处理已完成: 用户请求停止系统 
+2026-03-06 12:33:25,881 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1361] 处理已完成: 系统停止操作完成 
+2026-03-06 12:33:25,884 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnForceStopAll] 所有料仓已停止 
+2026-03-06 12:33:25,889 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1548] 系统状态更新: Stopped - 已停止（需复位） 
+2026-03-06 12:33:25,897 [INFO ] [thread-6] [Ewan.Core.Module.SafetyModule:SetRobotPauseOutput] 处理已完成: 暂停输出复位: Stop 
+2026-03-06 12:33:25,898 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnSystemControlMessage] 处理已完成: 皮带已停止 
+2026-03-06 12:33:27,290 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__365:1066] 处理已开始: 用户触发系统复位 
+2026-03-06 12:33:27,292 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__365:1071] 设置低速运行模式 
+2026-03-06 12:33:27,803 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnForceStopAll] 所有料仓已停止 
+2026-03-06 12:33:28,304 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__365:1096] 处理已完成: 复位命令已发送 
+2026-03-06 12:33:28,307 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1548] 系统状态更新: Stopped - 已停止（需复位） 
+2026-03-06 12:33:28,320 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnForceStopAll] 所有料仓已停止 
+2026-03-06 12:33:28,364 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__18:MoveNext] 料仓初始化开始 
+2026-03-06 12:33:28,373 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓1已到顶部（ELP触发），无物料 
+2026-03-06 12:33:28,375 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1548] 系统状态更新: Initializing - 复位中 
+2026-03-06 12:33:28,378 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓2已到顶部（ELP触发），无物料 
+2026-03-06 12:33:28,380 [INFO ] [thread-6] [Ewan.Core.Module.SafetyModule:SetRobotPauseOutput] 处理已完成: 暂停输出复位: Initialize 
+2026-03-06 12:33:28,382 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓3已到顶部（ELP触发），无物料 
+2026-03-06 12:33:28,384 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnSystemControlMessage] 处理已开始: 皮带系统已初始化 
+2026-03-06 12:33:28,385 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 所有料仓初始化完成（均无物料） 
+2026-03-06 12:33:28,387 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 12:33:28,420 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 初始状态 → 发送停止脉冲 
+2026-03-06 12:33:28,475 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送停止脉冲 → 等待停止完成 
+2026-03-06 12:33:29,495 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待停止完成 → 发送开始脉冲 
+2026-03-06 12:33:29,548 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送开始脉冲 → 等待开始完成 
+2026-03-06 12:33:30,060 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待开始完成 → 清除允许取料 
+2026-03-06 12:33:30,111 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 清除允许取料 → 料仓初始化 
+2026-03-06 12:33:30,162 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 料仓初始化 → 等待料仓完成 
+2026-03-06 12:33:30,202 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__18:MoveNext] 料仓初始化开始 
+2026-03-06 12:33:30,207 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓1已到顶部（ELP触发），无物料 
+2026-03-06 12:33:30,211 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓2已到顶部（ELP触发），无物料 
+2026-03-06 12:33:30,215 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓3已到顶部（ELP触发），无物料 
+2026-03-06 12:33:30,217 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 所有料仓初始化完成（均无物料） 
+2026-03-06 12:33:30,268 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待料仓完成 → 结束状态 
+2026-03-06 12:33:30,278 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1548] 系统状态更新: Standby - 复位完成，待机 
+2026-03-06 12:45:09,611 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1226] 用户触发系统启动 
+2026-03-06 12:45:09,614 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1243] 启用高速运行模式 
+2026-03-06 12:45:09,617 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1281] 系统启动完成 
+2026-03-06 12:45:09,630 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1548] 系统状态更新: Running - 运行中 
+2026-03-06 12:45:09,632 [INFO ] [thread-6] [Ewan.Core.Module.SafetyModule:SetRobotPauseOutput] 处理已完成: 暂停输出复位: Start 
+2026-03-06 13:52:58,388 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 13:52:58,439 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 13:53:26,858 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 13:53:26,939 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 13:53:29,713 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 13:53:29,766 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 13:53:29,766 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 13:53:29,831 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 13:53:30,875 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172289 
+2026-03-06 13:53:30,876 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 13:53:30,981 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=ZH26010002 
+2026-03-06 13:53:30,982 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 13:53:31,036 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 13:53:33,536 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 13:53:33,536 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓3开始下降 
+2026-03-06 13:53:33,588 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 13:53:33,589 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 13:53:33,593 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 13:53:33,621 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓3下降完成 
+2026-03-06 14:19:34,088 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 14:19:34,141 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 14:20:03,730 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 14:20:03,743 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 14:20:06,639 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 14:20:06,692 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 14:20:06,692 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 14:20:06,738 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 14:20:07,800 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172235 
+2026-03-06 14:20:07,802 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 14:20:07,905 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=LS26010172 
+2026-03-06 14:20:07,906 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 14:20:07,959 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 14:20:10,205 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 14:20:10,205 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓2开始下降 
+2026-03-06 14:20:10,262 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 14:20:10,262 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 14:20:10,264 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 14:20:10,298 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓2下降完成 
+2026-03-06 14:23:14,102 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 14:23:14,154 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 14:23:42,619 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 14:23:42,668 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 14:23:46,444 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 14:23:46,496 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 14:23:46,496 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 14:23:46,590 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 14:23:47,605 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172259 
+2026-03-06 14:23:47,606 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 14:23:47,709 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=LS26010172 
+2026-03-06 14:23:47,711 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 14:23:47,765 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 14:23:50,014 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 14:23:50,014 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓2开始下降 
+2026-03-06 14:23:50,067 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 14:23:50,068 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 14:23:50,067 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 14:23:50,114 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓2下降完成 
+2026-03-06 14:39:35,376 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 14:39:35,428 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 14:40:04,195 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 14:40:04,216 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 14:40:07,562 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 14:40:07,615 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 14:40:07,615 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 14:40:07,623 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 14:40:08,724 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172312 
+2026-03-06 14:40:08,726 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 14:40:08,829 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=LS26010172 
+2026-03-06 14:40:08,831 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 14:40:08,882 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 14:40:11,076 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 14:40:11,076 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓2开始下降 
+2026-03-06 14:40:11,130 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 14:40:11,130 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 14:40:11,131 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 14:40:11,180 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓2下降完成 
+2026-03-06 14:49:31,967 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 14:49:32,019 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 14:50:01,056 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 14:50:01,151 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 14:50:04,217 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 14:50:04,269 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 14:50:04,271 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 14:50:04,353 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 14:50:05,379 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172184 
+2026-03-06 14:50:05,381 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 14:50:05,485 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=LS26010172 
+2026-03-06 14:50:05,486 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 14:50:05,538 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 14:50:07,783 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 14:50:07,783 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓2开始下降 
+2026-03-06 14:50:07,836 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 14:50:07,839 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 14:50:07,840 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 14:50:07,900 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓2下降完成 
+2026-03-06 14:50:55,374 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 14:50:55,426 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 14:51:25,069 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 14:51:25,122 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 14:51:27,976 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 14:51:28,028 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 14:51:28,028 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 14:51:28,116 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 14:51:29,137 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172310 
+2026-03-06 14:51:29,141 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 14:51:29,245 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=LS26010172 
+2026-03-06 14:51:29,246 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 14:51:29,299 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 14:51:31,494 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 14:51:31,494 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓2开始下降 
+2026-03-06 14:51:31,548 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 14:51:31,548 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 14:51:31,549 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 14:51:31,613 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓2下降完成 
+2026-03-06 15:14:32,294 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 15:14:32,347 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 15:15:01,730 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 15:15:01,747 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 15:15:04,688 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 15:15:04,739 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 15:15:04,740 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 15:15:04,849 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 15:15:05,848 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172067 
+2026-03-06 15:15:05,850 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 15:15:05,956 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=LS26010172 
+2026-03-06 15:15:05,958 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 15:15:06,011 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 15:15:08,214 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 15:15:08,214 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓2开始下降 
+2026-03-06 15:15:08,267 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 15:15:08,268 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 15:15:08,268 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 15:15:08,314 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓2下降完成 
+2026-03-06 15:16:40,903 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 15:16:40,956 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 15:17:10,596 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 15:17:10,640 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 15:17:14,166 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 15:17:14,218 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 15:17:14,219 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 15:17:14,250 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 15:17:15,327 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172182 
+2026-03-06 15:17:15,327 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 15:17:15,434 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=LS26010172 
+2026-03-06 15:17:15,435 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 15:17:15,487 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 15:17:17,732 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 15:17:17,732 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓2开始下降 
+2026-03-06 15:17:17,785 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 15:17:17,785 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 15:17:17,786 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 15:17:17,817 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓2下降完成 
+2026-03-06 15:18:13,397 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 15:18:13,450 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 15:18:33,049 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 15:18:33,071 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 15:18:36,569 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 15:18:36,638 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 15:18:36,638 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 15:18:36,685 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 15:18:37,746 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172307 
+2026-03-06 15:18:37,747 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 15:18:37,850 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=LS26010172 
+2026-03-06 15:18:37,851 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 15:18:37,908 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 15:18:40,153 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 15:18:40,153 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓2开始下降 
+2026-03-06 15:18:40,206 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 15:18:40,207 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 15:18:40,207 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 15:18:40,266 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓2下降完成 
+2026-03-06 15:18:40,311 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 15:18:40,367 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 15:19:09,187 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 15:19:09,237 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 15:19:11,941 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 15:19:11,997 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 15:19:11,997 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 15:19:12,026 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 15:19:13,110 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172306 
+2026-03-06 15:19:13,116 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 15:19:13,424 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=LS26010172 
+2026-03-06 15:19:13,425 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 15:19:13,477 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 15:19:15,725 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 15:19:15,725 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓2开始下降 
+2026-03-06 15:19:15,778 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 15:19:15,779 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 15:19:15,782 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 15:19:15,828 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓2下降完成 
+2026-03-06 15:19:20,683 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 15:19:20,736 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 15:19:49,612 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 15:19:49,644 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 15:19:52,315 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 15:19:52,367 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 15:19:52,367 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 15:19:52,436 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 15:19:53,477 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172311 
+2026-03-06 15:19:53,482 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 15:19:53,586 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=LS26010172 
+2026-03-06 15:19:53,588 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 15:19:53,640 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 15:19:55,887 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 15:19:55,887 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓2开始下降 
+2026-03-06 15:19:55,939 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 15:19:55,940 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 15:19:55,945 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 15:19:55,975 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓2下降完成 
+2026-03-06 15:19:56,047 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 15:19:56,099 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 15:20:22,833 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 15:20:22,837 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 15:20:25,995 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 15:20:26,047 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 15:20:26,048 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 15:20:26,142 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 15:20:27,157 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172043 
+2026-03-06 15:20:27,158 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 15:20:27,262 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=LS26010172 
+2026-03-06 15:20:27,264 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 15:20:27,317 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 15:20:29,565 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 15:20:29,565 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓2开始下降 
+2026-03-06 15:20:29,619 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 15:20:29,619 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 15:20:29,622 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 15:20:29,665 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓2下降完成 
+2026-03-06 15:20:34,011 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 15:20:34,064 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 15:21:03,049 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 15:21:03,132 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 15:21:06,466 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 15:21:06,522 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 15:21:06,522 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 15:21:06,539 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 15:21:07,664 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172308 
+2026-03-06 15:21:07,669 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 15:21:07,773 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=LS26010172 
+2026-03-06 15:21:07,775 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 15:21:07,831 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 15:21:10,076 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 15:21:10,076 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓2开始下降 
+2026-03-06 15:21:10,130 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 15:21:10,130 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 15:21:10,130 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 15:21:10,194 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓2下降完成 
+2026-03-06 15:21:50,352 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 15:21:50,404 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 15:22:18,928 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 15:22:18,995 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 15:22:22,753 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 15:22:22,806 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 15:22:22,806 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 15:22:22,827 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 15:22:23,918 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172302 
+2026-03-06 15:22:23,920 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 15:22:24,025 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=LS26010172 
+2026-03-06 15:22:24,026 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 15:22:24,079 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 15:22:26,326 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 15:22:26,326 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓2开始下降 
+2026-03-06 15:22:26,379 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 15:22:26,380 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 15:22:26,379 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 15:22:26,435 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓2下降完成 
+2026-03-06 15:23:11,793 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 15:23:11,846 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 15:23:41,074 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 15:23:41,137 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 15:23:44,032 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 15:23:44,085 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 15:23:44,085 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 15:23:44,132 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 15:23:45,197 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172304 
+2026-03-06 15:23:45,199 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 15:23:45,306 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=LS26010172 
+2026-03-06 15:23:45,310 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 15:23:45,363 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 15:23:47,608 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 15:23:47,608 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓2开始下降 
+2026-03-06 15:23:47,661 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 15:23:47,668 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 15:23:47,669 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 15:23:47,727 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓2下降完成 
+2026-03-06 15:35:05,927 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 15:35:05,980 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 15:35:35,482 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 15:35:35,516 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 15:35:38,337 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 15:35:38,389 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 15:35:38,389 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 15:35:38,410 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 15:35:39,499 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172049 
+2026-03-06 15:35:39,505 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 15:35:39,612 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=LS26010172 
+2026-03-06 15:35:39,613 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 15:35:39,666 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 15:35:41,863 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 15:35:41,865 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓2开始下降 
+2026-03-06 15:35:41,916 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 15:35:41,916 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 15:35:41,917 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 15:35:41,988 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓2下降完成 
+2026-03-06 15:38:52,945 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 15:38:52,998 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 15:39:21,612 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 15:39:21,692 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 15:39:24,366 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 15:39:24,419 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 15:39:24,419 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 15:39:24,480 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 15:39:25,528 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172305 
+2026-03-06 15:39:25,531 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 15:39:25,635 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=LS26010172 
+2026-03-06 15:39:25,637 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 15:39:25,689 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 15:39:27,933 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 15:39:27,933 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓2开始下降 
+2026-03-06 15:39:27,984 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓2下降完成 
+2026-03-06 15:39:27,986 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 15:39:27,987 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 15:39:27,988 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 15:43:43,043 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 15:43:43,095 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 15:44:13,446 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 15:44:13,456 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 15:44:16,455 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 15:44:16,508 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 15:44:16,508 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 15:44:16,554 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 15:44:17,683 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172242 
+2026-03-06 15:44:17,684 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 15:44:17,792 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=LS26010172 
+2026-03-06 15:44:17,800 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 15:44:17,853 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 15:44:20,050 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 15:44:20,050 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓2开始下降 
+2026-03-06 15:44:20,103 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 15:44:20,103 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 15:44:20,105 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 15:44:20,147 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓2下降完成 
+2026-03-06 15:44:20,207 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 15:44:20,265 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 15:44:26,696 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 15:44:26,758 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 15:44:29,553 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 15:44:29,604 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 15:44:29,605 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 15:44:29,651 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 15:44:30,713 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172244 
+2026-03-06 15:44:30,715 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 15:44:30,818 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=LS26010172 
+2026-03-06 15:44:30,819 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 15:44:30,871 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 15:44:33,066 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓2开始下降 
+2026-03-06 15:44:33,066 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 15:44:33,126 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 15:44:33,127 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 15:44:33,128 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 15:44:33,145 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓2下降完成 
+2026-03-06 15:45:52,806 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 15:45:52,858 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 15:46:22,246 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 15:46:22,258 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 15:46:25,000 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 15:46:25,053 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 15:46:25,053 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 15:46:25,148 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 15:46:26,161 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172243 
+2026-03-06 15:46:26,166 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 15:46:26,271 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=LS26010172 
+2026-03-06 15:46:26,272 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 15:46:26,327 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 15:46:28,572 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 15:46:28,572 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓2开始下降 
+2026-03-06 15:46:28,624 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 15:46:28,625 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 15:46:28,625 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 15:46:28,673 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓2下降完成 
+2026-03-06 16:31:11,667 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 16:31:11,720 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 16:31:41,359 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 16:31:41,446 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 16:31:44,167 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 16:31:44,220 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 16:31:44,220 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 16:31:44,235 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 16:31:45,330 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172232 
+2026-03-06 16:31:45,333 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 16:31:45,437 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=LS26010172 
+2026-03-06 16:31:45,439 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 16:31:45,496 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 16:31:47,694 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 16:31:47,694 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓2开始下降 
+2026-03-06 16:31:47,747 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 16:31:47,747 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 16:31:47,748 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 16:31:47,791 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓2下降完成 
+2026-03-06 16:34:31,540 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 16:34:31,592 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 16:35:00,468 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 16:35:00,517 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 16:35:04,039 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 16:35:04,092 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 16:35:04,092 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 16:35:04,131 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 16:35:05,201 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172127 
+2026-03-06 16:35:05,202 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 16:35:05,304 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=LS26010172 
+2026-03-06 16:35:05,305 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 16:35:05,357 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 16:35:07,602 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 16:35:07,602 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓2开始下降 
+2026-03-06 16:35:07,659 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 16:35:07,660 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 16:35:07,661 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 16:35:07,692 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓2下降完成 
+2026-03-06 16:35:16,860 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 16:35:16,912 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 16:35:46,097 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 16:35:46,174 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 16:35:49,159 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 16:35:49,212 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 16:35:49,212 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 16:35:49,274 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 16:35:50,323 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172128 
+2026-03-06 16:35:50,326 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 16:35:50,430 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=LS26010172 
+2026-03-06 16:35:50,432 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 16:35:50,485 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 16:35:52,733 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 16:35:52,733 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓2开始下降 
+2026-03-06 16:35:52,786 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 16:35:52,787 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 16:35:52,788 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 16:35:52,857 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓2下降完成 
+2026-03-06 16:38:46,735 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 16:38:46,788 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 16:39:15,942 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 16:39:15,968 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 16:39:19,205 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 16:39:19,257 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 16:39:19,257 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 16:39:19,270 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 16:39:20,367 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172129 
+2026-03-06 16:39:20,368 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 16:39:20,471 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=LS26010172 
+2026-03-06 16:39:20,472 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 16:39:20,524 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 16:39:22,770 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 16:39:22,770 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓2开始下降 
+2026-03-06 16:39:22,823 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 16:39:22,823 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 16:39:22,824 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 16:39:22,866 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓2下降完成 
+2026-03-06 16:45:30,360 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 16:45:30,413 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 16:45:53,826 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 16:45:53,886 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 16:45:57,654 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 16:45:57,705 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 16:45:57,705 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 16:45:57,809 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 16:45:58,814 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172032 
+2026-03-06 16:45:58,816 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 16:45:58,920 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=LS26010172 
+2026-03-06 16:45:58,922 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 16:45:58,974 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 16:46:01,221 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 16:46:01,221 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓2开始下降 
+2026-03-06 16:46:01,274 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 16:46:01,275 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 16:46:01,276 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 16:46:01,335 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓2下降完成 
+2026-03-06 16:46:05,459 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 16:46:05,513 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 16:46:34,242 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 16:46:34,284 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 16:46:37,100 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 16:46:37,152 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 16:46:37,152 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 16:46:37,180 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 16:46:38,261 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172183 
+2026-03-06 16:46:38,262 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 16:46:38,367 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=LS26010172 
+2026-03-06 16:46:38,368 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 16:46:38,420 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 16:46:40,666 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 16:46:40,666 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓2开始下降 
+2026-03-06 16:46:40,718 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 16:46:40,719 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 16:46:40,720 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 16:46:40,749 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓2下降完成 
+2026-03-06 16:46:40,824 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 16:46:40,878 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 16:47:10,614 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 16:47:10,661 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 16:47:13,266 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 16:47:13,318 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 16:47:13,318 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 16:47:13,349 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 16:47:14,427 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172181 
+2026-03-06 16:47:14,428 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 16:47:14,531 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=LS26010172 
+2026-03-06 16:47:14,533 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 16:47:14,584 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 16:47:16,777 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 16:47:16,777 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓2开始下降 
+2026-03-06 16:47:16,830 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 16:47:16,830 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 16:47:16,831 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 16:47:16,874 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓2下降完成 
+2026-03-06 16:47:19,791 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 16:47:19,844 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 16:47:49,534 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 16:47:49,613 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 16:47:52,441 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 16:47:52,494 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 16:47:52,494 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 16:47:52,504 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 16:47:53,603 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172241 
+2026-03-06 16:47:53,604 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 16:47:53,709 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=LS26010172 
+2026-03-06 16:47:53,710 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 16:47:53,762 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 16:47:55,957 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 16:47:55,957 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓2开始下降 
+2026-03-06 16:47:56,010 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 16:47:56,010 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 16:47:56,012 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 16:47:56,054 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓2下降完成 
+2026-03-06 16:47:59,072 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 16:47:59,124 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 16:48:28,555 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 16:48:28,560 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 16:48:31,564 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 16:48:31,616 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 16:48:31,617 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 16:48:31,657 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 16:48:32,728 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172258 
+2026-03-06 16:48:32,729 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 16:48:32,832 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=LS26010172 
+2026-03-06 16:48:32,834 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 16:48:32,885 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 16:48:35,129 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 16:48:35,129 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓2开始下降 
+2026-03-06 16:48:35,185 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 16:48:35,185 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 16:48:35,186 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 16:48:35,267 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓2下降完成 
+2026-03-06 16:48:35,290 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 16:48:35,344 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 16:48:37,797 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 16:48:37,847 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 16:48:40,501 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 16:48:40,552 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 16:48:40,553 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 16:48:40,638 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 16:48:41,663 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172234 
+2026-03-06 16:48:41,665 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 16:48:41,769 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=LS26010172 
+2026-03-06 16:48:41,770 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 16:48:41,822 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 16:48:44,016 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 16:48:44,016 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓2开始下降 
+2026-03-06 16:48:44,069 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 16:48:44,069 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 16:48:44,070 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 16:48:44,194 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓2下降完成 
+2026-03-06 16:49:15,501 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 16:49:15,553 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 16:49:45,451 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 16:49:45,554 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 16:49:48,919 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 16:49:48,971 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 16:49:48,971 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 16:49:49,062 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 16:49:50,085 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172047 
+2026-03-06 16:49:50,087 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 16:49:50,195 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=LS26010172 
+2026-03-06 16:49:50,197 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 16:49:50,250 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 16:49:52,598 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 16:49:52,598 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓2开始下降 
+2026-03-06 16:49:52,651 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 16:49:52,651 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 16:49:52,652 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 16:49:52,672 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓2下降完成 
+2026-03-06 16:49:52,756 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 16:49:52,808 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 16:50:21,319 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 16:50:21,423 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 16:50:24,838 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 16:50:24,891 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 16:50:24,891 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 16:50:24,932 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 16:50:26,001 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172052 
+2026-03-06 16:50:26,002 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 16:50:26,718 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=LS26010172 
+2026-03-06 16:50:26,719 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 16:50:26,770 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 16:50:29,015 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 16:50:29,015 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓2开始下降 
+2026-03-06 16:50:29,069 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 16:50:29,069 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 16:50:29,071 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 16:50:29,101 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓2下降完成 
+2026-03-06 16:50:31,725 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 16:50:31,777 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 16:51:01,018 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 16:51:01,109 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 16:51:04,184 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 16:51:04,236 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 16:51:04,236 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 16:51:04,313 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 16:51:05,345 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172044 
+2026-03-06 16:51:05,346 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 16:51:05,450 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=LS26010172 
+2026-03-06 16:51:05,452 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 16:51:05,503 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 16:51:07,749 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 16:51:07,749 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓2开始下降 
+2026-03-06 16:51:07,801 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 16:51:07,802 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 16:51:07,803 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 16:51:07,847 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓2下降完成 
+2026-03-06 16:51:53,103 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 16:51:53,155 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 16:52:22,648 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 16:52:22,724 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 16:52:25,453 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 16:52:25,506 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 16:52:25,506 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 16:52:25,614 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 16:52:26,615 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172240 
+2026-03-06 16:52:26,619 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 16:52:26,722 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=LS26010172 
+2026-03-06 16:52:26,723 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 16:52:26,775 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 16:52:28,972 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 16:52:28,973 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓2开始下降 
+2026-03-06 16:52:29,025 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 16:52:29,026 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 16:52:29,027 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 16:52:29,075 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓2下降完成 
+2026-03-06 16:52:30,463 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 初始状态 → 等待料片信号 
+2026-03-06 16:52:30,515 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待料片信号 → 取料中 
+2026-03-06 16:53:00,058 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带请求停止 - 来源:MaterialLoading, 原因:机械手正在取料，停止皮带, 当前有停止请求:True 
+2026-03-06 16:53:00,138 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-03-06 16:53:03,581 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 取料中 → 到达扫码位置 
+2026-03-06 16:53:03,634 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 到达扫码位置 → 执行扫码 
+2026-03-06 16:53:03,634 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 16:53:03,655 [INFO ] [thread-16] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-03-06 16:53:04,744 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] 扫码内容: LS26010172260 
+2026-03-06 16:53:04,745 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 执行扫码 → 发送MES上料请求 
+2026-03-06 16:53:04,848 [INFO ] [thread-LogicRunner-023AEC39] [Ewan.Core.Logic.MaterialLoadingLogic:Handler] MES上料响应: A单=LS26010170, B单=LS26010172 
+2026-03-06 16:53:04,850 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 发送MES上料请求 → 移动到料仓 
+2026-03-06 16:53:04,903 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 移动到料仓 → 等待装载完成 
+2026-03-06 16:53:07,150 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 等待装载完成 → 清理状态 
+2026-03-06 16:53:07,150 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnLoadingCompleted] 料仓2开始下降 
+2026-03-06 16:53:07,202 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 清理状态 → 结束状态 
+2026-03-06 16:53:07,203 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnBeltControlMessage] 处理已开始: 皮带释放控制 - 来源:MaterialLoading, 原因:装料完成，释放皮带, 当前有停止请求:False 
+2026-03-06 16:53:07,203 [INFO ] [thread-LogicRunner-023AEC39] [EwanCore.StateMachine.LogicBase:145] [MaterialLoadingLogic] 步骤: 结束状态 → 初始状态 
+2026-03-06 16:53:07,248 [INFO ] [thread-15] [Ewan.Core.Module.BinElevatorModule:ProcessLoadingTask] 料仓2下降完成 

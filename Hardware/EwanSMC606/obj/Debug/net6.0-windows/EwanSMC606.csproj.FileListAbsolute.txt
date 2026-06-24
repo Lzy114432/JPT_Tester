@@ -1,0 +1,11 @@
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\Hardware\EwanSMC606\bin\Debug\net6.0-windows\EwanSMC606.deps.json
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\Hardware\EwanSMC606\bin\Debug\net6.0-windows\EwanSMC606.dll
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\Hardware\EwanSMC606\bin\Debug\net6.0-windows\EwanSMC606.pdb
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\Hardware\EwanSMC606\obj\Debug\net6.0-windows\EwanSMC606.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\Hardware\EwanSMC606\obj\Debug\net6.0-windows\EwanSMC606.AssemblyInfoInputs.cache
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\Hardware\EwanSMC606\obj\Debug\net6.0-windows\EwanSMC606.AssemblyInfo.cs
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\Hardware\EwanSMC606\obj\Debug\net6.0-windows\EwanSMC606.csproj.CoreCompileInputs.cache
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\Hardware\EwanSMC606\obj\Debug\net6.0-windows\EwanSMC606.dll
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\Hardware\EwanSMC606\obj\Debug\net6.0-windows\refint\EwanSMC606.dll
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\Hardware\EwanSMC606\obj\Debug\net6.0-windows\EwanSMC606.pdb
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\Hardware\EwanSMC606\obj\Debug\net6.0-windows\ref\EwanSMC606.dll

@@ -1,0 +1,3 @@
+﻿2026-04-18 22:43:55,775 [INFO ] [thread-20] [Ewan.Core.Module.RingLineModule:151] 检测到后段上料(6#): 04,1,2,0,FLS26020053035 -> 拼装: ZH26010002265 
+2026-04-18 22:44:14,607 [INFO ] [thread-20] [Ewan.Core.Module.RingLineModule:151] 检测到后段上料(6#): 04,1,2,0,FLS26020053035 -> 拼装: ZH26010002027 
+2026-04-18 22:44:32,789 [INFO ] [thread-20] [Ewan.Core.Module.RingLineModule:151] 检测到后段上料(6#): 04,1,2,0,FLS26020053035 -> 拼装: ZH26010002007 

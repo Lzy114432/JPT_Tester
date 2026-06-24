@@ -1,0 +1,51 @@
+﻿2025-12-26 23:50:33,369 [INFO ] [thread-1] [MarkingMachineFeeder.App:30] Log4net配置已加载 
+2025-12-26 23:50:33,573 [INFO ] [thread-1] MainController 开始初始化所有 Manager 
+2025-12-26 23:50:33,576 [INFO ] [thread-1] ManagerLifetimeHost starting. requireAll=False 
+2025-12-26 23:50:33,587 [INFO ] [thread-1] MesManager 初始化开始 
+2025-12-26 23:50:54,766 [ERROR] [thread-1] MES MQTT error: Failed to connect to MQTT Broker: 172.24.10.21:1883 
+uPLibrary.Networking.M2Mqtt.Exceptions.MqttConnectionException: Exception connecting to the broker ---> System.Net.Sockets.SocketException: 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。 172.24.10.21:1883
+   在 System.Net.Sockets.Socket.DoConnect(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   在 System.Net.Sockets.Socket.Connect(EndPoint remoteEP)
+   在 uPLibrary.Networking.M2Mqtt.MqttNetworkChannel.Connect() 位置 c:\Users\ppatierno\Source\Repos\m2mqtt\M2Mqtt\Net\MqttNetworkChannel.cs:行号 235
+   在 uPLibrary.Networking.M2Mqtt.MqttClient.Connect(String clientId, String username, String password, Boolean willRetain, Byte willQosLevel, Boolean willFlag, String willTopic, String willMessage, Boolean cleanSession, UInt16 keepAlivePeriod) 位置 c:\Users\ppatierno\Source\Repos\m2mqtt\M2Mqtt\MqttClient.cs:行号 556
+   --- 内部异常堆栈跟踪的结尾 ---
+   在 uPLibrary.Networking.M2Mqtt.MqttClient.Connect(String clientId, String username, String password, Boolean willRetain, Byte willQosLevel, Boolean willFlag, String willTopic, String willMessage, Boolean cleanSession, UInt16 keepAlivePeriod) 位置 c:\Users\ppatierno\Source\Repos\m2mqtt\M2Mqtt\MqttClient.cs:行号 560
+   在 uPLibrary.Networking.M2Mqtt.MqttClient.Connect(String clientId, String username, String password, Boolean cleanSession, UInt16 keepAlivePeriod) 位置 c:\Users\ppatierno\Source\Repos\m2mqtt\M2Mqtt\MqttClient.cs:行号 512
+   在 Ewan.Mes.Mqtt.MqttClientWrapper.Connect() 位置 C:\Users\Administrator\Desktop\钧崴\MarkingMachineFeeder\MarkingMachineFeeder\Ewan.Mes\Mqtt\MqttClientWrapper.cs:行号 118
+2025-12-26 23:50:54,856 [INFO ] [thread-1] MesManager 初始化完成 
+2025-12-26 23:50:54,857 [INFO ] [thread-1] MsgManager 初始化开始 
+2025-12-26 23:50:54,888 [ERROR] [thread-1] Init manager failed: Ewan.Core.Msg.MsgManager 
+System.IO.FileLoadException: 未能加载文件或程序集“System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a”或它的某一个依赖项。找到的程序集清单定义与程序集引用不匹配。 (异常来自 HRESULT:0x80131040)
+文件名:“System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a”
+   在 System.Collections.Immutable.ImmutableInterlocked.Update[T](ImmutableArray`1& location, Func`2 transformer)
+   在 EwanCore.Messaging.MessageBus.HandlerSet`1.Add(HandlerEntry`1 entry) 位置 C:\Users\Administrator\Desktop\钧崴\MarkingMachineFeeder\MarkingMachineFeeder\EwanCommon\EwanCommon\EwanCore\Messaging\Core\MessageBus.cs:行号 839
+   在 EwanCore.Messaging.MessageBus.Subscribe[TMessage](Action`1 handler) 位置 C:\Users\Administrator\Desktop\钧崴\MarkingMachineFeeder\MarkingMachineFeeder\EwanCommon\EwanCommon\EwanCore\Messaging\Core\MessageBus.cs:行号 131
+   在 Ewan.Core.Msg.MsgManager.Init() 位置 C:\Users\Administrator\Desktop\钧崴\MarkingMachineFeeder\MarkingMachineFeeder\Ewan.Core\Msg\MsgManager.cs:行号 75
+   在 EwanCore.Bootstrap.ManagerLifetimeHost.Start(Boolean requireAll) 位置 C:\Users\Administrator\Desktop\钧崴\MarkingMachineFeeder\MarkingMachineFeeder\EwanCommon\EwanCommon\EwanCore\Bootstrap\ManagerLifetimeHost.cs:行号 106
+
+=== 预绑定状态信息 ===
+日志: DisplayName = System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+ (Fully-specified)
+日志: Appbase = file:///C:/Users/Administrator/Desktop/钧崴/MarkingMachineFeeder/MarkingMachineFeeder/MarkingMachineFeeder/bin/x64/Debug/
+日志: 初始 PrivatePath = NULL
+调用程序集: System.Collections.Immutable, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a。
+===
+日志: 此绑定从 default 加载上下文开始。
+日志: 正在使用应用程序配置文件: C:\Users\Administrator\Desktop\钧崴\MarkingMachineFeeder\MarkingMachineFeeder\MarkingMachineFeeder\bin\x64\Debug\MarkingMachineFeeder.exe.Config
+日志: 使用主机配置文件: 
+日志: 使用 C:\Windows\Microsoft.NET\Framework64\v4.0.30319\config\machine.config 的计算机配置文件。
+日志: 策略后引用: System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+日志: 尝试下载新的 URL file:///C:/Users/Administrator/Desktop/钧崴/MarkingMachineFeeder/MarkingMachineFeeder/MarkingMachineFeeder/bin/x64/Debug/System.Runtime.CompilerServices.Unsafe.DLL。
+警告: 比较程序集名称时发生不匹配: 主版本
+错误: 未能完成程序集的安装(hr = 0x80131040)。探测终止。
+
+2025-12-26 23:50:54,891 [INFO ] [thread-1] ManagerLifetimeHost stopping. startedManagers=2 
+2025-12-26 23:50:54,891 [INFO ] [thread-1] MsgManager 开始销毁 
+2025-12-26 23:50:54,892 [INFO ] [thread-1] MsgManager 销毁完成 
+2025-12-26 23:50:54,905 [INFO ] [thread-1] MesManager 开始销毁 
+2025-12-26 23:50:54,907 [INFO ] [thread-1] MesManager 销毁完成 
+2025-12-26 23:50:54,908 [INFO ] [thread-1] ManagerLifetimeHost stopped. 
+2025-12-26 23:50:54,908 [ERROR] [thread-1] MainController 初始化失败 
+2025-12-26 23:50:54,908 [ERROR] [thread-1] [MarkingMachineFeeder.App:40] MainController初始化失败 
+2025-12-26 23:50:57,574 [INFO ] [thread-1] MainController 开始销毁所有 Manager 
+2025-12-26 23:50:57,575 [INFO ] [thread-1] MainController 销毁完成 

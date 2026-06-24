@@ -1,0 +1,77 @@
+﻿2025-09-03 16:21:18,834 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-03 16:21:18,947 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-03 16:21:18,947 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-03 16:21:18,968 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-03 16:21:18,985 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: CultureManager 
+2025-09-03 16:21:18,987 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: MsgManager 
+2025-09-03 16:21:19,021 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: StreamController 
+2025-09-03 16:21:19,021 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-09-03 16:21:19,023 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: operator 
+2025-09-03 16:21:30,183 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:349] Hardware IO Write Success: Y0 = ON 
+2025-09-03 16:22:37,421 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:349] Hardware IO Write Success: Y1 = ON 
+2025-09-03 16:22:38,405 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:349] Hardware IO Write Success: Y1 = OFF 
+2025-09-03 16:22:39,279 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:349] Hardware IO Write Success: Y2 = ON 
+2025-09-03 16:22:40,282 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:349] Hardware IO Write Success: Y2 = OFF 
+2025-09-03 16:22:41,182 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:349] Hardware IO Write Success: Y2 = ON 
+2025-09-03 16:22:42,733 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:349] Hardware IO Write Success: Y2 = OFF 
+2025-09-03 16:22:48,641 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:430] Hardware Input Simulate Success: X1 = ForceOn 
+2025-09-03 16:22:54,034 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:430] Hardware Input Simulate Success: X1 = ForceOff 
+2025-09-03 16:22:57,632 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:430] Hardware Input Simulate Success: X1 = None 
+2025-09-03 16:25:08,865 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-03 16:25:09,045 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-03 16:25:09,045 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-03 16:25:09,066 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-03 16:25:09,082 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: CultureManager 
+2025-09-03 16:25:09,083 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: MsgManager 
+2025-09-03 16:25:09,086 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: StreamController 
+2025-09-03 16:25:09,086 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-09-03 16:25:09,088 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: operator 
+2025-09-03 16:25:14,461 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:430] Hardware Input Simulate Success: X8 = ForceOn 
+2025-09-03 16:25:15,761 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:430] Hardware Input Simulate Success: X8 = ForceOff 
+2025-09-03 16:25:16,231 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:430] Hardware Input Simulate Success: X8 = None 
+2025-09-03 16:25:16,610 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:430] Hardware Input Simulate Success: X8 = ForceOn 
+2025-09-03 16:25:17,575 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:430] Hardware Input Simulate Success: X8 = ForceOff 
+2025-09-03 16:25:19,154 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:430] Hardware Input Simulate Success: X8 = None 
+2025-09-03 16:25:19,784 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:430] Hardware Input Simulate Success: X8 = ForceOn 
+2025-09-03 16:25:20,741 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:430] Hardware Input Simulate Success: X1 = ForceOn 
+2025-09-03 16:25:21,258 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:430] Hardware Input Simulate Success: X1 = ForceOff 
+2025-09-03 16:25:22,610 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:430] Hardware Input Simulate Success: X1 = None 
+2025-09-03 16:25:24,437 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:430] Hardware Input Simulate Success: X1 = ForceOn 
+2025-09-03 16:25:25,014 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:430] Hardware Input Simulate Success: X1 = ForceOff 
+2025-09-03 16:25:25,926 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:430] Hardware Input Simulate Success: X1 = None 
+2025-09-03 16:25:26,501 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:430] Hardware Input Simulate Success: X1 = ForceOn 
+2025-09-03 16:25:28,495 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:430] Hardware Input Simulate Success: X1 = ForceOff 
+2025-09-03 16:25:29,123 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:430] Hardware Input Simulate Success: X1 = None 
+2025-09-03 16:25:29,627 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:430] Hardware Input Simulate Success: X1 = ForceOn 
+2025-09-03 16:25:30,134 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:430] Hardware Input Simulate Success: X1 = ForceOff 
+2025-09-03 16:25:30,671 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:430] Hardware Input Simulate Success: X1 = None 
+2025-09-03 16:25:31,228 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:430] Hardware Input Simulate Success: X1 = ForceOn 
+2025-09-03 16:25:31,800 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:430] Hardware Input Simulate Success: X1 = ForceOff 
+2025-09-03 16:25:32,359 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:430] Hardware Input Simulate Success: X1 = None 
+2025-09-03 16:28:25,748 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-03 16:28:25,864 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-03 16:28:25,864 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-03 16:28:25,891 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-03 16:28:25,911 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: CultureManager 
+2025-09-03 16:28:25,912 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: MsgManager 
+2025-09-03 16:28:25,917 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: StreamController 
+2025-09-03 16:28:25,918 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-09-03 16:28:25,920 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: operator 
+2025-09-03 16:29:00,733 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-03 16:29:00,857 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-03 16:29:00,857 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-03 16:29:00,876 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-03 16:29:00,892 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: CultureManager 
+2025-09-03 16:29:00,893 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: MsgManager 
+2025-09-03 16:29:00,895 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: StreamController 
+2025-09-03 16:29:00,896 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-09-03 16:29:00,898 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: operator 
+2025-09-03 18:18:13,150 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-09-03 18:18:13,387 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-09-03 18:18:13,387 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-09-03 18:18:13,410 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: LayeredIOManager 
+2025-09-03 18:18:13,424 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: CultureManager 
+2025-09-03 18:18:13,424 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: MsgManager 
+2025-09-03 18:18:13,427 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: StreamController 
+2025-09-03 18:18:13,428 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-09-03 18:18:13,430 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: {0}: operator 

@@ -1,0 +1,502 @@
+﻿2025-08-29 09:08:54,375 [INFO ] [thread-1] [MarkingMachineFeeder.App:29] [Log4netConfigLoaded] Log4net配置已加载 
+2025-08-29 09:08:54,607 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:226] [UserCreated] 用户 admin 创建成功 
+2025-08-29 09:08:54,613 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:226] [UserCreated] 用户 engineer 创建成功 
+2025-08-29 09:08:54,626 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:226] [UserCreated] 用户 operator 创建成功 
+2025-08-29 09:08:54,626 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:251] [AdminUserCreated] 管理员用户创建成功，拥有 1 个角色和 4 个权限 
+2025-08-29 09:08:54,627 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:258] [DefaultUsersCreated] 默认用户创建成功 
+2025-08-29 09:08:54,627 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] [SecurityManagerInitialized] 安全管理器初始化成功 
+2025-08-29 09:08:54,628 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 SecurityManager 已初始化 
+2025-08-29 09:08:54,643 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 语言已切换至: zh-CN 
+2025-08-29 09:08:54,643 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 CultureManager 已初始化 
+2025-08-29 09:08:54,644 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 MsgManager 已初始化 
+2025-08-29 09:08:54,645 [INFO ] [thread-1] [MarkingMachineFeeder.App:40] [MainControllerInitialized] 主控制器已初始化 
+2025-08-29 09:08:54,648 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] 用户 operator 登录成功 
+2025-08-29 09:08:54,648 [INFO ] [thread-1] [MarkingMachineFeeder.App:60] [SystemInitialized] 系统初始化成功 
+2025-08-29 09:08:54,649 [INFO ] [thread-1] [MarkingMachineFeeder.App:74] [ViewModelLocatorConfigured] 视图模型定位器已配置 
+2025-08-29 09:08:54,789 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:290] [SystemInitialized] 系统初始化成功 
+2025-08-29 09:08:54,904 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:292] [SystemStatusNormal] 系统状态: 正常运行 
+2025-08-29 09:08:55,013 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:294] [Log4netConfigNotFound] 未找到Log4net配置文件 
+2025-08-29 09:08:55,122 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:296] [DatabaseConnected] 数据库连接成功 
+2025-08-29 09:08:55,231 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:298] [ViewModelLocatorConfigured] 视图模型定位器已配置 
+2025-08-29 09:08:55,238 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:187] [MainWindowStarted] 主窗口已启动 
+2025-08-29 09:09:06,402 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] 用户 admin 登录成功 
+2025-08-29 09:09:31,160 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.PermissionConfigViewModel:521] [PermissionsSaved] 权限配置保存成功 
+2025-08-29 09:09:31,161 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:257] [SystemInitialized] 系统初始化成功 
+2025-08-29 09:09:35,055 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] 用户 admin 登录成功 
+2025-08-29 09:09:41,115 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] 用户 operator 登录成功 
+2025-08-29 09:10:30,458 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] 用户 operator 登录成功 
+2025-08-29 09:10:50,911 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] Culture changed to: en-US 
+2025-08-29 09:10:55,554 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] User admin login successful 
+2025-08-29 09:11:03,360 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] User admin login successful 
+2025-08-29 09:11:12,068 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] User admin login successful 
+2025-08-29 09:11:25,715 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:299] [UserExiting] User admin is exiting the application 
+2025-08-29 09:14:39,535 [INFO ] [thread-1] [MarkingMachineFeeder.App:29] [Log4netConfigLoaded] Log4net配置已加载 
+2025-08-29 09:14:39,664 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:323] [UsersLoaded] 从存储加载了 3 个用户 
+2025-08-29 09:14:39,664 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:329] [AdminUserLoadCheck] 加载管理员用户，拥有 1 个角色和 4 个权限 
+2025-08-29 09:14:39,665 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] [SecurityManagerInitialized] 安全管理器初始化成功 
+2025-08-29 09:14:39,666 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 SecurityManager 已初始化 
+2025-08-29 09:14:39,686 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] Culture changed to: en-US 
+2025-08-29 09:14:39,687 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] Base manager CultureManager initialized 
+2025-08-29 09:14:39,688 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] Base manager MsgManager initialized 
+2025-08-29 09:14:39,691 [INFO ] [thread-1] [MarkingMachineFeeder.App:40] [MainControllerInitialized] Main controller initialized 
+2025-08-29 09:14:39,693 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] User operator login successful 
+2025-08-29 09:14:39,694 [INFO ] [thread-1] [MarkingMachineFeeder.App:60] [SystemInitialized] System initialized successfully 
+2025-08-29 09:14:39,695 [INFO ] [thread-1] [MarkingMachineFeeder.App:74] [ViewModelLocatorConfigured] View model locator configured 
+2025-08-29 09:14:39,812 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:290] [SystemInitialized] System initialized successfully 
+2025-08-29 09:14:39,921 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:292] [SystemStatusNormal] System status: Normal operation 
+2025-08-29 09:14:40,030 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:294] [Log4netConfigNotFound] Log4net configuration not found 
+2025-08-29 09:14:40,140 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:296] [DatabaseConnected] Database connected successfully 
+2025-08-29 09:14:40,248 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:298] [ViewModelLocatorConfigured] View model locator configured 
+2025-08-29 09:14:40,258 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:187] [MainWindowStarted] Main window started 
+2025-08-29 09:14:54,016 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] User admin login successful 
+2025-08-29 09:15:01,821 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.PermissionConfigViewModel:521] [PermissionsSaved] Permissions configuration saved successfully 
+2025-08-29 09:15:01,823 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:257] [SystemInitialized] System initialized successfully 
+2025-08-29 09:15:09,222 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] User operator login successful 
+2025-08-29 09:15:25,854 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:299] [UserExiting] User operator is exiting the application 
+2025-08-29 09:18:25,462 [INFO ] [thread-1] [MarkingMachineFeeder.App:29] [Log4netConfigLoaded] Log4net配置已加载 
+2025-08-29 09:18:25,593 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:323] [UsersLoaded] 从存储加载了 3 个用户 
+2025-08-29 09:18:25,593 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:329] [AdminUserLoadCheck] 加载管理员用户，拥有 1 个角色和 4 个权限 
+2025-08-29 09:18:25,594 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] [SecurityManagerInitialized] 安全管理器初始化成功 
+2025-08-29 09:18:25,596 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 SecurityManager 已初始化 
+2025-08-29 09:18:25,616 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] Culture changed to: en-US 
+2025-08-29 09:18:25,617 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] Base manager CultureManager initialized 
+2025-08-29 09:18:25,618 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] Base manager MsgManager initialized 
+2025-08-29 09:18:25,621 [INFO ] [thread-1] [MarkingMachineFeeder.App:40] [MainControllerInitialized] Main controller initialized 
+2025-08-29 09:18:25,623 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] User operator login successful 
+2025-08-29 09:18:25,624 [INFO ] [thread-1] [MarkingMachineFeeder.App:60] [SystemInitialized] System initialized successfully 
+2025-08-29 09:18:25,625 [INFO ] [thread-1] [MarkingMachineFeeder.App:74] [ViewModelLocatorConfigured] View model locator configured 
+2025-08-29 09:18:25,733 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:290] [SystemInitialized] System initialized successfully 
+2025-08-29 09:18:25,835 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:292] [SystemStatusNormal] System status: Normal operation 
+2025-08-29 09:18:25,943 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:294] [Log4netConfigNotFound] Log4net configuration not found 
+2025-08-29 09:18:26,051 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:296] [DatabaseConnected] Database connected successfully 
+2025-08-29 09:18:26,160 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:298] [ViewModelLocatorConfigured] View model locator configured 
+2025-08-29 09:18:26,169 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:187] [MainWindowStarted] Main window started 
+2025-08-29 09:18:37,383 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] User admin login successful 
+2025-08-29 09:18:44,093 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 语言已切换至: zh-CN 
+2025-08-29 09:18:48,017 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:299] [UserExiting] 用户 admin 正在退出应用程序 
+2025-08-29 09:20:51,765 [INFO ] [thread-1] [MarkingMachineFeeder.App:29] [Log4netConfigLoaded] Log4net配置已加载 
+2025-08-29 09:20:51,891 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:323] [UsersLoaded] 从存储加载了 3 个用户 
+2025-08-29 09:20:51,892 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:329] [AdminUserLoadCheck] 加载管理员用户，拥有 1 个角色和 4 个权限 
+2025-08-29 09:20:51,893 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] [SecurityManagerInitialized] 安全管理器初始化成功 
+2025-08-29 09:20:51,894 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 SecurityManager 已初始化 
+2025-08-29 09:20:51,914 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 语言已切换至: zh-CN 
+2025-08-29 09:20:51,914 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 CultureManager 已初始化 
+2025-08-29 09:20:51,915 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 MsgManager 已初始化 
+2025-08-29 09:20:51,916 [INFO ] [thread-1] [MarkingMachineFeeder.App:40] [MainControllerInitialized] 主控制器已初始化 
+2025-08-29 09:20:51,919 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] 用户 operator 登录成功 
+2025-08-29 09:20:51,920 [INFO ] [thread-1] [MarkingMachineFeeder.App:60] [SystemInitialized] 系统初始化成功 
+2025-08-29 09:20:51,921 [INFO ] [thread-1] [MarkingMachineFeeder.App:74] [ViewModelLocatorConfigured] 视图模型定位器已配置 
+2025-08-29 09:20:52,047 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:290] [SystemInitialized] 系统初始化成功 
+2025-08-29 09:20:52,159 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:292] [SystemStatusNormal] 系统状态: 正常运行 
+2025-08-29 09:20:52,267 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:294] [Log4netConfigNotFound] 未找到Log4net配置文件 
+2025-08-29 09:20:52,376 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:296] [DatabaseConnected] 数据库连接成功 
+2025-08-29 09:20:52,485 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:298] [ViewModelLocatorConfigured] 视图模型定位器已配置 
+2025-08-29 09:20:52,491 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:187] [MainWindowStarted] 主窗口已启动 
+2025-08-29 09:21:07,939 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:209] [TestLogClicked] 测试日志按钮被点击 - 测试国际化功能 
+2025-08-29 09:21:07,940 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:210] [SystemStatusNormal] 系统状态: 正常运行 
+2025-08-29 09:21:07,940 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:211] [Log4netConfigNotFound] 未找到Log4net配置文件 
+2025-08-29 09:21:07,941 [ERROR] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:212] [DatabaseConnectionError] 数据库连接失败: Connection timeout 
+2025-08-29 09:21:07,941 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:213] [ProcessingComplete] 处理成功完成，耗时 2.35 秒 
+2025-08-29 09:21:07,942 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:214] [BaseManagerInitialized] 基础管理器 TestManager 已初始化 
+2025-08-29 09:21:14,879 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:299] [UserExiting] 用户 operator 正在退出应用程序 
+2025-08-29 09:22:53,716 [INFO ] [thread-1] [MarkingMachineFeeder.App:29] [Log4netConfigLoaded] Log4net配置已加载 
+2025-08-29 09:22:53,846 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:323] [UsersLoaded] 从存储加载了 3 个用户 
+2025-08-29 09:22:53,847 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:329] [AdminUserLoadCheck] 加载管理员用户，拥有 1 个角色和 4 个权限 
+2025-08-29 09:22:53,848 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] [SecurityManagerInitialized] 安全管理器初始化成功 
+2025-08-29 09:22:53,848 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 SecurityManager 已初始化 
+2025-08-29 09:22:53,864 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 语言已切换至: zh-CN 
+2025-08-29 09:22:53,864 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 CultureManager 已初始化 
+2025-08-29 09:22:53,865 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 MsgManager 已初始化 
+2025-08-29 09:22:53,867 [INFO ] [thread-1] [MarkingMachineFeeder.App:40] [MainControllerInitialized] 主控制器已初始化 
+2025-08-29 09:22:53,870 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] 用户 operator 登录成功 
+2025-08-29 09:22:53,870 [INFO ] [thread-1] [MarkingMachineFeeder.App:60] [SystemInitialized] 系统初始化成功 
+2025-08-29 09:22:53,871 [INFO ] [thread-1] [MarkingMachineFeeder.App:74] [ViewModelLocatorConfigured] 视图模型定位器已配置 
+2025-08-29 09:22:54,009 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:290] [SystemInitialized] 系统初始化成功 
+2025-08-29 09:22:54,121 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:292] [SystemStatusNormal] 系统状态: 正常运行 
+2025-08-29 09:22:54,232 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:294] [Log4netConfigNotFound] 未找到Log4net配置文件 
+2025-08-29 09:22:54,342 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:296] [DatabaseConnected] 数据库连接成功 
+2025-08-29 09:22:54,453 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:298] [ViewModelLocatorConfigured] 视图模型定位器已配置 
+2025-08-29 09:22:54,460 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:187] [MainWindowStarted] 主窗口已启动 
+2025-08-29 09:23:00,816 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] 用户 admin 登录成功 
+2025-08-29 09:23:07,522 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] 用户 operator 登录成功 
+2025-08-29 09:23:19,101 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] 用户 operator 登录成功 
+2025-08-29 09:23:23,884 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] 用户 admin 登录成功 
+2025-08-29 09:24:15,920 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] 用户 operator 登录成功 
+2025-08-29 09:24:19,828 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] Culture changed to: en-US 
+2025-08-29 09:24:22,447 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 语言已切换至: zh-CN 
+2025-08-29 09:24:27,234 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:299] [UserExiting] 用户 operator 正在退出应用程序 
+2025-08-29 09:26:31,633 [INFO ] [thread-1] [MarkingMachineFeeder.App:29] [Log4netConfigLoaded] Log4net配置已加载 
+2025-08-29 09:26:31,773 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:323] [UsersLoaded] 从存储加载了 3 个用户 
+2025-08-29 09:26:31,774 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:329] [AdminUserLoadCheck] 加载管理员用户，拥有 1 个角色和 4 个权限 
+2025-08-29 09:26:31,775 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] [SecurityManagerInitialized] 安全管理器初始化成功 
+2025-08-29 09:26:31,776 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 SecurityManager 已初始化 
+2025-08-29 09:26:31,792 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 语言已切换至: zh-CN 
+2025-08-29 09:26:31,793 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 CultureManager 已初始化 
+2025-08-29 09:26:31,793 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 MsgManager 已初始化 
+2025-08-29 09:26:31,828 [INFO ] [thread-1] [MarkingMachineFeeder.App:40] [MainControllerInitialized] 主控制器已初始化 
+2025-08-29 09:26:31,830 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] 用户 operator 登录成功 
+2025-08-29 09:26:31,831 [INFO ] [thread-1] [MarkingMachineFeeder.App:60] [SystemInitialized] 系统初始化成功 
+2025-08-29 09:26:31,832 [INFO ] [thread-1] [MarkingMachineFeeder.App:74] [ViewModelLocatorConfigured] 视图模型定位器已配置 
+2025-08-29 09:26:31,965 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:290] [SystemInitialized] 系统初始化成功 
+2025-08-29 09:26:32,071 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:292] [SystemStatusNormal] 系统状态: 正常运行 
+2025-08-29 09:26:32,180 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:294] [Log4netConfigNotFound] 未找到Log4net配置文件 
+2025-08-29 09:26:32,290 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:296] [DatabaseConnected] 数据库连接成功 
+2025-08-29 09:26:32,398 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:298] [ViewModelLocatorConfigured] 视图模型定位器已配置 
+2025-08-29 09:26:32,405 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:187] [MainWindowStarted] 主窗口已启动 
+2025-08-29 09:26:35,153 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] Culture changed to: en-US 
+2025-08-29 09:26:38,546 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 语言已切换至: zh-CN 
+2025-08-29 09:26:45,180 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] 用户 admin 登录成功 
+2025-08-29 09:26:48,767 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:299] [UserExiting] 用户 admin 正在退出应用程序 
+2025-08-29 09:28:13,058 [INFO ] [thread-1] [MarkingMachineFeeder.App:29] [Log4netConfigLoaded] Log4net配置已加载 
+2025-08-29 09:28:13,237 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:323] [UsersLoaded] 从存储加载了 3 个用户 
+2025-08-29 09:28:13,238 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:329] [AdminUserLoadCheck] 加载管理员用户，拥有 1 个角色和 4 个权限 
+2025-08-29 09:28:13,240 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] [SecurityManagerInitialized] 安全管理器初始化成功 
+2025-08-29 09:28:13,241 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 SecurityManager 已初始化 
+2025-08-29 09:28:13,256 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 语言已切换至: zh-CN 
+2025-08-29 09:28:13,256 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 CultureManager 已初始化 
+2025-08-29 09:28:13,257 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 MsgManager 已初始化 
+2025-08-29 09:28:13,258 [INFO ] [thread-1] [MarkingMachineFeeder.App:40] [MainControllerInitialized] 主控制器已初始化 
+2025-08-29 09:28:13,261 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] 用户 operator 登录成功 
+2025-08-29 09:28:13,261 [INFO ] [thread-1] [MarkingMachineFeeder.App:60] [SystemInitialized] 系统初始化成功 
+2025-08-29 09:28:13,262 [INFO ] [thread-1] [MarkingMachineFeeder.App:74] [ViewModelLocatorConfigured] 视图模型定位器已配置 
+2025-08-29 09:28:13,400 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:290] [SystemInitialized] 系统初始化成功 
+2025-08-29 09:28:13,510 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:292] [SystemStatusNormal] 系统状态: 正常运行 
+2025-08-29 09:28:13,617 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:294] [Log4netConfigNotFound] 未找到Log4net配置文件 
+2025-08-29 09:28:13,726 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:296] [DatabaseConnected] 数据库连接成功 
+2025-08-29 09:28:13,835 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:298] [ViewModelLocatorConfigured] 视图模型定位器已配置 
+2025-08-29 09:28:13,843 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:187] [MainWindowStarted] 主窗口已启动 
+2025-08-29 09:28:22,903 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:299] [UserExiting] 用户 operator 正在退出应用程序 
+2025-08-29 09:29:00,748 [INFO ] [thread-1] [MarkingMachineFeeder.App:29] [Log4netConfigLoaded] Log4net配置已加载 
+2025-08-29 09:29:00,883 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:323] [UsersLoaded] 从存储加载了 3 个用户 
+2025-08-29 09:29:00,884 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:329] [AdminUserLoadCheck] 加载管理员用户，拥有 1 个角色和 4 个权限 
+2025-08-29 09:29:00,885 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] [SecurityManagerInitialized] 安全管理器初始化成功 
+2025-08-29 09:29:00,885 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 SecurityManager 已初始化 
+2025-08-29 09:29:00,900 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 语言已切换至: zh-CN 
+2025-08-29 09:29:00,901 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 CultureManager 已初始化 
+2025-08-29 09:29:00,901 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 MsgManager 已初始化 
+2025-08-29 09:29:00,904 [INFO ] [thread-1] [MarkingMachineFeeder.App:40] [MainControllerInitialized] 主控制器已初始化 
+2025-08-29 09:29:00,906 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] 用户 operator 登录成功 
+2025-08-29 09:29:00,907 [INFO ] [thread-1] [MarkingMachineFeeder.App:60] [SystemInitialized] 系统初始化成功 
+2025-08-29 09:29:00,908 [INFO ] [thread-1] [MarkingMachineFeeder.App:74] [ViewModelLocatorConfigured] 视图模型定位器已配置 
+2025-08-29 09:29:01,029 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:290] [SystemInitialized] 系统初始化成功 
+2025-08-29 09:29:01,142 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:292] [SystemStatusNormal] 系统状态: 正常运行 
+2025-08-29 09:29:01,248 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:294] [Log4netConfigNotFound] 未找到Log4net配置文件 
+2025-08-29 09:29:01,356 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:296] [DatabaseConnected] 数据库连接成功 
+2025-08-29 09:29:01,464 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:298] [ViewModelLocatorConfigured] 视图模型定位器已配置 
+2025-08-29 09:29:01,470 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:187] [MainWindowStarted] 主窗口已启动 
+2025-08-29 09:29:10,233 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] 用户 admin 登录成功 
+2025-08-29 09:30:17,169 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:264] [SystemInitialized] 系统初始化成功 
+2025-08-29 09:30:19,155 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:264] [SystemInitialized] 系统初始化成功 
+2025-08-29 09:30:26,042 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] 用户 admin 登录成功 
+2025-08-29 09:30:27,978 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:264] [SystemInitialized] 系统初始化成功 
+2025-08-29 09:30:30,041 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:264] [SystemInitialized] 系统初始化成功 
+2025-08-29 09:31:00,148 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:264] [SystemInitialized] 系统初始化成功 
+2025-08-29 09:31:03,622 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:299] [UserExiting] 用户 admin 正在退出应用程序 
+2025-08-29 09:31:16,766 [INFO ] [thread-1] [MarkingMachineFeeder.App:29] [Log4netConfigLoaded] Log4net配置已加载 
+2025-08-29 09:31:16,890 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:323] [UsersLoaded] 从存储加载了 3 个用户 
+2025-08-29 09:31:16,891 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:329] [AdminUserLoadCheck] 加载管理员用户，拥有 1 个角色和 4 个权限 
+2025-08-29 09:31:16,892 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] [SecurityManagerInitialized] 安全管理器初始化成功 
+2025-08-29 09:31:16,892 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 SecurityManager 已初始化 
+2025-08-29 09:31:16,907 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 语言已切换至: zh-CN 
+2025-08-29 09:31:16,908 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 CultureManager 已初始化 
+2025-08-29 09:31:16,908 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 MsgManager 已初始化 
+2025-08-29 09:31:16,936 [INFO ] [thread-1] [MarkingMachineFeeder.App:40] [MainControllerInitialized] 主控制器已初始化 
+2025-08-29 09:31:16,938 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] 用户 operator 登录成功 
+2025-08-29 09:31:16,939 [INFO ] [thread-1] [MarkingMachineFeeder.App:60] [SystemInitialized] 系统初始化成功 
+2025-08-29 09:31:16,940 [INFO ] [thread-1] [MarkingMachineFeeder.App:74] [ViewModelLocatorConfigured] 视图模型定位器已配置 
+2025-08-29 09:31:17,081 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:290] [SystemInitialized] 系统初始化成功 
+2025-08-29 09:31:17,182 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:292] [SystemStatusNormal] 系统状态: 正常运行 
+2025-08-29 09:31:17,290 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:294] [Log4netConfigNotFound] 未找到Log4net配置文件 
+2025-08-29 09:31:17,399 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:296] [DatabaseConnected] 数据库连接成功 
+2025-08-29 09:31:17,509 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:298] [ViewModelLocatorConfigured] 视图模型定位器已配置 
+2025-08-29 09:31:17,515 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:187] [MainWindowStarted] 主窗口已启动 
+2025-08-29 09:31:27,846 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:209] [TestLogClicked] 测试日志按钮被点击 - 测试国际化功能 
+2025-08-29 09:31:27,847 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:210] [SystemStatusNormal] 系统状态: 正常运行 
+2025-08-29 09:31:27,848 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:211] [Log4netConfigNotFound] 未找到Log4net配置文件 
+2025-08-29 09:31:27,848 [ERROR] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:212] [DatabaseConnectionError] 数据库连接失败: Connection timeout 
+2025-08-29 09:31:27,849 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:213] [ProcessingComplete] 处理成功完成，耗时 2.35 秒 
+2025-08-29 09:31:27,850 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:214] [BaseManagerInitialized] 基础管理器 TestManager 已初始化 
+2025-08-29 09:31:28,024 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:209] [TestLogClicked] 测试日志按钮被点击 - 测试国际化功能 
+2025-08-29 09:31:28,025 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:210] [SystemStatusNormal] 系统状态: 正常运行 
+2025-08-29 09:31:28,025 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:211] [Log4netConfigNotFound] 未找到Log4net配置文件 
+2025-08-29 09:31:28,026 [ERROR] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:212] [DatabaseConnectionError] 数据库连接失败: Connection timeout 
+2025-08-29 09:31:28,027 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:213] [ProcessingComplete] 处理成功完成，耗时 2.35 秒 
+2025-08-29 09:31:28,027 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:214] [BaseManagerInitialized] 基础管理器 TestManager 已初始化 
+2025-08-29 09:31:28,167 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:209] [TestLogClicked] 测试日志按钮被点击 - 测试国际化功能 
+2025-08-29 09:31:28,168 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:210] [SystemStatusNormal] 系统状态: 正常运行 
+2025-08-29 09:31:28,169 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:211] [Log4netConfigNotFound] 未找到Log4net配置文件 
+2025-08-29 09:31:28,170 [ERROR] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:212] [DatabaseConnectionError] 数据库连接失败: Connection timeout 
+2025-08-29 09:31:28,170 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:213] [ProcessingComplete] 处理成功完成，耗时 2.35 秒 
+2025-08-29 09:31:28,171 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:214] [BaseManagerInitialized] 基础管理器 TestManager 已初始化 
+2025-08-29 09:31:28,303 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:209] [TestLogClicked] 测试日志按钮被点击 - 测试国际化功能 
+2025-08-29 09:31:28,304 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:210] [SystemStatusNormal] 系统状态: 正常运行 
+2025-08-29 09:31:28,304 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:211] [Log4netConfigNotFound] 未找到Log4net配置文件 
+2025-08-29 09:31:28,304 [ERROR] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:212] [DatabaseConnectionError] 数据库连接失败: Connection timeout 
+2025-08-29 09:31:28,304 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:213] [ProcessingComplete] 处理成功完成，耗时 2.35 秒 
+2025-08-29 09:31:28,304 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:214] [BaseManagerInitialized] 基础管理器 TestManager 已初始化 
+2025-08-29 09:31:28,436 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:209] [TestLogClicked] 测试日志按钮被点击 - 测试国际化功能 
+2025-08-29 09:31:28,437 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:210] [SystemStatusNormal] 系统状态: 正常运行 
+2025-08-29 09:31:28,438 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:211] [Log4netConfigNotFound] 未找到Log4net配置文件 
+2025-08-29 09:31:28,439 [ERROR] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:212] [DatabaseConnectionError] 数据库连接失败: Connection timeout 
+2025-08-29 09:31:28,440 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:213] [ProcessingComplete] 处理成功完成，耗时 2.35 秒 
+2025-08-29 09:31:28,440 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:214] [BaseManagerInitialized] 基础管理器 TestManager 已初始化 
+2025-08-29 09:31:53,893 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] 用户 operator 登录成功 
+2025-08-29 09:31:56,055 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:299] [UserExiting] 用户 operator 正在退出应用程序 
+2025-08-29 09:43:19,993 [INFO ] [thread-1] [MarkingMachineFeeder.App:29] [Log4netConfigLoaded] Log4net配置已加载 
+2025-08-29 09:43:20,117 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:323] [UsersLoaded] 从存储加载了 3 个用户 
+2025-08-29 09:43:20,118 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:329] [AdminUserLoadCheck] 加载管理员用户，拥有 1 个角色和 4 个权限 
+2025-08-29 09:43:20,120 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] [SecurityManagerInitialized] 安全管理器初始化成功 
+2025-08-29 09:43:20,121 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 SecurityManager 已初始化 
+2025-08-29 09:43:20,135 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 语言已切换至: zh-CN 
+2025-08-29 09:43:20,135 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 CultureManager 已初始化 
+2025-08-29 09:43:20,136 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 MsgManager 已初始化 
+2025-08-29 09:43:20,139 [INFO ] [thread-1] [MarkingMachineFeeder.App:40] [MainControllerInitialized] 主控制器已初始化 
+2025-08-29 09:43:20,141 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] 用户 operator 登录成功 
+2025-08-29 09:43:20,141 [INFO ] [thread-1] [MarkingMachineFeeder.App:60] [SystemInitialized] 系统初始化成功 
+2025-08-29 09:43:20,142 [INFO ] [thread-1] [MarkingMachineFeeder.App:74] [ViewModelLocatorConfigured] 视图模型定位器已配置 
+2025-08-29 09:43:20,270 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:290] [SystemInitialized] 系统初始化成功 
+2025-08-29 09:43:20,383 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:292] [SystemStatusNormal] 系统状态: 正常运行 
+2025-08-29 09:43:20,492 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:294] [Log4netConfigNotFound] 未找到Log4net配置文件 
+2025-08-29 09:43:20,602 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:296] [DatabaseConnected] 数据库连接成功 
+2025-08-29 09:43:20,710 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:298] [ViewModelLocatorConfigured] 视图模型定位器已配置 
+2025-08-29 09:43:20,718 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:187] [MainWindowStarted] 主窗口已启动 
+2025-08-29 09:43:24,646 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] Culture changed to: en-US 
+2025-08-29 09:43:31,308 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] User admin login successful 
+2025-08-29 09:43:32,462 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:264] [SystemInitialized] System initialized successfully 
+2025-08-29 09:48:02,532 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:299] [UserExiting] User admin is exiting the application 
+2025-08-29 10:03:16,698 [INFO ] [thread-1] [MarkingMachineFeeder.App:29] [Log4netConfigLoaded] Log4net配置已加载 
+2025-08-29 10:03:16,832 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:323] [UsersLoaded] 从存储加载了 3 个用户 
+2025-08-29 10:03:16,833 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:329] [AdminUserLoadCheck] 加载管理员用户，拥有 1 个角色和 4 个权限 
+2025-08-29 10:03:16,834 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] [SecurityManagerInitialized] 安全管理器初始化成功 
+2025-08-29 10:03:16,834 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 SecurityManager 已初始化 
+2025-08-29 10:03:16,855 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] Culture changed to: en-US 
+2025-08-29 10:03:16,856 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] Base manager CultureManager initialized 
+2025-08-29 10:03:16,857 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] Base manager MsgManager initialized 
+2025-08-29 10:03:16,860 [INFO ] [thread-1] [MarkingMachineFeeder.App:40] [MainControllerInitialized] Main controller initialized 
+2025-08-29 10:03:16,862 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] User operator login successful 
+2025-08-29 10:03:16,862 [INFO ] [thread-1] [MarkingMachineFeeder.App:60] [SystemInitialized] System initialized successfully 
+2025-08-29 10:03:16,864 [INFO ] [thread-1] [MarkingMachineFeeder.App:74] [ViewModelLocatorConfigured] View model locator configured 
+2025-08-29 10:03:16,976 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:290] [SystemInitialized] System initialized successfully 
+2025-08-29 10:03:17,091 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:292] [SystemStatusNormal] System status: Normal operation 
+2025-08-29 10:03:17,200 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:294] [Log4netConfigNotFound] Log4net configuration not found 
+2025-08-29 10:03:17,307 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:296] [DatabaseConnected] Database connected successfully 
+2025-08-29 10:03:17,414 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:298] [ViewModelLocatorConfigured] View model locator configured 
+2025-08-29 10:03:17,421 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:187] [MainWindowStarted] Main window started 
+2025-08-29 10:03:22,465 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:91] [UserLoggedOut] User operator logged out successfully 
+2025-08-29 10:03:22,466 [DEBUG] [thread-1] [Ewan.Core.Security.SecurityManager:107] [PermissionCheckNotAuthenticated] Permission check failed: User not authenticated for PermissionConfig.View 
+2025-08-29 10:03:22,466 [DEBUG] [thread-1] [Ewan.Core.Security.SecurityManager:107] [PermissionCheckNotAuthenticated] Permission check failed: User not authenticated for Language.Control 
+2025-08-29 10:03:22,467 [DEBUG] [thread-1] [Ewan.Core.Security.SecurityManager:107] [PermissionCheckNotAuthenticated] Permission check failed: User not authenticated for SystemControl.Control 
+2025-08-29 10:03:22,468 [DEBUG] [thread-1] [Ewan.Core.Security.SecurityManager:107] [PermissionCheckNotAuthenticated] Permission check failed: User not authenticated for PermissionConfig.View 
+2025-08-29 10:03:28,187 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] User admin login successful 
+2025-08-29 10:03:30,047 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:264] [SystemInitialized] System initialized successfully 
+2025-08-29 10:03:33,640 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:264] [SystemInitialized] System initialized successfully 
+2025-08-29 10:03:35,958 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:264] [SystemInitialized] System initialized successfully 
+2025-08-29 10:03:40,928 [WARN ] [thread-1] [Ewan.Core.Security.SecurityManager:74] [LoginPasswordIncorrect] Login failed: Incorrect password for user admin 
+2025-08-29 10:03:43,715 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] User admin login successful 
+2025-08-29 10:03:46,474 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] User operator login successful 
+2025-08-29 10:03:52,272 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] User admin login successful 
+2025-08-29 10:07:50,953 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] User admin login successful 
+2025-08-29 10:07:51,812 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:264] [SystemInitialized] System initialized successfully 
+2025-08-29 10:07:59,329 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:299] [UserExiting] User admin is exiting the application 
+2025-08-29 10:08:29,413 [INFO ] [thread-1] [MarkingMachineFeeder.App:29] [Log4netConfigLoaded] Log4net配置已加载 
+2025-08-29 10:08:29,555 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:323] [UsersLoaded] 从存储加载了 3 个用户 
+2025-08-29 10:08:29,556 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:329] [AdminUserLoadCheck] 加载管理员用户，拥有 1 个角色和 4 个权限 
+2025-08-29 10:08:29,557 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] [SecurityManagerInitialized] 安全管理器初始化成功 
+2025-08-29 10:08:29,558 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 SecurityManager 已初始化 
+2025-08-29 10:08:29,578 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] Culture changed to: en-US 
+2025-08-29 10:08:29,579 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] Base manager CultureManager initialized 
+2025-08-29 10:08:29,580 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] Base manager MsgManager initialized 
+2025-08-29 10:08:29,583 [INFO ] [thread-1] [MarkingMachineFeeder.App:40] [MainControllerInitialized] Main controller initialized 
+2025-08-29 10:08:29,585 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] User operator login successful 
+2025-08-29 10:08:29,586 [INFO ] [thread-1] [MarkingMachineFeeder.App:60] [SystemInitialized] System initialized successfully 
+2025-08-29 10:08:29,587 [INFO ] [thread-1] [MarkingMachineFeeder.App:74] [ViewModelLocatorConfigured] View model locator configured 
+2025-08-29 10:08:29,699 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:290] [SystemInitialized] System initialized successfully 
+2025-08-29 10:08:29,812 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:292] [SystemStatusNormal] System status: Normal operation 
+2025-08-29 10:08:29,922 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:294] [Log4netConfigNotFound] Log4net configuration not found 
+2025-08-29 10:08:30,031 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:296] [DatabaseConnected] Database connected successfully 
+2025-08-29 10:08:30,141 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:298] [ViewModelLocatorConfigured] View model locator configured 
+2025-08-29 10:08:30,147 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:187] [MainWindowStarted] Main window started 
+2025-08-29 10:08:34,666 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:299] [UserExiting] User operator is exiting the application 
+2025-08-29 10:10:59,938 [INFO ] [thread-1] [MarkingMachineFeeder.App:29] [Log4netConfigLoaded] Log4net配置已加载 
+2025-08-29 10:11:00,086 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:323] [UsersLoaded] 从存储加载了 3 个用户 
+2025-08-29 10:11:00,086 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:329] [AdminUserLoadCheck] 加载管理员用户，拥有 1 个角色和 4 个权限 
+2025-08-29 10:11:00,087 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] [SecurityManagerInitialized] 安全管理器初始化成功 
+2025-08-29 10:11:00,088 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 SecurityManager 已初始化 
+2025-08-29 10:11:00,110 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] Culture changed to: en-US 
+2025-08-29 10:11:00,111 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] Base manager CultureManager initialized 
+2025-08-29 10:11:00,112 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] Base manager MsgManager initialized 
+2025-08-29 10:11:00,115 [INFO ] [thread-1] [MarkingMachineFeeder.App:40] [MainControllerInitialized] Main controller initialized 
+2025-08-29 10:11:00,117 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] User operator login successful 
+2025-08-29 10:11:00,118 [INFO ] [thread-1] [MarkingMachineFeeder.App:60] [SystemInitialized] System initialized successfully 
+2025-08-29 10:11:00,119 [INFO ] [thread-1] [MarkingMachineFeeder.App:74] [ViewModelLocatorConfigured] View model locator configured 
+2025-08-29 10:11:00,236 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:290] [SystemInitialized] System initialized successfully 
+2025-08-29 10:11:00,344 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:292] [SystemStatusNormal] System status: Normal operation 
+2025-08-29 10:11:00,453 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:294] [Log4netConfigNotFound] Log4net configuration not found 
+2025-08-29 10:11:00,560 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:296] [DatabaseConnected] Database connected successfully 
+2025-08-29 10:11:00,668 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:298] [ViewModelLocatorConfigured] View model locator configured 
+2025-08-29 10:11:00,674 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:187] [MainWindowStarted] Main window started 
+2025-08-29 10:11:05,956 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] Culture changed to: en-US 
+2025-08-29 10:13:43,839 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:299] [UserExiting] User operator is exiting the application 
+2025-08-29 10:27:32,577 [INFO ] [thread-1] [MarkingMachineFeeder.App:29] [Log4netConfigLoaded] Log4net配置已加载 
+2025-08-29 10:27:32,707 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:323] [UsersLoaded] 从存储加载了 3 个用户 
+2025-08-29 10:27:32,709 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:329] [AdminUserLoadCheck] 加载管理员用户，拥有 1 个角色和 4 个权限 
+2025-08-29 10:27:32,710 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] [SecurityManagerInitialized] 安全管理器初始化成功 
+2025-08-29 10:27:32,711 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 SecurityManager 已初始化 
+2025-08-29 10:27:32,738 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] Culture changed to: en-US 
+2025-08-29 10:27:32,739 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] Base manager CultureManager initialized 
+2025-08-29 10:27:32,740 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] Base manager MsgManager initialized 
+2025-08-29 10:27:32,744 [INFO ] [thread-1] [MarkingMachineFeeder.App:40] [MainControllerInitialized] Main controller initialized 
+2025-08-29 10:27:32,747 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] User operator login successful 
+2025-08-29 10:27:32,747 [INFO ] [thread-1] [MarkingMachineFeeder.App:60] [SystemInitialized] System initialized successfully 
+2025-08-29 10:27:32,748 [INFO ] [thread-1] [MarkingMachineFeeder.App:74] [ViewModelLocatorConfigured] View model locator configured 
+2025-08-29 10:27:32,862 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:290] [SystemInitialized] System initialized successfully 
+2025-08-29 10:27:32,971 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:292] [SystemStatusNormal] System status: Normal operation 
+2025-08-29 10:27:33,079 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:294] [Log4netConfigNotFound] Log4net configuration not found 
+2025-08-29 10:27:33,186 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:296] [DatabaseConnected] Database connected successfully 
+2025-08-29 10:27:33,295 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:298] [ViewModelLocatorConfigured] View model locator configured 
+2025-08-29 10:27:33,304 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:187] [MainWindowStarted] Main window started 
+2025-08-29 10:29:07,159 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:299] [UserExiting] User operator is exiting the application 
+2025-08-29 10:29:49,446 [INFO ] [thread-1] [MarkingMachineFeeder.App:29] [Log4netConfigLoaded] Log4net配置已加载 
+2025-08-29 10:29:49,593 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:323] [UsersLoaded] 从存储加载了 3 个用户 
+2025-08-29 10:29:49,594 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:329] [AdminUserLoadCheck] 加载管理员用户，拥有 1 个角色和 4 个权限 
+2025-08-29 10:29:49,595 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] [SecurityManagerInitialized] 安全管理器初始化成功 
+2025-08-29 10:29:49,596 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 SecurityManager 已初始化 
+2025-08-29 10:29:49,617 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] Culture changed to: en-US 
+2025-08-29 10:29:49,618 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] Base manager CultureManager initialized 
+2025-08-29 10:29:49,619 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] Base manager MsgManager initialized 
+2025-08-29 10:29:49,621 [INFO ] [thread-1] [MarkingMachineFeeder.App:40] [MainControllerInitialized] Main controller initialized 
+2025-08-29 10:29:49,624 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] User operator login successful 
+2025-08-29 10:29:49,624 [INFO ] [thread-1] [MarkingMachineFeeder.App:60] [SystemInitialized] System initialized successfully 
+2025-08-29 10:29:49,625 [INFO ] [thread-1] [MarkingMachineFeeder.App:74] [ViewModelLocatorConfigured] View model locator configured 
+2025-08-29 10:29:49,738 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:290] [SystemInitialized] System initialized successfully 
+2025-08-29 10:29:49,842 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:292] [SystemStatusNormal] System status: Normal operation 
+2025-08-29 10:29:49,952 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:294] [Log4netConfigNotFound] Log4net configuration not found 
+2025-08-29 10:29:50,060 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:296] [DatabaseConnected] Database connected successfully 
+2025-08-29 10:29:50,168 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:298] [ViewModelLocatorConfigured] View model locator configured 
+2025-08-29 10:29:50,174 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:179] [MainWindowStarted] Main window started 
+2025-08-29 10:29:55,456 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] User admin login successful 
+2025-08-29 10:30:02,414 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] User operator login successful 
+2025-08-29 10:30:06,236 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:286] [UserExiting] User operator is exiting the application 
+2025-08-29 10:30:36,399 [INFO ] [thread-1] [MarkingMachineFeeder.App:29] [Log4netConfigLoaded] Log4net配置已加载 
+2025-08-29 10:30:36,536 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:323] [UsersLoaded] 从存储加载了 3 个用户 
+2025-08-29 10:30:36,537 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:329] [AdminUserLoadCheck] 加载管理员用户，拥有 1 个角色和 4 个权限 
+2025-08-29 10:30:36,538 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] [SecurityManagerInitialized] 安全管理器初始化成功 
+2025-08-29 10:30:36,539 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 SecurityManager 已初始化 
+2025-08-29 10:30:36,568 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] Culture changed to: en-US 
+2025-08-29 10:30:36,568 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] Base manager CultureManager initialized 
+2025-08-29 10:30:36,570 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] Base manager MsgManager initialized 
+2025-08-29 10:30:36,575 [INFO ] [thread-1] [MarkingMachineFeeder.App:40] [MainControllerInitialized] Main controller initialized 
+2025-08-29 10:30:36,577 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] User operator login successful 
+2025-08-29 10:30:36,577 [INFO ] [thread-1] [MarkingMachineFeeder.App:60] [SystemInitialized] System initialized successfully 
+2025-08-29 10:30:36,578 [INFO ] [thread-1] [MarkingMachineFeeder.App:74] [ViewModelLocatorConfigured] View model locator configured 
+2025-08-29 10:30:36,698 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:290] [SystemInitialized] System initialized successfully 
+2025-08-29 10:30:36,811 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:292] [SystemStatusNormal] System status: Normal operation 
+2025-08-29 10:30:36,920 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:294] [Log4netConfigNotFound] Log4net configuration not found 
+2025-08-29 10:30:37,028 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:296] [DatabaseConnected] Database connected successfully 
+2025-08-29 10:30:37,135 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:298] [ViewModelLocatorConfigured] View model locator configured 
+2025-08-29 10:30:37,142 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:179] [MainWindowStarted] Main window started 
+2025-08-29 10:30:43,315 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] User admin login successful 
+2025-08-29 10:31:54,498 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:201] [TestLogClicked] Test log button clicked - Testing internationalization 
+2025-08-29 10:31:54,498 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:202] [SystemStatusNormal] System status: Normal operation 
+2025-08-29 10:31:54,498 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:203] [Log4netConfigNotFound] Log4net configuration not found 
+2025-08-29 10:31:54,499 [ERROR] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:204] [DatabaseConnectionError] Database connection failed: Connection timeout 
+2025-08-29 10:31:54,499 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:205] [ProcessingComplete] Processing completed successfully in 2.35 seconds 
+2025-08-29 10:31:54,500 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:206] [BaseManagerInitialized] Base manager TestManager initialized 
+2025-08-29 10:31:57,600 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 语言已切换至: zh-CN 
+2025-08-29 10:32:35,081 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:286] [UserExiting] 用户 admin 正在退出应用程序 
+2025-08-29 10:34:58,648 [INFO ] [thread-1] [MarkingMachineFeeder.App:29] [Log4netConfigLoaded] Log4net配置已加载 
+2025-08-29 10:34:58,774 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:323] [UsersLoaded] 从存储加载了 3 个用户 
+2025-08-29 10:34:58,775 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:329] [AdminUserLoadCheck] 加载管理员用户，拥有 1 个角色和 4 个权限 
+2025-08-29 10:34:58,776 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] [SecurityManagerInitialized] 安全管理器初始化成功 
+2025-08-29 10:34:58,777 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 SecurityManager 已初始化 
+2025-08-29 10:34:58,797 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 语言已切换至: zh-CN 
+2025-08-29 10:34:58,798 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 CultureManager 已初始化 
+2025-08-29 10:34:58,798 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 MsgManager 已初始化 
+2025-08-29 10:34:58,800 [INFO ] [thread-1] [MarkingMachineFeeder.App:40] [MainControllerInitialized] 主控制器已初始化 
+2025-08-29 10:34:58,803 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] 用户 operator 登录成功 
+2025-08-29 10:34:58,804 [INFO ] [thread-1] [MarkingMachineFeeder.App:60] [SystemInitialized] 系统初始化成功 
+2025-08-29 10:34:58,804 [INFO ] [thread-1] [MarkingMachineFeeder.App:74] [ViewModelLocatorConfigured] 视图模型定位器已配置 
+2025-08-29 10:34:58,922 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:290] [SystemInitialized] 系统初始化成功 
+2025-08-29 10:34:59,034 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:292] [SystemStatusNormal] 系统状态: 正常运行 
+2025-08-29 10:34:59,143 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:294] [Log4netConfigNotFound] 未找到Log4net配置文件 
+2025-08-29 10:34:59,253 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:296] [DatabaseConnected] 数据库连接成功 
+2025-08-29 10:34:59,362 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:298] [ViewModelLocatorConfigured] 视图模型定位器已配置 
+2025-08-29 10:34:59,370 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:179] [MainWindowStarted] 主窗口已启动 
+2025-08-29 10:35:20,087 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:286] [UserExiting] 用户 operator 正在退出应用程序 
+2025-08-29 10:35:37,184 [INFO ] [thread-1] [MarkingMachineFeeder.App:29] [Log4netConfigLoaded] Log4net配置已加载 
+2025-08-29 10:35:37,304 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:323] [UsersLoaded] 从存储加载了 3 个用户 
+2025-08-29 10:35:37,305 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:329] [AdminUserLoadCheck] 加载管理员用户，拥有 1 个角色和 4 个权限 
+2025-08-29 10:35:37,305 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] [SecurityManagerInitialized] 安全管理器初始化成功 
+2025-08-29 10:35:37,306 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 SecurityManager 已初始化 
+2025-08-29 10:35:37,321 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 语言已切换至: zh-CN 
+2025-08-29 10:35:37,322 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 CultureManager 已初始化 
+2025-08-29 10:35:37,323 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 MsgManager 已初始化 
+2025-08-29 10:35:37,357 [INFO ] [thread-1] [MarkingMachineFeeder.App:40] [MainControllerInitialized] 主控制器已初始化 
+2025-08-29 10:35:37,359 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] 用户 operator 登录成功 
+2025-08-29 10:35:37,360 [INFO ] [thread-1] [MarkingMachineFeeder.App:60] [SystemInitialized] 系统初始化成功 
+2025-08-29 10:35:37,361 [INFO ] [thread-1] [MarkingMachineFeeder.App:74] [ViewModelLocatorConfigured] 视图模型定位器已配置 
+2025-08-29 10:35:37,494 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:290] [SystemInitialized] 系统初始化成功 
+2025-08-29 10:35:37,606 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:292] [SystemStatusNormal] 系统状态: 正常运行 
+2025-08-29 10:35:37,715 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:294] [Log4netConfigNotFound] 未找到Log4net配置文件 
+2025-08-29 10:35:37,825 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:296] [DatabaseConnected] 数据库连接成功 
+2025-08-29 10:35:37,935 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:298] [ViewModelLocatorConfigured] 视图模型定位器已配置 
+2025-08-29 10:35:37,940 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:179] [MainWindowStarted] 主窗口已启动 
+2025-08-29 10:37:12,133 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:286] [UserExiting] 用户 operator 正在退出应用程序 
+2025-08-29 10:37:18,179 [INFO ] [thread-1] [MarkingMachineFeeder.App:29] [Log4netConfigLoaded] Log4net配置已加载 
+2025-08-29 10:37:18,330 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:323] [UsersLoaded] 从存储加载了 3 个用户 
+2025-08-29 10:37:18,331 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:329] [AdminUserLoadCheck] 加载管理员用户，拥有 1 个角色和 4 个权限 
+2025-08-29 10:37:18,332 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] [SecurityManagerInitialized] 安全管理器初始化成功 
+2025-08-29 10:37:18,332 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 SecurityManager 已初始化 
+2025-08-29 10:37:18,349 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 语言已切换至: zh-CN 
+2025-08-29 10:37:18,350 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 CultureManager 已初始化 
+2025-08-29 10:37:18,350 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 MsgManager 已初始化 
+2025-08-29 10:37:18,375 [INFO ] [thread-1] [MarkingMachineFeeder.App:40] [MainControllerInitialized] 主控制器已初始化 
+2025-08-29 10:37:18,377 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] 用户 operator 登录成功 
+2025-08-29 10:37:18,377 [INFO ] [thread-1] [MarkingMachineFeeder.App:60] [SystemInitialized] 系统初始化成功 
+2025-08-29 10:37:18,378 [INFO ] [thread-1] [MarkingMachineFeeder.App:74] [ViewModelLocatorConfigured] 视图模型定位器已配置 
+2025-08-29 10:37:18,505 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:290] [SystemInitialized] 系统初始化成功 
+2025-08-29 10:37:18,620 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:292] [SystemStatusNormal] 系统状态: 正常运行 
+2025-08-29 10:37:18,729 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:294] [Log4netConfigNotFound] 未找到Log4net配置文件 
+2025-08-29 10:37:18,836 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:296] [DatabaseConnected] 数据库连接成功 
+2025-08-29 10:37:18,943 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:298] [ViewModelLocatorConfigured] 视图模型定位器已配置 
+2025-08-29 10:37:18,949 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:179] [MainWindowStarted] 主窗口已启动 
+2025-08-29 10:37:27,188 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:201] [TestLogClicked] 测试日志按钮被点击 - 测试国际化功能 
+2025-08-29 10:37:27,188 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:202] [SystemStatusNormal] 系统状态: 正常运行 
+2025-08-29 10:37:27,189 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:203] [Log4netConfigNotFound] 未找到Log4net配置文件 
+2025-08-29 10:37:27,189 [ERROR] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:204] [DatabaseConnectionError] 数据库连接失败: Connection timeout 
+2025-08-29 10:37:27,190 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:205] [ProcessingComplete] 处理成功完成，耗时 2.35 秒 
+2025-08-29 10:37:27,191 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:206] [BaseManagerInitialized] 基础管理器 TestManager 已初始化 
+2025-08-29 10:37:43,323 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] 用户 admin 登录成功 
+2025-08-29 10:37:48,953 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 语言已切换至: zh-CN 
+2025-08-29 10:37:50,993 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] Culture changed to: en-US 
+2025-08-29 10:37:55,803 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:251] [SystemInitialized] System initialized successfully 
+2025-08-29 10:37:57,510 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:251] [SystemInitialized] System initialized successfully 
+2025-08-29 10:38:01,802 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:251] [SystemInitialized] System initialized successfully 
+2025-08-29 10:38:08,018 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] User admin login successful 
+2025-08-29 10:38:17,491 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:251] [SystemInitialized] System initialized successfully 
+2025-08-29 10:38:19,771 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:201] [TestLogClicked] Test log button clicked - Testing internationalization 
+2025-08-29 10:38:19,772 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:202] [SystemStatusNormal] System status: Normal operation 
+2025-08-29 10:38:19,773 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:203] [Log4netConfigNotFound] Log4net configuration not found 
+2025-08-29 10:38:19,773 [ERROR] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:204] [DatabaseConnectionError] Database connection failed: Connection timeout 
+2025-08-29 10:38:19,774 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:205] [ProcessingComplete] Processing completed successfully in 2.35 seconds 
+2025-08-29 10:38:19,774 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:206] [BaseManagerInitialized] Base manager TestManager initialized 
+2025-08-29 10:38:34,129 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:286] [UserExiting] User admin is exiting the application 
+2025-08-29 10:47:18,398 [INFO ] [thread-1] [MarkingMachineFeeder.App:29] [Log4netConfigLoaded] Log4net配置已加载 
+2025-08-29 10:47:18,517 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:323] [UsersLoaded] 从存储加载了 3 个用户 
+2025-08-29 10:47:18,518 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:329] [AdminUserLoadCheck] 加载管理员用户，拥有 1 个角色和 4 个权限 
+2025-08-29 10:47:18,519 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] [SecurityManagerInitialized] 安全管理器初始化成功 
+2025-08-29 10:47:18,520 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] 基础管理器 SecurityManager 已初始化 
+2025-08-29 10:47:18,539 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] Culture changed to: en-US 
+2025-08-29 10:47:18,540 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] Base manager CultureManager initialized 
+2025-08-29 10:47:18,540 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:27] [BaseManagerInitialized] Base manager MsgManager initialized 
+2025-08-29 10:47:18,544 [INFO ] [thread-1] [MarkingMachineFeeder.App:40] [MainControllerInitialized] Main controller initialized 
+2025-08-29 10:47:18,546 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] [LoginSuccessful] User operator login successful 
+2025-08-29 10:47:18,546 [INFO ] [thread-1] [MarkingMachineFeeder.App:60] [SystemInitialized] System initialized successfully 
+2025-08-29 10:47:18,547 [INFO ] [thread-1] [MarkingMachineFeeder.App:74] [ViewModelLocatorConfigured] View model locator configured 
+2025-08-29 10:47:18,641 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:290] [SystemInitialized] System initialized successfully 
+2025-08-29 10:47:18,745 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:292] [SystemStatusNormal] System status: Normal operation 
+2025-08-29 10:47:18,851 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:294] [Log4netConfigNotFound] Log4net configuration not found 
+2025-08-29 10:47:18,961 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:296] [DatabaseConnected] Database connected successfully 
+2025-08-29 10:47:19,069 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:298] [ViewModelLocatorConfigured] View model locator configured 
+2025-08-29 10:47:19,080 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:179] [MainWindowStarted] Main window started 
+2025-08-29 10:47:30,343 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:286] [UserExiting] User operator is exiting the application 

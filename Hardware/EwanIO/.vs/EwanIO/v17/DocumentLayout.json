@@ -1,0 +1,74 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Administrator\\source\\repos\\MarkingMachineFeeder\\Hardware\\EwanIO\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{E8CEDF24-5C69-4DA4-9D95-A3578A1FFC1B}|EwanIO.csproj|c:\\users\\administrator\\source\\repos\\markingmachinefeeder\\hardware\\ewanio\\hardware\\mitsubishi\\mcplc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E8CEDF24-5C69-4DA4-9D95-A3578A1FFC1B}|EwanIO.csproj|solutionrelative:hardware\\mitsubishi\\mcplc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E8CEDF24-5C69-4DA4-9D95-A3578A1FFC1B}|EwanIO.csproj|c:\\users\\administrator\\source\\repos\\markingmachinefeeder\\hardware\\ewanio\\hardware\\smc606io\\iosmc606driverwrapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E8CEDF24-5C69-4DA4-9D95-A3578A1FFC1B}|EwanIO.csproj|solutionrelative:hardware\\smc606io\\iosmc606driverwrapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MCPlc.cs",
+              "DocumentMoniker": "C:\\Users\\Administrator\\source\\repos\\MarkingMachineFeeder\\Hardware\\EwanIO\\Hardware\\Mitsubishi\\MCPlc.cs",
+              "RelativeDocumentMoniker": "Hardware\\Mitsubishi\\MCPlc.cs",
+              "ToolTip": "C:\\Users\\Administrator\\source\\repos\\MarkingMachineFeeder\\Hardware\\EwanIO\\Hardware\\Mitsubishi\\MCPlc.cs",
+              "RelativeToolTip": "Hardware\\Mitsubishi\\MCPlc.cs",
+              "ViewState": "AgIAACAAAAAAAAAAAAAUwBAAAAA5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-24T10:12:55.856Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "IOSMC606DriverWrapper.cs",
+              "DocumentMoniker": "C:\\Users\\Administrator\\source\\repos\\MarkingMachineFeeder\\Hardware\\EwanIO\\Hardware\\SMC606IO\\IOSMC606DriverWrapper.cs",
+              "RelativeDocumentMoniker": "Hardware\\SMC606IO\\IOSMC606DriverWrapper.cs",
+              "ToolTip": "C:\\Users\\Administrator\\source\\repos\\MarkingMachineFeeder\\Hardware\\EwanIO\\Hardware\\SMC606IO\\IOSMC606DriverWrapper.cs",
+              "RelativeToolTip": "Hardware\\SMC606IO\\IOSMC606DriverWrapper.cs",
+              "ViewState": "AgIAAJYAAAAAAAAAAAAAAKcAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-24T10:12:30.682Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

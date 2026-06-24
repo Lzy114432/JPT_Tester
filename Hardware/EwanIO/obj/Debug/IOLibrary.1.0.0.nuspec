@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>IOLibrary</id>
+    <version>1.0.0</version>
+    <authors>Your Name</authors>
+    <description>A layered IO control library with mapping and simulation support</description>
+    <repository type="git" commit="0c3f880f69ab8b8bc6e7f2dbb6d73af5ced0ab35" />
+    <dependencies>
+      <group targetFramework=".NETFramework4.7.2">
+        <dependency id="PlcCommunication" version="1.0.0" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="13.0.3" exclude="Build,Analyzers" />
+        <dependency id="System.Runtime.CompilerServices.Unsafe" version="6.1.2" exclude="Build,Analyzers" />
+        <dependency id="System.ValueTuple" version="4.6.1" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Runtime" targetFramework=".NETFramework4.7.2" />
+      <frameworkAssembly assemblyName="System.Runtime.InteropServices" targetFramework=".NETFramework4.7.2" />
+    </frameworkAssemblies>
+  </metadata>
+  <files>
+    <file src="C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\IO\bin\x64\Debug\net472\IOLibrary.dll" target="lib\net472\IOLibrary.dll" />
+  </files>
+</package>

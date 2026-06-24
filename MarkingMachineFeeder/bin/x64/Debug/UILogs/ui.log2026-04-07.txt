@@ -1,0 +1,524 @@
+﻿2026-04-07 08:33:50,380 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1352] 处理已完成: 用户请求停止系统 
+2026-04-07 08:33:50,382 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1368] 处理已完成: 系统停止操作完成 
+2026-04-07 08:33:50,384 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule:160] 所有料仓已停止 
+2026-04-07 08:33:50,389 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1555] 系统状态更新: Stopped - 已停止（需复位） 
+2026-04-07 08:33:50,390 [INFO ] [thread-4] [Ewan.Core.Module.SafetyModule:600] 处理已完成: 暂停输出复位: Stop 
+2026-04-07 08:33:50,392 [INFO ] [thread-4] [Ewan.Core.Module.BeltConveyorModule:404] 处理已完成: 皮带已停止 
+2026-04-07 08:33:50,900 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteClearAlarm>d__369:1204] 用户触发清除报警(OUT25脉冲) 
+2026-04-07 08:33:51,003 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteClearAlarm>d__369:1216] 清除报警完成 
+2026-04-07 08:33:51,005 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1555] 系统状态更新: Standby - 报警已清除，待机 
+2026-04-07 08:33:51,508 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__365:1066] 处理已开始: 用户触发系统复位 
+2026-04-07 08:33:51,508 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__365:1071] 设置低速运行模式 
+2026-04-07 08:33:52,019 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule:160] 所有料仓已停止 
+2026-04-07 08:33:52,522 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:99] 处理已完成: 皮带输送控制的所有锁定已强制清除 
+2026-04-07 08:33:52,547 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-04-07 08:33:52,548 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__365:1100] 处理已完成: 复位命令已发送 
+2026-04-07 08:33:52,549 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1555] 系统状态更新: Stopped - 已停止（需复位） 
+2026-04-07 08:33:52,553 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule:160] 所有料仓已停止 
+2026-04-07 08:33:52,567 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__18:238] 料仓初始化开始 
+2026-04-07 08:33:52,572 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1555] 系统状态更新: Initializing - 复位中 
+2026-04-07 08:33:52,573 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:397] 料仓2已到顶部（ELP触发），无物料 
+2026-04-07 08:33:52,574 [INFO ] [thread-4] [Ewan.Core.Module.SafetyModule:600] 处理已完成: 暂停输出复位: Initialize 
+2026-04-07 08:33:52,575 [INFO ] [thread-4] [Ewan.Core.Module.BeltConveyorModule:411] 处理已开始: 皮带系统已初始化 
+2026-04-07 08:33:52,577 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:397] 料仓3已到顶部（ELP触发），无物料 
+2026-04-07 08:33:52,585 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:425] 初始化进入下降阶段 1个料仓有物料 
+2026-04-07 08:33:52,660 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 初始状态 → 发送停止脉冲 
+2026-04-07 08:33:52,671 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:461] 料仓1下降到无感应位置 
+2026-04-07 08:33:52,673 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:479] 所有料仓初始化完成 
+2026-04-07 08:33:52,717 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送停止脉冲 → 等待停止完成 
+2026-04-07 08:33:53,739 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待停止完成 → 发送开始脉冲 
+2026-04-07 08:33:53,790 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送开始脉冲 → 等待开始完成 
+2026-04-07 08:33:54,300 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待开始完成 → 清除允许取料 
+2026-04-07 08:33:54,351 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 清除允许取料 → 料仓初始化 
+2026-04-07 08:33:54,403 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 料仓初始化 → 等待料仓完成 
+2026-04-07 08:33:54,419 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__18:238] 料仓初始化开始 
+2026-04-07 08:33:54,423 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:389] 料仓1检测到物料 
+2026-04-07 08:33:54,427 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:397] 料仓3已到顶部（ELP触发），无物料 
+2026-04-07 08:33:54,441 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:425] 初始化进入下降阶段 2个料仓有物料 
+2026-04-07 08:33:54,447 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:461] 料仓1下降到无感应位置 
+2026-04-07 08:33:54,448 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:461] 料仓2下降到无感应位置 
+2026-04-07 08:33:54,449 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:479] 所有料仓初始化完成 
+2026-04-07 08:33:54,454 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待料仓完成 → 结束状态 
+2026-04-07 08:33:54,458 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1555] 系统状态更新: Standby - 复位完成，待机 
+2026-04-07 09:50:33,517 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1300] 处理已完成: 用户请求暂停系统 
+2026-04-07 09:50:33,520 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1313] 处理已完成: 系统暂停操作完成 
+2026-04-07 09:50:33,523 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1555] 系统状态更新: Paused - 暂停中 
+2026-04-07 09:50:33,526 [INFO ] [thread-4] [Ewan.Core.Module.SafetyModule:475] 处理已完成: 暂停输出脉冲发送: Pause 
+2026-04-07 09:50:33,527 [INFO ] [thread-4] [Ewan.Core.Module.BeltConveyorModule:384] 处理已完成: 皮带已暂停 
+2026-04-07 09:50:35,373 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1233] 用户触发系统启动 
+2026-04-07 09:50:35,374 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1250] 启用高速运行模式 
+2026-04-07 09:50:35,377 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1261] 检测到系统处于暂停状态，发送复原脉冲 
+2026-04-07 09:50:35,379 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1288] 系统启动完成 
+2026-04-07 09:50:35,381 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1555] 系统状态更新: Running - 运行中 
+2026-04-07 09:50:35,382 [INFO ] [thread-4] [Ewan.Core.Module.SafetyModule:600] 处理已完成: 暂停输出复位: Resume 
+2026-04-07 09:50:35,383 [INFO ] [thread-4] [Ewan.Core.Module.BeltConveyorModule:391] 处理已开始: 皮带恢复运行 
+2026-04-07 09:50:41,376 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__365:1066] 处理已开始: 用户触发系统复位 
+2026-04-07 09:50:41,377 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__365:1071] 设置低速运行模式 
+2026-04-07 09:50:41,881 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule:160] 所有料仓已停止 
+2026-04-07 09:50:42,380 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:99] 处理已完成: 皮带输送控制的所有锁定已强制清除 
+2026-04-07 09:50:42,384 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-04-07 09:50:42,386 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__365:1100] 处理已完成: 复位命令已发送 
+2026-04-07 09:50:42,387 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1555] 系统状态更新: Stopped - 已停止（需复位） 
+2026-04-07 09:50:42,392 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule:160] 所有料仓已停止 
+2026-04-07 09:50:42,414 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__18:238] 料仓初始化开始 
+2026-04-07 09:50:42,421 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1555] 系统状态更新: Initializing - 复位中 
+2026-04-07 09:50:42,423 [INFO ] [thread-4] [Ewan.Core.Module.SafetyModule:600] 处理已完成: 暂停输出复位: Initialize 
+2026-04-07 09:50:42,424 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:397] 料仓2已到顶部（ELP触发），无物料 
+2026-04-07 09:50:42,425 [INFO ] [thread-4] [Ewan.Core.Module.BeltConveyorModule:411] 处理已开始: 皮带系统已初始化 
+2026-04-07 09:50:42,428 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:397] 料仓3已到顶部（ELP触发），无物料 
+2026-04-07 09:50:42,466 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 初始状态 → 发送停止脉冲 
+2026-04-07 09:50:42,518 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送停止脉冲 → 等待停止完成 
+2026-04-07 09:50:43,539 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待停止完成 → 发送开始脉冲 
+2026-04-07 09:50:43,590 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送开始脉冲 → 等待开始完成 
+2026-04-07 09:50:44,101 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待开始完成 → 清除允许取料 
+2026-04-07 09:50:44,155 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 清除允许取料 → 料仓初始化 
+2026-04-07 09:50:44,208 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 料仓初始化 → 等待料仓完成 
+2026-04-07 09:50:44,227 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__18:238] 料仓初始化开始 
+2026-04-07 09:50:44,234 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:397] 料仓2已到顶部（ELP触发），无物料 
+2026-04-07 09:50:44,242 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:397] 料仓3已到顶部（ELP触发），无物料 
+2026-04-07 09:50:46,741 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:389] 料仓1检测到物料 
+2026-04-07 09:50:46,747 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:425] 初始化进入下降阶段 1个料仓有物料 
+2026-04-07 09:50:46,758 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:461] 料仓1下降到无感应位置 
+2026-04-07 09:50:46,759 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:479] 所有料仓初始化完成 
+2026-04-07 09:50:46,810 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待料仓完成 → 结束状态 
+2026-04-07 09:50:46,812 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1555] 系统状态更新: Standby - 复位完成，待机 
+2026-04-07 13:46:10,886 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: ZH26010002262 
+2026-04-07 13:46:30,803 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: ZH26010002262 
+2026-04-07 14:04:27,041 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046096 
+2026-04-07 14:05:23,750 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046153 
+2026-04-07 14:05:33,221 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046154 
+2026-04-07 14:05:53,407 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046236 
+2026-04-07 14:06:13,385 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046233 
+2026-04-07 14:06:33,824 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046200 
+2026-04-07 14:06:54,018 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046232 
+2026-04-07 14:07:14,515 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:166] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046022 
+2026-04-07 14:07:34,046 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020053343 
+2026-04-07 14:07:54,554 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046017 
+2026-04-07 14:08:14,228 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046115 
+2026-04-07 14:08:34,023 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046114 
+2026-04-07 14:08:54,023 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046180 
+2026-04-07 14:09:14,044 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046181 
+2026-04-07 14:09:34,337 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046100 
+2026-04-07 14:09:53,851 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046182 
+2026-04-07 14:10:13,986 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046097 
+2026-04-07 14:10:33,913 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046098 
+2026-04-07 14:10:53,686 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020053357 
+2026-04-07 14:11:13,778 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020053356 
+2026-04-07 14:11:53,953 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020053351 
+2026-04-07 14:12:15,071 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046028 
+2026-04-07 14:12:34,805 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046063 
+2026-04-07 14:12:54,189 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046046 
+2026-04-07 14:13:13,957 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046030 
+2026-04-07 14:13:33,432 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046170 
+2026-04-07 14:13:52,941 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046262 
+2026-04-07 14:14:12,423 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046176 
+2026-04-07 14:14:31,922 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046258 
+2026-04-07 14:14:52,045 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:166] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046061 
+2026-04-07 14:15:11,146 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020053369 
+2026-04-07 14:15:30,768 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046007 
+2026-04-07 14:15:50,072 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020053375 
+2026-04-07 14:16:09,754 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046167 
+2026-04-07 14:16:28,970 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046091 
+2026-04-07 14:16:48,594 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020053378 
+2026-04-07 14:17:08,019 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046171 
+2026-04-07 14:17:27,595 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046104 
+2026-04-07 14:17:47,049 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020053361 
+2026-04-07 14:18:06,732 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046006 
+2026-04-07 14:18:26,034 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020053340 
+2026-04-07 14:18:45,351 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020053342 
+2026-04-07 14:19:05,094 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020053349 
+2026-04-07 14:19:24,624 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046092 
+2026-04-07 14:19:44,029 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046082 
+2026-04-07 14:20:03,378 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046152 
+2026-04-07 14:20:22,743 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046074 
+2026-04-07 14:20:42,255 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046195 
+2026-04-07 14:21:01,670 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046163 
+2026-04-07 14:21:21,183 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046052 
+2026-04-07 14:21:41,064 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046201 
+2026-04-07 14:22:00,304 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046260 
+2026-04-07 14:22:19,522 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046266 
+2026-04-07 14:22:39,220 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046220 
+2026-04-07 14:23:19,358 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:166] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046117 
+2026-04-07 14:23:38,639 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046135 
+2026-04-07 14:23:58,085 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046075 
+2026-04-07 14:24:18,037 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046072 
+2026-04-07 14:24:37,337 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046053 
+2026-04-07 14:24:56,812 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046138 
+2026-04-07 14:25:16,206 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046050 
+2026-04-07 14:25:35,434 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046157 
+2026-04-07 14:26:15,180 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046178 
+2026-04-07 14:26:34,478 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046121 
+2026-04-07 14:26:54,024 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046133 
+2026-04-07 14:27:14,128 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046265 
+2026-04-07 14:27:33,650 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046054 
+2026-04-07 14:27:52,736 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046150 
+2026-04-07 14:28:12,005 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046147 
+2026-04-07 14:28:31,783 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046225 
+2026-04-07 14:28:50,433 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046227 
+2026-04-07 14:29:30,848 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046199 
+2026-04-07 14:29:50,727 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046015 
+2026-04-07 14:30:09,716 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046039 
+2026-04-07 14:30:29,296 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046214 
+2026-04-07 14:30:49,113 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046130 
+2026-04-07 14:31:08,995 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:166] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046299 
+2026-04-07 14:31:27,447 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046228 
+2026-04-07 14:31:46,791 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020053346 
+2026-04-07 14:32:05,815 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046298 
+2026-04-07 14:32:25,397 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046020 
+2026-04-07 14:32:45,126 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046021 
+2026-04-07 14:33:04,332 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046208 
+2026-04-07 14:33:23,810 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046065 
+2026-04-07 14:33:53,531 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046276 
+2026-04-07 14:34:13,054 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046264 
+2026-04-07 14:34:32,430 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046120 
+2026-04-07 14:34:51,893 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046267 
+2026-04-07 14:35:11,607 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046210 
+2026-04-07 14:35:31,013 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046024 
+2026-04-07 14:36:01,113 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046237 
+2026-04-07 14:36:20,617 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046239 
+2026-04-07 14:36:40,675 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046205 
+2026-04-07 14:37:00,221 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046238 
+2026-04-07 14:37:20,080 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046183 
+2026-04-07 14:37:40,079 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046175 
+2026-04-07 14:37:59,197 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046055 
+2026-04-07 14:38:18,924 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046192 
+2026-04-07 14:38:38,322 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046025 
+2026-04-07 14:39:08,249 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046003 
+2026-04-07 14:57:19,363 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046177 
+2026-04-07 14:57:38,536 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046247 
+2026-04-07 14:57:58,167 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020053374 
+2026-04-07 14:58:17,277 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020053377 
+2026-04-07 14:58:36,792 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020053379 
+2026-04-07 14:58:56,406 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020053352 
+2026-04-07 14:59:15,990 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020053366 
+2026-04-07 14:59:35,497 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020053358 
+2026-04-07 14:59:54,596 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046257 
+2026-04-07 15:00:25,394 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046023 
+2026-04-07 15:00:45,007 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046094 
+2026-04-07 15:01:04,667 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046291 
+2026-04-07 15:01:24,504 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046174 
+2026-04-07 15:01:43,664 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046166 
+2026-04-07 15:02:03,333 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046155 
+2026-04-07 15:02:22,775 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046169 
+2026-04-07 15:02:42,095 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046076 
+2026-04-07 15:03:01,667 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046066 
+2026-04-07 15:03:52,158 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046193 
+2026-04-07 15:04:11,321 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046226 
+2026-04-07 15:04:30,562 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046191 
+2026-04-07 15:04:50,469 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020053362 
+2026-04-07 15:05:09,758 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046217 
+2026-04-07 15:05:29,164 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046057 
+2026-04-07 15:05:48,580 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046290 
+2026-04-07 15:06:38,929 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046297 
+2026-04-07 15:06:58,187 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046078 
+2026-04-07 15:07:18,419 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046164 
+2026-04-07 15:07:37,773 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046165 
+2026-04-07 15:07:57,198 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046067 
+2026-04-07 15:08:16,985 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046062 
+2026-04-07 15:08:36,374 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046251 
+2026-04-07 15:08:55,946 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:166] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046250 
+2026-04-07 15:09:15,002 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046048 
+2026-04-07 15:09:34,408 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046253 
+2026-04-07 15:09:53,945 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046087 
+2026-04-07 15:10:13,446 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046049 
+2026-04-07 15:10:33,760 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046088 
+2026-04-07 15:10:53,089 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046284 
+2026-04-07 15:11:12,668 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046285 
+2026-04-07 15:11:31,616 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046283 
+2026-04-07 15:11:50,950 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046045 
+2026-04-07 15:12:11,057 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046222 
+2026-04-07 15:12:50,882 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:166] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020053354 
+2026-04-07 15:13:09,938 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046256 
+2026-04-07 15:13:29,383 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046219 
+2026-04-07 15:13:48,922 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046213 
+2026-04-07 15:14:08,301 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020053355 
+2026-04-07 15:14:27,651 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020053370 
+2026-04-07 15:14:47,307 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020053365 
+2026-04-07 15:15:06,721 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020053341 
+2026-04-07 15:15:25,914 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046151 
+2026-04-07 15:15:45,634 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046279 
+2026-04-07 15:16:05,032 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020053376 
+2026-04-07 15:16:34,791 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020053367 
+2026-04-07 15:16:54,176 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046202 
+2026-04-07 15:17:13,760 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046041 
+2026-04-07 15:17:32,949 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046268 
+2026-04-07 15:17:52,744 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046295 
+2026-04-07 15:18:11,993 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046246 
+2026-04-07 15:18:32,008 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046010 
+2026-04-07 15:18:51,389 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046194 
+2026-04-07 15:19:11,023 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046216 
+2026-04-07 15:19:30,123 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046095 
+2026-04-07 15:19:49,887 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046244 
+2026-04-07 15:20:09,055 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:166] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046243 
+2026-04-07 15:20:28,202 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046224 
+2026-04-07 15:20:48,250 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:166] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046241 
+2026-04-07 15:21:07,312 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046102 
+2026-04-07 15:21:26,962 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020053373 
+2026-04-07 15:21:56,489 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046070 
+2026-04-07 15:22:15,492 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020053350 
+2026-04-07 15:22:35,458 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046234 
+2026-04-07 15:22:55,023 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046051 
+2026-04-07 15:23:14,036 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046093 
+2026-04-07 15:23:33,494 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046240 
+2026-04-07 15:23:53,327 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046196 
+2026-04-07 15:24:12,760 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020053371 
+2026-04-07 15:24:32,837 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:166] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046197 
+2026-04-07 15:24:52,495 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046084 
+2026-04-07 15:25:31,744 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020053359 
+2026-04-07 15:25:51,433 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046280 
+2026-04-07 15:26:11,096 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046086 
+2026-04-07 15:26:30,645 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046282 
+2026-04-07 15:26:50,779 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:166] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046079 
+2026-04-07 15:27:10,030 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046127 
+2026-04-07 15:27:29,607 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046203 
+2026-04-07 15:27:48,780 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046123 
+2026-04-07 15:28:08,481 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046131 
+2026-04-07 15:28:27,973 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046081 
+2026-04-07 15:28:47,922 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:166] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046033 
+2026-04-07 15:29:07,155 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046300 
+2026-04-07 15:29:46,841 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046038 
+2026-04-07 15:30:06,371 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046037 
+2026-04-07 15:30:26,061 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046035 
+2026-04-07 15:30:45,437 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046188 
+2026-04-07 15:31:04,935 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046036 
+2026-04-07 15:31:24,316 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046019 
+2026-04-07 15:31:44,181 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046056 
+2026-04-07 15:32:03,821 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046159 
+2026-04-07 15:32:22,945 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046099 
+2026-04-07 15:32:42,398 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046132 
+2026-04-07 15:33:02,353 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046269 
+2026-04-07 15:33:21,721 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046198 
+2026-04-07 15:33:41,819 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046149 
+2026-04-07 15:34:01,118 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046043 
+2026-04-07 15:34:20,780 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046134 
+2026-04-07 15:34:40,144 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046261 
+2026-04-07 15:35:00,071 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046270 
+2026-04-07 15:35:19,642 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046083 
+2026-04-07 15:35:38,997 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046111 
+2026-04-07 15:35:58,056 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046108 
+2026-04-07 15:36:17,861 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046101 
+2026-04-07 15:36:37,062 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046064 
+2026-04-07 15:36:56,799 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046242 
+2026-04-07 15:37:16,318 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046235 
+2026-04-07 15:37:35,790 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046211 
+2026-04-07 15:37:55,184 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046231 
+2026-04-07 15:38:24,806 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046286 
+2026-04-07 15:38:44,397 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046287 
+2026-04-07 15:39:03,593 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046288 
+2026-04-07 15:39:23,274 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046047 
+2026-04-07 15:39:42,867 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046252 
+2026-04-07 15:40:02,056 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046223 
+2026-04-07 15:40:21,794 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020053353 
+2026-04-07 15:40:41,467 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046206 
+2026-04-07 15:41:00,748 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046168 
+2026-04-07 15:41:19,779 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046248 
+2026-04-07 15:41:39,858 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046218 
+2026-04-07 15:41:59,323 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046230 
+2026-04-07 15:42:19,044 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046008 
+2026-04-07 15:42:38,561 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046005 
+2026-04-07 15:42:58,143 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046029 
+2026-04-07 15:43:38,130 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046162 
+2026-04-07 15:43:57,560 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046281 
+2026-04-07 15:44:17,668 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046009 
+2026-04-07 15:44:36,823 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046259 
+2026-04-07 15:44:56,752 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046221 
+2026-04-07 15:45:16,462 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046245 
+2026-04-07 15:45:35,904 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046027 
+2026-04-07 15:45:55,349 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046156 
+2026-04-07 15:46:15,404 [INFO ] [thread-19] [Ewan.Core.Module.RingLineModule:157] 检测到后段上料(6#): 04,1,2,0,FZH26010002262 -> 拼装: LS26020046209 
+2026-04-07 17:27:14,121 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__365:1066] 处理已开始: 用户触发系统复位 
+2026-04-07 17:27:14,122 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__365:1071] 设置低速运行模式 
+2026-04-07 17:27:14,627 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule:160] 所有料仓已停止 
+2026-04-07 17:27:15,127 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:99] 处理已完成: 皮带输送控制的所有锁定已强制清除 
+2026-04-07 17:27:15,131 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-04-07 17:27:15,131 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__365:1100] 处理已完成: 复位命令已发送 
+2026-04-07 17:27:15,132 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1555] 系统状态更新: Stopped - 已停止（需复位） 
+2026-04-07 17:27:15,136 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule:160] 所有料仓已停止 
+2026-04-07 17:27:15,167 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__18:238] 料仓初始化开始 
+2026-04-07 17:27:15,171 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1555] 系统状态更新: Initializing - 复位中 
+2026-04-07 17:27:15,177 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:397] 料仓2已到顶部（ELP触发），无物料 
+2026-04-07 17:27:15,181 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:397] 料仓3已到顶部（ELP触发），无物料 
+2026-04-07 17:27:15,186 [INFO ] [thread-4] [Ewan.Core.Module.SafetyModule:600] 处理已完成: 暂停输出复位: Initialize 
+2026-04-07 17:27:15,188 [INFO ] [thread-4] [Ewan.Core.Module.BeltConveyorModule:411] 处理已开始: 皮带系统已初始化 
+2026-04-07 17:27:15,218 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 初始状态 → 发送停止脉冲 
+2026-04-07 17:27:15,271 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送停止脉冲 → 等待停止完成 
+2026-04-07 17:27:15,663 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:389] 料仓1检测到物料 
+2026-04-07 17:27:15,668 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:425] 初始化进入下降阶段 1个料仓有物料 
+2026-04-07 17:27:15,789 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:461] 料仓1下降到无感应位置 
+2026-04-07 17:27:15,790 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:479] 所有料仓初始化完成 
+2026-04-07 17:27:16,292 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待停止完成 → 发送开始脉冲 
+2026-04-07 17:27:16,343 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送开始脉冲 → 等待开始完成 
+2026-04-07 17:27:16,854 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待开始完成 → 清除允许取料 
+2026-04-07 17:27:16,905 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 清除允许取料 → 料仓初始化 
+2026-04-07 17:27:16,959 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 料仓初始化 → 等待料仓完成 
+2026-04-07 17:27:16,979 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__18:238] 料仓初始化开始 
+2026-04-07 17:27:16,986 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:397] 料仓2已到顶部（ELP触发），无物料 
+2026-04-07 17:27:16,990 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:397] 料仓3已到顶部（ELP触发），无物料 
+2026-04-07 17:27:17,083 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:389] 料仓1检测到物料 
+2026-04-07 17:27:17,087 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:425] 初始化进入下降阶段 1个料仓有物料 
+2026-04-07 17:27:47,001 [ERROR] [thread-LogicRunner-03473B46] [Ewan.Core.Logic.HomeLogic:220] 处理错误: HomeLogic - 料仓初始化超时 
+2026-04-07 17:27:47,002 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待料仓完成 → 结束状态 
+2026-04-07 17:27:47,013 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1555] 系统状态更新: Critical - 料仓初始化超时 
+2026-04-07 17:27:57,258 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteClearAlarm>d__369:1204] 用户触发清除报警(OUT25脉冲) 
+2026-04-07 17:27:57,361 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteClearAlarm>d__369:1216] 清除报警完成 
+2026-04-07 17:27:57,367 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1555] 系统状态更新: Standby - 报警已清除，待机 
+2026-04-07 17:27:58,257 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1352] 处理已完成: 用户请求停止系统 
+2026-04-07 17:27:58,259 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1368] 处理已完成: 系统停止操作完成 
+2026-04-07 17:27:58,260 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule:160] 所有料仓已停止 
+2026-04-07 17:27:58,263 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1555] 系统状态更新: Stopped - 已停止（需复位） 
+2026-04-07 17:27:58,264 [INFO ] [thread-4] [Ewan.Core.Module.SafetyModule:600] 处理已完成: 暂停输出复位: Stop 
+2026-04-07 17:27:58,265 [INFO ] [thread-4] [Ewan.Core.Module.BeltConveyorModule:404] 处理已完成: 皮带已停止 
+2026-04-07 17:27:59,233 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__365:1066] 处理已开始: 用户触发系统复位 
+2026-04-07 17:27:59,233 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__365:1071] 设置低速运行模式 
+2026-04-07 17:27:59,741 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule:160] 所有料仓已停止 
+2026-04-07 17:28:00,240 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:99] 处理已完成: 皮带输送控制的所有锁定已强制清除 
+2026-04-07 17:28:00,244 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-04-07 17:28:00,246 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__365:1100] 处理已完成: 复位命令已发送 
+2026-04-07 17:28:00,247 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1555] 系统状态更新: Stopped - 已停止（需复位） 
+2026-04-07 17:28:00,252 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule:160] 所有料仓已停止 
+2026-04-07 17:28:00,262 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__18:238] 料仓初始化开始 
+2026-04-07 17:28:00,266 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1555] 系统状态更新: Initializing - 复位中 
+2026-04-07 17:28:00,274 [INFO ] [thread-4] [Ewan.Core.Module.SafetyModule:600] 处理已完成: 暂停输出复位: Initialize 
+2026-04-07 17:28:00,276 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:397] 料仓3已到顶部（ELP触发），无物料 
+2026-04-07 17:28:00,276 [INFO ] [thread-4] [Ewan.Core.Module.BeltConveyorModule:411] 处理已开始: 皮带系统已初始化 
+2026-04-07 17:28:00,305 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:425] 初始化进入下降阶段 2个料仓有物料 
+2026-04-07 17:28:00,312 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:461] 料仓2下降到无感应位置 
+2026-04-07 17:28:00,386 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 初始状态 → 发送停止脉冲 
+2026-04-07 17:28:00,410 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:461] 料仓1下降到无感应位置 
+2026-04-07 17:28:00,412 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:479] 所有料仓初始化完成 
+2026-04-07 17:28:00,438 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送停止脉冲 → 等待停止完成 
+2026-04-07 17:28:01,459 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待停止完成 → 发送开始脉冲 
+2026-04-07 17:28:01,510 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送开始脉冲 → 等待开始完成 
+2026-04-07 17:28:02,020 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待开始完成 → 清除允许取料 
+2026-04-07 17:28:02,072 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 清除允许取料 → 料仓初始化 
+2026-04-07 17:28:02,125 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 料仓初始化 → 等待料仓完成 
+2026-04-07 17:28:02,149 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__18:238] 料仓初始化开始 
+2026-04-07 17:28:02,156 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:397] 料仓3已到顶部（ELP触发），无物料 
+2026-04-07 17:28:02,163 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:389] 料仓2检测到物料 
+2026-04-07 17:28:02,230 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:389] 料仓1检测到物料 
+2026-04-07 17:28:02,242 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:425] 初始化进入下降阶段 2个料仓有物料 
+2026-04-07 17:28:02,248 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:461] 料仓1下降到无感应位置 
+2026-04-07 17:28:02,251 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:461] 料仓2下降到无感应位置 
+2026-04-07 17:28:02,253 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:479] 所有料仓初始化完成 
+2026-04-07 17:28:02,278 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待料仓完成 → 结束状态 
+2026-04-07 17:28:02,281 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1555] 系统状态更新: Standby - 复位完成，待机 
+2026-04-07 19:43:44,242 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__365:1066] 处理已开始: 用户触发系统复位 
+2026-04-07 19:43:44,243 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__365:1071] 设置低速运行模式 
+2026-04-07 19:43:44,747 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule:160] 所有料仓已停止 
+2026-04-07 19:43:45,246 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:99] 处理已完成: 皮带输送控制的所有锁定已强制清除 
+2026-04-07 19:43:45,250 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-04-07 19:43:45,251 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__365:1100] 处理已完成: 复位命令已发送 
+2026-04-07 19:43:45,257 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1555] 系统状态更新: Stopped - 已停止（需复位） 
+2026-04-07 19:43:45,262 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule:160] 所有料仓已停止 
+2026-04-07 19:43:45,278 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__18:238] 料仓初始化开始 
+2026-04-07 19:43:45,283 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1555] 系统状态更新: Initializing - 复位中 
+2026-04-07 19:43:45,285 [INFO ] [thread-4] [Ewan.Core.Module.SafetyModule:600] 处理已完成: 暂停输出复位: Initialize 
+2026-04-07 19:43:45,286 [INFO ] [thread-4] [Ewan.Core.Module.BeltConveyorModule:411] 处理已开始: 皮带系统已初始化 
+2026-04-07 19:43:45,285 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:397] 料仓2已到顶部（ELP触发），无物料 
+2026-04-07 19:43:45,295 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:397] 料仓3已到顶部（ELP触发），无物料 
+2026-04-07 19:43:45,310 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:425] 初始化进入下降阶段 1个料仓有物料 
+2026-04-07 19:43:45,326 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 初始状态 → 发送停止脉冲 
+2026-04-07 19:43:45,381 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送停止脉冲 → 等待停止完成 
+2026-04-07 19:43:46,402 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待停止完成 → 发送开始脉冲 
+2026-04-07 19:43:46,454 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送开始脉冲 → 等待开始完成 
+2026-04-07 19:43:46,965 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待开始完成 → 清除允许取料 
+2026-04-07 19:43:47,017 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 清除允许取料 → 料仓初始化 
+2026-04-07 19:43:47,069 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 料仓初始化 → 等待料仓完成 
+2026-04-07 19:43:47,083 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__18:238] 料仓初始化开始 
+2026-04-07 19:43:47,090 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:397] 料仓2已到顶部（ELP触发），无物料 
+2026-04-07 19:43:47,093 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:397] 料仓3已到顶部（ELP触发），无物料 
+2026-04-07 19:43:47,099 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:425] 初始化进入下降阶段 1个料仓有物料 
+2026-04-07 19:43:50,344 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:461] 料仓1下降到无感应位置 
+2026-04-07 19:43:50,345 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:479] 所有料仓初始化完成 
+2026-04-07 19:43:50,385 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待料仓完成 → 结束状态 
+2026-04-07 19:43:50,389 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1555] 系统状态更新: Standby - 复位完成，待机 
+2026-04-07 19:44:11,834 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__365:1066] 处理已开始: 用户触发系统复位 
+2026-04-07 19:44:11,835 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__365:1071] 设置低速运行模式 
+2026-04-07 19:44:12,348 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule:160] 所有料仓已停止 
+2026-04-07 19:44:12,847 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:99] 处理已完成: 皮带输送控制的所有锁定已强制清除 
+2026-04-07 19:44:12,854 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-04-07 19:44:12,855 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__365:1100] 处理已完成: 复位命令已发送 
+2026-04-07 19:44:12,856 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1555] 系统状态更新: Stopped - 已停止（需复位） 
+2026-04-07 19:44:12,860 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule:160] 所有料仓已停止 
+2026-04-07 19:44:12,876 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__18:238] 料仓初始化开始 
+2026-04-07 19:44:12,881 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1555] 系统状态更新: Initializing - 复位中 
+2026-04-07 19:44:12,882 [INFO ] [thread-4] [Ewan.Core.Module.SafetyModule:600] 处理已完成: 暂停输出复位: Initialize 
+2026-04-07 19:44:12,884 [INFO ] [thread-4] [Ewan.Core.Module.BeltConveyorModule:411] 处理已开始: 皮带系统已初始化 
+2026-04-07 19:44:12,888 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:397] 料仓3已到顶部（ELP触发），无物料 
+2026-04-07 19:44:12,903 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:425] 初始化进入下降阶段 2个料仓有物料 
+2026-04-07 19:44:12,908 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:461] 料仓2下降到无感应位置 
+2026-04-07 19:44:12,962 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 初始状态 → 发送停止脉冲 
+2026-04-07 19:44:13,015 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送停止脉冲 → 等待停止完成 
+2026-04-07 19:44:14,036 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待停止完成 → 发送开始脉冲 
+2026-04-07 19:44:14,089 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送开始脉冲 → 等待开始完成 
+2026-04-07 19:44:14,599 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待开始完成 → 清除允许取料 
+2026-04-07 19:44:14,654 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 清除允许取料 → 料仓初始化 
+2026-04-07 19:44:14,706 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 料仓初始化 → 等待料仓完成 
+2026-04-07 19:44:14,714 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__18:238] 料仓初始化开始 
+2026-04-07 19:44:14,720 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:397] 料仓3已到顶部（ELP触发），无物料 
+2026-04-07 19:44:14,731 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:425] 初始化进入下降阶段 2个料仓有物料 
+2026-04-07 19:44:14,737 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:461] 料仓2下降到无感应位置 
+2026-04-07 19:44:19,116 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:461] 料仓1下降到无感应位置 
+2026-04-07 19:44:19,117 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:479] 所有料仓初始化完成 
+2026-04-07 19:44:19,144 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待料仓完成 → 结束状态 
+2026-04-07 19:44:19,151 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1555] 系统状态更新: Standby - 复位完成，待机 
+2026-04-07 19:44:36,090 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__365:1066] 处理已开始: 用户触发系统复位 
+2026-04-07 19:44:36,091 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__365:1071] 设置低速运行模式 
+2026-04-07 19:44:36,609 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule:160] 所有料仓已停止 
+2026-04-07 19:44:37,109 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:99] 处理已完成: 皮带输送控制的所有锁定已强制清除 
+2026-04-07 19:44:37,114 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-04-07 19:44:37,115 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__365:1100] 处理已完成: 复位命令已发送 
+2026-04-07 19:44:37,116 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1555] 系统状态更新: Stopped - 已停止（需复位） 
+2026-04-07 19:44:37,120 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule:160] 所有料仓已停止 
+2026-04-07 19:44:37,136 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__18:238] 料仓初始化开始 
+2026-04-07 19:44:37,140 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1555] 系统状态更新: Initializing - 复位中 
+2026-04-07 19:44:37,141 [INFO ] [thread-4] [Ewan.Core.Module.SafetyModule:600] 处理已完成: 暂停输出复位: Initialize 
+2026-04-07 19:44:37,142 [INFO ] [thread-4] [Ewan.Core.Module.BeltConveyorModule:411] 处理已开始: 皮带系统已初始化 
+2026-04-07 19:44:37,144 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:397] 料仓3已到顶部（ELP触发），无物料 
+2026-04-07 19:44:37,152 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:397] 料仓2已到顶部（ELP触发），无物料 
+2026-04-07 19:44:37,164 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:425] 初始化进入下降阶段 1个料仓有物料 
+2026-04-07 19:44:37,175 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 初始状态 → 发送停止脉冲 
+2026-04-07 19:44:37,227 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送停止脉冲 → 等待停止完成 
+2026-04-07 19:44:38,248 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待停止完成 → 发送开始脉冲 
+2026-04-07 19:44:38,299 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送开始脉冲 → 等待开始完成 
+2026-04-07 19:44:38,809 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待开始完成 → 清除允许取料 
+2026-04-07 19:44:38,860 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 清除允许取料 → 料仓初始化 
+2026-04-07 19:44:38,912 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 料仓初始化 → 等待料仓完成 
+2026-04-07 19:44:38,927 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__18:238] 料仓初始化开始 
+2026-04-07 19:44:38,933 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:397] 料仓2已到顶部（ELP触发），无物料 
+2026-04-07 19:44:38,937 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:397] 料仓3已到顶部（ELP触发），无物料 
+2026-04-07 19:44:38,943 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:425] 初始化进入下降阶段 1个料仓有物料 
+2026-04-07 19:44:43,794 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:461] 料仓1下降到无感应位置 
+2026-04-07 19:44:43,795 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:479] 所有料仓初始化完成 
+2026-04-07 19:44:43,809 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待料仓完成 → 结束状态 
+2026-04-07 19:44:43,812 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1555] 系统状态更新: Standby - 复位完成，待机 
+2026-04-07 19:45:04,250 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__365:1066] 处理已开始: 用户触发系统复位 
+2026-04-07 19:45:04,251 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__365:1071] 设置低速运行模式 
+2026-04-07 19:45:04,757 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule:160] 所有料仓已停止 
+2026-04-07 19:45:05,254 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:99] 处理已完成: 皮带输送控制的所有锁定已强制清除 
+2026-04-07 19:45:05,260 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-04-07 19:45:05,261 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__365:1100] 处理已完成: 复位命令已发送 
+2026-04-07 19:45:05,263 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1555] 系统状态更新: Stopped - 已停止（需复位） 
+2026-04-07 19:45:05,267 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule:160] 所有料仓已停止 
+2026-04-07 19:45:05,284 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__18:238] 料仓初始化开始 
+2026-04-07 19:45:05,291 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1555] 系统状态更新: Initializing - 复位中 
+2026-04-07 19:45:05,293 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:397] 料仓2已到顶部（ELP触发），无物料 
+2026-04-07 19:45:05,293 [INFO ] [thread-4] [Ewan.Core.Module.SafetyModule:600] 处理已完成: 暂停输出复位: Initialize 
+2026-04-07 19:45:05,295 [INFO ] [thread-4] [Ewan.Core.Module.BeltConveyorModule:411] 处理已开始: 皮带系统已初始化 
+2026-04-07 19:45:05,296 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:397] 料仓3已到顶部（ELP触发），无物料 
+2026-04-07 19:45:05,306 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:425] 初始化进入下降阶段 1个料仓有物料 
+2026-04-07 19:45:05,374 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 初始状态 → 发送停止脉冲 
+2026-04-07 19:45:05,426 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送停止脉冲 → 等待停止完成 
+2026-04-07 19:45:06,448 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待停止完成 → 发送开始脉冲 
+2026-04-07 19:45:06,501 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送开始脉冲 → 等待开始完成 
+2026-04-07 19:45:07,011 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待开始完成 → 清除允许取料 
+2026-04-07 19:45:07,064 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 清除允许取料 → 料仓初始化 
+2026-04-07 19:45:07,116 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 料仓初始化 → 等待料仓完成 
+2026-04-07 19:45:07,133 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__18:238] 料仓初始化开始 
+2026-04-07 19:45:07,138 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:397] 料仓2已到顶部（ELP触发），无物料 
+2026-04-07 19:45:07,141 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:397] 料仓3已到顶部（ELP触发），无物料 
+2026-04-07 19:45:07,147 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:425] 初始化进入下降阶段 1个料仓有物料 
+2026-04-07 19:45:12,007 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:461] 料仓1下降到无感应位置 
+2026-04-07 19:45:12,009 [INFO ] [thread-17] [Ewan.Core.Module.BinElevatorModule:479] 所有料仓初始化完成 
+2026-04-07 19:45:12,012 [INFO ] [thread-LogicRunner-03473B46] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待料仓完成 → 结束状态 
+2026-04-07 19:45:12,015 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1555] 系统状态更新: Standby - 复位完成，待机 

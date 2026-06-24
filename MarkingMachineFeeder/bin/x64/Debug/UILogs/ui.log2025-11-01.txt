@@ -1,0 +1,397 @@
+﻿2025-11-01 15:59:37,395 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:322] [已加载 {0} 个用户] [Missing Resource: 已加载 {0} 个用户] 
+2025-11-01 15:59:37,396 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:328] [管理员用户检查: {0}] [Missing Resource: 管理员用户检查: {0}] 
+2025-11-01 15:59:37,399 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:43] 模块初始化成功: DLManager 
+2025-11-01 15:59:37,401 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:95] 处理已开始: 连接扫码器 192.168.3.100:51236 
+2025-11-01 15:59:40,422 [ERROR] [thread-1] [Ewan.Core.ScanCode.DLManager:119] 操作失败: 扫码器连接超时 
+2025-11-01 15:59:44,764 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-11-01 15:59:44,868 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-11-01 15:59:44,979 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-11-01 15:59:45,089 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-11-01 15:59:45,196 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-11-01 15:59:45,325 [DEBUG] [thread-1] [Ewan.Core.Security.SecurityManager:107] [权限检查失败：用户未认证，资源 {0}.{1}] [Missing Resource: 权限检查失败：用户未认证，资源 {0}.{1}] 
+2025-11-01 15:59:45,326 [DEBUG] [thread-1] [Ewan.Core.Security.SecurityManager:107] [权限检查失败：用户未认证，资源 {0}.{1}] [Missing Resource: 权限检查失败：用户未认证，资源 {0}.{1}] 
+2025-11-01 15:59:45,326 [DEBUG] [thread-1] [Ewan.Core.Security.SecurityManager:107] [权限检查失败：用户未认证，资源 {0}.{1}] [Missing Resource: 权限检查失败：用户未认证，资源 {0}.{1}] 
+2025-11-01 15:59:45,327 [DEBUG] [thread-1] [Ewan.Core.Security.SecurityManager:107] [权限检查失败：用户未认证，资源 {0}.{1}] [Missing Resource: 权限检查失败：用户未认证，资源 {0}.{1}] 
+2025-11-01 15:59:45,329 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:401] [MainWindowStarted] 主窗口已启动 
+2025-11-01 15:59:45,335 [DEBUG] [thread-1] [Ewan.BusinessBonding.StreamController:392] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-11-01 15:59:45,336 [DEBUG] [thread-1] [Ewan.BusinessBonding.StreamController:413] [皮带输送控制流程已停止] [Missing Resource: 皮带输送控制流程已停止] 
+2025-11-01 15:59:45,337 [DEBUG] [thread-1] [Ewan.BusinessBonding.StreamController:434] [Station心跳流程已停止] [Missing Resource: Station心跳流程已停止] 
+2025-11-01 15:59:45,339 [DEBUG] [thread-1] [Ewan.BusinessBonding.StreamController:455] [环线通信流程已停止] [Missing Resource: 环线通信流程已停止] 
+2025-11-01 15:59:45,341 [DEBUG] [thread-1] [Ewan.BusinessBonding.StreamController:513] [发送系统状态消息: {0} - {1}] [Missing Resource: 发送系统状态消息: {0} - {1}] 
+2025-11-01 15:59:45,342 [DEBUG] [thread-1] [Ewan.BusinessBonding.StreamController:498] [系统状态指示器流程已停止] [Missing Resource: 系统状态指示器流程已停止] 
+2025-11-01 15:59:45,344 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [流处理已停止] [Missing Resource: 流处理已停止] 
+2025-11-01 16:00:19,542 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:322] [已加载 {0} 个用户] [Missing Resource: 已加载 {0} 个用户] 
+2025-11-01 16:00:19,543 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:328] [管理员用户检查: {0}] [Missing Resource: 管理员用户检查: {0}] 
+2025-11-01 16:00:40,230 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:322] [已加载 {0} 个用户] [Missing Resource: 已加载 {0} 个用户] 
+2025-11-01 16:00:40,232 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:328] [管理员用户检查: {0}] [Missing Resource: 管理员用户检查: {0}] 
+2025-11-01 16:00:40,234 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:43] 模块初始化成功: DLManager 
+2025-11-01 16:00:40,235 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:95] 处理已开始: 连接扫码器 192.168.3.100:51236 
+2025-11-01 16:00:43,250 [ERROR] [thread-1] [Ewan.Core.ScanCode.DLManager:119] 操作失败: 扫码器连接超时 
+2025-11-01 16:00:43,255 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IO配置已从以下位置加载: {0}] [Missing Resource: IO配置已从以下位置加载: {0}] 
+2025-11-01 16:00:43,366 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:214] [IO硬件已创建: {0}] [Missing Resource: IO硬件已创建: {0}] 
+2025-11-01 16:00:43,367 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [管理器初始化成功: {0}] [Missing Resource: 管理器初始化成功: {0}] 
+2025-11-01 16:00:43,399 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [文化已更改为 {0}] [Missing Resource: 文化已更改为 {0}] 
+2025-11-01 16:00:43,418 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [轴配置已从以下位置加载: {0}] [Missing Resource: 轴配置已从以下位置加载: {0}] 
+2025-11-01 16:00:43,428 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [系统初始化成功] [Missing Resource: 系统初始化成功] 
+2025-11-01 16:00:48,688 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:438] [IO连接失败: {0}] [Missing Resource: IO连接失败: {0}] 
+2025-11-01 16:00:48,691 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:75] [IO连接失败: {0}] [Missing Resource: IO连接失败: {0}] 
+2025-11-01 16:00:48,692 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:79] [模块初始化成功: {0}] [Missing Resource: 模块初始化成功: {0}] 
+2025-11-01 16:00:48,693 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [流运行器模块初始化完成: {0}] [Missing Resource: 流运行器模块初始化完成: {0}] 
+2025-11-01 16:00:48,706 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [流运行器模块初始化完成: {0}] [Missing Resource: 流运行器模块初始化完成: {0}] 
+2025-11-01 16:00:48,708 [DEBUG] [thread-1] [Ewan.BusinessBonding.StreamController:488] [系统状态指示器流程已启动] [Missing Resource: 系统状态指示器流程已启动] 
+2025-11-01 16:00:48,747 [DEBUG] [thread-1] [Ewan.BusinessBonding.StreamController:513] [发送系统状态消息: {0} - {1}] [Missing Resource: 发送系统状态消息: {0} - {1}] 
+2025-11-01 16:00:49,023 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [模块初始化成功: {0}] [Missing Resource: 模块初始化成功: {0}] 
+2025-11-01 16:00:49,023 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [模块初始化成功: {0}] [Missing Resource: 模块初始化成功: {0}] 
+2025-11-01 16:00:49,024 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [流运行器模块初始化完成: {0}] [Missing Resource: 流运行器模块初始化完成: {0}] 
+2025-11-01 16:00:49,026 [INFO ] [thread-1] [Ewan.Core.Module.ProductionLineModule:37] 模块初始化成功: ProductionLineModule 
+2025-11-01 16:00:49,028 [INFO ] [thread-1] [Ewan.Core.Module.ProductionLineModule:317] 处理已完成: 系统控制消息监听器注册 
+2025-11-01 16:00:49,032 [INFO ] [thread-1] [Ewan.Core.Module.MaterialLoadingModule:63] 模块初始化成功: MaterialLoadingModule 
+2025-11-01 16:00:49,034 [INFO ] [thread-1] [Ewan.Core.Module.MaterialUnloadingModule:75] 模块初始化成功: MaterialUnloadingModule 
+2025-11-01 16:00:49,174 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:105] 模块初始化成功: BinElevatorModule 
+2025-11-01 16:00:49,175 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:117] 初始化已完成: 料仓升降控制系统 
+2025-11-01 16:00:49,176 [INFO ] [thread-1] [Ewan.Core.Module.ProductionLineModule:56] 初始化已完成: 生产线控制系统 
+2025-11-01 16:00:49,179 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [流运行器模块初始化完成: {0}] [Missing Resource: 流运行器模块初始化完成: {0}] 
+2025-11-01 16:00:49,183 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:41] 模块初始化成功: BeltConveyorModule 
+2025-11-01 16:00:49,183 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:51] 初始化已完成: 皮带输送控制系统 
+2025-11-01 16:00:49,185 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [流运行器模块初始化完成: {0}] [Missing Resource: 流运行器模块初始化完成: {0}] 
+2025-11-01 16:00:49,187 [DEBUG] [thread-1] [Ewan.BusinessBonding.StreamController:403] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-11-01 16:00:49,188 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [流运行器模块初始化完成: {0}] [Missing Resource: 流运行器模块初始化完成: {0}] 
+2025-11-01 16:00:49,189 [DEBUG] [thread-1] [Ewan.BusinessBonding.StreamController:424] [Station心跳流程已启动] [Missing Resource: Station心跳流程已启动] 
+2025-11-01 16:00:49,193 [INFO ] [thread-1] [Ewan.Core.Module.RingLineModule:25] [环线模块已初始化] [Missing Resource: 环线模块已初始化] 
+2025-11-01 16:00:49,193 [INFO ] [thread-13] [Ewan.Core.Module.BeltConveyorModule:139] 处理已开始: 皮带轴开始反向运行，速度:500 
+2025-11-01 16:00:49,195 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [流运行器模块初始化完成: {0}] [Missing Resource: 流运行器模块初始化完成: {0}] 
+2025-11-01 16:00:49,196 [DEBUG] [thread-1] [Ewan.BusinessBonding.StreamController:445] [环线通信流程已启动] [Missing Resource: 环线通信流程已启动] 
+2025-11-01 16:00:49,198 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [流处理已启动] [Missing Resource: 流处理已启动] 
+2025-11-01 16:00:49,201 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocator已配置] [Missing Resource: ViewModelLocator已配置] 
+2025-11-01 16:00:49,385 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-11-01 16:00:52,979 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-11-01 16:00:53,084 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-11-01 16:00:53,878 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-11-01 16:00:53,986 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-11-01 16:00:54,017 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:401] [MainWindowStarted] 主窗口已启动 
+2025-11-01 16:19:10,167 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:322] [已加载 {0} 个用户] [Missing Resource: 已加载 {0} 个用户] 
+2025-11-01 16:19:10,168 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:328] [管理员用户检查: {0}] [Missing Resource: 管理员用户检查: {0}] 
+2025-11-01 16:19:10,172 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:43] 模块初始化成功: DLManager 
+2025-11-01 16:19:10,173 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:95] 处理已开始: 连接扫码器 192.168.3.100:51236 
+2025-11-01 16:19:13,184 [ERROR] [thread-1] [Ewan.Core.ScanCode.DLManager:119] 操作失败: 扫码器连接超时 
+2025-11-01 16:19:15,015 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-11-01 16:19:15,131 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-11-01 16:19:15,241 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-11-01 16:19:15,349 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-11-01 16:19:15,459 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-11-01 16:19:15,487 [DEBUG] [thread-1] [Ewan.Core.Security.SecurityManager:107] [权限检查失败：用户未认证，资源 {0}.{1}] [Missing Resource: 权限检查失败：用户未认证，资源 {0}.{1}] 
+2025-11-01 16:19:15,488 [DEBUG] [thread-1] [Ewan.Core.Security.SecurityManager:107] [权限检查失败：用户未认证，资源 {0}.{1}] [Missing Resource: 权限检查失败：用户未认证，资源 {0}.{1}] 
+2025-11-01 16:19:15,488 [DEBUG] [thread-1] [Ewan.Core.Security.SecurityManager:107] [权限检查失败：用户未认证，资源 {0}.{1}] [Missing Resource: 权限检查失败：用户未认证，资源 {0}.{1}] 
+2025-11-01 16:19:15,490 [DEBUG] [thread-1] [Ewan.Core.Security.SecurityManager:107] [权限检查失败：用户未认证，资源 {0}.{1}] [Missing Resource: 权限检查失败：用户未认证，资源 {0}.{1}] 
+2025-11-01 16:19:15,493 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:401] [MainWindowStarted] 主窗口已启动 
+2025-11-01 16:19:15,497 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [流处理已停止] [Missing Resource: 流处理已停止] 
+2025-11-01 16:19:34,687 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:322] [已加载 {0} 个用户] [Missing Resource: 已加载 {0} 个用户] 
+2025-11-01 16:19:34,688 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:328] [管理员用户检查: {0}] [Missing Resource: 管理员用户检查: {0}] 
+2025-11-01 16:19:34,690 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:43] 模块初始化成功: DLManager 
+2025-11-01 16:19:34,691 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:95] 处理已开始: 连接扫码器 192.168.3.100:51236 
+2025-11-01 16:19:37,708 [ERROR] [thread-1] [Ewan.Core.ScanCode.DLManager:119] 操作失败: 扫码器连接超时 
+2025-11-01 16:19:37,712 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IO配置已从以下位置加载: {0}] [Missing Resource: IO配置已从以下位置加载: {0}] 
+2025-11-01 16:19:37,806 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:214] [IO硬件已创建: {0}] [Missing Resource: IO硬件已创建: {0}] 
+2025-11-01 16:19:37,806 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [管理器初始化成功: {0}] [Missing Resource: 管理器初始化成功: {0}] 
+2025-11-01 16:19:37,824 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [文化已更改为 {0}] [Missing Resource: 文化已更改为 {0}] 
+2025-11-01 16:19:37,831 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [轴配置已从以下位置加载: {0}] [Missing Resource: 轴配置已从以下位置加载: {0}] 
+2025-11-01 16:19:37,841 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [系统初始化成功] [Missing Resource: 系统初始化成功] 
+2025-11-01 16:19:37,842 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [流处理已启动] [Missing Resource: 流处理已启动] 
+2025-11-01 16:19:37,843 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocator已配置] [Missing Resource: ViewModelLocator已配置] 
+2025-11-01 16:19:37,988 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-11-01 16:19:38,098 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-11-01 16:19:38,208 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-11-01 16:19:38,315 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-11-01 16:19:38,424 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-11-01 16:19:38,462 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:401] [MainWindowStarted] 主窗口已启动 
+2025-11-01 16:22:27,036 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LoopInteractionViewModel:20] [ProcessingCompleted] 处理已完成: 环线交互窗口初始化 
+2025-11-01 16:22:27,144 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:799] [ProcessingComplete] 处理完成 
+2025-11-01 16:22:44,816 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [流处理已停止] [Missing Resource: 流处理已停止] 
+2025-11-01 16:25:36,702 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:322] [已加载 {0} 个用户] [Missing Resource: 已加载 {0} 个用户] 
+2025-11-01 16:25:36,702 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:328] [管理员用户检查: {0}] [Missing Resource: 管理员用户检查: {0}] 
+2025-11-01 16:25:36,707 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:43] 模块初始化成功: DLManager 
+2025-11-01 16:25:36,708 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:95] 处理已开始: 连接扫码器 192.168.3.100:51236 
+2025-11-01 16:25:39,720 [ERROR] [thread-1] [Ewan.Core.ScanCode.DLManager:119] 操作失败: 扫码器连接超时 
+2025-11-01 16:25:39,727 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IO配置已从以下位置加载: {0}] [Missing Resource: IO配置已从以下位置加载: {0}] 
+2025-11-01 16:25:39,841 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:214] [IO硬件已创建: {0}] [Missing Resource: IO硬件已创建: {0}] 
+2025-11-01 16:25:39,841 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [管理器初始化成功: {0}] [Missing Resource: 管理器初始化成功: {0}] 
+2025-11-01 16:25:39,860 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [文化已更改为 {0}] [Missing Resource: 文化已更改为 {0}] 
+2025-11-01 16:25:39,866 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [轴配置已从以下位置加载: {0}] [Missing Resource: 轴配置已从以下位置加载: {0}] 
+2025-11-01 16:25:39,880 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [系统初始化成功] [Missing Resource: 系统初始化成功] 
+2025-11-01 16:25:39,880 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [流处理已启动] [Missing Resource: 流处理已启动] 
+2025-11-01 16:25:39,881 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocator已配置] [Missing Resource: ViewModelLocator已配置] 
+2025-11-01 16:25:40,047 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-11-01 16:25:40,151 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-11-01 16:25:40,260 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-11-01 16:25:40,369 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-11-01 16:25:40,477 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-11-01 16:25:40,515 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:401] [MainWindowStarted] 主窗口已启动 
+2025-11-01 16:26:08,391 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [流处理已停止] [Missing Resource: 流处理已停止] 
+2025-11-01 16:28:48,200 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:322] [已加载 {0} 个用户] [Missing Resource: 已加载 {0} 个用户] 
+2025-11-01 16:28:48,202 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:328] [管理员用户检查: {0}] [Missing Resource: 管理员用户检查: {0}] 
+2025-11-01 16:28:48,207 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:43] 模块初始化成功: DLManager 
+2025-11-01 16:28:48,208 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:95] 处理已开始: 连接扫码器 192.168.3.100:51236 
+2025-11-01 16:28:51,226 [ERROR] [thread-1] [Ewan.Core.ScanCode.DLManager:119] 操作失败: 扫码器连接超时 
+2025-11-01 16:28:51,233 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IO配置已从以下位置加载: {0}] [Missing Resource: IO配置已从以下位置加载: {0}] 
+2025-11-01 16:28:51,358 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:214] [IO硬件已创建: {0}] [Missing Resource: IO硬件已创建: {0}] 
+2025-11-01 16:28:51,359 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [管理器初始化成功: {0}] [Missing Resource: 管理器初始化成功: {0}] 
+2025-11-01 16:28:51,388 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [文化已更改为 {0}] [Missing Resource: 文化已更改为 {0}] 
+2025-11-01 16:28:51,400 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [轴配置已从以下位置加载: {0}] [Missing Resource: 轴配置已从以下位置加载: {0}] 
+2025-11-01 16:28:51,418 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [系统初始化成功] [Missing Resource: 系统初始化成功] 
+2025-11-01 16:28:51,418 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [流处理已启动] [Missing Resource: 流处理已启动] 
+2025-11-01 16:28:51,420 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocator已配置] [Missing Resource: ViewModelLocator已配置] 
+2025-11-01 16:28:51,583 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-11-01 16:28:51,689 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-11-01 16:28:51,798 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-11-01 16:28:51,904 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-11-01 16:28:52,013 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-11-01 16:28:52,041 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:401] [MainWindowStarted] 主窗口已启动 
+2025-11-01 16:28:56,884 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [流处理已停止] [Missing Resource: 流处理已停止] 
+2025-11-01 16:29:14,343 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:322] [已加载 {0} 个用户] [Missing Resource: 已加载 {0} 个用户] 
+2025-11-01 16:29:14,344 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:328] [管理员用户检查: {0}] [Missing Resource: 管理员用户检查: {0}] 
+2025-11-01 16:29:14,349 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:43] 模块初始化成功: DLManager 
+2025-11-01 16:29:14,350 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:95] 处理已开始: 连接扫码器 192.168.3.100:51236 
+2025-11-01 16:29:17,357 [ERROR] [thread-1] [Ewan.Core.ScanCode.DLManager:119] 操作失败: 扫码器连接超时 
+2025-11-01 16:29:17,362 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IO配置已从以下位置加载: {0}] [Missing Resource: IO配置已从以下位置加载: {0}] 
+2025-11-01 16:29:17,455 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:214] [IO硬件已创建: {0}] [Missing Resource: IO硬件已创建: {0}] 
+2025-11-01 16:29:17,456 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [管理器初始化成功: {0}] [Missing Resource: 管理器初始化成功: {0}] 
+2025-11-01 16:29:17,480 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [文化已更改为 {0}] [Missing Resource: 文化已更改为 {0}] 
+2025-11-01 16:29:17,490 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [轴配置已从以下位置加载: {0}] [Missing Resource: 轴配置已从以下位置加载: {0}] 
+2025-11-01 16:29:17,503 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [系统初始化成功] [Missing Resource: 系统初始化成功] 
+2025-11-01 16:29:17,504 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [流处理已启动] [Missing Resource: 流处理已启动] 
+2025-11-01 16:29:17,505 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocator已配置] [Missing Resource: ViewModelLocator已配置] 
+2025-11-01 16:29:17,657 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-11-01 16:29:17,765 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-11-01 16:29:17,876 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-11-01 16:29:17,985 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-11-01 16:29:18,095 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-11-01 16:29:18,123 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:401] [MainWindowStarted] 主窗口已启动 
+2025-11-01 16:29:41,888 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [流处理已停止] [Missing Resource: 流处理已停止] 
+2025-11-01 16:30:23,585 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:322] [已加载 {0} 个用户] [Missing Resource: 已加载 {0} 个用户] 
+2025-11-01 16:30:23,585 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:328] [管理员用户检查: {0}] [Missing Resource: 管理员用户检查: {0}] 
+2025-11-01 16:30:23,588 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:43] 模块初始化成功: DLManager 
+2025-11-01 16:30:23,589 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:95] 处理已开始: 连接扫码器 192.168.3.100:51236 
+2025-11-01 16:30:26,611 [ERROR] [thread-1] [Ewan.Core.ScanCode.DLManager:119] 操作失败: 扫码器连接超时 
+2025-11-01 16:30:26,617 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IO配置已从以下位置加载: {0}] [Missing Resource: IO配置已从以下位置加载: {0}] 
+2025-11-01 16:30:26,740 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:214] [IO硬件已创建: {0}] [Missing Resource: IO硬件已创建: {0}] 
+2025-11-01 16:30:26,741 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [管理器初始化成功: {0}] [Missing Resource: 管理器初始化成功: {0}] 
+2025-11-01 16:30:26,763 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [文化已更改为 {0}] [Missing Resource: 文化已更改为 {0}] 
+2025-11-01 16:30:26,774 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [轴配置已从以下位置加载: {0}] [Missing Resource: 轴配置已从以下位置加载: {0}] 
+2025-11-01 16:30:26,785 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [系统初始化成功] [Missing Resource: 系统初始化成功] 
+2025-11-01 16:30:26,786 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [流处理已启动] [Missing Resource: 流处理已启动] 
+2025-11-01 16:30:26,788 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocator已配置] [Missing Resource: ViewModelLocator已配置] 
+2025-11-01 16:30:26,947 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-11-01 16:30:27,058 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-11-01 16:30:27,166 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-11-01 16:30:27,277 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-11-01 16:30:27,387 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-11-01 16:30:27,420 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:401] [MainWindowStarted] 主窗口已启动 
+2025-11-01 16:30:36,848 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [流处理已停止] [Missing Resource: 流处理已停止] 
+2025-11-01 16:38:22,557 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:322] [已加载 {0} 个用户] [Missing Resource: 已加载 {0} 个用户] 
+2025-11-01 16:38:22,560 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:328] [管理员用户检查: {0}] [Missing Resource: 管理员用户检查: {0}] 
+2025-11-01 16:38:22,565 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:43] 模块初始化成功: DLManager 
+2025-11-01 16:38:22,568 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:95] 处理已开始: 连接扫码器 192.168.3.100:51236 
+2025-11-01 16:38:25,600 [ERROR] [thread-1] [Ewan.Core.ScanCode.DLManager:119] 操作失败: 扫码器连接超时 
+2025-11-01 16:38:27,801 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-11-01 16:38:27,913 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-11-01 16:38:28,023 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-11-01 16:38:28,130 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-11-01 16:38:28,239 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-11-01 16:38:28,275 [DEBUG] [thread-1] [Ewan.Core.Security.SecurityManager:107] [权限检查失败：用户未认证，资源 {0}.{1}] [Missing Resource: 权限检查失败：用户未认证，资源 {0}.{1}] 
+2025-11-01 16:38:28,277 [DEBUG] [thread-1] [Ewan.Core.Security.SecurityManager:107] [权限检查失败：用户未认证，资源 {0}.{1}] [Missing Resource: 权限检查失败：用户未认证，资源 {0}.{1}] 
+2025-11-01 16:38:28,277 [DEBUG] [thread-1] [Ewan.Core.Security.SecurityManager:107] [权限检查失败：用户未认证，资源 {0}.{1}] [Missing Resource: 权限检查失败：用户未认证，资源 {0}.{1}] 
+2025-11-01 16:38:28,279 [DEBUG] [thread-1] [Ewan.Core.Security.SecurityManager:107] [权限检查失败：用户未认证，资源 {0}.{1}] [Missing Resource: 权限检查失败：用户未认证，资源 {0}.{1}] 
+2025-11-01 16:38:28,281 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:401] [MainWindowStarted] 主窗口已启动 
+2025-11-01 16:38:28,288 [DEBUG] [thread-1] [Ewan.BusinessBonding.StreamController:392] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-11-01 16:38:28,290 [DEBUG] [thread-1] [Ewan.BusinessBonding.StreamController:413] [皮带输送控制流程已停止] [Missing Resource: 皮带输送控制流程已停止] 
+2025-11-01 16:38:28,290 [DEBUG] [thread-1] [Ewan.BusinessBonding.StreamController:434] [Station心跳流程已停止] [Missing Resource: Station心跳流程已停止] 
+2025-11-01 16:38:28,292 [DEBUG] [thread-1] [Ewan.BusinessBonding.StreamController:455] [环线通信流程已停止] [Missing Resource: 环线通信流程已停止] 
+2025-11-01 16:38:28,294 [DEBUG] [thread-1] [Ewan.BusinessBonding.StreamController:513] [发送系统状态消息: {0} - {1}] [Missing Resource: 发送系统状态消息: {0} - {1}] 
+2025-11-01 16:38:28,295 [DEBUG] [thread-1] [Ewan.BusinessBonding.StreamController:498] [系统状态指示器流程已停止] [Missing Resource: 系统状态指示器流程已停止] 
+2025-11-01 16:38:28,297 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [流处理已停止] [Missing Resource: 流处理已停止] 
+2025-11-01 16:38:50,017 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:322] [已加载 {0} 个用户] [Missing Resource: 已加载 {0} 个用户] 
+2025-11-01 16:38:50,018 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:328] [管理员用户检查: {0}] [Missing Resource: 管理员用户检查: {0}] 
+2025-11-01 16:38:50,022 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:43] 模块初始化成功: DLManager 
+2025-11-01 16:38:50,023 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:95] 处理已开始: 连接扫码器 192.168.3.100:51236 
+2025-11-01 16:38:53,040 [ERROR] [thread-1] [Ewan.Core.ScanCode.DLManager:119] 操作失败: 扫码器连接超时 
+2025-11-01 16:38:53,046 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IO配置已从以下位置加载: {0}] [Missing Resource: IO配置已从以下位置加载: {0}] 
+2025-11-01 16:38:53,193 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:214] [IO硬件已创建: {0}] [Missing Resource: IO硬件已创建: {0}] 
+2025-11-01 16:38:53,194 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [管理器初始化成功: {0}] [Missing Resource: 管理器初始化成功: {0}] 
+2025-11-01 16:38:53,217 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [文化已更改为 {0}] [Missing Resource: 文化已更改为 {0}] 
+2025-11-01 16:38:53,223 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [轴配置已从以下位置加载: {0}] [Missing Resource: 轴配置已从以下位置加载: {0}] 
+2025-11-01 16:38:53,243 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [系统初始化成功] [Missing Resource: 系统初始化成功] 
+2025-11-01 16:38:53,244 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [流处理已启动] [Missing Resource: 流处理已启动] 
+2025-11-01 16:38:53,246 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocator已配置] [Missing Resource: ViewModelLocator已配置] 
+2025-11-01 16:38:53,373 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-11-01 16:38:53,477 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-11-01 16:38:53,586 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-11-01 16:38:53,694 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-11-01 16:38:53,803 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-11-01 16:38:53,846 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:401] [MainWindowStarted] 主窗口已启动 
+2025-11-01 16:39:39,329 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [流处理已停止] [Missing Resource: 流处理已停止] 
+2025-11-01 16:42:38,766 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:322] [已加载 {0} 个用户] [Missing Resource: 已加载 {0} 个用户] 
+2025-11-01 16:42:38,767 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:328] [管理员用户检查: {0}] [Missing Resource: 管理员用户检查: {0}] 
+2025-11-01 16:42:38,772 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:43] 模块初始化成功: DLManager 
+2025-11-01 16:42:38,774 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:95] 处理已开始: 连接扫码器 192.168.3.100:51236 
+2025-11-01 16:42:41,799 [ERROR] [thread-1] [Ewan.Core.ScanCode.DLManager:119] 操作失败: 扫码器连接超时 
+2025-11-01 16:42:41,804 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IO配置已从以下位置加载: {0}] [Missing Resource: IO配置已从以下位置加载: {0}] 
+2025-11-01 16:42:41,880 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:214] [IO硬件已创建: {0}] [Missing Resource: IO硬件已创建: {0}] 
+2025-11-01 16:42:41,881 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [管理器初始化成功: {0}] [Missing Resource: 管理器初始化成功: {0}] 
+2025-11-01 16:42:41,900 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [文化已更改为 {0}] [Missing Resource: 文化已更改为 {0}] 
+2025-11-01 16:42:41,907 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [轴配置已从以下位置加载: {0}] [Missing Resource: 轴配置已从以下位置加载: {0}] 
+2025-11-01 16:42:41,948 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [系统初始化成功] [Missing Resource: 系统初始化成功] 
+2025-11-01 16:42:41,949 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [流处理已启动] [Missing Resource: 流处理已启动] 
+2025-11-01 16:42:41,951 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocator已配置] [Missing Resource: ViewModelLocator已配置] 
+2025-11-01 16:42:42,108 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-11-01 16:42:42,215 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-11-01 16:42:42,325 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-11-01 16:42:42,433 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-11-01 16:42:42,542 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-11-01 16:42:42,580 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:401] [MainWindowStarted] 主窗口已启动 
+2025-11-01 16:42:59,678 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [流处理已停止] [Missing Resource: 流处理已停止] 
+2025-11-01 16:47:18,103 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:322] [已加载 {0} 个用户] [Missing Resource: 已加载 {0} 个用户] 
+2025-11-01 16:47:18,105 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:328] [管理员用户检查: {0}] [Missing Resource: 管理员用户检查: {0}] 
+2025-11-01 16:47:18,110 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:43] 模块初始化成功: DLManager 
+2025-11-01 16:47:18,111 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:95] 处理已开始: 连接扫码器 192.168.3.100:51236 
+2025-11-01 16:47:21,129 [ERROR] [thread-1] [Ewan.Core.ScanCode.DLManager:119] 操作失败: 扫码器连接超时 
+2025-11-01 16:47:21,234 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IO配置已从以下位置加载: {0}] [Missing Resource: IO配置已从以下位置加载: {0}] 
+2025-11-01 16:47:21,247 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:214] [IO硬件已创建: {0}] [Missing Resource: IO硬件已创建: {0}] 
+2025-11-01 16:47:21,248 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [管理器初始化成功: {0}] [Missing Resource: 管理器初始化成功: {0}] 
+2025-11-01 16:47:21,274 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [文化已更改为 {0}] [Missing Resource: 文化已更改为 {0}] 
+2025-11-01 16:47:21,280 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [轴配置已从以下位置加载: {0}] [Missing Resource: 轴配置已从以下位置加载: {0}] 
+2025-11-01 16:47:21,289 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [系统初始化成功] [Missing Resource: 系统初始化成功] 
+2025-11-01 16:47:21,290 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [流处理已启动] [Missing Resource: 流处理已启动] 
+2025-11-01 16:47:21,291 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocator已配置] [Missing Resource: ViewModelLocator已配置] 
+2025-11-01 16:47:21,433 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-11-01 16:47:21,548 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-11-01 16:47:21,657 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-11-01 16:47:21,766 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-11-01 16:47:21,876 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-11-01 16:47:21,919 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:401] [MainWindowStarted] 主窗口已启动 
+2025-11-01 16:48:29,317 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [流处理已停止] [Missing Resource: 流处理已停止] 
+2025-11-01 16:59:49,418 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:322] [已加载 {0} 个用户] [Missing Resource: 已加载 {0} 个用户] 
+2025-11-01 16:59:49,420 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:328] [管理员用户检查: {0}] [Missing Resource: 管理员用户检查: {0}] 
+2025-11-01 16:59:49,426 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:43] 模块初始化成功: DLManager 
+2025-11-01 16:59:49,428 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:95] 处理已开始: 连接扫码器 192.168.3.100:51236 
+2025-11-01 16:59:52,450 [ERROR] [thread-1] [Ewan.Core.ScanCode.DLManager:119] 操作失败: 扫码器连接超时 
+2025-11-01 16:59:52,456 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IO配置已从以下位置加载: {0}] [Missing Resource: IO配置已从以下位置加载: {0}] 
+2025-11-01 16:59:52,548 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:214] [IO硬件已创建: {0}] [Missing Resource: IO硬件已创建: {0}] 
+2025-11-01 16:59:52,556 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [管理器初始化成功: {0}] [Missing Resource: 管理器初始化成功: {0}] 
+2025-11-01 16:59:52,574 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [文化已更改为 {0}] [Missing Resource: 文化已更改为 {0}] 
+2025-11-01 16:59:52,585 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [轴配置已从以下位置加载: {0}] [Missing Resource: 轴配置已从以下位置加载: {0}] 
+2025-11-01 16:59:52,596 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [系统初始化成功] [Missing Resource: 系统初始化成功] 
+2025-11-01 16:59:52,596 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [流处理已启动] [Missing Resource: 流处理已启动] 
+2025-11-01 16:59:52,597 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocator已配置] [Missing Resource: ViewModelLocator已配置] 
+2025-11-01 16:59:52,749 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-11-01 16:59:52,866 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-11-01 16:59:52,976 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-11-01 16:59:53,084 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-11-01 16:59:53,192 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-11-01 16:59:53,225 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:401] [MainWindowStarted] 主窗口已启动 
+2025-11-01 17:00:06,924 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [流处理已停止] [Missing Resource: 流处理已停止] 
+2025-11-01 17:00:36,104 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:322] [已加载 {0} 个用户] [Missing Resource: 已加载 {0} 个用户] 
+2025-11-01 17:00:36,105 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:328] [管理员用户检查: {0}] [Missing Resource: 管理员用户检查: {0}] 
+2025-11-01 17:00:36,109 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:43] 模块初始化成功: DLManager 
+2025-11-01 17:00:36,111 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:95] 处理已开始: 连接扫码器 192.168.3.100:51236 
+2025-11-01 17:00:39,134 [ERROR] [thread-1] [Ewan.Core.ScanCode.DLManager:119] 操作失败: 扫码器连接超时 
+2025-11-01 17:00:39,238 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IO配置已从以下位置加载: {0}] [Missing Resource: IO配置已从以下位置加载: {0}] 
+2025-11-01 17:00:39,246 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:214] [IO硬件已创建: {0}] [Missing Resource: IO硬件已创建: {0}] 
+2025-11-01 17:00:39,247 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [管理器初始化成功: {0}] [Missing Resource: 管理器初始化成功: {0}] 
+2025-11-01 17:00:39,264 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [文化已更改为 {0}] [Missing Resource: 文化已更改为 {0}] 
+2025-11-01 17:00:39,273 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [轴配置已从以下位置加载: {0}] [Missing Resource: 轴配置已从以下位置加载: {0}] 
+2025-11-01 17:00:39,283 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [系统初始化成功] [Missing Resource: 系统初始化成功] 
+2025-11-01 17:00:39,283 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [流处理已启动] [Missing Resource: 流处理已启动] 
+2025-11-01 17:00:39,284 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocator已配置] [Missing Resource: ViewModelLocator已配置] 
+2025-11-01 17:00:39,427 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-11-01 17:00:39,538 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-11-01 17:00:39,649 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-11-01 17:00:39,757 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-11-01 17:00:39,866 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-11-01 17:00:39,894 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:401] [MainWindowStarted] 主窗口已启动 
+2025-11-01 17:01:39,816 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [流处理已停止] [Missing Resource: 流处理已停止] 
+2025-11-01 17:13:05,930 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:322] [已加载 {0} 个用户] [Missing Resource: 已加载 {0} 个用户] 
+2025-11-01 17:13:05,931 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:328] [管理员用户检查: {0}] [Missing Resource: 管理员用户检查: {0}] 
+2025-11-01 17:13:05,938 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:43] 模块初始化成功: DLManager 
+2025-11-01 17:13:05,940 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:95] 处理已开始: 连接扫码器 192.168.3.100:51236 
+2025-11-01 17:13:08,960 [ERROR] [thread-1] [Ewan.Core.ScanCode.DLManager:119] 操作失败: 扫码器连接超时 
+2025-11-01 17:13:08,967 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IO配置已从以下位置加载: {0}] [Missing Resource: IO配置已从以下位置加载: {0}] 
+2025-11-01 17:13:09,057 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:214] [IO硬件已创建: {0}] [Missing Resource: IO硬件已创建: {0}] 
+2025-11-01 17:13:09,058 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [管理器初始化成功: {0}] [Missing Resource: 管理器初始化成功: {0}] 
+2025-11-01 17:13:09,085 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [文化已更改为 {0}] [Missing Resource: 文化已更改为 {0}] 
+2025-11-01 17:13:09,097 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [轴配置已从以下位置加载: {0}] [Missing Resource: 轴配置已从以下位置加载: {0}] 
+2025-11-01 17:13:09,111 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [系统初始化成功] [Missing Resource: 系统初始化成功] 
+2025-11-01 17:13:09,111 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [流处理已启动] [Missing Resource: 流处理已启动] 
+2025-11-01 17:13:09,112 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocator已配置] [Missing Resource: ViewModelLocator已配置] 
+2025-11-01 17:13:09,277 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-11-01 17:13:09,394 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-11-01 17:13:09,502 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-11-01 17:13:09,609 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-11-01 17:13:09,716 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-11-01 17:13:09,744 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:401] [MainWindowStarted] 主窗口已启动 
+2025-11-01 17:16:34,326 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [流处理已停止] [Missing Resource: 流处理已停止] 
+2025-11-01 17:17:51,525 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:322] [已加载 {0} 个用户] [Missing Resource: 已加载 {0} 个用户] 
+2025-11-01 17:17:51,526 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:328] [管理员用户检查: {0}] [Missing Resource: 管理员用户检查: {0}] 
+2025-11-01 17:17:51,528 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:43] 模块初始化成功: DLManager 
+2025-11-01 17:17:51,529 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:95] 处理已开始: 连接扫码器 192.168.3.100:51236 
+2025-11-01 17:17:54,548 [ERROR] [thread-1] [Ewan.Core.ScanCode.DLManager:119] 操作失败: 扫码器连接超时 
+2025-11-01 17:17:54,550 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IO配置已从以下位置加载: {0}] [Missing Resource: IO配置已从以下位置加载: {0}] 
+2025-11-01 17:17:54,645 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:214] [IO硬件已创建: {0}] [Missing Resource: IO硬件已创建: {0}] 
+2025-11-01 17:17:54,645 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [管理器初始化成功: {0}] [Missing Resource: 管理器初始化成功: {0}] 
+2025-11-01 17:17:54,671 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [文化已更改为 {0}] [Missing Resource: 文化已更改为 {0}] 
+2025-11-01 17:17:54,678 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [轴配置已从以下位置加载: {0}] [Missing Resource: 轴配置已从以下位置加载: {0}] 
+2025-11-01 17:17:54,687 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [系统初始化成功] [Missing Resource: 系统初始化成功] 
+2025-11-01 17:17:54,687 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [流处理已启动] [Missing Resource: 流处理已启动] 
+2025-11-01 17:17:54,689 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocator已配置] [Missing Resource: ViewModelLocator已配置] 
+2025-11-01 17:17:54,840 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-11-01 17:17:54,954 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-11-01 17:17:55,062 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-11-01 17:17:55,171 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-11-01 17:17:55,278 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-11-01 17:17:55,303 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:401] [MainWindowStarted] 主窗口已启动 
+2025-11-01 17:21:32,815 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [流处理已停止] [Missing Resource: 流处理已停止] 
+2025-11-01 17:22:37,563 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:322] [已加载 {0} 个用户] [Missing Resource: 已加载 {0} 个用户] 
+2025-11-01 17:22:37,564 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:328] [管理员用户检查: {0}] [Missing Resource: 管理员用户检查: {0}] 
+2025-11-01 17:22:37,567 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:43] 模块初始化成功: DLManager 
+2025-11-01 17:22:37,569 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:95] 处理已开始: 连接扫码器 192.168.3.100:51236 
+2025-11-01 17:22:40,579 [ERROR] [thread-1] [Ewan.Core.ScanCode.DLManager:119] 操作失败: 扫码器连接超时 
+2025-11-01 17:22:40,585 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IO配置已从以下位置加载: {0}] [Missing Resource: IO配置已从以下位置加载: {0}] 
+2025-11-01 17:22:40,663 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:214] [IO硬件已创建: {0}] [Missing Resource: IO硬件已创建: {0}] 
+2025-11-01 17:22:40,664 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [管理器初始化成功: {0}] [Missing Resource: 管理器初始化成功: {0}] 
+2025-11-01 17:22:40,684 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [文化已更改为 {0}] [Missing Resource: 文化已更改为 {0}] 
+2025-11-01 17:22:40,691 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [轴配置已从以下位置加载: {0}] [Missing Resource: 轴配置已从以下位置加载: {0}] 
+2025-11-01 17:22:40,703 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [系统初始化成功] [Missing Resource: 系统初始化成功] 
+2025-11-01 17:22:40,704 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [流处理已启动] [Missing Resource: 流处理已启动] 
+2025-11-01 17:22:40,705 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocator已配置] [Missing Resource: ViewModelLocator已配置] 
+2025-11-01 17:22:40,855 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-11-01 17:22:40,967 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-11-01 17:22:41,077 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-11-01 17:22:41,187 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-11-01 17:22:41,295 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-11-01 17:22:41,330 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:401] [MainWindowStarted] 主窗口已启动 
+2025-11-01 17:26:29,911 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [流处理已停止] [Missing Resource: 流处理已停止] 
+2025-11-01 17:49:56,973 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:322] [已加载 {0} 个用户] [Missing Resource: 已加载 {0} 个用户] 
+2025-11-01 17:49:56,974 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:328] [管理员用户检查: {0}] [Missing Resource: 管理员用户检查: {0}] 
+2025-11-01 17:49:56,977 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:43] 模块初始化成功: DLManager 
+2025-11-01 17:49:56,978 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:95] 处理已开始: 连接扫码器 192.168.3.100:51236 
+2025-11-01 17:49:59,986 [ERROR] [thread-1] [Ewan.Core.ScanCode.DLManager:119] 操作失败: 扫码器连接超时 
+2025-11-01 17:50:01,546 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-11-01 17:50:01,651 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-11-01 17:50:01,762 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-11-01 17:50:01,869 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-11-01 17:50:01,978 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-11-01 17:50:01,994 [DEBUG] [thread-1] [Ewan.Core.Security.SecurityManager:107] [权限检查失败：用户未认证，资源 {0}.{1}] [Missing Resource: 权限检查失败：用户未认证，资源 {0}.{1}] 
+2025-11-01 17:50:01,994 [DEBUG] [thread-1] [Ewan.Core.Security.SecurityManager:107] [权限检查失败：用户未认证，资源 {0}.{1}] [Missing Resource: 权限检查失败：用户未认证，资源 {0}.{1}] 
+2025-11-01 17:50:01,995 [DEBUG] [thread-1] [Ewan.Core.Security.SecurityManager:107] [权限检查失败：用户未认证，资源 {0}.{1}] [Missing Resource: 权限检查失败：用户未认证，资源 {0}.{1}] 
+2025-11-01 17:50:01,995 [DEBUG] [thread-1] [Ewan.Core.Security.SecurityManager:107] [权限检查失败：用户未认证，资源 {0}.{1}] [Missing Resource: 权限检查失败：用户未认证，资源 {0}.{1}] 
+2025-11-01 17:50:01,996 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:401] [MainWindowStarted] 主窗口已启动 
+2025-11-01 17:50:01,998 [DEBUG] [thread-1] [Ewan.BusinessBonding.StreamController:392] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-11-01 17:50:01,999 [DEBUG] [thread-1] [Ewan.BusinessBonding.StreamController:413] [皮带输送控制流程已停止] [Missing Resource: 皮带输送控制流程已停止] 
+2025-11-01 17:50:01,999 [DEBUG] [thread-1] [Ewan.BusinessBonding.StreamController:434] [Station心跳流程已停止] [Missing Resource: Station心跳流程已停止] 
+2025-11-01 17:50:02,000 [DEBUG] [thread-1] [Ewan.BusinessBonding.StreamController:455] [环线通信流程已停止] [Missing Resource: 环线通信流程已停止] 
+2025-11-01 17:50:02,000 [DEBUG] [thread-1] [Ewan.BusinessBonding.StreamController:513] [发送系统状态消息: {0} - {1}] [Missing Resource: 发送系统状态消息: {0} - {1}] 
+2025-11-01 17:50:02,001 [DEBUG] [thread-1] [Ewan.BusinessBonding.StreamController:498] [系统状态指示器流程已停止] [Missing Resource: 系统状态指示器流程已停止] 
+2025-11-01 17:50:02,001 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [流处理已停止] [Missing Resource: 流处理已停止] 
+2025-11-01 19:14:36,913 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:322] [已加载 {0} 个用户] [Missing Resource: 已加载 {0} 个用户] 
+2025-11-01 19:14:36,914 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:328] [管理员用户检查: {0}] [Missing Resource: 管理员用户检查: {0}] 
+2025-11-01 19:14:36,919 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:43] 模块初始化成功: DLManager 
+2025-11-01 19:14:36,920 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:95] 处理已开始: 连接扫码器 192.168.3.100:51236 

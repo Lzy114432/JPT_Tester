@@ -1,0 +1,253 @@
+﻿2025-11-01 15:59:36,756 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-11-01 15:59:37,397 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-11-01 15:59:37,398 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: SecurityManager 
+2025-11-01 15:59:40,422 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: DLManager 
+2025-11-01 15:59:40,648 [INFO ] [thread-1] [Ewan.Core.Plc.ModbusRTUManager:38] ModbusRTUManager 开始初始化 - 串口:COM7, 波特率:115200, 数据位:8, 停止位:One, 校验位:None, 从站地址:1 
+2025-11-01 15:59:40,650 [INFO ] [thread-1] [Ewan.Core.Plc.ModbusRTUManager:69] ModbusRTUManager 尝试打开RS485串口连接 - COM7 
+2025-11-01 15:59:40,692 [ERROR] [thread-1] [Ewan.Core.Plc.ModbusRTUManager:78] ModbusRTUManager RS485连接异常 - 端口“COM7”不存在。 
+System.IO.IOException: 端口“COM7”不存在。
+   在 System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   在 System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   在 System.IO.Ports.SerialPort.Open()
+   在 HslCommunication.Serial.SerialBase.Open()
+   在 Ewan.Core.Plc.ModbusRTUManager.Open() 位置 C:\Users\Administrator\source\repos\MarkingMachineFeeder\Ewan.Core\Plc\ModbusRTUManager.cs:行号 78
+2025-11-01 15:59:40,702 [ERROR] [thread-1] [Ewan.Core.Plc.ModbusRTUManager:50] ModbusRTUManager 初始化失败 - ID:17324607, 无法建立RS485连接 
+2025-11-01 15:59:40,702 [ERROR] [thread-1] [MarkingMachineFeeder.App:38] MainController初始化失败: {0} 
+2025-11-01 16:00:19,376 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-11-01 16:00:19,545 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-11-01 16:00:19,545 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: SecurityManager 
+2025-11-01 16:00:40,060 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-11-01 16:00:40,232 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-11-01 16:00:40,233 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: SecurityManager 
+2025-11-01 16:00:43,251 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: DLManager 
+2025-11-01 16:00:43,367 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: LayeredIOManager 
+2025-11-01 16:00:43,399 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: CultureManager 
+2025-11-01 16:00:43,418 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: AxisManager 
+2025-11-01 16:00:43,419 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: MsgManager 
+2025-11-01 16:00:43,424 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: StreamController 
+2025-11-01 16:00:43,426 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-11-01 16:00:43,427 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: operator 
+2025-11-01 16:00:48,698 [WARN ] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:464] IO管理器未连接，无法停止蜂鸣器 
+2025-11-01 16:00:48,703 [WARN ] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:269] IO管理器未连接，无法控制三色灯 
+2025-11-01 16:00:48,704 [DEBUG] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:270] 预期三色灯状态: 红=False, 黄=True, 绿=False 
+2025-11-01 16:00:48,705 [DEBUG] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:163] 三色灯: 待机状态 - 黄灯常亮 
+2025-11-01 16:00:48,705 [INFO ] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:50] SystemStatusIndicatorModule 初始化完成 
+2025-11-01 16:00:48,748 [WARN ] [thread-9] [Ewan.Core.Module.SystemStatusIndicatorModule:464] IO管理器未连接，无法停止蜂鸣器 
+2025-11-01 16:00:48,749 [WARN ] [thread-9] [Ewan.Core.Module.SystemStatusIndicatorModule:269] IO管理器未连接，无法控制三色灯 
+2025-11-01 16:00:48,750 [DEBUG] [thread-9] [Ewan.Core.Module.SystemStatusIndicatorModule:270] 预期三色灯状态: 红=False, 黄=True, 绿=False 
+2025-11-01 16:00:48,750 [DEBUG] [thread-9] [Ewan.Core.Module.SystemStatusIndicatorModule:163] 三色灯: 待机状态 - 黄灯常亮 
+2025-11-01 16:00:49,188 [INFO ] [thread-1] [Ewan.Core.Module.StationHeartbeatModule:24] StationHeartbeat模块初始化成功 
+2025-11-01 16:00:49,192 [DEBUG] [thread-14] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-11-01 16:00:52,974 [DEBUG] [thread-14] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-11-01 16:00:52,980 [ERROR] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:103] ModbusRTUManager Read occur exception,System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Ewan.Core.Plc.ModbusRTUManager.Read(String address, UInt16 length) 位置 C:\Users\Administrator\source\repos\MarkingMachineFeeder\Ewan.Core\Plc\ModbusRTUManager.cs:行号 103 
+2025-11-01 16:00:53,878 [ERROR] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:103] ModbusRTUManager Read occur exception,System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Ewan.Core.Plc.ModbusRTUManager.Read(String address, UInt16 length) 位置 C:\Users\Administrator\source\repos\MarkingMachineFeeder\Ewan.Core\Plc\ModbusRTUManager.cs:行号 103 
+2025-11-01 16:00:53,992 [DEBUG] [thread-14] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-11-01 16:00:54,693 [ERROR] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:103] ModbusRTUManager Read occur exception,System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Ewan.Core.Plc.ModbusRTUManager.Read(String address, UInt16 length) 位置 C:\Users\Administrator\source\repos\MarkingMachineFeeder\Ewan.Core\Plc\ModbusRTUManager.cs:行号 103 
+2025-11-01 16:00:55,501 [DEBUG] [thread-14] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-11-01 16:00:55,504 [ERROR] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:103] ModbusRTUManager Read occur exception,System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Ewan.Core.Plc.ModbusRTUManager.Read(String address, UInt16 length) 位置 C:\Users\Administrator\source\repos\MarkingMachineFeeder\Ewan.Core\Plc\ModbusRTUManager.cs:行号 103 
+2025-11-01 16:00:56,234 [ERROR] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:103] ModbusRTUManager Read occur exception,System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Ewan.Core.Plc.ModbusRTUManager.Read(String address, UInt16 length) 位置 C:\Users\Administrator\source\repos\MarkingMachineFeeder\Ewan.Core\Plc\ModbusRTUManager.cs:行号 103 
+2025-11-01 16:00:56,807 [DEBUG] [thread-14] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-11-01 16:00:56,816 [ERROR] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:103] ModbusRTUManager Read occur exception,System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Ewan.Core.Plc.ModbusRTUManager.Read(String address, UInt16 length) 位置 C:\Users\Administrator\source\repos\MarkingMachineFeeder\Ewan.Core\Plc\ModbusRTUManager.cs:行号 103 
+2025-11-01 16:00:57,225 [ERROR] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:103] ModbusRTUManager Read occur exception,System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Ewan.Core.Plc.ModbusRTUManager.Read(String address, UInt16 length) 位置 C:\Users\Administrator\source\repos\MarkingMachineFeeder\Ewan.Core\Plc\ModbusRTUManager.cs:行号 103 
+2025-11-01 16:00:59,991 [DEBUG] [thread-14] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-11-01 16:00:59,997 [ERROR] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:103] ModbusRTUManager Read occur exception,System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 Ewan.Core.Plc.ModbusRTUManager.Read(String address, UInt16 length) 位置 C:\Users\Administrator\source\repos\MarkingMachineFeeder\Ewan.Core\Plc\ModbusRTUManager.cs:行号 103 
+2025-11-01 16:19:10,011 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-11-01 16:19:10,169 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-11-01 16:19:10,170 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: SecurityManager 
+2025-11-01 16:19:13,186 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: DLManager 
+2025-11-01 16:19:13,430 [INFO ] [thread-1] [Ewan.Core.Plc.ModbusRTUManager:38] ModbusRTUManager 开始初始化 - 串口:COM7, 波特率:115200, 数据位:8, 停止位:One, 校验位:None, 从站地址:1 
+2025-11-01 16:19:13,431 [INFO ] [thread-1] [Ewan.Core.Plc.ModbusRTUManager:69] ModbusRTUManager 尝试打开RS485串口连接 - COM7 
+2025-11-01 16:19:13,468 [ERROR] [thread-1] [Ewan.Core.Plc.ModbusRTUManager:78] ModbusRTUManager RS485连接异常 - 端口“COM7”不存在。 
+System.IO.IOException: 端口“COM7”不存在。
+   在 System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   在 System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   在 System.IO.Ports.SerialPort.Open()
+   在 HslCommunication.Serial.SerialBase.Open()
+   在 Ewan.Core.Plc.ModbusRTUManager.Open() 位置 C:\Users\Administrator\source\repos\MarkingMachineFeeder\Ewan.Core\Plc\ModbusRTUManager.cs:行号 78
+2025-11-01 16:19:13,476 [ERROR] [thread-1] [Ewan.Core.Plc.ModbusRTUManager:50] ModbusRTUManager 初始化失败 - ID:17324607, 无法建立RS485连接 
+2025-11-01 16:19:13,476 [ERROR] [thread-1] [MarkingMachineFeeder.App:38] MainController初始化失败: {0} 
+2025-11-01 16:19:34,487 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-11-01 16:19:34,689 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-11-01 16:19:34,689 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: SecurityManager 
+2025-11-01 16:19:37,710 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: DLManager 
+2025-11-01 16:19:37,807 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: LayeredIOManager 
+2025-11-01 16:19:37,824 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: CultureManager 
+2025-11-01 16:19:37,832 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: AxisManager 
+2025-11-01 16:19:37,832 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: MsgManager 
+2025-11-01 16:19:37,838 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: StreamController 
+2025-11-01 16:19:37,839 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-11-01 16:19:37,840 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: operator 
+2025-11-01 16:21:40,051 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: admin 
+2025-11-01 16:25:36,512 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-11-01 16:25:36,704 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-11-01 16:25:36,705 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: SecurityManager 
+2025-11-01 16:25:39,722 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: DLManager 
+2025-11-01 16:25:39,842 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: LayeredIOManager 
+2025-11-01 16:25:39,860 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: CultureManager 
+2025-11-01 16:25:39,867 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: AxisManager 
+2025-11-01 16:25:39,868 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: MsgManager 
+2025-11-01 16:25:39,874 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: StreamController 
+2025-11-01 16:25:39,875 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-11-01 16:25:39,879 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: operator 
+2025-11-01 16:28:48,016 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-11-01 16:28:48,203 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-11-01 16:28:48,204 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: SecurityManager 
+2025-11-01 16:28:51,228 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: DLManager 
+2025-11-01 16:28:51,361 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: LayeredIOManager 
+2025-11-01 16:28:51,388 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: CultureManager 
+2025-11-01 16:28:51,400 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: AxisManager 
+2025-11-01 16:28:51,401 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: MsgManager 
+2025-11-01 16:28:51,407 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: StreamController 
+2025-11-01 16:28:51,409 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-11-01 16:28:51,416 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: operator 
+2025-11-01 16:29:14,216 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-11-01 16:29:14,346 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-11-01 16:29:14,347 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: SecurityManager 
+2025-11-01 16:29:17,358 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: DLManager 
+2025-11-01 16:29:17,456 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: LayeredIOManager 
+2025-11-01 16:29:17,481 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: CultureManager 
+2025-11-01 16:29:17,490 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: AxisManager 
+2025-11-01 16:29:17,492 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: MsgManager 
+2025-11-01 16:29:17,500 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: StreamController 
+2025-11-01 16:29:17,500 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-11-01 16:29:17,502 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: operator 
+2025-11-01 16:30:23,390 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-11-01 16:30:23,586 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-11-01 16:30:23,587 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: SecurityManager 
+2025-11-01 16:30:26,612 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: DLManager 
+2025-11-01 16:30:26,741 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: LayeredIOManager 
+2025-11-01 16:30:26,764 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: CultureManager 
+2025-11-01 16:30:26,774 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: AxisManager 
+2025-11-01 16:30:26,775 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: MsgManager 
+2025-11-01 16:30:26,782 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: StreamController 
+2025-11-01 16:30:26,783 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-11-01 16:30:26,784 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: operator 
+2025-11-01 16:38:22,236 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-11-01 16:38:22,561 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-11-01 16:38:22,563 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: SecurityManager 
+2025-11-01 16:38:25,602 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: DLManager 
+2025-11-01 16:38:25,879 [INFO ] [thread-1] [Ewan.Core.Plc.ModbusRTUManager:38] ModbusRTUManager 开始初始化 - 串口:COM7, 波特率:115200, 数据位:8, 停止位:One, 校验位:None, 从站地址:1 
+2025-11-01 16:38:25,881 [INFO ] [thread-1] [Ewan.Core.Plc.ModbusRTUManager:69] ModbusRTUManager 尝试打开RS485串口连接 - COM7 
+2025-11-01 16:38:25,924 [ERROR] [thread-1] [Ewan.Core.Plc.ModbusRTUManager:78] ModbusRTUManager RS485连接异常 - 端口“COM7”不存在。 
+System.IO.IOException: 端口“COM7”不存在。
+   在 System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   在 System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   在 System.IO.Ports.SerialPort.Open()
+   在 HslCommunication.Serial.SerialBase.Open()
+   在 Ewan.Core.Plc.ModbusRTUManager.Open() 位置 C:\Users\Administrator\source\repos\MarkingMachineFeeder\Ewan.Core\Plc\ModbusRTUManager.cs:行号 78
+2025-11-01 16:38:25,931 [ERROR] [thread-1] [Ewan.Core.Plc.ModbusRTUManager:50] ModbusRTUManager 初始化失败 - ID:17324607, 无法建立RS485连接 
+2025-11-01 16:38:25,932 [ERROR] [thread-1] [MarkingMachineFeeder.App:38] MainController初始化失败: {0} 
+2025-11-01 16:38:49,841 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-11-01 16:38:50,019 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-11-01 16:38:50,020 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: SecurityManager 
+2025-11-01 16:38:53,041 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: DLManager 
+2025-11-01 16:38:53,195 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: LayeredIOManager 
+2025-11-01 16:38:53,218 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: CultureManager 
+2025-11-01 16:38:53,224 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: AxisManager 
+2025-11-01 16:38:53,224 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: MsgManager 
+2025-11-01 16:38:53,232 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: StreamController 
+2025-11-01 16:38:53,234 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-11-01 16:38:53,241 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: operator 
+2025-11-01 16:42:38,566 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-11-01 16:42:38,770 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-11-01 16:42:38,771 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: SecurityManager 
+2025-11-01 16:42:41,800 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: DLManager 
+2025-11-01 16:42:41,881 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: LayeredIOManager 
+2025-11-01 16:42:41,901 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: CultureManager 
+2025-11-01 16:42:41,908 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: AxisManager 
+2025-11-01 16:42:41,908 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: MsgManager 
+2025-11-01 16:42:41,940 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: StreamController 
+2025-11-01 16:42:41,941 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-11-01 16:42:41,946 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: operator 
+2025-11-01 16:47:17,911 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-11-01 16:47:18,106 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-11-01 16:47:18,108 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: SecurityManager 
+2025-11-01 16:47:21,131 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: DLManager 
+2025-11-01 16:47:21,249 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: LayeredIOManager 
+2025-11-01 16:47:21,275 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: CultureManager 
+2025-11-01 16:47:21,281 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: AxisManager 
+2025-11-01 16:47:21,281 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: MsgManager 
+2025-11-01 16:47:21,286 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: StreamController 
+2025-11-01 16:47:21,286 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-11-01 16:47:21,288 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: operator 
+2025-11-01 16:59:49,068 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-11-01 16:59:49,421 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-11-01 16:59:49,423 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: SecurityManager 
+2025-11-01 16:59:52,452 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: DLManager 
+2025-11-01 16:59:52,557 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: LayeredIOManager 
+2025-11-01 16:59:52,576 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: CultureManager 
+2025-11-01 16:59:52,586 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: AxisManager 
+2025-11-01 16:59:52,587 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: MsgManager 
+2025-11-01 16:59:52,593 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: StreamController 
+2025-11-01 16:59:52,593 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-11-01 16:59:52,595 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: operator 
+2025-11-01 17:00:35,964 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-11-01 17:00:36,106 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-11-01 17:00:36,107 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: SecurityManager 
+2025-11-01 17:00:39,140 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: DLManager 
+2025-11-01 17:00:39,247 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: LayeredIOManager 
+2025-11-01 17:00:39,265 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: CultureManager 
+2025-11-01 17:00:39,274 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: AxisManager 
+2025-11-01 17:00:39,275 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: MsgManager 
+2025-11-01 17:00:39,280 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: StreamController 
+2025-11-01 17:00:39,281 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-11-01 17:00:39,282 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: operator 
+2025-11-01 17:13:05,576 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-11-01 17:13:05,933 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-11-01 17:13:05,935 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: SecurityManager 
+2025-11-01 17:13:08,962 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: DLManager 
+2025-11-01 17:13:09,059 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: LayeredIOManager 
+2025-11-01 17:13:09,086 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: CultureManager 
+2025-11-01 17:13:09,099 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: AxisManager 
+2025-11-01 17:13:09,100 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: MsgManager 
+2025-11-01 17:13:09,108 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: StreamController 
+2025-11-01 17:13:09,108 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-11-01 17:13:09,110 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: operator 
+2025-11-01 17:17:51,366 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-11-01 17:17:51,527 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-11-01 17:17:51,527 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: SecurityManager 
+2025-11-01 17:17:54,550 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: DLManager 
+2025-11-01 17:17:54,647 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: LayeredIOManager 
+2025-11-01 17:17:54,672 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: CultureManager 
+2025-11-01 17:17:54,679 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: AxisManager 
+2025-11-01 17:17:54,679 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: MsgManager 
+2025-11-01 17:17:54,684 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: StreamController 
+2025-11-01 17:17:54,685 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-11-01 17:17:54,686 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: operator 
+2025-11-01 17:22:37,407 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-11-01 17:22:37,565 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-11-01 17:22:37,566 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: SecurityManager 
+2025-11-01 17:22:40,581 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: DLManager 
+2025-11-01 17:22:40,665 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: LayeredIOManager 
+2025-11-01 17:22:40,685 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: CultureManager 
+2025-11-01 17:22:40,691 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: AxisManager 
+2025-11-01 17:22:40,692 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: MsgManager 
+2025-11-01 17:22:40,698 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: StreamController 
+2025-11-01 17:22:40,699 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-11-01 17:22:40,702 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: operator 
+2025-11-01 17:49:56,737 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-11-01 17:49:56,975 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-11-01 17:49:56,976 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: SecurityManager 
+2025-11-01 17:49:59,987 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: DLManager 
+2025-11-01 17:50:00,098 [INFO ] [thread-1] [Ewan.Core.Plc.ModbusRTUManager:38] ModbusRTUManager 开始初始化 - 串口:COM7, 波特率:115200, 数据位:8, 停止位:One, 校验位:None, 从站地址:1 
+2025-11-01 17:50:00,100 [INFO ] [thread-1] [Ewan.Core.Plc.ModbusRTUManager:69] ModbusRTUManager 尝试打开RS485串口连接 - COM7 
+2025-11-01 17:50:00,128 [ERROR] [thread-1] [Ewan.Core.Plc.ModbusRTUManager:78] ModbusRTUManager RS485连接异常 - 端口“COM7”不存在。 
+System.IO.IOException: 端口“COM7”不存在。
+   在 System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   在 System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   在 System.IO.Ports.SerialPort.Open()
+   在 HslCommunication.Serial.SerialBase.Open()
+   在 Ewan.Core.Plc.ModbusRTUManager.Open() 位置 C:\Users\Administrator\source\repos\MarkingMachineFeeder\Ewan.Core\Plc\ModbusRTUManager.cs:行号 78
+2025-11-01 17:50:00,133 [ERROR] [thread-1] [Ewan.Core.Plc.ModbusRTUManager:50] ModbusRTUManager 初始化失败 - ID:17324607, 无法建立RS485连接 
+2025-11-01 17:50:00,133 [ERROR] [thread-1] [MarkingMachineFeeder.App:38] MainController初始化失败: {0} 
+2025-11-01 19:14:36,692 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-11-01 19:14:36,916 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-11-01 19:14:36,917 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: SecurityManager 

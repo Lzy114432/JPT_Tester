@@ -1,0 +1,58 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\01Demo\\珠海均威\\上料机\\MarkingMachineFeeder0617\\Hardware\\EwanSMC606\\EwanSMC606.csproj": {}
+  },
+  "projects": {
+    "D:\\01Demo\\珠海均威\\上料机\\MarkingMachineFeeder0617\\Hardware\\EwanSMC606\\EwanSMC606.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\01Demo\\珠海均威\\上料机\\MarkingMachineFeeder0617\\Hardware\\EwanSMC606\\EwanSMC606.csproj",
+        "projectName": "EwanSMC606",
+        "projectPath": "D:\\01Demo\\珠海均威\\上料机\\MarkingMachineFeeder0617\\Hardware\\EwanSMC606\\EwanSMC606.csproj",
+        "packagesPath": "C:\\Users\\112128\\.nuget\\packages\\",
+        "outputPath": "D:\\01Demo\\珠海均威\\上料机\\MarkingMachineFeeder0617\\Hardware\\EwanSMC606\\obj\\",
+        "projectStyle": "PackageReference",
+        "crossTargeting": true,
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\112128\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net472"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net472": {
+            "targetAlias": "net472",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net472": {
+          "targetAlias": "net472",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

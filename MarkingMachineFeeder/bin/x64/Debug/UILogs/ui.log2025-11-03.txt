@@ -1,0 +1,5 @@
+﻿2025-11-03 18:36:55,900 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:322] [已加载 {0} 个用户] [Missing Resource: 已加载 {0} 个用户] 
+2025-11-03 18:36:55,901 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:328] [管理员用户检查: {0}] [Missing Resource: 管理员用户检查: {0}] 
+2025-11-03 18:36:55,905 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:43] 模块初始化成功: DLManager 
+2025-11-03 18:36:55,906 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:95] 处理已开始: 连接扫码器 192.168.3.100:51236 
+2025-11-03 18:36:58,919 [ERROR] [thread-1] [Ewan.Core.ScanCode.DLManager:119] 操作失败: 扫码器连接超时 

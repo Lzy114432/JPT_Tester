@@ -1,0 +1,15 @@
+﻿2025-10-18 14:21:47,849 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-10-18 14:21:48,028 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-10-18 14:21:48,029 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: SecurityManager 
+2025-10-18 14:21:51,048 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: {0}: DLManager 
+2025-10-18 14:21:51,184 [INFO ] [thread-1] [Ewan.Core.Plc.ModbusRTUManager:38] ModbusRTUManager 开始初始化 - 串口:COM7, 波特率:115200, 数据位:8, 停止位:One, 校验位:None, 从站地址:1 
+2025-10-18 14:21:51,186 [INFO ] [thread-1] [Ewan.Core.Plc.ModbusRTUManager:69] ModbusRTUManager 尝试打开RS485串口连接 - COM7 
+2025-10-18 14:21:51,242 [ERROR] [thread-1] [Ewan.Core.Plc.ModbusRTUManager:78] ModbusRTUManager RS485连接异常 - 端口“COM7”不存在。 
+System.IO.IOException: 端口“COM7”不存在。
+   在 System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   在 System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   在 System.IO.Ports.SerialPort.Open()
+   在 HslCommunication.Serial.SerialBase.Open()
+   在 Ewan.Core.Plc.ModbusRTUManager.Open() 位置 C:\Users\Administrator\source\repos\MarkingMachineFeeder\Ewan.Core\Plc\ModbusRTUManager.cs:行号 78
+2025-10-18 14:21:51,252 [ERROR] [thread-1] [Ewan.Core.Plc.ModbusRTUManager:50] ModbusRTUManager 初始化失败 - ID:61115925, 无法建立RS485连接 
+2025-10-18 14:21:51,252 [ERROR] [thread-1] [MarkingMachineFeeder.App:38] MainController初始化失败: {0} 

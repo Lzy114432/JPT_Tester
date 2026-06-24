@@ -1,0 +1,1 @@
+﻿2025-12-22 09:27:21,748 [ERROR] [thread-1] IOC0640 connection failed with error code: 8 

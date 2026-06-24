@@ -1,0 +1,544 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Ewan.Messaging</name>
+    </assembly>
+    <members>
+        <member name="T:Ewan.Messaging.IMessage">
+            <summary>
+            强类型消息接口。
+            </summary>
+        </member>
+        <member name="P:Ewan.Messaging.IMessage.Timestamp">
+            <summary>
+            消息时间戳（建议使用本地时间 <see cref="P:System.DateTimeOffset.Now"/>）。
+            </summary>
+            <remarks>
+            - 若发送方未赋值（默认值），<see cref="T:Ewan.Messaging.MessageBus"/> 会在 Publish/Post 时自动补齐。
+            - 业务上如需区分“采集时间/发生时间/入队时间”，请在消息类型中自行扩展字段。
+            </remarks>
+        </member>
+        <member name="T:Ewan.Messaging.ICorrelatedMessage`1">
+            <summary>
+            带关联 ID 的消息（用于 Request/Reply 场景）。
+            </summary>
+            <typeparam name="TKey">关联键类型（建议 Guid/string）。</typeparam>
+        </member>
+        <member name="T:Ewan.Messaging.IMessageBus">
+            <summary>
+            强类型消息总线：支持同步发布（Publish）与异步排队（Post）。
+            </summary>
+        </member>
+        <member name="T:Ewan.Messaging.IMessageBusDiagnostics">
+            <summary>
+            消息总线诊断接口（队列、订阅、统计）。
+            </summary>
+        </member>
+        <member name="P:Ewan.Messaging.IMessageBusDiagnostics.QueueLength">
+            <summary>
+            当前异步队列长度（近似值）。
+            </summary>
+        </member>
+        <member name="M:Ewan.Messaging.IMessageBusDiagnostics.GetSubscriberCount``1">
+            <summary>
+            获取指定消息类型的订阅者数量。
+            </summary>
+        </member>
+        <member name="M:Ewan.Messaging.IMessageBusDiagnostics.GetSubscriberCount(System.Type)">
+            <summary>
+            获取指定消息类型的订阅者数量。
+            </summary>
+        </member>
+        <member name="P:Ewan.Messaging.IMessageBusDiagnostics.TotalPublished">
+            <summary>
+            累计发布（Publish/Post 成功入队）消息数。
+            </summary>
+        </member>
+        <member name="P:Ewan.Messaging.IMessageBusDiagnostics.TotalDropped">
+            <summary>
+            累计丢弃消息数（队列溢出）。
+            </summary>
+        </member>
+        <member name="P:Ewan.Messaging.IMessageBusDiagnostics.TotalHandlerExceptions">
+            <summary>
+            累计处理器异常数。
+            </summary>
+        </member>
+        <member name="P:Ewan.Messaging.IMessageBusDiagnostics.SubscribedTypes">
+            <summary>
+            获取所有已订阅的消息类型（不含订阅数为 0 的类型）。
+            </summary>
+        </member>
+        <member name="M:Ewan.Messaging.IMessageBusDiagnostics.ResetStatistics">
+            <summary>
+            重置统计计数（Published/Dropped/HandlerExceptions）。
+            </summary>
+        </member>
+        <member name="T:Ewan.Messaging.IMessageBusExceptionReporter">
+            <summary>
+            供扩展方法/外部组件上报处理器异常（用于 SubscribeAsync 等场景）。
+            </summary>
+        </member>
+        <member name="T:Ewan.Messaging.IPublishBus">
+            <summary>
+            Publish/Post 语义的消息总线接口。
+            </summary>
+        </member>
+        <member name="M:Ewan.Messaging.IPublishBus.Publish``1(``0)">
+            <summary>
+            同步发布：在调用线程中依次调用订阅者。
+            </summary>
+        </member>
+        <member name="M:Ewan.Messaging.IPublishBus.Publish``1(System.String,``0)">
+            <summary>
+            同步发布（命名管道）：在调用线程中依次调用订阅者。
+            </summary>
+        </member>
+        <member name="M:Ewan.Messaging.IPublishBus.Post``1(``0)">
+            <summary>
+            异步发布：消息进入队列，由后台线程按序分发给订阅者。
+            </summary>
+            <returns>是否成功进入队列（队列满时可能返回 false）。</returns>
+        </member>
+        <member name="M:Ewan.Messaging.IPublishBus.Post``1(System.String,``0)">
+            <summary>
+            异步发布（命名管道）：消息进入队列，由后台线程按序分发给订阅者。
+            </summary>
+            <returns>是否成功进入队列（队列满时可能返回 false）。</returns>
+        </member>
+        <member name="T:Ewan.Messaging.ISubscribeBus">
+            <summary>
+            Subscribe 语义的消息总线接口。
+            </summary>
+        </member>
+        <member name="M:Ewan.Messaging.ISubscribeBus.Subscribe``1(System.Action{``0})">
+            <summary>
+            订阅指定消息类型（支持订阅基类/接口：发布派生类型时也会收到）。
+            </summary>
+            <remarks>返回的 <see cref="T:System.IDisposable"/> 用于取消订阅。</remarks>
+        </member>
+        <member name="M:Ewan.Messaging.ISubscribeBus.Subscribe``1(System.String,System.Action{``0})">
+            <summary>
+            订阅指定消息类型（命名管道）。
+            </summary>
+            <param name="channel">管道名称（null/空白视为全局）。</param>
+            <param name="handler">消息处理器。</param>
+            <remarks>返回的 <see cref="T:System.IDisposable"/> 用于取消订阅。</remarks>
+        </member>
+        <member name="M:Ewan.Messaging.ISubscribeBus.SubscribeWeak``2(``0,System.Action{``0,``1})">
+            <summary>
+            弱引用订阅（防泄漏）：当 <paramref name="target"/> 被 GC 回收后，订阅会自动失效并在后续发布中被清理。
+            </summary>
+            <remarks>
+            推荐写法：<c>bus.SubscribeWeak(this, (me, msg) =&gt; me.OnMsg(msg));</c>
+            （lambda 不要捕获 <paramref name="target"/>，用第一个参数 <c>me</c> 访问实例即可）。
+            </remarks>
+        </member>
+        <member name="M:Ewan.Messaging.ISubscribeBus.SubscribeWeak``2(``0,System.Action{``1})">
+            <summary>
+            弱引用订阅便捷重载：适合直接传实例方法组（method group），例如 <c>bus.SubscribeWeak(this, OnMsg);</c>。
+            </summary>
+            <exception cref="T:System.ArgumentException">
+            当 <paramref name="handler"/> 不是绑定在 <paramref name="target"/> 上的实例方法时抛出；
+            请改用 <see cref="M:Ewan.Messaging.ISubscribeBus.SubscribeWeak``2(``0,System.Action{``0,``1})"/>。
+            </exception>
+        </member>
+        <member name="M:Ewan.Messaging.ISubscribeBus.SubscribeAll(System.Action{Ewan.Messaging.IMessage})">
+            <summary>
+            订阅所有消息（用于日志/监控等）。
+            </summary>
+        </member>
+        <member name="T:Ewan.Messaging.IRequestReplyBus">
+            <summary>
+            Request/Reply 语义的消息总线接口。
+            </summary>
+        </member>
+        <member name="M:Ewan.Messaging.IRequestReplyBus.RequestAsync``2(``0,System.Int32,System.Threading.CancellationToken,System.Boolean)">
+            <summary>
+            内置 Request/Reply：发送 <typeparamref name="TRequest"/> 并等待 <typeparamref name="TReply"/>。
+            </summary>
+            <remarks>
+            - 使用 <see cref="T:Ewan.Messaging.ICorrelatedMessage`1"/> 的 <see cref="P:Ewan.Messaging.ICorrelatedMessage`1.CorrelationId"/> 做关联。
+            - 若请求的 CorrelationId 为空（Guid.Empty），总线会自动生成。
+            </remarks>
+        </member>
+        <member name="M:Ewan.Messaging.IRequestReplyBus.RequestAsync``2(System.String,``0,System.Int32,System.Threading.CancellationToken,System.Boolean)">
+            <summary>
+            内置 Request/Reply：发送 <typeparamref name="TRequest"/> 并等待 <typeparamref name="TReply"/>（命名管道）。
+            </summary>
+            <remarks>
+            - 使用 <see cref="T:Ewan.Messaging.ICorrelatedMessage`1"/> 的 <see cref="P:Ewan.Messaging.ICorrelatedMessage`1.CorrelationId"/> 做关联。
+            - 若请求的 CorrelationId 为空（Guid.Empty），总线会自动生成。
+            </remarks>
+        </member>
+        <member name="M:Ewan.Messaging.IRequestReplyBus.Respond``2(System.Func{``0,``1},System.Boolean)">
+            <summary>
+            注册请求处理器：收到 <typeparamref name="TRequest"/> 后生成并发送 <typeparamref name="TReply"/>。
+            </summary>
+        </member>
+        <member name="M:Ewan.Messaging.IRequestReplyBus.Respond``2(System.String,System.Func{``0,``1},System.Boolean)">
+            <summary>
+            注册请求处理器（命名管道）：收到 <typeparamref name="TRequest"/> 后生成并发送 <typeparamref name="TReply"/>。
+            </summary>
+        </member>
+        <member name="M:Ewan.Messaging.IRequestReplyBus.RespondAsync``2(System.Func{``0,System.Threading.Tasks.Task{``1}},System.Boolean)">
+            <summary>
+            注册异步请求处理器：收到请求后异步生成响应并发送。
+            </summary>
+        </member>
+        <member name="M:Ewan.Messaging.IRequestReplyBus.RespondAsync``2(System.String,System.Func{``0,System.Threading.Tasks.Task{``1}},System.Boolean)">
+            <summary>
+            注册异步请求处理器（命名管道）：收到请求后异步生成响应并发送。
+            </summary>
+        </member>
+        <member name="T:Ewan.Messaging.MessageBase">
+            <summary>
+            消息基类：提供 <see cref="P:Ewan.Messaging.IMessage.Timestamp"/> 的默认实现。
+            </summary>
+        </member>
+        <member name="T:Ewan.Messaging.MessageDroppedEventArgs">
+            <summary>
+            异步队列溢出导致消息被丢弃的事件参数。
+            </summary>
+        </member>
+        <member name="T:Ewan.Messaging.MessageHandlerExceptionEventArgs">
+            <summary>
+            消息处理器执行异常事件参数。
+            </summary>
+        </member>
+        <member name="T:Ewan.Messaging.MessageOverflowStrategy">
+            <summary>
+            异步队列满时的处理策略。
+            </summary>
+        </member>
+        <member name="F:Ewan.Messaging.MessageOverflowStrategy.DropNewest">
+            <summary>
+            丢弃最新消息（不入队）。
+            </summary>
+        </member>
+        <member name="F:Ewan.Messaging.MessageOverflowStrategy.DropOldest">
+            <summary>
+            丢弃最旧消息（从队列头移除一条），再尝试把新消息入队。
+            </summary>
+        </member>
+        <member name="F:Ewan.Messaging.MessageOverflowStrategy.Block">
+            <summary>
+            阻塞等待队列空位（可能导致发布方线程阻塞）。
+            </summary>
+        </member>
+        <member name="T:Ewan.Messaging.MessageBusOptions">
+            <summary>
+            <see cref="T:Ewan.Messaging.MessageBus"/> 配置项。
+            </summary>
+        </member>
+        <member name="P:Ewan.Messaging.MessageBusOptions.AsyncQueueCapacity">
+            <summary>
+            异步队列容量（小于等于 0 会抛异常）。
+            </summary>
+        </member>
+        <member name="P:Ewan.Messaging.MessageBusOptions.OverflowStrategy">
+            <summary>
+            队列满时的处理策略。
+            </summary>
+        </member>
+        <member name="P:Ewan.Messaging.MessageBusOptions.CatchHandlerExceptions">
+            <summary>
+            是否捕获单个处理器异常并继续调用其它处理器。
+            </summary>
+        </member>
+        <member name="T:Ewan.Messaging.MessageHub">
+            <summary>
+            进程级消息总线入口（可由项目在 Composition Root 替换为自己的实例）。
+            </summary>
+        </member>
+        <member name="P:Ewan.Messaging.MessageHub.Current">
+            <summary>
+            当前进程使用的消息总线实例。
+            </summary>
+        </member>
+        <member name="P:Ewan.Messaging.MessageHub.PublishBus">
+            <summary>
+            仅发布接口（Publish/Post）。
+            </summary>
+        </member>
+        <member name="P:Ewan.Messaging.MessageHub.SubscribeBus">
+            <summary>
+            仅订阅接口（Subscribe/SubscribeWeak/SubscribeAll）。
+            </summary>
+        </member>
+        <member name="P:Ewan.Messaging.MessageHub.RequestReplyBus">
+            <summary>
+            仅 Request/Reply 接口。
+            </summary>
+        </member>
+        <member name="P:Ewan.Messaging.MessageHub.Diagnostics">
+            <summary>
+            诊断接口（队列/订阅/统计）。
+            </summary>
+        </member>
+        <member name="T:Ewan.Messaging.MessageBus">
+            <summary>
+            强类型消息总线：
+            - Publish：同步调用订阅者（适合轻量“事件通知”）
+            - Post：进入异步队列由后台线程分发（适合跨线程解耦、限流/背压）
+            </summary>
+        </member>
+        <member name="P:Ewan.Messaging.MessageBus.Default">
+            <summary>
+            默认全局实例（适合小项目快速上手）。
+            </summary>
+        </member>
+        <member name="T:Ewan.Messaging.RequestAwaiter`2">
+            <summary>
+            轻量“请求-响应等待器”（用于 MessageBus 这类异步消息总线场景）：
+            - 逻辑侧：Register(correlationId) 后发布请求消息；await Task 完成后推进状态机
+            - 后台侧：收到响应消息后 TrySetResult(correlationId, result)
+            </summary>
+            <typeparam name="TKey">关联键（建议 Guid/string）。</typeparam>
+            <typeparam name="TResult">响应结果类型。</typeparam>
+        </member>
+        <member name="M:Ewan.Messaging.RequestAwaiter`2.Register(`0,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            注册一个等待中的请求并返回可等待的 Task。
+            </summary>
+            <param name="key">关联键（CorrelationId）。</param>
+            <param name="timeoutMs">超时毫秒；小于 0 表示不超时。</param>
+            <param name="cancellationToken">外部取消。</param>
+        </member>
+        <member name="M:Ewan.Messaging.RequestAwaiter`2.TrySetResult(`0,`1)">
+            <summary>
+            以结果完成等待（收到响应时调用）。
+            </summary>
+        </member>
+        <member name="M:Ewan.Messaging.RequestAwaiter`2.TrySetException(`0,System.Exception)">
+            <summary>
+            以异常完成等待（收到错误响应/发送失败时调用）。
+            </summary>
+        </member>
+        <member name="M:Ewan.Messaging.RequestAwaiter`2.TryCancel(`0)">
+            <summary>
+            主动取消一个等待。
+            </summary>
+        </member>
+        <member name="M:Ewan.Messaging.RequestAwaiter`2.CancelAll">
+            <summary>
+            取消所有等待（退出时）。
+            </summary>
+        </member>
+        <member name="M:Ewan.Messaging.MessageBusExtensions.Subscribe``1(Ewan.Messaging.ISubscribeBus,System.Func{``0,System.Boolean},System.Action{``0})">
+            <summary>
+            带过滤条件的订阅。
+            </summary>
+        </member>
+        <member name="M:Ewan.Messaging.MessageBusExtensions.SubscribeOnContext``1(Ewan.Messaging.ISubscribeBus,System.Threading.SynchronizationContext,System.Action{``0})">
+            <summary>
+            在指定 <see cref="T:System.Threading.SynchronizationContext"/> 上处理消息（适合 UI 线程调度）。
+            </summary>
+        </member>
+        <member name="M:Ewan.Messaging.MessageBusExtensions.SubscribeOnCurrentContext``1(Ewan.Messaging.ISubscribeBus,System.Action{``0})">
+            <summary>
+            在当前线程的 <see cref="T:System.Threading.SynchronizationContext"/> 上处理消息。
+            </summary>
+        </member>
+        <member name="M:Ewan.Messaging.MessageBusExtensions.SubscribeAsync``1(Ewan.Messaging.ISubscribeBus,System.Func{``0,System.Threading.Tasks.Task})">
+            <summary>
+            异步订阅处理器：处理器在后台线程执行，避免阻塞发布线程。
+            </summary>
+        </member>
+        <member name="M:Ewan.Messaging.MessageBusExtensions.SubscribeAsync``1(Ewan.Messaging.ISubscribeBus,System.Func{``0,System.Threading.CancellationToken,System.Threading.Tasks.Task},System.Threading.CancellationToken)">
+            <summary>
+            带 <see cref="T:System.Threading.CancellationToken"/> 的异步订阅处理器。
+            </summary>
+        </member>
+        <member name="T:Ewan.Messaging.Extensions.MessageBusLinqExtensions">
+            <summary>
+            LINQ-style stream extensions for message buses.
+            </summary>
+        </member>
+        <member name="M:Ewan.Messaging.Extensions.MessageBusLinqExtensions.Stream``1(Ewan.Messaging.IMessageBus)">
+            <summary>
+            Creates a message stream for the specified message type.
+            </summary>
+            <typeparam name="T">Message type.</typeparam>
+            <param name="bus">Message bus instance.</param>
+            <returns>A stream builder for the message type.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="bus"/> is null.</exception>
+        </member>
+        <member name="M:Ewan.Messaging.Extensions.MessageBusLinqExtensions.Stream``1(Ewan.Messaging.IMessageBus,System.String)">
+            <summary>
+            Creates a message stream for the specified message type and channel.
+            </summary>
+            <typeparam name="T">Message type.</typeparam>
+            <param name="bus">Message bus instance.</param>
+            <param name="channel">Channel name (null/whitespace uses global route).</param>
+            <returns>A stream builder for the message type.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="bus"/> is null.</exception>
+        </member>
+        <member name="M:Ewan.Messaging.Extensions.MessageBusLinqExtensions.Stream``1(Ewan.Messaging.ISubscribeBus)">
+            <summary>
+            Creates a message stream for the specified message type.
+            </summary>
+            <typeparam name="T">Message type.</typeparam>
+            <param name="bus">Subscribe bus instance.</param>
+            <returns>A stream builder for the message type.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="bus"/> is null.</exception>
+        </member>
+        <member name="M:Ewan.Messaging.Extensions.MessageBusLinqExtensions.Stream``1(Ewan.Messaging.ISubscribeBus,System.String)">
+            <summary>
+            Creates a message stream for the specified message type and channel.
+            </summary>
+            <typeparam name="T">Message type.</typeparam>
+            <param name="bus">Subscribe bus instance.</param>
+            <param name="channel">Channel name (null/whitespace uses global route).</param>
+            <returns>A stream builder for the message type.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="bus"/> is null.</exception>
+        </member>
+        <member name="T:Ewan.Messaging.Messages.UILogLevel">
+            <summary>
+            UI日志级别
+            </summary>
+        </member>
+        <member name="T:Ewan.Messaging.Messages.UILogMessage">
+            <summary>
+            UI日志消息 - 用于通过 MessageBus 传递日志到 UI 显示
+            </summary>
+        </member>
+        <member name="P:Ewan.Messaging.Messages.UILogMessage.Level">
+            <summary>
+            日志级别
+            </summary>
+        </member>
+        <member name="P:Ewan.Messaging.Messages.UILogMessage.Message">
+            <summary>
+            日志消息内容
+            </summary>
+        </member>
+        <member name="P:Ewan.Messaging.Messages.UILogMessage.CallerInfo">
+            <summary>
+            调用者信息（类名:行号）
+            </summary>
+        </member>
+        <member name="P:Ewan.Messaging.Messages.UILogMessage.Timestamp">
+            <summary>
+            消息时间戳
+            </summary>
+        </member>
+        <member name="M:Ewan.Messaging.Messages.UILogMessage.#ctor(Ewan.Messaging.Messages.UILogLevel,System.String,System.String)">
+            <summary>
+            创建 UI 日志消息
+            </summary>
+            <param name="level">日志级别</param>
+            <param name="message">消息内容</param>
+            <param name="callerInfo">调用者信息</param>
+        </member>
+        <member name="M:Ewan.Messaging.Messages.UILogMessage.Debug(System.String,System.String)">
+            <summary>
+            创建 Debug 级别日志消息
+            </summary>
+        </member>
+        <member name="M:Ewan.Messaging.Messages.UILogMessage.Info(System.String,System.String)">
+            <summary>
+            创建 Info 级别日志消息
+            </summary>
+        </member>
+        <member name="M:Ewan.Messaging.Messages.UILogMessage.Warn(System.String,System.String)">
+            <summary>
+            创建 Warn 级别日志消息
+            </summary>
+        </member>
+        <member name="M:Ewan.Messaging.Messages.UILogMessage.Error(System.String,System.String)">
+            <summary>
+            创建 Error 级别日志消息
+            </summary>
+        </member>
+        <member name="M:Ewan.Messaging.Messages.UILogMessage.Fatal(System.String,System.String)">
+            <summary>
+            创建 Fatal 级别日志消息
+            </summary>
+        </member>
+        <member name="T:Ewan.Messaging.Operators.CompositeDisposable">
+            <summary>
+            Combines multiple disposables into one.
+            </summary>
+        </member>
+        <member name="T:Ewan.Messaging.Operators.DisposableAction">
+            <summary>
+            Wraps an action in IDisposable.
+            </summary>
+        </member>
+        <member name="T:Ewan.Messaging.Operators.MessageStream`1">
+            <summary>
+            Message stream builder for LINQ-style chaining.
+            </summary>
+            <typeparam name="T">Message type.</typeparam>
+        </member>
+        <member name="M:Ewan.Messaging.Operators.MessageStream`1.#ctor(Ewan.Messaging.ISubscribeBus)">
+            <summary>
+            Initializes a new message stream.
+            </summary>
+            <param name="bus">Subscribe bus used to create the stream.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="bus"/> is null.</exception>
+        </member>
+        <member name="M:Ewan.Messaging.Operators.MessageStream`1.#ctor(Ewan.Messaging.ISubscribeBus,System.String)">
+            <summary>
+            Initializes a new message stream.
+            </summary>
+            <param name="bus">Subscribe bus used to create the stream.</param>
+            <param name="channel">Channel name (null/whitespace uses global route).</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="bus"/> is null.</exception>
+        </member>
+        <member name="M:Ewan.Messaging.Operators.MessageStream`1.Where(System.Func{`0,System.Boolean})">
+            <summary>
+            Adds a filter predicate to the stream.
+            </summary>
+            <param name="predicate">Predicate to evaluate per message.</param>
+            <returns>The same stream instance.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="predicate"/> is null.</exception>
+        </member>
+        <member name="M:Ewan.Messaging.Operators.MessageStream`1.Select(System.Func{`0,`0})">
+            <summary>
+            Adds a transform step to the stream.
+            </summary>
+            <param name="selector">Transform to apply to messages.</param>
+            <returns>The same stream instance.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="selector"/> is null.</exception>
+        </member>
+        <member name="M:Ewan.Messaging.Operators.MessageStream`1.Tap(System.Action{`0})">
+            <summary>
+            Adds a side-effect action executed before the handler.
+            </summary>
+            <param name="action">Action to invoke for each message.</param>
+            <returns>The same stream instance.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="action"/> is null.</exception>
+        </member>
+        <member name="M:Ewan.Messaging.Operators.MessageStream`1.Throttle(System.Int32)">
+            <summary>
+            Throttles messages to the first one within each interval.
+            </summary>
+            <param name="milliseconds">Interval in milliseconds (must be > 0).</param>
+            <returns>The same stream instance.</returns>
+        </member>
+        <member name="M:Ewan.Messaging.Operators.MessageStream`1.ThrottleHighPrecision(System.Int32)">
+            <summary>
+            Throttles messages with higher precision timing.
+            </summary>
+            <param name="milliseconds">Interval in milliseconds (must be > 0).</param>
+            <returns>The same stream instance.</returns>
+        </member>
+        <member name="M:Ewan.Messaging.Operators.MessageStream`1.Debounce(System.Int32)">
+            <summary>
+            Debounces messages to the last one after a quiet period.
+            </summary>
+            <param name="milliseconds">Quiet period in milliseconds (must be > 0).</param>
+            <returns>The same stream instance.</returns>
+        </member>
+        <member name="M:Ewan.Messaging.Operators.MessageStream`1.Subscribe(System.Action{`0})">
+            <summary>
+            Subscribes to the stream.
+            </summary>
+            <param name="handler">Handler invoked for each message.</param>
+            <returns>A disposable subscription.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="handler"/> is null.</exception>
+        </member>
+    </members>
+</doc>

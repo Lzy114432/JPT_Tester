@@ -1,0 +1,17 @@
+F:\项目\钧崴\MarkingMachineFeeder\Ewan.Controls\bin\x64\Debug\Ewan.Controls.dll
+F:\项目\钧崴\MarkingMachineFeeder\Ewan.Controls\bin\x64\Debug\Ewan.Controls.pdb
+F:\项目\钧崴\MarkingMachineFeeder\Ewan.Controls\obj\x64\Debug\Ewan.Controls.csproj.AssemblyReference.cache
+F:\项目\钧崴\MarkingMachineFeeder\Ewan.Controls\obj\x64\Debug\GeneratedInternalTypeHelper.g.cs
+F:\项目\钧崴\MarkingMachineFeeder\Ewan.Controls\obj\x64\Debug\Ewan.Controls_MarkupCompile.cache
+F:\项目\钧崴\MarkingMachineFeeder\Ewan.Controls\obj\x64\Debug\Ewan.Controls_MarkupCompile.lref
+F:\项目\钧崴\MarkingMachineFeeder\Ewan.Controls\obj\x64\Debug\Themes\Generic.baml
+F:\项目\钧崴\MarkingMachineFeeder\Ewan.Controls\obj\x64\Debug\Ewan.Controls.g.resources
+F:\项目\钧崴\MarkingMachineFeeder\Ewan.Controls\obj\x64\Debug\Ewan.Controls.csproj.CoreCompileInputs.cache
+F:\项目\钧崴\MarkingMachineFeeder\Ewan.Controls\obj\x64\Debug\Ewan.Controls.dll
+F:\项目\钧崴\MarkingMachineFeeder\Ewan.Controls\obj\x64\Debug\Ewan.Controls.pdb
+C:\Users\Administrator\Desktop\钧崴\code\MarkingMachineFeeder\Ewan.Controls\bin\x64\Debug\Ewan.Controls.dll
+C:\Users\Administrator\Desktop\钧崴\code\MarkingMachineFeeder\Ewan.Controls\bin\x64\Debug\Ewan.Controls.pdb
+C:\Users\Administrator\Desktop\钧崴\code\MarkingMachineFeeder\Ewan.Controls\obj\x64\Debug\Ewan.Controls.csproj.AssemblyReference.cache
+C:\Users\Administrator\Desktop\钧崴\code\MarkingMachineFeeder\Ewan.Controls\obj\x64\Debug\Ewan.Controls.csproj.CoreCompileInputs.cache
+C:\Users\Administrator\Desktop\钧崴\code\MarkingMachineFeeder\Ewan.Controls\obj\x64\Debug\Ewan.Controls.dll
+C:\Users\Administrator\Desktop\钧崴\code\MarkingMachineFeeder\Ewan.Controls\obj\x64\Debug\Ewan.Controls.pdb

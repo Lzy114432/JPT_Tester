@@ -1,0 +1,7 @@
+C:\Users\Administrator\source\repos\ClassLibrary2\ClassLibrary2\bin\Debug\ClassLibrary2.dll
+C:\Users\Administrator\source\repos\ClassLibrary2\ClassLibrary2\bin\Debug\ClassLibrary2.pdb
+C:\Users\Administrator\source\repos\ClassLibrary2\ClassLibrary2\bin\Debug\M2Mqtt.Net.dll
+C:\Users\Administrator\source\repos\ClassLibrary2\ClassLibrary2\bin\Debug\M2Mqtt.Net.pdb
+C:\Users\Administrator\source\repos\ClassLibrary2\ClassLibrary2\obj\Debug\ClassLibrary2.dll
+C:\Users\Administrator\source\repos\ClassLibrary2\ClassLibrary2\obj\Debug\ClassLibrary2.pdb
+C:\Users\Administrator\source\repos\ClassLibrary2\ClassLibrary2\obj\Debug\ClassLibrary2.csprojResolveAssemblyReference.cache

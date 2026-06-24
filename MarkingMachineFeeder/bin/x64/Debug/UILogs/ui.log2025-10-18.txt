@@ -1,0 +1,22 @@
+﻿2025-10-18 14:21:48,026 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-10-18 14:21:48,027 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-10-18 14:21:48,030 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:43] [ModuleInitialized] 模块初始化成功: DLManager 
+2025-10-18 14:21:48,032 [INFO ] [thread-1] [Ewan.Core.ScanCode.DLManager:95] [ProcessingStarted] 处理已开始: 连接扫码器 192.168.3.100:51236 
+2025-10-18 14:21:51,045 [ERROR] [thread-1] [Ewan.Core.ScanCode.DLManager:119] [OperationFailed] 操作失败: 扫码器连接超时 
+2025-10-18 14:21:52,539 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-10-18 14:21:52,646 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-10-18 14:21:52,756 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-10-18 14:21:52,865 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-10-18 14:21:52,974 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-10-18 14:21:52,985 [DEBUG] [thread-1] [Ewan.Core.Security.SecurityManager:107] [PermissionCheckNotAuthenticated] 权限检查失败：用户未认证，资源 PermissionConfig.View 
+2025-10-18 14:21:52,985 [DEBUG] [thread-1] [Ewan.Core.Security.SecurityManager:107] [PermissionCheckNotAuthenticated] 权限检查失败：用户未认证，资源 Language.Control 
+2025-10-18 14:21:52,986 [DEBUG] [thread-1] [Ewan.Core.Security.SecurityManager:107] [PermissionCheckNotAuthenticated] 权限检查失败：用户未认证，资源 SystemControl.Control 
+2025-10-18 14:21:52,987 [DEBUG] [thread-1] [Ewan.Core.Security.SecurityManager:107] [PermissionCheckNotAuthenticated] 权限检查失败：用户未认证，资源 HardwareControl.Control 
+2025-10-18 14:21:52,988 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:390] [MainWindowStarted] 主窗口已启动 
+2025-10-18 14:21:52,995 [DEBUG] [thread-1] [Ewan.BusinessBonding.StreamController:392] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-10-18 14:21:52,996 [DEBUG] [thread-1] [Ewan.BusinessBonding.StreamController:413] [皮带输送控制流程已停止] [Missing Resource: 皮带输送控制流程已停止] 
+2025-10-18 14:21:52,996 [DEBUG] [thread-1] [Ewan.BusinessBonding.StreamController:434] [Station心跳流程已停止] [Missing Resource: Station心跳流程已停止] 
+2025-10-18 14:21:52,996 [DEBUG] [thread-1] [Ewan.BusinessBonding.StreamController:455] [环线通信流程已停止] [Missing Resource: 环线通信流程已停止] 
+2025-10-18 14:21:52,999 [DEBUG] [thread-1] [Ewan.BusinessBonding.StreamController:513] [SystemStatusMessageSent] 发送系统状态消息: Stopped - 流程停止 
+2025-10-18 14:21:52,999 [DEBUG] [thread-1] [Ewan.BusinessBonding.StreamController:498] [StatusIndicatorStreamStopped] 系统状态指示器流程已停止 
+2025-10-18 14:21:53,000 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] 流处理已停止 

@@ -1,0 +1,16 @@
+﻿2026-02-25 11:10:32,640 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule:160] 所有料仓已停止 
+2026-02-25 11:10:32,674 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:134] 模块已销毁: BinElevatorModule 
+2026-02-25 11:10:32,687 [INFO ] [thread-1] [Ewan.Core.Module.MesModule:89] 模块已销毁: MesModule 
+2026-02-25 11:10:32,709 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:594] 处理已完成: 暂停输出复位: SafetyModule销毁 
+2026-02-25 11:10:32,714 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:188] 模块已销毁: SafetyModule 
+2026-02-25 11:10:32,716 [INFO ] [thread-1] [MarkingMachineFeeder.App:94] 流处理已停止 
+2026-02-25 11:10:32,739 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:134] 模块已销毁: BinElevatorModule 
+2026-02-25 11:10:32,743 [INFO ] [thread-1] [Ewan.Core.Module.MesModule:89] 模块已销毁: MesModule 
+2026-02-25 11:10:32,755 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:594] 处理已完成: 暂停输出复位: SafetyModule销毁 
+2026-02-25 11:10:32,757 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:188] 模块已销毁: SafetyModule 
+2026-02-25 11:10:32,793 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:223] 模块销毁: MesManager 
+2026-02-25 11:10:32,941 [INFO ] [thread-1] [MarkingMachineFeeder.App:105] 资源释放完成 
+2026-02-25 11:10:32,988 [ERROR] [thread-4] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:OnStatusIndicatorReceived] 处理错误: 处理系统状态变化 - 已取消一个任务。 
+2026-02-25 11:10:32,990 [INFO ] [thread-4] [Ewan.Core.Module.BeltConveyorModule:StopBelt] 处理已完成: 皮带轴已停止 
+2026-02-25 11:10:32,992 [INFO ] [thread-4] [Ewan.Core.Module.BeltConveyorModule:OnSystemControlMessage] 处理已完成: 皮带已停止 
+2026-02-25 11:10:32,993 [INFO ] [thread-4] [Ewan.Core.Module.BeltConveyorModule:OnSystemControlMessage] 处理已完成: 皮带已停止 

@@ -1,0 +1,58 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\01Demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\MarkingMachineFeeder0617\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{4C459CB9-E516-4068-B558-D89862B7D54F}|EwanCommon\\EwanCommon\\EwanCommon.csproj|d:\\01demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\markingmachinefeeder0617\\ewancommon\\ewancommon\\ewancore\\bootstrap\\managerlifetimehost.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C459CB9-E516-4068-B558-D89862B7D54F}|EwanCommon\\EwanCommon\\EwanCommon.csproj|solutionrelative:ewancommon\\ewancommon\\ewancore\\bootstrap\\managerlifetimehost.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1D00DD0A-E7EB-4234-84E5-357B7CA7CFA0}|MarkingMachineFeeder\\MarkingMachineFeeder.csproj|d:\\01demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\markingmachinefeeder0617\\markingmachinefeeder\\mainwindow.xaml.cs||{8B382828-6202-11D1-8870-0000F87579D2}|",
+      "RelativeMoniker": "D:0:0:{1D00DD0A-E7EB-4234-84E5-357B7CA7CFA0}|MarkingMachineFeeder\\MarkingMachineFeeder.csproj|solutionrelative:markingmachinefeeder\\mainwindow.xaml.cs||{8B382828-6202-11D1-8870-0000F87579D2}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 1,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedHeight": 231,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ManagerLifetimeHost.cs",
+              "DocumentMoniker": "D:\\01Demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\MarkingMachineFeeder0617\\EwanCommon\\EwanCommon\\EwanCore\\Bootstrap\\ManagerLifetimeHost.cs",
+              "RelativeDocumentMoniker": "EwanCommon\\EwanCommon\\EwanCore\\Bootstrap\\ManagerLifetimeHost.cs",
+              "ToolTip": "D:\\01Demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\MarkingMachineFeeder0617\\EwanCommon\\EwanCommon\\EwanCore\\Bootstrap\\ManagerLifetimeHost.cs",
+              "RelativeToolTip": "EwanCommon\\EwanCommon\\EwanCore\\Bootstrap\\ManagerLifetimeHost.cs",
+              "ViewState": "AgIAAFcAAAAAAAAAAAAYwG8AAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-23T08:40:37.758Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "D:\\01Demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\MarkingMachineFeeder0617\\MarkingMachineFeeder\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "MarkingMachineFeeder\\MainWindow.xaml.cs",
+              "ToolTip": "D:\\01Demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\MarkingMachineFeeder0617\\MarkingMachineFeeder\\MainWindow.xaml.cs",
+              "RelativeToolTip": "MarkingMachineFeeder\\MainWindow.xaml.cs",
+              "ViewState": "AgIAAIIAAAAAAAAAAAAAAJEAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-23T08:33:43.341Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,197 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\01Demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\MarkingMachineFeeder0617\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{74A46493-03C1-44B6-BA22-CFF0F8EC9FBE}|Ewan.Core\\Ewan.Core.csproj|d:\\01demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\markingmachinefeeder0617\\ewan.core\\logic\\materialloadinglogic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{74A46493-03C1-44B6-BA22-CFF0F8EC9FBE}|Ewan.Core\\Ewan.Core.csproj|solutionrelative:ewan.core\\logic\\materialloadinglogic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C459CB9-E516-4068-B558-D89862B7D54F}|EwanCommon\\EwanCommon\\EwanCommon.csproj|d:\\01demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\markingmachinefeeder0617\\ewancommon\\ewancommon\\ewancore\\statemachine\\logic\\logicbase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C459CB9-E516-4068-B558-D89862B7D54F}|EwanCommon\\EwanCommon\\EwanCommon.csproj|solutionrelative:ewancommon\\ewancommon\\ewancore\\statemachine\\logic\\logicbase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{74A46493-03C1-44B6-BA22-CFF0F8EC9FBE}|Ewan.Core\\Ewan.Core.csproj|d:\\01demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\markingmachinefeeder0617\\ewan.core\\logic\\mainlogic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{74A46493-03C1-44B6-BA22-CFF0F8EC9FBE}|Ewan.Core\\Ewan.Core.csproj|solutionrelative:ewan.core\\logic\\mainlogic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{74A46493-03C1-44B6-BA22-CFF0F8EC9FBE}|Ewan.Core\\Ewan.Core.csproj|d:\\01demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\markingmachinefeeder0617\\ewan.core\\logic\\homelogic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{74A46493-03C1-44B6-BA22-CFF0F8EC9FBE}|Ewan.Core\\Ewan.Core.csproj|solutionrelative:ewan.core\\logic\\homelogic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{74A46493-03C1-44B6-BA22-CFF0F8EC9FBE}|Ewan.Core\\Ewan.Core.csproj|d:\\01demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\markingmachinefeeder0617\\ewan.core\\logic\\materialunloadinglogic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{74A46493-03C1-44B6-BA22-CFF0F8EC9FBE}|Ewan.Core\\Ewan.Core.csproj|solutionrelative:ewan.core\\logic\\materialunloadinglogic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1D00DD0A-E7EB-4234-84E5-357B7CA7CFA0}|MarkingMachineFeeder\\MarkingMachineFeeder.csproj|d:\\01demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\markingmachinefeeder0617\\markingmachinefeeder\\viewmodel\\mainwindowviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1D00DD0A-E7EB-4234-84E5-357B7CA7CFA0}|MarkingMachineFeeder\\MarkingMachineFeeder.csproj|solutionrelative:markingmachinefeeder\\viewmodel\\mainwindowviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1D00DD0A-E7EB-4234-84E5-357B7CA7CFA0}|MarkingMachineFeeder\\MarkingMachineFeeder.csproj|d:\\01demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\markingmachinefeeder0617\\config\\io_mapping.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{1D00DD0A-E7EB-4234-84E5-357B7CA7CFA0}|MarkingMachineFeeder\\MarkingMachineFeeder.csproj|solutionrelative:config\\io_mapping.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E9B968B2-7577-4524-A023-9E18D7314296}|Ewan.Model\\Ewan.Model.csproj|d:\\01demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\markingmachinefeeder0617\\ewan.model\\io\\markingmachinefeederiomodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E9B968B2-7577-4524-A023-9E18D7314296}|Ewan.Model\\Ewan.Model.csproj|solutionrelative:ewan.model\\io\\markingmachinefeederiomodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C459CB9-E516-4068-B558-D89862B7D54F}|EwanCommon\\EwanCommon\\EwanCommon.csproj|d:\\01demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\markingmachinefeeder0617\\ewancommon\\ewancommon\\ewancore\\bootstrap\\managerlifetimehost.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C459CB9-E516-4068-B558-D89862B7D54F}|EwanCommon\\EwanCommon\\EwanCommon.csproj|solutionrelative:ewancommon\\ewancommon\\ewancore\\bootstrap\\managerlifetimehost.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1D00DD0A-E7EB-4234-84E5-357B7CA7CFA0}|MarkingMachineFeeder\\MarkingMachineFeeder.csproj|D:\\01Demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\MarkingMachineFeeder0617\\markingmachinefeeder\\mainwindow.xaml.cs||{8B382828-6202-11D1-8870-0000F87579D2}|",
+      "RelativeMoniker": "D:0:0:{1D00DD0A-E7EB-4234-84E5-357B7CA7CFA0}|MarkingMachineFeeder\\MarkingMachineFeeder.csproj|solutionrelative:markingmachinefeeder\\mainwindow.xaml.cs||{8B382828-6202-11D1-8870-0000F87579D2}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 1,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedHeight": 231,
+          "SelectedChildIndex": 6,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "HomeLogic.cs",
+              "DocumentMoniker": "D:\\01Demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\MarkingMachineFeeder0617\\Ewan.Core\\Logic\\HomeLogic.cs",
+              "RelativeDocumentMoniker": "Ewan.Core\\Logic\\HomeLogic.cs",
+              "ToolTip": "D:\\01Demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\MarkingMachineFeeder0617\\Ewan.Core\\Logic\\HomeLogic.cs",
+              "RelativeToolTip": "Ewan.Core\\Logic\\HomeLogic.cs",
+              "ViewState": "AgIAAFMAAAAAAAAAAADwv1wAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-24T02:21:51.125Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "LogicBase.cs",
+              "DocumentMoniker": "D:\\01Demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\MarkingMachineFeeder0617\\EwanCommon\\EwanCommon\\EwanCore\\StateMachine\\Logic\\LogicBase.cs",
+              "RelativeDocumentMoniker": "EwanCommon\\EwanCommon\\EwanCore\\StateMachine\\Logic\\LogicBase.cs",
+              "ToolTip": "D:\\01Demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\MarkingMachineFeeder0617\\EwanCommon\\EwanCommon\\EwanCore\\StateMachine\\Logic\\LogicBase.cs",
+              "RelativeToolTip": "EwanCommon\\EwanCommon\\EwanCore\\StateMachine\\Logic\\LogicBase.cs",
+              "ViewState": "AgIAAIkAAAAAAAAAAAAgwIsAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-24T02:21:17.544Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MainLogic.cs",
+              "DocumentMoniker": "D:\\01Demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\MarkingMachineFeeder0617\\Ewan.Core\\Logic\\MainLogic.cs",
+              "RelativeDocumentMoniker": "Ewan.Core\\Logic\\MainLogic.cs",
+              "ToolTip": "D:\\01Demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\MarkingMachineFeeder0617\\Ewan.Core\\Logic\\MainLogic.cs",
+              "RelativeToolTip": "Ewan.Core\\Logic\\MainLogic.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAAAAACoAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-24T02:20:58.453Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "MainWindowViewModel.cs",
+              "DocumentMoniker": "D:\\01Demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\MarkingMachineFeeder0617\\MarkingMachineFeeder\\Viewmodel\\MainWindowViewModel.cs",
+              "RelativeDocumentMoniker": "MarkingMachineFeeder\\Viewmodel\\MainWindowViewModel.cs",
+              "ToolTip": "D:\\01Demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\MarkingMachineFeeder0617\\MarkingMachineFeeder\\Viewmodel\\MainWindowViewModel.cs",
+              "RelativeToolTip": "MarkingMachineFeeder\\Viewmodel\\MainWindowViewModel.cs",
+              "ViewState": "AgIAANIEAAAAAAAAAAAAwOIEAAA/AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-24T00:45:28.088Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MaterialLoadingLogic.cs",
+              "DocumentMoniker": "D:\\01Demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\MarkingMachineFeeder0617\\Ewan.Core\\Logic\\MaterialLoadingLogic.cs",
+              "RelativeDocumentMoniker": "Ewan.Core\\Logic\\MaterialLoadingLogic.cs",
+              "ToolTip": "D:\\01Demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\MarkingMachineFeeder0617\\Ewan.Core\\Logic\\MaterialLoadingLogic.cs",
+              "RelativeToolTip": "Ewan.Core\\Logic\\MaterialLoadingLogic.cs",
+              "ViewState": "AgIAAE8FAAAAAAAAAAAAAFsFAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-24T00:38:23.147Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "io_mapping.json",
+              "DocumentMoniker": "D:\\01Demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\MarkingMachineFeeder0617\\config\\io_mapping.json",
+              "RelativeDocumentMoniker": "config\\io_mapping.json",
+              "ToolTip": "D:\\01Demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\MarkingMachineFeeder0617\\config\\io_mapping.json",
+              "RelativeToolTip": "config\\io_mapping.json",
+              "ViewState": "AgIAAFsBAAAAAAAAAAAAAGQBAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-06-24T00:45:19.466Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "MaterialUnloadingLogic.cs",
+              "DocumentMoniker": "D:\\01Demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\MarkingMachineFeeder0617\\Ewan.Core\\Logic\\MaterialUnloadingLogic.cs",
+              "RelativeDocumentMoniker": "Ewan.Core\\Logic\\MaterialUnloadingLogic.cs",
+              "ToolTip": "D:\\01Demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\MarkingMachineFeeder0617\\Ewan.Core\\Logic\\MaterialUnloadingLogic.cs",
+              "RelativeToolTip": "Ewan.Core\\Logic\\MaterialUnloadingLogic.cs",
+              "ViewState": "AgIAANYDAAAAAAAAAAAAAOgDAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-24T00:38:25.855Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "MarkingMachineFeederIOModel.cs",
+              "DocumentMoniker": "D:\\01Demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\MarkingMachineFeeder0617\\Ewan.Model\\IO\\MarkingMachineFeederIOModel.cs",
+              "RelativeDocumentMoniker": "Ewan.Model\\IO\\MarkingMachineFeederIOModel.cs",
+              "ToolTip": "D:\\01Demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\MarkingMachineFeeder0617\\Ewan.Model\\IO\\MarkingMachineFeederIOModel.cs",
+              "RelativeToolTip": "Ewan.Model\\IO\\MarkingMachineFeederIOModel.cs",
+              "ViewState": "AgIAAKwAAAAAAAAAAAAgwL8AAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-24T00:45:55.133Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "ManagerLifetimeHost.cs",
+              "DocumentMoniker": "D:\\01Demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\MarkingMachineFeeder0617\\EwanCommon\\EwanCommon\\EwanCore\\Bootstrap\\ManagerLifetimeHost.cs",
+              "RelativeDocumentMoniker": "EwanCommon\\EwanCommon\\EwanCore\\Bootstrap\\ManagerLifetimeHost.cs",
+              "ToolTip": "D:\\01Demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\MarkingMachineFeeder0617\\EwanCommon\\EwanCommon\\EwanCore\\Bootstrap\\ManagerLifetimeHost.cs",
+              "RelativeToolTip": "EwanCommon\\EwanCommon\\EwanCore\\Bootstrap\\ManagerLifetimeHost.cs",
+              "ViewState": "AgIAAFoAAAAAAAAAAAAYwG8AAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-23T08:40:37.758Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "D:\\01Demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\MarkingMachineFeeder0617\\MarkingMachineFeeder\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "MarkingMachineFeeder\\MainWindow.xaml.cs",
+              "ToolTip": "D:\\01Demo\\\u73E0\u6D77\u5747\u5A01\\\u4E0A\u6599\u673A\\MarkingMachineFeeder0617\\MarkingMachineFeeder\\MainWindow.xaml.cs",
+              "RelativeToolTip": "MarkingMachineFeeder\\MainWindow.xaml.cs",
+              "ViewState": "AgIAAIIAAAAAAAAAAAAAAJEAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-23T08:33:43.341Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

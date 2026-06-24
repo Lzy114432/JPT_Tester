@@ -1,0 +1,14 @@
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\PlcCommunication\bin\Release\netcoreapp3.1\communication.dll
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\PlcCommunication\bin\Release\netcoreapp3.1\PlcCommunication.deps.json
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\PlcCommunication\bin\Release\netcoreapp3.1\PlcCommunication.dll
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\PlcCommunication\bin\Release\netcoreapp3.1\PlcCommunication.pdb
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\PlcCommunication\bin\Release\netcoreapp3.1\PlcCommunication.xml
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\PlcCommunication\obj\Release\netcoreapp3.1\PlcCommunication.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\PlcCommunication\obj\Release\netcoreapp3.1\PlcCommunication.AssemblyInfoInputs.cache
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\PlcCommunication\obj\Release\netcoreapp3.1\PlcCommunication.AssemblyInfo.cs
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\PlcCommunication\obj\Release\netcoreapp3.1\PlcCommunication.csproj.CoreCompileInputs.cache
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\PlcCommunication\obj\Release\netcoreapp3.1\PlcCommunication.dll
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\PlcCommunication\obj\Release\netcoreapp3.1\PlcCommunication.xml
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\PlcCommunication\obj\Release\netcoreapp3.1\PlcCommunication.pdb
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\PlcCommunication\bin\Release\netcoreapp3.1\LTSMC.dll
+C:\Users\Administrator\Desktop\切栈桥和除胶\Hardware\PlcCommunication\bin\Release\netcoreapp3.1\IOC0640.dll

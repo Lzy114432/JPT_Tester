@@ -1,0 +1,6 @@
+﻿2026-03-24 09:47:13,865 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1345] 处理已完成: 用户请求停止系统 
+2026-03-24 09:47:13,867 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1361] 处理已完成: 系统停止操作完成 
+2026-03-24 09:47:13,872 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule:160] 所有料仓已停止 
+2026-03-24 09:47:13,879 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1548] 系统状态更新: Stopped - 已停止（需复位） 
+2026-03-24 09:47:13,881 [INFO ] [thread-4] [Ewan.Core.Module.SafetyModule:600] 处理已完成: 暂停输出复位: Stop 
+2026-03-24 09:47:13,882 [INFO ] [thread-4] [Ewan.Core.Module.BeltConveyorModule:383] 处理已完成: 皮带已停止 

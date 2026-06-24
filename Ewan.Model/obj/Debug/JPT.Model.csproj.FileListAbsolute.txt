@@ -1,0 +1,6 @@
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\JPT.Model\bin\Debug\JPT.Model.dll
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\JPT.Model\bin\Debug\JPT.Model.pdb
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\JPT.Model\obj\Debug\JPT.Model.csproj.AssemblyReference.cache
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\JPT.Model\obj\Debug\JPT.Model.csproj.CoreCompileInputs.cache
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\JPT.Model\obj\Debug\JPT.Model.dll
+C:\Users\Administrator\source\repos\MarkingMachineFeeder\JPT.Model\obj\Debug\JPT.Model.pdb

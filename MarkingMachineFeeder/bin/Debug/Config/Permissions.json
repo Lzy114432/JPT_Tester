@@ -1,0 +1,70 @@
+{
+  "Permissions": [
+    {
+      "PermissionId": "language.control",
+      "DisplayName": "LanguageSwitch",
+      "Description": "LanguageSwitchDesc",
+      "Category": "SystemSettings",
+      "IsEnabled": true
+    },
+    {
+      "PermissionId": "permissionconfig.view",
+      "DisplayName": "PermissionConfigView",
+      "Description": "PermissionConfigViewDesc",
+      "Category": "SystemSettings",
+      "IsEnabled": true
+    },
+    {
+      "PermissionId": "permissionconfig.control",
+      "DisplayName": "PermissionConfigControl",
+      "Description": "PermissionConfigControlDesc",
+      "Category": "SystemSettings",
+      "IsEnabled": true
+    },
+    {
+      "PermissionId": "systemcontrol.control",
+      "DisplayName": "SystemControl",
+      "Description": "SystemControlDesc",
+      "Category": "SystemControl",
+      "IsEnabled": true
+    }
+  ],
+  "RolePermissions": [
+    {
+      "RoleName": "Administrator",
+      "RoleDisplayName": "系统管理员",
+      "LocalizedRoleDisplayName": "Administrator",
+      "PermissionIds": [
+        "language.control",
+        "permissionconfig.view",
+        "permissionconfig.control",
+        "systemcontrol.control"
+      ],
+      "IsSystemRole": true
+    },
+    {
+      "RoleName": "Engineer",
+      "RoleDisplayName": "工程师",
+      "LocalizedRoleDisplayName": "Engineer",
+      "PermissionIds": [
+        "language.control",
+        "permissionconfig.view",
+        "systemcontrol.control"
+      ],
+      "IsSystemRole": true
+    },
+    {
+      "RoleName": "Operator",
+      "RoleDisplayName": "操作员",
+      "LocalizedRoleDisplayName": "Operator",
+      "PermissionIds": [
+        "language.control",
+        "systemcontrol.control"
+      ],
+      "IsSystemRole": true
+    }
+  ],
+  "UserPermissions": [],
+  "Version": "1.0",
+  "LastModified": "2025-08-29T09:15:01.7823744+08:00"
+}

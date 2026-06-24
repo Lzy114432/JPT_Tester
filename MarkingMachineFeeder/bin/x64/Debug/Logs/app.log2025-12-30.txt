@@ -1,0 +1,33 @@
+﻿2025-12-30 17:19:04,545 [INFO ] [thread-1] [MarkingMachineFeeder.App:30] Log4net配置已加载 
+2025-12-30 17:19:04,609 [INFO ] [thread-1] MainController 开始初始化所有 Manager 
+2025-12-30 17:19:04,611 [INFO ] [thread-1] ManagerLifetimeHost starting. requireAll=False 
+2025-12-30 17:19:04,612 [INFO ] [thread-1] SecurityManager 初始化开始 
+2025-12-30 17:19:04,729 [INFO ] [thread-1] 已加载 3 个用户 
+2025-12-30 17:19:04,732 [INFO ] [thread-1] 管理员用户检查: 角色数=1，权限数=5 
+2025-12-30 17:19:04,733 [INFO ] [thread-1] SecurityManager 初始化完成 
+2025-12-30 17:19:04,735 [INFO ] [thread-1] AxisManager 初始化开始 
+2025-12-30 17:19:04,740 [INFO ] [thread-1] 轴配置加载完成: 4个轴配置 
+2025-12-30 17:19:09,856 [ERROR] [thread-1] 控制卡连接失败: IP=192.168.5.11 
+2025-12-30 17:19:09,858 [ERROR] [thread-1] AxisManager 初始化失败: 控制卡连接失败 
+2025-12-30 17:19:09,858 [ERROR] [thread-1] Init manager returned false: Ewan.Core.Axis.AxisManager 
+2025-12-30 17:19:09,859 [INFO ] [thread-1] ManagerLifetimeHost stopping. startedManagers=2 
+2025-12-30 17:19:09,859 [INFO ] [thread-1] AxisManager 开始销毁 
+2025-12-30 17:19:09,860 [INFO ] [thread-1] AxisManager 销毁完成 
+2025-12-30 17:19:09,860 [INFO ] [thread-1] SecurityManager 开始销毁 
+2025-12-30 17:19:09,861 [INFO ] [thread-1] SecurityManager 销毁完成 
+2025-12-30 17:19:09,861 [INFO ] [thread-1] ManagerLifetimeHost stopped. 
+2025-12-30 17:19:09,862 [ERROR] [thread-1] MainController 初始化失败 
+2025-12-30 17:19:09,862 [ERROR] [thread-1] [MarkingMachineFeeder.App:40] MainController初始化失败 
+2025-12-30 17:19:11,235 [DEBUG] [thread-1] 权限检查失败：用户未认证，资源 PermissionConfig.View 
+2025-12-30 17:19:11,236 [DEBUG] [thread-1] 权限检查失败：用户未认证，资源 SystemControl.Control 
+2025-12-30 17:19:11,237 [DEBUG] [thread-1] 权限检查失败：用户未认证，资源 HardwareControl.Control 
+2025-12-30 17:19:11,259 [INFO ] [thread-1] 主流程（LogicManager）已停止 
+2025-12-30 17:19:11,259 [DEBUG] [thread-1] 料仓升降控制流程已停止 
+2025-12-30 17:19:11,260 [DEBUG] [thread-1] 皮带输送控制流程已停止 
+2025-12-30 17:19:11,260 [DEBUG] [thread-1] Station心跳流程已停止 
+2025-12-30 17:19:11,260 [DEBUG] [thread-1] 环线通信流程已停止 
+2025-12-30 17:19:11,262 [DEBUG] [thread-1] MES消息处理流程已停止 
+2025-12-30 17:19:11,263 [DEBUG] [thread-1] 发送系统状态消息: Stopped - 流程停止 
+2025-12-30 17:19:11,263 [DEBUG] [thread-1] 系统状态指示器流程已停止 
+2025-12-30 17:19:11,266 [INFO ] [thread-1] MainController 开始销毁所有 Manager 
+2025-12-30 17:19:11,266 [INFO ] [thread-1] MainController 销毁完成 

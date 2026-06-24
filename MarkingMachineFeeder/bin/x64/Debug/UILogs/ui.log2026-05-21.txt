@@ -1,0 +1,937 @@
+﻿2026-05-21 09:13:48,610 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1405] 处理已完成: 用户请求停止系统 
+2026-05-21 09:13:48,616 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1421] 处理已完成: 系统停止操作完成 
+2026-05-21 09:13:48,618 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:167] 所有料仓已停止 
+2026-05-21 09:13:48,625 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1753] 系统状态更新: Stopped - 已停止（需复位） 
+2026-05-21 09:13:48,628 [INFO ] [thread-6] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: Stop 
+2026-05-21 09:13:48,632 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:404] 处理已完成: 皮带已停止 
+2026-05-21 09:49:10,871 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:188] 模块初始化: MesManager 
+2026-05-21 09:49:11,493 [INFO ] [thread-1] [MarkingMachineFeeder.App:63] 系统初始化成功 
+2026-05-21 09:49:11,500 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: 系统启动 
+2026-05-21 09:49:11,532 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:104] 模块初始化成功: SafetyModule 
+2026-05-21 09:49:11,532 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 09:49:11,544 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 09:49:11,550 [WARN ] [thread-1] [Ewan.Core.Manager.LogicManager:401] 需要先复位，才能启动 
+2026-05-21 09:49:11,566 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:80] 模块初始化成功: BinElevatorModule (MessageHub) 
+2026-05-21 09:49:11,566 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 09:49:11,571 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:110] 模块初始化成功: BeltConveyorModule 
+2026-05-21 09:49:11,573 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:120] 初始化已完成: 皮带输送控制系统 
+2026-05-21 09:49:11,574 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 09:49:11,579 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 09:49:11,582 [INFO ] [thread-1] [Ewan.Core.Module.RingLineModule:49] 环线模块已初始化 
+2026-05-21 09:49:11,587 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 09:49:11,593 [INFO ] [thread-1] [Ewan.Core.Module.MesModule:35] 模块初始化成功: MesModule (MessageHub) 
+2026-05-21 09:49:11,597 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 09:49:11,598 [INFO ] [thread-1] [MarkingMachineFeeder.App:68] 流处理已启动 
+2026-05-21 09:49:11,670 [INFO ] [thread-12] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-05-21 09:49:11,782 [INFO ] [thread-1] [MarkingMachineFeeder.App:82] ViewModelLocator已配置 
+2026-05-21 09:49:12,131 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1564] 已从参数加载数量统计：上料速率=0, 下料速率=21 
+2026-05-21 09:49:12,137 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:357] 主窗口已启动 
+2026-05-21 10:16:59,872 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:188] 模块初始化: MesManager 
+2026-05-21 10:17:00,470 [INFO ] [thread-1] [MarkingMachineFeeder.App:63] 系统初始化成功 
+2026-05-21 10:17:00,476 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: 系统启动 
+2026-05-21 10:17:00,501 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:104] 模块初始化成功: SafetyModule 
+2026-05-21 10:17:00,503 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 10:17:00,512 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 10:17:00,523 [WARN ] [thread-1] [Ewan.Core.Manager.LogicManager:401] 需要先复位，才能启动 
+2026-05-21 10:17:00,536 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:80] 模块初始化成功: BinElevatorModule (MessageHub) 
+2026-05-21 10:17:00,536 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 10:17:00,542 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:110] 模块初始化成功: BeltConveyorModule 
+2026-05-21 10:17:00,544 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:120] 初始化已完成: 皮带输送控制系统 
+2026-05-21 10:17:00,545 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 10:17:00,550 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 10:17:00,555 [INFO ] [thread-1] [Ewan.Core.Module.RingLineModule:49] 环线模块已初始化 
+2026-05-21 10:17:00,555 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 10:17:00,564 [INFO ] [thread-1] [Ewan.Core.Module.MesModule:35] 模块初始化成功: MesModule (MessageHub) 
+2026-05-21 10:17:00,566 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 10:17:04,945 [INFO ] [thread-1] [MarkingMachineFeeder.App:68] 流处理已启动 
+2026-05-21 10:17:06,029 [INFO ] [thread-12] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-05-21 10:17:08,604 [INFO ] [thread-1] [MarkingMachineFeeder.App:82] ViewModelLocator已配置 
+2026-05-21 10:17:09,000 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1564] 已从参数加载数量统计：上料速率=0, 下料速率=21 
+2026-05-21 10:17:09,007 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:357] 主窗口已启动 
+2026-05-21 10:17:47,148 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1405] 处理已完成: 用户请求停止系统 
+2026-05-21 10:17:47,159 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1421] 处理已完成: 系统停止操作完成 
+2026-05-21 10:17:47,162 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:167] 所有料仓已停止 
+2026-05-21 10:17:47,186 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1753] 系统状态更新: Stopped - 已停止（需复位） 
+2026-05-21 10:17:47,192 [INFO ] [thread-6] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: Stop 
+2026-05-21 10:17:47,196 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:404] 处理已完成: 皮带已停止 
+2026-05-21 10:17:47,733 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteClearAlarm>d__380:1257] 用户触发清除报警(OUT25脉冲) 
+2026-05-21 10:17:47,860 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteClearAlarm>d__380:1269] 清除报警完成 
+2026-05-21 10:17:47,862 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1753] 系统状态更新: Standby - 报警已清除，待机 
+2026-05-21 10:17:49,353 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__376:1107] 处理已开始: 用户触发系统复位 
+2026-05-21 10:17:49,353 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__376:1112] 设置低速运行模式 
+2026-05-21 10:17:49,868 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:167] 所有料仓已停止 
+2026-05-21 10:17:50,377 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:99] 处理已完成: 皮带输送控制的所有锁定已强制清除 
+2026-05-21 10:17:50,383 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-05-21 10:17:50,383 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__376:1141] 处理已完成: 复位命令已发送 
+2026-05-21 10:17:50,385 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1753] 系统状态更新: Stopped - 已停止（需复位） 
+2026-05-21 10:17:50,388 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:167] 所有料仓已停止 
+2026-05-21 10:17:50,404 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__20:285] 料仓初始化开始 
+2026-05-21 10:17:50,425 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1753] 系统状态更新: Initializing - 复位中 
+2026-05-21 10:17:50,427 [INFO ] [thread-6] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: Initialize 
+2026-05-21 10:17:50,432 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:411] 处理已开始: 皮带系统已初始化 
+2026-05-21 10:17:50,444 [INFO ] [thread-LogicRunner-01B8EEA9] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 初始状态 → 发送停止脉冲 
+2026-05-21 10:17:50,462 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:436] 料仓3检测到物料 
+2026-05-21 10:17:50,489 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:472] 初始化进入下降阶段 3个料仓有物料 
+2026-05-21 10:17:50,495 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:508] 料仓2下降到无感应位置 
+2026-05-21 10:17:50,498 [INFO ] [thread-LogicRunner-01B8EEA9] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送停止脉冲 → 等待停止完成 
+2026-05-21 10:17:50,542 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:508] 料仓3下降到无感应位置 
+2026-05-21 10:17:51,521 [INFO ] [thread-LogicRunner-01B8EEA9] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待停止完成 → 发送开始脉冲 
+2026-05-21 10:17:51,574 [INFO ] [thread-LogicRunner-01B8EEA9] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送开始脉冲 → 等待开始完成 
+2026-05-21 10:17:52,083 [INFO ] [thread-LogicRunner-01B8EEA9] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待开始完成 → 清除允许取料 
+2026-05-21 10:17:52,138 [INFO ] [thread-LogicRunner-01B8EEA9] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 清除允许取料 → 料仓初始化 
+2026-05-21 10:17:52,199 [INFO ] [thread-LogicRunner-01B8EEA9] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 料仓初始化 → 等待料仓完成 
+2026-05-21 10:17:52,246 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__20:285] 料仓初始化开始 
+2026-05-21 10:17:52,322 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:436] 料仓2检测到物料 
+2026-05-21 10:17:52,346 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:472] 初始化进入下降阶段 3个料仓有物料 
+2026-05-21 10:17:52,368 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:508] 料仓3下降到无感应位置 
+2026-05-21 10:17:52,419 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:508] 料仓2下降到无感应位置 
+2026-05-21 10:17:53,629 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:508] 料仓1下降到无感应位置 
+2026-05-21 10:17:53,630 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:526] 所有料仓初始化完成 
+2026-05-21 10:17:53,682 [INFO ] [thread-LogicRunner-01B8EEA9] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待料仓完成 → 结束状态 
+2026-05-21 10:17:53,693 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1753] 系统状态更新: Standby - 复位完成，待机 
+2026-05-21 10:43:21,235 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:188] 模块初始化: MesManager 
+2026-05-21 10:43:21,608 [INFO ] [thread-1] [MarkingMachineFeeder.App:63] 系统初始化成功 
+2026-05-21 10:43:21,635 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: 系统启动 
+2026-05-21 10:43:21,683 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:104] 模块初始化成功: SafetyModule 
+2026-05-21 10:43:21,689 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 10:43:21,705 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 10:43:21,714 [WARN ] [thread-1] [Ewan.Core.Manager.LogicManager:401] 需要先复位，才能启动 
+2026-05-21 10:43:21,732 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:80] 模块初始化成功: BinElevatorModule (MessageHub) 
+2026-05-21 10:43:21,734 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 10:43:21,741 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:110] 模块初始化成功: BeltConveyorModule 
+2026-05-21 10:43:21,743 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:120] 初始化已完成: 皮带输送控制系统 
+2026-05-21 10:43:21,745 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 10:43:21,751 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 10:43:21,762 [INFO ] [thread-1] [Ewan.Core.Module.RingLineModule:49] 环线模块已初始化 
+2026-05-21 10:43:21,763 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 10:43:21,771 [INFO ] [thread-1] [Ewan.Core.Module.MesModule:35] 模块初始化成功: MesModule (MessageHub) 
+2026-05-21 10:43:21,773 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 10:43:21,776 [INFO ] [thread-1] [MarkingMachineFeeder.App:68] 流处理已启动 
+2026-05-21 10:43:21,781 [INFO ] [thread-12] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-05-21 10:43:21,832 [INFO ] [thread-1] [MarkingMachineFeeder.App:82] ViewModelLocator已配置 
+2026-05-21 10:43:22,256 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1564] 已从参数加载数量统计：上料速率=0, 下料速率=21 
+2026-05-21 10:43:22,269 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:357] 主窗口已启动 
+2026-05-21 12:50:36,517 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:188] 模块初始化: MesManager 
+2026-05-21 12:50:37,112 [INFO ] [thread-1] [MarkingMachineFeeder.App:63] 系统初始化成功 
+2026-05-21 12:50:37,120 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: 系统启动 
+2026-05-21 12:50:37,156 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:104] 模块初始化成功: SafetyModule 
+2026-05-21 12:50:37,157 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 12:50:37,170 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 12:50:37,178 [WARN ] [thread-1] [Ewan.Core.Manager.LogicManager:401] 需要先复位，才能启动 
+2026-05-21 12:50:37,187 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:80] 模块初始化成功: BinElevatorModule (MessageHub) 
+2026-05-21 12:50:37,189 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 12:50:37,192 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:110] 模块初始化成功: BeltConveyorModule 
+2026-05-21 12:50:37,194 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:120] 初始化已完成: 皮带输送控制系统 
+2026-05-21 12:50:37,195 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 12:50:37,207 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 12:50:37,212 [INFO ] [thread-1] [Ewan.Core.Module.RingLineModule:49] 环线模块已初始化 
+2026-05-21 12:50:37,213 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 12:50:37,218 [INFO ] [thread-1] [Ewan.Core.Module.MesModule:35] 模块初始化成功: MesModule (MessageHub) 
+2026-05-21 12:50:37,220 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 12:50:37,223 [INFO ] [thread-1] [MarkingMachineFeeder.App:68] 流处理已启动 
+2026-05-21 12:50:37,248 [INFO ] [thread-12] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-05-21 12:50:37,404 [INFO ] [thread-1] [MarkingMachineFeeder.App:82] ViewModelLocator已配置 
+2026-05-21 12:50:37,886 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1564] 已从参数加载数量统计：上料速率=0, 下料速率=21 
+2026-05-21 12:50:37,897 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:357] 主窗口已启动 
+2026-05-21 13:03:23,997 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:188] 模块初始化: MesManager 
+2026-05-21 13:03:24,337 [INFO ] [thread-1] [MarkingMachineFeeder.App:63] 系统初始化成功 
+2026-05-21 13:03:24,348 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: 系统启动 
+2026-05-21 13:03:24,381 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:104] 模块初始化成功: SafetyModule 
+2026-05-21 13:03:24,382 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:03:24,395 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:03:24,418 [WARN ] [thread-1] [Ewan.Core.Manager.LogicManager:401] 需要先复位，才能启动 
+2026-05-21 13:03:24,442 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:80] 模块初始化成功: BinElevatorModule (MessageHub) 
+2026-05-21 13:03:24,442 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:03:24,448 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:110] 模块初始化成功: BeltConveyorModule 
+2026-05-21 13:03:24,451 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:120] 初始化已完成: 皮带输送控制系统 
+2026-05-21 13:03:24,451 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:03:24,456 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:03:24,461 [INFO ] [thread-1] [Ewan.Core.Module.RingLineModule:49] 环线模块已初始化 
+2026-05-21 13:03:24,462 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:03:24,470 [INFO ] [thread-1] [Ewan.Core.Module.MesModule:35] 模块初始化成功: MesModule (MessageHub) 
+2026-05-21 13:03:24,475 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:03:24,477 [INFO ] [thread-1] [MarkingMachineFeeder.App:68] 流处理已启动 
+2026-05-21 13:03:24,492 [INFO ] [thread-1] [MarkingMachineFeeder.App:82] ViewModelLocator已配置 
+2026-05-21 13:03:24,497 [INFO ] [thread-12] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-05-21 13:03:24,788 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1564] 已从参数加载数量统计：上料速率=0, 下料速率=21 
+2026-05-21 13:03:24,794 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:357] 主窗口已启动 
+2026-05-21 13:11:53,734 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:188] 模块初始化: MesManager 
+2026-05-21 13:11:54,056 [INFO ] [thread-1] [MarkingMachineFeeder.App:63] 系统初始化成功 
+2026-05-21 13:11:54,067 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: 系统启动 
+2026-05-21 13:11:54,092 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:104] 模块初始化成功: SafetyModule 
+2026-05-21 13:11:54,096 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:11:54,106 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:11:54,116 [WARN ] [thread-1] [Ewan.Core.Manager.LogicManager:401] 需要先复位，才能启动 
+2026-05-21 13:11:54,124 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:80] 模块初始化成功: BinElevatorModule (MessageHub) 
+2026-05-21 13:11:54,129 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:11:54,135 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:110] 模块初始化成功: BeltConveyorModule 
+2026-05-21 13:11:54,138 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:120] 初始化已完成: 皮带输送控制系统 
+2026-05-21 13:11:54,138 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:11:54,144 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:11:54,147 [INFO ] [thread-1] [Ewan.Core.Module.RingLineModule:49] 环线模块已初始化 
+2026-05-21 13:11:54,149 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:11:54,154 [INFO ] [thread-1] [Ewan.Core.Module.MesModule:35] 模块初始化成功: MesModule (MessageHub) 
+2026-05-21 13:11:54,158 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:11:54,165 [INFO ] [thread-1] [MarkingMachineFeeder.App:68] 流处理已启动 
+2026-05-21 13:11:54,171 [INFO ] [thread-12] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-05-21 13:11:54,185 [INFO ] [thread-1] [MarkingMachineFeeder.App:82] ViewModelLocator已配置 
+2026-05-21 13:11:54,542 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1564] 已从参数加载数量统计：上料速率=0, 下料速率=21 
+2026-05-21 13:11:54,549 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:357] 主窗口已启动 
+2026-05-21 13:15:04,435 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:188] 模块初始化: MesManager 
+2026-05-21 13:15:04,744 [INFO ] [thread-1] [MarkingMachineFeeder.App:63] 系统初始化成功 
+2026-05-21 13:15:04,751 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: 系统启动 
+2026-05-21 13:15:04,794 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:104] 模块初始化成功: SafetyModule 
+2026-05-21 13:15:04,795 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:15:04,812 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:15:04,827 [WARN ] [thread-1] [Ewan.Core.Manager.LogicManager:401] 需要先复位，才能启动 
+2026-05-21 13:15:04,841 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:80] 模块初始化成功: BinElevatorModule (MessageHub) 
+2026-05-21 13:15:04,842 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:15:04,850 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:110] 模块初始化成功: BeltConveyorModule 
+2026-05-21 13:15:04,852 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:120] 初始化已完成: 皮带输送控制系统 
+2026-05-21 13:15:04,853 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:15:04,858 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:15:04,869 [INFO ] [thread-1] [Ewan.Core.Module.RingLineModule:49] 环线模块已初始化 
+2026-05-21 13:15:04,872 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:15:04,879 [INFO ] [thread-1] [Ewan.Core.Module.MesModule:35] 模块初始化成功: MesModule (MessageHub) 
+2026-05-21 13:15:04,881 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:15:04,884 [INFO ] [thread-1] [MarkingMachineFeeder.App:68] 流处理已启动 
+2026-05-21 13:15:04,893 [INFO ] [thread-12] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-05-21 13:15:04,917 [INFO ] [thread-1] [MarkingMachineFeeder.App:82] ViewModelLocator已配置 
+2026-05-21 13:15:05,191 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1564] 已从参数加载数量统计：上料速率=0, 下料速率=21 
+2026-05-21 13:15:05,199 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:357] 主窗口已启动 
+2026-05-21 13:24:38,620 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:188] 模块初始化: MesManager 
+2026-05-21 13:24:38,910 [INFO ] [thread-1] [MarkingMachineFeeder.App:63] 系统初始化成功 
+2026-05-21 13:24:38,916 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: 系统启动 
+2026-05-21 13:24:38,943 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:104] 模块初始化成功: SafetyModule 
+2026-05-21 13:24:38,946 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:24:38,957 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:24:38,990 [WARN ] [thread-1] [Ewan.Core.Manager.LogicManager:401] 需要先复位，才能启动 
+2026-05-21 13:24:39,004 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:80] 模块初始化成功: BinElevatorModule (MessageHub) 
+2026-05-21 13:24:39,008 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:24:39,014 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:110] 模块初始化成功: BeltConveyorModule 
+2026-05-21 13:24:39,015 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:120] 初始化已完成: 皮带输送控制系统 
+2026-05-21 13:24:39,017 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:24:39,026 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:24:39,036 [INFO ] [thread-1] [Ewan.Core.Module.RingLineModule:49] 环线模块已初始化 
+2026-05-21 13:24:39,041 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:24:39,047 [INFO ] [thread-12] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-05-21 13:24:39,050 [INFO ] [thread-1] [Ewan.Core.Module.MesModule:35] 模块初始化成功: MesModule (MessageHub) 
+2026-05-21 13:24:39,052 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:24:39,055 [INFO ] [thread-1] [MarkingMachineFeeder.App:68] 流处理已启动 
+2026-05-21 13:24:39,090 [INFO ] [thread-1] [MarkingMachineFeeder.App:82] ViewModelLocator已配置 
+2026-05-21 13:24:39,407 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1564] 已从参数加载数量统计：上料速率=0, 下料速率=21 
+2026-05-21 13:24:39,411 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:357] 主窗口已启动 
+2026-05-21 13:49:59,081 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:188] 模块初始化: MesManager 
+2026-05-21 13:49:59,376 [INFO ] [thread-1] [MarkingMachineFeeder.App:63] 系统初始化成功 
+2026-05-21 13:49:59,387 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: 系统启动 
+2026-05-21 13:49:59,415 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:104] 模块初始化成功: SafetyModule 
+2026-05-21 13:49:59,417 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:49:59,424 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:49:59,437 [WARN ] [thread-1] [Ewan.Core.Manager.LogicManager:401] 需要先复位，才能启动 
+2026-05-21 13:49:59,448 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:80] 模块初始化成功: BinElevatorModule (MessageHub) 
+2026-05-21 13:49:59,450 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:49:59,454 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:110] 模块初始化成功: BeltConveyorModule 
+2026-05-21 13:49:59,456 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:120] 初始化已完成: 皮带输送控制系统 
+2026-05-21 13:49:59,456 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:49:59,464 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:49:59,472 [INFO ] [thread-1] [Ewan.Core.Module.RingLineModule:49] 环线模块已初始化 
+2026-05-21 13:49:59,476 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:49:59,484 [INFO ] [thread-1] [Ewan.Core.Module.MesModule:35] 模块初始化成功: MesModule (MessageHub) 
+2026-05-21 13:49:59,486 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:49:59,489 [INFO ] [thread-1] [MarkingMachineFeeder.App:68] 流处理已启动 
+2026-05-21 13:49:59,492 [INFO ] [thread-12] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-05-21 13:49:59,520 [INFO ] [thread-1] [MarkingMachineFeeder.App:82] ViewModelLocator已配置 
+2026-05-21 13:49:59,818 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1564] 已从参数加载数量统计：上料速率=0, 下料速率=21 
+2026-05-21 13:49:59,824 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:357] 主窗口已启动 
+2026-05-21 13:50:02,913 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1405] 处理已完成: 用户请求停止系统 
+2026-05-21 13:50:02,921 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1421] 处理已完成: 系统停止操作完成 
+2026-05-21 13:50:02,923 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:167] 所有料仓已停止 
+2026-05-21 13:50:02,988 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1753] 系统状态更新: Stopped - 已停止（需复位） 
+2026-05-21 13:50:02,996 [INFO ] [thread-6] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: Stop 
+2026-05-21 13:50:03,000 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:404] 处理已完成: 皮带已停止 
+2026-05-21 13:50:03,544 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteClearAlarm>d__380:1257] 用户触发清除报警(OUT25脉冲) 
+2026-05-21 13:50:03,672 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteClearAlarm>d__380:1269] 清除报警完成 
+2026-05-21 13:50:03,681 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1753] 系统状态更新: Standby - 报警已清除，待机 
+2026-05-21 13:50:04,722 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__376:1107] 处理已开始: 用户触发系统复位 
+2026-05-21 13:50:04,724 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__376:1112] 设置低速运行模式 
+2026-05-21 13:50:05,247 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:167] 所有料仓已停止 
+2026-05-21 13:50:05,751 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:99] 处理已完成: 皮带输送控制的所有锁定已强制清除 
+2026-05-21 13:50:05,756 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-05-21 13:50:05,757 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__376:1141] 处理已完成: 复位命令已发送 
+2026-05-21 13:50:05,757 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1753] 系统状态更新: Stopped - 已停止（需复位） 
+2026-05-21 13:50:05,765 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:167] 所有料仓已停止 
+2026-05-21 13:50:05,784 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__20:285] 料仓初始化开始 
+2026-05-21 13:50:05,795 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1753] 系统状态更新: Initializing - 复位中 
+2026-05-21 13:50:05,800 [INFO ] [thread-6] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: Initialize 
+2026-05-21 13:50:05,805 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:411] 处理已开始: 皮带系统已初始化 
+2026-05-21 13:50:05,814 [INFO ] [thread-LogicRunner-038063F4] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 初始状态 → 发送停止脉冲 
+2026-05-21 13:50:05,828 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:436] 料仓2检测到物料 
+2026-05-21 13:50:05,862 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:436] 料仓3检测到物料 
+2026-05-21 13:50:05,883 [INFO ] [thread-LogicRunner-038063F4] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送停止脉冲 → 等待停止完成 
+2026-05-21 13:50:05,889 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:472] 初始化进入下降阶段 3个料仓有物料 
+2026-05-21 13:50:05,905 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:508] 料仓3下降到无感应位置 
+2026-05-21 13:50:05,957 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:508] 料仓2下降到无感应位置 
+2026-05-21 13:50:06,237 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:508] 料仓1下降到无感应位置 
+2026-05-21 13:50:06,238 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:526] 所有料仓初始化完成 
+2026-05-21 13:50:06,908 [INFO ] [thread-LogicRunner-038063F4] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待停止完成 → 发送开始脉冲 
+2026-05-21 13:50:06,960 [INFO ] [thread-LogicRunner-038063F4] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送开始脉冲 → 等待开始完成 
+2026-05-21 13:50:07,471 [INFO ] [thread-LogicRunner-038063F4] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待开始完成 → 清除允许取料 
+2026-05-21 13:50:07,523 [INFO ] [thread-LogicRunner-038063F4] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 清除允许取料 → 料仓初始化 
+2026-05-21 13:50:07,590 [INFO ] [thread-LogicRunner-038063F4] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 料仓初始化 → 等待料仓完成 
+2026-05-21 13:50:07,598 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__20:285] 料仓初始化开始 
+2026-05-21 13:50:07,670 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:436] 料仓2检测到物料 
+2026-05-21 13:50:07,692 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:472] 初始化进入下降阶段 3个料仓有物料 
+2026-05-21 13:50:07,718 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:508] 料仓1下降到无感应位置 
+2026-05-21 13:50:07,734 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:508] 料仓3下降到无感应位置 
+2026-05-21 13:50:07,754 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:508] 料仓2下降到无感应位置 
+2026-05-21 13:50:07,757 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:526] 所有料仓初始化完成 
+2026-05-21 13:50:07,768 [INFO ] [thread-LogicRunner-038063F4] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待料仓完成 → 结束状态 
+2026-05-21 13:50:07,778 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1753] 系统状态更新: Standby - 复位完成，待机 
+2026-05-21 13:50:17,081 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.AxisControlViewModel:238] 轴配置已加载：4个轴 
+2026-05-21 13:50:17,181 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:708] 处理已完成: 轴手动控制 
+2026-05-21 13:50:27,477 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.AxisControlViewModel:453] 轴 1 负向点动开始，速度: 100 
+2026-05-21 13:50:28,321 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.AxisControlViewModel:472] 轴 1 点动停止 
+2026-05-21 13:50:29,119 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.AxisControlViewModel:434] 轴 1 正向点动开始，速度: 100 
+2026-05-21 13:50:32,795 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.AxisControlViewModel:472] 轴 1 点动停止 
+2026-05-21 13:50:37,371 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.AxisControlViewModel:434] 轴 1 正向点动开始，速度: 100 
+2026-05-21 13:50:39,701 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.AxisControlViewModel:472] 轴 1 点动停止 
+2026-05-21 13:50:43,190 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.AxisControlViewModel:434] 轴 1 正向点动开始，速度: 100 
+2026-05-21 13:50:45,641 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.AxisControlViewModel:472] 轴 1 点动停止 
+2026-05-21 13:50:49,255 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.AxisControlViewModel:434] 轴 1 正向点动开始，速度: 100 
+2026-05-21 13:50:51,137 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.AxisControlViewModel:472] 轴 1 点动停止 
+2026-05-21 13:50:56,184 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1405] 处理已完成: 用户请求停止系统 
+2026-05-21 13:50:56,187 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1421] 处理已完成: 系统停止操作完成 
+2026-05-21 13:50:56,188 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:167] 所有料仓已停止 
+2026-05-21 13:50:56,200 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1753] 系统状态更新: Stopped - 已停止（需复位） 
+2026-05-21 13:50:56,201 [INFO ] [thread-6] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: Stop 
+2026-05-21 13:50:56,204 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:404] 处理已完成: 皮带已停止 
+2026-05-21 13:50:58,396 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:167] 所有料仓已停止 
+2026-05-21 13:50:58,423 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:141] 模块已销毁: BinElevatorModule 
+2026-05-21 13:50:58,431 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:301] 处理已完成: 皮带轴已停止 
+2026-05-21 13:50:58,434 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:233] 模块已销毁: BeltConveyorModule 
+2026-05-21 13:50:58,442 [INFO ] [thread-1] [Ewan.Core.Module.MesModule:89] 模块已销毁: MesModule 
+2026-05-21 13:50:58,449 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: SafetyModule销毁 
+2026-05-21 13:50:58,452 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:188] 模块已销毁: SafetyModule 
+2026-05-21 13:50:58,453 [INFO ] [thread-1] [MarkingMachineFeeder.App:101] 流处理已停止 
+2026-05-21 13:50:58,471 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:141] 模块已销毁: BinElevatorModule 
+2026-05-21 13:50:58,474 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:301] 处理已完成: 皮带轴已停止 
+2026-05-21 13:50:58,476 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:233] 模块已销毁: BeltConveyorModule 
+2026-05-21 13:50:58,479 [INFO ] [thread-1] [Ewan.Core.Module.MesModule:89] 模块已销毁: MesModule 
+2026-05-21 13:50:58,490 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: SafetyModule销毁 
+2026-05-21 13:50:58,493 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:188] 模块已销毁: SafetyModule 
+2026-05-21 13:50:58,522 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:224] 模块销毁: MesManager 
+2026-05-21 13:50:58,650 [INFO ] [thread-1] [MarkingMachineFeeder.App:112] 资源释放完成 
+2026-05-21 13:50:58,747 [ERROR] [thread-6] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:OnStatusIndicatorReceived] 处理错误: 处理系统状态变化 - 已取消一个任务。 
+2026-05-21 13:53:12,796 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:188] 模块初始化: MesManager 
+2026-05-21 13:53:13,376 [INFO ] [thread-1] [MarkingMachineFeeder.App:63] 系统初始化成功 
+2026-05-21 13:53:13,386 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: 系统启动 
+2026-05-21 13:53:13,427 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:104] 模块初始化成功: SafetyModule 
+2026-05-21 13:53:13,427 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:53:13,444 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:53:13,469 [WARN ] [thread-1] [Ewan.Core.Manager.LogicManager:401] 需要先复位，才能启动 
+2026-05-21 13:53:13,483 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:80] 模块初始化成功: BinElevatorModule (MessageHub) 
+2026-05-21 13:53:13,485 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:53:13,493 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:110] 模块初始化成功: BeltConveyorModule 
+2026-05-21 13:53:13,505 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:120] 初始化已完成: 皮带输送控制系统 
+2026-05-21 13:53:13,507 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:53:13,518 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:53:13,617 [INFO ] [thread-1] [Ewan.Core.Module.RingLineModule:49] 环线模块已初始化 
+2026-05-21 13:53:13,618 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:53:13,626 [INFO ] [thread-1] [Ewan.Core.Module.MesModule:35] 模块初始化成功: MesModule (MessageHub) 
+2026-05-21 13:53:13,629 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 13:53:13,636 [INFO ] [thread-1] [MarkingMachineFeeder.App:68] 流处理已启动 
+2026-05-21 13:53:13,656 [INFO ] [thread-1] [MarkingMachineFeeder.App:82] ViewModelLocator已配置 
+2026-05-21 13:53:13,664 [INFO ] [thread-12] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-05-21 13:53:13,988 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1564] 已从参数加载数量统计：上料速率=0, 下料速率=0 
+2026-05-21 13:53:13,995 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:357] 主窗口已启动 
+2026-05-21 14:03:53,499 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:188] 模块初始化: MesManager 
+2026-05-21 14:03:53,969 [INFO ] [thread-1] [MarkingMachineFeeder.App:63] 系统初始化成功 
+2026-05-21 14:03:53,985 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: 系统启动 
+2026-05-21 14:03:54,036 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:104] 模块初始化成功: SafetyModule 
+2026-05-21 14:03:54,039 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 14:03:54,072 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 14:03:54,099 [WARN ] [thread-1] [Ewan.Core.Manager.LogicManager:401] 需要先复位，才能启动 
+2026-05-21 14:03:54,111 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:80] 模块初始化成功: BinElevatorModule (MessageHub) 
+2026-05-21 14:03:54,113 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 14:03:54,121 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:110] 模块初始化成功: BeltConveyorModule 
+2026-05-21 14:03:54,124 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:120] 初始化已完成: 皮带输送控制系统 
+2026-05-21 14:03:54,127 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 14:03:54,134 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 14:03:54,143 [INFO ] [thread-1] [Ewan.Core.Module.RingLineModule:49] 环线模块已初始化 
+2026-05-21 14:03:54,144 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 14:03:54,149 [INFO ] [thread-1] [Ewan.Core.Module.MesModule:35] 模块初始化成功: MesModule (MessageHub) 
+2026-05-21 14:03:54,151 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 14:03:54,154 [INFO ] [thread-1] [MarkingMachineFeeder.App:68] 流处理已启动 
+2026-05-21 14:03:54,214 [INFO ] [thread-12] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-05-21 14:03:54,233 [INFO ] [thread-1] [MarkingMachineFeeder.App:82] ViewModelLocator已配置 
+2026-05-21 14:03:54,620 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1564] 已从参数加载数量统计：上料速率=0, 下料速率=0 
+2026-05-21 14:03:54,628 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:357] 主窗口已启动 
+2026-05-21 14:05:05,998 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:188] 模块初始化: MesManager 
+2026-05-21 14:05:06,344 [INFO ] [thread-1] [MarkingMachineFeeder.App:63] 系统初始化成功 
+2026-05-21 14:05:06,354 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: 系统启动 
+2026-05-21 14:05:06,386 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:104] 模块初始化成功: SafetyModule 
+2026-05-21 14:05:06,386 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 14:05:06,401 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 14:05:06,411 [WARN ] [thread-1] [Ewan.Core.Manager.LogicManager:401] 需要先复位，才能启动 
+2026-05-21 14:05:06,419 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:80] 模块初始化成功: BinElevatorModule (MessageHub) 
+2026-05-21 14:05:06,420 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 14:05:06,425 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:110] 模块初始化成功: BeltConveyorModule 
+2026-05-21 14:05:06,428 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:120] 初始化已完成: 皮带输送控制系统 
+2026-05-21 14:05:06,430 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 14:05:06,441 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 14:05:06,447 [INFO ] [thread-1] [Ewan.Core.Module.RingLineModule:49] 环线模块已初始化 
+2026-05-21 14:05:06,454 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 14:05:06,463 [INFO ] [thread-1] [Ewan.Core.Module.MesModule:35] 模块初始化成功: MesModule (MessageHub) 
+2026-05-21 14:05:06,470 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 14:05:06,474 [INFO ] [thread-1] [MarkingMachineFeeder.App:68] 流处理已启动 
+2026-05-21 14:05:06,477 [INFO ] [thread-12] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-05-21 14:05:06,513 [INFO ] [thread-1] [MarkingMachineFeeder.App:82] ViewModelLocator已配置 
+2026-05-21 14:05:06,772 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1564] 已从参数加载数量统计：上料速率=0, 下料速率=0 
+2026-05-21 14:05:06,778 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:357] 主窗口已启动 
+2026-05-21 14:10:24,407 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:188] 模块初始化: MesManager 
+2026-05-21 14:10:24,696 [INFO ] [thread-1] [MarkingMachineFeeder.App:63] 系统初始化成功 
+2026-05-21 14:10:24,707 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: 系统启动 
+2026-05-21 14:10:24,741 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:104] 模块初始化成功: SafetyModule 
+2026-05-21 14:10:24,742 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 14:10:24,753 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 14:10:24,771 [WARN ] [thread-1] [Ewan.Core.Manager.LogicManager:401] 需要先复位，才能启动 
+2026-05-21 14:10:24,782 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:80] 模块初始化成功: BinElevatorModule (MessageHub) 
+2026-05-21 14:10:24,783 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 14:10:24,790 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:110] 模块初始化成功: BeltConveyorModule 
+2026-05-21 14:10:24,793 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:120] 初始化已完成: 皮带输送控制系统 
+2026-05-21 14:10:24,794 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 14:10:24,804 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 14:10:24,808 [INFO ] [thread-1] [Ewan.Core.Module.RingLineModule:49] 环线模块已初始化 
+2026-05-21 14:10:24,810 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 14:10:24,816 [INFO ] [thread-1] [Ewan.Core.Module.MesModule:35] 模块初始化成功: MesModule (MessageHub) 
+2026-05-21 14:10:24,818 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 14:10:24,819 [INFO ] [thread-1] [MarkingMachineFeeder.App:68] 流处理已启动 
+2026-05-21 14:10:24,821 [INFO ] [thread-12] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-05-21 14:10:24,860 [INFO ] [thread-1] [MarkingMachineFeeder.App:82] ViewModelLocator已配置 
+2026-05-21 14:10:25,105 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1564] 已从参数加载数量统计：上料速率=0, 下料速率=0 
+2026-05-21 14:10:25,112 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:357] 主窗口已启动 
+2026-05-21 17:02:27,573 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:188] 模块初始化: MesManager 
+2026-05-21 17:02:28,235 [INFO ] [thread-1] [MarkingMachineFeeder.App:63] 系统初始化成功 
+2026-05-21 17:02:28,243 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: 系统启动 
+2026-05-21 17:02:28,273 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:104] 模块初始化成功: SafetyModule 
+2026-05-21 17:02:28,275 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:02:28,287 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:02:28,300 [WARN ] [thread-1] [Ewan.Core.Manager.LogicManager:401] 需要先复位，才能启动 
+2026-05-21 17:02:28,308 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:80] 模块初始化成功: BinElevatorModule (MessageHub) 
+2026-05-21 17:02:28,308 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:02:28,312 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:110] 模块初始化成功: BeltConveyorModule 
+2026-05-21 17:02:28,314 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:120] 初始化已完成: 皮带输送控制系统 
+2026-05-21 17:02:28,315 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:02:28,321 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:02:28,331 [INFO ] [thread-1] [Ewan.Core.Module.RingLineModule:49] 环线模块已初始化 
+2026-05-21 17:02:28,333 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:02:28,339 [INFO ] [thread-1] [Ewan.Core.Module.MesModule:35] 模块初始化成功: MesModule (MessageHub) 
+2026-05-21 17:02:28,341 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:02:28,342 [INFO ] [thread-1] [MarkingMachineFeeder.App:68] 流处理已启动 
+2026-05-21 17:02:28,347 [INFO ] [thread-12] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-05-21 17:02:28,512 [INFO ] [thread-1] [MarkingMachineFeeder.App:82] ViewModelLocator已配置 
+2026-05-21 17:02:28,858 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1564] 已从参数加载数量统计：上料速率=0, 下料速率=0 
+2026-05-21 17:02:28,869 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:357] 主窗口已启动 
+2026-05-21 17:10:17,939 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:188] 模块初始化: MesManager 
+2026-05-21 17:10:18,389 [INFO ] [thread-1] [MarkingMachineFeeder.App:63] 系统初始化成功 
+2026-05-21 17:10:18,398 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: 系统启动 
+2026-05-21 17:10:18,428 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:104] 模块初始化成功: SafetyModule 
+2026-05-21 17:10:18,429 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:10:18,447 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:10:18,458 [WARN ] [thread-1] [Ewan.Core.Manager.LogicManager:401] 需要先复位，才能启动 
+2026-05-21 17:10:18,481 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:80] 模块初始化成功: BinElevatorModule (MessageHub) 
+2026-05-21 17:10:18,483 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:10:18,488 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:110] 模块初始化成功: BeltConveyorModule 
+2026-05-21 17:10:18,496 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:120] 初始化已完成: 皮带输送控制系统 
+2026-05-21 17:10:18,499 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:10:18,508 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:10:18,511 [INFO ] [thread-1] [Ewan.Core.Module.RingLineModule:49] 环线模块已初始化 
+2026-05-21 17:10:18,519 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:10:18,547 [INFO ] [thread-1] [Ewan.Core.Module.MesModule:35] 模块初始化成功: MesModule (MessageHub) 
+2026-05-21 17:10:18,550 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:10:18,553 [INFO ] [thread-1] [MarkingMachineFeeder.App:68] 流处理已启动 
+2026-05-21 17:10:18,577 [INFO ] [thread-1] [MarkingMachineFeeder.App:82] ViewModelLocator已配置 
+2026-05-21 17:10:18,585 [INFO ] [thread-12] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-05-21 17:10:18,913 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1564] 已从参数加载数量统计：上料速率=0, 下料速率=0 
+2026-05-21 17:10:18,923 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:357] 主窗口已启动 
+2026-05-21 17:14:36,077 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:188] 模块初始化: MesManager 
+2026-05-21 17:14:36,425 [INFO ] [thread-1] [MarkingMachineFeeder.App:63] 系统初始化成功 
+2026-05-21 17:14:36,439 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: 系统启动 
+2026-05-21 17:14:36,469 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:104] 模块初始化成功: SafetyModule 
+2026-05-21 17:14:36,471 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:14:36,483 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:14:36,492 [WARN ] [thread-1] [Ewan.Core.Manager.LogicManager:401] 需要先复位，才能启动 
+2026-05-21 17:14:36,512 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:80] 模块初始化成功: BinElevatorModule (MessageHub) 
+2026-05-21 17:14:36,513 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:14:36,519 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:110] 模块初始化成功: BeltConveyorModule 
+2026-05-21 17:14:36,523 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:120] 初始化已完成: 皮带输送控制系统 
+2026-05-21 17:14:36,524 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:14:36,529 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:14:36,539 [INFO ] [thread-1] [Ewan.Core.Module.RingLineModule:49] 环线模块已初始化 
+2026-05-21 17:14:36,540 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:14:36,553 [INFO ] [thread-1] [Ewan.Core.Module.MesModule:35] 模块初始化成功: MesModule (MessageHub) 
+2026-05-21 17:14:36,555 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:14:36,558 [INFO ] [thread-1] [MarkingMachineFeeder.App:68] 流处理已启动 
+2026-05-21 17:14:36,583 [INFO ] [thread-1] [MarkingMachineFeeder.App:82] ViewModelLocator已配置 
+2026-05-21 17:14:36,592 [INFO ] [thread-12] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-05-21 17:14:36,888 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1564] 已从参数加载数量统计：上料速率=0, 下料速率=0 
+2026-05-21 17:14:36,895 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:357] 主窗口已启动 
+2026-05-21 17:44:14,382 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:188] 模块初始化: MesManager 
+2026-05-21 17:44:14,801 [INFO ] [thread-1] [MarkingMachineFeeder.App:63] 系统初始化成功 
+2026-05-21 17:44:14,812 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: 系统启动 
+2026-05-21 17:44:14,845 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:104] 模块初始化成功: SafetyModule 
+2026-05-21 17:44:14,847 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:44:14,858 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:44:14,889 [WARN ] [thread-1] [Ewan.Core.Manager.LogicManager:401] 需要先复位，才能启动 
+2026-05-21 17:44:14,904 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:80] 模块初始化成功: BinElevatorModule (MessageHub) 
+2026-05-21 17:44:14,905 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:44:14,913 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:110] 模块初始化成功: BeltConveyorModule 
+2026-05-21 17:44:14,916 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:120] 初始化已完成: 皮带输送控制系统 
+2026-05-21 17:44:14,918 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:44:14,929 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:44:14,939 [INFO ] [thread-1] [Ewan.Core.Module.RingLineModule:49] 环线模块已初始化 
+2026-05-21 17:44:14,940 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:44:14,946 [INFO ] [thread-1] [Ewan.Core.Module.MesModule:35] 模块初始化成功: MesModule (MessageHub) 
+2026-05-21 17:44:14,946 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:44:14,949 [INFO ] [thread-1] [MarkingMachineFeeder.App:68] 流处理已启动 
+2026-05-21 17:44:14,970 [INFO ] [thread-12] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-05-21 17:44:14,972 [INFO ] [thread-1] [MarkingMachineFeeder.App:82] ViewModelLocator已配置 
+2026-05-21 17:44:15,224 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1564] 已从参数加载数量统计：上料速率=0, 下料速率=0 
+2026-05-21 17:44:15,230 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:357] 主窗口已启动 
+2026-05-21 17:51:10,068 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:188] 模块初始化: MesManager 
+2026-05-21 17:51:10,488 [INFO ] [thread-1] [MarkingMachineFeeder.App:63] 系统初始化成功 
+2026-05-21 17:51:10,513 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: 系统启动 
+2026-05-21 17:51:10,569 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:104] 模块初始化成功: SafetyModule 
+2026-05-21 17:51:10,571 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:51:10,583 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:51:10,606 [WARN ] [thread-1] [Ewan.Core.Manager.LogicManager:401] 需要先复位，才能启动 
+2026-05-21 17:51:10,620 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:80] 模块初始化成功: BinElevatorModule (MessageHub) 
+2026-05-21 17:51:10,622 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:51:10,638 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:110] 模块初始化成功: BeltConveyorModule 
+2026-05-21 17:51:10,646 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:120] 初始化已完成: 皮带输送控制系统 
+2026-05-21 17:51:10,647 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:51:10,657 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:51:10,673 [INFO ] [thread-1] [Ewan.Core.Module.RingLineModule:49] 环线模块已初始化 
+2026-05-21 17:51:10,677 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:51:10,724 [INFO ] [thread-1] [Ewan.Core.Module.MesModule:35] 模块初始化成功: MesModule (MessageHub) 
+2026-05-21 17:51:10,748 [INFO ] [thread-12] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-05-21 17:51:10,753 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:51:10,766 [INFO ] [thread-1] [MarkingMachineFeeder.App:68] 流处理已启动 
+2026-05-21 17:51:10,784 [INFO ] [thread-1] [MarkingMachineFeeder.App:82] ViewModelLocator已配置 
+2026-05-21 17:51:11,129 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1564] 已从参数加载数量统计：上料速率=0, 下料速率=0 
+2026-05-21 17:51:11,138 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:357] 主窗口已启动 
+2026-05-21 17:52:00,683 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:188] 模块初始化: MesManager 
+2026-05-21 17:52:01,542 [INFO ] [thread-1] [MarkingMachineFeeder.App:63] 系统初始化成功 
+2026-05-21 17:52:01,557 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: 系统启动 
+2026-05-21 17:52:01,601 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:104] 模块初始化成功: SafetyModule 
+2026-05-21 17:52:01,602 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:52:01,616 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:52:01,630 [WARN ] [thread-1] [Ewan.Core.Manager.LogicManager:401] 需要先复位，才能启动 
+2026-05-21 17:52:01,649 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:80] 模块初始化成功: BinElevatorModule (MessageHub) 
+2026-05-21 17:52:01,650 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:52:01,657 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:110] 模块初始化成功: BeltConveyorModule 
+2026-05-21 17:52:01,660 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:120] 初始化已完成: 皮带输送控制系统 
+2026-05-21 17:52:01,660 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:52:01,673 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:52:01,688 [INFO ] [thread-1] [Ewan.Core.Module.RingLineModule:49] 环线模块已初始化 
+2026-05-21 17:52:01,690 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:52:01,716 [INFO ] [thread-1] [Ewan.Core.Module.MesModule:35] 模块初始化成功: MesModule (MessageHub) 
+2026-05-21 17:52:01,717 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 17:52:01,719 [INFO ] [thread-1] [MarkingMachineFeeder.App:68] 流处理已启动 
+2026-05-21 17:52:01,761 [INFO ] [thread-12] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-05-21 17:52:01,763 [INFO ] [thread-1] [MarkingMachineFeeder.App:82] ViewModelLocator已配置 
+2026-05-21 17:52:02,186 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1564] 已从参数加载数量统计：上料速率=0, 下料速率=0 
+2026-05-21 17:52:02,192 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:357] 主窗口已启动 
+2026-05-21 18:04:22,519 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:188] 模块初始化: MesManager 
+2026-05-21 18:04:22,888 [INFO ] [thread-1] [MarkingMachineFeeder.App:63] 系统初始化成功 
+2026-05-21 18:04:22,904 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: 系统启动 
+2026-05-21 18:04:22,946 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:104] 模块初始化成功: SafetyModule 
+2026-05-21 18:04:22,948 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 18:04:22,959 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 18:04:22,984 [WARN ] [thread-1] [Ewan.Core.Manager.LogicManager:401] 需要先复位，才能启动 
+2026-05-21 18:04:22,995 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:80] 模块初始化成功: BinElevatorModule (MessageHub) 
+2026-05-21 18:04:22,996 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 18:04:23,004 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:110] 模块初始化成功: BeltConveyorModule 
+2026-05-21 18:04:23,007 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:120] 初始化已完成: 皮带输送控制系统 
+2026-05-21 18:04:23,009 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 18:04:23,014 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 18:04:23,020 [INFO ] [thread-1] [Ewan.Core.Module.RingLineModule:49] 环线模块已初始化 
+2026-05-21 18:04:23,021 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 18:04:23,033 [INFO ] [thread-1] [Ewan.Core.Module.MesModule:35] 模块初始化成功: MesModule (MessageHub) 
+2026-05-21 18:04:23,034 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 18:04:23,037 [INFO ] [thread-1] [MarkingMachineFeeder.App:68] 流处理已启动 
+2026-05-21 18:04:23,073 [INFO ] [thread-12] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-05-21 18:04:23,077 [INFO ] [thread-1] [MarkingMachineFeeder.App:82] ViewModelLocator已配置 
+2026-05-21 18:04:23,364 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1564] 已从参数加载数量统计：上料速率=0, 下料速率=0 
+2026-05-21 18:04:23,372 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:357] 主窗口已启动 
+2026-05-21 18:10:56,864 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:188] 模块初始化: MesManager 
+2026-05-21 18:10:57,188 [INFO ] [thread-1] [MarkingMachineFeeder.App:63] 系统初始化成功 
+2026-05-21 18:10:57,201 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: 系统启动 
+2026-05-21 18:10:57,226 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:104] 模块初始化成功: SafetyModule 
+2026-05-21 18:10:57,228 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 18:10:57,240 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 18:10:57,248 [WARN ] [thread-1] [Ewan.Core.Manager.LogicManager:401] 需要先复位，才能启动 
+2026-05-21 18:10:57,259 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:80] 模块初始化成功: BinElevatorModule (MessageHub) 
+2026-05-21 18:10:57,259 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 18:10:57,267 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:110] 模块初始化成功: BeltConveyorModule 
+2026-05-21 18:10:57,270 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:120] 初始化已完成: 皮带输送控制系统 
+2026-05-21 18:10:57,272 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 18:10:57,277 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 18:10:57,281 [INFO ] [thread-1] [Ewan.Core.Module.RingLineModule:49] 环线模块已初始化 
+2026-05-21 18:10:57,283 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 18:10:57,289 [INFO ] [thread-1] [Ewan.Core.Module.MesModule:35] 模块初始化成功: MesModule (MessageHub) 
+2026-05-21 18:10:57,291 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 18:10:57,292 [INFO ] [thread-12] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-05-21 18:10:57,294 [INFO ] [thread-1] [MarkingMachineFeeder.App:68] 流处理已启动 
+2026-05-21 18:10:57,315 [INFO ] [thread-1] [MarkingMachineFeeder.App:82] ViewModelLocator已配置 
+2026-05-21 18:10:57,555 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1564] 已从参数加载数量统计：上料速率=0, 下料速率=0 
+2026-05-21 18:10:57,562 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:357] 主窗口已启动 
+2026-05-21 19:05:16,891 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:188] 模块初始化: MesManager 
+2026-05-21 19:05:17,190 [INFO ] [thread-1] [MarkingMachineFeeder.App:63] 系统初始化成功 
+2026-05-21 19:05:17,208 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: 系统启动 
+2026-05-21 19:05:17,241 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:104] 模块初始化成功: SafetyModule 
+2026-05-21 19:05:17,242 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 19:05:17,250 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 19:05:17,258 [WARN ] [thread-1] [Ewan.Core.Manager.LogicManager:401] 需要先复位，才能启动 
+2026-05-21 19:05:17,272 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:80] 模块初始化成功: BinElevatorModule (MessageHub) 
+2026-05-21 19:05:17,274 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 19:05:17,277 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:110] 模块初始化成功: BeltConveyorModule 
+2026-05-21 19:05:17,278 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:120] 初始化已完成: 皮带输送控制系统 
+2026-05-21 19:05:17,280 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 19:05:17,284 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 19:05:17,289 [INFO ] [thread-1] [Ewan.Core.Module.RingLineModule:49] 环线模块已初始化 
+2026-05-21 19:05:17,291 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 19:05:17,297 [INFO ] [thread-1] [Ewan.Core.Module.MesModule:35] 模块初始化成功: MesModule (MessageHub) 
+2026-05-21 19:05:17,301 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-05-21 19:05:17,305 [INFO ] [thread-1] [MarkingMachineFeeder.App:68] 流处理已启动 
+2026-05-21 19:05:17,314 [INFO ] [thread-12] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-05-21 19:05:17,354 [INFO ] [thread-1] [MarkingMachineFeeder.App:82] ViewModelLocator已配置 
+2026-05-21 19:05:17,612 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1564] 已从参数加载数量统计：上料速率=0, 下料速率=0 
+2026-05-21 19:05:17,618 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:357] 主窗口已启动 
+2026-05-21 21:46:52,612 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:ExecuteSystemStop] 处理已完成: 用户请求停止系统 
+2026-05-21 21:46:52,620 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:ExecuteSystemStop] 处理已完成: 系统停止操作完成 
+2026-05-21 21:46:52,623 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnForceStopAll] 所有料仓已停止 
+2026-05-21 21:46:52,653 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:UpdateSystemStatusDisplay] 系统状态更新: Stopped - 已停止（需复位） 
+2026-05-21 21:46:52,658 [INFO ] [thread-6] [Ewan.Core.Module.SafetyModule:SetRobotPauseOutput] 处理已完成: 暂停输出复位: Stop 
+2026-05-21 21:46:52,666 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnSystemControlMessage] 处理已完成: 皮带已停止 
+2026-05-21 21:46:53,172 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteClearAlarm>d__380:MoveNext] 用户触发清除报警(OUT25脉冲) 
+2026-05-21 21:46:53,296 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteClearAlarm>d__380:MoveNext] 清除报警完成 
+2026-05-21 21:46:53,303 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:UpdateSystemStatusDisplay] 系统状态更新: Standby - 报警已清除，待机 
+2026-05-21 21:46:53,894 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__376:MoveNext] 处理已开始: 用户触发系统复位 
+2026-05-21 21:46:53,894 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__376:MoveNext] 设置低速运行模式 
+2026-05-21 21:46:54,402 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnForceStopAll] 所有料仓已停止 
+2026-05-21 21:46:54,909 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:ClearAllLocks] 处理已完成: 皮带输送控制的所有锁定已强制清除 
+2026-05-21 21:46:54,912 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-05-21 21:46:54,913 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__376:MoveNext] 处理已完成: 复位命令已发送 
+2026-05-21 21:46:54,915 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:UpdateSystemStatusDisplay] 系统状态更新: Stopped - 已停止（需复位） 
+2026-05-21 21:46:54,918 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnForceStopAll] 所有料仓已停止 
+2026-05-21 21:46:54,941 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__20:MoveNext] 料仓初始化开始 
+2026-05-21 21:46:54,972 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:UpdateSystemStatusDisplay] 系统状态更新: Initializing - 复位中 
+2026-05-21 21:46:54,972 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 初始状态 → 发送停止脉冲 
+2026-05-21 21:46:54,976 [INFO ] [thread-6] [Ewan.Core.Module.SafetyModule:SetRobotPauseOutput] 处理已完成: 暂停输出复位: Initialize 
+2026-05-21 21:46:54,979 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnSystemControlMessage] 处理已开始: 皮带系统已初始化 
+2026-05-21 21:46:54,981 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓3检测到物料 
+2026-05-21 21:46:55,030 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送停止脉冲 → 等待停止完成 
+2026-05-21 21:46:56,058 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待停止完成 → 发送开始脉冲 
+2026-05-21 21:46:56,113 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送开始脉冲 → 等待开始完成 
+2026-05-21 21:46:56,629 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待开始完成 → 清除允许取料 
+2026-05-21 21:46:56,683 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 清除允许取料 → 料仓初始化 
+2026-05-21 21:46:56,743 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 料仓初始化 → 等待料仓完成 
+2026-05-21 21:46:56,829 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__20:MoveNext] 料仓初始化开始 
+2026-05-21 21:46:56,835 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓2检测到物料 
+2026-05-21 21:46:56,837 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓3检测到物料 
+2026-05-21 21:46:57,050 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓1检测到物料 
+2026-05-21 21:46:57,072 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 初始化进入下降阶段 3个料仓有物料 
+2026-05-21 21:46:57,079 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓1下降到无感应位置 
+2026-05-21 21:46:57,080 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓2下降到无感应位置 
+2026-05-21 21:46:57,082 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓3下降到无感应位置 
+2026-05-21 21:46:57,083 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 所有料仓初始化完成 
+2026-05-21 21:46:57,120 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待料仓完成 → 结束状态 
+2026-05-21 21:46:57,134 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:UpdateSystemStatusDisplay] 系统状态更新: Standby - 复位完成，待机 
+2026-05-21 21:47:23,761 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__376:MoveNext] 处理已开始: 用户触发系统复位 
+2026-05-21 21:47:23,763 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__376:MoveNext] 设置低速运行模式 
+2026-05-21 21:47:24,279 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnForceStopAll] 所有料仓已停止 
+2026-05-21 21:47:24,780 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:ClearAllLocks] 处理已完成: 皮带输送控制的所有锁定已强制清除 
+2026-05-21 21:47:24,784 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-05-21 21:47:24,784 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__376:MoveNext] 处理已完成: 复位命令已发送 
+2026-05-21 21:47:24,786 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:UpdateSystemStatusDisplay] 系统状态更新: Stopped - 已停止（需复位） 
+2026-05-21 21:47:24,791 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnForceStopAll] 所有料仓已停止 
+2026-05-21 21:47:24,808 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__20:MoveNext] 料仓初始化开始 
+2026-05-21 21:47:24,816 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓2检测到物料 
+2026-05-21 21:47:24,816 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:UpdateSystemStatusDisplay] 系统状态更新: Initializing - 复位中 
+2026-05-21 21:47:24,818 [INFO ] [thread-6] [Ewan.Core.Module.SafetyModule:SetRobotPauseOutput] 处理已完成: 暂停输出复位: Initialize 
+2026-05-21 21:47:24,819 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnSystemControlMessage] 处理已开始: 皮带系统已初始化 
+2026-05-21 21:47:24,822 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓1检测到物料 
+2026-05-21 21:47:24,846 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 初始化进入下降阶段 3个料仓有物料 
+2026-05-21 21:47:24,851 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓1下降到无感应位置 
+2026-05-21 21:47:24,854 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓2下降到无感应位置 
+2026-05-21 21:47:24,856 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓3下降到无感应位置 
+2026-05-21 21:47:24,858 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 所有料仓初始化完成 
+2026-05-21 21:47:24,923 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 初始状态 → 发送停止脉冲 
+2026-05-21 21:47:24,974 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送停止脉冲 → 等待停止完成 
+2026-05-21 21:47:25,998 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待停止完成 → 发送开始脉冲 
+2026-05-21 21:47:26,050 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送开始脉冲 → 等待开始完成 
+2026-05-21 21:47:26,562 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待开始完成 → 清除允许取料 
+2026-05-21 21:47:26,617 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 清除允许取料 → 料仓初始化 
+2026-05-21 21:47:26,669 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 料仓初始化 → 等待料仓完成 
+2026-05-21 21:47:26,690 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__20:MoveNext] 料仓初始化开始 
+2026-05-21 21:47:26,700 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓3检测到物料 
+2026-05-21 21:47:26,716 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓2检测到物料 
+2026-05-21 21:47:26,720 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓1检测到物料 
+2026-05-21 21:47:26,742 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 初始化进入下降阶段 3个料仓有物料 
+2026-05-21 21:47:26,749 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓1下降到无感应位置 
+2026-05-21 21:47:26,750 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓2下降到无感应位置 
+2026-05-21 21:47:26,767 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓3下降到无感应位置 
+2026-05-21 21:47:26,768 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 所有料仓初始化完成 
+2026-05-21 21:47:26,788 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待料仓完成 → 结束状态 
+2026-05-21 21:47:26,803 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:UpdateSystemStatusDisplay] 系统状态更新: Standby - 复位完成，待机 
+2026-05-21 21:47:34,239 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__376:MoveNext] 处理已开始: 用户触发系统复位 
+2026-05-21 21:47:34,239 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__376:MoveNext] 设置低速运行模式 
+2026-05-21 21:47:34,756 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnForceStopAll] 所有料仓已停止 
+2026-05-21 21:47:35,254 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:ClearAllLocks] 处理已完成: 皮带输送控制的所有锁定已强制清除 
+2026-05-21 21:47:35,259 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-05-21 21:47:35,260 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__376:MoveNext] 处理已完成: 复位命令已发送 
+2026-05-21 21:47:35,262 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:UpdateSystemStatusDisplay] 系统状态更新: Stopped - 已停止（需复位） 
+2026-05-21 21:47:35,269 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnForceStopAll] 所有料仓已停止 
+2026-05-21 21:47:35,295 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__20:MoveNext] 料仓初始化开始 
+2026-05-21 21:47:35,300 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:UpdateSystemStatusDisplay] 系统状态更新: Initializing - 复位中 
+2026-05-21 21:47:35,303 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓2已到顶部（ELP触发），无物料 
+2026-05-21 21:47:35,303 [INFO ] [thread-6] [Ewan.Core.Module.SafetyModule:SetRobotPauseOutput] 处理已完成: 暂停输出复位: Initialize 
+2026-05-21 21:47:35,305 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnSystemControlMessage] 处理已开始: 皮带系统已初始化 
+2026-05-21 21:47:35,321 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓3检测到物料 
+2026-05-21 21:47:35,325 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 初始状态 → 发送停止脉冲 
+2026-05-21 21:47:35,398 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送停止脉冲 → 等待停止完成 
+2026-05-21 21:47:35,606 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓1检测到物料 
+2026-05-21 21:47:35,620 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 初始化进入下降阶段 2个料仓有物料 
+2026-05-21 21:47:35,626 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓1下降到无感应位置 
+2026-05-21 21:47:35,642 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓3下降到无感应位置 
+2026-05-21 21:47:35,644 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 所有料仓初始化完成 
+2026-05-21 21:47:36,421 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待停止完成 → 发送开始脉冲 
+2026-05-21 21:47:36,473 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送开始脉冲 → 等待开始完成 
+2026-05-21 21:47:36,986 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待开始完成 → 清除允许取料 
+2026-05-21 21:47:37,040 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 清除允许取料 → 料仓初始化 
+2026-05-21 21:47:37,096 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 料仓初始化 → 等待料仓完成 
+2026-05-21 21:47:37,119 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__20:MoveNext] 料仓初始化开始 
+2026-05-21 21:47:37,129 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓2已到顶部（ELP触发），无物料 
+2026-05-21 21:47:37,147 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓3检测到物料 
+2026-05-21 21:47:40,136 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓1检测到物料 
+2026-05-21 21:47:40,149 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 初始化进入下降阶段 2个料仓有物料 
+2026-05-21 21:47:40,155 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓1下降到无感应位置 
+2026-05-21 21:47:40,171 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓3下降到无感应位置 
+2026-05-21 21:47:40,172 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 所有料仓初始化完成 
+2026-05-21 21:47:40,215 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待料仓完成 → 结束状态 
+2026-05-21 21:47:40,220 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:UpdateSystemStatusDisplay] 系统状态更新: Standby - 复位完成，待机 
+2026-05-21 21:47:46,576 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__376:MoveNext] 处理已开始: 用户触发系统复位 
+2026-05-21 21:47:46,576 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__376:MoveNext] 设置低速运行模式 
+2026-05-21 21:47:47,098 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnForceStopAll] 所有料仓已停止 
+2026-05-21 21:47:47,601 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:ClearAllLocks] 处理已完成: 皮带输送控制的所有锁定已强制清除 
+2026-05-21 21:47:47,605 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-05-21 21:47:47,607 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__376:MoveNext] 处理已完成: 复位命令已发送 
+2026-05-21 21:47:47,609 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:UpdateSystemStatusDisplay] 系统状态更新: Stopped - 已停止（需复位） 
+2026-05-21 21:47:47,612 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnForceStopAll] 所有料仓已停止 
+2026-05-21 21:47:47,639 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__20:MoveNext] 料仓初始化开始 
+2026-05-21 21:47:47,644 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:UpdateSystemStatusDisplay] 系统状态更新: Initializing - 复位中 
+2026-05-21 21:47:47,645 [INFO ] [thread-6] [Ewan.Core.Module.SafetyModule:SetRobotPauseOutput] 处理已完成: 暂停输出复位: Initialize 
+2026-05-21 21:47:47,647 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓2已到顶部（ELP触发），无物料 
+2026-05-21 21:47:47,647 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnSystemControlMessage] 处理已开始: 皮带系统已初始化 
+2026-05-21 21:47:47,661 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓3检测到物料 
+2026-05-21 21:47:47,733 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 初始状态 → 发送停止脉冲 
+2026-05-21 21:47:47,785 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送停止脉冲 → 等待停止完成 
+2026-05-21 21:47:48,808 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待停止完成 → 发送开始脉冲 
+2026-05-21 21:47:48,865 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送开始脉冲 → 等待开始完成 
+2026-05-21 21:47:49,379 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待开始完成 → 清除允许取料 
+2026-05-21 21:47:49,431 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 清除允许取料 → 料仓初始化 
+2026-05-21 21:47:49,484 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 料仓初始化 → 等待料仓完成 
+2026-05-21 21:47:49,531 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__20:MoveNext] 料仓初始化开始 
+2026-05-21 21:47:49,541 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓2已到顶部（ELP触发），无物料 
+2026-05-21 21:47:49,768 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓1检测到物料 
+2026-05-21 21:47:49,782 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 初始化进入下降阶段 2个料仓有物料 
+2026-05-21 21:47:49,789 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓1下降到无感应位置 
+2026-05-21 21:47:49,805 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓3下降到无感应位置 
+2026-05-21 21:47:49,806 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 所有料仓初始化完成 
+2026-05-21 21:47:49,845 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待料仓完成 → 结束状态 
+2026-05-21 21:47:49,848 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:UpdateSystemStatusDisplay] 系统状态更新: Standby - 复位完成，待机 
+2026-05-21 21:47:53,774 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__376:MoveNext] 处理已开始: 用户触发系统复位 
+2026-05-21 21:47:53,776 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__376:MoveNext] 设置低速运行模式 
+2026-05-21 21:47:54,297 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnForceStopAll] 所有料仓已停止 
+2026-05-21 21:47:54,802 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:ClearAllLocks] 处理已完成: 皮带输送控制的所有锁定已强制清除 
+2026-05-21 21:47:54,808 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-05-21 21:47:54,808 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__376:MoveNext] 处理已完成: 复位命令已发送 
+2026-05-21 21:47:54,810 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:UpdateSystemStatusDisplay] 系统状态更新: Stopped - 已停止（需复位） 
+2026-05-21 21:47:54,816 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnForceStopAll] 所有料仓已停止 
+2026-05-21 21:47:54,825 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__20:MoveNext] 料仓初始化开始 
+2026-05-21 21:47:54,833 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:UpdateSystemStatusDisplay] 系统状态更新: Initializing - 复位中 
+2026-05-21 21:47:54,835 [INFO ] [thread-6] [Ewan.Core.Module.SafetyModule:SetRobotPauseOutput] 处理已完成: 暂停输出复位: Initialize 
+2026-05-21 21:47:54,838 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnSystemControlMessage] 处理已开始: 皮带系统已初始化 
+2026-05-21 21:47:54,944 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 初始状态 → 发送停止脉冲 
+2026-05-21 21:47:54,980 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓1检测到物料 
+2026-05-21 21:47:55,012 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 初始化进入下降阶段 3个料仓有物料 
+2026-05-21 21:47:55,015 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送停止脉冲 → 等待停止完成 
+2026-05-21 21:47:55,017 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓1下降到无感应位置 
+2026-05-21 21:47:55,034 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓2下降到无感应位置 
+2026-05-21 21:47:55,038 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓3下降到无感应位置 
+2026-05-21 21:47:55,039 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 所有料仓初始化完成 
+2026-05-21 21:47:56,039 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待停止完成 → 发送开始脉冲 
+2026-05-21 21:47:56,090 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送开始脉冲 → 等待开始完成 
+2026-05-21 21:47:56,604 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待开始完成 → 清除允许取料 
+2026-05-21 21:47:56,664 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 清除允许取料 → 料仓初始化 
+2026-05-21 21:47:56,717 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 料仓初始化 → 等待料仓完成 
+2026-05-21 21:47:56,731 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__20:MoveNext] 料仓初始化开始 
+2026-05-21 21:47:56,755 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓2检测到物料 
+2026-05-21 21:47:56,938 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓1检测到物料 
+2026-05-21 21:47:56,960 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 初始化进入下降阶段 3个料仓有物料 
+2026-05-21 21:47:56,966 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓1下降到无感应位置 
+2026-05-21 21:47:56,970 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓2下降到无感应位置 
+2026-05-21 21:47:56,980 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓3下降到无感应位置 
+2026-05-21 21:47:56,982 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 所有料仓初始化完成 
+2026-05-21 21:47:57,024 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待料仓完成 → 结束状态 
+2026-05-21 21:47:57,034 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:UpdateSystemStatusDisplay] 系统状态更新: Standby - 复位完成，待机 
+2026-05-21 21:48:41,381 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__376:MoveNext] 处理已开始: 用户触发系统复位 
+2026-05-21 21:48:41,382 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__376:MoveNext] 设置低速运行模式 
+2026-05-21 21:48:41,900 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnForceStopAll] 所有料仓已停止 
+2026-05-21 21:48:42,402 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:ClearAllLocks] 处理已完成: 皮带输送控制的所有锁定已强制清除 
+2026-05-21 21:48:42,408 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-05-21 21:48:42,408 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__376:MoveNext] 处理已完成: 复位命令已发送 
+2026-05-21 21:48:42,410 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:UpdateSystemStatusDisplay] 系统状态更新: Stopped - 已停止（需复位） 
+2026-05-21 21:48:42,414 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnForceStopAll] 所有料仓已停止 
+2026-05-21 21:48:42,422 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__20:MoveNext] 料仓初始化开始 
+2026-05-21 21:48:42,432 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:UpdateSystemStatusDisplay] 系统状态更新: Initializing - 复位中 
+2026-05-21 21:48:42,435 [INFO ] [thread-6] [Ewan.Core.Module.SafetyModule:SetRobotPauseOutput] 处理已完成: 暂停输出复位: Initialize 
+2026-05-21 21:48:42,437 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnSystemControlMessage] 处理已开始: 皮带系统已初始化 
+2026-05-21 21:48:42,470 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓1检测到物料 
+2026-05-21 21:48:42,488 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 初始状态 → 发送停止脉冲 
+2026-05-21 21:48:42,499 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 初始化进入下降阶段 3个料仓有物料 
+2026-05-21 21:48:42,507 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓1下降到无感应位置 
+2026-05-21 21:48:42,509 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓3下降到无感应位置 
+2026-05-21 21:48:42,542 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送停止脉冲 → 等待停止完成 
+2026-05-21 21:48:43,563 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待停止完成 → 发送开始脉冲 
+2026-05-21 21:48:43,616 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送开始脉冲 → 等待开始完成 
+2026-05-21 21:48:44,130 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待开始完成 → 清除允许取料 
+2026-05-21 21:48:44,188 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 清除允许取料 → 料仓初始化 
+2026-05-21 21:48:44,242 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 料仓初始化 → 等待料仓完成 
+2026-05-21 21:48:44,287 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__20:MoveNext] 料仓初始化开始 
+2026-05-21 21:48:44,298 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓1检测到物料 
+2026-05-21 21:48:44,346 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓3检测到物料 
+2026-05-21 21:48:44,365 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 初始化进入下降阶段 3个料仓有物料 
+2026-05-21 21:48:44,373 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓1下降到无感应位置 
+2026-05-21 21:48:44,377 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓3下降到无感应位置 
+2026-05-21 21:48:46,276 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓2下降到无感应位置 
+2026-05-21 21:48:46,278 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 所有料仓初始化完成 
+2026-05-21 21:48:46,315 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待料仓完成 → 结束状态 
+2026-05-21 21:48:46,318 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:UpdateSystemStatusDisplay] 系统状态更新: Standby - 复位完成，待机 
+2026-05-21 21:48:51,101 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__376:MoveNext] 处理已开始: 用户触发系统复位 
+2026-05-21 21:48:51,102 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__376:MoveNext] 设置低速运行模式 
+2026-05-21 21:48:51,620 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnForceStopAll] 所有料仓已停止 
+2026-05-21 21:48:52,121 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:ClearAllLocks] 处理已完成: 皮带输送控制的所有锁定已强制清除 
+2026-05-21 21:48:52,125 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-05-21 21:48:52,125 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__376:MoveNext] 处理已完成: 复位命令已发送 
+2026-05-21 21:48:52,127 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:UpdateSystemStatusDisplay] 系统状态更新: Stopped - 已停止（需复位） 
+2026-05-21 21:48:52,131 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnForceStopAll] 所有料仓已停止 
+2026-05-21 21:48:52,145 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__20:MoveNext] 料仓初始化开始 
+2026-05-21 21:48:52,149 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:UpdateSystemStatusDisplay] 系统状态更新: Initializing - 复位中 
+2026-05-21 21:48:52,154 [INFO ] [thread-6] [Ewan.Core.Module.SafetyModule:SetRobotPauseOutput] 处理已完成: 暂停输出复位: Initialize 
+2026-05-21 21:48:52,157 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnSystemControlMessage] 处理已开始: 皮带系统已初始化 
+2026-05-21 21:48:52,163 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓3检测到物料 
+2026-05-21 21:48:52,190 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 初始化进入下降阶段 3个料仓有物料 
+2026-05-21 21:48:52,199 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓1下降到无感应位置 
+2026-05-21 21:48:52,204 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓3下降到无感应位置 
+2026-05-21 21:48:52,223 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 初始状态 → 发送停止脉冲 
+2026-05-21 21:48:52,275 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送停止脉冲 → 等待停止完成 
+2026-05-21 21:48:52,964 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓2下降到无感应位置 
+2026-05-21 21:48:52,966 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 所有料仓初始化完成 
+2026-05-21 21:48:53,298 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待停止完成 → 发送开始脉冲 
+2026-05-21 21:48:53,352 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送开始脉冲 → 等待开始完成 
+2026-05-21 21:48:53,867 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待开始完成 → 清除允许取料 
+2026-05-21 21:48:53,919 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 清除允许取料 → 料仓初始化 
+2026-05-21 21:48:53,971 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 料仓初始化 → 等待料仓完成 
+2026-05-21 21:48:53,995 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__20:MoveNext] 料仓初始化开始 
+2026-05-21 21:48:54,019 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓3检测到物料 
+2026-05-21 21:48:54,035 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓2检测到物料 
+2026-05-21 21:48:54,039 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓1检测到物料 
+2026-05-21 21:48:54,070 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 初始化进入下降阶段 3个料仓有物料 
+2026-05-21 21:48:54,081 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓2下降到无感应位置 
+2026-05-21 21:48:54,104 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓3下降到无感应位置 
+2026-05-21 21:48:54,119 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓1下降到无感应位置 
+2026-05-21 21:48:54,122 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 所有料仓初始化完成 
+2026-05-21 21:48:54,130 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待料仓完成 → 结束状态 
+2026-05-21 21:48:54,143 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:UpdateSystemStatusDisplay] 系统状态更新: Standby - 复位完成，待机 
+2026-05-21 21:49:49,196 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__376:MoveNext] 处理已开始: 用户触发系统复位 
+2026-05-21 21:49:49,199 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__376:MoveNext] 设置低速运行模式 
+2026-05-21 21:49:49,713 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnForceStopAll] 所有料仓已停止 
+2026-05-21 21:49:50,214 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:ClearAllLocks] 处理已完成: 皮带输送控制的所有锁定已强制清除 
+2026-05-21 21:49:50,218 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-05-21 21:49:50,218 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__376:MoveNext] 处理已完成: 复位命令已发送 
+2026-05-21 21:49:50,220 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:UpdateSystemStatusDisplay] 系统状态更新: Stopped - 已停止（需复位） 
+2026-05-21 21:49:50,226 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnForceStopAll] 所有料仓已停止 
+2026-05-21 21:49:50,242 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__20:MoveNext] 料仓初始化开始 
+2026-05-21 21:49:50,248 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:UpdateSystemStatusDisplay] 系统状态更新: Initializing - 复位中 
+2026-05-21 21:49:50,252 [INFO ] [thread-6] [Ewan.Core.Module.SafetyModule:SetRobotPauseOutput] 处理已完成: 暂停输出复位: Initialize 
+2026-05-21 21:49:50,253 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnSystemControlMessage] 处理已开始: 皮带系统已初始化 
+2026-05-21 21:49:50,291 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓2检测到物料 
+2026-05-21 21:49:50,293 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 初始状态 → 发送停止脉冲 
+2026-05-21 21:49:50,295 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓3检测到物料 
+2026-05-21 21:49:50,331 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 初始化进入下降阶段 3个料仓有物料 
+2026-05-21 21:49:50,345 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送停止脉冲 → 等待停止完成 
+2026-05-21 21:49:50,371 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓2下降到无感应位置 
+2026-05-21 21:49:50,372 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓3下降到无感应位置 
+2026-05-21 21:49:51,370 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待停止完成 → 发送开始脉冲 
+2026-05-21 21:49:51,422 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送开始脉冲 → 等待开始完成 
+2026-05-21 21:49:51,934 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待开始完成 → 清除允许取料 
+2026-05-21 21:49:51,980 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓1下降到无感应位置 
+2026-05-21 21:49:51,982 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 所有料仓初始化完成 
+2026-05-21 21:49:51,985 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 清除允许取料 → 料仓初始化 
+2026-05-21 21:49:52,038 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 料仓初始化 → 等待料仓完成 
+2026-05-21 21:49:52,052 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__20:MoveNext] 料仓初始化开始 
+2026-05-21 21:49:52,074 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓3检测到物料 
+2026-05-21 21:49:52,095 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓1检测到物料 
+2026-05-21 21:49:52,116 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 初始化进入下降阶段 3个料仓有物料 
+2026-05-21 21:49:52,122 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓2下降到无感应位置 
+2026-05-21 21:49:52,159 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓3下降到无感应位置 
+2026-05-21 21:49:52,172 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓1下降到无感应位置 
+2026-05-21 21:49:52,173 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 所有料仓初始化完成 
+2026-05-21 21:49:52,196 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待料仓完成 → 结束状态 
+2026-05-21 21:49:52,204 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:UpdateSystemStatusDisplay] 系统状态更新: Standby - 复位完成，待机 
+2026-05-21 21:52:31,946 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:ExecuteSystemStop] 处理已完成: 用户请求停止系统 
+2026-05-21 21:52:31,949 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:ExecuteSystemStop] 处理已完成: 系统停止操作完成 
+2026-05-21 21:52:31,949 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnForceStopAll] 所有料仓已停止 
+2026-05-21 21:52:31,954 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:UpdateSystemStatusDisplay] 系统状态更新: Stopped - 已停止（需复位） 
+2026-05-21 21:52:31,956 [INFO ] [thread-6] [Ewan.Core.Module.SafetyModule:SetRobotPauseOutput] 处理已完成: 暂停输出复位: Stop 
+2026-05-21 21:52:31,957 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnSystemControlMessage] 处理已完成: 皮带已停止 
+2026-05-21 21:52:32,604 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteClearAlarm>d__380:MoveNext] 用户触发清除报警(OUT25脉冲) 
+2026-05-21 21:52:32,708 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteClearAlarm>d__380:MoveNext] 清除报警完成 
+2026-05-21 21:52:32,711 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:UpdateSystemStatusDisplay] 系统状态更新: Standby - 报警已清除，待机 
+2026-05-21 21:52:33,208 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__376:MoveNext] 处理已开始: 用户触发系统复位 
+2026-05-21 21:52:33,209 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__376:MoveNext] 设置低速运行模式 
+2026-05-21 21:52:33,729 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnForceStopAll] 所有料仓已停止 
+2026-05-21 21:52:34,225 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:ClearAllLocks] 处理已完成: 皮带输送控制的所有锁定已强制清除 
+2026-05-21 21:52:34,229 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:StartBeltReverse] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-05-21 21:52:34,232 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__376:MoveNext] 处理已完成: 复位命令已发送 
+2026-05-21 21:52:34,236 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:UpdateSystemStatusDisplay] 系统状态更新: Stopped - 已停止（需复位） 
+2026-05-21 21:52:34,244 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:OnForceStopAll] 所有料仓已停止 
+2026-05-21 21:52:34,245 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__20:MoveNext] 料仓初始化开始 
+2026-05-21 21:52:34,250 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:UpdateSystemStatusDisplay] 系统状态更新: Initializing - 复位中 
+2026-05-21 21:52:34,253 [INFO ] [thread-6] [Ewan.Core.Module.SafetyModule:SetRobotPauseOutput] 处理已完成: 暂停输出复位: Initialize 
+2026-05-21 21:52:34,255 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:OnSystemControlMessage] 处理已开始: 皮带系统已初始化 
+2026-05-21 21:52:34,274 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 初始化进入下降阶段 3个料仓有物料 
+2026-05-21 21:52:34,279 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓3下降到无感应位置 
+2026-05-21 21:52:34,378 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 初始状态 → 发送停止脉冲 
+2026-05-21 21:52:34,432 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送停止脉冲 → 等待停止完成 
+2026-05-21 21:52:35,266 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓2下降到无感应位置 
+2026-05-21 21:52:35,350 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓1下降到无感应位置 
+2026-05-21 21:52:35,352 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 所有料仓初始化完成 
+2026-05-21 21:52:35,454 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待停止完成 → 发送开始脉冲 
+2026-05-21 21:52:35,506 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送开始脉冲 → 等待开始完成 
+2026-05-21 21:52:36,019 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待开始完成 → 清除允许取料 
+2026-05-21 21:52:36,071 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 清除允许取料 → 料仓初始化 
+2026-05-21 21:52:36,124 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 料仓初始化 → 等待料仓完成 
+2026-05-21 21:52:36,146 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__20:MoveNext] 料仓初始化开始 
+2026-05-21 21:52:36,171 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓3检测到物料 
+2026-05-21 21:52:36,204 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓2检测到物料 
+2026-05-21 21:52:36,236 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 料仓1检测到物料 
+2026-05-21 21:52:36,270 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitRaisingPhase] 初始化进入下降阶段 3个料仓有物料 
+2026-05-21 21:52:36,280 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓3下降到无感应位置 
+2026-05-21 21:52:36,296 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓2下降到无感应位置 
+2026-05-21 21:52:36,311 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 料仓1下降到无感应位置 
+2026-05-21 21:52:36,314 [INFO ] [thread-11] [Ewan.Core.Module.BinElevatorModule:ProcessInitLoweringPhase] 所有料仓初始化完成 
+2026-05-21 21:52:36,330 [INFO ] [thread-LogicRunner-013EE70E] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待料仓完成 → 结束状态 
+2026-05-21 21:52:36,341 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:UpdateSystemStatusDisplay] 系统状态更新: Standby - 复位完成，待机 

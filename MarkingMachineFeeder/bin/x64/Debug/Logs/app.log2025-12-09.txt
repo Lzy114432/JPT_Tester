@@ -1,0 +1,394 @@
+﻿2025-12-09 10:26:57,440 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-12-09 10:26:57,601 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-12-09 10:26:57,602 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: SecurityManager 
+2025-12-09 10:27:00,620 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: DLManager 
+2025-12-09 10:27:00,622 [INFO ] [thread-1] [Ewan.Core.Plc.ModbusRTUManager:48] ModbusRTUManager 开始初始化 - 串口:COM10, 波特率:115200, 数据位:8, 停止位:One, 校验位:None, 从站地址:1 
+2025-12-09 10:27:00,951 [INFO ] [thread-1] [Ewan.Core.Plc.ModbusRTUManager:100] ModbusRTUManager 尝试打开RS485串口连接 - 客户端:default, 串口:COM10 
+2025-12-09 10:27:01,207 [ERROR] [thread-1] [Ewan.Core.Plc.ModbusRTUManager:111] ModbusRTUManager RS485连接异常 - 端口“COM10”不存在。 
+System.IO.IOException: 端口“COM10”不存在。
+   在 System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   在 System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   在 System.IO.Ports.SerialPort.Open()
+   在 HslCommunication.Serial.SerialBase.Open()
+   在 Ewan.Core.Plc.ModbusRTUManager.Open(ClientContext context) 位置 C:\Users\Administrator\source\repos\MarkingMachineFeeder\Ewan.Core\Plc\ModbusRTUManager.cs:行号 111
+2025-12-09 10:27:01,220 [ERROR] [thread-1] [Ewan.Core.Plc.ModbusRTUManager:81] ModbusRTUManager 初始化失败 - ID:21703739, 无法建立RS485连接 
+2025-12-09 10:27:01,221 [ERROR] [thread-1] [MarkingMachineFeeder.App:38] MainController初始化失败: {0} 
+2025-12-09 10:38:37,825 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-12-09 10:38:38,021 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-12-09 10:38:38,022 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: SecurityManager 
+2025-12-09 10:38:41,040 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: DLManager 
+2025-12-09 10:38:41,128 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: LayeredIOManager 
+2025-12-09 10:38:41,130 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: CultureManager 
+2025-12-09 10:38:41,155 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: AxisManager 
+2025-12-09 10:38:41,155 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: MsgManager 
+2025-12-09 10:38:41,166 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: StreamController 
+2025-12-09 10:38:41,167 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-12-09 10:38:41,171 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: operator 
+2025-12-09 10:38:46,234 [WARN ] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:464] IO管理器未连接，无法停止蜂鸣器 
+2025-12-09 10:38:46,237 [WARN ] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:269] IO管理器未连接，无法控制三色灯 
+2025-12-09 10:38:46,237 [DEBUG] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:270] 预期三色灯状态: 红=False, 黄=True, 绿=False 
+2025-12-09 10:38:46,238 [DEBUG] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:163] 三色灯: 待机状态 - 黄灯常亮 
+2025-12-09 10:38:46,238 [INFO ] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:50] SystemStatusIndicatorModule 初始化完成 
+2025-12-09 10:38:46,242 [WARN ] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:464] IO管理器未连接，无法停止蜂鸣器 
+2025-12-09 10:38:46,243 [WARN ] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:269] IO管理器未连接，无法控制三色灯 
+2025-12-09 10:38:46,245 [DEBUG] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:270] 预期三色灯状态: 红=False, 黄=True, 绿=False 
+2025-12-09 10:38:46,246 [DEBUG] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:163] 三色灯: 待机状态 - 黄灯常亮 
+2025-12-09 10:38:46,640 [INFO ] [thread-1] [Ewan.Core.Module.StationHeartbeatModule:24] StationHeartbeat模块初始化成功 
+2025-12-09 10:38:46,653 [INFO ] [thread-13] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:46,653 [DEBUG] [thread-13] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:38:46,865 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:47,084 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:47,315 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:47,534 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:47,669 [INFO ] [thread-13] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:47,669 [DEBUG] [thread-13] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:38:47,777 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:47,993 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:48,243 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:48,507 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:48,695 [INFO ] [thread-13] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:48,696 [DEBUG] [thread-13] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:38:48,747 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:48,958 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:49,183 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:49,390 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:49,593 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:49,738 [INFO ] [thread-13] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:49,738 [DEBUG] [thread-13] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:38:49,797 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:50,015 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:50,235 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:50,451 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:50,676 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:50,863 [INFO ] [thread-13] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:50,863 [DEBUG] [thread-13] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:38:50,883 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:51,111 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:51,329 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:51,549 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:51,755 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:51,830 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: admin 
+2025-12-09 10:38:51,896 [INFO ] [thread-13] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:51,897 [DEBUG] [thread-13] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:38:51,962 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:52,165 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:52,369 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:52,572 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:52,777 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:52,905 [INFO ] [thread-13] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:52,906 [DEBUG] [thread-13] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:38:52,984 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:53,187 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:53,392 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:53,608 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:53,813 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:53,910 [INFO ] [thread-13] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:53,911 [DEBUG] [thread-13] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:38:54,023 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:54,226 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:54,429 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:54,633 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:54,836 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:54,914 [INFO ] [thread-13] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:54,914 [DEBUG] [thread-13] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:38:55,040 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:55,243 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:55,447 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:55,650 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:55,856 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:55,919 [INFO ] [thread-13] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:55,919 [DEBUG] [thread-13] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:38:56,059 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:56,275 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:56,481 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:56,686 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:56,889 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:56,927 [INFO ] [thread-13] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:56,927 [DEBUG] [thread-13] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:38:57,092 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:57,295 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:57,499 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:57,715 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:57,921 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:57,947 [INFO ] [thread-13] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:57,947 [DEBUG] [thread-13] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:38:58,125 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:58,328 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:58,553 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:58,757 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:58,966 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:58,989 [INFO ] [thread-13] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:58,990 [DEBUG] [thread-13] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:38:59,180 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:59,392 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:59,609 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:38:59,823 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:00,013 [INFO ] [thread-13] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:00,014 [DEBUG] [thread-13] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:39:00,027 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:00,257 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:00,483 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:00,687 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:00,890 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:01,052 [INFO ] [thread-13] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:01,052 [DEBUG] [thread-13] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:39:01,093 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:01,296 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:01,499 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:01,747 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:01,972 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:02,122 [INFO ] [thread-13] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:02,123 [DEBUG] [thread-13] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:39:02,175 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:02,378 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:02,593 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:02,797 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:03,014 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:03,126 [INFO ] [thread-13] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:03,127 [DEBUG] [thread-13] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:39:03,219 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:03,436 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:03,639 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:03,843 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:04,061 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:04,132 [INFO ] [thread-13] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:04,133 [DEBUG] [thread-13] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:39:04,265 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:04,470 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:04,675 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:04,878 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:05,085 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:05,140 [INFO ] [thread-13] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:05,141 [DEBUG] [thread-13] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:39:05,289 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:05,494 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:05,697 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:05,902 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:06,108 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:06,149 [INFO ] [thread-13] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:06,150 [DEBUG] [thread-13] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:39:06,311 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:06,514 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:06,718 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:06,921 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:07,125 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:07,152 [INFO ] [thread-13] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:07,153 [DEBUG] [thread-13] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:39:07,329 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:07,544 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:07,750 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:07,966 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:08,159 [INFO ] [thread-13] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:08,160 [DEBUG] [thread-13] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:39:08,170 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:08,373 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:08,585 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:08,790 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:09,009 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:09,189 [INFO ] [thread-13] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:09,190 [DEBUG] [thread-13] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:39:09,213 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:09,416 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:09,619 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:09,823 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:10,027 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:10,195 [INFO ] [thread-13] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:10,196 [DEBUG] [thread-13] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:39:10,232 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:10,437 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:10,641 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:10,859 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:11,063 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:11,204 [INFO ] [thread-13] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:11,206 [DEBUG] [thread-13] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:39:11,282 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:11,488 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:11,694 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:11,904 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:12,110 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:12,209 [INFO ] [thread-13] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:12,210 [DEBUG] [thread-13] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:39:12,326 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:12,531 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:12,734 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:13,062 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:13,280 [INFO ] [thread-13] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:13,284 [DEBUG] [thread-13] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:39:13,347 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:13,562 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:13,770 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:14,003 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:14,207 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:14,333 [INFO ] [thread-13] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:14,334 [DEBUG] [thread-13] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:39:14,411 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:14,620 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:14,842 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:15,052 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:15,260 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:15,370 [INFO ] [thread-13] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:15,371 [DEBUG] [thread-13] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:39:15,463 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:15,671 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:15,881 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:16,084 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:16,287 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:16,382 [INFO ] [thread-13] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:16,384 [DEBUG] [thread-13] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:39:16,493 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:39:16,668 [INFO ] [thread-1] [Ewan.Core.Module.StationHeartbeatModule:69] StationHeartbeat模块已销毁 
+2025-12-09 10:39:16,672 [WARN ] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:464] IO管理器未连接，无法停止蜂鸣器 
+2025-12-09 10:39:16,672 [WARN ] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:464] IO管理器未连接，无法停止蜂鸣器 
+2025-12-09 10:39:16,673 [WARN ] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:269] IO管理器未连接，无法控制三色灯 
+2025-12-09 10:39:16,675 [DEBUG] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:270] 预期三色灯状态: 红=False, 黄=True, 绿=False 
+2025-12-09 10:39:16,675 [DEBUG] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:146] 系统状态指示器: 停止 - 流程停止 
+2025-12-09 10:39:16,674 [WARN ] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:269] IO管理器未连接，无法控制三色灯 
+2025-12-09 10:39:16,692 [DEBUG] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:270] 预期三色灯状态: 红=False, 黄=True, 绿=False 
+2025-12-09 10:39:16,693 [INFO ] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:80] SystemStatusIndicatorModule 已销毁 
+2025-12-09 10:39:16,697 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:40:49,948 [INFO ] [thread-1] [MarkingMachineFeeder.App:28] Log4net配置已加载 
+2025-12-09 10:40:50,153 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:47] 安全管理器初始化成功 
+2025-12-09 10:40:50,154 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: SecurityManager 
+2025-12-09 10:40:53,187 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: DLManager 
+2025-12-09 10:40:53,273 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: LayeredIOManager 
+2025-12-09 10:40:53,277 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: CultureManager 
+2025-12-09 10:40:53,283 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: AxisManager 
+2025-12-09 10:40:53,284 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: MsgManager 
+2025-12-09 10:40:53,291 [DEBUG] [thread-1] [Ewan.Core.BaseManager`1:29] 基础管理器初始化成功: StreamController 
+2025-12-09 10:40:53,292 [INFO ] [thread-1] [MarkingMachineFeeder.App:34] MainController初始化成功 
+2025-12-09 10:40:53,293 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: operator 
+2025-12-09 10:40:58,349 [WARN ] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:464] IO管理器未连接，无法停止蜂鸣器 
+2025-12-09 10:40:58,353 [WARN ] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:269] IO管理器未连接，无法控制三色灯 
+2025-12-09 10:40:58,354 [DEBUG] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:270] 预期三色灯状态: 红=False, 黄=True, 绿=False 
+2025-12-09 10:40:58,355 [DEBUG] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:163] 三色灯: 待机状态 - 黄灯常亮 
+2025-12-09 10:40:58,356 [INFO ] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:50] SystemStatusIndicatorModule 初始化完成 
+2025-12-09 10:40:58,383 [WARN ] [thread-9] [Ewan.Core.Module.SystemStatusIndicatorModule:464] IO管理器未连接，无法停止蜂鸣器 
+2025-12-09 10:40:58,384 [WARN ] [thread-9] [Ewan.Core.Module.SystemStatusIndicatorModule:269] IO管理器未连接，无法控制三色灯 
+2025-12-09 10:40:58,385 [DEBUG] [thread-9] [Ewan.Core.Module.SystemStatusIndicatorModule:270] 预期三色灯状态: 红=False, 黄=True, 绿=False 
+2025-12-09 10:40:58,386 [DEBUG] [thread-9] [Ewan.Core.Module.SystemStatusIndicatorModule:163] 三色灯: 待机状态 - 黄灯常亮 
+2025-12-09 10:40:58,738 [INFO ] [thread-1] [Ewan.Core.Module.StationHeartbeatModule:24] StationHeartbeat模块初始化成功 
+2025-12-09 10:40:58,759 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:40:58,759 [DEBUG] [thread-14] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:40:58,974 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:40:59,190 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:40:59,424 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:40:59,657 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:40:59,778 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:40:59,783 [DEBUG] [thread-14] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:40:59,882 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:00,166 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:00,487 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:00,695 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:00,788 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:00,789 [DEBUG] [thread-14] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:41:00,904 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:01,107 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:01,312 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:01,515 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:01,719 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:01,800 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:01,801 [DEBUG] [thread-14] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:41:01,931 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:02,135 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:02,340 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:02,577 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:02,780 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:02,803 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:02,805 [DEBUG] [thread-14] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:41:02,909 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:79] 用户登录成功: admin 
+2025-12-09 10:41:02,984 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:03,202 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:03,406 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:03,612 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:03,811 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:03,812 [DEBUG] [thread-14] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:41:03,816 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:04,020 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:04,224 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:04,427 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:04,632 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:04,825 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:04,826 [DEBUG] [thread-14] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:41:04,844 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:05,050 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:05,255 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:05,460 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:05,683 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:05,870 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:05,871 [DEBUG] [thread-14] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:41:05,908 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:06,125 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:06,341 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:06,545 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:06,749 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:06,875 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:06,877 [DEBUG] [thread-14] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:41:06,952 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:07,160 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:07,364 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:07,568 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:07,772 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:07,881 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:07,883 [DEBUG] [thread-14] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:41:07,977 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:08,180 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:08,384 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:08,587 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:08,790 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:08,886 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:08,887 [DEBUG] [thread-14] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:41:08,994 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:09,197 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:09,438 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:09,657 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:09,864 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:09,918 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:09,918 [DEBUG] [thread-14] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:41:10,068 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:10,297 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:10,501 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:10,707 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:10,911 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:10,954 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:10,955 [DEBUG] [thread-14] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:41:11,121 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:11,333 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:11,537 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:11,761 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:11,965 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:11,989 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:11,989 [DEBUG] [thread-14] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:41:12,169 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:12,374 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:12,576 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:12,780 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:12,983 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:12,994 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:12,994 [DEBUG] [thread-14] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:41:13,187 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:13,391 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:13,595 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:13,811 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:13,999 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:14,001 [DEBUG] [thread-14] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:41:14,014 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:14,218 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:14,421 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:14,625 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:14,842 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:15,005 [INFO ] [thread-14] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:15,005 [DEBUG] [thread-14] [Ewan.Core.Module.StationHeartbeatModule:53] 心跳模块: Modbus未连接,跳过心跳写入 
+2025-12-09 10:41:15,045 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:15,264 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:15,467 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:15,671 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 
+2025-12-09 10:41:15,833 [INFO ] [thread-1] [Ewan.Core.Module.StationHeartbeatModule:69] StationHeartbeat模块已销毁 
+2025-12-09 10:41:15,836 [WARN ] [thread-9] [Ewan.Core.Module.SystemStatusIndicatorModule:464] IO管理器未连接，无法停止蜂鸣器 
+2025-12-09 10:41:15,837 [WARN ] [thread-9] [Ewan.Core.Module.SystemStatusIndicatorModule:269] IO管理器未连接，无法控制三色灯 
+2025-12-09 10:41:15,837 [WARN ] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:464] IO管理器未连接，无法停止蜂鸣器 
+2025-12-09 10:41:15,842 [WARN ] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:269] IO管理器未连接，无法控制三色灯 
+2025-12-09 10:41:15,843 [DEBUG] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:270] 预期三色灯状态: 红=False, 黄=True, 绿=False 
+2025-12-09 10:41:15,844 [INFO ] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:80] SystemStatusIndicatorModule 已销毁 
+2025-12-09 10:41:15,838 [DEBUG] [thread-9] [Ewan.Core.Module.SystemStatusIndicatorModule:270] 预期三色灯状态: 红=False, 黄=True, 绿=False 
+2025-12-09 10:41:15,872 [DEBUG] [thread-9] [Ewan.Core.Module.SystemStatusIndicatorModule:146] 系统状态指示器: 停止 - 流程停止 
+2025-12-09 10:41:15,882 [INFO ] [thread-15] [Ewan.Core.Plc.ModbusRTUManager:133] ModbusRTUManager 未找到客户端:default 

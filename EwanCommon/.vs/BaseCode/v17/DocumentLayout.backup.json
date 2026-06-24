@@ -1,0 +1,138 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Administrator\\Desktop\\\u94A7\u5D34\\BaseCode\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{4C459CB9-E516-4068-B558-D89862B7D54F}|HcCommon\\HcCommon.csproj|c:\\users\\administrator\\desktop\\\u94A7\u5D34\\basecode\\hccommon\\hccore\\bootstrap\\managertypescanner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C459CB9-E516-4068-B558-D89862B7D54F}|HcCommon\\HcCommon.csproj|solutionrelative:hccommon\\hccore\\bootstrap\\managertypescanner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C459CB9-E516-4068-B558-D89862B7D54F}|HcCommon\\HcCommon.csproj|c:\\users\\administrator\\desktop\\\u94A7\u5D34\\basecode\\hccommon\\hccore\\bootstrap\\managerlifetimehost.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C459CB9-E516-4068-B558-D89862B7D54F}|HcCommon\\HcCommon.csproj|solutionrelative:hccommon\\hccore\\bootstrap\\managerlifetimehost.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C459CB9-E516-4068-B558-D89862B7D54F}|HcCommon\\HcCommon.csproj|c:\\users\\administrator\\desktop\\\u94A7\u5D34\\basecode\\hccommon\\hccore\\messaging\\abstractions\\isubscribebus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C459CB9-E516-4068-B558-D89862B7D54F}|HcCommon\\HcCommon.csproj|solutionrelative:hccommon\\hccore\\messaging\\abstractions\\isubscribebus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C459CB9-E516-4068-B558-D89862B7D54F}|HcCommon\\HcCommon.csproj|c:\\users\\administrator\\desktop\\\u94A7\u5D34\\basecode\\hccommon\\hccore\\messaging\\abstractions\\ipublishbus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C459CB9-E516-4068-B558-D89862B7D54F}|HcCommon\\HcCommon.csproj|solutionrelative:hccommon\\hccore\\messaging\\abstractions\\ipublishbus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C459CB9-E516-4068-B558-D89862B7D54F}|HcCommon\\HcCommon.csproj|c:\\users\\administrator\\desktop\\\u94A7\u5D34\\basecode\\hccommon\\hccore\\messaging\\abstractions\\imessagebus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C459CB9-E516-4068-B558-D89862B7D54F}|HcCommon\\HcCommon.csproj|solutionrelative:hccommon\\hccore\\messaging\\abstractions\\imessagebus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C459CB9-E516-4068-B558-D89862B7D54F}|HcCommon\\HcCommon.csproj|c:\\users\\administrator\\desktop\\\u94A7\u5D34\\basecode\\hccommon\\hccore\\messaging\\abstractions\\imessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4C459CB9-E516-4068-B558-D89862B7D54F}|HcCommon\\HcCommon.csproj|solutionrelative:hccommon\\hccore\\messaging\\abstractions\\imessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ManagerTypeScanner.cs",
+              "DocumentMoniker": "C:\\Users\\Administrator\\Desktop\\\u94A7\u5D34\\BaseCode\\HcCommon\\HcCore\\Bootstrap\\ManagerTypeScanner.cs",
+              "RelativeDocumentMoniker": "HcCommon\\HcCore\\Bootstrap\\ManagerTypeScanner.cs",
+              "ToolTip": "C:\\Users\\Administrator\\Desktop\\\u94A7\u5D34\\BaseCode\\HcCommon\\HcCore\\Bootstrap\\ManagerTypeScanner.cs",
+              "RelativeToolTip": "HcCommon\\HcCore\\Bootstrap\\ManagerTypeScanner.cs",
+              "ViewState": "AgIAACUAAAAAAAAAAAAAwEAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-24T14:26:28.619Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ManagerLifetimeHost.cs",
+              "DocumentMoniker": "C:\\Users\\Administrator\\Desktop\\\u94A7\u5D34\\BaseCode\\HcCommon\\HcCore\\Bootstrap\\ManagerLifetimeHost.cs",
+              "RelativeDocumentMoniker": "HcCommon\\HcCore\\Bootstrap\\ManagerLifetimeHost.cs",
+              "ToolTip": "C:\\Users\\Administrator\\Desktop\\\u94A7\u5D34\\BaseCode\\HcCommon\\HcCore\\Bootstrap\\ManagerLifetimeHost.cs",
+              "RelativeToolTip": "HcCommon\\HcCore\\Bootstrap\\ManagerLifetimeHost.cs",
+              "ViewState": "AgIAAGoBAAAAAAAAAAAuwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-24T14:26:22.502Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ISubscribeBus.cs",
+              "DocumentMoniker": "C:\\Users\\Administrator\\Desktop\\\u94A7\u5D34\\BaseCode\\HcCommon\\HcCore\\Messaging\\Abstractions\\ISubscribeBus.cs",
+              "RelativeDocumentMoniker": "HcCommon\\HcCore\\Messaging\\Abstractions\\ISubscribeBus.cs",
+              "ToolTip": "C:\\Users\\Administrator\\Desktop\\\u94A7\u5D34\\BaseCode\\HcCommon\\HcCore\\Messaging\\Abstractions\\ISubscribeBus.cs",
+              "RelativeToolTip": "HcCommon\\HcCore\\Messaging\\Abstractions\\ISubscribeBus.cs",
+              "ViewState": "AgIAACMAAAAAAAAAAAAxwC8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-24T14:19:00.596Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "IPublishBus.cs",
+              "DocumentMoniker": "C:\\Users\\Administrator\\Desktop\\\u94A7\u5D34\\BaseCode\\HcCommon\\HcCore\\Messaging\\Abstractions\\IPublishBus.cs",
+              "RelativeDocumentMoniker": "HcCommon\\HcCore\\Messaging\\Abstractions\\IPublishBus.cs",
+              "ToolTip": "C:\\Users\\Administrator\\Desktop\\\u94A7\u5D34\\BaseCode\\HcCommon\\HcCore\\Messaging\\Abstractions\\IPublishBus.cs",
+              "RelativeToolTip": "HcCommon\\HcCore\\Messaging\\Abstractions\\IPublishBus.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-24T14:18:59.045Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "IMessageBus.cs",
+              "DocumentMoniker": "C:\\Users\\Administrator\\Desktop\\\u94A7\u5D34\\BaseCode\\HcCommon\\HcCore\\Messaging\\Abstractions\\IMessageBus.cs",
+              "RelativeDocumentMoniker": "HcCommon\\HcCore\\Messaging\\Abstractions\\IMessageBus.cs",
+              "ToolTip": "C:\\Users\\Administrator\\Desktop\\\u94A7\u5D34\\BaseCode\\HcCommon\\HcCore\\Messaging\\Abstractions\\IMessageBus.cs",
+              "RelativeToolTip": "HcCommon\\HcCore\\Messaging\\Abstractions\\IMessageBus.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-24T14:18:56.056Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "IMessage.cs",
+              "DocumentMoniker": "C:\\Users\\Administrator\\Desktop\\\u94A7\u5D34\\BaseCode\\HcCommon\\HcCore\\Messaging\\Abstractions\\IMessage.cs",
+              "RelativeDocumentMoniker": "HcCommon\\HcCore\\Messaging\\Abstractions\\IMessage.cs",
+              "ToolTip": "C:\\Users\\Administrator\\Desktop\\\u94A7\u5D34\\BaseCode\\HcCommon\\HcCore\\Messaging\\Abstractions\\IMessage.cs",
+              "RelativeToolTip": "HcCommon\\HcCore\\Messaging\\Abstractions\\IMessage.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-24T14:18:54.948Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

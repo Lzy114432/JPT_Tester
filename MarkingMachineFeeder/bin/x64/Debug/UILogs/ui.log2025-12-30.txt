@@ -1,0 +1,3 @@
+﻿2025-12-30 17:19:11,253 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:354] 主窗口已启动 
+2025-12-30 17:19:11,265 [INFO ] [thread-1] [MarkingMachineFeeder.App:94] 流处理已停止 
+2025-12-30 17:19:11,267 [INFO ] [thread-1] [MarkingMachineFeeder.App:105] 资源释放完成 

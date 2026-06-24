@@ -1,0 +1,87 @@
+﻿2026-04-21 16:11:22,972 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1354] 处理已完成: 用户请求停止系统 
+2026-04-21 16:11:22,982 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1370] 处理已完成: 系统停止操作完成 
+2026-04-21 16:11:22,988 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:160] 所有料仓已停止 
+2026-04-21 16:11:22,994 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1557] 系统状态更新: Stopped - 已停止（需复位） 
+2026-04-21 16:11:22,997 [INFO ] [thread-6] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: Stop 
+2026-04-21 16:11:22,999 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:404] 处理已完成: 皮带已停止 
+2026-04-21 16:11:32,708 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:800] IO测试模式: 输出测试模式已开启 
+2026-04-21 16:11:36,588 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓1定位电磁阀 设置为: ON 
+2026-04-21 16:11:37,610 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓1定位电磁阀 设置为: OFF 
+2026-04-21 16:11:39,643 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓1定位电磁阀 设置为: ON 
+2026-04-21 16:11:40,650 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓1定位电磁阀 设置为: OFF 
+2026-04-21 16:11:41,314 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓1定位电磁阀 设置为: ON 
+2026-04-21 16:11:41,945 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓1定位电磁阀 设置为: OFF 
+2026-04-21 16:11:42,889 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓1定位电磁阀 设置为: ON 
+2026-04-21 16:11:44,170 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓1定位电磁阀 设置为: OFF 
+2026-04-21 16:18:13,044 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:800] IO测试模式: 输出测试模式已开启 
+2026-04-21 16:18:14,312 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓1定位电磁阀 设置为: ON 
+2026-04-21 16:18:15,289 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓1定位电磁阀 设置为: OFF 
+2026-04-21 16:18:15,952 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓1定位电磁阀 设置为: ON 
+2026-04-21 16:18:16,521 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓1定位电磁阀 设置为: OFF 
+2026-04-21 16:18:17,041 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓1定位电磁阀 设置为: ON 
+2026-04-21 16:18:17,577 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓1定位电磁阀 设置为: OFF 
+2026-04-21 16:18:19,849 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓1定位电磁阀 设置为: ON 
+2026-04-21 16:18:21,188 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓1定位电磁阀 设置为: OFF 
+2026-04-21 16:18:22,235 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓1定位电磁阀 设置为: ON 
+2026-04-21 16:18:22,865 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓1定位电磁阀 设置为: OFF 
+2026-04-21 16:19:02,921 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓1定位电磁阀 设置为: ON 
+2026-04-21 16:19:03,482 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓1定位电磁阀 设置为: OFF 
+2026-04-21 16:19:04,425 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓1定位电磁阀 设置为: ON 
+2026-04-21 16:19:05,001 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓1定位电磁阀 设置为: OFF 
+2026-04-21 16:19:07,609 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓2定位电磁阀 设置为: ON 
+2026-04-21 16:19:08,273 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓2定位电磁阀 设置为: OFF 
+2026-04-21 16:19:09,193 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓2定位电磁阀 设置为: ON 
+2026-04-21 16:19:09,802 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓2定位电磁阀 设置为: OFF 
+2026-04-21 16:19:12,457 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓吹3气电磁阀 设置为: ON 
+2026-04-21 16:19:13,409 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓吹3气电磁阀 设置为: OFF 
+2026-04-21 16:19:14,129 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓2吹气电磁阀 设置为: ON 
+2026-04-21 16:19:14,761 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓2吹气电磁阀 设置为: OFF 
+2026-04-21 16:19:15,497 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓1吹气电磁阀 设置为: ON 
+2026-04-21 16:19:16,105 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓1吹气电磁阀 设置为: OFF 
+2026-04-21 16:19:16,705 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓2吹气电磁阀 设置为: ON 
+2026-04-21 16:19:17,249 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓2吹气电磁阀 设置为: OFF 
+2026-04-21 16:46:36,093 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1354] 处理已完成: 用户请求停止系统 
+2026-04-21 16:46:36,095 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1370] 处理已完成: 系统停止操作完成 
+2026-04-21 16:46:36,097 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:160] 所有料仓已停止 
+2026-04-21 16:46:36,105 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1557] 系统状态更新: Stopped - 已停止（需复位） 
+2026-04-21 16:46:36,109 [INFO ] [thread-6] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: Stop 
+2026-04-21 16:46:36,111 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:404] 处理已完成: 皮带已停止 
+2026-04-21 16:46:36,659 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteClearAlarm>d__369:1206] 用户触发清除报警(OUT25脉冲) 
+2026-04-21 16:46:36,775 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteClearAlarm>d__369:1218] 清除报警完成 
+2026-04-21 16:46:36,778 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1557] 系统状态更新: Standby - 报警已清除，待机 
+2026-04-21 16:46:37,226 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__365:1066] 处理已开始: 用户触发系统复位 
+2026-04-21 16:46:37,227 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__365:1071] 设置低速运行模式 
+2026-04-21 16:46:37,741 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:160] 所有料仓已停止 
+2026-04-21 16:46:38,241 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:99] 处理已完成: 皮带输送控制的所有锁定已强制清除 
+2026-04-21 16:46:38,269 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-04-21 16:46:38,271 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteSystemReset>d__365:1100] 处理已完成: 复位命令已发送 
+2026-04-21 16:46:38,273 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1557] 系统状态更新: Stopped - 已停止（需复位） 
+2026-04-21 16:46:38,277 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:160] 所有料仓已停止 
+2026-04-21 16:46:38,306 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__18:238] 料仓初始化开始 
+2026-04-21 16:46:38,315 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule:397] 料仓2已到顶部（ELP触发），无物料 
+2026-04-21 16:46:38,315 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1557] 系统状态更新: Initializing - 复位中 
+2026-04-21 16:46:38,318 [INFO ] [thread-6] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: Initialize 
+2026-04-21 16:46:38,320 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:411] 处理已开始: 皮带系统已初始化 
+2026-04-21 16:46:38,355 [INFO ] [thread-LogicRunner-0149FCEA] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 初始状态 → 发送停止脉冲 
+2026-04-21 16:46:38,369 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule:389] 料仓3检测到物料 
+2026-04-21 16:46:38,375 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule:389] 料仓1检测到物料 
+2026-04-21 16:46:38,391 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule:425] 初始化进入下降阶段 2个料仓有物料 
+2026-04-21 16:46:38,406 [INFO ] [thread-LogicRunner-0149FCEA] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送停止脉冲 → 等待停止完成 
+2026-04-21 16:46:38,465 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule:461] 料仓1下降到无感应位置 
+2026-04-21 16:46:38,466 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule:461] 料仓3下降到无感应位置 
+2026-04-21 16:46:38,467 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule:479] 所有料仓初始化完成 
+2026-04-21 16:46:39,427 [INFO ] [thread-LogicRunner-0149FCEA] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待停止完成 → 发送开始脉冲 
+2026-04-21 16:46:39,479 [INFO ] [thread-LogicRunner-0149FCEA] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 发送开始脉冲 → 等待开始完成 
+2026-04-21 16:46:39,990 [INFO ] [thread-LogicRunner-0149FCEA] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待开始完成 → 清除允许取料 
+2026-04-21 16:46:40,042 [INFO ] [thread-LogicRunner-0149FCEA] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 清除允许取料 → 料仓初始化 
+2026-04-21 16:46:40,094 [INFO ] [thread-LogicRunner-0149FCEA] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 料仓初始化 → 等待料仓完成 
+2026-04-21 16:46:40,116 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule+<HandleInitializeAsync>d__18:238] 料仓初始化开始 
+2026-04-21 16:46:40,123 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule:397] 料仓2已到顶部（ELP触发），无物料 
+2026-04-21 16:46:40,170 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule:389] 料仓3检测到物料 
+2026-04-21 16:46:40,179 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule:389] 料仓1检测到物料 
+2026-04-21 16:46:40,196 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule:425] 初始化进入下降阶段 2个料仓有物料 
+2026-04-21 16:46:40,244 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule:461] 料仓3下降到无感应位置 
+2026-04-21 16:46:40,250 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule:461] 料仓1下降到无感应位置 
+2026-04-21 16:46:40,252 [INFO ] [thread-4] [Ewan.Core.Module.BinElevatorModule:479] 所有料仓初始化完成 
+2026-04-21 16:46:40,300 [INFO ] [thread-LogicRunner-0149FCEA] [EwanCore.StateMachine.LogicBase:145] [HomeLogic] 步骤: 等待料仓完成 → 结束状态 
+2026-04-21 16:46:40,305 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1557] 系统状态更新: Standby - 复位完成，待机 

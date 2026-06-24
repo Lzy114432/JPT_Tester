@@ -1,0 +1,57 @@
+{
+  "AxisConfigs": [
+    {
+      "AxisID": 0,
+      "IsUsing": true,
+      "MaxPos": 50000.0,
+      "MinPos": -10000.0,
+      "Step": 1.0,
+      "HomingDir": 1,
+      "Jerk": 500000.0,
+      "MotionDir": 1,
+      "Speed": 50.0,
+      "Acc": 0.001,
+      "Dec": 0.001
+    },
+    {
+      "AxisID": 1,
+      "IsUsing": true,
+      "MaxPos": 50000.0,
+      "MinPos": -10000.0,
+      "Step": 1.0,
+      "HomingDir": 1,
+      "Jerk": 500000.0,
+      "MotionDir": 1,
+      "Speed": 50.0,
+      "Acc": 0.001,
+      "Dec": 0.001
+    },
+    {
+      "AxisID": 2,
+      "IsUsing": true,
+      "MaxPos": 50000.0,
+      "MinPos": -10000.0,
+      "Step": 1.0,
+      "HomingDir": 1,
+      "Jerk": 500000.0,
+      "MotionDir": 1,
+      "Speed": 50.0,
+      "Acc": 0.001,
+      "Dec": 0.001
+    },
+    {
+      "AxisID": 3,
+      "IsUsing": true,
+      "MaxPos": 50.0,
+      "MinPos": 0.0,
+      "Step": 1.0,
+      "HomingDir": 1,
+      "Jerk": 500000.0,
+      "MotionDir": 0,
+      "Speed": 12.0,
+      "Acc": 0.001,
+      "Dec": 0.001
+    }
+  ],
+  "SaveTime": "2026-05-22T20:26:36.4045871+08:00"
+}

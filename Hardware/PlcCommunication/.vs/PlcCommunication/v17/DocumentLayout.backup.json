@@ -1,0 +1,69 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "E:\\Code\\CODE\\PlcCommunication\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{63536B2B-846B-49C0-BEC4-ABD38E6AB20E}|PlcCommunication.csproj|e:\\code\\code\\plccommunication\\plccommunication.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{63536B2B-846B-49C0-BEC4-ABD38E6AB20E}|PlcCommunication.csproj|solutionrelative:plccommunication.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{63536B2B-846B-49C0-BEC4-ABD38E6AB20E}|PlcCommunication.csproj|E:\\Code\\CODE\\PlcCommunication\\implementations\\mcprotocol\\mcprotocolplc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{63536B2B-846B-49C0-BEC4-ABD38E6AB20E}|PlcCommunication.csproj|solutionrelative:implementations\\mcprotocol\\mcprotocolplc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{63536B2B-846B-49C0-BEC4-ABD38E6AB20E}|PlcCommunication.csproj|E:\\Code\\CODE\\PlcCommunication\\implementations\\simulated\\simulatedplc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{63536B2B-846B-49C0-BEC4-ABD38E6AB20E}|PlcCommunication.csproj|solutionrelative:implementations\\simulated\\simulatedplc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "PlcCommunication.csproj",
+              "DocumentMoniker": "E:\\Code\\CODE\\PlcCommunication\\PlcCommunication.csproj",
+              "RelativeDocumentMoniker": "PlcCommunication.csproj",
+              "ToolTip": "E:\\Code\\CODE\\PlcCommunication\\PlcCommunication.csproj",
+              "RelativeToolTip": "PlcCommunication.csproj",
+              "ViewState": "AQIAAAAAAAAAAAAAAADwvwAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-08-05T16:15:08.563Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MCProtocolPlc.cs",
+              "DocumentMoniker": "E:\\Code\\CODE\\PlcCommunication\\Implementations\\MCProtocol\\MCProtocolPlc.cs",
+              "RelativeDocumentMoniker": "Implementations\\MCProtocol\\MCProtocolPlc.cs",
+              "ToolTip": "E:\\Code\\CODE\\PlcCommunication\\Implementations\\MCProtocol\\MCProtocolPlc.cs",
+              "RelativeToolTip": "Implementations\\MCProtocol\\MCProtocolPlc.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAA1AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-05T16:14:51.336Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "SimulatedPlc.cs",
+              "DocumentMoniker": "E:\\Code\\CODE\\PlcCommunication\\Implementations\\Simulated\\SimulatedPlc.cs",
+              "RelativeDocumentMoniker": "Implementations\\Simulated\\SimulatedPlc.cs",
+              "ToolTip": "E:\\Code\\CODE\\PlcCommunication\\Implementations\\Simulated\\SimulatedPlc.cs",
+              "RelativeToolTip": "Implementations\\Simulated\\SimulatedPlc.cs",
+              "ViewState": "AQIAAK0AAAAAAAAAAAAQwAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-05T16:14:36.256Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

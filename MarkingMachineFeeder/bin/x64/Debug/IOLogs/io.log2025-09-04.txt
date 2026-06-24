@@ -1,0 +1,23 @@
+﻿2025-09-04 09:30:14,248 [INFO ] [thread-1] Loaded mapping configuration from Config\io_mapping.json 
+2025-09-04 09:30:14,248 [INFO ] [thread-1] Input mappings: 64, Output mappings: 64 
+2025-09-04 09:30:14,354 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:120] [PLC] Address: 127.0.0.1:6000, Operation: Connect, Data: Connected successfully, Status: SUCCESS 
+2025-09-04 09:30:14,355 [INFO ] [thread-1] Connected to MC_PLC: 127.0.0.1:6000 
+2025-09-04 09:30:17,362 [DEBUG] [thread-4] IO同步性能: 平均12.05ms, 当前8ms 
+2025-09-04 09:30:19,688 [DEBUG] [thread-4] IO同步性能: 平均11.18ms, 当前8ms 
+2025-09-04 09:30:21,916 [DEBUG] [thread-4] IO同步性能: 平均10.54ms, 当前8ms 
+2025-09-04 09:30:24,160 [DEBUG] [thread-4] IO同步性能: 平均10.29ms, 当前7ms 
+2025-09-04 09:30:26,288 [DEBUG] [thread-4] IO同步性能: 平均9.91ms, 当前7ms 
+2025-09-04 09:30:28,456 [DEBUG] [thread-4] IO同步性能: 平均9.71ms, 当前7ms 
+2025-09-04 09:30:30,556 [DEBUG] [thread-4] IO同步性能: 平均9.49ms, 当前15ms 
+2025-09-04 09:30:32,805 [DEBUG] [thread-4] IO同步性能: 平均9.49ms, 当前11ms 
+2025-09-04 09:30:33,044 [WARN ] [thread-4] [IOLibrary.Hardware.Mitsubishi.MCPlc:246] [PLC] Address: Y0, Operation: WriteOutput, Data: PLC error: Get Tcp Connnection Failed, Status: FAILED 
+2025-09-04 09:30:33,045 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:142] [PLC] Address: 127.0.0.1:6000, Operation: Disconnect, Data: Disconnected successfully, Status: SUCCESS 
+2025-09-04 09:30:33,046 [INFO ] [thread-1] Disconnected from MC_PLC 
+2025-09-04 10:14:27,511 [INFO ] [thread-1] Loaded mapping configuration from Config\io_mapping.json 
+2025-09-04 10:14:27,512 [INFO ] [thread-1] Input mappings: 64, Output mappings: 64 
+2025-09-04 10:14:27,554 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:120] [PLC] Address: 127.0.0.1:6000, Operation: Connect, Data: Connected successfully, Status: SUCCESS 
+2025-09-04 10:14:27,554 [INFO ] [thread-1] Connected to MC_PLC: 127.0.0.1:6000 
+2025-09-04 10:14:30,542 [DEBUG] [thread-4] IO同步性能: 平均12.53ms, 当前11ms 
+2025-09-04 10:14:33,045 [DEBUG] [thread-4] IO同步性能: 平均12.22ms, 当前12ms 
+2025-09-04 10:14:35,495 [DEBUG] [thread-4] IO同步性能: 平均11.97ms, 当前12ms 
+2025-09-04 10:14:38,042 [DEBUG] [thread-4] IO同步性能: 平均12.09ms, 当前12ms 

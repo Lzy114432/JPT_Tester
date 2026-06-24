@@ -1,0 +1,66 @@
+﻿2026-06-04 09:59:26,974 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:188] 模块初始化: MesManager 
+2026-06-04 09:59:27,158 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:269] MES connect starting: 172.24.10.21:1883 
+2026-06-04 09:59:48,368 [ERROR] [thread-1] [Ewan.Core.Mes.MesManager:270] MES connect failed: Exception connecting to the broker 
+2026-06-04 10:00:03,130 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:269] MES connect starting: 172.24.10.21:1883 
+2026-06-04 10:00:24,238 [ERROR] [thread-1] [Ewan.Core.Mes.MesManager:270] MES connect failed: Exception connecting to the broker 
+2026-06-04 10:00:24,245 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:269] MES connect starting: 172.24.10.21:1883 
+2026-06-04 10:00:45,363 [ERROR] [thread-1] [Ewan.Core.Mes.MesManager:270] MES connect failed: Exception connecting to the broker 
+2026-06-04 10:00:45,364 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:343] RingLine service initialized: c3030bd6dfe94dc48be471b438985c3b/Z-JQ-S-101-001 
+2026-06-04 10:00:45,409 [INFO ] [thread-1] [MarkingMachineFeeder.App:64] 系统初始化成功 
+2026-06-04 10:00:45,415 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: 系统启动 
+2026-06-04 10:00:55,493 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:100] IO连接失败: SafetyModule初始化 
+2026-06-04 10:00:55,494 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:104] 模块初始化成功: SafetyModule 
+2026-06-04 10:00:55,495 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-06-04 10:00:55,504 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-06-04 10:00:55,511 [WARN ] [thread-1] [Ewan.Core.Manager.LogicManager:430] 需要先复位，才能启动 
+2026-06-04 10:00:55,518 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:80] 模块初始化成功: BinElevatorModule (MessageHub) 
+2026-06-04 10:00:55,519 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-06-04 10:00:55,523 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:110] 模块初始化成功: BeltConveyorModule 
+2026-06-04 10:00:55,525 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:120] 初始化已完成: 皮带输送控制系统 
+2026-06-04 10:00:55,525 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-06-04 10:00:55,529 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-06-04 10:00:55,532 [INFO ] [thread-1] [Ewan.Core.Module.RingLineModule:49] 环线模块已初始化 
+2026-06-04 10:00:55,533 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-06-04 10:00:55,534 [INFO ] [thread-12] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-06-04 10:00:55,539 [INFO ] [thread-1] [Ewan.Core.Module.MesModule:35] 模块初始化成功: MesModule (MessageHub) 
+2026-06-04 10:00:55,540 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-06-04 10:00:55,541 [INFO ] [thread-1] [MarkingMachineFeeder.App:69] 流处理已启动 
+2026-06-04 10:00:55,637 [INFO ] [thread-1] [MarkingMachineFeeder.App:83] ViewModelLocator已配置 
+2026-06-04 10:01:02,524 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1671] 已从参数加载数量统计：上料速率=40, 下料速率=0 
+2026-06-04 10:01:02,528 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:403] 主窗口已启动 
+2026-06-04 17:37:50,539 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:188] 模块初始化: MesManager 
+2026-06-04 17:37:54,057 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:269] MES connect starting: 172.24.10.21:1883 
+2026-06-04 17:38:15,243 [ERROR] [thread-1] [Ewan.Core.Mes.MesManager:270] MES connect failed: Exception connecting to the broker 
+2026-06-04 17:38:43,937 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:269] MES connect starting: 172.24.10.21:1883 
+2026-06-04 17:39:05,061 [ERROR] [thread-1] [Ewan.Core.Mes.MesManager:270] MES connect failed: Exception connecting to the broker 
+2026-06-04 17:39:05,071 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:269] MES connect starting: 172.24.10.21:1883 
+2026-06-04 17:39:26,178 [ERROR] [thread-1] [Ewan.Core.Mes.MesManager:270] MES connect failed: Exception connecting to the broker 
+2026-06-04 17:39:26,179 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:343] RingLine service initialized: c3030bd6dfe94dc48be471b438985c3b/Z-JQ-S-101-001 
+2026-06-04 17:39:26,566 [INFO ] [thread-1] [MarkingMachineFeeder.App:64] 系统初始化成功 
+2026-06-04 17:39:26,573 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: 系统启动 
+2026-06-04 17:39:36,652 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:100] IO连接失败: SafetyModule初始化 
+2026-06-04 17:39:36,653 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:104] 模块初始化成功: SafetyModule 
+2026-06-04 17:39:36,653 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-06-04 17:39:36,663 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-06-04 17:39:36,686 [WARN ] [thread-1] [Ewan.Core.Manager.LogicManager:430] 需要先复位，才能启动 
+2026-06-04 17:39:36,690 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:80] 模块初始化成功: BinElevatorModule (MessageHub) 
+2026-06-04 17:39:36,690 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-06-04 17:39:36,695 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:110] 模块初始化成功: BeltConveyorModule 
+2026-06-04 17:39:36,696 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:120] 初始化已完成: 皮带输送控制系统 
+2026-06-04 17:39:36,696 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-06-04 17:39:36,701 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-06-04 17:39:36,706 [INFO ] [thread-1] [Ewan.Core.Module.RingLineModule:49] 环线模块已初始化 
+2026-06-04 17:39:36,707 [INFO ] [thread-13] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-06-04 17:39:36,715 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-06-04 17:39:36,718 [INFO ] [thread-1] [Ewan.Core.Module.MesModule:35] 模块初始化成功: MesModule (MessageHub) 
+2026-06-04 17:39:36,719 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-06-04 17:39:36,720 [INFO ] [thread-1] [MarkingMachineFeeder.App:69] 流处理已启动 
+2026-06-04 17:39:36,908 [INFO ] [thread-1] [MarkingMachineFeeder.App:83] ViewModelLocator已配置 
+2026-06-04 17:39:52,724 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1671] 已从参数加载数量统计：上料速率=40, 下料速率=0 
+2026-06-04 17:39:52,739 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:403] 主窗口已启动 
+2026-06-04 17:41:38,845 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:ExecuteSystemStop] 处理已完成: 用户请求停止系统 
+2026-06-04 17:41:38,854 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:ExecuteSystemStop] 处理已完成: 系统停止操作完成 
+2026-06-04 17:41:38,855 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:167] 所有料仓已停止 
+2026-06-04 17:41:38,869 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:UpdateSystemStatusDisplay] 系统状态更新: Stopped - 已停止（需复位） 
+2026-06-04 17:41:38,871 [INFO ] [thread-6] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: Stop 
+2026-06-04 17:41:38,873 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:404] 处理已完成: 皮带已停止 

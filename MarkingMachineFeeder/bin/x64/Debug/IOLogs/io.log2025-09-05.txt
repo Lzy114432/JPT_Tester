@@ -1,0 +1,642 @@
+﻿2025-09-05 09:09:39,243 [INFO ] [thread-1] Loaded mapping configuration from Config\io_mapping.json 
+2025-09-05 09:09:39,243 [INFO ] [thread-1] Input mappings: 64, Output mappings: 64 
+2025-09-05 09:09:39,370 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:120] [PLC] Address: 127.0.0.1:6000, Operation: Connect, Data: Connected successfully, Status: SUCCESS 
+2025-09-05 09:09:39,371 [INFO ] [thread-1] Connected to MC_PLC: 127.0.0.1:6000 
+2025-09-05 09:09:42,398 [DEBUG] [thread-4] IO同步性能: 平均13.10ms, 当前10ms 
+2025-09-05 09:09:44,874 [DEBUG] [thread-4] IO同步性能: 平均12.41ms, 当前15ms 
+2025-09-05 09:09:46,170 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:142] [PLC] Address: 127.0.0.1:6000, Operation: Disconnect, Data: Disconnected successfully, Status: SUCCESS 
+2025-09-05 09:09:46,170 [INFO ] [thread-1] Disconnected from MC_PLC 
+2025-09-05 09:36:36,786 [INFO ] [thread-1] Loaded mapping configuration from Config\io_mapping.json 
+2025-09-05 09:36:36,787 [INFO ] [thread-1] Input mappings: 64, Output mappings: 64 
+2025-09-05 09:36:36,983 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:120] [PLC] Address: 127.0.0.1:6000, Operation: Connect, Data: Connected successfully, Status: SUCCESS 
+2025-09-05 09:36:36,983 [INFO ] [thread-1] Connected to MC_PLC: 127.0.0.1:6000 
+2025-09-05 09:36:40,074 [DEBUG] [thread-4] IO同步性能: 平均13.16ms, 当前11ms 
+2025-09-05 09:36:42,540 [DEBUG] [thread-4] IO同步性能: 平均12.47ms, 当前12ms 
+2025-09-05 09:36:45,091 [DEBUG] [thread-4] IO同步性能: 平均12.48ms, 当前12ms 
+2025-09-05 09:36:47,725 [DEBUG] [thread-4] IO同步性能: 平均12.71ms, 当前10ms 
+2025-09-05 09:36:50,303 [DEBUG] [thread-4] IO同步性能: 平均12.74ms, 当前13ms 
+2025-09-05 09:36:52,746 [DEBUG] [thread-4] IO同步性能: 平均12.53ms, 当前15ms 
+2025-09-05 09:36:55,203 [DEBUG] [thread-4] IO同步性能: 平均12.41ms, 当前13ms 
+2025-09-05 09:36:57,690 [DEBUG] [thread-4] IO同步性能: 平均12.34ms, 当前11ms 
+2025-09-05 09:37:00,136 [DEBUG] [thread-4] IO同步性能: 平均12.25ms, 当前12ms 
+2025-09-05 09:37:02,550 [DEBUG] [thread-4] IO同步性能: 平均12.13ms, 当前14ms 
+2025-09-05 09:37:05,005 [DEBUG] [thread-4] IO同步性能: 平均12.10ms, 当前14ms 
+2025-09-05 09:37:07,515 [DEBUG] [thread-4] IO同步性能: 平均12.10ms, 当前13ms 
+2025-09-05 09:37:10,052 [DEBUG] [thread-4] IO同步性能: 平均12.13ms, 当前17ms 
+2025-09-05 09:37:12,497 [DEBUG] [thread-4] IO同步性能: 平均12.09ms, 当前10ms 
+2025-09-05 09:37:14,829 [DEBUG] [thread-4] IO同步性能: 平均11.98ms, 当前11ms 
+2025-09-05 09:37:17,271 [DEBUG] [thread-4] IO同步性能: 平均11.95ms, 当前9ms 
+2025-09-05 09:37:19,756 [DEBUG] [thread-4] IO同步性能: 平均11.95ms, 当前10ms 
+2025-09-05 09:37:22,262 [DEBUG] [thread-4] IO同步性能: 平均11.96ms, 当前11ms 
+2025-09-05 09:37:24,765 [DEBUG] [thread-4] IO同步性能: 平均11.97ms, 当前15ms 
+2025-09-05 09:37:27,223 [DEBUG] [thread-4] IO同步性能: 平均11.95ms, 当前13ms 
+2025-09-05 09:37:29,694 [DEBUG] [thread-4] IO同步性能: 平均11.95ms, 当前9ms 
+2025-09-05 09:37:32,261 [DEBUG] [thread-4] IO同步性能: 平均11.98ms, 当前10ms 
+2025-09-05 09:37:32,529 [WARN ] [thread-4] [IOLibrary.Hardware.Mitsubishi.MCPlc:246] [PLC] Address: Y0, Operation: WriteOutput, Data: PLC error: Get Tcp Connnection Failed, Status: FAILED 
+2025-09-05 09:37:32,531 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:142] [PLC] Address: 127.0.0.1:6000, Operation: Disconnect, Data: Disconnected successfully, Status: SUCCESS 
+2025-09-05 09:37:32,531 [INFO ] [thread-1] Disconnected from MC_PLC 
+2025-09-05 09:38:05,904 [INFO ] [thread-1] Loaded mapping configuration from Config\io_mapping.json 
+2025-09-05 09:38:05,904 [INFO ] [thread-1] Input mappings: 64, Output mappings: 64 
+2025-09-05 09:38:05,947 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:120] [PLC] Address: 127.0.0.1:6000, Operation: Connect, Data: Connected successfully, Status: SUCCESS 
+2025-09-05 09:38:05,948 [INFO ] [thread-1] Connected to MC_PLC: 127.0.0.1:6000 
+2025-09-05 09:38:09,054 [DEBUG] [thread-4] IO同步性能: 平均13.90ms, 当前11ms 
+2025-09-05 09:38:11,632 [DEBUG] [thread-4] IO同步性能: 平均13.35ms, 当前15ms 
+2025-09-05 09:38:14,051 [DEBUG] [thread-4] IO同步性能: 平均12.65ms, 当前12ms 
+2025-09-05 09:38:16,570 [DEBUG] [thread-4] IO同步性能: 平均12.55ms, 当前11ms 
+2025-09-05 09:38:19,048 [DEBUG] [thread-4] IO同步性能: 平均12.42ms, 当前10ms 
+2025-09-05 09:38:21,512 [DEBUG] [thread-4] IO同步性能: 平均12.29ms, 当前17ms 
+2025-09-05 09:38:24,006 [DEBUG] [thread-4] IO同步性能: 平均12.26ms, 当前15ms 
+2025-09-05 09:38:26,527 [DEBUG] [thread-4] IO同步性能: 平均12.25ms, 当前10ms 
+2025-09-05 09:38:29,076 [DEBUG] [thread-4] IO同步性能: 平均12.28ms, 当前16ms 
+2025-09-05 09:38:31,631 [DEBUG] [thread-4] IO同步性能: 平均12.31ms, 当前14ms 
+2025-09-05 09:38:32,183 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:142] [PLC] Address: 127.0.0.1:6000, Operation: Disconnect, Data: Disconnected successfully, Status: SUCCESS 
+2025-09-05 09:38:32,183 [INFO ] [thread-1] Disconnected from MC_PLC 
+2025-09-05 10:04:59,917 [INFO ] [thread-1] Loaded mapping configuration from Config\io_mapping.json 
+2025-09-05 10:04:59,918 [INFO ] [thread-1] Input mappings: 64, Output mappings: 64 
+2025-09-05 10:04:59,983 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:120] [PLC] Address: 127.0.0.1:6000, Operation: Connect, Data: Connected successfully, Status: SUCCESS 
+2025-09-05 10:04:59,983 [INFO ] [thread-1] Connected to MC_PLC: 127.0.0.1:6000 
+2025-09-05 10:05:03,062 [DEBUG] [thread-4] IO同步性能: 平均13.07ms, 当前13ms 
+2025-09-05 10:05:05,645 [DEBUG] [thread-4] IO同步性能: 平均13.00ms, 当前16ms 
+2025-09-05 10:05:08,266 [DEBUG] [thread-4] IO同步性能: 平均13.11ms, 当前11ms 
+2025-09-05 10:05:10,756 [DEBUG] [thread-4] IO同步性能: 平均12.84ms, 当前12ms 
+2025-09-05 10:05:13,261 [DEBUG] [thread-4] IO同步性能: 平均12.69ms, 当前13ms 
+2025-09-05 10:05:15,844 [DEBUG] [thread-4] IO同步性能: 平均12.73ms, 当前16ms 
+2025-09-05 10:05:18,492 [DEBUG] [thread-4] IO同步性能: 平均12.84ms, 当前15ms 
+2025-09-05 10:05:21,134 [DEBUG] [thread-4] IO同步性能: 平均12.91ms, 当前12ms 
+2025-09-05 10:05:23,789 [DEBUG] [thread-4] IO同步性能: 平均12.98ms, 当前17ms 
+2025-09-05 10:05:26,447 [DEBUG] [thread-4] IO同步性能: 平均13.05ms, 当前12ms 
+2025-09-05 10:05:29,044 [DEBUG] [thread-4] IO同步性能: 平均13.04ms, 当前14ms 
+2025-09-05 10:05:31,612 [DEBUG] [thread-4] IO同步性能: 平均13.02ms, 当前14ms 
+2025-09-05 10:05:34,114 [DEBUG] [thread-4] IO同步性能: 平均12.95ms, 当前13ms 
+2025-09-05 10:05:36,683 [DEBUG] [thread-4] IO同步性能: 平均12.93ms, 当前17ms 
+2025-09-05 10:05:39,256 [DEBUG] [thread-4] IO同步性能: 平均12.93ms, 当前14ms 
+2025-09-05 10:05:41,837 [DEBUG] [thread-4] IO同步性能: 平均12.93ms, 当前13ms 
+2025-09-05 10:05:44,480 [DEBUG] [thread-4] IO同步性能: 平均12.96ms, 当前11ms 
+2025-09-05 10:05:46,919 [DEBUG] [thread-4] IO同步性能: 平均12.88ms, 当前10ms 
+2025-09-05 10:05:49,428 [DEBUG] [thread-4] IO同步性能: 平均12.83ms, 当前12ms 
+2025-09-05 10:05:51,864 [DEBUG] [thread-4] IO同步性能: 平均12.77ms, 当前10ms 
+2025-09-05 10:05:54,309 [DEBUG] [thread-4] IO同步性能: 平均12.71ms, 当前15ms 
+2025-09-05 10:05:56,727 [DEBUG] [thread-4] IO同步性能: 平均12.64ms, 当前12ms 
+2025-09-05 10:05:59,109 [DEBUG] [thread-4] IO同步性能: 平均12.57ms, 当前12ms 
+2025-09-05 10:06:01,626 [DEBUG] [thread-4] IO同步性能: 平均12.56ms, 当前13ms 
+2025-09-05 10:06:03,500 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:142] [PLC] Address: 127.0.0.1:6000, Operation: Disconnect, Data: Disconnected successfully, Status: SUCCESS 
+2025-09-05 10:06:03,500 [INFO ] [thread-1] Disconnected from MC_PLC 
+2025-09-05 10:06:03,500 [WARN ] [thread-4] [IOLibrary.Hardware.Mitsubishi.MCPlc:246] [PLC] Address: Y0, Operation: WriteOutput, Data: PLC error: Get Tcp Connnection Failed, Status: FAILED 
+2025-09-05 10:16:41,097 [INFO ] [thread-1] Loaded mapping configuration from Config\io_mapping.json 
+2025-09-05 10:16:41,097 [INFO ] [thread-1] Input mappings: 64, Output mappings: 64 
+2025-09-05 10:16:41,293 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:120] [PLC] Address: 127.0.0.1:6000, Operation: Connect, Data: Connected successfully, Status: SUCCESS 
+2025-09-05 10:16:41,293 [INFO ] [thread-1] Connected to MC_PLC: 127.0.0.1:6000 
+2025-09-05 10:16:44,300 [DEBUG] [thread-3] IO同步性能: 平均13.55ms, 当前14ms 
+2025-09-05 10:16:46,851 [DEBUG] [thread-3] IO同步性能: 平均13.00ms, 当前16ms 
+2025-09-05 10:16:49,419 [DEBUG] [thread-3] IO同步性能: 平均12.93ms, 当前12ms 
+2025-09-05 10:16:51,935 [DEBUG] [thread-3] IO同步性能: 平均12.76ms, 当前11ms 
+2025-09-05 10:16:54,476 [DEBUG] [thread-3] IO同步性能: 平均12.69ms, 当前16ms 
+2025-09-05 10:16:57,051 [DEBUG] [thread-3] IO同步性能: 平均12.71ms, 当前15ms 
+2025-09-05 10:16:59,747 [DEBUG] [thread-3] IO同步性能: 平均12.51ms, 当前9ms 
+2025-09-05 10:17:04,427 [DEBUG] [thread-3] IO同步性能: 平均12.12ms, 当前8ms 
+2025-09-05 10:17:09,073 [DEBUG] [thread-3] IO同步性能: 平均11.84ms, 当前8ms 
+2025-09-05 10:17:13,787 [DEBUG] [thread-3] IO同步性能: 平均11.78ms, 当前9ms 
+2025-09-05 10:17:18,442 [DEBUG] [thread-3] IO同步性能: 平均11.53ms, 当前15ms 
+2025-09-05 10:17:23,101 [DEBUG] [thread-3] IO同步性能: 平均11.40ms, 当前9ms 
+2025-09-05 10:17:27,790 [DEBUG] [thread-3] IO同步性能: 平均11.25ms, 当前10ms 
+2025-09-05 10:17:32,446 [DEBUG] [thread-3] IO同步性能: 平均11.15ms, 当前9ms 
+2025-09-05 10:17:37,084 [DEBUG] [thread-3] IO同步性能: 平均11.02ms, 当前9ms 
+2025-09-05 10:17:41,724 [DEBUG] [thread-3] IO同步性能: 平均10.90ms, 当前9ms 
+2025-09-05 10:17:46,375 [DEBUG] [thread-3] IO同步性能: 平均10.82ms, 当前11ms 
+2025-09-05 10:17:51,029 [DEBUG] [thread-3] IO同步性能: 平均10.75ms, 当前10ms 
+2025-09-05 10:17:55,679 [DEBUG] [thread-3] IO同步性能: 平均10.68ms, 当前9ms 
+2025-09-05 10:18:00,334 [DEBUG] [thread-3] IO同步性能: 平均10.59ms, 当前8ms 
+2025-09-05 10:18:04,997 [DEBUG] [thread-3] IO同步性能: 平均10.51ms, 当前8ms 
+2025-09-05 10:18:09,651 [DEBUG] [thread-3] IO同步性能: 平均10.44ms, 当前8ms 
+2025-09-05 10:18:14,362 [DEBUG] [thread-3] IO同步性能: 平均10.44ms, 当前8ms 
+2025-09-05 10:18:18,995 [DEBUG] [thread-3] IO同步性能: 平均10.43ms, 当前9ms 
+2025-09-05 10:18:21,965 [DEBUG] [thread-3] IO同步性能: 平均10.49ms, 当前8ms 
+2025-09-05 10:18:24,583 [DEBUG] [thread-3] IO同步性能: 平均10.60ms, 当前12ms 
+2025-09-05 10:18:27,112 [DEBUG] [thread-3] IO同步性能: 平均10.66ms, 当前10ms 
+2025-09-05 10:18:29,622 [DEBUG] [thread-3] IO同步性能: 平均10.72ms, 当前12ms 
+2025-09-05 10:18:32,181 [DEBUG] [thread-3] IO同步性能: 平均10.79ms, 当前11ms 
+2025-09-05 10:18:34,632 [DEBUG] [thread-3] IO同步性能: 平均10.81ms, 当前12ms 
+2025-09-05 10:18:37,165 [DEBUG] [thread-3] IO同步性能: 平均10.87ms, 当前12ms 
+2025-09-05 10:18:39,593 [DEBUG] [thread-3] IO同步性能: 平均10.88ms, 当前13ms 
+2025-09-05 10:18:42,056 [DEBUG] [thread-3] IO同步性能: 平均10.91ms, 当前10ms 
+2025-09-05 10:18:44,537 [DEBUG] [thread-3] IO同步性能: 平均10.94ms, 当前12ms 
+2025-09-05 10:18:47,016 [DEBUG] [thread-3] IO同步性能: 平均10.97ms, 当前14ms 
+2025-09-05 10:18:49,447 [DEBUG] [thread-3] IO同步性能: 平均10.98ms, 当前10ms 
+2025-09-05 10:18:49,979 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:142] [PLC] Address: 127.0.0.1:6000, Operation: Disconnect, Data: Disconnected successfully, Status: SUCCESS 
+2025-09-05 10:18:49,979 [INFO ] [thread-1] Disconnected from MC_PLC 
+2025-09-05 10:40:46,583 [INFO ] [thread-1] Loaded mapping configuration from Config\io_mapping.json 
+2025-09-05 10:40:46,583 [INFO ] [thread-1] Input mappings: 64, Output mappings: 64 
+2025-09-05 10:40:46,712 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:120] [PLC] Address: 127.0.0.1:6000, Operation: Connect, Data: Connected successfully, Status: SUCCESS 
+2025-09-05 10:40:46,712 [INFO ] [thread-1] Connected to MC_PLC: 127.0.0.1:6000 
+2025-09-05 10:44:15,763 [INFO ] [thread-1] Loaded mapping configuration from Config\io_mapping.json 
+2025-09-05 10:44:15,764 [INFO ] [thread-1] Input mappings: 64, Output mappings: 64 
+2025-09-05 10:44:15,868 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:120] [PLC] Address: 127.0.0.1:6000, Operation: Connect, Data: Connected successfully, Status: SUCCESS 
+2025-09-05 10:44:15,869 [INFO ] [thread-1] Connected to MC_PLC: 127.0.0.1:6000 
+2025-09-05 10:44:18,916 [DEBUG] [thread-3] IO同步性能: 平均13.29ms, 当前12ms 
+2025-09-05 10:44:21,402 [DEBUG] [thread-3] IO同步性能: 平均12.64ms, 当前12ms 
+2025-09-05 10:44:23,887 [DEBUG] [thread-3] IO同步性能: 平均12.41ms, 当前15ms 
+2025-09-05 10:44:24,577 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:142] [PLC] Address: 127.0.0.1:6000, Operation: Disconnect, Data: Disconnected successfully, Status: SUCCESS 
+2025-09-05 10:44:24,577 [INFO ] [thread-1] Disconnected from MC_PLC 
+2025-09-05 10:49:05,193 [INFO ] [thread-1] Loaded mapping configuration from Config\io_mapping.json 
+2025-09-05 10:49:05,194 [INFO ] [thread-1] Input mappings: 64, Output mappings: 64 
+2025-09-05 10:49:05,351 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:120] [PLC] Address: 127.0.0.1:6000, Operation: Connect, Data: Connected successfully, Status: SUCCESS 
+2025-09-05 10:49:05,352 [INFO ] [thread-1] Connected to MC_PLC: 127.0.0.1:6000 
+2025-09-05 10:49:08,393 [DEBUG] [thread-3] IO同步性能: 平均13.65ms, 当前16ms 
+2025-09-05 10:49:10,972 [DEBUG] [thread-3] IO同步性能: 平均13.26ms, 当前8ms 
+2025-09-05 10:49:13,518 [DEBUG] [thread-3] IO同步性能: 平均13.00ms, 当前11ms 
+2025-09-05 10:49:16,144 [DEBUG] [thread-3] IO同步性能: 平均13.08ms, 当前14ms 
+2025-09-05 10:49:18,682 [DEBUG] [thread-3] IO同步性能: 平均12.97ms, 当前14ms 
+2025-09-05 10:49:21,278 [DEBUG] [thread-3] IO同步性能: 平均12.99ms, 当前12ms 
+2025-09-05 10:49:23,794 [DEBUG] [thread-3] IO同步性能: 平均12.89ms, 当前10ms 
+2025-09-05 10:49:26,356 [DEBUG] [thread-3] IO同步性能: 平均12.86ms, 当前9ms 
+2025-09-05 10:49:28,920 [DEBUG] [thread-3] IO同步性能: 平均12.85ms, 当前15ms 
+2025-09-05 10:49:31,429 [DEBUG] [thread-3] IO同步性能: 平均12.78ms, 当前10ms 
+2025-09-05 10:49:33,925 [DEBUG] [thread-3] IO同步性能: 平均12.72ms, 当前12ms 
+2025-09-05 10:49:36,571 [DEBUG] [thread-3] IO同步性能: 平均12.79ms, 当前14ms 
+2025-09-05 10:49:38,979 [DEBUG] [thread-3] IO同步性能: 平均12.67ms, 当前12ms 
+2025-09-05 10:49:41,512 [DEBUG] [thread-3] IO同步性能: 平均12.65ms, 当前14ms 
+2025-09-05 10:49:44,050 [DEBUG] [thread-3] IO同步性能: 平均12.64ms, 当前13ms 
+2025-09-05 10:49:46,524 [DEBUG] [thread-3] IO同步性能: 平均12.60ms, 当前9ms 
+2025-09-05 10:49:49,047 [DEBUG] [thread-3] IO同步性能: 平均12.58ms, 当前16ms 
+2025-09-05 10:49:51,589 [DEBUG] [thread-3] IO同步性能: 平均12.58ms, 当前13ms 
+2025-09-05 10:49:54,109 [DEBUG] [thread-3] IO同步性能: 平均12.57ms, 当前8ms 
+2025-09-05 10:49:56,532 [DEBUG] [thread-3] IO同步性能: 平均12.51ms, 当前11ms 
+2025-09-05 10:49:59,059 [DEBUG] [thread-3] IO同步性能: 平均12.51ms, 当前14ms 
+2025-09-05 10:50:01,640 [DEBUG] [thread-3] IO同步性能: 平均12.52ms, 当前12ms 
+2025-09-05 10:50:04,170 [DEBUG] [thread-3] IO同步性能: 平均12.52ms, 当前14ms 
+2025-09-05 10:50:06,605 [DEBUG] [thread-3] IO同步性能: 平均12.48ms, 当前13ms 
+2025-09-05 10:50:09,113 [DEBUG] [thread-3] IO同步性能: 平均12.46ms, 当前14ms 
+2025-09-05 10:50:11,361 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:142] [PLC] Address: 127.0.0.1:6000, Operation: Disconnect, Data: Disconnected successfully, Status: SUCCESS 
+2025-09-05 10:50:11,361 [INFO ] [thread-1] Disconnected from MC_PLC 
+2025-09-05 10:50:48,672 [INFO ] [thread-1] Loaded mapping configuration from Config\io_mapping.json 
+2025-09-05 10:50:48,672 [INFO ] [thread-1] Input mappings: 64, Output mappings: 64 
+2025-09-05 10:50:48,767 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:120] [PLC] Address: 127.0.0.1:6000, Operation: Connect, Data: Connected successfully, Status: SUCCESS 
+2025-09-05 10:50:48,767 [INFO ] [thread-1] Connected to MC_PLC: 127.0.0.1:6000 
+2025-09-05 10:50:51,757 [DEBUG] [thread-3] IO同步性能: 平均12.90ms, 当前9ms 
+2025-09-05 10:50:54,315 [DEBUG] [thread-3] IO同步性能: 平均12.76ms, 当前13ms 
+2025-09-05 10:50:56,734 [DEBUG] [thread-3] IO同步性能: 平均12.26ms, 当前14ms 
+2025-09-05 10:50:59,253 [DEBUG] [thread-3] IO同步性能: 平均12.27ms, 当前15ms 
+2025-09-05 10:51:01,280 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:142] [PLC] Address: 127.0.0.1:6000, Operation: Disconnect, Data: Disconnected successfully, Status: SUCCESS 
+2025-09-05 10:51:01,282 [INFO ] [thread-1] Disconnected from MC_PLC 
+2025-09-05 10:51:01,280 [WARN ] [thread-3] [IOLibrary.Hardware.Mitsubishi.MCPlc:246] [PLC] Address: Y0, Operation: WriteOutput, Data: PLC error: Get Tcp Connnection Failed, Status: FAILED 
+2025-09-05 13:39:24,576 [INFO ] [thread-1] Loaded mapping configuration from Config\io_mapping.json 
+2025-09-05 13:39:24,577 [INFO ] [thread-1] Input mappings: 64, Output mappings: 64 
+2025-09-05 13:39:24,828 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:120] [PLC] Address: 127.0.0.1:6000, Operation: Connect, Data: Connected successfully, Status: SUCCESS 
+2025-09-05 13:39:24,829 [INFO ] [thread-1] Connected to MC_PLC: 127.0.0.1:6000 
+2025-09-05 13:39:27,969 [DEBUG] [thread-3] IO同步性能: 平均13.14ms, 当前7ms 
+2025-09-05 13:39:30,072 [DEBUG] [thread-3] IO同步性能: 平均10.68ms, 当前7ms 
+2025-09-05 13:39:32,345 [DEBUG] [thread-3] IO同步性能: 平均10.43ms, 当前8ms 
+2025-09-05 13:39:34,763 [DEBUG] [thread-3] IO同步性能: 平均10.61ms, 当前7ms 
+2025-09-05 13:39:37,121 [DEBUG] [thread-3] IO同步性能: 平均10.64ms, 当前10ms 
+2025-09-05 13:39:39,407 [DEBUG] [thread-3] IO同步性能: 平均10.52ms, 当前9ms 
+2025-09-05 13:39:41,536 [DEBUG] [thread-3] IO同步性能: 平均10.22ms, 当前8ms 
+2025-09-05 13:39:43,736 [DEBUG] [thread-3] IO同步性能: 平均10.08ms, 当前9ms 
+2025-09-05 13:39:45,860 [DEBUG] [thread-3] IO同步性能: 平均9.89ms, 当前9ms 
+2025-09-05 13:39:48,130 [DEBUG] [thread-3] IO同步性能: 平均9.88ms, 当前8ms 
+2025-09-05 13:39:50,252 [DEBUG] [thread-3] IO同步性能: 平均9.74ms, 当前8ms 
+2025-09-05 13:39:52,360 [DEBUG] [thread-3] IO同步性能: 平均9.62ms, 当前8ms 
+2025-09-05 13:39:54,594 [DEBUG] [thread-3] IO同步性能: 平均9.61ms, 当前8ms 
+2025-09-05 13:39:56,744 [DEBUG] [thread-3] IO同步性能: 平均9.53ms, 当前9ms 
+2025-09-05 13:39:59,028 [DEBUG] [thread-3] IO同步性能: 平均9.56ms, 当前15ms 
+2025-09-05 13:39:59,393 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:142] [PLC] Address: 127.0.0.1:6000, Operation: Disconnect, Data: Disconnected successfully, Status: SUCCESS 
+2025-09-05 13:39:59,395 [INFO ] [thread-1] Disconnected from MC_PLC 
+2025-09-05 13:40:50,845 [INFO ] [thread-1] Loaded mapping configuration from Config\io_mapping.json 
+2025-09-05 13:40:50,848 [INFO ] [thread-1] Input mappings: 64, Output mappings: 64 
+2025-09-05 13:40:50,994 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:120] [PLC] Address: 127.0.0.1:6000, Operation: Connect, Data: Connected successfully, Status: SUCCESS 
+2025-09-05 13:40:50,994 [INFO ] [thread-1] Connected to MC_PLC: 127.0.0.1:6000 
+2025-09-05 13:40:53,975 [DEBUG] [thread-3] IO同步性能: 平均13.26ms, 当前14ms 
+2025-09-05 13:40:56,468 [DEBUG] [thread-3] IO同步性能: 平均12.60ms, 当前14ms 
+2025-09-05 13:40:58,938 [DEBUG] [thread-3] IO同步性能: 平均12.36ms, 当前13ms 
+2025-09-05 13:41:01,502 [DEBUG] [thread-3] IO同步性能: 平均12.44ms, 当前11ms 
+2025-09-05 13:41:04,056 [DEBUG] [thread-3] IO同步性能: 平均12.49ms, 当前13ms 
+2025-09-05 13:41:06,675 [DEBUG] [thread-3] IO同步性能: 平均12.62ms, 当前14ms 
+2025-09-05 13:41:09,135 [DEBUG] [thread-3] IO同步性能: 平均12.49ms, 当前9ms 
+2025-09-05 13:41:11,719 [DEBUG] [thread-3] IO同步性能: 平均12.53ms, 当前11ms 
+2025-09-05 13:41:15,935 [DEBUG] [thread-3] IO同步性能: 平均12.49ms, 当前8ms 
+2025-09-05 13:41:19,924 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:142] [PLC] Address: 127.0.0.1:6000, Operation: Disconnect, Data: Disconnected successfully, Status: SUCCESS 
+2025-09-05 13:41:19,924 [INFO ] [thread-1] Disconnected from MC_PLC 
+2025-09-05 13:49:02,876 [INFO ] [thread-1] Loaded mapping configuration from Config\io_mapping.json 
+2025-09-05 13:49:02,877 [INFO ] [thread-1] Input mappings: 64, Output mappings: 64 
+2025-09-05 13:49:03,038 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:120] [PLC] Address: 127.0.0.1:6000, Operation: Connect, Data: Connected successfully, Status: SUCCESS 
+2025-09-05 13:49:03,038 [INFO ] [thread-1] Connected to MC_PLC: 127.0.0.1:6000 
+2025-09-05 13:49:05,961 [DEBUG] [thread-3] IO同步性能: 平均12.34ms, 当前10ms 
+2025-09-05 13:49:08,414 [DEBUG] [thread-3] IO同步性能: 平均12.01ms, 当前10ms 
+2025-09-05 13:49:11,257 [INFO ] [thread-1] Loaded mapping configuration from Config\io_mapping.json 
+2025-09-05 13:49:11,257 [INFO ] [thread-1] Input mappings: 64, Output mappings: 64 
+2025-09-05 13:49:11,362 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:120] [PLC] Address: 127.0.0.1:6000, Operation: Connect, Data: Connected successfully, Status: SUCCESS 
+2025-09-05 13:49:11,364 [INFO ] [thread-1] Connected to MC_PLC: 127.0.0.1:6000 
+2025-09-05 13:49:14,430 [DEBUG] [thread-3] IO同步性能: 平均13.58ms, 当前10ms 
+2025-09-05 13:49:16,832 [DEBUG] [thread-3] IO同步性能: 平均12.34ms, 当前11ms 
+2025-09-05 13:49:19,289 [DEBUG] [thread-3] IO同步性能: 平均12.14ms, 当前12ms 
+2025-09-05 13:49:21,738 [DEBUG] [thread-3] IO同步性能: 平均11.99ms, 当前10ms 
+2025-09-05 13:49:24,274 [DEBUG] [thread-3] IO同步性能: 平均12.06ms, 当前11ms 
+2025-09-05 13:49:26,658 [DEBUG] [thread-3] IO同步性能: 平均11.88ms, 当前13ms 
+2025-09-05 13:49:29,201 [DEBUG] [thread-3] IO同步性能: 平均11.99ms, 当前8ms 
+2025-09-05 13:49:31,661 [DEBUG] [thread-3] IO同步性能: 平均11.96ms, 当前9ms 
+2025-09-05 13:49:34,129 [DEBUG] [thread-3] IO同步性能: 平均11.94ms, 当前12ms 
+2025-09-05 13:49:36,558 [DEBUG] [thread-3] IO同步性能: 平均11.88ms, 当前11ms 
+2025-09-05 13:49:39,115 [DEBUG] [thread-3] IO同步性能: 平均11.95ms, 当前12ms 
+2025-09-05 13:49:41,966 [DEBUG] [thread-3] IO同步性能: 平均11.97ms, 当前12ms 
+2025-09-05 13:49:46,595 [DEBUG] [thread-3] IO同步性能: 平均11.96ms, 当前17ms 
+2025-09-05 13:49:51,208 [DEBUG] [thread-3] IO同步性能: 平均11.95ms, 当前13ms 
+2025-09-05 13:49:55,822 [DEBUG] [thread-3] IO同步性能: 平均11.97ms, 当前13ms 
+2025-09-05 13:50:00,446 [DEBUG] [thread-3] IO同步性能: 平均12.04ms, 当前12ms 
+2025-09-05 13:50:05,327 [DEBUG] [thread-3] IO同步性能: 平均12.23ms, 当前10ms 
+2025-09-05 13:50:09,959 [DEBUG] [thread-3] IO同步性能: 平均12.17ms, 当前8ms 
+2025-09-05 13:50:14,555 [DEBUG] [thread-3] IO同步性能: 平均12.03ms, 当前9ms 
+2025-09-05 13:50:17,787 [DEBUG] [thread-3] IO同步性能: 平均11.92ms, 当前10ms 
+2025-09-05 13:50:20,079 [DEBUG] [thread-3] IO同步性能: 平均11.83ms, 当前9ms 
+2025-09-05 13:50:22,330 [DEBUG] [thread-3] IO同步性能: 平均11.73ms, 当前8ms 
+2025-09-05 13:50:24,547 [DEBUG] [thread-3] IO同步性能: 平均11.62ms, 当前9ms 
+2025-09-05 13:50:26,824 [DEBUG] [thread-3] IO同步性能: 平均11.55ms, 当前9ms 
+2025-09-05 13:50:27,908 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:142] [PLC] Address: 127.0.0.1:6000, Operation: Disconnect, Data: Disconnected successfully, Status: SUCCESS 
+2025-09-05 13:50:27,908 [INFO ] [thread-1] Disconnected from MC_PLC 
+2025-09-05 13:54:17,693 [INFO ] [thread-1] Loaded mapping configuration from Config\io_mapping.json 
+2025-09-05 13:54:17,694 [INFO ] [thread-1] Input mappings: 64, Output mappings: 64 
+2025-09-05 13:54:17,802 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:120] [PLC] Address: 127.0.0.1:6000, Operation: Connect, Data: Connected successfully, Status: SUCCESS 
+2025-09-05 13:54:17,802 [INFO ] [thread-1] Connected to MC_PLC: 127.0.0.1:6000 
+2025-09-05 13:54:20,688 [DEBUG] [thread-3] IO同步性能: 平均12.01ms, 当前8ms 
+2025-09-05 13:54:22,973 [DEBUG] [thread-3] IO同步性能: 平均10.99ms, 当前8ms 
+2025-09-05 13:54:25,152 [DEBUG] [thread-3] IO同步性能: 平均10.27ms, 当前8ms 
+2025-09-05 13:54:27,551 [DEBUG] [thread-3] IO同步性能: 平均10.46ms, 当前11ms 
+2025-09-05 13:54:29,719 [DEBUG] [thread-3] IO同步性能: 平均10.12ms, 当前9ms 
+2025-09-05 13:54:31,934 [DEBUG] [thread-3] IO同步性能: 平均9.97ms, 当前10ms 
+2025-09-05 13:54:34,182 [DEBUG] [thread-3] IO同步性能: 平均9.89ms, 当前13ms 
+2025-09-05 13:54:36,393 [DEBUG] [thread-3] IO同步性能: 平均9.80ms, 当前8ms 
+2025-09-05 13:54:38,516 [DEBUG] [thread-3] IO同步性能: 平均9.63ms, 当前9ms 
+2025-09-05 13:54:40,774 [DEBUG] [thread-3] IO同步性能: 平均9.64ms, 当前8ms 
+2025-09-05 13:54:42,924 [DEBUG] [thread-3] IO同步性能: 平均9.54ms, 当前10ms 
+2025-09-05 13:54:45,099 [DEBUG] [thread-3] IO同步性能: 平均9.47ms, 当前9ms 
+2025-09-05 13:54:47,261 [DEBUG] [thread-3] IO同步性能: 平均9.41ms, 当前9ms 
+2025-09-05 13:54:49,409 [DEBUG] [thread-3] IO同步性能: 平均9.34ms, 当前11ms 
+2025-09-05 13:54:51,687 [DEBUG] [thread-3] IO同步性能: 平均9.38ms, 当前11ms 
+2025-09-05 13:54:53,854 [DEBUG] [thread-3] IO同步性能: 平均9.33ms, 当前8ms 
+2025-09-05 13:54:55,949 [DEBUG] [thread-3] IO同步性能: 平均9.25ms, 当前8ms 
+2025-09-05 13:54:58,113 [DEBUG] [thread-3] IO同步性能: 平均9.22ms, 当前9ms 
+2025-09-05 13:55:00,185 [DEBUG] [thread-3] IO同步性能: 平均9.15ms, 当前8ms 
+2025-09-05 13:55:02,314 [DEBUG] [thread-3] IO同步性能: 平均9.11ms, 当前8ms 
+2025-09-05 13:55:04,597 [DEBUG] [thread-3] IO同步性能: 平均9.14ms, 当前9ms 
+2025-09-05 13:55:06,924 [DEBUG] [thread-3] IO同步性能: 平均9.19ms, 当前8ms 
+2025-09-05 13:55:10,045 [DEBUG] [thread-3] IO同步性能: 平均9.20ms, 当前9ms 
+2025-09-05 13:55:14,620 [DEBUG] [thread-3] IO同步性能: 平均9.22ms, 当前8ms 
+2025-09-05 13:55:19,229 [DEBUG] [thread-3] IO同步性能: 平均9.28ms, 当前10ms 
+2025-09-05 13:55:23,830 [DEBUG] [thread-3] IO同步性能: 平均9.31ms, 当前8ms 
+2025-09-05 13:55:28,420 [DEBUG] [thread-3] IO同步性能: 平均9.31ms, 当前9ms 
+2025-09-05 13:55:32,889 [DEBUG] [thread-3] IO同步性能: 平均9.31ms, 当前11ms 
+2025-09-05 13:55:35,173 [DEBUG] [thread-3] IO同步性能: 平均9.33ms, 当前11ms 
+2025-09-05 13:55:37,399 [DEBUG] [thread-3] IO同步性能: 平均9.33ms, 当前10ms 
+2025-09-05 13:55:39,552 [DEBUG] [thread-3] IO同步性能: 平均9.31ms, 当前8ms 
+2025-09-05 13:55:41,821 [DEBUG] [thread-3] IO同步性能: 平均9.32ms, 当前9ms 
+2025-09-05 13:55:44,053 [DEBUG] [thread-3] IO同步性能: 平均9.32ms, 当前8ms 
+2025-09-05 13:55:46,309 [DEBUG] [thread-3] IO同步性能: 平均9.32ms, 当前7ms 
+2025-09-05 13:55:48,268 [WARN ] [thread-3] [IOLibrary.Hardware.Mitsubishi.MCPlc:246] [PLC] Address: Y0, Operation: WriteOutput, Data: PLC error: Get Tcp Connnection Failed, Status: FAILED 
+2025-09-05 13:55:48,268 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:142] [PLC] Address: 127.0.0.1:6000, Operation: Disconnect, Data: Disconnected successfully, Status: SUCCESS 
+2025-09-05 13:55:48,269 [INFO ] [thread-1] Disconnected from MC_PLC 
+2025-09-05 15:14:24,479 [INFO ] [thread-1] Loaded mapping configuration from Config\io_mapping.json 
+2025-09-05 15:14:24,480 [INFO ] [thread-1] Input mappings: 64, Output mappings: 64 
+2025-09-05 15:14:24,525 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:120] [PLC] Address: 127.0.0.1:6000, Operation: Connect, Data: Connected successfully, Status: SUCCESS 
+2025-09-05 15:14:24,525 [INFO ] [thread-1] Connected to MC_PLC: 127.0.0.1:6000 
+2025-09-05 15:14:27,535 [DEBUG] [thread-4] IO同步性能: 平均13.49ms, 当前8ms 
+2025-09-05 15:14:30,108 [DEBUG] [thread-4] IO同步性能: 平均13.09ms, 当前14ms 
+2025-09-05 15:14:32,617 [DEBUG] [thread-4] IO同步性能: 平均12.75ms, 当前14ms 
+2025-09-05 15:14:35,173 [DEBUG] [thread-4] IO同步性能: 平均12.69ms, 当前11ms 
+2025-09-05 15:14:37,730 [DEBUG] [thread-4] IO同步性能: 平均12.67ms, 当前14ms 
+2025-09-05 15:14:40,284 [DEBUG] [thread-4] IO同步性能: 平均12.63ms, 当前10ms 
+2025-09-05 15:14:42,717 [DEBUG] [thread-4] IO同步性能: 平均12.45ms, 当前13ms 
+2025-09-05 15:14:45,114 [DEBUG] [thread-4] IO同步性能: 平均12.27ms, 当前10ms 
+2025-09-05 15:14:47,590 [DEBUG] [thread-4] IO同步性能: 平均12.22ms, 当前11ms 
+2025-09-05 15:14:50,060 [DEBUG] [thread-4] IO同步性能: 平均12.16ms, 当前9ms 
+2025-09-05 15:14:52,467 [DEBUG] [thread-4] IO同步性能: 平均12.06ms, 当前17ms 
+2025-09-05 15:14:55,042 [DEBUG] [thread-4] IO同步性能: 平均12.12ms, 当前9ms 
+2025-09-05 15:14:57,571 [DEBUG] [thread-4] IO同步性能: 平均12.14ms, 当前11ms 
+2025-09-05 15:15:00,174 [DEBUG] [thread-4] IO同步性能: 平均12.20ms, 当前13ms 
+2025-09-05 15:15:02,719 [DEBUG] [thread-4] IO同步性能: 平均12.22ms, 当前9ms 
+2025-09-05 15:15:05,268 [DEBUG] [thread-4] IO同步性能: 平均12.24ms, 当前14ms 
+2025-09-05 15:15:07,766 [DEBUG] [thread-4] IO同步性能: 平均12.22ms, 当前10ms 
+2025-09-05 15:15:10,281 [DEBUG] [thread-4] IO同步性能: 平均12.22ms, 当前10ms 
+2025-09-05 15:15:12,819 [DEBUG] [thread-4] IO同步性能: 平均12.23ms, 当前8ms 
+2025-09-05 15:15:15,394 [DEBUG] [thread-4] IO同步性能: 平均12.25ms, 当前10ms 
+2025-09-05 15:15:17,384 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:142] [PLC] Address: 127.0.0.1:6000, Operation: Disconnect, Data: Disconnected successfully, Status: SUCCESS 
+2025-09-05 15:15:17,384 [INFO ] [thread-1] Disconnected from MC_PLC 
+2025-09-05 15:32:44,536 [INFO ] [thread-1] Loaded mapping configuration from Config\io_mapping.json 
+2025-09-05 15:32:44,537 [INFO ] [thread-1] Input mappings: 64, Output mappings: 64 
+2025-09-05 15:32:44,583 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:120] [PLC] Address: 127.0.0.1:6000, Operation: Connect, Data: Connected successfully, Status: SUCCESS 
+2025-09-05 15:32:44,584 [INFO ] [thread-1] Connected to MC_PLC: 127.0.0.1:6000 
+2025-09-05 15:32:47,723 [DEBUG] [thread-4] IO同步性能: 平均13.11ms, 当前19ms 
+2025-09-05 15:32:50,327 [DEBUG] [thread-4] IO同步性能: 平均13.08ms, 当前10ms 
+2025-09-05 15:32:52,872 [DEBUG] [thread-4] IO同步性能: 平均12.89ms, 当前11ms 
+2025-09-05 15:32:55,329 [DEBUG] [thread-4] IO同步性能: 平均12.56ms, 当前10ms 
+2025-09-05 15:32:57,804 [DEBUG] [thread-4] IO同步性能: 平均12.40ms, 当前11ms 
+2025-09-05 15:33:00,333 [DEBUG] [thread-4] IO同步性能: 平均12.38ms, 当前11ms 
+2025-09-05 15:33:02,895 [DEBUG] [thread-4] IO同步性能: 平均12.41ms, 当前11ms 
+2025-09-05 15:33:03,358 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:142] [PLC] Address: 127.0.0.1:6000, Operation: Disconnect, Data: Disconnected successfully, Status: SUCCESS 
+2025-09-05 15:33:03,359 [INFO ] [thread-1] Disconnected from MC_PLC 
+2025-09-05 15:43:09,916 [INFO ] [thread-1] Loaded mapping configuration from Config\io_mapping.json 
+2025-09-05 15:43:09,916 [INFO ] [thread-1] Input mappings: 64, Output mappings: 64 
+2025-09-05 15:43:09,962 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:120] [PLC] Address: 127.0.0.1:6000, Operation: Connect, Data: Connected successfully, Status: SUCCESS 
+2025-09-05 15:43:09,962 [INFO ] [thread-1] Connected to MC_PLC: 127.0.0.1:6000 
+2025-09-05 15:43:13,010 [DEBUG] [thread-4] IO同步性能: 平均13.21ms, 当前11ms 
+2025-09-05 15:43:15,546 [DEBUG] [thread-4] IO同步性能: 平均12.76ms, 当前13ms 
+2025-09-05 15:43:17,958 [DEBUG] [thread-4] IO同步性能: 平均12.20ms, 当前12ms 
+2025-09-05 15:43:20,447 [DEBUG] [thread-4] IO同步性能: 平均12.14ms, 当前10ms 
+2025-09-05 15:43:23,019 [DEBUG] [thread-4] IO同步性能: 平均12.23ms, 当前12ms 
+2025-09-05 15:43:25,630 [DEBUG] [thread-4] IO同步性能: 平均12.37ms, 当前14ms 
+2025-09-05 15:43:28,176 [DEBUG] [thread-4] IO同步性能: 平均12.39ms, 当前14ms 
+2025-09-05 15:43:30,722 [DEBUG] [thread-4] IO同步性能: 平均12.39ms, 当前12ms 
+2025-09-05 15:43:33,196 [DEBUG] [thread-4] IO同步性能: 平均12.33ms, 当前12ms 
+2025-09-05 15:43:35,708 [DEBUG] [thread-4] IO同步性能: 平均12.33ms, 当前17ms 
+2025-09-05 15:43:38,301 [DEBUG] [thread-4] IO同步性能: 平均12.38ms, 当前13ms 
+2025-09-05 15:43:40,861 [DEBUG] [thread-4] IO同步性能: 平均12.40ms, 当前15ms 
+2025-09-05 15:43:43,419 [DEBUG] [thread-4] IO同步性能: 平均12.42ms, 当前11ms 
+2025-09-05 15:43:45,952 [DEBUG] [thread-4] IO同步性能: 平均12.41ms, 当前12ms 
+2025-09-05 15:43:48,497 [DEBUG] [thread-4] IO同步性能: 平均12.41ms, 当前12ms 
+2025-09-05 15:43:51,031 [DEBUG] [thread-4] IO同步性能: 平均12.41ms, 当前11ms 
+2025-09-05 15:43:53,526 [DEBUG] [thread-4] IO同步性能: 平均12.38ms, 当前11ms 
+2025-09-05 15:43:55,963 [DEBUG] [thread-4] IO同步性能: 平均12.32ms, 当前11ms 
+2025-09-05 15:43:58,504 [DEBUG] [thread-4] IO同步性能: 平均12.32ms, 当前14ms 
+2025-09-05 15:44:00,979 [DEBUG] [thread-4] IO同步性能: 平均12.29ms, 当前11ms 
+2025-09-05 15:44:03,515 [DEBUG] [thread-4] IO同步性能: 平均12.30ms, 当前15ms 
+2025-09-05 15:44:06,081 [DEBUG] [thread-4] IO同步性能: 平均12.32ms, 当前12ms 
+2025-09-05 15:44:08,630 [DEBUG] [thread-4] IO同步性能: 平均12.33ms, 当前12ms 
+2025-09-05 15:44:11,142 [DEBUG] [thread-4] IO同步性能: 平均12.32ms, 当前11ms 
+2025-09-05 15:44:13,689 [DEBUG] [thread-4] IO同步性能: 平均12.32ms, 当前14ms 
+2025-09-05 15:44:16,227 [DEBUG] [thread-4] IO同步性能: 平均12.32ms, 当前11ms 
+2025-09-05 15:44:18,777 [DEBUG] [thread-4] IO同步性能: 平均12.33ms, 当前10ms 
+2025-09-05 15:44:21,254 [DEBUG] [thread-4] IO同步性能: 平均12.31ms, 当前10ms 
+2025-09-05 15:44:23,759 [DEBUG] [thread-4] IO同步性能: 平均12.30ms, 当前10ms 
+2025-09-05 15:44:26,278 [DEBUG] [thread-4] IO同步性能: 平均12.30ms, 当前12ms 
+2025-09-05 15:44:28,769 [DEBUG] [thread-4] IO同步性能: 平均12.28ms, 当前12ms 
+2025-09-05 15:44:28,865 [WARN ] [thread-4] [IOLibrary.Hardware.Mitsubishi.MCPlc:246] [PLC] Address: Y0, Operation: WriteOutput, Data: PLC error: Get Tcp Connnection Failed, Status: FAILED 
+2025-09-05 15:44:28,868 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:142] [PLC] Address: 127.0.0.1:6000, Operation: Disconnect, Data: Disconnected successfully, Status: SUCCESS 
+2025-09-05 15:44:28,868 [INFO ] [thread-1] Disconnected from MC_PLC 
+2025-09-05 15:47:28,684 [INFO ] [thread-1] Loaded mapping configuration from Config\io_mapping.json 
+2025-09-05 15:47:28,685 [INFO ] [thread-1] Input mappings: 64, Output mappings: 64 
+2025-09-05 15:47:28,726 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:120] [PLC] Address: 127.0.0.1:6000, Operation: Connect, Data: Connected successfully, Status: SUCCESS 
+2025-09-05 15:47:28,726 [INFO ] [thread-1] Connected to MC_PLC: 127.0.0.1:6000 
+2025-09-05 15:47:31,774 [DEBUG] [thread-4] IO同步性能: 平均12.74ms, 当前15ms 
+2025-09-05 15:47:32,602 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:142] [PLC] Address: 127.0.0.1:6000, Operation: Disconnect, Data: Disconnected successfully, Status: SUCCESS 
+2025-09-05 15:47:32,603 [INFO ] [thread-1] Disconnected from MC_PLC 
+2025-09-05 15:47:49,983 [INFO ] [thread-1] Loaded mapping configuration from Config\io_mapping.json 
+2025-09-05 15:47:49,983 [INFO ] [thread-1] Input mappings: 64, Output mappings: 64 
+2025-09-05 15:47:50,018 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:120] [PLC] Address: 127.0.0.1:6000, Operation: Connect, Data: Connected successfully, Status: SUCCESS 
+2025-09-05 15:47:50,019 [INFO ] [thread-1] Connected to MC_PLC: 127.0.0.1:6000 
+2025-09-05 15:47:53,089 [DEBUG] [thread-4] IO同步性能: 平均13.45ms, 当前13ms 
+2025-09-05 15:47:56,501 [DEBUG] [thread-4] IO同步性能: 平均13.17ms, 当前13ms 
+2025-09-05 15:48:01,118 [DEBUG] [thread-4] IO同步性能: 平均12.67ms, 当前11ms 
+2025-09-05 15:48:05,717 [DEBUG] [thread-4] IO同步性能: 平均12.08ms, 当前8ms 
+2025-09-05 15:48:09,787 [DEBUG] [thread-4] IO同步性能: 平均11.86ms, 当前13ms 
+2025-09-05 15:48:12,385 [DEBUG] [thread-4] IO同步性能: 平均12.05ms, 当前13ms 
+2025-09-05 15:48:14,878 [DEBUG] [thread-4] IO同步性能: 平均12.04ms, 当前14ms 
+2025-09-05 15:48:17,412 [DEBUG] [thread-4] IO同步性能: 平均12.08ms, 当前13ms 
+2025-09-05 15:48:19,835 [DEBUG] [thread-4] IO同步性能: 平均11.99ms, 当前12ms 
+2025-09-05 15:48:22,284 [DEBUG] [thread-4] IO同步性能: 平均11.94ms, 当前7ms 
+2025-09-05 15:48:24,764 [DEBUG] [thread-4] IO同步性能: 平均11.93ms, 当前15ms 
+2025-09-05 15:48:27,159 [DEBUG] [thread-4] IO同步性能: 平均11.85ms, 当前13ms 
+2025-09-05 15:48:29,599 [DEBUG] [thread-4] IO同步性能: 平均11.81ms, 当前8ms 
+2025-09-05 15:48:32,195 [DEBUG] [thread-4] IO同步性能: 平均11.90ms, 当前9ms 
+2025-09-05 15:48:34,758 [DEBUG] [thread-4] IO同步性能: 平均11.95ms, 当前14ms 
+2025-09-05 15:48:37,328 [DEBUG] [thread-4] IO同步性能: 平均12.00ms, 当前14ms 
+2025-09-05 15:48:39,846 [DEBUG] [thread-4] IO同步性能: 平均12.01ms, 当前15ms 
+2025-09-05 15:48:42,989 [DEBUG] [thread-4] IO同步性能: 平均12.02ms, 当前14ms 
+2025-09-05 15:48:47,585 [DEBUG] [thread-4] IO同步性能: 平均12.03ms, 当前13ms 
+2025-09-05 15:48:52,179 [DEBUG] [thread-4] IO同步性能: 平均12.04ms, 当前9ms 
+2025-09-05 15:48:56,805 [DEBUG] [thread-4] IO同步性能: 平均12.11ms, 当前20ms 
+2025-09-05 15:49:01,400 [DEBUG] [thread-4] IO同步性能: 平均12.15ms, 当前11ms 
+2025-09-05 15:49:05,992 [DEBUG] [thread-4] IO同步性能: 平均12.19ms, 当前13ms 
+2025-09-05 15:49:10,583 [DEBUG] [thread-4] IO同步性能: 平均12.22ms, 当前9ms 
+2025-09-05 15:49:14,344 [DEBUG] [thread-4] IO同步性能: 平均12.25ms, 当前15ms 
+2025-09-05 15:49:16,881 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:142] [PLC] Address: 127.0.0.1:6000, Operation: Disconnect, Data: Disconnected successfully, Status: SUCCESS 
+2025-09-05 15:49:16,886 [INFO ] [thread-1] Disconnected from MC_PLC 
+2025-09-05 15:51:35,824 [INFO ] [thread-1] Loaded mapping configuration from Config\io_mapping.json 
+2025-09-05 15:51:35,825 [INFO ] [thread-1] Input mappings: 64, Output mappings: 64 
+2025-09-05 15:51:35,872 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:120] [PLC] Address: 127.0.0.1:6000, Operation: Connect, Data: Connected successfully, Status: SUCCESS 
+2025-09-05 15:51:35,873 [INFO ] [thread-1] Connected to MC_PLC: 127.0.0.1:6000 
+2025-09-05 15:51:38,880 [DEBUG] [thread-4] IO同步性能: 平均13.46ms, 当前15ms 
+2025-09-05 15:51:41,243 [DEBUG] [thread-4] IO同步性能: 平均12.05ms, 当前9ms 
+2025-09-05 15:51:43,599 [DEBUG] [thread-4] IO同步性能: 平均11.56ms, 当前8ms 
+2025-09-05 15:51:45,774 [DEBUG] [thread-4] IO同步性能: 平均10.87ms, 当前8ms 
+2025-09-05 15:51:47,970 [DEBUG] [thread-4] IO同步性能: 平均10.46ms, 当前7ms 
+2025-09-05 15:51:50,300 [DEBUG] [thread-4] IO同步性能: 平均10.43ms, 当前10ms 
+2025-09-05 15:51:52,709 [DEBUG] [thread-4] IO同步性能: 平均10.51ms, 当前17ms 
+2025-09-05 15:51:54,918 [DEBUG] [thread-4] IO同步性能: 平均10.34ms, 当前8ms 
+2025-09-05 15:51:57,216 [DEBUG] [thread-4] IO同步性能: 平均10.30ms, 当前8ms 
+2025-09-05 15:51:59,696 [DEBUG] [thread-4] IO同步性能: 平均10.34ms, 当前13ms 
+2025-09-05 15:52:04,279 [DEBUG] [thread-4] IO同步性能: 平均10.36ms, 当前8ms 
+2025-09-05 15:52:05,003 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:142] [PLC] Address: 127.0.0.1:6000, Operation: Disconnect, Data: Disconnected successfully, Status: SUCCESS 
+2025-09-05 15:52:05,004 [INFO ] [thread-1] Disconnected from MC_PLC 
+2025-09-05 15:52:12,316 [INFO ] [thread-1] Loaded mapping configuration from Config\io_mapping.json 
+2025-09-05 15:52:12,317 [INFO ] [thread-1] Input mappings: 64, Output mappings: 64 
+2025-09-05 15:52:12,357 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:120] [PLC] Address: 127.0.0.1:6000, Operation: Connect, Data: Connected successfully, Status: SUCCESS 
+2025-09-05 15:52:12,357 [INFO ] [thread-1] Connected to MC_PLC: 127.0.0.1:6000 
+2025-09-05 15:52:15,375 [DEBUG] [thread-4] IO同步性能: 平均13.10ms, 当前10ms 
+2025-09-05 15:52:17,872 [DEBUG] [thread-4] IO同步性能: 平均12.52ms, 当前10ms 
+2025-09-05 15:52:20,334 [DEBUG] [thread-4] IO同步性能: 平均12.22ms, 当前13ms 
+2025-09-05 15:52:22,839 [DEBUG] [thread-4] IO同步性能: 平均12.16ms, 当前11ms 
+2025-09-05 15:52:25,391 [DEBUG] [thread-4] IO同步性能: 平均12.25ms, 当前13ms 
+2025-09-05 15:52:27,954 [DEBUG] [thread-4] IO同步性能: 平均12.30ms, 当前12ms 
+2025-09-05 15:52:30,225 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:142] [PLC] Address: 127.0.0.1:6000, Operation: Disconnect, Data: Disconnected successfully, Status: SUCCESS 
+2025-09-05 15:52:30,225 [INFO ] [thread-1] Disconnected from MC_PLC 
+2025-09-05 15:57:36,426 [INFO ] [thread-1] Loaded mapping configuration from Config\io_mapping.json 
+2025-09-05 15:57:36,426 [INFO ] [thread-1] Input mappings: 64, Output mappings: 64 
+2025-09-05 15:57:36,466 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:120] [PLC] Address: 127.0.0.1:6000, Operation: Connect, Data: Connected successfully, Status: SUCCESS 
+2025-09-05 15:57:36,466 [INFO ] [thread-1] Connected to MC_PLC: 127.0.0.1:6000 
+2025-09-05 15:57:39,496 [DEBUG] [thread-4] IO同步性能: 平均12.97ms, 当前11ms 
+2025-09-05 15:57:42,054 [DEBUG] [thread-4] IO同步性能: 平均12.80ms, 当前11ms 
+2025-09-05 15:57:44,574 [DEBUG] [thread-4] IO同步性能: 平均12.58ms, 当前10ms 
+2025-09-05 15:57:47,115 [DEBUG] [thread-4] IO同步性能: 平均12.52ms, 当前12ms 
+2025-09-05 15:57:49,632 [DEBUG] [thread-4] IO同步性能: 平均12.43ms, 当前13ms 
+2025-09-05 15:57:52,117 [DEBUG] [thread-4] IO同步性能: 平均12.34ms, 当前12ms 
+2025-09-05 15:57:54,658 [DEBUG] [thread-4] IO同步性能: 平均12.36ms, 当前15ms 
+2025-09-05 15:57:57,060 [DEBUG] [thread-4] IO同步性能: 平均12.19ms, 当前8ms 
+2025-09-05 15:57:59,508 [DEBUG] [thread-4] IO同步性能: 平均12.12ms, 当前12ms 
+2025-09-05 15:58:02,021 [DEBUG] [thread-4] IO同步性能: 平均12.12ms, 当前15ms 
+2025-09-05 15:58:04,641 [DEBUG] [thread-4] IO同步性能: 平均12.22ms, 当前13ms 
+2025-09-05 15:58:07,082 [DEBUG] [thread-4] IO同步性能: 平均12.15ms, 当前11ms 
+2025-09-05 15:58:09,561 [DEBUG] [thread-4] IO同步性能: 平均12.12ms, 当前12ms 
+2025-09-05 15:58:12,103 [DEBUG] [thread-4] IO同步性能: 平均12.15ms, 当前14ms 
+2025-09-05 15:58:14,614 [DEBUG] [thread-4] IO同步性能: 平均12.15ms, 当前12ms 
+2025-09-05 15:58:17,106 [DEBUG] [thread-4] IO同步性能: 平均12.13ms, 当前13ms 
+2025-09-05 15:58:19,578 [DEBUG] [thread-4] IO同步性能: 平均12.11ms, 当前10ms 
+2025-09-05 15:58:21,978 [DEBUG] [thread-4] IO同步性能: 平均12.06ms, 当前11ms 
+2025-09-05 15:58:24,542 [DEBUG] [thread-4] IO同步性能: 平均12.09ms, 当前14ms 
+2025-09-05 15:58:27,048 [DEBUG] [thread-4] IO同步性能: 平均12.09ms, 当前15ms 
+2025-09-05 15:58:29,581 [DEBUG] [thread-4] IO同步性能: 平均12.10ms, 当前11ms 
+2025-09-05 15:58:32,099 [DEBUG] [thread-4] IO同步性能: 平均12.10ms, 当前10ms 
+2025-09-05 15:58:34,540 [DEBUG] [thread-4] IO同步性能: 平均12.08ms, 当前12ms 
+2025-09-05 15:58:37,067 [DEBUG] [thread-4] IO同步性能: 平均12.09ms, 当前12ms 
+2025-09-05 15:58:39,660 [DEBUG] [thread-4] IO同步性能: 平均12.12ms, 当前11ms 
+2025-09-05 15:58:42,160 [DEBUG] [thread-4] IO同步性能: 平均12.12ms, 当前9ms 
+2025-09-05 15:58:44,720 [DEBUG] [thread-4] IO同步性能: 平均12.13ms, 当前12ms 
+2025-09-05 15:58:47,251 [DEBUG] [thread-4] IO同步性能: 平均12.14ms, 当前11ms 
+2025-09-05 15:58:49,762 [DEBUG] [thread-4] IO同步性能: 平均12.14ms, 当前12ms 
+2025-09-05 15:58:52,271 [DEBUG] [thread-4] IO同步性能: 平均12.14ms, 当前18ms 
+2025-09-05 15:58:54,724 [DEBUG] [thread-4] IO同步性能: 平均12.12ms, 当前15ms 
+2025-09-05 15:58:57,245 [DEBUG] [thread-4] IO同步性能: 平均12.13ms, 当前13ms 
+2025-09-05 15:58:59,705 [DEBUG] [thread-4] IO同步性能: 平均12.11ms, 当前8ms 
+2025-09-05 15:59:02,276 [DEBUG] [thread-4] IO同步性能: 平均12.13ms, 当前19ms 
+2025-09-05 15:59:04,860 [DEBUG] [thread-4] IO同步性能: 平均12.15ms, 当前15ms 
+2025-09-05 15:59:07,499 [DEBUG] [thread-4] IO同步性能: 平均12.19ms, 当前15ms 
+2025-09-05 15:59:09,982 [DEBUG] [thread-4] IO同步性能: 平均12.17ms, 当前9ms 
+2025-09-05 15:59:12,446 [DEBUG] [thread-4] IO同步性能: 平均12.16ms, 当前16ms 
+2025-09-05 15:59:15,001 [DEBUG] [thread-4] IO同步性能: 平均12.18ms, 当前13ms 
+2025-09-05 15:59:17,505 [DEBUG] [thread-4] IO同步性能: 平均12.17ms, 当前14ms 
+2025-09-05 15:59:19,956 [DEBUG] [thread-4] IO同步性能: 平均12.16ms, 当前13ms 
+2025-09-05 15:59:22,447 [DEBUG] [thread-4] IO同步性能: 平均12.15ms, 当前13ms 
+2025-09-05 15:59:24,958 [DEBUG] [thread-4] IO同步性能: 平均12.15ms, 当前13ms 
+2025-09-05 15:59:27,534 [DEBUG] [thread-4] IO同步性能: 平均12.17ms, 当前10ms 
+2025-09-05 15:59:30,011 [DEBUG] [thread-4] IO同步性能: 平均12.16ms, 当前10ms 
+2025-09-05 15:59:32,520 [DEBUG] [thread-4] IO同步性能: 平均12.16ms, 当前12ms 
+2025-09-05 15:59:34,975 [DEBUG] [thread-4] IO同步性能: 平均12.15ms, 当前13ms 
+2025-09-05 15:59:37,425 [DEBUG] [thread-4] IO同步性能: 平均12.13ms, 当前11ms 
+2025-09-05 15:59:39,944 [DEBUG] [thread-4] IO同步性能: 平均12.14ms, 当前9ms 
+2025-09-05 15:59:42,414 [DEBUG] [thread-4] IO同步性能: 平均12.13ms, 当前12ms 
+2025-09-05 15:59:44,917 [DEBUG] [thread-4] IO同步性能: 平均12.13ms, 当前13ms 
+2025-09-05 15:59:47,405 [DEBUG] [thread-4] IO同步性能: 平均12.12ms, 当前9ms 
+2025-09-05 15:59:49,897 [DEBUG] [thread-4] IO同步性能: 平均12.12ms, 当前15ms 
+2025-09-05 15:59:52,450 [DEBUG] [thread-4] IO同步性能: 平均12.13ms, 当前13ms 
+2025-09-05 15:59:54,883 [DEBUG] [thread-4] IO同步性能: 平均12.11ms, 当前15ms 
+2025-09-05 15:59:57,362 [DEBUG] [thread-4] IO同步性能: 平均12.11ms, 当前13ms 
+2025-09-05 15:59:59,884 [DEBUG] [thread-4] IO同步性能: 平均12.11ms, 当前15ms 
+2025-09-05 16:00:02,359 [DEBUG] [thread-4] IO同步性能: 平均12.10ms, 当前15ms 
+2025-09-05 16:00:04,799 [DEBUG] [thread-4] IO同步性能: 平均12.09ms, 当前9ms 
+2025-09-05 16:00:07,312 [DEBUG] [thread-4] IO同步性能: 平均12.09ms, 当前10ms 
+2025-09-05 16:00:09,792 [DEBUG] [thread-4] IO同步性能: 平均12.09ms, 当前9ms 
+2025-09-05 16:00:12,200 [DEBUG] [thread-4] IO同步性能: 平均12.07ms, 当前15ms 
+2025-09-05 16:00:14,672 [DEBUG] [thread-4] IO同步性能: 平均12.06ms, 当前16ms 
+2025-09-05 16:00:17,201 [DEBUG] [thread-4] IO同步性能: 平均12.07ms, 当前14ms 
+2025-09-05 16:00:19,713 [DEBUG] [thread-4] IO同步性能: 平均12.07ms, 当前10ms 
+2025-09-05 16:00:22,198 [DEBUG] [thread-4] IO同步性能: 平均12.06ms, 当前12ms 
+2025-09-05 16:00:24,802 [DEBUG] [thread-4] IO同步性能: 平均12.08ms, 当前10ms 
+2025-09-05 16:00:27,266 [DEBUG] [thread-4] IO同步性能: 平均12.07ms, 当前9ms 
+2025-09-05 16:00:29,695 [DEBUG] [thread-4] IO同步性能: 平均12.06ms, 当前13ms 
+2025-09-05 16:00:32,172 [DEBUG] [thread-4] IO同步性能: 平均12.06ms, 当前11ms 
+2025-09-05 16:00:34,661 [DEBUG] [thread-4] IO同步性能: 平均12.06ms, 当前14ms 
+2025-09-05 16:00:37,103 [DEBUG] [thread-4] IO同步性能: 平均12.05ms, 当前11ms 
+2025-09-05 16:00:39,649 [DEBUG] [thread-4] IO同步性能: 平均12.05ms, 当前12ms 
+2025-09-05 16:00:42,115 [DEBUG] [thread-4] IO同步性能: 平均12.05ms, 当前13ms 
+2025-09-05 16:00:44,546 [DEBUG] [thread-4] IO同步性能: 平均12.04ms, 当前7ms 
+2025-09-05 16:00:47,031 [DEBUG] [thread-4] IO同步性能: 平均12.04ms, 当前13ms 
+2025-09-05 16:00:49,537 [DEBUG] [thread-4] IO同步性能: 平均12.04ms, 当前9ms 
+2025-09-05 16:00:50,483 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:142] [PLC] Address: 127.0.0.1:6000, Operation: Disconnect, Data: Disconnected successfully, Status: SUCCESS 
+2025-09-05 16:00:50,484 [INFO ] [thread-1] Disconnected from MC_PLC 
+2025-09-05 16:09:16,569 [INFO ] [thread-1] Loaded mapping configuration from Config\io_mapping.json 
+2025-09-05 16:09:16,569 [INFO ] [thread-1] Input mappings: 64, Output mappings: 64 
+2025-09-05 16:09:16,611 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:120] [PLC] Address: 127.0.0.1:6000, Operation: Connect, Data: Connected successfully, Status: SUCCESS 
+2025-09-05 16:09:16,612 [INFO ] [thread-1] Connected to MC_PLC: 127.0.0.1:6000 
+2025-09-05 16:09:19,735 [DEBUG] [thread-4] IO同步性能: 平均13.67ms, 当前14ms 
+2025-09-05 16:09:20,654 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:142] [PLC] Address: 127.0.0.1:6000, Operation: Disconnect, Data: Disconnected successfully, Status: SUCCESS 
+2025-09-05 16:09:20,654 [INFO ] [thread-1] Disconnected from MC_PLC 
+2025-09-05 16:13:41,630 [INFO ] [thread-1] Loaded mapping configuration from Config\io_mapping.json 
+2025-09-05 16:13:41,630 [INFO ] [thread-1] Input mappings: 64, Output mappings: 64 
+2025-09-05 16:13:41,670 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:120] [PLC] Address: 127.0.0.1:6000, Operation: Connect, Data: Connected successfully, Status: SUCCESS 
+2025-09-05 16:13:41,670 [INFO ] [thread-1] Connected to MC_PLC: 127.0.0.1:6000 
+2025-09-05 16:13:44,624 [DEBUG] [thread-4] IO同步性能: 平均12.18ms, 当前15ms 
+2025-09-05 16:13:47,183 [DEBUG] [thread-4] IO同步性能: 平均12.41ms, 当前14ms 
+2025-09-05 16:13:49,637 [DEBUG] [thread-4] IO同步性能: 平均12.12ms, 当前12ms 
+2025-09-05 16:13:52,142 [DEBUG] [thread-4] IO同步性能: 平均12.11ms, 当前13ms 
+2025-09-05 16:13:54,530 [DEBUG] [thread-4] IO同步性能: 平均11.88ms, 当前11ms 
+2025-09-05 16:13:57,020 [DEBUG] [thread-4] IO同步性能: 平均11.90ms, 当前11ms 
+2025-09-05 16:13:59,394 [DEBUG] [thread-4] IO同步性能: 平均11.74ms, 当前8ms 
+2025-09-05 16:14:01,767 [DEBUG] [thread-4] IO同步性能: 平均11.62ms, 当前9ms 
+2025-09-05 16:14:04,292 [DEBUG] [thread-4] IO同步性能: 平均11.69ms, 当前13ms 
+2025-09-05 16:14:06,867 [DEBUG] [thread-4] IO同步性能: 平均11.79ms, 当前12ms 
+2025-09-05 16:14:09,343 [DEBUG] [thread-4] IO同步性能: 平均11.79ms, 当前12ms 
+2025-09-05 16:14:11,798 [DEBUG] [thread-4] IO同步性能: 平均11.78ms, 当前12ms 
+2025-09-05 16:14:13,545 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:142] [PLC] Address: 127.0.0.1:6000, Operation: Disconnect, Data: Disconnected successfully, Status: SUCCESS 
+2025-09-05 16:14:13,545 [INFO ] [thread-1] Disconnected from MC_PLC 
+2025-09-05 16:20:22,956 [INFO ] [thread-1] Loaded mapping configuration from Config\io_mapping.json 
+2025-09-05 16:20:22,956 [INFO ] [thread-1] Input mappings: 64, Output mappings: 64 
+2025-09-05 16:20:22,999 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:120] [PLC] Address: 127.0.0.1:6000, Operation: Connect, Data: Connected successfully, Status: SUCCESS 
+2025-09-05 16:20:22,999 [INFO ] [thread-1] Connected to MC_PLC: 127.0.0.1:6000 
+2025-09-05 16:20:25,996 [DEBUG] [thread-4] IO同步性能: 平均12.69ms, 当前14ms 
+2025-09-05 16:20:28,554 [DEBUG] [thread-4] IO同步性能: 平均12.63ms, 当前15ms 
+2025-09-05 16:20:31,049 [DEBUG] [thread-4] IO同步性能: 平均12.40ms, 当前14ms 
+2025-09-05 16:20:33,499 [DEBUG] [thread-4] IO同步性能: 平均12.19ms, 当前11ms 
+2025-09-05 16:20:35,835 [DEBUG] [thread-4] IO同步性能: 平均11.84ms, 当前9ms 
+2025-09-05 16:20:38,367 [DEBUG] [thread-4] IO同步性能: 平均11.93ms, 当前8ms 
+2025-09-05 16:20:40,985 [DEBUG] [thread-4] IO同步性能: 平均12.11ms, 当前10ms 
+2025-09-05 16:20:43,389 [DEBUG] [thread-4] IO同步性能: 平均11.97ms, 当前10ms 
+2025-09-05 16:20:45,845 [DEBUG] [thread-4] IO同步性能: 平均11.92ms, 当前14ms 
+2025-09-05 16:20:48,277 [DEBUG] [thread-4] IO同步性能: 平均11.86ms, 当前9ms 
+2025-09-05 16:20:50,649 [DEBUG] [thread-4] IO同步性能: 平均11.75ms, 当前11ms 
+2025-09-05 16:20:53,171 [DEBUG] [thread-4] IO同步性能: 平均11.79ms, 当前11ms 
+2025-09-05 16:20:55,666 [DEBUG] [thread-4] IO同步性能: 平均11.81ms, 当前12ms 
+2025-09-05 16:20:56,511 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:142] [PLC] Address: 127.0.0.1:6000, Operation: Disconnect, Data: Disconnected successfully, Status: SUCCESS 
+2025-09-05 16:20:56,512 [INFO ] [thread-1] Disconnected from MC_PLC 
+2025-09-05 16:36:01,516 [INFO ] [thread-1] Loaded mapping configuration from Config\io_mapping.json 
+2025-09-05 16:36:01,517 [INFO ] [thread-1] Input mappings: 64, Output mappings: 64 
+2025-09-05 16:36:01,556 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:120] [PLC] Address: 127.0.0.1:6000, Operation: Connect, Data: Connected successfully, Status: SUCCESS 
+2025-09-05 16:36:01,556 [INFO ] [thread-1] Connected to MC_PLC: 127.0.0.1:6000 
+2025-09-05 16:36:04,628 [DEBUG] [thread-4] IO同步性能: 平均13.17ms, 当前16ms 
+2025-09-05 16:36:07,158 [DEBUG] [thread-4] IO同步性能: 平均12.75ms, 当前12ms 
+2025-09-05 16:36:09,645 [DEBUG] [thread-4] IO同步性能: 平均12.45ms, 当前8ms 
+2025-09-05 16:36:12,208 [DEBUG] [thread-4] IO同步性能: 平均12.50ms, 当前11ms 
+2025-09-05 16:36:14,694 [DEBUG] [thread-4] IO同步性能: 平均12.35ms, 当前13ms 
+2025-09-05 16:36:17,153 [DEBUG] [thread-4] IO同步性能: 平均12.24ms, 当前13ms 
+2025-09-05 16:36:19,685 [DEBUG] [thread-4] IO同步性能: 平均12.25ms, 当前14ms 
+2025-09-05 16:36:22,094 [DEBUG] [thread-4] IO同步性能: 平均12.11ms, 当前11ms 
+2025-09-05 16:36:24,594 [DEBUG] [thread-4] IO同步性能: 平均12.09ms, 当前11ms 
+2025-09-05 16:36:27,029 [DEBUG] [thread-4] IO同步性能: 平均12.02ms, 当前14ms 
+2025-09-05 16:36:29,587 [DEBUG] [thread-4] IO同步性能: 平均12.06ms, 当前13ms 
+2025-09-05 16:36:32,191 [DEBUG] [thread-4] IO同步性能: 平均12.14ms, 当前16ms 
+2025-09-05 16:36:34,728 [DEBUG] [thread-4] IO同步性能: 平均12.16ms, 当前15ms 
+2025-09-05 16:36:37,305 [DEBUG] [thread-4] IO同步性能: 平均12.21ms, 当前15ms 
+2025-09-05 16:36:39,801 [DEBUG] [thread-4] IO同步性能: 平均12.19ms, 当前13ms 
+2025-09-05 16:36:42,206 [DEBUG] [thread-4] IO同步性能: 平均12.12ms, 当前12ms 
+2025-09-05 16:36:44,656 [DEBUG] [thread-4] IO同步性能: 平均12.08ms, 当前14ms 
+2025-09-05 16:36:47,129 [DEBUG] [thread-4] IO同步性能: 平均12.06ms, 当前13ms 
+2025-09-05 16:36:49,524 [DEBUG] [thread-4] IO同步性能: 平均12.00ms, 当前9ms 
+2025-09-05 16:36:51,939 [DEBUG] [thread-4] IO同步性能: 平均11.96ms, 当前13ms 
+2025-09-05 16:36:54,368 [DEBUG] [thread-4] IO同步性能: 平均11.92ms, 当前9ms 
+2025-09-05 16:36:56,858 [DEBUG] [thread-4] IO同步性能: 平均11.92ms, 当前8ms 
+2025-09-05 16:36:56,940 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:142] [PLC] Address: 127.0.0.1:6000, Operation: Disconnect, Data: Disconnected successfully, Status: SUCCESS 
+2025-09-05 16:36:56,940 [INFO ] [thread-1] Disconnected from MC_PLC 
+2025-09-05 17:03:10,548 [INFO ] [thread-1] Loaded mapping configuration from Config\io_mapping.json 
+2025-09-05 17:03:10,549 [INFO ] [thread-1] Input mappings: 64, Output mappings: 64 
+2025-09-05 17:03:10,597 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:120] [PLC] Address: 127.0.0.1:6000, Operation: Connect, Data: Connected successfully, Status: SUCCESS 
+2025-09-05 17:03:10,597 [INFO ] [thread-1] Connected to MC_PLC: 127.0.0.1:6000 
+2025-09-05 17:03:13,670 [DEBUG] [thread-4] IO同步性能: 平均13.52ms, 当前9ms 
+2025-09-05 17:03:16,200 [DEBUG] [thread-4] IO同步性能: 平均12.93ms, 当前15ms 
+2025-09-05 17:03:18,742 [DEBUG] [thread-4] IO同步性能: 平均12.75ms, 当前13ms 
+2025-09-05 17:03:21,231 [DEBUG] [thread-4] IO同步性能: 平均12.54ms, 当前9ms 
+2025-09-05 17:03:23,722 [DEBUG] [thread-4] IO同步性能: 平均12.41ms, 当前13ms 
+2025-09-05 17:03:26,234 [DEBUG] [thread-4] IO同步性能: 平均12.37ms, 当前12ms 
+2025-09-05 17:03:28,706 [DEBUG] [thread-4] IO同步性能: 平均12.28ms, 当前13ms 
+2025-09-05 17:03:31,177 [DEBUG] [thread-4] IO同步性能: 平均12.20ms, 当前12ms 
+2025-09-05 17:03:33,545 [DEBUG] [thread-4] IO同步性能: 平均12.03ms, 当前10ms 
+2025-09-05 17:03:36,060 [DEBUG] [thread-4] IO同步性能: 平均12.05ms, 当前11ms 
+2025-09-05 17:03:38,627 [DEBUG] [thread-4] IO同步性能: 平均12.11ms, 当前11ms 
+2025-09-05 17:03:41,137 [DEBUG] [thread-4] IO同步性能: 平均12.09ms, 当前9ms 
+2025-09-05 17:03:43,518 [DEBUG] [thread-4] IO同步性能: 平均12.00ms, 当前11ms 
+2025-09-05 17:03:45,961 [DEBUG] [thread-4] IO同步性能: 平均11.95ms, 当前11ms 
+2025-09-05 17:03:48,307 [DEBUG] [thread-4] IO同步性能: 平均11.85ms, 当前10ms 
+2025-09-05 17:03:50,748 [DEBUG] [thread-4] IO同步性能: 平均11.82ms, 当前11ms 
+2025-09-05 17:03:53,234 [DEBUG] [thread-4] IO同步性能: 平均11.83ms, 当前11ms 
+2025-09-05 17:03:55,315 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:142] [PLC] Address: 127.0.0.1:6000, Operation: Disconnect, Data: Disconnected successfully, Status: SUCCESS 
+2025-09-05 17:03:55,315 [INFO ] [thread-1] Disconnected from MC_PLC 
+2025-09-05 17:07:48,001 [INFO ] [thread-1] Loaded mapping configuration from Config\io_mapping.json 
+2025-09-05 17:07:48,001 [INFO ] [thread-1] Input mappings: 64, Output mappings: 64 
+2025-09-05 17:07:48,054 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:120] [PLC] Address: 127.0.0.1:6000, Operation: Connect, Data: Connected successfully, Status: SUCCESS 
+2025-09-05 17:07:48,054 [INFO ] [thread-1] Connected to MC_PLC: 127.0.0.1:6000 
+2025-09-05 17:07:51,014 [DEBUG] [thread-4] IO同步性能: 平均12.50ms, 当前10ms 
+2025-09-05 17:07:53,372 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:142] [PLC] Address: 127.0.0.1:6000, Operation: Disconnect, Data: Disconnected successfully, Status: SUCCESS 
+2025-09-05 17:07:53,374 [INFO ] [thread-1] Disconnected from MC_PLC 
+2025-09-05 17:13:10,743 [INFO ] [thread-1] Loaded mapping configuration from Config\io_mapping.json 
+2025-09-05 17:13:10,744 [INFO ] [thread-1] Input mappings: 64, Output mappings: 64 
+2025-09-05 17:13:10,790 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:120] [PLC] Address: 127.0.0.1:6000, Operation: Connect, Data: Connected successfully, Status: SUCCESS 
+2025-09-05 17:13:10,791 [INFO ] [thread-1] Connected to MC_PLC: 127.0.0.1:6000 
+2025-09-05 17:13:13,784 [DEBUG] [thread-4] IO同步性能: 平均12.81ms, 当前8ms 
+2025-09-05 17:13:16,278 [DEBUG] [thread-4] IO同步性能: 平均12.33ms, 当前8ms 
+2025-09-05 17:13:18,746 [DEBUG] [thread-4] IO同步性能: 平均12.12ms, 当前10ms 
+2025-09-05 17:13:21,305 [DEBUG] [thread-4] IO同步性能: 平均12.26ms, 当前12ms 
+2025-09-05 17:13:23,771 [DEBUG] [thread-4] IO同步性能: 平均12.14ms, 当前9ms 
+2025-09-05 17:13:26,239 [DEBUG] [thread-4] IO同步性能: 平均12.06ms, 当前8ms 
+2025-09-05 17:13:28,659 [DEBUG] [thread-4] IO同步性能: 平均11.94ms, 当前11ms 
+2025-09-05 17:13:31,047 [DEBUG] [thread-4] IO同步性能: 平均11.81ms, 当前8ms 
+2025-09-05 17:13:33,465 [DEBUG] [thread-4] IO同步性能: 平均11.74ms, 当前13ms 
+2025-09-05 17:13:35,939 [DEBUG] [thread-4] IO同步性能: 平均11.75ms, 当前10ms 
+2025-09-05 17:13:38,396 [DEBUG] [thread-4] IO同步性能: 平均11.73ms, 当前12ms 
+2025-09-05 17:13:40,799 [DEBUG] [thread-4] IO同步性能: 平均11.68ms, 当前13ms 
+2025-09-05 17:13:43,241 [DEBUG] [thread-4] IO同步性能: 平均11.66ms, 当前9ms 
+2025-09-05 17:13:45,008 [INFO ] [thread-1] [IOLibrary.Hardware.Mitsubishi.MCPlc:142] [PLC] Address: 127.0.0.1:6000, Operation: Disconnect, Data: Disconnected successfully, Status: SUCCESS 
+2025-09-05 17:13:45,008 [INFO ] [thread-1] Disconnected from MC_PLC 

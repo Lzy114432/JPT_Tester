@@ -1,0 +1,2 @@
+﻿2026-04-16 20:58:21,219 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.AxisControlViewModel:238] 轴配置已加载：4个轴 
+2026-04-16 20:58:21,387 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:680] 处理已完成: 轴手动控制 

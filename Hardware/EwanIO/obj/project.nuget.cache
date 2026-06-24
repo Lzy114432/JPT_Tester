@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "dgSpecHash": "TkQiMpzUhCs=",
+  "success": true,
+  "projectFilePath": "D:\\01Demo\\珠海均威\\上料机\\MarkingMachineFeeder0617\\Hardware\\EwanIO\\EwanIO.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\112128\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\112128\\.nuget\\packages\\system.runtime\\4.3.0\\system.runtime.4.3.0.nupkg.sha512",
+    "C:\\Users\\112128\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.1.2\\system.runtime.compilerservices.unsafe.6.1.2.nupkg.sha512",
+    "C:\\Users\\112128\\.nuget\\packages\\system.runtime.interopservices\\4.3.0\\system.runtime.interopservices.4.3.0.nupkg.sha512",
+    "C:\\Users\\112128\\.nuget\\packages\\system.valuetuple\\4.6.1\\system.valuetuple.4.6.1.nupkg.sha512"
+  ],
+  "logs": []
+}

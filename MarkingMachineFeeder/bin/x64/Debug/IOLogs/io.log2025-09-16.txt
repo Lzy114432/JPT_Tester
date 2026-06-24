@@ -1,0 +1,4 @@
+﻿2025-09-16 12:26:07,491 [ERROR] [thread-1] IOC0640 connection failed with error code: 8 
+2025-09-16 12:26:50,765 [ERROR] [thread-1] IOC0640 connection failed with error code: 8 
+2025-09-16 15:57:41,999 [ERROR] [thread-1] IOC0640 connection failed with error code: 8 
+2025-09-16 16:41:44,715 [ERROR] [thread-1] IOC0640 connection failed with error code: 8 

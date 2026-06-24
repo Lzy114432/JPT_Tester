@@ -1,0 +1,211 @@
+﻿2025-09-30 15:45:27,546 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-30 15:45:27,547 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-30 15:45:27,550 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=SMC606IO, ConnectionString=192.168.5.11, MappingPath=Config\io_mapping.json 
+2025-09-30 15:45:27,555 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:214] [IOHardwareCreated] IO硬件已创建: SMC606IO 
+2025-09-30 15:45:27,556 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-30 15:45:27,591 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 文化已更改为 zh-CN 
+2025-09-30 15:45:27,605 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴配置 
+2025-09-30 15:45:27,639 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] 系统初始化成功 
+2025-09-30 15:45:32,775 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:438] [IOConnectionFailed] IO连接失败: 192.168.5.11 
+2025-09-30 15:45:32,776 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:65] [IOConnectionFailed] IO连接失败: SafetyModule初始化 
+2025-09-30 15:45:32,776 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:69] [ModuleInitialized] 模块初始化成功: SafetyModule 
+2025-09-30 15:45:32,776 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-30 15:45:32,781 [WARN ] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:442] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:32,782 [WARN ] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:32,783 [DEBUG] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:32,783 [INFO ] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:164] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:32,783 [INFO ] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:50] [ModuleInitialized] 模块初始化成功: SystemStatusIndicatorModule 
+2025-09-30 15:45:32,783 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-30 15:45:32,785 [INFO ] [thread-1] [Ewan.BusinessBonding.StreamController:365] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:32,786 [INFO ] [thread-1] [Ewan.BusinessBonding.StreamController:390] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:32,788 [WARN ] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:442] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:32,789 [INFO ] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:174] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:32,791 [WARN ] [thread-10] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:32,792 [DEBUG] [thread-10] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:33,071 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] 模块初始化成功: IOPollingModule: IO映射名称加载成功 
+2025-09-30 15:45:33,071 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] 模块初始化成功: IOPollingModule 
+2025-09-30 15:45:33,072 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-30 15:45:33,072 [INFO ] [thread-1] [Ewan.Core.Module.ProductionLineModule:35] [ModuleInitialized] 模块初始化成功: ProductionLineModule 
+2025-09-30 15:45:33,073 [INFO ] [thread-1] [Ewan.Core.Module.ProductionLineModule:225] [ProcessingCompleted] 处理已完成: 系统控制消息监听器注册 
+2025-09-30 15:45:33,074 [INFO ] [thread-1] [Ewan.Core.Module.MaterialLoadingModule:49] [ModuleInitialized] 模块初始化成功: MaterialLoadingModule 
+2025-09-30 15:45:33,075 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:105] [ModuleInitialized] 模块初始化成功: BinElevatorModule 
+2025-09-30 15:45:33,075 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:117] [InitializationCompleted] 初始化已完成: 料仓升降控制系统 
+2025-09-30 15:45:33,075 [INFO ] [thread-1] [Ewan.Core.Module.ProductionLineModule:52] [InitializationCompleted] 初始化已完成: 生产线控制系统 
+2025-09-30 15:45:33,076 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-30 15:45:33,077 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] 流处理已启动 
+2025-09-30 15:45:33,080 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-30 15:45:33,304 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:33,304 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:33,314 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-09-30 15:45:33,429 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-09-30 15:45:33,546 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-09-30 15:45:33,662 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-09-30 15:45:33,771 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-30 15:45:33,780 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:374] [MainWindowStarted] 主窗口已启动 
+2025-09-30 15:45:33,814 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:33,815 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:34,320 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:34,321 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:34,822 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:34,823 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:35,324 [WARN ] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:35,325 [DEBUG] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:35,825 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:35,826 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:36,327 [WARN ] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:36,328 [DEBUG] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:36,830 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:36,831 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:37,332 [WARN ] [thread-15] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:37,333 [DEBUG] [thread-15] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:37,836 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:37,837 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:38,339 [WARN ] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:38,339 [DEBUG] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:38,840 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:38,841 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:39,342 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:39,344 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:39,860 [WARN ] [thread-15] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:39,861 [DEBUG] [thread-15] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:40,370 [WARN ] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:40,372 [DEBUG] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:40,886 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:40,886 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:41,398 [WARN ] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:41,398 [DEBUG] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:41,914 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:41,915 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:42,427 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:42,429 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:42,941 [WARN ] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:42,942 [DEBUG] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:43,453 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:43,454 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:43,969 [WARN ] [thread-15] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:43,970 [DEBUG] [thread-15] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:44,481 [WARN ] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:44,483 [DEBUG] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:44,993 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:44,994 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:45,507 [WARN ] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:45,508 [DEBUG] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:46,023 [WARN ] [thread-16] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:46,024 [DEBUG] [thread-16] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:46,536 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:46,537 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:47,051 [WARN ] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:47,052 [DEBUG] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:47,565 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:47,566 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:48,080 [WARN ] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:48,082 [DEBUG] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:48,593 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:48,594 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:49,106 [WARN ] [thread-15] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:49,107 [DEBUG] [thread-15] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:49,620 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:49,622 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:50,133 [WARN ] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:50,135 [DEBUG] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:50,648 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:50,649 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:51,164 [WARN ] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:51,165 [DEBUG] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:51,677 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:51,678 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:52,190 [WARN ] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:52,206 [DEBUG] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:52,721 [WARN ] [thread-15] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:52,722 [DEBUG] [thread-15] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:53,235 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:53,236 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:53,745 [WARN ] [thread-15] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:53,746 [DEBUG] [thread-15] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:54,255 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:54,256 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:54,770 [WARN ] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:54,771 [DEBUG] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:55,281 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:55,282 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:55,796 [WARN ] [thread-15] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:55,798 [DEBUG] [thread-15] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:56,308 [WARN ] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:56,309 [DEBUG] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:56,812 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:56,813 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:57,327 [WARN ] [thread-15] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:57,328 [DEBUG] [thread-15] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:57,841 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:57,842 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:58,355 [WARN ] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:58,357 [DEBUG] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:58,870 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:58,872 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:59,386 [WARN ] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:59,387 [DEBUG] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:59,905 [WARN ] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:45:59,907 [DEBUG] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:00,427 [WARN ] [thread-15] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:00,428 [DEBUG] [thread-15] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:00,940 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:00,941 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:01,455 [WARN ] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:01,456 [DEBUG] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:01,968 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:01,969 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:02,481 [WARN ] [thread-15] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:02,482 [DEBUG] [thread-15] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:02,992 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:02,994 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:03,517 [WARN ] [thread-14] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:03,527 [DEBUG] [thread-14] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:04,048 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:04,050 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:04,562 [WARN ] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:04,563 [DEBUG] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:05,073 [WARN ] [thread-15] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:05,074 [DEBUG] [thread-15] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:05,587 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:05,589 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:06,097 [WARN ] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:06,098 [DEBUG] [thread-13] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:06,615 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:06,617 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:07,152 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:07,153 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:07,664 [WARN ] [thread-15] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:07,665 [DEBUG] [thread-15] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:08,175 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:08,176 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:08,689 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:08,690 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:09,204 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:09,205 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:09,716 [WARN ] [thread-16] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:09,718 [DEBUG] [thread-16] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:09,804 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:527] [UserExiting] 用户 operator 正在退出应用程序 
+2025-09-30 15:46:09,914 [INFO ] [thread-1] [Ewan.Core.Module.ProductionLineModule:245] [ProcessingCompleted] 处理已完成: 系统控制消息监听器取消注册 
+2025-09-30 15:46:09,918 [INFO ] [thread-1] [Ewan.Core.Module.MaterialLoadingModule:129] [ModuleDestroyed] 模块已销毁: MaterialLoadingModule 
+2025-09-30 15:46:09,920 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:699] [ProcessingStarted] 处理已开始: 停止所有料仓Jog运动 
+2025-09-30 15:46:09,927 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:711] [ProcessingCompleted] 处理已完成: 所有料仓Jog运动已停止 
+2025-09-30 15:46:09,930 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:192] [ModuleDestroyed] 模块已销毁: BinElevatorModule 
+2025-09-30 15:46:09,932 [INFO ] [thread-1] [Ewan.Core.Module.ProductionLineModule:114] [ModuleDestroyed] 模块已销毁: ProductionLineModule 
+2025-09-30 15:46:09,933 [INFO ] [thread-1] [Ewan.BusinessBonding.StreamController:332] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:09,934 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] 模块已销毁: IOPollingModule 
+2025-09-30 15:46:09,935 [INFO ] [thread-1] [Ewan.BusinessBonding.StreamController:390] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:09,938 [WARN ] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:442] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:09,970 [WARN ] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:09,971 [DEBUG] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:09,973 [INFO ] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:80] [ModuleDestroyed] 模块已销毁: SystemStatusIndicatorModule 
+2025-09-30 15:46:09,973 [INFO ] [thread-1] [Ewan.BusinessBonding.StreamController:375] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-30 15:46:09,975 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:141] [ModuleDestroyed] 模块已销毁: SafetyModule 
+2025-09-30 15:46:09,976 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] 流处理已停止 
+2025-09-30 15:53:31,620 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-30 15:53:31,621 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-30 15:53:31,624 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=SMC606IO, ConnectionString=192.168.5.11, MappingPath=Config\io_mapping.json 
+2025-09-30 15:53:31,631 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:214] [IOHardwareCreated] IO硬件已创建: SMC606IO 
+2025-09-30 15:53:31,632 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-30 15:53:31,648 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 文化已更改为 zh-CN 
+2025-09-30 15:53:31,653 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴配置 
+2025-09-30 15:53:31,691 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] 系统初始化成功 

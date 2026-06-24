@@ -1,0 +1,8 @@
+is_global = true
+build_property.RootNamespace = Ewan.Core.Tests
+build_property.ProjectDir = C:\Users\Administrator\Desktop\钧崴\code\MarkingMachineFeeder\Ewan.Core.Tests\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.CsWinRTUseWindowsUIXamlProjections = false
+build_property.EffectiveAnalysisLevelStyle = 
+build_property.EnableCodeStyleSeverity = 

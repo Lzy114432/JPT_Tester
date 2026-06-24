@@ -1,0 +1,1257 @@
+﻿2025-09-09 10:08:34,491 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 10:08:34,492 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 10:08:34,496 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 10:08:34,560 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 10:08:34,579 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 10:08:34,580 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 10:08:34,611 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 文化已更改为 zh-CN 
+2025-09-09 10:08:34,623 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴配置 
+2025-09-09 10:08:34,663 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] 系统初始化成功 
+2025-09-09 10:08:36,785 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO连接失败: 127.0.0.1:6000 
+2025-09-09 10:08:36,787 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO连接失败: SafetyModule初始化 
+2025-09-09 10:08:36,787 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] 模块初始化成功: SafetyModule 
+2025-09-09 10:08:36,788 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 10:08:37,064 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] 模块初始化成功: IOPollingModule: IO映射名称加载成功 
+2025-09-09 10:08:37,064 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] 模块初始化成功: IOPollingModule 
+2025-09-09 10:08:37,064 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 10:08:37,065 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] 流处理已启动 
+2025-09-09 10:08:37,067 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 10:08:37,227 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-09-09 10:08:37,340 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-09-09 10:08:37,450 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-09-09 10:08:37,557 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-09-09 10:08:37,664 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 10:08:37,672 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:220] [MainWindowStarted] 主窗口已启动 
+2025-09-09 10:09:16,623 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:503] [ProcessingComplete] 处理完成 
+2025-09-09 10:09:23,850 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:503] [ProcessingComplete] 处理完成 
+2025-09-09 10:09:26,773 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:353] [UserExiting] 用户 admin 正在退出应用程序 
+2025-09-09 10:09:26,803 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] 模块已销毁: SafetyModule 
+2025-09-09 10:09:26,804 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] 模块已销毁: IOPollingModule 
+2025-09-09 10:09:26,805 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] 流处理已停止 
+2025-09-09 10:09:55,395 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 10:09:55,396 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 10:09:55,399 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 10:09:55,407 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 10:09:55,419 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 10:09:55,420 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 10:09:55,436 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 文化已更改为 zh-CN 
+2025-09-09 10:09:55,439 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:74] [AxisConfigurationLoadFailed] 加载轴配置失败: 配置文件不存在，创建默认配置 
+2025-09-09 10:09:55,444 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:110] [AxisConfigurationSaved] 轴配置已保存到: C:\Users\Administrator\source\repos\MarkingMachineFeeder\MarkingMachineFeeder\bin\x64\Debug\Config\axis_config.json 
+2025-09-09 10:09:55,451 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] 系统初始化成功 
+2025-09-09 10:09:57,501 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO连接失败: 127.0.0.1:6000 
+2025-09-09 10:09:57,502 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO连接失败: SafetyModule初始化 
+2025-09-09 10:09:57,502 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] 模块初始化成功: SafetyModule 
+2025-09-09 10:09:57,502 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 10:09:57,744 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] 模块初始化成功: IOPollingModule: IO映射名称加载成功 
+2025-09-09 10:09:57,745 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] 模块初始化成功: IOPollingModule 
+2025-09-09 10:09:57,745 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 10:09:57,746 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] 流处理已启动 
+2025-09-09 10:09:57,747 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 10:09:57,863 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-09-09 10:09:57,971 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-09-09 10:09:58,077 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-09-09 10:09:58,184 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-09-09 10:09:58,290 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 10:09:58,296 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:220] [MainWindowStarted] 主窗口已启动 
+2025-09-09 10:10:49,490 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:353] [UserExiting] 用户 operator 正在退出应用程序 
+2025-09-09 10:10:49,519 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] 模块已销毁: SafetyModule 
+2025-09-09 10:10:49,520 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] 模块已销毁: IOPollingModule 
+2025-09-09 10:10:49,521 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] 流处理已停止 
+2025-09-09 10:12:01,715 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 10:12:01,716 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 10:12:01,718 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 10:12:01,726 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 10:12:01,736 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 10:12:01,736 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 10:12:01,754 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 文化已更改为 zh-CN 
+2025-09-09 10:12:01,759 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴配置 
+2025-09-09 10:12:01,765 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] 系统初始化成功 
+2025-09-09 10:12:03,821 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO连接失败: 127.0.0.1:6000 
+2025-09-09 10:12:03,821 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO连接失败: SafetyModule初始化 
+2025-09-09 10:12:03,821 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] 模块初始化成功: SafetyModule 
+2025-09-09 10:12:03,822 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 10:12:04,054 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] 模块初始化成功: IOPollingModule: IO映射名称加载成功 
+2025-09-09 10:12:04,054 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] 模块初始化成功: IOPollingModule 
+2025-09-09 10:12:04,055 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 10:12:04,055 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] 流处理已启动 
+2025-09-09 10:12:04,057 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 10:12:04,168 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-09-09 10:12:04,279 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-09-09 10:12:04,386 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-09-09 10:12:04,493 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-09-09 10:12:04,600 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 10:12:04,607 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:220] [MainWindowStarted] 主窗口已启动 
+2025-09-09 10:12:21,720 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:503] [ProcessingComplete] 处理完成 
+2025-09-09 10:12:24,776 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:353] [UserExiting] 用户 admin 正在退出应用程序 
+2025-09-09 10:12:24,812 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] 模块已销毁: SafetyModule 
+2025-09-09 10:12:24,813 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] 模块已销毁: IOPollingModule 
+2025-09-09 10:12:24,813 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] 流处理已停止 
+2025-09-09 10:18:05,845 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 10:18:05,846 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 10:18:05,850 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 10:18:05,856 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 10:18:05,868 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 10:18:05,869 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 10:18:05,889 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 文化已更改为 zh-CN 
+2025-09-09 10:18:05,895 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴配置 
+2025-09-09 10:18:05,903 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] 系统初始化成功 
+2025-09-09 10:18:07,978 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO连接失败: 127.0.0.1:6000 
+2025-09-09 10:18:07,979 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO连接失败: SafetyModule初始化 
+2025-09-09 10:18:07,979 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] 模块初始化成功: SafetyModule 
+2025-09-09 10:18:07,980 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 10:18:08,251 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] 模块初始化成功: IOPollingModule: IO映射名称加载成功 
+2025-09-09 10:18:08,252 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] 模块初始化成功: IOPollingModule 
+2025-09-09 10:18:08,252 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 10:18:08,252 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] 流处理已启动 
+2025-09-09 10:18:08,254 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 10:18:08,365 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-09-09 10:18:08,473 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-09-09 10:18:08,581 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-09-09 10:18:08,688 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-09-09 10:18:08,796 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 10:18:08,805 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:220] [MainWindowStarted] 主窗口已启动 
+2025-09-09 10:18:15,439 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:242] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 10:18:15,439 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:243] [SystemStatusNormal] 系统状态: 正常 
+2025-09-09 10:18:15,439 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:244] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-09-09 10:18:15,440 [ERROR] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:245] [DatabaseConnectionError] 数据库连接错误: Connection timeout 
+2025-09-09 10:18:15,440 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:246] [ProcessingComplete] 处理完成 
+2025-09-09 10:18:15,440 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:247] [BaseManagerInitialized] 基础管理器初始化成功: TestManager 
+2025-09-09 10:20:31,395 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:503] [ProcessingComplete] 处理完成 
+2025-09-09 10:20:34,857 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:353] [UserExiting] 用户 admin 正在退出应用程序 
+2025-09-09 10:20:34,881 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] 模块已销毁: SafetyModule 
+2025-09-09 10:20:34,881 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] 模块已销毁: IOPollingModule 
+2025-09-09 10:20:34,882 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] 流处理已停止 
+2025-09-09 11:06:22,022 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 11:06:22,023 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 11:06:22,027 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 11:06:22,034 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 11:06:22,047 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 11:06:22,047 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 11:06:22,064 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 文化已更改为 zh-CN 
+2025-09-09 11:06:22,073 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴配置 
+2025-09-09 11:06:22,081 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] 系统初始化成功 
+2025-09-09 11:06:24,154 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO连接失败: 127.0.0.1:6000 
+2025-09-09 11:06:24,155 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO连接失败: SafetyModule初始化 
+2025-09-09 11:06:24,156 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] 模块初始化成功: SafetyModule 
+2025-09-09 11:06:24,156 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 11:06:24,410 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] 模块初始化成功: IOPollingModule: IO映射名称加载成功 
+2025-09-09 11:06:24,411 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] 模块初始化成功: IOPollingModule 
+2025-09-09 11:06:24,411 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 11:06:24,412 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] 流处理已启动 
+2025-09-09 11:06:24,413 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 11:06:24,525 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-09-09 11:06:24,636 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-09-09 11:06:24,742 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-09-09 11:06:24,849 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-09-09 11:06:24,956 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 11:06:24,962 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:229] [MainWindowStarted] 主窗口已启动 
+2025-09-09 11:06:35,474 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.AxisControlViewModel:241] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴 
+2025-09-09 11:06:39,414 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:529] [ProcessingComplete] 处理完成 
+2025-09-09 11:06:44,695 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.AxisControlViewModel:241] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴 
+2025-09-09 11:06:51,914 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:529] [ProcessingComplete] 处理完成 
+2025-09-09 11:07:28,409 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.AxisControlViewModel:241] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴 
+2025-09-09 11:07:32,208 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.AxisControlViewModel:241] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴 
+2025-09-09 11:07:32,271 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.AxisControlViewModel:555] [ProcessingComplete] 处理完成 
+2025-09-09 11:07:33,044 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.AxisControlViewModel:241] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴 
+2025-09-09 11:07:33,098 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.AxisControlViewModel:555] [ProcessingComplete] 处理完成 
+2025-09-09 11:07:33,844 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.AxisControlViewModel:241] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴 
+2025-09-09 11:07:33,895 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.AxisControlViewModel:555] [ProcessingComplete] 处理完成 
+2025-09-09 11:07:36,457 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.AxisControlViewModel:241] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴 
+2025-09-09 11:07:36,504 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.AxisControlViewModel:555] [ProcessingComplete] 处理完成 
+2025-09-09 11:07:37,031 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.AxisControlViewModel:241] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴 
+2025-09-09 11:07:37,080 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.AxisControlViewModel:555] [ProcessingComplete] 处理完成 
+2025-09-09 11:07:58,731 [ERROR] [thread-1] [MarkingMachineFeeder.Viewmodel.AxisControlViewModel:517] [OperationFailed] 操作失败: 轴 0 移动失败: 无法加载 DLL“LTSMC.dll”: 找不到指定的模块。 (异常来自 HRESULT:0x8007007E)。 
+2025-09-09 11:08:01,945 [ERROR] [thread-1] [MarkingMachineFeeder.Viewmodel.AxisControlViewModel:517] [OperationFailed] 操作失败: 轴 0 移动失败: 无法加载 DLL“LTSMC.dll”: 找不到指定的模块。 (异常来自 HRESULT:0x8007007E)。 
+2025-09-09 11:08:12,807 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:529] [ProcessingComplete] 处理完成 
+2025-09-09 11:08:29,306 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:514] [ProcessingComplete] 处理完成 
+2025-09-09 11:11:49,268 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.AxisControlViewModel:241] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴 
+2025-09-09 11:11:53,835 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:529] [ProcessingComplete] 处理完成 
+2025-09-09 11:26:43,850 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:673] [IOTestModeChanged] IO测试模式: 输出测试模式已开启 
+2025-09-09 11:26:44,424 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:452] [IONotConnected] IO未连接 
+2025-09-09 11:26:44,425 [WARN ] [thread-1] [Ewan.BusinessBonding.IOController:24] [IOWriteFailed] 写入 Y0 失败 
+2025-09-09 11:26:44,426 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:722] [IOOutputChanged] 输出 Y0 设置为: ON 
+2025-09-09 11:26:49,180 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:673] [IOTestModeChanged] IO测试模式: 输出测试模式已关闭 
+2025-09-09 11:26:56,113 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:654] [IOMappingModeChanged] IO映射模式已切换至: 真实模式 
+2025-09-09 11:26:56,702 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:654] [IOMappingModeChanged] IO映射模式已切换至: 映射模式 
+2025-09-09 11:27:20,080 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:654] [IOMappingModeChanged] IO映射模式已切换至: 真实模式 
+2025-09-09 11:27:21,866 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:654] [IOMappingModeChanged] IO映射模式已切换至: 映射模式 
+2025-09-09 11:27:22,275 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:654] [IOMappingModeChanged] IO映射模式已切换至: 真实模式 
+2025-09-09 11:27:22,477 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:654] [IOMappingModeChanged] IO映射模式已切换至: 映射模式 
+2025-09-09 11:28:42,961 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:514] [ProcessingComplete] 处理完成 
+2025-09-09 11:28:46,054 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.AxisControlViewModel:241] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴 
+2025-09-09 11:28:47,465 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:529] [ProcessingComplete] 处理完成 
+2025-09-09 11:28:55,618 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:514] [ProcessingComplete] 处理完成 
+2025-09-09 11:29:07,713 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] Culture changed to en-US 
+2025-09-09 11:29:10,174 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:251] [TestLogClicked] Test log button clicked 
+2025-09-09 11:29:10,176 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:252] [SystemStatusNormal] System status: Normal 
+2025-09-09 11:29:10,177 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:253] [Log4netConfigNotFound] Log4net configuration file not found 
+2025-09-09 11:29:10,177 [ERROR] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:254] [DatabaseConnectionError] Database connection error: Connection timeout 
+2025-09-09 11:29:10,178 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:255] [ProcessingComplete] Processing complete 
+2025-09-09 11:29:10,179 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:256] [BaseManagerInitialized] Base Manager initialized: TestManager 
+2025-09-09 11:29:10,351 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:251] [TestLogClicked] Test log button clicked 
+2025-09-09 11:29:10,352 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:252] [SystemStatusNormal] System status: Normal 
+2025-09-09 11:29:10,353 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:253] [Log4netConfigNotFound] Log4net configuration file not found 
+2025-09-09 11:29:10,355 [ERROR] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:254] [DatabaseConnectionError] Database connection error: Connection timeout 
+2025-09-09 11:29:10,356 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:255] [ProcessingComplete] Processing complete 
+2025-09-09 11:29:10,357 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:256] [BaseManagerInitialized] Base Manager initialized: TestManager 
+2025-09-09 11:29:10,658 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:251] [TestLogClicked] Test log button clicked 
+2025-09-09 11:29:10,659 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:252] [SystemStatusNormal] System status: Normal 
+2025-09-09 11:29:10,659 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:253] [Log4netConfigNotFound] Log4net configuration file not found 
+2025-09-09 11:29:10,660 [ERROR] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:254] [DatabaseConnectionError] Database connection error: Connection timeout 
+2025-09-09 11:29:10,661 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:255] [ProcessingComplete] Processing complete 
+2025-09-09 11:29:10,662 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:256] [BaseManagerInitialized] Base Manager initialized: TestManager 
+2025-09-09 11:29:11,214 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:251] [TestLogClicked] Test log button clicked 
+2025-09-09 11:29:11,215 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:252] [SystemStatusNormal] System status: Normal 
+2025-09-09 11:29:11,215 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:253] [Log4netConfigNotFound] Log4net configuration file not found 
+2025-09-09 11:29:11,216 [ERROR] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:254] [DatabaseConnectionError] Database connection error: Connection timeout 
+2025-09-09 11:29:11,217 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:255] [ProcessingComplete] Processing complete 
+2025-09-09 11:29:11,218 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:256] [BaseManagerInitialized] Base Manager initialized: TestManager 
+2025-09-09 11:29:11,439 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:251] [TestLogClicked] Test log button clicked 
+2025-09-09 11:29:11,440 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:252] [SystemStatusNormal] System status: Normal 
+2025-09-09 11:29:11,441 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:253] [Log4netConfigNotFound] Log4net configuration file not found 
+2025-09-09 11:29:11,444 [ERROR] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:254] [DatabaseConnectionError] Database connection error: Connection timeout 
+2025-09-09 11:29:11,445 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:255] [ProcessingComplete] Processing complete 
+2025-09-09 11:29:11,446 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:256] [BaseManagerInitialized] Base Manager initialized: TestManager 
+2025-09-09 11:29:18,926 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:251] [TestLogClicked] Test log button clicked 
+2025-09-09 11:29:18,928 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:252] [SystemStatusNormal] System status: Normal 
+2025-09-09 11:29:18,929 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:253] [Log4netConfigNotFound] Log4net configuration file not found 
+2025-09-09 11:29:18,930 [ERROR] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:254] [DatabaseConnectionError] Database connection error: Connection timeout 
+2025-09-09 11:29:18,930 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:255] [ProcessingComplete] Processing complete 
+2025-09-09 11:29:18,931 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:256] [BaseManagerInitialized] Base Manager initialized: TestManager 
+2025-09-09 13:09:40,682 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:362] [UserExiting] User admin is exiting the application 
+2025-09-09 13:09:40,705 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] Module destroyed: SafetyModule 
+2025-09-09 13:09:40,706 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] Module destroyed: IOPollingModule 
+2025-09-09 13:09:40,707 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] Stream process stopped 
+2025-09-09 14:11:28,887 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 14:11:28,887 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 14:11:28,890 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 14:11:28,974 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 14:11:28,991 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 14:11:28,991 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 14:11:29,033 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] Culture changed to en-US 
+2025-09-09 14:11:29,043 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] Axis configuration loaded from: 3个轴配置 
+2025-09-09 14:11:29,051 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] System initialized successfully 
+2025-09-09 14:11:31,160 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO connection failed: 127.0.0.1:6000 
+2025-09-09 14:11:31,161 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO connection failed: SafetyModule初始化 
+2025-09-09 14:11:31,161 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] Module initialized: SafetyModule 
+2025-09-09 14:11:31,161 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] Stream runner modules initialized: {0} 
+2025-09-09 14:11:31,451 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] Module initialized: IOPollingModule: IO映射名称加载成功 
+2025-09-09 14:11:31,452 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] Module initialized: IOPollingModule 
+2025-09-09 14:11:31,452 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] Stream runner modules initialized: {0} 
+2025-09-09 14:11:31,453 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] Stream process started 
+2025-09-09 14:11:31,454 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator configured 
+2025-09-09 14:11:31,552 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] System initialized successfully 
+2025-09-09 14:11:31,657 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] System status: Normal 
+2025-09-09 14:11:31,765 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net configuration file not found 
+2025-09-09 14:11:31,872 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] Database connected successfully 
+2025-09-09 14:11:31,979 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator configured 
+2025-09-09 14:11:31,985 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:229] [MainWindowStarted] Main window started 
+2025-09-09 14:11:35,730 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:362] [UserExiting] User operator is exiting the application 
+2025-09-09 14:11:35,761 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] Module destroyed: SafetyModule 
+2025-09-09 14:11:35,762 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] Module destroyed: IOPollingModule 
+2025-09-09 14:11:35,762 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] Stream process stopped 
+2025-09-09 14:11:42,660 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 14:11:42,660 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 14:11:42,664 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 14:11:42,673 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 14:11:42,683 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 14:11:42,684 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 14:11:42,705 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] Culture changed to en-US 
+2025-09-09 14:11:42,711 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] Axis configuration loaded from: 3个轴配置 
+2025-09-09 14:11:42,719 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] System initialized successfully 
+2025-09-09 14:11:44,776 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO connection failed: 127.0.0.1:6000 
+2025-09-09 14:11:44,778 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO connection failed: SafetyModule初始化 
+2025-09-09 14:11:44,778 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] Module initialized: SafetyModule 
+2025-09-09 14:11:44,779 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] Stream runner modules initialized: {0} 
+2025-09-09 14:11:44,987 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] Module initialized: IOPollingModule: IO映射名称加载成功 
+2025-09-09 14:11:44,988 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] Module initialized: IOPollingModule 
+2025-09-09 14:11:44,988 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] Stream runner modules initialized: {0} 
+2025-09-09 14:11:44,988 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] Stream process started 
+2025-09-09 14:11:44,991 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator configured 
+2025-09-09 14:11:45,080 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] System initialized successfully 
+2025-09-09 14:11:45,190 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] System status: Normal 
+2025-09-09 14:11:45,298 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net configuration file not found 
+2025-09-09 14:11:45,406 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] Database connected successfully 
+2025-09-09 14:11:45,513 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator configured 
+2025-09-09 14:11:45,523 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:229] [MainWindowStarted] Main window started 
+2025-09-09 14:12:01,583 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:362] [UserExiting] User operator is exiting the application 
+2025-09-09 14:12:01,612 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] Module destroyed: SafetyModule 
+2025-09-09 14:12:01,613 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] Module destroyed: IOPollingModule 
+2025-09-09 14:12:01,614 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] Stream process stopped 
+2025-09-09 14:17:18,194 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 14:17:18,194 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 14:17:18,197 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 14:17:18,204 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 14:17:18,214 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 14:17:18,215 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 14:17:18,234 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] Culture changed to en-US 
+2025-09-09 14:17:18,239 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] Axis configuration loaded from: 3个轴配置 
+2025-09-09 14:17:18,246 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] System initialized successfully 
+2025-09-09 14:17:20,301 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO connection failed: 127.0.0.1:6000 
+2025-09-09 14:17:20,302 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO connection failed: SafetyModule初始化 
+2025-09-09 14:17:20,303 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] Module initialized: SafetyModule 
+2025-09-09 14:17:20,303 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] Stream runner modules initialized: {0} 
+2025-09-09 14:17:20,527 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] Module initialized: IOPollingModule: IO映射名称加载成功 
+2025-09-09 14:17:20,528 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] Module initialized: IOPollingModule 
+2025-09-09 14:17:20,529 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] Stream runner modules initialized: {0} 
+2025-09-09 14:17:20,529 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] Stream process started 
+2025-09-09 14:17:20,531 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator configured 
+2025-09-09 14:17:20,665 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] System initialized successfully 
+2025-09-09 14:17:20,774 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] System status: Normal 
+2025-09-09 14:17:20,883 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net configuration file not found 
+2025-09-09 14:17:20,989 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] Database connected successfully 
+2025-09-09 14:17:21,097 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator configured 
+2025-09-09 14:17:21,106 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:248] [MainWindowStarted] Main window started 
+2025-09-09 14:18:26,922 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:270] [TestLogClicked] Test log button clicked 
+2025-09-09 14:18:26,922 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:271] [SystemStatusNormal] System status: Normal 
+2025-09-09 14:18:26,923 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:272] [Log4netConfigNotFound] Log4net configuration file not found 
+2025-09-09 14:18:26,923 [ERROR] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:273] [DatabaseConnectionError] Database connection error: Connection timeout 
+2025-09-09 14:18:26,924 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:274] [ProcessingComplete] Processing complete 
+2025-09-09 14:18:26,924 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:275] [BaseManagerInitialized] Base Manager initialized: TestManager 
+2025-09-09 14:18:56,240 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:381] [UserExiting] User operator is exiting the application 
+2025-09-09 14:18:56,266 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] Module destroyed: SafetyModule 
+2025-09-09 14:18:56,267 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] Module destroyed: IOPollingModule 
+2025-09-09 14:18:56,269 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] Stream process stopped 
+2025-09-09 14:24:58,169 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 14:24:58,170 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 14:24:58,173 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 14:24:58,180 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 14:24:58,190 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 14:24:58,191 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 14:24:58,211 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] Culture changed to en-US 
+2025-09-09 14:24:58,217 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] Axis configuration loaded from: 3个轴配置 
+2025-09-09 14:24:58,223 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] System initialized successfully 
+2025-09-09 14:25:00,290 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO connection failed: 127.0.0.1:6000 
+2025-09-09 14:25:00,291 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO connection failed: SafetyModule初始化 
+2025-09-09 14:25:00,291 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] Module initialized: SafetyModule 
+2025-09-09 14:25:00,291 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] Stream runner modules initialized: {0} 
+2025-09-09 14:25:00,503 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] Module initialized: IOPollingModule: IO映射名称加载成功 
+2025-09-09 14:25:00,504 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] Module initialized: IOPollingModule 
+2025-09-09 14:25:00,504 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] Stream runner modules initialized: {0} 
+2025-09-09 14:25:00,505 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] Stream process started 
+2025-09-09 14:25:00,507 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator configured 
+2025-09-09 14:25:00,608 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] System initialized successfully 
+2025-09-09 14:25:00,711 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] System status: Normal 
+2025-09-09 14:25:00,817 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net configuration file not found 
+2025-09-09 14:25:00,925 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] Database connected successfully 
+2025-09-09 14:25:01,033 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator configured 
+2025-09-09 14:25:01,040 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:248] [MainWindowStarted] Main window started 
+2025-09-09 14:25:05,543 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:381] [UserExiting] User operator is exiting the application 
+2025-09-09 14:25:05,569 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] Module destroyed: SafetyModule 
+2025-09-09 14:25:05,569 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] Module destroyed: IOPollingModule 
+2025-09-09 14:25:05,570 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] Stream process stopped 
+2025-09-09 14:29:07,875 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 14:29:07,876 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 14:29:07,879 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 14:29:07,886 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 14:29:07,897 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 14:29:07,897 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 14:29:07,917 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] Culture changed to en-US 
+2025-09-09 14:29:07,923 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] Axis configuration loaded from: 3个轴配置 
+2025-09-09 14:29:07,931 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] System initialized successfully 
+2025-09-09 14:29:09,994 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO connection failed: 127.0.0.1:6000 
+2025-09-09 14:29:09,995 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO connection failed: SafetyModule初始化 
+2025-09-09 14:29:09,995 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] Module initialized: SafetyModule 
+2025-09-09 14:29:09,997 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] Stream runner modules initialized: {0} 
+2025-09-09 14:29:10,214 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] Module initialized: IOPollingModule: IO映射名称加载成功 
+2025-09-09 14:29:10,214 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] Module initialized: IOPollingModule 
+2025-09-09 14:29:10,215 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] Stream runner modules initialized: {0} 
+2025-09-09 14:29:10,215 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] Stream process started 
+2025-09-09 14:29:10,218 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator configured 
+2025-09-09 14:29:10,360 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] System initialized successfully 
+2025-09-09 14:29:10,473 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] System status: Normal 
+2025-09-09 14:29:10,582 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net configuration file not found 
+2025-09-09 14:29:10,690 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] Database connected successfully 
+2025-09-09 14:29:10,797 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator configured 
+2025-09-09 14:29:10,805 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:248] [MainWindowStarted] Main window started 
+2025-09-09 14:29:15,462 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:381] [UserExiting] User operator is exiting the application 
+2025-09-09 14:29:15,491 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] Module destroyed: SafetyModule 
+2025-09-09 14:29:15,491 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] Module destroyed: IOPollingModule 
+2025-09-09 14:29:15,492 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] Stream process stopped 
+2025-09-09 14:30:50,711 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 14:30:50,712 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 14:30:50,715 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 14:30:50,722 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 14:30:50,733 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 14:30:50,734 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 14:30:50,751 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] Culture changed to en-US 
+2025-09-09 14:30:50,757 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] Axis configuration loaded from: 3个轴配置 
+2025-09-09 14:30:50,764 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] System initialized successfully 
+2025-09-09 14:30:52,832 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO connection failed: 127.0.0.1:6000 
+2025-09-09 14:30:52,833 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO connection failed: SafetyModule初始化 
+2025-09-09 14:30:52,833 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] Module initialized: SafetyModule 
+2025-09-09 14:30:52,834 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] Stream runner modules initialized: {0} 
+2025-09-09 14:30:53,054 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] Module initialized: IOPollingModule: IO映射名称加载成功 
+2025-09-09 14:30:53,054 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] Module initialized: IOPollingModule 
+2025-09-09 14:30:53,054 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] Stream runner modules initialized: {0} 
+2025-09-09 14:30:53,055 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] Stream process started 
+2025-09-09 14:30:53,058 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator configured 
+2025-09-09 14:30:53,187 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] System initialized successfully 
+2025-09-09 14:30:53,290 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] System status: Normal 
+2025-09-09 14:30:53,399 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net configuration file not found 
+2025-09-09 14:30:53,508 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] Database connected successfully 
+2025-09-09 14:30:53,616 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator configured 
+2025-09-09 14:30:53,622 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:248] [MainWindowStarted] Main window started 
+2025-09-09 14:31:05,290 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:381] [UserExiting] User operator is exiting the application 
+2025-09-09 14:31:05,333 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] Module destroyed: SafetyModule 
+2025-09-09 14:31:05,334 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] Module destroyed: IOPollingModule 
+2025-09-09 14:31:05,334 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] Stream process stopped 
+2025-09-09 14:35:07,461 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 14:35:07,462 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 14:35:07,465 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 14:35:07,471 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 14:35:07,482 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 14:35:07,482 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 14:35:07,502 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] Culture changed to en-US 
+2025-09-09 14:35:07,510 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] Axis configuration loaded from: 3个轴配置 
+2025-09-09 14:35:07,519 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] System initialized successfully 
+2025-09-09 14:35:09,579 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO connection failed: 127.0.0.1:6000 
+2025-09-09 14:35:09,580 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO connection failed: SafetyModule初始化 
+2025-09-09 14:35:09,580 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] Module initialized: SafetyModule 
+2025-09-09 14:35:09,582 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] Stream runner modules initialized: {0} 
+2025-09-09 14:35:09,792 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] Module initialized: IOPollingModule: IO映射名称加载成功 
+2025-09-09 14:35:09,792 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] Module initialized: IOPollingModule 
+2025-09-09 14:35:09,793 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] Stream runner modules initialized: {0} 
+2025-09-09 14:35:09,793 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] Stream process started 
+2025-09-09 14:35:09,795 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator configured 
+2025-09-09 14:35:09,900 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] System initialized successfully 
+2025-09-09 14:35:10,004 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] System status: Normal 
+2025-09-09 14:35:10,111 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net configuration file not found 
+2025-09-09 14:35:10,221 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] Database connected successfully 
+2025-09-09 14:35:10,330 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator configured 
+2025-09-09 14:35:10,336 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:248] [MainWindowStarted] Main window started 
+2025-09-09 14:35:30,385 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:381] [UserExiting] User operator is exiting the application 
+2025-09-09 14:35:30,443 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] Module destroyed: SafetyModule 
+2025-09-09 14:35:30,444 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] Module destroyed: IOPollingModule 
+2025-09-09 14:35:30,444 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] Stream process stopped 
+2025-09-09 14:40:14,737 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 14:40:14,737 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 14:40:14,740 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 14:40:14,747 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 14:40:14,758 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 14:40:14,758 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 14:40:14,778 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] Culture changed to en-US 
+2025-09-09 14:40:14,782 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] Axis configuration loaded from: 3个轴配置 
+2025-09-09 14:40:14,790 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] System initialized successfully 
+2025-09-09 14:40:16,848 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO connection failed: 127.0.0.1:6000 
+2025-09-09 14:40:16,849 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO connection failed: SafetyModule初始化 
+2025-09-09 14:40:16,849 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] Module initialized: SafetyModule 
+2025-09-09 14:40:16,851 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] Stream runner modules initialized: {0} 
+2025-09-09 14:40:17,062 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] Module initialized: IOPollingModule: IO映射名称加载成功 
+2025-09-09 14:40:17,063 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] Module initialized: IOPollingModule 
+2025-09-09 14:40:17,063 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] Stream runner modules initialized: {0} 
+2025-09-09 14:40:17,064 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] Stream process started 
+2025-09-09 14:40:17,065 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator configured 
+2025-09-09 14:40:17,168 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] System initialized successfully 
+2025-09-09 14:40:17,271 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] System status: Normal 
+2025-09-09 14:40:17,377 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net configuration file not found 
+2025-09-09 14:40:17,486 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] Database connected successfully 
+2025-09-09 14:40:17,592 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator configured 
+2025-09-09 14:40:17,605 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:248] [MainWindowStarted] Main window started 
+2025-09-09 14:40:54,818 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:381] [UserExiting] User operator is exiting the application 
+2025-09-09 14:40:54,859 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] Module destroyed: SafetyModule 
+2025-09-09 14:40:54,859 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] Module destroyed: IOPollingModule 
+2025-09-09 14:40:54,860 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] Stream process stopped 
+2025-09-09 14:57:44,651 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 14:57:44,652 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 14:57:44,656 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 14:57:44,742 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 14:57:44,753 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 14:57:44,754 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 14:57:44,785 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] Culture changed to en-US 
+2025-09-09 14:57:44,793 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] Axis configuration loaded from: 3个轴配置 
+2025-09-09 14:57:44,802 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] System initialized successfully 
+2025-09-09 14:57:46,877 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO connection failed: 127.0.0.1:6000 
+2025-09-09 14:57:46,877 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO connection failed: SafetyModule初始化 
+2025-09-09 14:57:46,878 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] Module initialized: SafetyModule 
+2025-09-09 14:57:46,879 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] Stream runner modules initialized: {0} 
+2025-09-09 14:57:47,110 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] Module initialized: IOPollingModule: IO映射名称加载成功 
+2025-09-09 14:57:47,110 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] Module initialized: IOPollingModule 
+2025-09-09 14:57:47,110 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] Stream runner modules initialized: {0} 
+2025-09-09 14:57:47,112 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] Stream process started 
+2025-09-09 14:57:47,114 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator configured 
+2025-09-09 14:57:47,207 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] System initialized successfully 
+2025-09-09 14:57:47,323 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] System status: Normal 
+2025-09-09 14:57:47,429 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net configuration file not found 
+2025-09-09 14:57:47,537 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] Database connected successfully 
+2025-09-09 14:57:47,644 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator configured 
+2025-09-09 14:57:47,653 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:278] [MainWindowStarted] Main window started 
+2025-09-09 14:57:50,940 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:803] [TestLogClicked] Test log button clicked 
+2025-09-09 14:58:56,840 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:411] [UserExiting] User operator is exiting the application 
+2025-09-09 14:58:56,896 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] Module destroyed: SafetyModule 
+2025-09-09 14:58:56,897 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] Module destroyed: IOPollingModule 
+2025-09-09 14:58:56,898 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] Stream process stopped 
+2025-09-09 15:12:38,431 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 15:12:38,432 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 15:12:38,435 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 15:12:38,442 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 15:12:38,453 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 15:12:38,453 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 15:12:38,474 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] Culture changed to en-US 
+2025-09-09 15:12:38,480 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] Axis configuration loaded from: 3个轴配置 
+2025-09-09 15:12:38,488 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] System initialized successfully 
+2025-09-09 15:12:40,537 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO connection failed: 127.0.0.1:6000 
+2025-09-09 15:12:40,539 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO connection failed: SafetyModule初始化 
+2025-09-09 15:12:40,539 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] Module initialized: SafetyModule 
+2025-09-09 15:12:40,540 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] Stream runner modules initialized: {0} 
+2025-09-09 15:12:40,763 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] Module initialized: IOPollingModule: IO映射名称加载成功 
+2025-09-09 15:12:40,763 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] Module initialized: IOPollingModule 
+2025-09-09 15:12:40,764 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] Stream runner modules initialized: {0} 
+2025-09-09 15:12:40,764 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] Stream process started 
+2025-09-09 15:12:40,766 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator configured 
+2025-09-09 15:12:40,866 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] System initialized successfully 
+2025-09-09 15:12:40,977 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] System status: Normal 
+2025-09-09 15:12:41,086 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net configuration file not found 
+2025-09-09 15:12:41,194 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] Database connected successfully 
+2025-09-09 15:12:41,302 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator configured 
+2025-09-09 15:12:49,241 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 15:12:49,242 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 15:12:49,245 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 15:12:49,251 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 15:12:49,263 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 15:12:49,263 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 15:12:49,283 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] Culture changed to en-US 
+2025-09-09 15:12:49,289 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] Axis configuration loaded from: 3个轴配置 
+2025-09-09 15:12:49,296 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] System initialized successfully 
+2025-09-09 15:12:51,354 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO connection failed: 127.0.0.1:6000 
+2025-09-09 15:12:51,355 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO connection failed: SafetyModule初始化 
+2025-09-09 15:12:51,355 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] Module initialized: SafetyModule 
+2025-09-09 15:12:51,356 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] Stream runner modules initialized: {0} 
+2025-09-09 15:12:51,559 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] Module initialized: IOPollingModule: IO映射名称加载成功 
+2025-09-09 15:12:51,559 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] Module initialized: IOPollingModule 
+2025-09-09 15:12:51,560 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] Stream runner modules initialized: {0} 
+2025-09-09 15:12:51,560 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] Stream process started 
+2025-09-09 15:12:51,562 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator configured 
+2025-09-09 15:12:51,658 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] System initialized successfully 
+2025-09-09 15:12:51,762 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] System status: Normal 
+2025-09-09 15:12:51,868 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net configuration file not found 
+2025-09-09 15:12:51,976 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] Database connected successfully 
+2025-09-09 15:12:52,082 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator configured 
+2025-09-09 15:14:10,870 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 15:14:10,870 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 15:14:10,874 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 15:14:10,880 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 15:14:10,892 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 15:14:10,893 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 15:14:10,910 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] Culture changed to en-US 
+2025-09-09 15:14:10,915 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] Axis configuration loaded from: 3个轴配置 
+2025-09-09 15:14:10,922 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] System initialized successfully 
+2025-09-09 15:14:12,975 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO connection failed: 127.0.0.1:6000 
+2025-09-09 15:14:12,976 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO connection failed: SafetyModule初始化 
+2025-09-09 15:14:12,976 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] Module initialized: SafetyModule 
+2025-09-09 15:14:12,976 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] Stream runner modules initialized: {0} 
+2025-09-09 15:14:13,190 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] Module initialized: IOPollingModule: IO映射名称加载成功 
+2025-09-09 15:14:13,191 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] Module initialized: IOPollingModule 
+2025-09-09 15:14:13,191 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] Stream runner modules initialized: {0} 
+2025-09-09 15:14:13,192 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] Stream process started 
+2025-09-09 15:14:13,193 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator configured 
+2025-09-09 15:14:13,289 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] System initialized successfully 
+2025-09-09 15:14:13,402 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] System status: Normal 
+2025-09-09 15:14:13,511 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net configuration file not found 
+2025-09-09 15:14:13,619 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] Database connected successfully 
+2025-09-09 15:14:13,724 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator configured 
+2025-09-09 15:14:13,736 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:312] [MainWindowStarted] Main window started 
+2025-09-09 15:14:16,604 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:929] [TestLogClicked] Test log button clicked 
+2025-09-09 15:14:17,905 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:940] [TestLogClicked] Test log button clicked 
+2025-09-09 15:14:21,115 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:948] [TestLogClicked] Test log button clicked 
+2025-09-09 15:14:22,092 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:948] [TestLogClicked] Test log button clicked 
+2025-09-09 15:14:23,169 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:959] [TestLogClicked] Test log button clicked 
+2025-09-09 15:14:25,490 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:970] [TestLogClicked] Test log button clicked 
+2025-09-09 15:14:27,305 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:981] [TestLogClicked] Test log button clicked 
+2025-09-09 15:14:28,200 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:940] [TestLogClicked] Test log button clicked 
+2025-09-09 15:14:28,728 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:970] [TestLogClicked] Test log button clicked 
+2025-09-09 15:14:29,230 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:981] [TestLogClicked] Test log button clicked 
+2025-09-09 15:14:29,779 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:959] [TestLogClicked] Test log button clicked 
+2025-09-09 15:14:41,289 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:445] [UserExiting] User operator is exiting the application 
+2025-09-09 15:14:41,335 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] Module destroyed: SafetyModule 
+2025-09-09 15:14:41,336 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] Module destroyed: IOPollingModule 
+2025-09-09 15:14:41,336 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] Stream process stopped 
+2025-09-09 15:26:54,305 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 15:26:54,306 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 15:26:54,308 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 15:26:54,316 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 15:26:54,327 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 15:26:54,327 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 15:26:54,347 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] Culture changed to en-US 
+2025-09-09 15:26:54,352 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] Axis configuration loaded from: 3个轴配置 
+2025-09-09 15:26:54,359 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] System initialized successfully 
+2025-09-09 15:26:56,426 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO connection failed: 127.0.0.1:6000 
+2025-09-09 15:26:56,427 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO connection failed: SafetyModule初始化 
+2025-09-09 15:26:56,427 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] Module initialized: SafetyModule 
+2025-09-09 15:26:56,428 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] Stream runner modules initialized: {0} 
+2025-09-09 15:26:56,634 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] Module initialized: IOPollingModule: IO映射名称加载成功 
+2025-09-09 15:26:56,635 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] Module initialized: IOPollingModule 
+2025-09-09 15:26:56,635 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] Stream runner modules initialized: {0} 
+2025-09-09 15:26:56,636 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] Stream process started 
+2025-09-09 15:26:56,640 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator configured 
+2025-09-09 15:26:56,739 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] System initialized successfully 
+2025-09-09 15:26:56,853 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] System status: Normal 
+2025-09-09 15:26:56,959 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net configuration file not found 
+2025-09-09 15:26:57,068 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] Database connected successfully 
+2025-09-09 15:26:57,175 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator configured 
+2025-09-09 15:26:57,185 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:318] [MainWindowStarted] Main window started 
+2025-09-09 15:27:14,702 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:964] [TestLogClicked] Test log button clicked 
+2025-09-09 15:27:15,351 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:977] [TestLogClicked] Test log button clicked 
+2025-09-09 15:27:16,422 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:986] [TestLogClicked] Test log button clicked 
+2025-09-09 15:27:17,767 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1013] [TestLogClicked] Test log button clicked 
+2025-09-09 15:27:18,190 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1026] [TestLogClicked] Test log button clicked 
+2025-09-09 15:27:21,394 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:340] [TestLogClicked] Test log button clicked 
+2025-09-09 15:27:21,394 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:341] [SystemStatusNormal] System status: Normal 
+2025-09-09 15:27:21,394 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:342] [Log4netConfigNotFound] Log4net configuration file not found 
+2025-09-09 15:27:21,394 [ERROR] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:343] [DatabaseConnectionError] Database connection error: Connection timeout 
+2025-09-09 15:27:21,396 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:344] [ProcessingComplete] Processing complete 
+2025-09-09 15:27:21,396 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:345] [BaseManagerInitialized] Base Manager initialized: TestManager 
+2025-09-09 15:27:33,540 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 文化已更改为 zh-CN 
+2025-09-09 15:27:46,045 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:451] [UserExiting] 用户 operator 正在退出应用程序 
+2025-09-09 15:27:46,098 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] 模块已销毁: SafetyModule 
+2025-09-09 15:27:46,098 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] 模块已销毁: IOPollingModule 
+2025-09-09 15:27:46,100 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] 流处理已停止 
+2025-09-09 15:28:00,068 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 15:28:00,069 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 15:28:00,072 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 15:28:00,079 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 15:28:00,091 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 15:28:00,091 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 15:28:00,107 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 文化已更改为 zh-CN 
+2025-09-09 15:28:00,112 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴配置 
+2025-09-09 15:28:00,120 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] 系统初始化成功 
+2025-09-09 15:28:02,173 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO连接失败: 127.0.0.1:6000 
+2025-09-09 15:28:02,174 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO连接失败: SafetyModule初始化 
+2025-09-09 15:28:02,174 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] 模块初始化成功: SafetyModule 
+2025-09-09 15:28:02,174 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 15:28:02,419 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] 模块初始化成功: IOPollingModule: IO映射名称加载成功 
+2025-09-09 15:28:02,419 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] 模块初始化成功: IOPollingModule 
+2025-09-09 15:28:02,420 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 15:28:02,420 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] 流处理已启动 
+2025-09-09 15:28:02,422 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 15:28:02,554 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-09-09 15:28:02,661 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-09-09 15:28:02,770 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-09-09 15:28:02,876 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-09-09 15:28:02,984 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 15:28:02,991 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:318] [MainWindowStarted] 主窗口已启动 
+2025-09-09 15:29:07,143 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:451] [UserExiting] 用户 operator 正在退出应用程序 
+2025-09-09 15:29:07,190 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] 模块已销毁: SafetyModule 
+2025-09-09 15:29:07,191 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] 模块已销毁: IOPollingModule 
+2025-09-09 15:29:07,191 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] 流处理已停止 
+2025-09-09 15:41:40,305 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 15:41:40,306 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 15:41:40,309 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 15:41:40,373 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 15:41:40,384 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 15:41:40,385 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 15:41:40,404 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 文化已更改为 zh-CN 
+2025-09-09 15:41:40,414 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴配置 
+2025-09-09 15:41:40,431 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] 系统初始化成功 
+2025-09-09 15:41:42,492 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO连接失败: 127.0.0.1:6000 
+2025-09-09 15:41:42,493 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO连接失败: SafetyModule初始化 
+2025-09-09 15:41:42,493 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] 模块初始化成功: SafetyModule 
+2025-09-09 15:41:42,493 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 15:41:42,734 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] 模块初始化成功: IOPollingModule: IO映射名称加载成功 
+2025-09-09 15:41:42,735 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] 模块初始化成功: IOPollingModule 
+2025-09-09 15:41:42,735 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 15:41:42,736 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] 流处理已启动 
+2025-09-09 15:41:42,738 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 15:41:42,859 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-09-09 15:41:42,975 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-09-09 15:41:43,081 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-09-09 15:41:43,189 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-09-09 15:41:43,299 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 15:41:43,307 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:316] [MainWindowStarted] 主窗口已启动 
+2025-09-09 15:41:51,699 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:449] [UserExiting] 用户 operator 正在退出应用程序 
+2025-09-09 15:41:51,742 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] 模块已销毁: SafetyModule 
+2025-09-09 15:41:51,743 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] 模块已销毁: IOPollingModule 
+2025-09-09 15:41:51,744 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] 流处理已停止 
+2025-09-09 15:44:37,195 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 15:44:37,196 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 15:44:37,199 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 15:44:37,205 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 15:44:37,217 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 15:44:37,218 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 15:44:37,234 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 文化已更改为 zh-CN 
+2025-09-09 15:44:37,240 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴配置 
+2025-09-09 15:44:37,250 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] 系统初始化成功 
+2025-09-09 15:44:39,317 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO连接失败: 127.0.0.1:6000 
+2025-09-09 15:44:39,317 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO连接失败: SafetyModule初始化 
+2025-09-09 15:44:39,318 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] 模块初始化成功: SafetyModule 
+2025-09-09 15:44:39,318 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 15:44:39,560 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] 模块初始化成功: IOPollingModule: IO映射名称加载成功 
+2025-09-09 15:44:39,561 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] 模块初始化成功: IOPollingModule 
+2025-09-09 15:44:39,561 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 15:44:39,561 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] 流处理已启动 
+2025-09-09 15:44:39,564 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 15:44:39,693 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-09-09 15:44:39,810 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-09-09 15:44:39,917 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-09-09 15:44:40,025 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-09-09 15:44:40,132 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 15:44:40,141 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:316] [MainWindowStarted] 主窗口已启动 
+2025-09-09 15:44:56,059 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:449] [UserExiting] 用户 operator 正在退出应用程序 
+2025-09-09 15:44:56,105 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] 模块已销毁: SafetyModule 
+2025-09-09 15:44:56,106 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] 模块已销毁: IOPollingModule 
+2025-09-09 15:44:56,106 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] 流处理已停止 
+2025-09-09 15:48:10,545 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 15:48:10,545 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 15:48:10,547 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 15:48:10,554 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 15:48:10,565 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 15:48:10,565 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 15:48:10,581 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 文化已更改为 zh-CN 
+2025-09-09 15:48:10,587 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴配置 
+2025-09-09 15:48:10,619 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] 系统初始化成功 
+2025-09-09 15:48:12,681 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO连接失败: 127.0.0.1:6000 
+2025-09-09 15:48:12,682 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO连接失败: SafetyModule初始化 
+2025-09-09 15:48:12,682 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] 模块初始化成功: SafetyModule 
+2025-09-09 15:48:12,683 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 15:48:12,911 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] 模块初始化成功: IOPollingModule: IO映射名称加载成功 
+2025-09-09 15:48:12,911 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] 模块初始化成功: IOPollingModule 
+2025-09-09 15:48:12,912 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 15:48:12,912 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] 流处理已启动 
+2025-09-09 15:48:12,914 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 15:48:13,021 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-09-09 15:48:13,137 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-09-09 15:48:13,244 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-09-09 15:48:13,352 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-09-09 15:48:13,459 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 15:48:13,469 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:316] [MainWindowStarted] 主窗口已启动 
+2025-09-09 15:48:45,664 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:449] [UserExiting] 用户 operator 正在退出应用程序 
+2025-09-09 15:48:45,708 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] 模块已销毁: SafetyModule 
+2025-09-09 15:48:45,708 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] 模块已销毁: IOPollingModule 
+2025-09-09 15:48:45,709 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] 流处理已停止 
+2025-09-09 15:58:38,672 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 15:58:38,673 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 15:58:38,676 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 15:58:38,684 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 15:58:38,695 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 15:58:38,695 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 15:58:38,710 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 文化已更改为 zh-CN 
+2025-09-09 15:58:38,717 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴配置 
+2025-09-09 15:58:38,725 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] 系统初始化成功 
+2025-09-09 15:58:40,795 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO连接失败: 127.0.0.1:6000 
+2025-09-09 15:58:40,795 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO连接失败: SafetyModule初始化 
+2025-09-09 15:58:40,795 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] 模块初始化成功: SafetyModule 
+2025-09-09 15:58:40,796 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 15:58:41,048 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] 模块初始化成功: IOPollingModule: IO映射名称加载成功 
+2025-09-09 15:58:41,049 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] 模块初始化成功: IOPollingModule 
+2025-09-09 15:58:41,049 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 15:58:41,049 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] 流处理已启动 
+2025-09-09 15:58:41,054 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 15:58:41,190 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-09-09 15:58:41,301 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-09-09 15:58:41,409 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-09-09 15:58:41,515 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-09-09 15:58:41,624 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 15:58:41,633 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:328] [MainWindowStarted] 主窗口已启动 
+2025-09-09 15:59:13,743 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:461] [UserExiting] 用户 operator 正在退出应用程序 
+2025-09-09 15:59:13,788 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] 模块已销毁: SafetyModule 
+2025-09-09 15:59:13,789 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] 模块已销毁: IOPollingModule 
+2025-09-09 15:59:13,789 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] 流处理已停止 
+2025-09-09 16:03:26,477 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 16:03:26,477 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 16:03:26,481 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 16:03:26,488 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 16:03:26,500 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 16:03:26,501 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 16:03:26,517 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 文化已更改为 zh-CN 
+2025-09-09 16:03:26,522 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴配置 
+2025-09-09 16:03:26,529 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] 系统初始化成功 
+2025-09-09 16:03:28,579 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO连接失败: 127.0.0.1:6000 
+2025-09-09 16:03:28,580 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO连接失败: SafetyModule初始化 
+2025-09-09 16:03:28,580 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] 模块初始化成功: SafetyModule 
+2025-09-09 16:03:28,580 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 16:03:28,833 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] 模块初始化成功: IOPollingModule: IO映射名称加载成功 
+2025-09-09 16:03:28,833 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] 模块初始化成功: IOPollingModule 
+2025-09-09 16:03:28,833 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 16:03:28,834 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] 流处理已启动 
+2025-09-09 16:03:28,836 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 16:03:28,950 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-09-09 16:03:29,065 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-09-09 16:03:29,173 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-09-09 16:03:29,282 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-09-09 16:03:29,389 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 16:03:29,397 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:328] [MainWindowStarted] 主窗口已启动 
+2025-09-09 16:03:39,892 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:461] [UserExiting] 用户 operator 正在退出应用程序 
+2025-09-09 16:03:39,934 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] 模块已销毁: SafetyModule 
+2025-09-09 16:03:39,935 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] 模块已销毁: IOPollingModule 
+2025-09-09 16:03:39,935 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] 流处理已停止 
+2025-09-09 16:13:15,081 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 16:13:15,082 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 16:13:15,085 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 16:13:15,093 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 16:13:15,104 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 16:13:15,105 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 16:13:15,122 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 文化已更改为 zh-CN 
+2025-09-09 16:13:15,127 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴配置 
+2025-09-09 16:13:15,136 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] 系统初始化成功 
+2025-09-09 16:13:17,191 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO连接失败: 127.0.0.1:6000 
+2025-09-09 16:13:17,193 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO连接失败: SafetyModule初始化 
+2025-09-09 16:13:17,193 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] 模块初始化成功: SafetyModule 
+2025-09-09 16:13:17,194 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 16:13:17,429 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] 模块初始化成功: IOPollingModule: IO映射名称加载成功 
+2025-09-09 16:13:17,430 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] 模块初始化成功: IOPollingModule 
+2025-09-09 16:13:17,430 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 16:13:17,431 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] 流处理已启动 
+2025-09-09 16:13:17,434 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 16:13:17,568 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-09-09 16:13:17,677 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-09-09 16:13:17,787 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-09-09 16:13:17,894 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-09-09 16:13:18,000 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 16:13:18,009 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:328] [MainWindowStarted] 主窗口已启动 
+2025-09-09 16:14:47,206 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:461] [UserExiting] 用户 operator 正在退出应用程序 
+2025-09-09 16:14:47,259 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] 模块已销毁: SafetyModule 
+2025-09-09 16:14:47,260 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] 模块已销毁: IOPollingModule 
+2025-09-09 16:14:47,261 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] 流处理已停止 
+2025-09-09 16:23:19,373 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 16:23:19,374 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 16:23:19,378 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 16:23:19,458 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 16:23:19,469 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 16:23:19,470 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 16:23:19,489 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 文化已更改为 zh-CN 
+2025-09-09 16:23:19,495 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴配置 
+2025-09-09 16:23:19,503 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] 系统初始化成功 
+2025-09-09 16:23:21,578 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO连接失败: 127.0.0.1:6000 
+2025-09-09 16:23:21,578 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO连接失败: SafetyModule初始化 
+2025-09-09 16:23:21,579 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] 模块初始化成功: SafetyModule 
+2025-09-09 16:23:21,579 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 16:23:21,819 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] 模块初始化成功: IOPollingModule: IO映射名称加载成功 
+2025-09-09 16:23:21,819 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] 模块初始化成功: IOPollingModule 
+2025-09-09 16:23:21,819 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 16:23:21,820 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] 流处理已启动 
+2025-09-09 16:23:21,821 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 16:27:05,621 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 16:27:05,622 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 16:27:05,625 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 16:27:05,632 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 16:27:05,643 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 16:27:05,644 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 16:27:05,660 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 文化已更改为 zh-CN 
+2025-09-09 16:27:05,666 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴配置 
+2025-09-09 16:27:05,708 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] 系统初始化成功 
+2025-09-09 16:27:07,783 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO连接失败: 127.0.0.1:6000 
+2025-09-09 16:27:07,783 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO连接失败: SafetyModule初始化 
+2025-09-09 16:27:07,784 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] 模块初始化成功: SafetyModule 
+2025-09-09 16:27:07,784 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 16:27:08,013 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] 模块初始化成功: IOPollingModule: IO映射名称加载成功 
+2025-09-09 16:27:08,014 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] 模块初始化成功: IOPollingModule 
+2025-09-09 16:27:08,014 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 16:27:08,014 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] 流处理已启动 
+2025-09-09 16:27:08,016 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 16:27:08,143 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-09-09 16:27:08,247 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-09-09 16:27:08,354 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-09-09 16:27:08,463 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-09-09 16:27:08,571 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 16:27:08,602 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:328] [MainWindowStarted] 主窗口已启动 
+2025-09-09 16:27:18,908 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:461] [UserExiting] 用户 operator 正在退出应用程序 
+2025-09-09 16:27:18,951 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] 模块已销毁: SafetyModule 
+2025-09-09 16:27:18,952 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] 模块已销毁: IOPollingModule 
+2025-09-09 16:27:18,953 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] 流处理已停止 
+2025-09-09 16:33:39,010 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 16:33:39,011 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 16:33:39,013 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 16:33:39,020 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 16:33:39,031 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 16:33:39,032 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 16:33:39,047 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 文化已更改为 zh-CN 
+2025-09-09 16:33:39,053 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴配置 
+2025-09-09 16:33:39,060 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] 系统初始化成功 
+2025-09-09 16:33:41,123 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO连接失败: 127.0.0.1:6000 
+2025-09-09 16:33:41,124 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO连接失败: SafetyModule初始化 
+2025-09-09 16:33:41,124 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] 模块初始化成功: SafetyModule 
+2025-09-09 16:33:41,124 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 16:33:41,367 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] 模块初始化成功: IOPollingModule: IO映射名称加载成功 
+2025-09-09 16:33:41,367 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] 模块初始化成功: IOPollingModule 
+2025-09-09 16:33:41,367 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 16:33:41,367 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] 流处理已启动 
+2025-09-09 16:33:41,369 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 16:33:41,495 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-09-09 16:33:41,610 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-09-09 16:33:41,717 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-09-09 16:33:41,825 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-09-09 16:33:41,931 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 16:33:41,945 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:328] [MainWindowStarted] 主窗口已启动 
+2025-09-09 16:34:33,082 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:461] [UserExiting] 用户 operator 正在退出应用程序 
+2025-09-09 16:34:33,136 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] 模块已销毁: SafetyModule 
+2025-09-09 16:34:33,136 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] 模块已销毁: IOPollingModule 
+2025-09-09 16:34:33,137 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] 流处理已停止 
+2025-09-09 16:35:49,738 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 16:35:49,740 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 16:35:49,746 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 16:35:49,753 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 16:35:49,764 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 16:35:49,766 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 16:35:49,786 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 文化已更改为 zh-CN 
+2025-09-09 16:35:49,791 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴配置 
+2025-09-09 16:35:49,799 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] 系统初始化成功 
+2025-09-09 16:35:51,859 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO连接失败: 127.0.0.1:6000 
+2025-09-09 16:35:51,859 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO连接失败: SafetyModule初始化 
+2025-09-09 16:35:51,859 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] 模块初始化成功: SafetyModule 
+2025-09-09 16:35:51,860 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 16:35:52,116 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] 模块初始化成功: IOPollingModule: IO映射名称加载成功 
+2025-09-09 16:35:52,116 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] 模块初始化成功: IOPollingModule 
+2025-09-09 16:35:52,117 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 16:35:52,117 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] 流处理已启动 
+2025-09-09 16:35:52,120 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 16:35:52,253 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-09-09 16:35:52,363 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-09-09 16:35:52,471 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-09-09 16:35:52,578 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-09-09 16:35:52,686 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 16:35:52,694 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:328] [MainWindowStarted] 主窗口已启动 
+2025-09-09 16:36:19,603 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:943] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 16:36:22,596 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:934] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 16:36:26,782 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:943] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 16:40:51,729 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:913] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 16:40:53,062 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:906] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 16:40:53,776 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:899] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 16:41:05,875 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:461] [UserExiting] 用户 operator 正在退出应用程序 
+2025-09-09 16:41:05,929 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] 模块已销毁: SafetyModule 
+2025-09-09 16:41:05,931 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] 模块已销毁: IOPollingModule 
+2025-09-09 16:41:05,931 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] 流处理已停止 
+2025-09-09 16:41:14,986 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 16:41:14,987 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 16:41:14,990 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 16:41:14,997 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 16:41:15,007 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 16:41:15,007 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 16:41:15,024 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 文化已更改为 zh-CN 
+2025-09-09 16:41:15,029 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴配置 
+2025-09-09 16:41:15,036 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] 系统初始化成功 
+2025-09-09 16:41:17,103 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO连接失败: 127.0.0.1:6000 
+2025-09-09 16:41:17,103 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO连接失败: SafetyModule初始化 
+2025-09-09 16:41:17,104 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] 模块初始化成功: SafetyModule 
+2025-09-09 16:41:17,104 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 16:41:17,338 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] 模块初始化成功: IOPollingModule: IO映射名称加载成功 
+2025-09-09 16:41:17,339 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] 模块初始化成功: IOPollingModule 
+2025-09-09 16:41:17,339 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 16:41:17,339 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] 流处理已启动 
+2025-09-09 16:41:17,342 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 16:41:17,469 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-09-09 16:41:17,576 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-09-09 16:41:17,684 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-09-09 16:41:17,792 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-09-09 16:41:17,900 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 16:41:17,910 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:328] [MainWindowStarted] 主窗口已启动 
+2025-09-09 16:42:23,904 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1043] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 16:42:24,235 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1043] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 16:42:24,657 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1037] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 16:42:25,561 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1055] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 16:42:26,366 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1049] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 16:42:30,461 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:965] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 16:42:31,243 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:978] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 16:42:32,025 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:987] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 16:42:32,457 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1001] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 16:42:32,921 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1014] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 16:42:33,295 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1027] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 16:43:05,926 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:913] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 16:43:06,726 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:906] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 16:43:07,485 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:899] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 16:43:20,205 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:461] [UserExiting] 用户 admin 正在退出应用程序 
+2025-09-09 16:43:20,251 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] 模块已销毁: SafetyModule 
+2025-09-09 16:43:20,252 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] 模块已销毁: IOPollingModule 
+2025-09-09 16:43:20,252 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] 流处理已停止 
+2025-09-09 16:44:21,878 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 16:44:21,879 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 16:44:21,883 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 16:44:21,890 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 16:44:21,901 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 16:44:21,901 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 16:44:21,916 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 文化已更改为 zh-CN 
+2025-09-09 16:44:21,921 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴配置 
+2025-09-09 16:44:21,930 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] 系统初始化成功 
+2025-09-09 16:44:23,991 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO连接失败: 127.0.0.1:6000 
+2025-09-09 16:44:23,992 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO连接失败: SafetyModule初始化 
+2025-09-09 16:44:23,993 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] 模块初始化成功: SafetyModule 
+2025-09-09 16:44:23,993 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 16:44:24,227 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] 模块初始化成功: IOPollingModule: IO映射名称加载成功 
+2025-09-09 16:44:24,227 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] 模块初始化成功: IOPollingModule 
+2025-09-09 16:44:24,228 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 16:44:24,228 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] 流处理已启动 
+2025-09-09 16:44:24,231 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 16:44:24,363 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-09-09 16:44:24,476 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-09-09 16:44:24,581 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-09-09 16:44:24,690 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-09-09 16:44:24,796 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 16:44:24,804 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:328] [MainWindowStarted] 主窗口已启动 
+2025-09-09 16:44:29,121 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:461] [UserExiting] 用户 operator 正在退出应用程序 
+2025-09-09 16:44:29,167 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] 模块已销毁: SafetyModule 
+2025-09-09 16:44:29,168 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] 模块已销毁: IOPollingModule 
+2025-09-09 16:44:29,169 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] 流处理已停止 
+2025-09-09 16:45:43,991 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 16:45:43,992 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 16:45:43,996 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 16:45:44,002 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 16:45:44,014 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 16:45:44,015 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 16:45:44,030 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 文化已更改为 zh-CN 
+2025-09-09 16:45:44,035 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴配置 
+2025-09-09 16:45:44,043 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] 系统初始化成功 
+2025-09-09 16:45:46,101 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO连接失败: 127.0.0.1:6000 
+2025-09-09 16:45:46,102 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO连接失败: SafetyModule初始化 
+2025-09-09 16:45:46,102 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] 模块初始化成功: SafetyModule 
+2025-09-09 16:45:46,102 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 16:45:46,355 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] 模块初始化成功: IOPollingModule: IO映射名称加载成功 
+2025-09-09 16:45:46,356 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] 模块初始化成功: IOPollingModule 
+2025-09-09 16:45:46,356 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 16:45:46,356 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] 流处理已启动 
+2025-09-09 16:45:46,359 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 16:45:46,494 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-09-09 16:45:46,602 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-09-09 16:45:46,712 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-09-09 16:45:46,817 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-09-09 16:45:46,926 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 16:45:46,934 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:328] [MainWindowStarted] 主窗口已启动 
+2025-09-09 16:45:58,140 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:461] [UserExiting] 用户 operator 正在退出应用程序 
+2025-09-09 16:45:58,188 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] 模块已销毁: SafetyModule 
+2025-09-09 16:45:58,188 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] 模块已销毁: IOPollingModule 
+2025-09-09 16:45:58,189 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] 流处理已停止 
+2025-09-09 16:51:50,989 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 16:51:50,990 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 16:51:50,993 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 16:51:51,000 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 16:51:51,011 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 16:51:51,012 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 16:51:51,028 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 文化已更改为 zh-CN 
+2025-09-09 16:51:51,034 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴配置 
+2025-09-09 16:51:51,041 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] 系统初始化成功 
+2025-09-09 16:51:53,079 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO连接失败: 127.0.0.1:6000 
+2025-09-09 16:51:53,080 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO连接失败: SafetyModule初始化 
+2025-09-09 16:51:53,080 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] 模块初始化成功: SafetyModule 
+2025-09-09 16:51:53,081 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 16:51:53,317 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] 模块初始化成功: IOPollingModule: IO映射名称加载成功 
+2025-09-09 16:51:53,317 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] 模块初始化成功: IOPollingModule 
+2025-09-09 16:51:53,317 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 16:51:53,318 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] 流处理已启动 
+2025-09-09 16:51:53,321 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 16:51:53,455 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-09-09 16:51:53,564 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-09-09 16:51:53,673 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-09-09 16:51:53,780 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-09-09 16:51:53,887 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 16:51:53,904 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:328] [MainWindowStarted] 主窗口已启动 
+2025-09-09 16:55:44,007 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:461] [UserExiting] 用户 operator 正在退出应用程序 
+2025-09-09 16:55:44,054 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] 模块已销毁: SafetyModule 
+2025-09-09 16:55:44,055 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] 模块已销毁: IOPollingModule 
+2025-09-09 16:55:44,055 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] 流处理已停止 
+2025-09-09 16:59:12,624 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 16:59:12,625 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 16:59:12,628 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 16:59:12,636 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 16:59:12,646 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 16:59:12,646 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 16:59:12,661 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 文化已更改为 zh-CN 
+2025-09-09 16:59:12,666 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴配置 
+2025-09-09 16:59:12,674 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] 系统初始化成功 
+2025-09-09 16:59:14,740 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO连接失败: 127.0.0.1:6000 
+2025-09-09 16:59:14,740 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO连接失败: SafetyModule初始化 
+2025-09-09 16:59:14,741 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] 模块初始化成功: SafetyModule 
+2025-09-09 16:59:14,741 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 16:59:14,967 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] 模块初始化成功: IOPollingModule: IO映射名称加载成功 
+2025-09-09 16:59:14,968 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] 模块初始化成功: IOPollingModule 
+2025-09-09 16:59:14,968 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 16:59:14,968 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] 流处理已启动 
+2025-09-09 16:59:14,971 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 16:59:15,089 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-09-09 16:59:15,201 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-09-09 16:59:15,308 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-09-09 16:59:15,416 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-09-09 16:59:15,524 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 16:59:15,540 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:328] [MainWindowStarted] 主窗口已启动 
+2025-09-09 17:02:11,551 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:461] [UserExiting] 用户 operator 正在退出应用程序 
+2025-09-09 17:02:11,600 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] 模块已销毁: SafetyModule 
+2025-09-09 17:02:11,600 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] 模块已销毁: IOPollingModule 
+2025-09-09 17:02:11,602 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] 流处理已停止 
+2025-09-09 17:04:31,630 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 17:04:31,631 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 17:04:31,634 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 17:04:31,642 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 17:04:31,653 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 17:04:31,655 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 17:04:31,671 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 文化已更改为 zh-CN 
+2025-09-09 17:04:31,675 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴配置 
+2025-09-09 17:04:31,683 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] 系统初始化成功 
+2025-09-09 17:04:33,745 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO连接失败: 127.0.0.1:6000 
+2025-09-09 17:04:33,746 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO连接失败: SafetyModule初始化 
+2025-09-09 17:04:33,746 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] 模块初始化成功: SafetyModule 
+2025-09-09 17:04:33,746 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 17:04:33,962 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] 模块初始化成功: IOPollingModule: IO映射名称加载成功 
+2025-09-09 17:04:33,962 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] 模块初始化成功: IOPollingModule 
+2025-09-09 17:04:33,963 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 17:04:33,963 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] 流处理已启动 
+2025-09-09 17:04:33,965 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 17:04:34,093 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-09-09 17:04:34,203 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-09-09 17:04:34,312 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-09-09 17:04:34,419 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-09-09 17:04:34,526 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 17:04:34,542 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:328] [MainWindowStarted] 主窗口已启动 
+2025-09-09 17:04:59,238 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:461] [UserExiting] 用户 operator 正在退出应用程序 
+2025-09-09 17:04:59,277 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] 模块已销毁: SafetyModule 
+2025-09-09 17:04:59,278 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] 模块已销毁: IOPollingModule 
+2025-09-09 17:04:59,278 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] 流处理已停止 
+2025-09-09 17:06:51,600 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 17:06:51,601 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 17:06:51,604 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 17:06:51,611 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 17:06:51,623 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 17:06:51,623 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 17:06:51,640 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 文化已更改为 zh-CN 
+2025-09-09 17:06:51,646 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴配置 
+2025-09-09 17:06:51,679 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] 系统初始化成功 
+2025-09-09 17:06:53,733 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO连接失败: 127.0.0.1:6000 
+2025-09-09 17:06:53,734 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO连接失败: SafetyModule初始化 
+2025-09-09 17:06:53,735 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] 模块初始化成功: SafetyModule 
+2025-09-09 17:06:53,735 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 17:06:53,995 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] 模块初始化成功: IOPollingModule: IO映射名称加载成功 
+2025-09-09 17:06:53,996 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] 模块初始化成功: IOPollingModule 
+2025-09-09 17:06:53,996 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 17:06:53,997 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] 流处理已启动 
+2025-09-09 17:06:53,999 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 17:06:54,128 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-09-09 17:06:54,238 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-09-09 17:06:54,346 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-09-09 17:06:54,454 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-09-09 17:06:54,562 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 17:06:54,576 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:328] [MainWindowStarted] 主窗口已启动 
+2025-09-09 17:08:09,902 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:461] [UserExiting] 用户 operator 正在退出应用程序 
+2025-09-09 17:08:09,943 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] 模块已销毁: SafetyModule 
+2025-09-09 17:08:09,943 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] 模块已销毁: IOPollingModule 
+2025-09-09 17:08:09,944 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] 流处理已停止 
+2025-09-09 17:13:08,677 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 17:13:08,678 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 17:13:08,681 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 17:13:08,742 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 17:13:08,752 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 17:13:08,753 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 17:13:08,768 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 文化已更改为 zh-CN 
+2025-09-09 17:13:08,772 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴配置 
+2025-09-09 17:13:08,780 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] 系统初始化成功 
+2025-09-09 17:13:10,832 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO连接失败: 127.0.0.1:6000 
+2025-09-09 17:13:10,832 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO连接失败: SafetyModule初始化 
+2025-09-09 17:13:10,833 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] 模块初始化成功: SafetyModule 
+2025-09-09 17:13:10,834 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 17:13:11,058 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] 模块初始化成功: IOPollingModule: IO映射名称加载成功 
+2025-09-09 17:13:11,058 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] 模块初始化成功: IOPollingModule 
+2025-09-09 17:13:11,058 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 17:13:11,059 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] 流处理已启动 
+2025-09-09 17:13:11,061 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 17:13:11,186 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-09-09 17:13:11,302 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-09-09 17:13:11,411 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-09-09 17:13:11,518 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-09-09 17:13:11,634 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 17:13:11,641 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:328] [MainWindowStarted] 主窗口已启动 
+2025-09-09 17:15:10,477 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:536] [IOSimulateModeChanged] IO模拟模式已更改: 模拟输入模式已开启 
+2025-09-09 17:15:12,761 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:544] [IOSimulateSet] IO模拟模式设置: X8 = ForceOn 
+2025-09-09 17:15:12,762 [INFO ] [thread-1] [Ewan.BusinessBonding.IOController:65] [IOSimulateSet] IO模拟模式设置: X8 = ForceOn 
+2025-09-09 17:15:12,762 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:635] [IOSimulateSet] IO模拟模式设置: X8 = ForceOn 
+2025-09-09 17:15:14,393 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:544] [IOSimulateSet] IO模拟模式设置: X8 = ForceOff 
+2025-09-09 17:15:14,393 [INFO ] [thread-1] [Ewan.BusinessBonding.IOController:65] [IOSimulateSet] IO模拟模式设置: X8 = ForceOff 
+2025-09-09 17:15:14,394 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:635] [IOSimulateSet] IO模拟模式设置: X8 = ForceOff 
+2025-09-09 17:15:15,018 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:544] [IOSimulateSet] IO模拟模式设置: X8 = None 
+2025-09-09 17:15:15,018 [INFO ] [thread-1] [Ewan.BusinessBonding.IOController:65] [IOSimulateSet] IO模拟模式设置: X8 = None 
+2025-09-09 17:15:15,020 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:635] [IOSimulateSet] IO模拟模式设置: X8 = None 
+2025-09-09 17:17:15,996 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:461] [UserExiting] 用户 operator 正在退出应用程序 
+2025-09-09 17:17:16,043 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] 模块已销毁: SafetyModule 
+2025-09-09 17:17:16,044 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] 模块已销毁: IOPollingModule 
+2025-09-09 17:17:16,044 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] 流处理已停止 
+2025-09-09 17:17:41,329 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 17:17:41,330 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 17:17:41,332 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 17:17:41,339 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 17:17:41,350 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 17:17:41,350 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 17:17:41,365 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 文化已更改为 zh-CN 
+2025-09-09 17:17:41,370 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴配置 
+2025-09-09 17:17:41,376 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] 系统初始化成功 
+2025-09-09 17:17:43,429 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO连接失败: 127.0.0.1:6000 
+2025-09-09 17:17:43,430 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO连接失败: SafetyModule初始化 
+2025-09-09 17:17:43,431 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] 模块初始化成功: SafetyModule 
+2025-09-09 17:17:43,431 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 17:17:43,680 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] 模块初始化成功: IOPollingModule: IO映射名称加载成功 
+2025-09-09 17:17:43,680 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] 模块初始化成功: IOPollingModule 
+2025-09-09 17:17:43,680 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 17:17:43,681 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] 流处理已启动 
+2025-09-09 17:17:43,684 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 17:17:43,810 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-09-09 17:17:43,918 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-09-09 17:17:44,026 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-09-09 17:17:44,133 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-09-09 17:17:44,241 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 17:17:44,259 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:328] [MainWindowStarted] 主窗口已启动 
+2025-09-09 17:18:04,282 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:461] [UserExiting] 用户 operator 正在退出应用程序 
+2025-09-09 17:18:04,325 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] 模块已销毁: SafetyModule 
+2025-09-09 17:18:04,327 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] 模块已销毁: IOPollingModule 
+2025-09-09 17:18:04,327 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] 流处理已停止 
+2025-09-09 17:20:27,165 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 17:20:27,166 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 17:20:27,169 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 17:20:27,176 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 17:20:27,186 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 17:20:27,187 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 17:20:27,201 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 文化已更改为 zh-CN 
+2025-09-09 17:20:27,205 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴配置 
+2025-09-09 17:20:27,213 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] 系统初始化成功 
+2025-09-09 17:20:29,272 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO连接失败: 127.0.0.1:6000 
+2025-09-09 17:20:29,272 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO连接失败: SafetyModule初始化 
+2025-09-09 17:20:29,273 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] 模块初始化成功: SafetyModule 
+2025-09-09 17:20:29,273 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 17:20:29,488 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] 模块初始化成功: IOPollingModule: IO映射名称加载成功 
+2025-09-09 17:20:29,489 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] 模块初始化成功: IOPollingModule 
+2025-09-09 17:20:29,489 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 17:20:29,490 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] 流处理已启动 
+2025-09-09 17:20:29,492 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 17:20:29,617 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-09-09 17:20:29,729 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-09-09 17:20:29,835 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-09-09 17:20:29,942 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-09-09 17:20:30,061 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 17:20:30,070 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:328] [MainWindowStarted] 主窗口已启动 
+2025-09-09 17:20:45,074 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1014] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 17:20:50,237 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:978] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 17:20:51,758 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:987] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 17:20:52,459 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:987] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 17:20:53,270 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:987] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 17:20:55,056 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1001] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 17:20:56,638 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1027] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 17:20:59,892 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1027] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 17:21:00,432 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1014] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 17:21:04,212 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:987] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 17:21:05,212 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:978] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 17:21:06,133 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:965] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 17:21:06,744 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:978] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 17:21:07,246 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:987] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 17:21:07,607 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1014] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 17:21:08,005 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1027] [TestLogClicked] 测试日志按钮被点击 
+2025-09-09 17:21:14,567 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:461] [UserExiting] 用户 operator 正在退出应用程序 
+2025-09-09 17:21:14,613 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:119] [ModuleDestroyed] 模块已销毁: SafetyModule 
+2025-09-09 17:21:14,614 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] 模块已销毁: IOPollingModule 
+2025-09-09 17:21:14,614 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] 流处理已停止 
+2025-09-09 17:21:47,715 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-09 17:21:47,716 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-09 17:21:47,720 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=MitsubishiPLC, ConnectionString=127.0.0.1:6000, MappingPath=Config\io_mapping.json 
+2025-09-09 17:21:47,726 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:138] [IOConfigFileLoaded] IO配置文件已加载: Config\io_mapping.json 
+2025-09-09 17:21:47,738 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:172] [IOHardwareCreated] IO硬件已创建: MitsubishiPLC 
+2025-09-09 17:21:47,738 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-09 17:21:47,754 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 文化已更改为 zh-CN 
+2025-09-09 17:21:47,760 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴配置 
+2025-09-09 17:21:47,769 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] 系统初始化成功 
+2025-09-09 17:21:49,819 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:400] [IOConnectionFailed] IO连接失败: 127.0.0.1:6000 
+2025-09-09 17:21:49,820 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:51] [IOConnectionFailed] IO连接失败: SafetyModule初始化 
+2025-09-09 17:21:49,820 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:55] [ModuleInitialized] 模块初始化成功: SafetyModule 
+2025-09-09 17:21:49,821 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 17:21:50,063 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] 模块初始化成功: IOPollingModule: IO映射名称加载成功 
+2025-09-09 17:21:50,064 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] 模块初始化成功: IOPollingModule 
+2025-09-09 17:21:50,064 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-09 17:21:50,065 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] 流处理已启动 
+2025-09-09 17:21:50,067 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 17:21:50,186 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-09-09 17:21:50,291 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-09-09 17:21:50,399 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-09-09 17:21:50,506 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-09-09 17:21:50,617 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-09 17:21:50,634 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:328] [MainWindowStarted] 主窗口已启动 
+2025-09-09 17:24:36,158 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:613] [ProcessingComplete] 处理完成 

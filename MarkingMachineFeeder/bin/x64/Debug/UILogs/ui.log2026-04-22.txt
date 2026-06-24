@@ -1,0 +1,136 @@
+﻿2026-04-22 14:09:49,583 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1354] 处理已完成: 用户请求停止系统 
+2026-04-22 14:09:49,596 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1370] 处理已完成: 系统停止操作完成 
+2026-04-22 14:09:49,598 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:160] 所有料仓已停止 
+2026-04-22 14:09:49,606 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1557] 系统状态更新: Stopped - 已停止（需复位） 
+2026-04-22 14:09:49,610 [INFO ] [thread-6] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: Stop 
+2026-04-22 14:09:49,612 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:404] 处理已完成: 皮带已停止 
+2026-04-22 14:09:49,774 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1354] 处理已完成: 用户请求停止系统 
+2026-04-22 14:09:49,777 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1370] 处理已完成: 系统停止操作完成 
+2026-04-22 14:09:49,778 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:160] 所有料仓已停止 
+2026-04-22 14:09:49,788 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1557] 系统状态更新: Stopped - 已停止（需复位） 
+2026-04-22 14:09:49,789 [INFO ] [thread-6] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: Stop 
+2026-04-22 14:09:49,791 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:404] 处理已完成: 皮带已停止 
+2026-04-22 14:09:53,910 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:160] 所有料仓已停止 
+2026-04-22 14:09:53,939 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:134] 模块已销毁: BinElevatorModule 
+2026-04-22 14:09:53,945 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:301] 处理已完成: 皮带轴已停止 
+2026-04-22 14:09:53,951 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:233] 模块已销毁: BeltConveyorModule 
+2026-04-22 14:09:53,969 [INFO ] [thread-1] [Ewan.Core.Module.MesModule:89] 模块已销毁: MesModule 
+2026-04-22 14:09:53,983 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: SafetyModule销毁 
+2026-04-22 14:09:53,988 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:188] 模块已销毁: SafetyModule 
+2026-04-22 14:09:53,990 [INFO ] [thread-1] [MarkingMachineFeeder.App:97] 流处理已停止 
+2026-04-22 14:09:54,006 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:134] 模块已销毁: BinElevatorModule 
+2026-04-22 14:09:54,009 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:301] 处理已完成: 皮带轴已停止 
+2026-04-22 14:09:54,012 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:233] 模块已销毁: BeltConveyorModule 
+2026-04-22 14:09:54,016 [INFO ] [thread-1] [Ewan.Core.Module.MesModule:89] 模块已销毁: MesModule 
+2026-04-22 14:09:54,032 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: SafetyModule销毁 
+2026-04-22 14:09:54,034 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:188] 模块已销毁: SafetyModule 
+2026-04-22 14:09:54,058 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:224] 模块销毁: MesManager 
+2026-04-22 14:09:54,071 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:294] MES disconnected: 172.24.10.21:1883 
+2026-04-22 14:09:54,214 [INFO ] [thread-1] [MarkingMachineFeeder.App:108] 资源释放完成 
+2026-04-22 14:09:54,313 [ERROR] [thread-6] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1425] 处理错误: 处理系统状态变化 - 已取消一个任务。 
+2026-04-22 15:15:10,863 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:188] 模块初始化: MesManager 
+2026-04-22 15:15:11,050 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:269] MES connect starting: 172.24.10.21:1883 
+2026-04-22 15:15:11,083 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:271] MES connect succeeded: 172.24.10.21:1883 
+2026-04-22 15:15:11,527 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] 系统初始化成功 
+2026-04-22 15:15:11,539 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: 系统启动 
+2026-04-22 15:15:11,581 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:104] 模块初始化成功: SafetyModule 
+2026-04-22 15:15:11,582 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-04-22 15:15:11,594 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-04-22 15:15:11,603 [WARN ] [thread-1] [Ewan.Core.Manager.LogicManager:401] 需要先复位，才能启动 
+2026-04-22 15:15:11,619 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:74] 模块初始化成功: BinElevatorModule (MessageHub) 
+2026-04-22 15:15:11,620 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-04-22 15:15:11,623 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:110] 模块初始化成功: BeltConveyorModule 
+2026-04-22 15:15:11,625 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:120] 初始化已完成: 皮带输送控制系统 
+2026-04-22 15:15:11,626 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-04-22 15:15:11,632 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-04-22 15:15:11,638 [INFO ] [thread-1] [Ewan.Core.Module.RingLineModule:49] 环线模块已初始化 
+2026-04-22 15:15:11,642 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-04-22 15:15:11,646 [INFO ] [thread-1] [Ewan.Core.Module.MesModule:35] 模块初始化成功: MesModule (MessageHub) 
+2026-04-22 15:15:11,647 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] 流运行器模块初始化完成: 1 个节点 
+2026-04-22 15:15:11,650 [INFO ] [thread-1] [MarkingMachineFeeder.App:64] 流处理已启动 
+2026-04-22 15:15:11,656 [INFO ] [thread-17] [Ewan.Core.Module.BeltConveyorModule:262] 处理已开始: 皮带轴开始反向运行，速度:12 
+2026-04-22 15:15:11,786 [INFO ] [thread-1] [MarkingMachineFeeder.App:78] ViewModelLocator已配置 
+2026-04-22 15:15:12,089 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:351] 主窗口已启动 
+2026-04-22 15:15:12,190 [INFO ] [thread-16] [Ewan.Core.Module.RingLineModule:130] 检测到中段上料(4#): 04,1,2,0,FLS26020053035 -> 拼装: LS26020053035 
+2026-04-22 15:15:12,201 [INFO ] [thread-16] [Ewan.Core.Module.RingLineModule:151] 检测到后段上料(6#): 04,1,2,0,FLS26020053035 -> 拼装: ZH26010002003 
+2026-04-22 15:15:12,214 [INFO ] [thread-6] [Ewan.Core.Mes.MesManager:343] RingLine service initialized: c3030bd6dfe94dc48be471b438985c3b/Z-JQ-S-101-001 
+2026-04-22 15:15:33,865 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:800] IO测试模式: 输出测试模式已开启 
+2026-04-22 15:15:37,375 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 定位夹持 设置为: ON 
+2026-04-22 15:15:39,678 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 定位夹持 设置为: OFF 
+2026-04-22 15:15:47,865 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:655] 处理已完成: 轴配置 
+2026-04-22 15:15:54,823 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.AxisControlViewModel:238] 轴配置已加载：4个轴 
+2026-04-22 15:15:54,876 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:680] 处理已完成: 轴手动控制 
+2026-04-22 15:15:56,711 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.AxisControlViewModel:472] 轴 3 点动停止 
+2026-04-22 15:21:04,877 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 定位夹持 设置为: ON 
+2026-04-22 15:24:46,797 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 定位夹持 设置为: ON 
+2026-04-22 15:24:48,783 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:800] IO测试模式: 输出测试模式已关闭 
+2026-04-22 15:24:50,030 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:800] IO测试模式: 输出测试模式已开启 
+2026-04-22 15:24:50,965 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 定位夹持 设置为: ON 
+2026-04-22 15:24:56,644 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 定位夹持 设置为: ON 
+2026-04-22 15:24:57,341 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 定位夹持 设置为: ON 
+2026-04-22 15:25:08,229 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 定位夹持 设置为: ON 
+2026-04-22 15:25:08,917 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 定位夹持 设置为: ON 
+2026-04-22 15:25:15,493 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 定位夹持 设置为: ON 
+2026-04-22 15:25:28,190 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:800] IO测试模式: 输出测试模式已关闭 
+2026-04-22 15:25:29,014 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:800] IO测试模式: 输出测试模式已开启 
+2026-04-22 15:25:30,373 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 定位夹持 设置为: ON 
+2026-04-22 15:25:30,967 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 定位夹持 设置为: ON 
+2026-04-22 15:26:06,958 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:800] IO测试模式: 输出测试模式已关闭 
+2026-04-22 15:26:34,591 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:800] IO测试模式: 输出测试模式已开启 
+2026-04-22 15:26:35,911 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 定位夹持 设置为: ON 
+2026-04-22 15:26:36,485 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 定位夹持 设置为: ON 
+2026-04-22 15:26:37,326 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:800] IO测试模式: 输出测试模式已关闭 
+2026-04-22 15:26:43,417 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1354] 处理已完成: 用户请求停止系统 
+2026-04-22 15:26:43,424 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1370] 处理已完成: 系统停止操作完成 
+2026-04-22 15:26:43,426 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:160] 所有料仓已停止 
+2026-04-22 15:26:43,446 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1557] 系统状态更新: Stopped - 已停止（需复位） 
+2026-04-22 15:26:43,450 [INFO ] [thread-6] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: Stop 
+2026-04-22 15:26:43,453 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:404] 处理已完成: 皮带已停止 
+2026-04-22 15:26:44,456 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteClearAlarm>d__369:1206] 用户触发清除报警(OUT25脉冲) 
+2026-04-22 15:26:44,562 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel+<ExecuteClearAlarm>d__369:1218] 清除报警完成 
+2026-04-22 15:26:44,563 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1557] 系统状态更新: Standby - 报警已清除，待机 
+2026-04-22 15:26:45,454 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1354] 处理已完成: 用户请求停止系统 
+2026-04-22 15:26:45,456 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1370] 处理已完成: 系统停止操作完成 
+2026-04-22 15:26:45,457 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:160] 所有料仓已停止 
+2026-04-22 15:26:45,466 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1557] 系统状态更新: Stopped - 已停止（需复位） 
+2026-04-22 15:26:45,469 [INFO ] [thread-6] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: Stop 
+2026-04-22 15:26:45,469 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:404] 处理已完成: 皮带已停止 
+2026-04-22 15:26:49,710 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:800] IO测试模式: 输出测试模式已开启 
+2026-04-22 15:26:52,582 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 定位夹持 设置为: OFF 
+2026-04-22 15:26:55,269 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 定位夹持 设置为: ON 
+2026-04-22 15:26:56,230 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 定位夹持 设置为: OFF 
+2026-04-22 15:26:57,213 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 定位夹持 设置为: ON 
+2026-04-22 15:26:57,869 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 定位夹持 设置为: OFF 
+2026-04-22 15:26:58,741 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 定位夹持 设置为: ON 
+2026-04-22 15:27:06,295 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 定位夹持 设置为: OFF 
+2026-04-22 15:27:07,229 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 定位夹持 设置为: ON 
+2026-04-22 15:27:18,413 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 定位夹持 设置为: OFF 
+2026-04-22 15:27:19,501 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 定位夹持 设置为: ON 
+2026-04-22 15:27:47,853 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 定位夹持 设置为: OFF 
+2026-04-22 15:33:28,294 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓1定位电磁阀 设置为: ON 
+2026-04-22 15:33:57,773 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:862] 输出 料仓1定位电磁阀 设置为: OFF 
+2026-04-22 15:49:07,287 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.IOControlViewModel:800] IO测试模式: 输出测试模式已关闭 
+2026-04-22 15:50:04,735 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1354] 处理已完成: 用户请求停止系统 
+2026-04-22 15:50:04,736 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1370] 处理已完成: 系统停止操作完成 
+2026-04-22 15:50:04,739 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:160] 所有料仓已停止 
+2026-04-22 15:50:04,744 [DEBUG] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:1557] 系统状态更新: Stopped - 已停止（需复位） 
+2026-04-22 15:50:04,749 [INFO ] [thread-6] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: Stop 
+2026-04-22 15:50:04,750 [INFO ] [thread-6] [Ewan.Core.Module.BeltConveyorModule:404] 处理已完成: 皮带已停止 
+2026-04-22 15:50:08,132 [INFO ] [thread-6] [Ewan.Core.Module.BinElevatorModule:160] 所有料仓已停止 
+2026-04-22 15:50:08,154 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:134] 模块已销毁: BinElevatorModule 
+2026-04-22 15:50:08,161 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:301] 处理已完成: 皮带轴已停止 
+2026-04-22 15:50:08,166 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:233] 模块已销毁: BeltConveyorModule 
+2026-04-22 15:50:08,172 [INFO ] [thread-1] [Ewan.Core.Module.MesModule:89] 模块已销毁: MesModule 
+2026-04-22 15:50:08,182 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: SafetyModule销毁 
+2026-04-22 15:50:08,185 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:188] 模块已销毁: SafetyModule 
+2026-04-22 15:50:08,186 [INFO ] [thread-1] [MarkingMachineFeeder.App:97] 流处理已停止 
+2026-04-22 15:50:08,201 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:134] 模块已销毁: BinElevatorModule 
+2026-04-22 15:50:08,203 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:301] 处理已完成: 皮带轴已停止 
+2026-04-22 15:50:08,204 [INFO ] [thread-1] [Ewan.Core.Module.BeltConveyorModule:233] 模块已销毁: BeltConveyorModule 
+2026-04-22 15:50:08,207 [INFO ] [thread-1] [Ewan.Core.Module.MesModule:89] 模块已销毁: MesModule 
+2026-04-22 15:50:08,216 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:615] 处理已完成: 暂停输出复位: SafetyModule销毁 
+2026-04-22 15:50:08,218 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:188] 模块已销毁: SafetyModule 
+2026-04-22 15:50:08,236 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:224] 模块销毁: MesManager 
+2026-04-22 15:50:08,247 [INFO ] [thread-1] [Ewan.Core.Mes.MesManager:294] MES disconnected: 172.24.10.21:1883 
+2026-04-22 15:50:08,371 [INFO ] [thread-1] [MarkingMachineFeeder.App:108] 资源释放完成 
+2026-04-22 15:50:08,459 [ERROR] [thread-6] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:OnStatusIndicatorReceived] 处理错误: 处理系统状态变化 - 已取消一个任务。 

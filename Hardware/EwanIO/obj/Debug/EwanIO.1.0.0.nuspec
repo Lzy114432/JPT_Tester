@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>EwanIO</id>
+    <version>1.0.0</version>
+    <authors>Your Name</authors>
+    <description>A layered IO control library with mapping and simulation support</description>
+    <repository type="git" commit="c9e0c1dd18fd21f0d71720081d8a580990abf8d6" />
+    <dependencies>
+      <group targetFramework=".NETFramework4.7.2">
+        <dependency id="EwanAxis" version="1.0.0" exclude="Build,Analyzers" />
+        <dependency id="EwanSMC606" version="1.0.0" exclude="Build,Analyzers" />
+        <dependency id="PlcCommunication" version="1.0.0" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="13.0.3" exclude="Build,Analyzers" />
+        <dependency id="System.Runtime.CompilerServices.Unsafe" version="6.1.2" exclude="Build,Analyzers" />
+        <dependency id="System.ValueTuple" version="4.6.1" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Runtime" targetFramework=".NETFramework4.7.2" />
+      <frameworkAssembly assemblyName="System.Runtime.InteropServices" targetFramework=".NETFramework4.7.2" />
+    </frameworkAssemblies>
+  </metadata>
+  <files>
+    <file src="D:\01Demo\珠海均威\上料机\MarkingMachineFeeder0617\Hardware\EwanIO\bin\x64\Debug\net472\EwanIO.dll" target="lib\net472\EwanIO.dll" />
+  </files>
+</package>

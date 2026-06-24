@@ -1,0 +1,93 @@
+﻿2025-09-14 10:40:13,471 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:325] [UsersLoaded] 已加载 3 个用户 
+2025-09-14 10:40:13,472 [INFO ] [thread-1] [Ewan.Core.Security.SecurityManager:331] [AdminUserLoadCheck] 管理员用户检查: 1 
+2025-09-14 10:40:13,475 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:93] [IOConfigurationLoaded] IO配置已从以下位置加载: HardwareType=SMC606IO, ConnectionString=192.168.5.11, MappingPath=Config\io_mapping.json 
+2025-09-14 10:40:13,480 [DEBUG] [thread-1] [Ewan.Core.IO.LayeredIOManager:214] [IOHardwareCreated] IO硬件已创建: SMC606IO 
+2025-09-14 10:40:13,481 [INFO ] [thread-1] [Ewan.Core.IO.LayeredIOManager:69] [ManagerInitialized] 管理器初始化成功: LayeredIOManager 
+2025-09-14 10:40:13,503 [INFO ] [thread-1] [Ewan.Core.Culture.CultureManager:55] [CultureChanged] 文化已更改为 zh-CN 
+2025-09-14 10:40:13,513 [INFO ] [thread-1] [Ewan.Core.Axis.AxisManager:79] [AxisConfigurationLoaded] 轴配置已从以下位置加载: 3个轴配置 
+2025-09-14 10:40:13,521 [INFO ] [thread-1] [MarkingMachineFeeder.App:54] [SystemInitialized] 系统初始化成功 
+2025-09-14 10:40:18,631 [ERROR] [thread-1] [Ewan.Core.IO.LayeredIOManager:438] [IOConnectionFailed] IO连接失败: 192.168.5.11 
+2025-09-14 10:40:18,632 [WARN ] [thread-1] [Ewan.Core.Module.SafetyModule:62] [IOConnectionFailed] IO连接失败: SafetyModule初始化 
+2025-09-14 10:40:18,633 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:66] [ModuleInitialized] 模块初始化成功: SafetyModule 
+2025-09-14 10:40:18,634 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-14 10:40:18,638 [WARN ] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:442] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:18,640 [WARN ] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:18,641 [DEBUG] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:18,641 [INFO ] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:164] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:18,642 [INFO ] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:50] [ModuleInitialized] 模块初始化成功: SystemStatusIndicatorModule 
+2025-09-14 10:40:18,642 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-14 10:40:18,643 [INFO ] [thread-1] [Ewan.BusinessBonding.StreamController:367] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:18,645 [INFO ] [thread-1] [Ewan.BusinessBonding.StreamController:392] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:18,646 [WARN ] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:442] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:18,647 [INFO ] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:174] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:18,649 [WARN ] [thread-10] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:18,650 [DEBUG] [thread-10] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:18,905 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:200] [ModuleInitialized] 模块初始化成功: IOPollingModule: IO映射名称加载成功 
+2025-09-14 10:40:18,906 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:38] [ModuleInitialized] 模块初始化成功: IOPollingModule 
+2025-09-14 10:40:18,906 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-14 10:40:18,907 [INFO ] [thread-1] [Ewan.Core.Module.AutoProductionModule:34] [ModuleInitialized] 模块初始化成功: AutoProductionModule 
+2025-09-14 10:40:18,908 [INFO ] [thread-1] [Ewan.Core.Module.AutoProductionModule:480] [InitializationStarted] 初始化已开始: 自动流程系统初始化开始 
+2025-09-14 10:40:18,908 [INFO ] [thread-1] [Ewan.Core.Module.AutoProductionModule:499] [InitializationCompleted] 初始化已完成: 自动流程系统初始化完成 
+2025-09-14 10:40:18,908 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-14 10:40:18,911 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:85] [ModuleInitialized] 模块初始化成功: BinElevatorModule 
+2025-09-14 10:40:18,912 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:733] [ProcessingStarted] 处理已开始: 检查料仓轴配置 
+2025-09-14 10:40:18,912 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:741] [ProcessingCompleted] 处理已完成: 轴配置检查完成 
+2025-09-14 10:40:18,913 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:756] [ProcessingStarted] 处理已开始: 初始化料仓状态 
+2025-09-14 10:40:18,914 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:773] [ProcessingCompleted] 处理已完成: 料仓状态初始化 - 料仓1:无料 料仓2:无料 料仓3:无料 
+2025-09-14 10:40:18,914 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:102] [InitializationCompleted] 初始化已完成: 料仓升降控制系统 
+2025-09-14 10:40:18,915 [INFO ] [thread-1] [Ewan.Core.Run.StreamRunner:28] [StreamRunnerModulesInitialized] 流运行器模块初始化完成: {0} 
+2025-09-14 10:40:18,915 [INFO ] [thread-1] [Ewan.BusinessBonding.StreamController:324] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:18,916 [INFO ] [thread-1] [MarkingMachineFeeder.App:59] [StreamProcessStarted] 流处理已启动 
+2025-09-14 10:40:18,917 [INFO ] [thread-1] [MarkingMachineFeeder.App:73] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-14 10:40:18,926 [INFO ] [thread-13] [Ewan.Core.Module.BinElevatorModule:490] [ProcessingStarted] 处理已开始: 料仓1开始Jog上升，速度:1000 
+2025-09-14 10:40:18,926 [INFO ] [thread-13] [Ewan.Core.Module.BinElevatorModule:247] [ProcessingStarted] 处理已开始: 料仓1自动上升模式：开始上升到感应位置 
+2025-09-14 10:40:18,928 [INFO ] [thread-13] [Ewan.Core.Module.BinElevatorModule:490] [ProcessingStarted] 处理已开始: 料仓2开始Jog上升，速度:1000 
+2025-09-14 10:40:18,929 [INFO ] [thread-13] [Ewan.Core.Module.BinElevatorModule:247] [ProcessingStarted] 处理已开始: 料仓2自动上升模式：开始上升到感应位置 
+2025-09-14 10:40:18,929 [INFO ] [thread-13] [Ewan.Core.Module.BinElevatorModule:490] [ProcessingStarted] 处理已开始: 料仓3开始Jog上升，速度:1000 
+2025-09-14 10:40:18,930 [INFO ] [thread-13] [Ewan.Core.Module.BinElevatorModule:247] [ProcessingStarted] 处理已开始: 料仓3自动上升模式：开始上升到感应位置 
+2025-09-14 10:40:19,168 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:19,169 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:19,181 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:295] [SystemInitialized] 系统初始化成功 
+2025-09-14 10:40:19,286 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:297] [SystemStatusNormal] 系统状态: 正常 
+2025-09-14 10:40:19,395 [WARN ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:299] [Log4netConfigNotFound] Log4net配置文件未找到 
+2025-09-14 10:40:19,503 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:301] [DatabaseConnected] 数据库连接成功 
+2025-09-14 10:40:19,613 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.LogWindowViewModel:303] [ViewModelLocatorConfigured] ViewModelLocator已配置 
+2025-09-14 10:40:19,623 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:335] [MainWindowStarted] 主窗口已启动 
+2025-09-14 10:40:19,673 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:19,674 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:20,174 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:20,175 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:20,676 [WARN ] [thread-14] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:20,677 [DEBUG] [thread-14] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:21,177 [WARN ] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:21,177 [DEBUG] [thread-3] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:21,679 [WARN ] [thread-15] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:21,679 [DEBUG] [thread-15] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:22,182 [WARN ] [thread-14] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:22,182 [DEBUG] [thread-14] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:22,600 [INFO ] [thread-1] [MarkingMachineFeeder.Viewmodel.MainWindowViewModel:488] [UserExiting] 用户 operator 正在退出应用程序 
+2025-09-14 10:40:22,664 [INFO ] [thread-1] [Ewan.Core.Module.AutoProductionModule:132] [ModuleDestroyed] 模块已销毁: AutoProductionModule 
+2025-09-14 10:40:22,665 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:791] [ProcessingStarted] 处理已开始: 停止所有料仓Jog运动 
+2025-09-14 10:40:22,667 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:529] [ProcessingStarted] 处理已开始: 料仓1Jog停止 
+2025-09-14 10:40:22,667 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:529] [ProcessingStarted] 处理已开始: 料仓2Jog停止 
+2025-09-14 10:40:22,669 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:529] [ProcessingStarted] 处理已开始: 料仓3Jog停止 
+2025-09-14 10:40:22,669 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:803] [ProcessingCompleted] 处理已完成: 所有料仓Jog运动已停止 
+2025-09-14 10:40:22,669 [INFO ] [thread-1] [Ewan.Core.Module.BinElevatorModule:148] [ModuleDestroyed] 模块已销毁: BinElevatorModule 
+2025-09-14 10:40:22,670 [INFO ] [thread-1] [Ewan.BusinessBonding.StreamController:334] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:22,670 [INFO ] [thread-1] [Ewan.Core.Module.IOPollingModule:212] [ModuleDestroyed] 模块已销毁: IOPollingModule 
+2025-09-14 10:40:22,672 [INFO ] [thread-1] [Ewan.BusinessBonding.StreamController:392] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:22,672 [WARN ] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:442] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:22,690 [WARN ] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:442] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:22,690 [WARN ] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:22,690 [WARN ] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:269] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:22,690 [DEBUG] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:22,691 [INFO ] [thread-8] [Ewan.Core.Module.SystemStatusIndicatorModule:147] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:22,690 [DEBUG] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:270] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:22,691 [INFO ] [thread-1] [Ewan.Core.Module.SystemStatusIndicatorModule:80] [ModuleDestroyed] 模块已销毁: SystemStatusIndicatorModule 
+2025-09-14 10:40:22,700 [INFO ] [thread-1] [Ewan.BusinessBonding.StreamController:377] [UnknownResource] [Missing Resource: UnknownResource] 
+2025-09-14 10:40:22,700 [WARN ] [thread-8] [Ewan.Core.Msg.MsgManager:29] [MsgManagerProcessError] 消息管理器处理错误:    在 System.ThrowHelper.ThrowInvalidOperationException(ExceptionResource resource)
+   在 System.Collections.Generic.List`1.Enumerator.MoveNextRare()
+   在 Ewan.Core.Msg.MsgManager.NotifyListeners(MessageModel msg) 位置 C:\Users\Administrator\source\repos\MarkingMachineFeeder\Ewan.Core\Msg\MsgManager.cs:行号 72
+   在 Ewan.Core.Msg.MsgManager.<Init>b__3_0() 位置 C:\Users\Administrator\source\repos\MarkingMachineFeeder\Ewan.Core\Msg\MsgManager.cs:行号 29 
+2025-09-14 10:40:22,701 [INFO ] [thread-1] [Ewan.Core.Module.SafetyModule:138] [ModuleDestroyed] 模块已销毁: SafetyModule 
+2025-09-14 10:40:22,701 [INFO ] [thread-1] [MarkingMachineFeeder.App:81] [StreamProcessStopped] 流处理已停止 
