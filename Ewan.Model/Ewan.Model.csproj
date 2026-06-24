@@ -68,6 +68,7 @@
     <Compile Include="Config\AxisConfigManager.cs" />
     <Compile Include="Config\AxisEnum.cs" />
     <Compile Include="IO\MarkingMachineFeederIOModel.cs" />
+    <Compile Include="Messages\PutModeChangedMessage.cs" />
     <Compile Include="Messages\UILogMsg.cs" />
     <Compile Include="Messages\SystemControlMessage.cs" />
     <Compile Include="Messages\SafetyAlertMessage.cs" />

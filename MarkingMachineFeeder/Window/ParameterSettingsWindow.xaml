@@ -439,6 +439,8 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="10"/>
                                     <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="10"/>
+                                    <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
 
                                 <!-- 系统复位延迟 -->
@@ -512,6 +514,25 @@
                                             Style="{StaticResource ModernTextBox}"/>
 
                                         <TextBlock Text="小车间隔数量"
+                                             FontSize="12" 
+                                             Foreground="#9CA3AF"
+                                             Margin="0,5,0,0"
+                                             TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Grid.Row="4" Grid.Column="0" Background="#FAFAFA" CornerRadius="8" Padding="20">
+                                    <StackPanel>
+                                        <TextBlock Text="小车持续放空车数量"
+                                            FontSize="14" 
+                                            FontWeight="Medium" 
+                                            Foreground="#495057"
+                                            Margin="0,0,0,10"/>
+
+                                        <TextBox Text="{Binding I_持续空车数量, UpdateSourceTrigger=PropertyChanged}"
+                                            Style="{StaticResource ModernTextBox}"/>
+
+                                        <TextBlock Text="小车持续放空车数量"
                                              FontSize="12" 
                                              Foreground="#9CA3AF"
                                              Margin="0,5,0,0"

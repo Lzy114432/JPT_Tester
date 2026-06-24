@@ -89,6 +89,16 @@ namespace Ewan.Core.Module
                     bool risingEdge = currentState == 2 && _lastState != 2;//下面给2
                     bool isLoading = currentState == 1 || currentState == 2;
 
+                    if (SystemParametersManager.Instance.Parameters.b_启动)
+                    {
+                        if (!risingEdge)
+                            risingEdge = currentState == 2 || currentState == 1;
+                        if (!fallingEdge)
+                            fallingEdge = currentState == 1;
+                        SystemParametersManager.Instance.Parameters.b_启动 = false;
+                    }
+
+                
                     Push(new RingLineModel
                     {
                         IsLoading = isLoading,
@@ -139,13 +149,13 @@ namespace Ewan.Core.Module
                         string finalCode = v_temp[4].Remove(0, 1);
                         if (type == "1")
                         {
-                            _uiLogger.InfoRaw("检测到中段上料(4#): {0} -> 拼装: {1}", str_中料仓loadingQrCode, finalCode);
+                            _uiLogger.InfoRaw("检测到中段上料1(4#): {0} -> 拼装: {1}", str_中料仓loadingQrCode, finalCode);
                             TriggerMesRequest(finalCode, MesRingLineAction.FeedingZhongLiaocang, bin);
 
                         }
                         else
                         {
-                            _uiLogger.InfoRaw("检测到中段上料(4#): {0} -> 拼装: {1}", str_中料仓loadingQrCode, finalCode);
+                            _uiLogger.InfoRaw("检测到中段上料2(4#): {0} -> 拼装: {1}", str_中料仓loadingQrCode, finalCode);
                             TriggerMesRequest(finalCode, MesRingLineAction.UnloadingZhongLiaocang, bin);
 
                         }

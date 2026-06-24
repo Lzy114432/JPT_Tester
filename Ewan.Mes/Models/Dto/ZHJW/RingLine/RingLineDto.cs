@@ -37,18 +37,43 @@ namespace Ewan.Mes.Models.Dto.ZHJW.RingLine
     {
         [JsonProperty("billno_A")]
         public string BillNoA { get; set; }
-
         [JsonProperty("billno_B")]
         public string BillNoB { get; set; }
-
         [JsonProperty("success")]
         public bool Success { get; set; }
-
         [JsonProperty("message")]
         public string Message { get; set; }
-
         [JsonProperty("t")]
         public string Timestamp { get; set; }
+
+
+        [JsonProperty("size_A", Required = Required.Default)]
+        public string SizeA { get; set; } = "";
+
+        [JsonProperty("metal_A", Required = Required.Default)]
+        public string MetalA { get; set; } = "";
+
+        [JsonProperty("power_A", Required = Required.Default)]
+        public string PowerA { get; set; } = "";
+        [JsonProperty("resis_A", Required = Required.Default)]
+        public string ResisA { get; set; } = "";
+        [JsonProperty("suffix_A", Required = Required.Default)]
+        public string SuffixA { get; set; } = "";
+
+
+        [JsonProperty("size_B", Required = Required.Default)]
+        public string SizeB { get; set; } = "";
+
+        [JsonProperty("metal_B", Required = Required.Default)]
+        public string MetalB { get; set; } = "";
+
+        [JsonProperty("power_B", Required = Required.Default)]
+        public string PowerB { get; set; } = "";
+        [JsonProperty("resis_B", Required = Required.Default)]
+        public string ResisB { get; set; } = "";
+        [JsonProperty("suffix_B", Required = Required.Default)]
+        public string SuffixB { get; set; } = "";
+
     }
     public class FeedingUnloadingStateResponseModel
     {

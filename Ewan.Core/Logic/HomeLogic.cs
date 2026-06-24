@@ -114,7 +114,7 @@ namespace Ewan.Core.Logic
                                 var request = BinElevatorCommandMessage.InitializeAll(nameof(HomeLogic));
                                 _binInitTask = MessageHub.Current.RequestAsync<BinElevatorCommandMessage, BinElevatorStatusMessage>(
                                     request,
-                                    timeoutMs: BIN_INIT_TIMEOUT);
+                                    timeoutMs: 15000);
                             }
                             SwitchIndex = "等待料仓完成";
                         }

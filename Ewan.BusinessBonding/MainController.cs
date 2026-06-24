@@ -4,6 +4,7 @@ using EwanCore;
 using EwanCore.Bootstrap;
 using EwanCommon.Logging;
 using log4net;
+using Ewan.Core.Mes;
 
 namespace Ewan.BusinessBonding
 {
@@ -84,6 +85,12 @@ namespace Ewan.BusinessBonding
                 if (result)
                 {
                     s_logger.Info("MainController 初始化完成");
+                    try {
+                        MesManager.Instance().ConfigureFromSystemParameters(connect: true);
+                        bool ol = MesManager.Instance().InitializeRingLineFromSystemParameters();
+                        s_logger.InfoFormat($"自动初始化环线服务结果{ol}");
+                    }
+                    catch { }
                 }
                 else
                 {

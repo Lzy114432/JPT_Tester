@@ -377,15 +377,15 @@ namespace Ewan.Core.Mes
             return _ringLineService.PublishFeedingQianLiaocangAsync(payload);
         }
 
-        public ushort PublishFeedingQianLiaocangSuccess(FeedingQianLiaocangSuccessData payload)
-        {
-            if (!EnsureRingLineService())
-            {
-                return (ushort)0;
-            }
+        //public ushort PublishFeedingQianLiaocangSuccess(FeedingQianLiaocangSuccessData payload)
+        //{
+        //    if (!EnsureRingLineService())
+        //    {
+        //        return (ushort)0;
+        //    }
 
-            return _ringLineService.PublishFeedingQianLiaocangSuccess(payload);
-        }
+        //    return _ringLineService.PublishFeedingQianLiaocangSuccess(payload);
+        //}
 
         public Task<ushort> PublishFeedingQianLiaocangSuccessAsync(string plateCode, string feedingLiaokuangCode)
         {

@@ -342,17 +342,18 @@ namespace Ewan.Core.Manager
 
         private void HomeInternal(bool publishSystemControl)
         {
+            _uiLogger.Info("HomeInternal LogicManager开始");
             lock (_controlLock)
             {
                 if (_logicThread == null)
                 {
-                    _uiLogger.WarnRaw("LogicManager 未初始化，无法复位");
+                    _uiLogger.WarnRaw("HomeInternal LogicManager 未初始化，无法复位");
                     return;
                 }
 
                 if (MachineParameters.Instance.IsHomeing || _logicThread.ExistAction(typeof(HomeLogic)))
                 {
-                    _uiLogger.WarnRaw("复位中，请勿重复点击");
+                    _uiLogger.WarnRaw("HomeInternal 复位中，请勿重复点击");
                     return;
                 }
 
@@ -368,7 +369,17 @@ namespace Ewan.Core.Manager
                 MessageHub.Current.Post(Ewan.Model.Production.BinElevatorCommandMessage.InitializeAll(nameof(LogicManager)));
 
                 _logicThread.AddAction(new HomeLogic());
-                _controllerBox.Start();
+
+                try
+                {
+                    _uiLogger.Info($"HomeInternal: starting ControllerBox.Start, logicThread.Count={_logicThread?.Count}");
+                    _controllerBox.Start();
+                    _uiLogger.Info("HomeInternal: ControllerBox.Start completed");
+                }
+                catch (Exception ex)
+                {
+                    _uiLogger.Error("复位时启动控制器异常: {0}", ex.Message);
+                }
 
                 MessageHub.Current.Post(new StatusIndicatorCommand(SystemStatus.Initializing, "复位中"));
                 if (publishSystemControl)
@@ -376,9 +387,16 @@ namespace Ewan.Core.Manager
                     MessageHub.Current.Post(SystemControlMessage.Initialize(nameof(LogicManager), "LogicManager.Home"));
                 }
                 SubscribeRingLineData();
-                s_logger.Info("复位开始");
+
+                if (!MachineParameters.Instance.IsHomeing)
+                {
+                    MachineParameters.Instance.MarkNeedHome();
+                    _uiLogger.Error("HomeInternal 料仓初始化失败，需重新复位");
+                }
+                _uiLogger.Info("HomeInternal LogicManager结束");
             }
         }
+
         //public void Dispose()
         //{
         //    _ringLineSubscription?.Dispose();

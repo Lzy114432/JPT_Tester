@@ -72,12 +72,21 @@ namespace MarkingMachineFeeder.Viewmodel
             get => _ringLineTimeoutSeconds;
             set => SetProperty(ref _ringLineTimeoutSeconds, value);
         }
-        private int i_小车间隔数量;
+        private int i_小车间隔数量 = 3;
         public int I_小车间隔数量
         {
             get => i_小车间隔数量;
             set => SetProperty(ref i_小车间隔数量, value);
         }
+
+        private int i_持续空车数量 = 3;
+        public int I_持续空车数量
+        {
+            get => i_持续空车数量;
+            set => SetProperty(ref i_持续空车数量, value);
+        }
+
+
         private bool _safetyDoorAlarmBypass;
         public bool SafetyDoorAlarmBypass
         {
@@ -351,7 +360,7 @@ namespace MarkingMachineFeeder.Viewmodel
             set => SetProperty(ref _ringLineTimeoutDesc, value);
         }
 
-  
+
 
         #endregion
 
@@ -373,28 +382,28 @@ namespace MarkingMachineFeeder.Viewmodel
                 _binOptions.Add(new BinSelectionOption(BinSelection.Bin3, "料仓 3 (设计时)"));
                 LoadingSelectedBin = BinSelection.Bin1;
                 UnloadingSelectedBin = BinSelection.Bin1;
-                
+
                 // Set localized strings to fallback values or dummy text
                 EnableLoadingLabel = "启用上料模块";
                 EnableUnloadingLabel = "启用下料模块";
                 LoadingBinSelectionLabel = "装料料仓选择";
                 UnloadingBinSelectionLabel = "下料料仓选择";
 
-                 MesEnabled = false;
-                 MesBrokerHost = "localhost";
-                 MesBrokerPort = 1883;
-                 MesUserName = string.Empty;
-                 MesPassword = string.Empty;
+                MesEnabled = false;
+                MesBrokerHost = "localhost";
+                MesBrokerPort = 1883;
+                MesUserName = string.Empty;
+                MesPassword = string.Empty;
                 MesClientId = string.Empty;
                 MesCleanSession = true;
-                 MesKeepAliveSeconds = 30;
-                 MesRingLineDeviceId = string.Empty;
-                 MesRingLineDeviceCode = string.Empty;
-                 LiaokuangCodeTemplate = "BIN{0:D2}";
+                MesKeepAliveSeconds = 30;
+                MesRingLineDeviceId = string.Empty;
+                MesRingLineDeviceCode = string.Empty;
+                LiaokuangCodeTemplate = "BIN{0:D2}";
                 CodeReaderScanRetryCount = 3;
-                 
-                 return;
-             }
+
+                return;
+            }
 
             _uiLogger = new UILogger();
             _parametersManager = SystemParametersManager.Instance;
@@ -435,12 +444,11 @@ namespace MarkingMachineFeeder.Viewmodel
             MesKeepAliveSeconds = parameters.MesKeepAliveSeconds;
             MesRingLineDeviceId = parameters.MesRingLineDeviceId;
             MesRingLineDeviceCode = parameters.MesRingLineDeviceCode;
-            //I_小车间隔数量 = parameters.I_小车间隔数量;
-            I_小车间隔数量 = 0;
+            I_小车间隔数量 = parameters.I_小车间隔数量;
             LiaokuangCodeTemplate = string.IsNullOrWhiteSpace(parameters.LiaokuangCodeTemplate)
                 ? "BIN{0:D2}"
                 : parameters.LiaokuangCodeTemplate;
-
+            I_持续空车数量 = parameters.I_持续空车数量;
             UpdateBinOptionDisplays();
         }
 
@@ -502,19 +510,23 @@ namespace MarkingMachineFeeder.Viewmodel
 
         private void ExecuteSave()
         {
+
             if (SaveParameters())
             {
                 _uiLogger.InfoRaw("系统参数已保存");
                 CloseWindow();
             }
+            SystemParametersManager.Instance.Reload();
         }
 
         private void ExecuteApply()
         {
+
             if (SaveParameters())
             {
                 _uiLogger.InfoRaw("系统参数已应用");
             }
+            SystemParametersManager.Instance.Reload();
         }
 
         private void ExecuteCancel()
@@ -532,42 +544,78 @@ namespace MarkingMachineFeeder.Viewmodel
             try
             {
                 var existing = _parametersManager.Parameters;
-                var parameters = new Ewan.Model.System.SystemParameters
-                {
-                    EnableLoadingModule = EnableLoadingModule,
-                    EnableUnloadingModule = EnableUnloadingModule,
-                    LoadingBinSelection = LoadingSelectedBin,
-                    UnloadingBinSelection = UnloadingSelectedBin,
-                    HighSpeedModeEnabled = HighSpeedModeEnabled,
-                    ResetDelayMs = ResetDelayMs,
-                    LowSpeedSetupDelayMs = LowSpeedSetupDelayMs,
-                    RingLineTimeoutSeconds = RingLineTimeoutSeconds,
-                    SafetyDoorAlarmBypass = SafetyDoorAlarmBypass,
-                    EmptyCartReserveCount = EmptyCartReserveCount,
-                    CartCheckMode = CartCheckMode,
-                    CuttingBridgeCarReserveCount = CuttingBridgeCarReserveCount,
-                    CodeReaderType = existing?.CodeReaderType ?? "Datalogic",
-                    CodeReaderIp = existing?.CodeReaderIp ?? "192.168.3.100",
-                    CodeReaderPort = existing?.CodeReaderPort ?? 51236,
-                    CodeReaderTriggerCommand = existing?.CodeReaderTriggerCommand ?? "T",
-                    CodeReaderConnectionTimeoutMs = existing?.CodeReaderConnectionTimeoutMs ?? 3000,
-                    CodeReaderReceiveTimeoutMs = existing?.CodeReaderReceiveTimeoutMs ?? 5000,
-                    CodeReaderScanRetryCount = CodeReaderScanRetryCount <= 0 ? 1 : CodeReaderScanRetryCount,
-                    MesEnabled = MesEnabled,
-                    MesBrokerHost = MesBrokerHost,
-                    MesBrokerPort = MesBrokerPort,
-                    MesUserName = MesUserName,
-                    MesPassword = MesPassword,
-                    MesClientId = MesClientId,
-                    MesCleanSession = MesCleanSession,
-                    MesKeepAliveSeconds = MesKeepAliveSeconds,
-                    MesRingLineDeviceId = MesRingLineDeviceId,
-                    MesRingLineDeviceCode = MesRingLineDeviceCode,
-                    I_小车间隔数量 = I_小车间隔数量,
-                    LiaokuangCodeTemplate = string.IsNullOrWhiteSpace(LiaokuangCodeTemplate)
-                        ? "BIN{0:D2}"
-                        : LiaokuangCodeTemplate.Trim()
-                };
+
+                _parametersManager.Parameters.EnableLoadingModule = EnableLoadingModule;
+                _parametersManager.Parameters.EnableUnloadingModule = EnableUnloadingModule;
+                _parametersManager.Parameters.LoadingBinSelection = LoadingSelectedBin;
+                _parametersManager.Parameters.UnloadingBinSelection = UnloadingSelectedBin;
+                _parametersManager.Parameters.HighSpeedModeEnabled = HighSpeedModeEnabled;
+                _parametersManager.Parameters.ResetDelayMs = ResetDelayMs;
+                _parametersManager.Parameters.LowSpeedSetupDelayMs = LowSpeedSetupDelayMs;
+                _parametersManager.Parameters.RingLineTimeoutSeconds = RingLineTimeoutSeconds;
+                _parametersManager.Parameters.SafetyDoorAlarmBypass = SafetyDoorAlarmBypass;
+                _parametersManager.Parameters.EmptyCartReserveCount = EmptyCartReserveCount;
+                _parametersManager.Parameters.CartCheckMode = CartCheckMode;
+                _parametersManager.Parameters.CuttingBridgeCarReserveCount = CuttingBridgeCarReserveCount;
+                _parametersManager.Parameters.CodeReaderType = existing?.CodeReaderType ?? "Datalogic";
+                _parametersManager.Parameters.CodeReaderIp = existing?.CodeReaderIp ?? "192.168.3.100";
+                _parametersManager.Parameters.CodeReaderPort = existing?.CodeReaderPort ?? 51236;
+                _parametersManager.Parameters.CodeReaderTriggerCommand = existing?.CodeReaderTriggerCommand ?? "T";
+                _parametersManager.Parameters.CodeReaderConnectionTimeoutMs = existing?.CodeReaderConnectionTimeoutMs ?? 3000;
+                _parametersManager.Parameters.CodeReaderReceiveTimeoutMs = existing?.CodeReaderReceiveTimeoutMs ?? 5000;
+                _parametersManager.Parameters.CodeReaderScanRetryCount = CodeReaderScanRetryCount <= 0 ? 1 : CodeReaderScanRetryCount;
+                _parametersManager.Parameters.MesEnabled = MesEnabled;
+                _parametersManager.Parameters.MesBrokerHost = MesBrokerHost;
+                _parametersManager.Parameters.MesBrokerPort = MesBrokerPort;
+                _parametersManager.Parameters.MesUserName = MesUserName;
+                _parametersManager.Parameters.MesPassword = MesPassword;
+                _parametersManager.Parameters.MesClientId = MesClientId;
+                _parametersManager.Parameters.MesCleanSession = MesCleanSession;
+                _parametersManager.Parameters.MesKeepAliveSeconds = MesKeepAliveSeconds;
+                _parametersManager.Parameters.MesRingLineDeviceId = MesRingLineDeviceId;
+                _parametersManager.Parameters.MesRingLineDeviceCode = MesRingLineDeviceCode;
+                _parametersManager.Parameters.I_小车间隔数量 = I_小车间隔数量;
+                _parametersManager.Parameters.LiaokuangCodeTemplate = string.IsNullOrWhiteSpace(LiaokuangCodeTemplate) ? "BIN{0:D2}"
+                        : LiaokuangCodeTemplate.Trim();
+                _parametersManager.Parameters.I_持续空车数量 = I_持续空车数量;
+                var parameters = _parametersManager.Parameters;
+
+                //var parameters = new Ewan.Model.System.SystemParameters
+                //{
+                //    EnableLoadingModule = EnableLoadingModule,
+                //    EnableUnloadingModule = EnableUnloadingModule,
+                //    LoadingBinSelection = LoadingSelectedBin,
+                //UnloadingBinSelection = UnloadingSelectedBin,
+                //HighSpeedModeEnabled = HighSpeedModeEnabled,
+                //ResetDelayMs = ResetDelayMs,
+                //LowSpeedSetupDelayMs = LowSpeedSetupDelayMs,
+                //RingLineTimeoutSeconds = RingLineTimeoutSeconds,
+                //SafetyDoorAlarmBypass = SafetyDoorAlarmBypass,
+                //EmptyCartReserveCount = EmptyCartReserveCount,
+                //CartCheckMode = CartCheckMode,
+                //CuttingBridgeCarReserveCount = CuttingBridgeCarReserveCount,
+                //CodeReaderType = existing?.CodeReaderType ?? "Datalogic",
+                //CodeReaderIp = existing?.CodeReaderIp ?? "192.168.3.100",
+                //CodeReaderPort = existing?.CodeReaderPort ?? 51236,
+                //CodeReaderTriggerCommand = existing?.CodeReaderTriggerCommand ?? "T",
+                //CodeReaderConnectionTimeoutMs = existing?.CodeReaderConnectionTimeoutMs ?? 3000,
+                //CodeReaderReceiveTimeoutMs = existing?.CodeReaderReceiveTimeoutMs ?? 5000,
+                //CodeReaderScanRetryCount = CodeReaderScanRetryCount <= 0 ? 1 : CodeReaderScanRetryCount,
+                //MesEnabled = MesEnabled,
+                //MesBrokerHost = MesBrokerHost,
+                //MesBrokerPort = MesBrokerPort,
+                //MesUserName = MesUserName,
+                //MesPassword = MesPassword,
+                //MesClientId = MesClientId,
+                //MesCleanSession = MesCleanSession,
+                //MesKeepAliveSeconds = MesKeepAliveSeconds,
+                //MesRingLineDeviceId = MesRingLineDeviceId,
+                //MesRingLineDeviceCode = MesRingLineDeviceCode,
+                //I_小车间隔数量 = I_小车间隔数量,
+                //LiaokuangCodeTemplate = string.IsNullOrWhiteSpace(LiaokuangCodeTemplate)
+                //    ? "BIN{0:D2}"
+                //    : LiaokuangCodeTemplate.Trim()
+                //};
 
                 if (!parameters.Validate())
                 {

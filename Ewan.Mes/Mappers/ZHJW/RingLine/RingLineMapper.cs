@@ -13,6 +13,7 @@ using Ewan.Mes.Models.Domain.ZHJW.DicingMachine;
 using Ewan.Mes.Models.Domain.ZHJW.RingLine;
 using Ewan.Mes.Models.Dto.ZHJW.DicingMachine;
 using Ewan.Mes.Models.Dto.ZHJW.RingLine;
+using Newtonsoft.Json;
 using System;
 
 namespace Ewan.Mes.Mappers.ZHJW.RingLine
@@ -49,7 +50,21 @@ namespace Ewan.Mes.Mappers.ZHJW.RingLine
                 BillNoB = dto.BillNoB,
                 Success = dto.Success,
                 Message = dto.Message,
-                Timestamp = DateTime.TryParse(dto.Timestamp, out var dt) ? dt : DateTime.Now
+                Timestamp = DateTime.TryParse(dto.Timestamp, out var dt) ? dt : DateTime.Now,
+                SizeA = dto.SizeA,
+                MetalA = dto.MetalA,
+                PowerA = dto.PowerA,
+                ResisA = dto.ResisA,
+                SuffixA = dto.SuffixA,
+                SizeB = dto.SizeB,
+                MetalB = dto.MetalB,
+                PowerB = dto.PowerB,
+                ResisB = dto.ResisB,
+                SuffixB = dto.SuffixB
+
+
+
+
             };
         }
     }

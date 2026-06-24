@@ -9,6 +9,7 @@ using log4net.Core;
 using Microsoft.Win32;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO.Ports;
 using System.Linq;
@@ -24,6 +25,7 @@ namespace Ewan.Core.Plc
     [Manager(Priority = 1)]
     public class ModbusRTUManager : IManager
     {
+        private readonly UILogger _uiLogger = new UILogger();
         private static readonly ILog s_logger = Log.GetLogger(typeof(ModbusRTUManager));
         private bool _disposed;
 
@@ -329,43 +331,48 @@ namespace Ewan.Core.Plc
             }
         }
 
+        public List<string> lisWorkOrder = new List<string>() { "", "", "", "", "", "" };
+
         public void WriteWorkOrderToFirstAvailable(string workOrder, string clientKey = null)
         {
-            Task.Run(() => {
+            Task.Run(() =>
+            {
                 const ushort length = 10;
                 const string primaryAddress = "701";  // 
                 const string primaryAddress1 = "711";  // 
                 const string secondaryAddress = "731"; //
                 const string secondaryAddress1 = "741"; //
 
-                ushort us_Cur1 = 1;
-                ushort us_Cur2 = 1;
+
                 var v_A = func_Read(primaryAddress, length);
                 var v_B = func_Read(primaryAddress1, length);
                 var v_C = func_Read(secondaryAddress, length);
                 var v_D = func_Read(secondaryAddress1, length);
-                //var v_D1 = func_Read("700", 1);
-                //var v_D2 = func_Read("730", 1);
+                var mid = ModbusRTUManager.Instance()?.func_Read("700", 1).Trim('\0');
+                var rear = ModbusRTUManager.Instance()?.func_Read("730", 1).Trim('\0');
+                if (mid == "\u0001")
+                {
+                    WriteAny("700", (ushort)1, "main");
+                }
+                else if (mid == "\u0002")
+                {
+                    WriteAny("700", (ushort)2, "main");
+                }
 
-                if (SystemParametersManager.Instance.Parameters.str_当前工单号 == v_A && v_A != "")
+                if (rear == "\u0001")
                 {
+                    WriteAny("730", (ushort)1, "main");
+                }
+                else if (rear == "\u0002")
+                {
+                    WriteAny("730", (ushort)2, "main");
+                }
+                //WriteAny("700", (ushort)SystemParametersManager.Instance.Parameters.i_当前中段环线料仓, "main");
+                //WriteAny("730", (ushort)SystemParametersManager.Instance.Parameters.i_当前后段环线料仓, "main");
 
-                    us_Cur1 = 1;
-                }
-                else if (SystemParametersManager.Instance.Parameters.str_当前工单号 == v_B && v_B != "")
-                {
-                    us_Cur1 = 2;
-                }
-                if (SystemParametersManager.Instance.Parameters.str_当前工单号 == v_C && v_C != "")
-                {
-                    us_Cur2 = 1;
-                }
-                else if (SystemParametersManager.Instance.Parameters.str_当前工单号 == v_D && v_D != "")
-                {
-                    us_Cur2 = 2;
-                }
-                WriteAny("700", us_Cur1, "main");
-                WriteAny("730", us_Cur2, "main");
+
+                //= 1;
+                //SystemParametersManager.Instance.Parameters.i_当前后段环线料仓 = 1;
                 //SystemParametersManager.Instance.Parameters.str_当前工单号；
                 try
                 {
@@ -375,35 +382,90 @@ namespace Ewan.Core.Plc
                     //3 = FULL // 满
                     //4 = ERROR // 异常
                     // 尝试读取主区
-                    var primaryBytes = func_Read("190", 1);
-                    var primaryBytes1 = func_Read("191", 1);
-
+                    //var primaryBytes = func_Read("190", 1);
+                    //var primaryBytes1 = func_Read("191", 1);
+                    bool bWrite = false;
                     if (!(v_A.Contains(workOrder) || v_B.Contains(workOrder)))
                     {
-                        if (primaryBytes == "\u0001\0")
+                        //if (primaryBytes == "\u0001\0")
+                        if (v_A == "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0")
+                        {
+                            bWrite = true;
                             WriteStringToRegisters(primaryAddress, workOrder, length, clientKey);
-                        else if (primaryBytes1 == "\u0001\0")
+                            s_logger.InfoFormat($"当前工单号自动写入主区A: {workOrder}");
+                            _uiLogger.WarnRaw($"当前工单号自动写入主区A: {workOrder}");
+                        }
+                        //else if (primaryBytes1 == "\u0001\0")
+                        else if (v_B == "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0")
+                        {
+                            bWrite = true;
                             WriteStringToRegisters(primaryAddress1, workOrder, length, clientKey);
+                            s_logger.InfoFormat($"当前工单号自动写入主区B: {workOrder}");
+                            _uiLogger.WarnRaw($"当前工单号自动写入主区B: {workOrder}");
+                        }
                     }
 
-                    var primaryBytes2 = func_Read("192", 1);
-                    var primaryBytes3 = func_Read("193", 1);
+                    //var primaryBytes2 = func_Read("192", 1);
+                    //var primaryBytes3 = func_Read("193", 1);
                     if (!(v_C.Contains(workOrder) || v_D.Contains(workOrder)))
                     {
-                        if (primaryBytes2 == "\u0001\0")
+                        // if (primaryBytes2 == "\u0001\0")
+                        if (v_C == "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0")
+                        {
+                            bWrite = true;
                             WriteStringToRegisters(secondaryAddress, workOrder, length, clientKey);
-                        else if (primaryBytes3 == "\u0001\0")
+                            s_logger.InfoFormat($"当前工单号自动写入主区C: {workOrder}");
+                            _uiLogger.WarnRaw($"当前工单号自动写入主区C: {workOrder}");
+                        }
+                        //else if (primaryBytes3 == "\u0001\0")
+                        else if (v_D == "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0")
+                        {
+                            bWrite = true;
                             WriteStringToRegisters(secondaryAddress1, workOrder, length, clientKey);
+                            s_logger.InfoFormat($"当前工单号自动写入主区D: {workOrder}");
+                            _uiLogger.WarnRaw($"当前工单号自动写入主区D: {workOrder}");
+                        }
                     }
+
+
+
+                    if (bWrite)
+                    {
+                        v_A = func_Read(primaryAddress, length);
+                        v_B = func_Read(primaryAddress1, length);
+                        v_C = func_Read(secondaryAddress, length);
+                        v_D = func_Read(secondaryAddress1, length);
+                    }
+
+                    lisWorkOrder[0] = v_A.Trim('\0');
+                    lisWorkOrder[1] = v_B.Trim('\0');
+                    lisWorkOrder[2] = v_C.Trim('\0');
+                    lisWorkOrder[3] = v_D.Trim('\0');
+                    if (mid == "\u0001")
+                        lisWorkOrder[4] = v_A.Trim('\0');
+                    else if (mid == "\u0002")
+                        lisWorkOrder[4] = v_B.Trim('\0');
+                    else
+                        lisWorkOrder[4] = "";
+
+                    if (rear == "\u0001")
+                        lisWorkOrder[5] = v_C.Trim('\0');
+                    else if (rear == "\u0002")
+                        lisWorkOrder[5] = v_D.Trim('\0');
+                    else
+                        lisWorkOrder[5] = "";
+
                     return true;
                 }
                 catch (Exception ex)
                 {
+                    _uiLogger.WarnRaw($"错误: {ex.Message}");
                     return false;
                 }
             });
 
         }
+
         public bool func_清空单号(string str_工单地址, string clientKey = null)
         {
 
@@ -420,6 +482,51 @@ namespace Ewan.Core.Plc
 
 
         // 将字符串转换为 length 个 uint16 并写入指定寄存器地址（大端）
+        public bool func_手动写入(string address, string text, ushort length, string clientKey = null)
+        {
+            if (address == "701")
+            {
+                s_logger.InfoFormat($"当前工单号手动写入主区A: {text}");
+            }
+            if (address == "711")
+            {
+                s_logger.InfoFormat($"当前工单号手动写入主区B: {text}");
+            }
+            if (address == "731")
+            {
+                s_logger.InfoFormat($"当前工单号手动写入主区C: {text}");
+            }
+            if (address == "741")
+            {
+                s_logger.InfoFormat($"当前工单号手动写入主区D: {text}");
+            }
+
+            if (text == null) text = string.Empty;
+            // 最大可存储字符数 = 寄存器数量 * 2
+            int maxChars = length * 2;
+            if (text.Length > maxChars) text = text.Substring(0, maxChars);
+
+            byte[] payload = new byte[length * 2];  // 每个寄存器 2 字节
+
+            // 遍历每个寄存器（不是每个字符）
+            for (int regIdx = 0; regIdx < length; regIdx++)
+            {
+                // 当前寄存器对应的两个字符在字符串中的索引
+                int charIdx1 = regIdx * 2;
+                int charIdx2 = regIdx * 2 + 1;
+
+                // 获取字符值（如果索引超出则填 0）
+                ushort val1 = (charIdx1 < text.Length) ? (ushort)(text[charIdx1]) : (ushort)0;
+                ushort val2 = (charIdx2 < text.Length) ? (ushort)(text[charIdx2]) : (ushort)0;
+
+                // 存储：高字节 = val1，低字节 = val2
+                payload[regIdx * 2 + 1] = (byte)val1;   // 高字节
+                payload[regIdx * 2] = (byte)val2;   // 低字节
+            }
+
+            var result = ModbusRTUManager.Instance().WriteAny(address, payload, clientKey ?? "main");
+            return result != null && result.IsSuccess;
+        }
         public bool WriteStringToRegisters(string address, string text, ushort length, string clientKey = null)
         {
             if (text == null) text = string.Empty;

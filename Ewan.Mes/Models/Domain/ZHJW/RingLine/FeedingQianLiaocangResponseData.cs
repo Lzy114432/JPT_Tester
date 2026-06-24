@@ -22,6 +22,20 @@ namespace Ewan.Mes.Models.Domain.ZHJW.RingLine
         public bool Success { get; set; }
         public string Message { get; set; }
         public DateTime Timestamp { get; set; }
+
+
+        public string SizeA { get; set; } = "";
+        public string MetalA { get; set; } = "";
+        public string PowerA { get; set; } = "";
+        public string ResisA { get; set; } = "";
+        public string SuffixA { get; set; } = "";
+
+        public string SizeB { get; set; } = "";
+        public string MetalB { get; set; } = "";
+        public string PowerB { get; set; } = "";
+        public string ResisB { get; set; } = "";
+        public string SuffixB { get; set; } = "";
+
     }
     public class UnloadingQianLiaocangResponse
     {
